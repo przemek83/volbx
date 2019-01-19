@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/Icons">
+        <file>Images/copy.png</file>
+        <file>Images/filter.png</file>
+        <file>Images/charts.png</file>
+        <file>Images/export.png</file>
+        <file>Images/selectAll.png</file>
+        <file>Images/unselectAll.png</file>
+        <file>Images/float.png</file>
+        <file>Images/grouping.png</file>
+        <file>Images/basics.png</file>
+    </qresource>
+    <qresource prefix="/Stylesheet">
+        <file>Images/checkedGroupBox.png</file>
+        <file>Images/uncheckedGroupBox.png</file>
+        <file>Images/DarkOrangeCheckbox.png</file>
+        <file>Images/DarkOrangedownArrow.png</file>
+        <file>Images/DarkOrangeHandle.png</file>
+        <file>Images/downArrow.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>Css/Dark Orange.css</file>
+        <file>Css/Rounded Blue.css</file>
+        <file>template.xlsx</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,73 @@
+QGroupBox {
+border: 3px solid gray;
+border-radius: 8px;
+background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #eef, stop: 1 #ccf);
+padding-top: 8px;
+margin-top: 1ex;
+padding-left: 2px;
+padding-right: 2px;
+padding-bottom: 2px;
+}
+
+QGroupBox::title {
+subcontrol-origin: margin ;
+subcontrol-position: top center;
+margin-left: 5px; 
+}
+
+QLineEdit, QComboBox {
+padding: 1px;
+border-style: solid;
+border: 2px solid gray;
+border-radius: 8px;
+}
+
+QCheckBox, QRadioButton, QLabel {
+font-weight: bold;
+font-size: 14px;
+}
+
+QPushButton {
+color: white;
+background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #88d, stop: 0.1 #99e, stop: 0.49 #77c, stop: 0.5 #66b, stop: 1 #77c);
+border-width: 1px;
+border-color: #339;
+border-style: solid;
+border-radius: 7;
+padding: 3px;
+font-weight: bold;
+font-size: 12px;
+min-height: 15px;
+/*min-width: 50px;
+min-height: 13px;
+max-height: 13px;*/
+}
+
+QPushButton:hover,  QPushButton:pressed{
+color: red;
+}
+
+QPushButton:pressed {
+color: red;
+background: qradialgradient(cx: 0.3, cy: -0.4, fx: 0.3, fy: -0.4, radius: 1.35, stop: 0 #eef, stop: 1 #ccf);
+}
+
+QPushButton:disabled{
+color: #333;
+background: qradialgradient(cx: 0.3, cy: -0.4, fx: 0.3, fy: -0.4, radius: 1.35, stop: 0 #fff, stop: 1 #888);
+}
+
+QComboBox::drop-down {
+subcontrol-origin: padding;
+subcontrol-position: top right;
+width: 15px;
+border-left-width: 1px;
+border-left-color: darkgray;
+border-left-style: solid; /* just a single line */
+border-top-right-radius: 3px; /* same radius as the QComboBox */
+border-bottom-right-radius: 3px;
+}
+
+QComboBox::down-arrow {
+image: url(:/Stylesheet/Images/downArrow.png);
+}
