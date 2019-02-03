@@ -6,7 +6,6 @@
 #include <QDate>
 #include <QVariant>
 #include <QObject>
-#include "boost/tuple/tuple.hpp"
 #include <qwt_series_data.h>
 
 #include "Common/Quantiles.h"

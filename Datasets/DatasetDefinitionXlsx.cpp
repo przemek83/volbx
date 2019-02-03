@@ -1,9 +1,9 @@
 #include <math.h>
+#include <memory>
 
 #include <QDebug>
 #include <QDomDocument>
 #include <QVariant>
-#include <boost/scoped_ptr.hpp>
 #include <QApplication>
 
 #include "Shared/Logger.h"
@@ -609,7 +609,7 @@ bool DatasetDefinitionXlsx::getDataFromZip( QuaZip& zip,
 											QVector<QVector<QVariant> >* dataContainer,
 											bool fillSamplesOnly )
 {
-	boost::scoped_ptr<ProgressBar> bar(NULL);
+    std::unique_ptr<ProgressBar> bar;
 
 	if ( false == fillSamplesOnly )
 	{

@@ -1,5 +1,6 @@
 #include <QPainter>
 #include <QDebug>
+#include <QStyle>
 
 #include "Common/Constants.h"
 

@@ -6,7 +6,6 @@
 #include <QVariant>
 #include <QApplication>
 #include <QtCore>
-#include <boost/math/distributions/normal.hpp>
 
 #include "Common/Constants.h"
 #include "Shared/Logger.h"

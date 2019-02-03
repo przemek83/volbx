@@ -1,7 +1,6 @@
 #ifndef FILTERINGPROXYMODEL_H
 #define FILTERINGPROXYMODEL_H
 
-#include "boost/tuple/tuple.hpp"
 #include <map>
 
 #include <QSortFilterProxyModel>
@@ -68,7 +67,7 @@ private:
     std::map<int, QSet<QString> > stringsRestrictions_;
 
     ///Filter set for dates.
-    std::map<int, boost::tuples::tuple<QDate, QDate, bool> > datesRestrictions_;
+    std::map<int, std::tuple<QDate, QDate, bool> > datesRestrictions_;
 
     ///Filter set for numeric.
     std::map<int, std::pair<double, double> > numericRestrictions_;

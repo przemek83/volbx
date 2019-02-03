@@ -2,9 +2,9 @@
 #include <QDomElement>
 #include <QXmlStreamReader>
 #include <QDebug>
-#include <quazipfile.h>
-#include <boost/scoped_ptr.hpp>
+#include <quazip5/quazipfile.h>
 #include <QApplication>
+#include <memory>
 
 #include "Shared/Logger.h"
 #include "Common/Constants.h"
@@ -412,7 +412,7 @@ bool DatasetDefinitionOds::getDataFromZip( QuaZip& zip,
                                            QVector<QVector<QVariant> >* dataContainer,
                                            bool fillSamplesOnly )
 {
-	boost::scoped_ptr<ProgressBar> bar(NULL);
+    std::unique_ptr<ProgressBar> bar;
 	QTime performanceTimer;
 	performanceTimer.start();
 

@@ -1,7 +1,7 @@
 #ifndef DATASETDEFINITIONINNER_H
 #define DATASETDEFINITIONINNER_H
 
-#include <quazip.h>
+#include <quazip5/quazip.h>
 
 #include "DatasetDefinition.h"
 

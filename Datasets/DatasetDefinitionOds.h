@@ -1,9 +1,9 @@
 #ifndef DATASETDEFINITIONODS_H
 #define DATASETDEFINITIONODS_H
 
-#include <quazip.h>
+#include <quazip5/quazip.h>
 #include <QXmlStreamReader>
-#include <quazipfile.h>
+#include <quazip5/quazipfile.h>
 
 #include "DatasetDefinitionSpreadsheet.h"
 

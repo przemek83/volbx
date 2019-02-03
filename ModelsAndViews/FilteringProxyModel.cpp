@@ -34,7 +34,7 @@ void FilteringProxyModel::setDateFilter(int column,
                                         bool filterEmptyDates)
 {
     datesRestrictions_[column] =
-        boost::tuples::make_tuple(from, to, filterEmptyDates);
+        std::make_tuple(from, to, filterEmptyDates);
     invalidate();
 }
 
@@ -62,19 +62,19 @@ bool FilteringProxyModel::filterAcceptsRow(int sourceRow,
     }
 
     //Filter dates.
-    std::map<int, boost::tuples::tuple<QDate, QDate, bool> >::const_iterator iterDates;
+    std::map<int, std::tuple<QDate, QDate, bool> >::const_iterator iterDates;
     for(iterDates = datesRestrictions_.begin();
         iterDates != datesRestrictions_.end();
         ++iterDates)
     {
         QModelIndex index =
             sourceModel()->index(sourceRow, iterDates->first, sourceParent);
-        boost::tuples::tuple<QDate, QDate, bool> datesRestrictions =
+        std::tuple<QDate, QDate, bool> datesRestrictions =
             iterDates->second;
         const QVariant& dateVariant = index.data();
         if ( true == dateVariant.isNull() )
         {
-            if ( true == datesRestrictions.get<2>() )
+            if ( true == std::get<2>(datesRestrictions) )
             {
                 return false;
             }
@@ -85,8 +85,8 @@ bool FilteringProxyModel::filterAcceptsRow(int sourceRow,
         }
 
         QDate itemDate = dateVariant.toDate();
-        if ( itemDate < datesRestrictions.get<0>() ||
-             itemDate > datesRestrictions.get<1>() )
+        if ( itemDate < std::get<0>(datesRestrictions) ||
+             itemDate > std::get<1>(datesRestrictions) )
             return false;
     }
 

@@ -5,7 +5,6 @@
 #include <QDate>
 #include <QToolTip>
 #include <qwt_legend_label.h>
-#include <boost/math/distributions/normal.hpp>
 
 #include "Common/Constants.h"
 

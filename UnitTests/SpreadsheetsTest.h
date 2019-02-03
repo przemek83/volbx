@@ -1,7 +1,6 @@
 #ifndef SPREADSHEETSTEST_H
 #define SPREADSHEETSTEST_H
 
-#include <boost/tuple/tuple.hpp>
 #include <QObject>
 
 #include "Common/Formats.h"
@@ -51,7 +50,7 @@ private:
     void testSampleData(DatasetDefinition& definition,
                         int rows,
                         int columns,
-                        QVector<boost::tuples::tuple<QVariant, int, int> >& fields);
+                        QVector<std::tuple<QVariant, int, int> >& fields);
 
     void generateDataDumpsForFile(QString name);
 

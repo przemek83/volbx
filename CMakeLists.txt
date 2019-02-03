@@ -18,6 +18,7 @@ find_package(Qt5Widgets CONFIG REQUIRED)
 find_package(Qt5Core CONFIG REQUIRED)
 find_package(Qt5Gui CONFIG REQUIRED)
 find_package(Qt5Network CONFIG REQUIRED)
+find_package(Qt5Xml CONFIG REQUIRED)
 
 add_definitions( ${QT_DEFINITIONS} )
 
@@ -29,7 +30,6 @@ execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
 
 execute_process(COMMAND ${CMAKE_COMMAND} --build .
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/zlib )
-
 
 # QuaZip
 configure_file(CMakeLists.txt.quazip quazip/CMakeLists.txt)
@@ -60,7 +60,14 @@ file(COPY ${QWT_HEADERS} DESTINATION ${CMAKE_BINARY_DIR}/qwt/install/include)
 # workaround for not working passing "CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<dir>" in ExternalProject_Add
 set(workaround ON CACHE BOOL "" FORCE)
 
-message(WARNING ${QWT_ROOT} )
+
+include_directories(${CMAKE_BINARY_DIR}/qwt/install/include)
+include_directories(${CMAKE_BINARY_DIR}/zlib/install/include)
+include_directories(${CMAKE_BINARY_DIR}/quazip/install/include)
+
+LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/qwt/install/lib)
+LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/zlib/install/lib)
+LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/quazip/install/lib)
 
 include_directories(Charts)
 include_directories(Common)
@@ -85,4 +92,4 @@ file(GLOB SOURCES "Volbx/*.cpp"
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-target_link_libraries( ${PROJECT_NAME} zlib quazip qwt Qt5::Core Qt5::Network Qt5::Widgets Qt5::Gui)
+target_link_libraries( ${PROJECT_NAME} zlib quazip5 qwt Qt5::Core Qt5::Network Qt5::Widgets Qt5::Gui Qt5::Xml)

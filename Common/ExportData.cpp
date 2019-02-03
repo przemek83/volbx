@@ -8,7 +8,7 @@
 #include <QFile>
 #include <QAbstractItemView>
 #include <QItemSelectionModel>
-#include <quazip.h>
+#include <quazip5/quazip.h>
 
 #include "Common/Constants.h"
 #include "Shared/Logger.h"

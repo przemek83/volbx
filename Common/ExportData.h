@@ -4,7 +4,7 @@
 #include <QString>
 #include <QVariant>
 #include <vector>
-#include <quazipfile.h>
+#include <quazip5/quazipfile.h>
 
 #include "Common/Formats.h"
 #include "Common/SpecialColumns.h"

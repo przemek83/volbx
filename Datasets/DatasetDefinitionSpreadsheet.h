@@ -3,7 +3,7 @@
 
 #include <QHash>
 
-#include <quazip.h>
+#include <quazip5/quazip.h>
 
 #include "DatasetDefinition.h"
 

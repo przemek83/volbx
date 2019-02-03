@@ -1,5 +1,5 @@
 #include <QDebug>
-#include <quazipfile.h>
+#include <quazip5/quazipfile.h>
 
 #include "Common/Constants.h"
 #include "Shared/Logger.h"

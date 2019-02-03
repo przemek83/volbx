@@ -1,10 +1,10 @@
 #include <QFile>
 #include <QTextStream>
 #include <QDomDocument>
-#include <boost/scoped_ptr.hpp>
 #include <QApplication>
 #include <QDebug>
-#include <quazipfile.h>
+#include <quazip5/quazipfile.h>
+#include <memory>
 
 #include "Common/Constants.h"
 #include "Shared/Logger.h"
@@ -218,7 +218,7 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
     QTextStream stream(&zipFile);
     stream.setCodec("UTF-8");
 
-    boost::scoped_ptr<ProgressBar> bar(NULL);
+    std::unique_ptr<ProgressBar> bar;
 
 	if ( false == fillSamplesOnly )
 	{
