@@ -66,7 +66,7 @@ include_directories(${CMAKE_BINARY_DIR}/zlib/install/include)
 include_directories(${CMAKE_BINARY_DIR}/quazip/install/include)
 
 LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/qwt/install/lib)
-LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/zlib/install/lib)
+LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/zlib/install/bin)
 LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/quazip/install/lib)
 
 include_directories(Charts)
@@ -90,6 +90,21 @@ file(GLOB SOURCES "Volbx/*.cpp"
     "ModelsAndViews/*.cpp"
     "Shared/*.cpp")
 
-add_executable(${PROJECT_NAME} ${SOURCES})
 
-target_link_libraries( ${PROJECT_NAME} zlib quazip5 qwt Qt5::Core Qt5::Network Qt5::Widgets Qt5::Gui Qt5::Xml)
+# Remove background console window.
+IF(WIN32)
+SET(GUI_TYPE WIN32)
+ENDIF(WIN32)
+IF (APPLE)
+SET(GUI_TYPE MACOSX_BUNDLE)
+ENDIF (APPLE)
+
+qt5_add_resources(RESOURCES Resources/Resources.qrc)
+add_custom_target(generated_qrc DEPENDS ${RESOURCES})
+
+add_executable(${PROJECT_NAME} ${GUI_TYPE} ${SOURCES} ${RESOURCES} Volbx/VolbxProperties.rc)
+add_dependencies(${PROJECT_NAME} generated_qrc)
+
+target_link_libraries( ${PROJECT_NAME} quazip5 Qt5::Core Qt5::Network Qt5::Widgets Qt5::Gui Qt5::Xml)
+target_link_libraries(${PROJECT_NAME} optimized qwt)
+target_link_libraries(${PROJECT_NAME} debug qwtd)
