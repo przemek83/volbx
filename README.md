@@ -26,7 +26,7 @@ To launch and work properly Volbx needs dynamically linked Qwt and QuaZip libs i
 Volbx can be used using LGPLv2 or LGPLv3. 
 Volbx uses following software and licenses:    
 * Qt, Qwt and QuaZip libraries - LGPL licences (more on qt-project.org, quazip.sourceforge.net and qwt.sourceforge.net),    
-* Zlib - zlib license (can be found on zlib.net).
+* Zlib - Zlib license (can be found on zlib.net).
 
 ## Updater (not migrated to Cmake yet)
 TODO
