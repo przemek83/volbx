@@ -5,7 +5,7 @@
 #include <QDebug>
 #include <QApplication>
 
-#include "Common/Constants.h"
+#include "Constants.h"
 #include "Shared/Logger.h"
 
 #include "Configuration.h"

@@ -6,9 +6,9 @@
 
 #include "Common/Configuration.h"
 #include "Common/Constants.h"
-#include "DataSets/DatasetDefinitionXlsx.h"
-#include "DataSets/DatasetDefinitionOds.h"
-#include "DataSets/Dataset.h"
+#include "Datasets/DatasetDefinitionXlsx.h"
+#include "Datasets/DatasetDefinitionOds.h"
+#include "Datasets/Dataset.h"
 #include "ModelsAndViews/TableModel.h"
 #include "ModelsAndViews/FilteringProxyModel.h"
 #include "Common/ExportData.h"
@@ -104,11 +104,11 @@ void SpreadsheetsTest::testSpreadsheetFile01(DatasetDefinitionSpreadsheet* defin
     columnNames.append(qMakePair(5, QString("Price per unit")));
     testColumnInfo(*definition, columnFormats, columnNames);
 
-    QVector<boost::tuples::tuple<QVariant, int, int> > fields;
-    fields.append(boost::make_tuple(QVariant(QDate::fromJulianDay(2455207)), 3, 2));
-    fields.append(boost::make_tuple(QVariant("black"), 3, 6));
-    fields.append(boost::make_tuple(QVariant(12.0), 5, 1));
-    fields.append(boost::make_tuple(QVariant(4462.2), 3, 5));
+    QVector<std::tuple<QVariant, int, int> > fields;
+    fields.append(std::make_tuple(QVariant(QDate::fromJulianDay(2455207)), 3, 2));
+    fields.append(std::make_tuple(QVariant("black"), 3, 6));
+    fields.append(std::make_tuple(QVariant(12.0), 5, 1));
+    fields.append(std::make_tuple(QVariant(4462.2), 3, 5));
     testSampleData(*definition, 10, 7, fields);
 
     QVector<bool> activeColumns(definition->columnCount(), true);
@@ -204,10 +204,10 @@ void SpreadsheetsTest::testSpreadsheetFile03(DatasetDefinitionSpreadsheet* defin
     columnNames.append(qMakePair(3, QString("data transakcji")));
     testColumnInfo(*definition, columnFormats, columnNames);
 
-    QVector<boost::tuples::tuple<QVariant, int, int> > fields;
-    fields.append(boost::make_tuple(QVariant(3703.75925925926), 3, 2));
-    fields.append(boost::make_tuple(QVariant(53.0), 2, 1));
-    fields.append(boost::make_tuple(QVariant(3773.62264150943), 2, 2));
+    QVector<std::tuple<QVariant, int, int> > fields;
+    fields.append(std::make_tuple(QVariant(3703.75925925926), 3, 2));
+    fields.append(std::make_tuple(QVariant(53.0), 2, 1));
+    fields.append(std::make_tuple(QVariant(3773.62264150943), 2, 2));
     testSampleData(*definition, 4, 5, fields);
 
     QVector<bool> activeColumns(definition->columnCount(), true);
@@ -256,9 +256,9 @@ void SpreadsheetsTest::testSpreadsheetFile04(DatasetDefinitionSpreadsheet* defin
     columnNames.append(qMakePair(3, QString("height")));
     testColumnInfo(*definition, columnFormats, columnNames);
 
-    QVector<boost::tuples::tuple<QVariant, int, int> > fields;
-    fields.append(boost::make_tuple(QVariant(1.55), 3, 3));
-    fields.append(boost::make_tuple(QVariant(58.57), 5, 2));
+    QVector<std::tuple<QVariant, int, int> > fields;
+    fields.append(std::make_tuple(QVariant(1.55), 3, 3));
+    fields.append(std::make_tuple(QVariant(58.57), 5, 2));
     testSampleData(*definition, 10, 4, fields);
 
     QVector<bool> activeColumns(definition->columnCount(), true);
@@ -342,18 +342,18 @@ void SpreadsheetsTest::testColumnInfo(DatasetDefinition &definition,
 void SpreadsheetsTest::testSampleData(DatasetDefinition& definition,
                                   int rows,
                                   int columns,
-                                  QVector<boost::tuples::tuple<QVariant, int, int> >& fields)
+                                  QVector<std::tuple<QVariant, int, int> >& fields)
 {
     const QVector<QVector<QVariant> >* sampleData = definition.getSampleData();
 
     QCOMPARE(rows, sampleData->size());
     QCOMPARE(columns, sampleData->front().size());
 
-    boost::tuples::tuple<QVariant, int, int> fieldsTuple;
+    std::tuple<QVariant, int, int> fieldsTuple;
     foreach ( fieldsTuple, fields )
     {
-        QCOMPARE(fieldsTuple.get<0>(),
-                 sampleData->at(fieldsTuple.get<1>())[fieldsTuple.get<2>()]);
+        QCOMPARE(std::get<0>(fieldsTuple),
+                 sampleData->at(std::get<1>(fieldsTuple))[std::get<2>(fieldsTuple)]);
     }
 }
 

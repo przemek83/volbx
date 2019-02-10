@@ -3,7 +3,7 @@
 #include <QFile>
 #include <QStyleFactory>
 
-#include "Shared/CommonProperties.h"
+#include "CommonProperties.h"
 
 #include "Application.h"
 

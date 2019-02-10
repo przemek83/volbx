@@ -6,7 +6,7 @@
 #include <QCheckBox>
 #include <QLatin1String>
 
-#include "Shared/Debugging.h"
+#include "Debugging.h"
 
 //If debug is not activated use empty logger. For debugging on use logging window.
 #ifdef DEBUGGING

@@ -10,13 +10,13 @@
 #include <QItemSelectionModel>
 #include <quazip5/quazip.h>
 
-#include "Common/Constants.h"
+#include "Constants.h"
 #include "Shared/Logger.h"
-#include "DataSets/DatasetDefinition.h"
-#include "DataSets/Dataset.h"
-#include "DataSets/DatasetInner.h"
-#include "DataSets/DatasetDefinitionInner.h"
-#include "Common/ProgressBar.h"
+#include "Datasets/DatasetDefinition.h"
+#include "Datasets/Dataset.h"
+#include "Datasets/DatasetInner.h"
+#include "Datasets/DatasetDefinitionInner.h"
+#include "ProgressBar.h"
 #include "ModelsAndViews/TableModel.h"
 #include "ModelsAndViews/FilteringProxyModel.h"
 

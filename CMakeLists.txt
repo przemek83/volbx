@@ -19,6 +19,7 @@ find_package(Qt5Core CONFIG REQUIRED)
 find_package(Qt5Gui CONFIG REQUIRED)
 find_package(Qt5Network CONFIG REQUIRED)
 find_package(Qt5Xml CONFIG REQUIRED)
+find_package(Qt5Test CONFIG REQUIRED)
 
 add_definitions( ${QT_DEFINITIONS} )
 
@@ -69,26 +70,35 @@ LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/qwt/install/lib)
 LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/zlib/install/bin)
 LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/quazip/install/lib)
 
+
+include_directories(${CMAKE_SOURCE_DIR})
 include_directories(Charts)
-include_directories(Common)
-include_directories(DataProvider)
-include_directories(Datasets)
 include_directories(Filters)
 include_directories(GUI)
 include_directories(Import)
-include_directories(ModelsAndViews)
+
+
+add_subdirectory(Shared)
 include_directories(Shared)
+
+add_subdirectory(Common)
+include_directories(Common)
+
+add_subdirectory(Datasets)
+include_directories(Datasets)
+
+add_subdirectory(ModelsAndViews)
+include_directories(ModelsAndViews)
+
+add_subdirectory(DataProvider)
+include_directories(DataProvider)
 
 file(GLOB SOURCES "Volbx/*.cpp"
     "Charts/*.cpp"
-    "Common/*.cpp"
-    "DataProvider/*.cpp"
-    "Datasets/*.cpp"
     "Filters/*.cpp"
     "GUI/*.cpp"
     "Import/*.cpp"
-    "ModelsAndViews/*.cpp"
-    "Shared/*.cpp")
+   )
 
 
 # Remove background console window.
@@ -105,6 +115,11 @@ add_custom_target(generated_qrc DEPENDS ${RESOURCES})
 add_executable(${PROJECT_NAME} ${GUI_TYPE} ${SOURCES} ${RESOURCES} Volbx/VolbxProperties.rc)
 add_dependencies(${PROJECT_NAME} generated_qrc)
 
-target_link_libraries( ${PROJECT_NAME} quazip5 Qt5::Core Qt5::Network Qt5::Widgets Qt5::Gui Qt5::Xml)
+target_link_libraries(${PROJECT_NAME} shared common datasets modelsAndViews dataProvider quazip5 Qt5::Core Qt5::Network Qt5::Widgets Qt5::Gui Qt5::Xml)
 target_link_libraries(${PROJECT_NAME} optimized qwt)
 target_link_libraries(${PROJECT_NAME} debug qwtd)
+
+add_subdirectory(Update)
+
+enable_testing()
+add_subdirectory(UnitTests)

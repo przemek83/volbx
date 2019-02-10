@@ -3,12 +3,12 @@
 #include <QApplication>
 #include <QDebug>
 #include <QClipboard>
-#include <quazip.h>
-#include <quazipfile.h>
+#include <quazip5/quazip.h>
+#include <quazip5/quazipfile.h>
 #include <QDomDocument>
 
-#include "DataSets/DatasetDefinitionInner.h"
-#include "DataSets/DatasetInner.h"
+#include "Datasets/DatasetDefinitionInner.h"
+#include "Datasets/DatasetInner.h"
 #include "ModelsAndViews/TableModel.h"
 #include "ModelsAndViews/FilteringProxyModel.h"
 #include "Common/ExportData.h"
