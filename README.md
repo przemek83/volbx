@@ -1,8 +1,5 @@
-## Screenshots:
-![Alt text](Screenshot1.jpg?raw=true "")
-![Alt text](Screenshot2.jpg?raw=true "")
-![Alt text](Screenshot3.jpg?raw=true "")
-![Alt text](Screenshot4.jpg?raw=true "")
+## Example view:
+![](Screenshot1.jpg?raw=true "")
 
 ## Description
 Volbx is a graphical tool for data manipulation written in C++/Qt. User can load data, filter, select, visualize, export and more using few clicks. Volbx reads, along with inner application format, xlsx and ods spreadsheet files. User can save output stream as csv or xlsx and plots as png files. Dynamic and interactive plots can be zoomed, moved, reset to initial state, quickly exported to clipboard and more. Application calculate dynamically such handy values as quantiles, standard deviation, average and more for given sample.
@@ -39,3 +36,6 @@ Volbx uses following software and licenses:
 4) Run "UnitTests" binary and check results for "PASS" and "FAIL" statuses.
 
 Directory "TestSpreadsheets" has some subdirectories in which test files are located. Names of those subdirectories are hardcoded in "UnitTests" binary. If you add new test files, or you need to update comparison results, you can modify "UnitTests" to generate new comparison data by uncomment one line in method "initTestCase()".
+
+## More screenshots:
+![Alt text](Screenshot2.jpg?raw=true "")![Alt text](Screenshot3.jpg?raw=true "")![Alt text](Screenshot4.jpg?raw=true "")
