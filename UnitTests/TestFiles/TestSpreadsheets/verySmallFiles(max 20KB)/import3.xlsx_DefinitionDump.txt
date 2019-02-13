@@ -1,0 +1,12 @@
+Column 0 name=Data transakcji format=2
+Column 1 name=Cena transkacji format=1
+Column 2 name=pow format=1
+Column 3 name=cena metra format=1
+Column 4 name=prawa format=0
+Column 5 name=waga format=1
+Column 6 name=nic format=2
+Column 7 name=pusta format=0
+Column 8 name=cosjednak format=0
+Column 9 name=test1 format=0
+Column 10 name=test2 format=0
+Column 11 name=test3 format=0

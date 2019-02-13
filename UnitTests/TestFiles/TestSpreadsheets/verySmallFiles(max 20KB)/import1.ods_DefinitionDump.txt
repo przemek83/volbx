@@ -1,0 +1,12 @@
+Column 0 name=data trans format=2
+Column 1 name=data1 format=2
+Column 2 name=data2 format=2
+Column 3 name=data3 format=2
+Column 4 name=cena nier format=1
+Column 5 name=pow uż format=1
+Column 6 name=cena_metra format=1
+Column 7 name=rodzaj wł format=0
+Column 8 name=number1 format=1
+Column 9 name=number2 format=1
+Column 10 name=number3  format=1
+Column 11 name=number4 format=1

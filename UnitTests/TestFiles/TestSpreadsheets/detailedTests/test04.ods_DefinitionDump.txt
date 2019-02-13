@@ -1,0 +1,4 @@
+Column 0 name=name format=0
+Column 1 name=date format=2
+Column 2 name=mass (kg) format=1
+Column 3 name=height format=1

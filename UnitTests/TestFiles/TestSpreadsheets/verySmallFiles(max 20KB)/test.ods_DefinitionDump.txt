@@ -1,0 +1,3 @@
+Column 0 name=Pow format=1
+Column 1 name=Cena format=1
+Column 2 name=cena_m format=1

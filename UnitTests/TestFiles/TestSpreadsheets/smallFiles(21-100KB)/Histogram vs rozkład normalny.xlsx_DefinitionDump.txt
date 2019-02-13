@@ -1,0 +1,3 @@
+Column 0 name=modificator format=1
+Column 1 name=x format=1
+Column 2 name=y format=1

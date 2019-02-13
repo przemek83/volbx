@@ -1,0 +1,3 @@
+Column 0 name=Data transakcji format=2 special=0
+Column 1 name=Cena 1 mkw format=1 special=3
+Column 2 name=Zaktualizowana cena działek format=1

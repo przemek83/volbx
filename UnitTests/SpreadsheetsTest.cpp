@@ -504,8 +504,8 @@ void SpreadsheetsTest::compareExportDataWithDump(DatasetSpreadsheet* dataset)
 
     ExportData::quickExportAsTSV(&view);
 
-    QCOMPARE(QApplication::clipboard()->text(),
-             Common::loadFile(dataset->getName() + Common::getDataTsvDumpSuffix()));
+    QCOMPARE(QApplication::clipboard()->text().split('\n'),
+             Common::loadFile(dataset->getName() + Common::getDataTsvDumpSuffix()).split('\n'));
 }
 
 void SpreadsheetsTest::generateDataDumpsForFile(QString name)

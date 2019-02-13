@@ -1,0 +1,4 @@
+Column 0 name=Transaction date format=2
+Column 1 name=Price format=1
+Column 2 name=Price per unit format=1
+Column 3 name=Another trait format=0

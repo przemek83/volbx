@@ -1,0 +1,7 @@
+Column 0 name=Trait #1 format=0
+Column 1 name=Value #1 format=1
+Column 2 name=Transaction date format=2 special=0
+Column 3 name=Units format=1
+Column 4 name=Price format=1
+Column 5 name=Price per unit format=1 special=3
+Column 6 name=Another trait format=0

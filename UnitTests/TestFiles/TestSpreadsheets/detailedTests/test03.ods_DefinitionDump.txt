@@ -1,0 +1,5 @@
+Column 0 name=cena nier format=1
+Column 1 name=pow format=1
+Column 2 name=cena metra format=1
+Column 3 name=data transakcji format=2
+Column 4 name=text format=0

@@ -110,7 +110,7 @@ void InnerTests::checkImport(QString& fileName,
     QString compareData =
         Common::loadFile(datasetFilePath + Common::getDefinitionDumpSuffix());
 
-    QCOMPARE(compareData, definition->dumpDatasetDefinition());
+    QCOMPARE(compareData.split('\n'), definition->dumpDatasetDefinition().split('\n'));
 
     ExportData::quickExportAsTSV(&view);
 
@@ -119,7 +119,7 @@ void InnerTests::checkImport(QString& fileName,
     compareData = Common::loadFile(datasetFilePath +
                                    Common::getDataTsvDumpSuffix());
 
-    QCOMPARE(compareData, actualData);
+    QCOMPARE(actualData.split('\n'), compareData.split('\n'));
 }
 
 void InnerTests::checkExport(QString fileName)
