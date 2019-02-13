@@ -122,4 +122,4 @@ target_link_libraries(${PROJECT_NAME} debug qwtd)
 add_subdirectory(Update)
 
 enable_testing()
-add_subdirectory(UnitTests)
+add_subdirectory(Tests)
