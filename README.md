@@ -56,8 +56,8 @@ foreach (glob("*") as $filename) {
 **Remarks**:   
 - Instead of size of files returned by PHP script checksums should be returned and used for checking of correctenss of downloaded files.   
 - When I've created VersionChecker I've decided to use simplest solution which I was able to create. I do not know if it is safe and 'proper' enough but it worked :D I'm not web deweloper ;)   
-- Windows needs admin rights when executing files having in name strings like "update", "install" or "setup". Quite ugly name `VersionChecker` was picked to workaround that problem. ;)   
-- On Windows updater cannot overwrite file which is being used (executed) so ther is a special mechanism closing Volbx, running updater (Volbx binary and some libs can be replaced by new ones) and when running again Volbx replacing updater binary.
+- Windows needs admin rights (as of ~2012) when executing files having in name strings like "update", "install" or "setup". Quite ugly name `VersionChecker` was picked to workaround that problem. ;)   
+- On Windows updater cannot overwrite file which is being used (as of ~2012). There is a special mechanism for replacing used files: closing Volbx, running updater, changing not used/blocked binaries/libs, replacing automatically used/blocked ones during next run of Volbx.
 
 ## Testing
 1) Compile project.
