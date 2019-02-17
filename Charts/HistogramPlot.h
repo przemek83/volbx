@@ -51,7 +51,7 @@ private:
     public:
         explicit HistPicker(QWidget* parent);
 
-        virtual ~HistPicker();
+        virtual ~HistPicker() = default;
 
     protected:
         virtual QwtText trackerTextF(const QPointF &pos)const;

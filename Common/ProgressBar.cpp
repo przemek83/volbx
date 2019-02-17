@@ -72,11 +72,6 @@ ProgressBar::ProgressBar(ProgressBar::ProgressTitle title,
     show();
 }
 
-ProgressBar::~ProgressBar()
-{
-
-}
-
 void ProgressBar::initNames(QVector<QString>& titles, const char newLine)
 {
     static bool initialized = false;

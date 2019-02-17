@@ -20,11 +20,6 @@ TabBar::TabBar(QWidget *parent) :
     lineEdit_.installEventFilter(this);
 }
 
-TabBar::~TabBar()
-{
-
-}
-
 void TabBar::mouseDoubleClickEvent(QMouseEvent* event)
 {
     int index = currentIndex();

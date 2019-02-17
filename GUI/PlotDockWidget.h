@@ -12,11 +12,11 @@ class PlotDockWidget :  public DockWidget
 {
     Q_OBJECT
 public:
-    PlotDockWidget(QString title,
+    explicit PlotDockWidget(QString title,
                    QWidget* parent = 0,
                    Qt::WindowFlags flags = 0);
 
-    virtual ~PlotDockWidget();
+    virtual ~PlotDockWidget() = default;
 
     QList<PlotBase*> exportContent();
 

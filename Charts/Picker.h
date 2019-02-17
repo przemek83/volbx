@@ -11,7 +11,7 @@ class Picker : public QwtPlotPicker
 public:
     explicit Picker(QWidget *parent);
 
-    virtual ~Picker();
+    virtual ~Picker() = default;
 
     virtual int getAreaOfMouse();
 

@@ -38,7 +38,7 @@ protected:
     public:
         PlotMagnifier(QWidget* canvas);
 
-        virtual ~PlotMagnifier();
+        virtual ~PlotMagnifier() = default;
 
         void reset();
 
@@ -69,7 +69,7 @@ private:
     public:
         IntervalsScaleDraw();
 
-        virtual ~IntervalsScaleDraw();
+        virtual ~IntervalsScaleDraw() = default;
 
         virtual QwtText label(double v) const;
     };

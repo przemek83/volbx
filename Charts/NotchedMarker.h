@@ -13,7 +13,7 @@ class NotchedMarker : public CustomMarker
 public:
     explicit NotchedMarker(QVector<Quantiles>* quantiles);
 
-    virtual ~NotchedMarker();
+    virtual ~NotchedMarker() = default;
 
 protected:
     virtual void drawLegend(QPainter* p,

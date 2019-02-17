@@ -25,11 +25,6 @@ MainTabWidget::MainTabWidget(QWidget *parent) :
     setMovable(true);
 }
 
-MainTabWidget::~MainTabWidget()
-{
-
-}
-
 FilteringProxyModel* MainTabWidget::getCurrentProxyModel()
 {
     MainTab* currentTab = static_cast<MainTab*>(currentWidget());

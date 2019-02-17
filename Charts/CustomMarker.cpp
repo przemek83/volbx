@@ -19,11 +19,6 @@ CustomMarker::CustomMarker(QVector<Quantiles>* quantiles)
     setRenderHint(QwtPlotItem::RenderAntialiased, true);
 }
 
-CustomMarker::~CustomMarker()
-{
-
-}
-
 int CustomMarker::rtti() const
 {
     return QwtPlotItem::Rtti_PlotUserItem;

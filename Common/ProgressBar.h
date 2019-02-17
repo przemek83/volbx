@@ -25,7 +25,7 @@ public:
 
     ProgressBar(ProgressBar::ProgressTitle title, int max, QWidget* parent = 0);
 
-    virtual ~ProgressBar();
+    virtual ~ProgressBar() = default;
 
     inline void updateProgress(int newValue)
     {

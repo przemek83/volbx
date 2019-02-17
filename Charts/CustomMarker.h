@@ -13,7 +13,7 @@ class CustomMarker: public QwtPlotItem
 public:
     explicit CustomMarker(QVector<Quantiles>* quantiles);
 
-    virtual ~CustomMarker();
+    virtual ~CustomMarker() = default;
 
     virtual int rtti() const;
 

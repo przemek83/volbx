@@ -77,11 +77,6 @@ PlotData::ReferenceCounter::ReferenceCounter() :
 
 }
 
-PlotData::ReferenceCounter::~ReferenceCounter()
-{
-
-}
-
 void PlotData::ReferenceCounter::increase()
 {
     count_++;

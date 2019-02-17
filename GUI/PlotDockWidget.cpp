@@ -3,7 +3,7 @@
 #include <QPainter>
 #include <QScrollArea>
 
-#include "common/ExportImage.h"
+#include "Common/ExportImage.h"
 #include "Common/Constants.h"
 #include "Charts/PlotBase.h"
 
@@ -26,11 +26,6 @@ PlotDockWidget::PlotDockWidget(QString title,
             SIGNAL(clicked()),
             this,
             SLOT(resetPlot()));
-}
-
-PlotDockWidget::~PlotDockWidget()
-{
-
 }
 
 void PlotDockWidget::quickExportData()

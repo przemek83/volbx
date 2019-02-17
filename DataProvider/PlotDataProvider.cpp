@@ -21,11 +21,6 @@ PlotDataProvider::PlotDataProvider(int defaultGroupingColumn) :
 
 }
 
-PlotDataProvider::~PlotDataProvider()
-{
-
-}
-
 void PlotDataProvider::reCompute(QVector<TransactionData>* newCalcData,
                                  DataFormat columnFormat)
 {

@@ -31,11 +31,6 @@ ViewDockWidget::ViewDockWidget(QString title,
             SLOT(unselectAll()));
 }
 
-ViewDockWidget::~ViewDockWidget()
-{
-
-}
-
 void ViewDockWidget::quickExportData()
 {
     DataView* view = findChild<DataView*>();

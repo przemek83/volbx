@@ -37,7 +37,7 @@ private:
     public:
         ReferenceCounter();
 
-        virtual ~ReferenceCounter();
+        virtual ~ReferenceCounter() = default;
 
         void increase();
 

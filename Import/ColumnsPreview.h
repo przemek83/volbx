@@ -15,7 +15,7 @@ class ColumnsPreview : public QTableWidget
 public:
     explicit ColumnsPreview(QWidget* parent = 0);
 
-    virtual ~ColumnsPreview();
+    virtual ~ColumnsPreview() = default;
 
     void setDatasetDefinitionSampleInfo(const DatasetDefinition* datasetDefinition);
 

@@ -9,11 +9,6 @@ StringsScaleDraw::StringsScaleDraw(QVector<QString>* intervals) :
     setLabelAlignment(Qt::AlignLeft | Qt::AlignBottom);
 }
 
-StringsScaleDraw::~StringsScaleDraw()
-{
-
-}
-
 QwtText StringsScaleDraw::label(double v) const
 {
     if(intervals_->isEmpty() || fmod (v, 1) || !v || v < 0 ||

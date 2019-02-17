@@ -15,7 +15,7 @@ class DatasetSpreadsheet : public Dataset
 public:
     explicit DatasetSpreadsheet(DatasetDefinitionSpreadsheet* datasetDefinition);
 
-    virtual ~DatasetSpreadsheet();
+    virtual ~DatasetSpreadsheet() = default;
 
     virtual void init();
 

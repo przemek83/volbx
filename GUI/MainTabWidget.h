@@ -19,7 +19,7 @@ class MainTabWidget : public QTabWidget
 public:
     explicit MainTabWidget(QWidget *parent = 0);
 
-    virtual ~MainTabWidget();
+    virtual ~MainTabWidget() = default;
 
     FilteringProxyModel* getCurrentProxyModel();
 

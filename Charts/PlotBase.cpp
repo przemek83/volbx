@@ -92,11 +92,6 @@ PlotBase::IntervalsScaleDraw::IntervalsScaleDraw() :
 
 }
 
-PlotBase::IntervalsScaleDraw::~IntervalsScaleDraw()
-{
-
-}
-
 QwtText PlotBase::IntervalsScaleDraw::label(double v) const
 {
     if( fmod(v, 1) )
@@ -113,11 +108,6 @@ PlotBase::PlotMagnifier::PlotMagnifier(QWidget *canvas)
     : QwtPlotMagnifier(canvas)
 {
     actualFactor_ = 1.0;
-}
-
-PlotBase::PlotMagnifier::~PlotMagnifier()
-{
-
 }
 
 void PlotBase::PlotMagnifier::rescale(double factor)

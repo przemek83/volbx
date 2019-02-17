@@ -10,9 +10,9 @@
 class TransactionData
 {
 public:
-    TransactionData();
+    TransactionData() = default;
 
-    virtual ~TransactionData();
+    virtual ~TransactionData() = default;
 
     float pricePerMeter_;
 

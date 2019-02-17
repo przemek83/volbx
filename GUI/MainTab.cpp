@@ -25,11 +25,6 @@ MainTab::MainTab(Dataset* dataset, QWidget *parent) :
     addDockWidget(Qt::LeftDockWidgetArea, dock);
 }
 
-MainTab::~MainTab()
-{
-
-}
-
 FilteringProxyModel* MainTab::getCurrentProxyModel()
 {
     FilteringProxyModel* proxyModel = findChild<FilteringProxyModel*>();

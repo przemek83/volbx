@@ -16,11 +16,6 @@ ColumnsPreview::ColumnsPreview(QWidget* parent) :
             SLOT(selectionChanged()));
 }
 
-ColumnsPreview::~ColumnsPreview()
-{
-
-}
-
 void ColumnsPreview::setDatasetDefinitionSampleInfo(const DatasetDefinition* datasetDefinition)
 {
     clear();

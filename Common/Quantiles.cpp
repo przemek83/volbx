@@ -11,12 +11,6 @@ Quantiles::Quantiles()
     clear();
 }
 
-Quantiles::~Quantiles()
-{
-
-}
-
-
 void Quantiles::clear()
 {
     min_ = .0;

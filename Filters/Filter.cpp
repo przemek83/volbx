@@ -13,11 +13,6 @@ Filter::Filter(QString title, int column, QWidget *parent) :
     setStyleSheet(Application::getGroupBoxStyle());
 }
 
-Filter::~Filter()
-{
-
-}
-
 void Filter::setChecked(bool checked)
 {
     QGroupBox::setChecked(checked);

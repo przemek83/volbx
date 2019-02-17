@@ -46,7 +46,7 @@ public:
 
 private:
     Configuration();
-    virtual ~Configuration();
+    virtual ~Configuration() = default;
     Q_DISABLE_COPY(Configuration)
 
     ///Flag indicating that config existed and was valid.

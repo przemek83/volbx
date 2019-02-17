@@ -16,7 +16,7 @@ public:
                QWidget* parent = 0,
                Qt::WindowFlags flags = 0);
 
-    virtual ~DockWidget();
+    virtual ~DockWidget() = default;
 
 public slots:
     void setNewToolTip(QString text);

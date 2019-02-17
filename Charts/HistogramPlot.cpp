@@ -74,11 +74,6 @@ HistogramPlot::HistPicker::HistPicker(QWidget *parent)
 
 }
 
-HistogramPlot::HistPicker::~HistPicker()
-{
-
-}
-
 QwtText HistogramPlot::HistPicker::trackerTextF(const QPointF &pos)const
 {
     QwtText coords(QString::number(pos.x(), 'f', 0) +

@@ -20,11 +20,6 @@ DatasetInner::DatasetInner(DatasetDefinitionInner* datasetDefinition)
 
 }
 
-DatasetInner::~DatasetInner()
-{
-
-}
-
 void DatasetInner::init()
 {
     //If definition is not valid than skip loading data.

@@ -51,7 +51,7 @@ private:
     public:
         TimeScaleDraw();
 
-        virtual ~TimeScaleDraw();
+        virtual ~TimeScaleDraw() = default;
 
         virtual QwtText label(double v) const;
     };
@@ -61,7 +61,7 @@ private:
     public:
         explicit LinearPicker(QWidget* parent);
 
-        virtual ~LinearPicker();
+        virtual ~LinearPicker() = default;
 
     protected:
         virtual QwtText trackerTextF(const QPointF &pos)const;

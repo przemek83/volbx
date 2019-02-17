@@ -19,11 +19,6 @@ DatasetDefinitionXlsx::DatasetDefinitionXlsx(const QString& name,
 
 }
 
-DatasetDefinitionXlsx::~DatasetDefinitionXlsx()
-{
-
-}
-
 bool DatasetDefinitionXlsx::getSheetList(QuaZip& zip)
 {
 	QMap<QString, QString> sheetIdToUserFriendlyNameMap;

@@ -55,9 +55,9 @@ private:
     class GroupPicker : public Picker
     {
     public:
-        GroupPicker(QWidget* parent);
+        explicit GroupPicker(QWidget* parent);
 
-        virtual ~GroupPicker();
+        virtual ~GroupPicker() = default;
 
     protected:
         virtual QwtText trackerTextF(const QPointF &pos) const;

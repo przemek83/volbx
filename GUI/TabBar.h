@@ -13,7 +13,7 @@ class TabBar : public QTabBar
 public:
     explicit TabBar(QWidget *parent = 0);
 
-    virtual ~TabBar();
+    virtual ~TabBar() = default;
 
 protected:
     virtual void mouseDoubleClickEvent(QMouseEvent* event);

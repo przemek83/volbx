@@ -21,11 +21,6 @@ DatasetDefinition::DatasetDefinition(QString name):
 
 }
 
-DatasetDefinition::~DatasetDefinition()
-{
-
-}
-
 int DatasetDefinition::rowCount() const
 {
     return rowsCount_;

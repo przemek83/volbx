@@ -18,7 +18,7 @@ class DatasetDefinition
 public:
     explicit DatasetDefinition(QString name);
 
-    virtual ~DatasetDefinition();
+    virtual ~DatasetDefinition() = default;
 
     virtual bool isValid() const = 0;
 

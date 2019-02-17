@@ -71,11 +71,6 @@ QuantilesPlot::BoxPicker::BoxPicker(QWidget *parent)
 
 }
 
-QuantilesPlot::BoxPicker::~BoxPicker()
-{
-
-}
-
 QwtText QuantilesPlot::BoxPicker::trackerTextF(const QPointF &pos)const
 {
     QwtText coords(QString::number(pos.y(), 'f', 2));
@@ -86,11 +81,6 @@ QwtText QuantilesPlot::BoxPicker::trackerTextF(const QPointF &pos)const
 
 QuantilesPlot::IntervalsScaleDraw::IntervalsScaleDraw(int count) :
     QwtScaleDraw(), count_(count)
-{
-
-}
-
-QuantilesPlot::IntervalsScaleDraw::~IntervalsScaleDraw()
 {
 
 }

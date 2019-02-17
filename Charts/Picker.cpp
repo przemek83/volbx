@@ -21,11 +21,6 @@ Picker::Picker(QWidget* parent)
     setTrackerFont(actualFont);
 }
 
-Picker::~Picker()
-{
-
-}
-
 int Picker::getAreaOfMouse()
 {
     int x = (int)(invTransform(trackerPosition()).x()+0.5);

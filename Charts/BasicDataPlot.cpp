@@ -170,11 +170,6 @@ BasicDataPlot::TimeScaleDraw::TimeScaleDraw() :
     setLabelAlignment(Qt::AlignLeft | Qt::AlignBottom);
 }
 
-BasicDataPlot::TimeScaleDraw::~TimeScaleDraw()
-{
-
-}
-
 QwtText BasicDataPlot::TimeScaleDraw::label(double v) const
 {
     return QwtText(Constants::stringFromDays(v));
@@ -183,11 +178,6 @@ QwtText BasicDataPlot::TimeScaleDraw::label(double v) const
 
 BasicDataPlot::LinearPicker::LinearPicker(QWidget *parent)
     : Picker(parent)
-{
-
-}
-
-BasicDataPlot::LinearPicker::~LinearPicker()
 {
 
 }

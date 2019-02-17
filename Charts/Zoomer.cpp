@@ -25,11 +25,6 @@ Zoomer::Zoomer(QwtPlotCanvas *canvas):
     setTrackerPen(c);
 }
 
-Zoomer::~Zoomer()
-{
-
-}
-
 QwtText Zoomer::trackerTextF(const QPointF &pos) const
 {
     QColor bg(Qt::white);

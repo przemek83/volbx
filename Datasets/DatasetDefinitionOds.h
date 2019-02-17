@@ -15,7 +15,7 @@ class DatasetDefinitionOds : public DatasetDefinitionSpreadsheet
 public:
     DatasetDefinitionOds(const QString& name, QString& zipFileName);
 
-    virtual ~DatasetDefinitionOds();
+    virtual ~DatasetDefinitionOds() = default;
 
 protected:
     virtual const QString& getSheetName();

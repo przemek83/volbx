@@ -12,7 +12,7 @@ struct Quantiles
 public:
     Quantiles();
 
-    virtual ~Quantiles();
+    virtual ~Quantiles() = default;
 
     //Y axis variables.
     float min_;

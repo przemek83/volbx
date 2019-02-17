@@ -13,11 +13,6 @@ DatasetSpreadsheet::DatasetSpreadsheet(DatasetDefinitionSpreadsheet* datasetDefi
 
 }
 
-DatasetSpreadsheet::~DatasetSpreadsheet()
-{
-
-}
-
 void DatasetSpreadsheet::init()
 {
     //Load data if definition is valid.

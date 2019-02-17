@@ -11,7 +11,7 @@ class StringsScaleDraw : public QwtScaleDraw
 public:
     explicit StringsScaleDraw(QVector<QString>* intervals);
 
-    virtual ~StringsScaleDraw();
+    virtual ~StringsScaleDraw() = default;
 
     virtual QwtText label(double v) const;
 

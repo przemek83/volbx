@@ -24,13 +24,6 @@ DockWidget::DockWidget(QString titleText,
             SLOT(manageFloating()));
 
     setTitleBarWidget(&titleBarWidget_);
-    //setFeatures(features() & ~DockWidgetFloatable);
-}
-
-
-DockWidget::~DockWidget()
-{
-
 }
 
 void DockWidget::setNewToolTip(QString text)

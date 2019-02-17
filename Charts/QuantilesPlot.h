@@ -34,7 +34,7 @@ private:
     public:
         IntervalsScaleDraw(int count);
 
-        virtual ~IntervalsScaleDraw();
+        virtual ~IntervalsScaleDraw() = default;
 
         virtual QwtText label(double v) const;
 
@@ -51,7 +51,7 @@ private:
     {
     public:
         BoxPicker(QWidget* parent);
-        virtual ~BoxPicker();
+        virtual ~BoxPicker() = default;
 
     protected:
         virtual QwtText trackerTextF(const QPointF &pos)const;

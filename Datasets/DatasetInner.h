@@ -13,7 +13,7 @@ class DatasetInner : public Dataset
 public:
     explicit DatasetInner(DatasetDefinitionInner* datasetDefinition);
 
-    virtual ~DatasetInner();
+    virtual ~DatasetInner() = default;
 
     ///Return names without extension of available datasets in datasets dir.
     static QStringList getListOfAvailableDatasets();

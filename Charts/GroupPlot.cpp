@@ -115,11 +115,6 @@ GroupPlot::GroupPicker::GroupPicker(QWidget *parent)
 
 }
 
-GroupPlot::GroupPicker::~GroupPicker()
-{
-
-}
-
 QwtText GroupPlot::GroupPicker::trackerTextF(const QPointF &pos)const
 {
     QwtText coords(QString::number(pos.y(), 'f', 2));

@@ -12,7 +12,7 @@ class Filter : public QGroupBox
 public:
     Filter(QString title, int column, QWidget *parent = 0);
 
-    virtual ~Filter();
+    virtual ~Filter() = default;
 
 public slots:
     virtual void setChecked(bool checked);

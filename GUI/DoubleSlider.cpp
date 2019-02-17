@@ -33,11 +33,6 @@ DoubleSlider::DoubleSlider(int min, int max, QWidget *parent) :
     refreshTimer_.start(25);
 }
 
-DoubleSlider::~DoubleSlider()
-{
-
-}
-
 QSize DoubleSlider::sizeHint() const
 {
     return QSize(120, 40);

@@ -20,11 +20,6 @@ DatasetDefinitionOds::DatasetDefinitionOds(const QString& name,
 
 }
 
-DatasetDefinitionOds::~DatasetDefinitionOds()
-{
-
-}
-
 bool DatasetDefinitionOds::getSheetList(QuaZip& zip)
 {
 	if(zip.setCurrentFile("settings.xml"))

@@ -26,10 +26,6 @@ Configuration::Configuration() :
     load();
 }
 
-Configuration::~Configuration()
-{
-}
-
 Configuration& Configuration::getInstance()
 {
     static Configuration instance;

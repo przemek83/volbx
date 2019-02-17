@@ -26,11 +26,6 @@ NotchedMarker::NotchedMarker(QVector<Quantiles>* quantiles)
     markerBrush_ = QBrush(gradient);
 }
 
-NotchedMarker::~NotchedMarker()
-{
-
-}
-
 void NotchedMarker::drawElement(QPainter *p,
                             int elementNumber,
                             const QwtScaleMap &xMap,

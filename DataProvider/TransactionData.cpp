@@ -4,16 +4,6 @@
 
 #include "TransactionData.h"
 
-TransactionData::TransactionData()
-{
-
-}
-
-TransactionData::~TransactionData()
-{
-
-}
-
 void TransactionData::clear()
 {
     pricePerMeter_ = 0;

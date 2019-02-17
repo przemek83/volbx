@@ -166,11 +166,6 @@ GroupPlotGui::ScrollArea::ScrollArea(QWidget* parent)
 
 }
 
-GroupPlotGui::ScrollArea::~ScrollArea()
-{
-
-}
-
 void GroupPlotGui::ScrollArea::forceResize()
 {
     resizeEvent(new QResizeEvent(size(), size()));

@@ -15,7 +15,7 @@ class DatasetDefinitionXlsx : public DatasetDefinitionSpreadsheet
 public:
     DatasetDefinitionXlsx(const QString& name, QString& zipFileName);
 
-    virtual ~DatasetDefinitionXlsx();
+    virtual ~DatasetDefinitionXlsx() = default;
 
 protected:
     virtual const QString& getSheetName();
