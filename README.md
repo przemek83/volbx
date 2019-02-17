@@ -62,13 +62,13 @@ foreach (glob("*") as $filename) {
 ## Testing
 1) Compile project.
 2) Run target named tests.
-3) Check test output, all tests should have status `PASSED`.
+3) Check test output, all tests should have status `PASSED`.    
+
 Tests are done using Qt test framework.
 
 ## Potential further improvements
 * Clean and simplify whole code (it was created between 2010 and 2013 when I had only few years of experience and veeery little knowledge how good code should look like...).
 * Upgrade whole code to use C++17.
-* Migrate testing and Updater parts to Cmake.
 * Increase test coverage.
 
 ## More screenshots:
