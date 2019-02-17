@@ -30,7 +30,7 @@ Volbx uses following software and licenses:
 
 ## Updater
 1) Build target VersionCheck.
-2) Run VersionCheck, following window should be shown:
+2) Run VersionCheck, following window should be shown:    
 ![Alt text](updater.jpg?raw=true "")
 
 ## Setup update server
