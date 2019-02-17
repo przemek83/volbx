@@ -12,7 +12,7 @@ This tool was originally created for real estate appraisal to give possibility, 
     Qwt 6.1
     QuaZip 0.7.6
     MinGW with GCC 7.3.0, 64 bit
-    Windows 10, v. 1809
+    Windows 10 v1809
     Cmake 3.12.3
     Git 2.19.1
     Svn 1.11.1
@@ -23,20 +23,47 @@ Use Cmake directly or via QtCreator. Cmake **should** configure everything autom
 To launch and work properly Volbx needs dynamically linked Qwt and QuaZip libs in lib search path or in working directory (usually directory where Volbx binary is and it is launched from).
 
 ## Licensing
-Volbx can be used using LGPLv2 or LGPLv3. 
+Volbx can be used using LGPLv3. 
 Volbx uses following software and licenses:    
 * Qt, Qwt and QuaZip libraries - LGPL licences (more on qt-project.org, quazip.sourceforge.net and qwt.sourceforge.net),    
 * Zlib - Zlib license (can be found on zlib.net).
 
-## Updater (not migrated to Cmake yet)
-TODO
+## Updater
+1) Build target VersionCheck.
+2) Run VersionCheck, following window should be shown:
+![Alt text](updater.jpg?raw=true "")
 
-## Testing (not migrated to Cmake yet)
-1) Compile project UnitTests.pro.
-2) Download test files from projects page on SourceForge or create own files to match expected by unit test content.
-3) Add downloaded/created directories and file to binary run time directory. There should be 2 directories ("Data" for inner format files and "TestSpreadsheets" for spreadsheets tests) and file named "config" with configuration to test.
-4) Run "UnitTests" binary and check results for "PASS" and "FAIL" statuses.
-Directory "TestSpreadsheets" has some sub directories in which test files are located. Names of those sub directories are hard coded in "UnitTests" binary. If you add new test files, or you need to update comparison results, you can modify "UnitTests" to generate new comparison data by uncomment one line in method "initTestCase()".
+## Setup update server
+1) Get a domain and hosting ;)
+2) Add simple .php file which contains
+```
+<?
+echo("Volbx-Updade-Info\n");
+
+echo("1.10");
+
+chdir("current/");
+foreach (glob("*") as $filename) {
+    echo "\n$filename;" . filesize($filename);
+}
+?>
+```
+3) Create folder `current` in directory where PHP file from point above is located.
+4) Add new/other version of Volbx and/or updater in `current` directory.
+5) Change code of networking module in Volbx to point to proper adress - look for `Networking::getCurrentVersionRequest()` and `QNetworkRequest Networking::getDownloadFileRequest(QString file)`
+6) Compile VersionChecker and run it - it should connect to given adress and download content of `current` folder.
+
+**Remarks**:   
+- Instead of size of files returned by PHP script checksums should be returned and used for checking of correctenss of downloaded files.   
+- When I've created VersionChecker I've decided to use simplest solution which I was able to create. I do not know if it is safe and 'proper' enough but it worked :D I'm not web deweloper ;)   
+- Windows needs admin rights when executing files having in name strings like "update", "install" or "setup". Quite ugly name `VersionChecker` was picked to workaround that problem. ;)   
+- On Windows updater cannot overwrite file which is being used (executed) so ther is a special mechanism closing Volbx, running updater (Volbx binary and some libs can be replaced by new ones) and when running again Volbx replacing updater binary.
+
+## Testing
+1) Compile project.
+2) Run target named tests.
+3) Check test output, all tests should have status `PASSED`.
+Tests are done using Qt test framework.
 
 ## Potential further improvements
 * Clean and simplify whole code (it was created between 2010 and 2013 when I had only few years of experience and veeery little knowledge how good code should look like...).
