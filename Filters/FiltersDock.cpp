@@ -31,14 +31,14 @@ void FiltersDock::addModel(const FilteringProxyModel* model)
     {
         return;
     }
-    QWidget* mainWidget = new QWidget();
+    auto mainWidget = new QWidget();
     modelsMap_[mainWidget] = model;
 
-    QVBoxLayout* mainLayout = new QVBoxLayout(mainWidget);
+    auto mainLayout = new QVBoxLayout(mainWidget);
     mainLayout->setContentsMargins(0,0,0,0);
 
     //Search line edit.
-    QLineEdit* lineEdit = new QLineEdit(mainWidget);
+    auto lineEdit = new QLineEdit(mainWidget);
     lineEdit->setPlaceholderText(tr("Search..."));
     lineEdit->setClearButtonEnabled(true);
     connect(lineEdit,
@@ -47,10 +47,10 @@ void FiltersDock::addModel(const FilteringProxyModel* model)
             SLOT(searchTextChanged(QString)));
     mainLayout->addWidget(lineEdit);
 
-    QWidget* filterListWidget = new QWidget();
+    auto filterListWidget = new QWidget();
 
     //Create layout.
-    QVBoxLayout* filterListLayout = new QVBoxLayout(filterListWidget);
+    auto filterListLayout = new QVBoxLayout(filterListWidget);
     filterListLayout->setContentsMargins(0,0,0,0);
     filterListLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
     filterListWidget->setLayout(filterListLayout);
@@ -61,7 +61,7 @@ void FiltersDock::addModel(const FilteringProxyModel* model)
     createFiltersWidgets(parentModel, filterListWidget, filterListLayout);
 
     //Add scroll area for filterListWidget.
-    QScrollArea* scrollArea = new QScrollArea();
+    auto scrollArea = new QScrollArea();
     scrollArea->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred));
     scrollArea->setWidget(filterListWidget);
     scrollArea->setWidgetResizable(true);

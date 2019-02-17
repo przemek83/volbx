@@ -30,7 +30,7 @@ FilterNames::FilterNames(QString name,
     int longestNameWidth = 0;
     foreach(QString itemName, initialList_)
     {
-        QListWidgetItem* item = new QListWidgetItem(itemName, ui->listWidget);
+        auto item = new QListWidgetItem(itemName, ui->listWidget);
         item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
         item->setCheckState(Qt::Checked);
         longestNameWidth = qMax(longestNameWidth, itemName.length());
@@ -120,7 +120,7 @@ void FilterNames::setChecked(bool checked)
 {
     QGroupBox::setChecked(checked);
 
-    QCheckBox* checkBox = findChild<QCheckBox*>();
+    auto checkBox = findChild<QCheckBox*>();
 
     QList<QWidget *> widgets = findChildren<QWidget*>();
     widgets.removeOne(checkBox);

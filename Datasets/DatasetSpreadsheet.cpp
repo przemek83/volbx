@@ -18,8 +18,7 @@ void DatasetSpreadsheet::init()
     //Load data if definition is valid.
     if( datasetDefinition_->isValid() )
     {
-        DatasetDefinitionSpreadsheet* definition =
-                dynamic_cast<DatasetDefinitionSpreadsheet*>(datasetDefinition_);
+        auto definition = dynamic_cast<DatasetDefinitionSpreadsheet*>(datasetDefinition_);
 
         data_.resize(rowCount());
         if( nullptr != definition && true == definition->getData(&data_) )

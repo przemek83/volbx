@@ -94,7 +94,7 @@ bool DatasetDefinitionSpreadsheet::isValid() const
 
 QVariant* DatasetDefinitionSpreadsheet::getSharedStringTable()
 {
-    QVariant* stringsTable = new QVariant[nextIndex_];
+    auto stringsTable = new QVariant[nextIndex_];
     stringsTable[0] = QVariant(QString());
     QHash<QString, int>::const_iterator i = stringsMap_.constBegin();
     while (i != stringsMap_.constEnd())

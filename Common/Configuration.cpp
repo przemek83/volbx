@@ -92,7 +92,7 @@ bool Configuration::load()
     if( false == updateElement.isNull() )
     {
         updateOption_ =
-            (UpdateOption)updateElement.attribute(xmlNames_[XML_NAME_VALUE]).toInt();
+            static_cast<UpdateOption>(updateElement.attribute(xmlNames_[XML_NAME_VALUE]).toInt());
     }
 
     list = configXML.elementsByTagName(xmlNames_[XML_NAME_STYLE]);
@@ -124,7 +124,7 @@ bool Configuration::save()
 
     QDomElement updates = doc.createElement(xmlNames_[XML_NAME_UPDATE]);
     updates.setAttribute(xmlNames_[XML_NAME_VALUE],
-                         QString::number((int)updateOption_));
+                         QString::number(static_cast<int>(updateOption_)));
     root.appendChild(updates);
 
     QDomElement style = doc.createElement(xmlNames_[XML_NAME_STYLE]);

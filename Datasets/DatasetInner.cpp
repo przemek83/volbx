@@ -33,8 +33,7 @@ void DatasetInner::init()
             data_[i].resize(activeColumnsCount);
         }
 
-        DatasetDefinitionInner* definition =
-                dynamic_cast<DatasetDefinitionInner*>(datasetDefinition_);
+        auto definition = dynamic_cast<DatasetDefinitionInner*>(datasetDefinition_);
 
         if ( nullptr != definition && true == definition->getData(&data_) )
         {

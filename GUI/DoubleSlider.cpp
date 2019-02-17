@@ -135,7 +135,7 @@ void DoubleSlider::mousePressEvent(QMouseEvent *event)
     if (event->buttons() & Qt::LeftButton)
     {
         mousePositionX_ =
-            (float)(event->x()) / (float)this->width() * (100.0 + cursorSize_);
+            static_cast<float>(event->x()) / static_cast<float>(this->width()) * (100.0 + cursorSize_);
     }
 
     moving_ = 0;
@@ -150,7 +150,7 @@ void DoubleSlider::mouseReleaseEvent(QMouseEvent *event)
 void DoubleSlider::mouseMoveEvent(QMouseEvent *event)
 {
     float mouseX =
-        (float)(event->x()) / (float)this->width() * (100.0 + cursorSize_);
+        static_cast<float>(event->x()) / static_cast<float>(this->width()) * (100.0 + cursorSize_);
     float minX = ((currentMin_ - minValue_) / (maxValue_ - minValue_) * 100);
     float maxX = ((currentMax_ - minValue_) / (maxValue_ - minValue_) * 100);
 

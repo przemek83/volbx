@@ -23,7 +23,7 @@ Picker::Picker(QWidget* parent)
 
 int Picker::getAreaOfMouse()
 {
-    int x = (int)(invTransform(trackerPosition()).x()+0.5);
+    int x = static_cast<int>(invTransform(trackerPosition()).x()+0.5);
     return x;
 }
 

@@ -43,9 +43,7 @@ void ExportData::gatherSheetContent(QByteArray& rowsContent,
 
     QStringList columnNames;
     Constants::generateExcelColumnNames(columnNames, 600);
-
-    FilteringProxyModel* proxyModel =
-        static_cast<FilteringProxyModel*>(view->model());
+    auto proxyModel = static_cast<FilteringProxyModel*>(view->model());
 
     Q_ASSERT(nullptr != proxyModel);
 
@@ -223,8 +221,7 @@ void ExportData::dataToByteArray(const QAbstractItemView* view,
      * http://tools.ietf.org/html/rfc4180
      */
 
-    FilteringProxyModel* proxyModel =
-        static_cast<FilteringProxyModel*>(view->model());
+    auto proxyModel = static_cast<FilteringProxyModel*>(view->model());
     Q_ASSERT(nullptr != proxyModel);
 
     int proxyColumnCount = proxyModel->columnCount();
@@ -391,9 +388,7 @@ bool ExportData::saveDataset(QString name,
     //Data file, write directly in loop.
     //Only one zip file in archive can be accessed at a time.
     QuaZipFile zipFile(&zip);
-
-    FilteringProxyModel* proxyModel =
-        static_cast<FilteringProxyModel*>(view->model());
+    auto proxyModel = static_cast<FilteringProxyModel*>(view->model());
     Q_ASSERT(nullptr != proxyModel);
     ProgressBar bar(ProgressBar::PROGRESS_TITLE_SAVING,
                     proxyModel->rowCount(),
@@ -554,7 +549,7 @@ bool ExportData::saveDatasetDefinitionFile(QuaZipFile& zipFile,
     //Save definition file.
     const TableModel* parentModel =
         (static_cast<FilteringProxyModel*>(view->model()))->getParentModel();
-    const DatasetDefinitionInner* definition =
+    const auto definition =
         static_cast<const DatasetDefinitionInner*>(parentModel->getDatasetDefinition());
     QByteArray definitionContent;
     definition->toXml(definitionContent, rowCount);

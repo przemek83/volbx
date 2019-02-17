@@ -36,7 +36,7 @@ GroupPlotGui::GroupPlotGui(const TableModel* model, QWidget* parent) :
     dynamic_cast<DockTitleBar*>(titleBarWidget())->setTitle(windowTitle());
 
     //Add splitter with group and quantiles plots.
-    QSplitter* splitter = new QSplitter(Qt::Horizontal, this);
+    auto splitter = new QSplitter(Qt::Horizontal, this);
     scrollArea_ = new ScrollArea(this);
     scrollArea_->setWidgetResizable(true);
     scrollArea_->setWidget(&groupPlot_);

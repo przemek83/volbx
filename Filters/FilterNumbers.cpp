@@ -37,8 +37,8 @@ FilterNumbers::FilterNumbers(QString name,
         if(fmod(maxOnInit_, 1) && maxOnInit_ > 0)
             maxOnInit_ = maxOnInit_ + 1;
 
-        minOnInit_ = (int)minOnInit_;
-        maxOnInit_ = (int)maxOnInit_;
+        minOnInit_ = static_cast<int>(minOnInit_);
+        maxOnInit_ = static_cast<int>(maxOnInit_);
     }
 
     if(doubleMode_)
@@ -108,7 +108,7 @@ void FilterNumbers::sliderMinChanged(int newValue)
 {
     if(doubleMode_)
     {
-        ui->fromValue->setText(QString::number(newValue/(double)factor_, 'f', 2));
+        ui->fromValue->setText(QString::number(newValue/static_cast<double>(factor_), 'f', 2));
     }
     else
     {
@@ -127,7 +127,7 @@ void FilterNumbers::sliderMaxChanged(int newValue)
 {
     if(doubleMode_)
     {
-        ui->toValue->setText(QString::number(newValue/(double)factor_, 'f', 2));
+        ui->toValue->setText(QString::number(newValue/static_cast<double>(factor_), 'f', 2));
     }
     else
     {

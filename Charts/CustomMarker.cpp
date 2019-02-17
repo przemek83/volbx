@@ -34,7 +34,7 @@ void CustomMarker::draw(QPainter* p,
     if(nullptr == quantiles_)
         return;
 
-    PlotBase* basePlot = dynamic_cast<PlotBase*>(plot());
+    auto basePlot = dynamic_cast<PlotBase*>(plot());
     QwtScaleDiv scaleLeft = basePlot->axisScaleDiv(QwtPlot::yLeft);
     QwtScaleDiv scaleBottom = basePlot->axisScaleDiv(QwtPlot::xBottom);
 

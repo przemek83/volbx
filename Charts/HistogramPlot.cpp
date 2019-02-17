@@ -58,7 +58,7 @@ void HistogramPlot::initActualDensity()
 
 void HistogramPlot::initLegend()
 {
-    QwtLegend* legend = new QwtLegend();
+    auto legend = new QwtLegend();
     legend->setDefaultItemMode(QwtLegendData::Checkable);
     legend->setFrameStyle(QFrame::Box|QFrame::Sunken);
     connect(legend,
@@ -100,7 +100,7 @@ void HistogramPlot::setLegendItemChecked(QwtPlotItem* plot)
 
     if ( legendWidget != nullptr )
     {
-        QwtLegendLabel* legendLabel = static_cast<QwtLegendLabel*>(legendWidget);
+        auto legendLabel = static_cast<QwtLegendLabel*>(legendWidget);
         if( nullptr != legendLabel )
         {
             legendLabel->setChecked(true);

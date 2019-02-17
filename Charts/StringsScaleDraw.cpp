@@ -17,7 +17,7 @@ QwtText StringsScaleDraw::label(double v) const
         return QwtText("                     ");
     }
 
-    int point = (int)v;
+    int point = static_cast<int>(v);
     if(intervals_->count() >= point)
     {
         return QwtText(intervals_->at(point-1));
