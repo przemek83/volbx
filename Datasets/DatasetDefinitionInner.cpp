@@ -27,7 +27,7 @@ const char* DatasetDefinitionInner::datasetDefinitionXmlNames_[] =
 
 DatasetDefinitionInner::DatasetDefinitionInner(QString name)
     : DatasetDefinition(name),
-      stringsTable_(NULL)
+      stringsTable_(nullptr)
 {
     zip_.setZipName(DatasetInner::getDatasetsDir() +
                     name_ +
@@ -37,7 +37,7 @@ DatasetDefinitionInner::DatasetDefinitionInner(QString name)
 
 DatasetDefinitionInner::~DatasetDefinitionInner()
 {
-    if( NULL != stringsTable_ )
+    if( nullptr != stringsTable_ )
     {
         delete[] stringsTable_;
     }
@@ -222,7 +222,7 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
 
 	if ( false == fillSamplesOnly )
 	{
-		bar.reset(new ProgressBar(ProgressBar::PROGRESS_TITLE_LOADING, rowCount(), NULL));
+		bar.reset(new ProgressBar(ProgressBar::PROGRESS_TITLE_LOADING, rowCount(), nullptr));
 	}
 
     QTime performanceTimer;
@@ -367,7 +367,7 @@ QVariant* DatasetDefinitionInner::getSharedStringTable()
 {
     ///Manage memory only when it was not retrieved.
     QVariant* temp = stringsTable_;
-    stringsTable_ = NULL;
+    stringsTable_ = nullptr;
     return temp;
 }
 

@@ -10,11 +10,6 @@ NumericDelegate::NumericDelegate(QObject* parent)
 
 }
 
-NumericDelegate::~NumericDelegate()
-{
-
-}
-
 QString NumericDelegate::displayText(const QVariant& value,
                                      const QLocale& /*locale*/) const
 {

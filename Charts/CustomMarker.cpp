@@ -34,9 +34,9 @@ void CustomMarker::draw(QPainter* p,
                         const QwtScaleMap &yMap,
                         const QRectF& rect) const
 {
-    Q_ASSERT(NULL != quantiles_);
+    Q_ASSERT(nullptr != quantiles_);
 
-    if(NULL == quantiles_)
+    if(nullptr == quantiles_)
         return;
 
     PlotBase* basePlot = dynamic_cast<PlotBase*>(plot());

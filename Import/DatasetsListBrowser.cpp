@@ -1,7 +1,7 @@
 #include <QMenu>
 #include <QMessageBox>
 
-#include "DataSets/DatasetInner.h"
+#include "Datasets/DatasetInner.h"
 #include "Common/Constants.h"
 
 #include "DatasetsListBrowser.h"
@@ -63,7 +63,7 @@ void DatasetsListBrowser::showContextMenu(const QPoint& pos)
     QPoint globalPos = ui->datasetsList->viewport()->mapToGlobal(pos);
 
     if ( true == ui->datasetsList->selectedItems().isEmpty() ||
-         NULL == ui->datasetsList->itemAt(pos))
+         nullptr == ui->datasetsList->itemAt(pos))
     {
         return;
     }
@@ -77,7 +77,7 @@ void DatasetsListBrowser::showContextMenu(const QPoint& pos)
     QAction* selectedItem = myMenu.exec(globalPos);
 
     //Delete dataset.
-    if ( NULL != selectedItem )
+    if ( nullptr != selectedItem )
     {
         QString datasetName = ui->datasetsList->selectedItems().first()->text();
         QMessageBox::StandardButton answer =

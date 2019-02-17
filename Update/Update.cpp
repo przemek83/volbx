@@ -238,15 +238,7 @@ bool Update::handleVerificationError(QString &fileName, QString& fileSize)
     insertErrorInfoIntoDetails(tr("Error during verification!"));
 
     //Add corrupted file to front of vector if max tries not reached yet.
-    if(currentTriesCount_ < Networking::getMaxTries() )
-    {
-        filesToDownload_.push_front(fileName);
-        filesToDownloadSize_.push_front(fileSize);
-        currentTriesCount_++;
-
-        return true;
-    }
-    else
+    if(currentTriesCount_ >= Networking::getMaxTries() )
     {
         insertErrorInfoIntoDetails(tr("Can not download file."));
         QString msg(tr("Updating interrupted - downloading error. Please retry later."));
@@ -254,7 +246,14 @@ bool Update::handleVerificationError(QString &fileName, QString& fileSize)
                               tr("Updating interrupted"),
                               msg);
         return false;
+
     }
+
+    filesToDownload_.push_front(fileName);
+    filesToDownloadSize_.push_front(fileSize);
+    currentTriesCount_++;
+
+    return true;
 }
 
 void Update::finalizeUpdate()
@@ -281,7 +280,7 @@ void Update::finalizeUpdate()
 
     ui->valueActual->setText(ui->valueAvailable->text());
 
-    QMessageBox::information(NULL,
+    QMessageBox::information(nullptr,
                              tr("Update complete"),
                              tr("Application update is completed."));
 }

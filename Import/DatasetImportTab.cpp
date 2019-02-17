@@ -3,7 +3,7 @@
 #include <QHeaderView>
 #include <QMessageBox>
 
-#include "DataSets/DatasetDefinitionInner.h"
+#include "Datasets/DatasetDefinitionInner.h"
 
 #include "DatasetDefinitionVisualization.h"
 #include "DatasetsListBrowser.h"
@@ -61,31 +61,21 @@ DatasetImportTab::DatasetImportTab(QWidget *parent) :
             SLOT(selectCurrentColumn(int)));
 }
 
-DatasetImportTab::~DatasetImportTab()
-{
-
-}
-
 DatasetDefinition* DatasetImportTab::getDatasetDefinition()
 {
-    DatasetDefinitionVisualization* definition =
-        findChild<DatasetDefinitionVisualization*>();
+    auto definition = findChild<DatasetDefinitionVisualization*>();
     return definition->getDatasetDefinition();
 }
 
 void DatasetImportTab::selectedDatasetChanged(QString current)
 {
-    DatasetDefinitionVisualization* visualization =
-        findChild<DatasetDefinitionVisualization*>();
+    auto visualization = findChild<DatasetDefinitionVisualization*>();
+    auto columnsPreview = findChild<ColumnsPreview*>();
+    auto datasetsListBrowser = findChild<DatasetsListBrowser*>();
 
-    ColumnsPreview* columnsPreview = findChild<ColumnsPreview*>();
-
-    DatasetsListBrowser* datasetsListBrowser =
-        findChild<DatasetsListBrowser*>();
-
-    if( NULL == datasetsListBrowser ||
-        NULL == visualization ||
-        NULL == columnsPreview )
+    if( nullptr == datasetsListBrowser ||
+        nullptr == visualization ||
+        nullptr == columnsPreview )
     {
         return;
     }
@@ -100,11 +90,11 @@ void DatasetImportTab::selectedDatasetChanged(QString current)
     }
     else
     {
-        DatasetDefinition* datasetDefinition =
+        auto datasetDefinition =
             new DatasetDefinitionInner(current);
 
         //If definition is valid, than fill details.
-        if ( NULL != datasetDefinition && datasetDefinition->isValid() )
+        if ( nullptr != datasetDefinition && datasetDefinition->isValid() )
         {
             visualization->setDatasetDefiniton(datasetDefinition);
             visualization->setEnabled(true);
@@ -133,9 +123,8 @@ void DatasetImportTab::selectedDatasetChanged(QString current)
 
 bool DatasetImportTab::datasetsAreAvailable()
 {
-    DatasetsListBrowser* datasetsListBrowser =
-        findChild<DatasetsListBrowser*>();
-    if( NULL == datasetsListBrowser )
+    auto datasetsListBrowser = findChild<DatasetsListBrowser*>();
+    if( nullptr == datasetsListBrowser )
     {
         return false;
     }

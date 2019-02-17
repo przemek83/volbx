@@ -18,7 +18,7 @@ Dataset::Dataset(DatasetDefinition* definition) :
     datasetDefinition_(definition),
     data_(QVector<QVector<QVariant> >()),
     valid_(false),
-    sharedStrings_(NULL)
+    sharedStrings_(nullptr)
 {
 
 }
@@ -27,7 +27,7 @@ Dataset::~Dataset()
 {
     delete datasetDefinition_;
 
-    if( NULL != sharedStrings_)
+    if( nullptr != sharedStrings_)
     {
         delete[] sharedStrings_;
     }
@@ -121,7 +121,7 @@ void Dataset::getStringList(int column, QStringList& listToFill) const
 
     listToFill.removeDuplicates();
 
-    if( NULL != sharedStrings_ )
+    if( nullptr != sharedStrings_ )
     {
         int listSize = listToFill.count();
         for( int i = 0; i < listSize; ++i )

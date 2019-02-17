@@ -15,7 +15,7 @@
 
 PlotDataProvider::PlotDataProvider(int defaultGroupingColumn) :
     QObject(),
-    calcData_(NULL),
+    calcData_(nullptr),
     groupingColumn_(defaultGroupingColumn)
 {
 
@@ -125,13 +125,13 @@ void PlotDataProvider::fillDataForStringGrouping(QVector<TransactionData>* calcD
 
 void PlotDataProvider::computeBasicData()
 {
-    double* pointsQuantilesX = NULL;
-    double* pointsQuantilesY = NULL;
+    double* pointsQuantilesX = nullptr;
+    double* pointsQuantilesY = nullptr;
 
     int dataSize = calcData_->size();
     if( dataSize <= 0 )
     {
-        PlotData plotData(NULL, NULL, 0);
+        PlotData plotData(nullptr, nullptr, 0);
 
         emit basicPlotDataChanged(plotData,
                                   quantiles_,

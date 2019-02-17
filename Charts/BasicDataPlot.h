@@ -22,7 +22,7 @@ class BasicDataPlot : public PlotBase
 {
     Q_OBJECT
 public:
-    explicit BasicDataPlot(QWidget* parent = NULL);
+    explicit BasicDataPlot(QWidget* parent = nullptr);
 
     virtual ~BasicDataPlot();
 

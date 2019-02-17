@@ -27,7 +27,7 @@ void DatasetSpreadsheet::init()
                 dynamic_cast<DatasetDefinitionSpreadsheet*>(datasetDefinition_);
 
         data_.resize(rowCount());
-        if( NULL != definition && true == definition->getData(&data_) )
+        if( nullptr != definition && true == definition->getData(&data_) )
         {
             valid_ = true;
             sharedStrings_ = definition->getSharedStringTable();

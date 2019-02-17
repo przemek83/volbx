@@ -27,7 +27,7 @@ FiltersDock::~FiltersDock()
 
 void FiltersDock::addModel(const FilteringProxyModel* model)
 {
-    if( NULL == model )
+    if( nullptr == model )
     {
         return;
     }
@@ -79,7 +79,7 @@ void FiltersDock::createFiltersWidgets(const TableModel* model,
 {
     for(int i = 0; i < model->columnCount(); ++i)
     {
-        Filter* filter = NULL;
+        Filter* filter = nullptr;
         switch( model->getColumnFormat(i) )
         {
             case DATA_FORMAT_STRING:
@@ -177,7 +177,7 @@ FilterNumbers* FiltersDock::createNewNumbersFilter(const TableModel *parentModel
 
 void FiltersDock::removeModel(const FilteringProxyModel* model)
 {
-    if( NULL != model )
+    if( nullptr != model )
     {
         QWidget* widgetWithFiltersToDelete = modelsMap_.key(model);
         modelsMap_.remove(widgetWithFiltersToDelete);
@@ -188,7 +188,7 @@ void FiltersDock::removeModel(const FilteringProxyModel* model)
 
 void FiltersDock::activateFiltersForModel(const FilteringProxyModel* model)
 {
-    if( NULL != model )
+    if( nullptr != model )
     {
         ui->stackedWidget->setCurrentWidget(modelsMap_.key(model));
     }
@@ -198,7 +198,7 @@ void FiltersDock::searchTextChanged(const QString arg1)
 {
     QWidget* currentWidget = ui->stackedWidget->currentWidget();
 
-    if ( NULL == currentWidget )
+    if ( nullptr == currentWidget )
     {
         Q_ASSERT(false);
         return;
@@ -208,7 +208,7 @@ void FiltersDock::searchTextChanged(const QString arg1)
 
     foreach(Filter* current, widgets)
     {
-        if ( NULL != current )
+        if ( nullptr != current )
         {
             current->setVisible(current->title().contains(arg1, Qt::CaseInsensitive));
         }

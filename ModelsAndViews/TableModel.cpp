@@ -1,6 +1,6 @@
 #include <QDebug>
 
-#include "DataSets/Dataset.h"
+#include "Datasets/Dataset.h"
 #include "Common/Constants.h"
 
 #include "TableModel.h"
@@ -16,7 +16,7 @@ TableModel::TableModel(Dataset* dataset, QObject *parent) :
 
 TableModel::~TableModel()
 {
-    if( NULL != dataset_ )
+    if( nullptr != dataset_ )
     {
         delete dataset_;
     }

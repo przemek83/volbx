@@ -20,7 +20,7 @@ class QwtPlotPanner;
 class PlotBase : public QwtPlot
 {
 public:
-    PlotBase(QString /*title*/, QWidget *parent = NULL);
+    PlotBase(QString /*title*/, QWidget *parent = nullptr);
 
     virtual ~PlotBase();
 

@@ -12,7 +12,7 @@
 
 HistogramPlot::HistogramPlot(QWidget *parent) :
     PlotBase(QObject::tr("Histogram"), parent),
-    plotData_(PlotData(NULL, NULL, 0))
+    plotData_(PlotData(nullptr, nullptr, 0))
 {
     picker_ = new HistPicker(canvas());
 
@@ -29,7 +29,7 @@ HistogramPlot::HistogramPlot(QWidget *parent) :
 
 HistogramPlot::~HistogramPlot()
 {
-    if( NULL != picker_ )
+    if( nullptr != picker_ )
         delete picker_;
 }
 
@@ -103,10 +103,10 @@ void HistogramPlot::setLegendItemChecked(QwtPlotItem* plot)
     QWidget* legendWidget =
         static_cast<QwtLegend*>(legend())->legendWidget(itemToInfo(plot));
 
-    if ( legendWidget != NULL )
+    if ( legendWidget != nullptr )
     {
         QwtLegendLabel* legendLabel = static_cast<QwtLegendLabel*>(legendWidget);
-        if( NULL != legendLabel )
+        if( nullptr != legendLabel )
         {
             legendLabel->setChecked(true);
         }

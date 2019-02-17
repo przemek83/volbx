@@ -47,7 +47,7 @@ void ExportData::gatherSheetContent(QByteArray& rowsContent,
     FilteringProxyModel* proxyModel =
         static_cast<FilteringProxyModel*>(view->model());
 
-    Q_ASSERT(NULL != proxyModel);
+    Q_ASSERT(nullptr != proxyModel);
 
     bool multiSelection =
         (QAbstractItemView::MultiSelection == view->selectionMode());
@@ -70,7 +70,7 @@ void ExportData::gatherSheetContent(QByteArray& rowsContent,
     int skippedRows = 0;
 
     ProgressBar bar(ProgressBar::PROGRESS_TITLE_SAVING,
-                    proxyModel->rowCount(), NULL);
+                    proxyModel->rowCount(), nullptr);
 
     //For each row.
     for(int i = 0; i < proxyRowCount; ++i)
@@ -112,7 +112,7 @@ void ExportData::gatherSheetContent(QByteArray& rowsContent,
 
 bool ExportData::exportAsXLSX(const QAbstractItemView* view, QString fileName)
 {
-    Q_ASSERT(NULL != view);
+    Q_ASSERT(nullptr != view);
 
     //Open xlsx template.
     QuaZip inZip(":/template.xlsx");
@@ -225,7 +225,7 @@ void ExportData::dataToByteArray(const QAbstractItemView* view,
 
     FilteringProxyModel* proxyModel =
         static_cast<FilteringProxyModel*>(view->model());
-    Q_ASSERT(NULL != proxyModel);
+    Q_ASSERT(nullptr != proxyModel);
 
     int proxyColumnCount = proxyModel->columnCount();
 
@@ -243,7 +243,7 @@ void ExportData::dataToByteArray(const QAbstractItemView* view,
 
     ProgressBar bar(ProgressBar::PROGRESS_TITLE_SAVING,
                     proxyModel->rowCount(),
-                    NULL);
+                    nullptr);
 
     bool multiSelection =
         (QAbstractItemView::MultiSelection == view->selectionMode());
@@ -373,7 +373,7 @@ bool ExportData::exportAsCsv(const QAbstractItemView* view,
 bool ExportData::saveDataset(QString name,
                              const QAbstractItemView* view)
 {
-    Q_ASSERT(NULL != view);
+    Q_ASSERT(nullptr != view);
 
     QTime performanceTimer;
     performanceTimer.start();
@@ -394,10 +394,10 @@ bool ExportData::saveDataset(QString name,
 
     FilteringProxyModel* proxyModel =
         static_cast<FilteringProxyModel*>(view->model());
-    Q_ASSERT(NULL != proxyModel);
+    Q_ASSERT(nullptr != proxyModel);
     ProgressBar bar(ProgressBar::PROGRESS_TITLE_SAVING,
                     proxyModel->rowCount(),
-                    NULL);
+                    nullptr);
 
     //Save data.
     int rowCount = 0;

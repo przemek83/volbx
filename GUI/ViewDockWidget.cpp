@@ -39,7 +39,7 @@ ViewDockWidget::~ViewDockWidget()
 void ViewDockWidget::quickExportData()
 {
     DataView* view = findChild<DataView*>();
-    Q_ASSERT(NULL != view);
+    Q_ASSERT(nullptr != view);
 
     ExportData::quickExportAsTSV(view);
 }

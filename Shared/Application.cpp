@@ -9,14 +9,6 @@
 
 const char* Application::cssSuffix_ = ".css";
 
-Application::Application()
-{
-}
-
-Application::~Application()
-{
-}
-
 void Application::setAdditionalApplicatioInfo(const char* productName)
 {
     QApplication::setApplicationName(QLatin1String(productName));
@@ -90,7 +82,7 @@ void Application::setQtStyle(QString name)
 void Application::clearAppFocus()
 {
     QWidget* focusWidget = qApp->focusWidget();
-    if( NULL != focusWidget)
+    if( nullptr != focusWidget)
     {
         focusWidget->clearFocus();
     }

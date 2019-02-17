@@ -10,7 +10,7 @@
 
 void showDifferentInstanceRunnningError()
 {
-    QMessageBox::critical(NULL,
+    QMessageBox::critical(nullptr,
                           QObject::tr("Error"),
                           QObject::tr("Different instance of ") +
                           QApplication::applicationName() +

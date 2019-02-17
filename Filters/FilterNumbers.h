@@ -22,7 +22,7 @@ public:
                   int column,
                   double min,
                   double max,
-                  QWidget* parent = NULL);
+                  QWidget* parent = nullptr);
 
     virtual ~FilterNumbers();
 

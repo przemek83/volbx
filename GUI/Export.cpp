@@ -89,7 +89,7 @@ void Export::saveOnDisk()
 
     }
     DataView* view = tab_->findChild<DataView*>();
-    Q_ASSERT(NULL != view);
+    Q_ASSERT(nullptr != view);
 
     if(ui->xlsx->isChecked())
     {

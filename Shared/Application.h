@@ -29,8 +29,8 @@ public:
     static void initStyle(QString nameFromConfig);
 
 private:
-    Application();
-    virtual ~Application();
+    Application() = default;
+    virtual ~Application() = default;
     Q_DISABLE_COPY(Application)
 
     static QString getStylePath(QString styleName);

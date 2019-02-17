@@ -2,7 +2,7 @@
 #include <QTreeWidgetItem>
 #include <QTreeWidgetItemIterator>
 
-#include "DataSets/DatasetDefinition.h"
+#include "Datasets/DatasetDefinition.h"
 #include "Common/Constants.h"
 
 #include "DatasetDefinitionVisualization.h"
@@ -14,7 +14,7 @@ DatasetDefinitionVisualization::DatasetDefinitionVisualization(QWidget* parent) 
     typeNameString_(tr("Name")),
     typeNameFloat_(tr("Number")),
     typeNameDate_(tr("Date")),
-    datasetDefinition_(NULL)
+    datasetDefinition_(nullptr)
 {
     ui->setupUi(this);
 
@@ -164,10 +164,10 @@ void DatasetDefinitionVisualization::clear()
 
     ui->specialColumnsWidget->setEnabled(false);
 
-    if ( NULL != datasetDefinition_ )
+    if ( nullptr != datasetDefinition_ )
     {
         delete datasetDefinition_;
-        datasetDefinition_ = NULL;
+        datasetDefinition_ = nullptr;
     }
 }
 
@@ -235,7 +235,7 @@ DatasetDefinition* DatasetDefinitionVisualization::getDatasetDefinition()
 void DatasetDefinitionVisualization::currentColumnOnTreeChanged(
         QTreeWidgetItem* current, QTreeWidgetItem* /*previous*/)
 {
-    if ( NULL == current )
+    if ( nullptr == current )
         return;
 
     emit currentColumnNeedSync(current->data(0, Qt::UserRole).toInt());

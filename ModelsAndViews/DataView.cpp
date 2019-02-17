@@ -29,7 +29,7 @@
 #include "GUI/GroupPlotGui.h"
 
 DataView::DataView(QWidget *parent) :
-    QTableView(parent), plotDataProvider_(NULL)
+    QTableView(parent), plotDataProvider_(nullptr)
 {
     setSelectionMode(QAbstractItemView::SingleSelection);
     setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -50,7 +50,7 @@ DataView::DataView(QWidget *parent) :
 
 DataView::~DataView()
 {
-    if( NULL != plotDataProvider_ )
+    if( nullptr != plotDataProvider_ )
     {
         delete plotDataProvider_;
     }
@@ -106,23 +106,23 @@ void DataView::groupingColumnChanged(int column)
 QVector<TransactionData>* DataView::fillDataFromSelection(int groupByColumn)
 {
     FilteringProxyModel* proxyModel = static_cast<FilteringProxyModel*>(model());
-    Q_ASSERT(NULL != proxyModel);
+    Q_ASSERT(nullptr != proxyModel);
 
     const TableModel* parentModel = proxyModel->getParentModel();
-    Q_ASSERT(NULL != parentModel);
+    Q_ASSERT(nullptr != parentModel);
 
     int pricePerMeterColumn;
     if(false == parentModel->getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT,
                                                       pricePerMeterColumn))
     {
-        return NULL;
+        return nullptr;
     }
 
     int transactionDateColumn;
     if(false == parentModel->getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE,
                                                       transactionDateColumn))
     {
-        return NULL;
+        return nullptr;
     }
 
     QTime performanceTimer;
@@ -173,7 +173,7 @@ QVector<TransactionData>* DataView::fillDataFromSelection(int groupByColumn)
 
 void DataView::reloadSelectionDataAndRecompute()
 {
-    if( NULL == plotDataProvider_ )
+    if( nullptr == plotDataProvider_ )
     {
         return;
     }
@@ -196,7 +196,7 @@ void DataView::reloadSelectionDataAndRecompute()
         columnFormat = parentModel->getColumnFormat(groupByColumn);
     }
 
-    Q_ASSERT(NULL != newCalcData);
+    Q_ASSERT(nullptr != newCalcData);
 
     QTime performanceTimer;
     performanceTimer.start();
@@ -241,7 +241,7 @@ void DataView::keyPressEvent(QKeyEvent* event)
 
 const PlotDataProvider* DataView::getPlotDataProvider()
 {
-    if( NULL == plotDataProvider_)
+    if( nullptr == plotDataProvider_)
     {
         const TableModel* tableModel =
             (dynamic_cast<FilteringProxyModel*>(model()))->getParentModel();

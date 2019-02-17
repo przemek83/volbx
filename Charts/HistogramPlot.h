@@ -23,7 +23,7 @@ class HistogramPlot : public PlotBase
 {
     Q_OBJECT
 public:
-    explicit HistogramPlot(QWidget* parent = NULL);
+    explicit HistogramPlot(QWidget* parent = nullptr);
 
     virtual ~HistogramPlot();
 

@@ -18,7 +18,7 @@ class FilteringProxyModel : public QSortFilterProxyModel
 public:
     explicit FilteringProxyModel(QObject *parent = 0);
 
-    virtual ~FilteringProxyModel();
+    virtual ~FilteringProxyModel() = default;
 
     /**
      * @brief get pointer to parent model.

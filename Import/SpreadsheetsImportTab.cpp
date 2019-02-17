@@ -7,8 +7,8 @@
 
 #include "Common/Configuration.h"
 #include "Datasets/DatasetDefinitionSpreadsheet.h"
-#include "DataSets/DatasetDefinitionOds.h"
-#include "DataSets/DatasetDefinitionXlsx.h"
+#include "Datasets/DatasetDefinitionOds.h"
+#include "Datasets/DatasetDefinitionXlsx.h"
 #include "Common/Constants.h"
 
 #include "DatasetDefinitionVisualization.h"
@@ -23,12 +23,11 @@ SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    DatasetDefinitionVisualization* visualization =
-        new DatasetDefinitionVisualization(this);
+    auto visualization = new DatasetDefinitionVisualization(this);
 
-    QSplitter* splitter2 = new QSplitter(Qt::Vertical, this);
+    auto splitter2 = new QSplitter(Qt::Vertical, this);
     splitter2->addWidget(visualization);
-    ColumnsPreview* columnsPreview = new ColumnsPreview(this);
+    auto columnsPreview = new ColumnsPreview(this);
     splitter2->addWidget(columnsPreview);
     QList<int> sizes;
     sizes << 300 << 150;
@@ -86,7 +85,7 @@ void SpreadsheetsImportTab::on_openFileButton_clicked()
 
     ui->fileNameLineEdit->setText(fileName);
 
-    DatasetDefinitionSpreadsheet* datasetDefinition = NULL;
+    DatasetDefinitionSpreadsheet* datasetDefinition = nullptr;
 
     //Remove all not allowed characters from file name.
     QString regexpString = QString(Constants::datasetNameRegExp_).replace("[", "[^");
@@ -121,7 +120,7 @@ void SpreadsheetsImportTab::on_openFileButton_clicked()
 
     DatasetDefinitionVisualization* visualization =
         findChild<DatasetDefinitionVisualization*>();
-    if( NULL == visualization )
+    if( nullptr == visualization )
     {
         return;
     }
@@ -129,7 +128,7 @@ void SpreadsheetsImportTab::on_openFileButton_clicked()
     visualization->setEnabled(true);
 
     ColumnsPreview* columnsPreview = findChild<ColumnsPreview*>();
-    if( NULL == columnsPreview )
+    if( nullptr == columnsPreview )
     {
         return;
     }

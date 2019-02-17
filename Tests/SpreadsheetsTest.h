@@ -4,8 +4,8 @@
 #include <QObject>
 
 #include "Common/Formats.h"
-#include "DataSets/DatasetDefinitionSpreadsheet.h"
-#include "DataSets/DatasetSpreadsheet.h"
+#include "Datasets/DatasetDefinitionSpreadsheet.h"
+#include "Datasets/DatasetSpreadsheet.h"
 
 class DatasetDefinition;
 

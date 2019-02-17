@@ -222,7 +222,7 @@ bool DatasetDefinitionOds::openZipAndMoveToSecondRow( QuaZip& zip,
 bool DatasetDefinitionOds::getColumnTypes( QuaZip& zip,
                                            const QString& sheetName )
 {
-	ProgressBar bar(ProgressBar::PROGRESS_TITLE_DETECTING_COLUMN_TYPES, 0, NULL);
+	ProgressBar bar(ProgressBar::PROGRESS_TITLE_DETECTING_COLUMN_TYPES, 0, nullptr);
 	QTime performanceTimer;
 	performanceTimer.start();
 
@@ -420,7 +420,7 @@ bool DatasetDefinitionOds::getDataFromZip( QuaZip& zip,
 	{
         bar.reset(new ProgressBar(ProgressBar::PROGRESS_TITLE_LOADING,
                                   rowsCount_,
-                                  NULL));
+                                  nullptr));
 	}
 
 	QuaZipFile zipFile;
@@ -576,7 +576,7 @@ bool DatasetDefinitionOds::getDataFromZip( QuaZip& zip,
 
                         const QString* stringPointer = xmlStreamReader.text().string();
                         value =
-                            QVariant(getStringIndex((stringPointer == NULL ? emptyString : *stringPointer)));
+                            QVariant(getStringIndex((stringPointer == nullptr ? emptyString : *stringPointer)));
 
                         break;
 					}

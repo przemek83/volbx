@@ -12,11 +12,6 @@ FilteringProxyModel::FilteringProxyModel(QObject *parent)
 
 }
 
-FilteringProxyModel::~FilteringProxyModel()
-{
-
-}
-
 const TableModel* FilteringProxyModel::getParentModel() const
 {
     return dynamic_cast<const TableModel*>(sourceModel());

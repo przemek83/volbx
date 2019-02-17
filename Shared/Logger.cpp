@@ -20,8 +20,8 @@ const char* Logger::LogTypeNames_[] =
 
 Logger::Logger() :
     QObject(),
-    display_(NULL),
-    textEdit_(NULL)
+    display_(nullptr),
+    textEdit_(nullptr)
 {
     display_ = new QWidget();
     display_->setWindowTitle(QLatin1String("Logs"));
@@ -53,7 +53,7 @@ Logger::Logger() :
 
 Logger::~Logger()
 {
-    if( NULL != display_ )
+    if( nullptr != display_ )
         delete display_;
 
     delete activeLogs_;
@@ -71,9 +71,9 @@ void Logger::log(LogTypes type,
                  int line,
                  QString msg)
 {
-    Q_ASSERT(NULL != display_ && NULL != textEdit_);
+    Q_ASSERT(nullptr != display_ && nullptr != textEdit_);
 
-    if( NULL == display_ || NULL == textEdit_)
+    if( nullptr == display_ || nullptr == textEdit_)
         return;
 
     //TODO Use __file__ and __line__
@@ -110,9 +110,9 @@ void Logger::reloadCheckBoxes()
 {
     QVBoxLayout* verticalLayout = display_->findChild<QVBoxLayout*>();
 
-    Q_ASSERT(verticalLayout != NULL);
+    Q_ASSERT(verticalLayout != nullptr);
 
-    if( verticalLayout == NULL )
+    if( verticalLayout == nullptr )
         return;
 
     //Delete all.
@@ -164,7 +164,7 @@ void Logger::changeActiveLogs(bool state)
 
 void Logger::switchVisibility()
 {
-    if( NULL != display_ )
+    if( nullptr != display_ )
     {
         display_->setVisible(!display_->isVisible());
     }

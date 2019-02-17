@@ -395,7 +395,7 @@ bool DatasetDefinitionXlsx::getColumnTypes( QuaZip& zip,
 {
     Constants::generateExcelColumnNames(excelColNames_, columnsCount_);
 
-	ProgressBar bar(ProgressBar::PROGRESS_TITLE_DETECTING_COLUMN_TYPES, 0, NULL);
+    ProgressBar bar(ProgressBar::PROGRESS_TITLE_DETECTING_COLUMN_TYPES, 0, nullptr);
 	QTime performanceTimer;
 	performanceTimer.start();
 
@@ -615,7 +615,7 @@ bool DatasetDefinitionXlsx::getDataFromZip( QuaZip& zip,
 	{
         bar.reset(new ProgressBar(ProgressBar::PROGRESS_TITLE_LOADING,
                                   rowsCount_,
-                                  NULL));
+                                  nullptr));
 	}
 
 	QApplication::processEvents();

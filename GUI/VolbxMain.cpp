@@ -14,12 +14,12 @@
 #include "ModelsAndViews/FilteringProxyModel.h"
 #include "Common/Configuration.h"
 #include "Common/ExportData.h"
-#include "DataSets/Dataset.h"
-#include "DataSets/DatasetSpreadsheet.h"
-#include "DataSets/DatasetInner.h"
-#include "DataSets/DatasetDefinitionInner.h"
-#include "DataSets/DatasetDefinitionXlsx.h"
-#include "DataSets/DatasetDefinitionOds.h"
+#include "Datasets/Dataset.h"
+#include "Datasets/DatasetSpreadsheet.h"
+#include "Datasets/DatasetInner.h"
+#include "Datasets/DatasetDefinitionInner.h"
+#include "Datasets/DatasetDefinitionXlsx.h"
+#include "Datasets/DatasetDefinitionOds.h"
 #include "Common/ProgressBar.h"
 #include "Common/Constants.h"
 #include "ModelsAndViews/TableModel.h"
@@ -42,9 +42,9 @@
 
 VolbxMain::VolbxMain(QWidget *parent) :
     QMainWindow(parent),
-    filters_(NULL),
+    filters_(nullptr),
     ui(new Ui::VolbxMain),
-    tabWidget_(NULL)
+    tabWidget_(nullptr)
 {
     ui->setupUi(this);
 
@@ -259,7 +259,7 @@ void VolbxMain::tabWasChanged(int index)
     if ( -1 != index )
     {
         const FilteringProxyModel* model = tabWidget_->getCurrentProxyModel();
-        if ( NULL == model )
+        if ( nullptr == model )
         {
             return;
         }
@@ -318,7 +318,7 @@ void VolbxMain::manageActions(bool tabExists)
     if( true == tabExists )
     {
         const TableModel* dataModel = tabWidget_->getCurrentDataModel();
-        if( NULL != dataModel )
+        if( nullptr != dataModel )
         {
             activateCharts = (true == activateCharts &&
                               true == dataModel->isSpecialColumnsSet());
@@ -369,7 +369,7 @@ void VolbxMain::on_actionSaveDatasetAs_triggered()
         performanceTimer.start();
 
         DataView* view = tabWidget_->getCurrentDataView();
-        if( NULL == view )
+        if( nullptr == view )
         {
             return;
         }
@@ -401,7 +401,7 @@ bool VolbxMain::loadDataset(Dataset* dataset)
         return false;
     }
 
-    if ( NULL != dataset && false == dataset->isValid() )
+    if ( nullptr != dataset && false == dataset->isValid() )
     {
         return false;
     }
@@ -417,8 +417,8 @@ void VolbxMain::on_actionImportData_triggered()
     {
         DatasetDefinition* datasetDefinition = import.getSelectedDataset();
 
-        if ( NULL == datasetDefinition ||
-             (NULL != datasetDefinition && false == datasetDefinition->isValid()) )
+        if ( nullptr == datasetDefinition ||
+             (nullptr != datasetDefinition && false == datasetDefinition->isValid()) )
         {
             QMessageBox::critical(this,
                                   tr("Import error"),
@@ -429,7 +429,7 @@ void VolbxMain::on_actionImportData_triggered()
         //Sample data is not needed anymore.
         datasetDefinition->clearSampleData();
 
-        Dataset* dataset = NULL;
+        Dataset* dataset = nullptr;
 
         switch( import.getImportDataType() )
         {
@@ -437,7 +437,7 @@ void VolbxMain::on_actionImportData_triggered()
             {
                 DatasetDefinitionInner* innerDataset =
                         dynamic_cast<DatasetDefinitionInner*>(datasetDefinition);
-                if ( NULL != innerDataset )
+                if ( nullptr != innerDataset )
                 {
                     dataset = new DatasetInner(innerDataset);
                 }
@@ -449,7 +449,7 @@ void VolbxMain::on_actionImportData_triggered()
             {
                 DatasetDefinitionSpreadsheet* definitionSpreadsheet =
                         dynamic_cast<DatasetDefinitionSpreadsheet*>(datasetDefinition);
-                if ( NULL != definitionSpreadsheet )
+                if ( nullptr != definitionSpreadsheet )
                 {
                     dataset = new DatasetSpreadsheet(definitionSpreadsheet);
                 }
@@ -464,7 +464,7 @@ void VolbxMain::on_actionImportData_triggered()
             }
         }
 
-        if( NULL == dataset )
+        if( nullptr == dataset )
         {
             QMessageBox::critical(this,
                                   tr("Import error"),
@@ -487,7 +487,7 @@ void VolbxMain::addMainTabForDataset(Dataset* dataset)
 {
     MainTab* mainTab = new MainTab(dataset, tabWidget_);
     const FilteringProxyModel* proxyModel = mainTab->getCurrentProxyModel();
-    if( NULL != proxyModel )
+    if( nullptr != proxyModel )
     {
         filters_->addModel(proxyModel);
     }
@@ -529,7 +529,7 @@ void VolbxMain::updateCheckReplyFinished(QNetworkReply* reply)
     if( newestVersion != QApplication::applicationVersion() )
     {
          QMessageBox::StandardButton answer =
-                QMessageBox::question(NULL,
+                QMessageBox::question(nullptr,
                                       tr("New version"),
                                       tr("New version is available. Download and install it now?"));
 
@@ -546,7 +546,7 @@ void VolbxMain::updateCheckReplyFinished(QNetworkReply* reply)
             }
             else
             {
-                QMessageBox::critical(NULL,
+                QMessageBox::critical(nullptr,
                                       tr("Wrong installation"),
                                       tr("Installation is corrupted. Could not find file ") +
                                       Constants::updaterName_ + Constants::exeFileSuffix_ + ".\n" +
@@ -573,7 +573,7 @@ void VolbxMain::on_actionUpdateAuto_toggled(bool alwaysCheck)
 void VolbxMain::qtStylePicked()
 {
     QAction* action = dynamic_cast<QAction*>(sender());
-    if( NULL != action)
+    if( nullptr != action)
     {
         QString style = action->text();
         Application::setQtStyle(style);
@@ -584,7 +584,7 @@ void VolbxMain::qtStylePicked()
 void VolbxMain::customStylePicked()
 {
     QAction* action = dynamic_cast<QAction*>(sender());
-    if( NULL != action)
+    if( nullptr != action)
     {
         QString styleName = action->text();
         Application::setCssStyle(styleName);

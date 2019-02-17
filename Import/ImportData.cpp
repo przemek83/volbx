@@ -7,9 +7,9 @@
 #include <QPushButton>
 
 #include "Common/Constants.h"
-#include "DataSets/DatasetDefinitionInner.h"
-#include "DataSets/DatasetDefinitionOds.h"
-#include "DataSets/DatasetDefinitionXlsx.h"
+#include "Datasets/DatasetDefinitionInner.h"
+#include "Datasets/DatasetDefinitionOds.h"
+#include "Datasets/DatasetDefinitionXlsx.h"
 #include "Common/Configuration.h"
 
 #include "ImportData.h"
@@ -20,12 +20,12 @@
 ImportData::ImportData(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ImportData),
-    buttonBox_(NULL)
+    buttonBox_(nullptr)
 {
     ui->setupUi(this);
 
     //Create tabs.
-    DatasetImportTab* datasetsTab = new DatasetImportTab(ui->tabWidget);
+    auto datasetsTab = new DatasetImportTab(ui->tabWidget);
     connect(datasetsTab,
             SIGNAL(definitionIsReady(bool)),
             this,
@@ -34,7 +34,7 @@ ImportData::ImportData(QWidget *parent) :
                              datasetsTab,
                              tr("Datasets"));
 
-    SpreadsheetsImportTab* spreadsheetsTab =
+    auto spreadsheetsTab =
             new SpreadsheetsImportTab(ui->tabWidget);
     connect(spreadsheetsTab,
             SIGNAL(definitionIsReady(bool)),

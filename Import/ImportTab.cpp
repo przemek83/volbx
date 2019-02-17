@@ -6,7 +6,3 @@ ImportTab::ImportTab(QWidget *parent) :
 
 }
 
-ImportTab::~ImportTab()
-{
-
-}

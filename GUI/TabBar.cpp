@@ -63,7 +63,7 @@ bool TabBar::eventFilter(QObject *obj, QEvent *event)
     if (event->type() == QEvent::KeyPress)
     {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-        if ( NULL != keyEvent && Qt::Key_Escape == keyEvent->key() )
+        if ( nullptr != keyEvent && Qt::Key_Escape == keyEvent->key() )
         {
             lineEdit_.hide();
             return true;

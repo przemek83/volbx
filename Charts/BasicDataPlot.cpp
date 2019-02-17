@@ -39,7 +39,7 @@ BasicDataPlot::BasicDataPlot(QWidget *parent) :
 
 BasicDataPlot::~BasicDataPlot()
 {
-    if(NULL != picker_)
+    if(nullptr != picker_)
         delete picker_;
 }
 
@@ -217,10 +217,10 @@ void BasicDataPlot::setLegendItemChecked(QwtPlotCurve* plot)
     QWidget* legendWidget =
         static_cast<QwtLegend*>(legend())->legendWidget(itemToInfo(plot));
 
-    if ( legendWidget != NULL )
+    if ( legendWidget != nullptr )
     {
         QwtLegendLabel* legendLabel = static_cast<QwtLegendLabel*>(legendWidget);
-        if(NULL != legendLabel)
+        if(nullptr != legendLabel)
         {
             legendLabel->setChecked(true);
         }

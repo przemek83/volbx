@@ -16,7 +16,7 @@ class CustomMarker;
 class QuantilesPlot : public PlotBase
 {
 public:
-    explicit QuantilesPlot(QWidget* parent = NULL);
+    explicit QuantilesPlot(QWidget* parent = nullptr);
 
     virtual ~QuantilesPlot();
 

@@ -11,11 +11,6 @@ DateDelegate::DateDelegate(QObject* parent)
     defaultDateFormat_ = QString(Constants::defaultDateFormat_);
 }
 
-DateDelegate::~DateDelegate()
-{
-
-}
-
 QString DateDelegate::displayText(const QVariant& value,
                                   const QLocale& /*locale*/) const
 {

@@ -404,7 +404,7 @@ void SpreadsheetsTest::compareDataWithDumps(QString category, bool damaged)
     foreach ( QFileInfo f, list )
     {
         QString fileName(f.filePath());
-        DatasetDefinitionSpreadsheet* definition = NULL;
+        DatasetDefinitionSpreadsheet* definition = nullptr;
         if( fileName.endsWith(".xlsx") )
         {
             definition = new DatasetDefinitionXlsx(fileName, fileName);
@@ -510,7 +510,7 @@ void SpreadsheetsTest::compareExportDataWithDump(DatasetSpreadsheet* dataset)
 
 void SpreadsheetsTest::generateDataDumpsForFile(QString name)
 {
-    DatasetDefinitionSpreadsheet* definition = NULL;
+    DatasetDefinitionSpreadsheet* definition = nullptr;
     if( name.endsWith(".xlsx") )
     {
         definition = new DatasetDefinitionXlsx(name, name);

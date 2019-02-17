@@ -11,7 +11,7 @@ class DateDelegate : public QStyledItemDelegate
 public:
     explicit DateDelegate(QObject* parent = 0);
 
-    virtual ~DateDelegate();
+    virtual ~DateDelegate() = default;
 
     virtual QString displayText(const QVariant& value, const QLocale& locale) const;
 

@@ -33,20 +33,20 @@ MainTab::~MainTab()
 FilteringProxyModel* MainTab::getCurrentProxyModel()
 {
     FilteringProxyModel* proxyModel = findChild<FilteringProxyModel*>();
-    Q_ASSERT(NULL != proxyModel);
+    Q_ASSERT(nullptr != proxyModel);
     return proxyModel;
 }
 
 TableModel* MainTab::getCurrentDataModel()
 {
     TableModel* dataModel = findChild<TableModel*>();
-    Q_ASSERT(NULL != dataModel);
+    Q_ASSERT(nullptr != dataModel);
     return dataModel;
 }
 
 DataView* MainTab::getCurrentDataView()
 {
     DataView* dataView = findChild<DataView*>();
-    Q_ASSERT(NULL != dataView);
+    Q_ASSERT(nullptr != dataView);
     return dataView;
 }

@@ -10,8 +10,8 @@
 
 PlotBase::PlotBase(QString title, QWidget* parent) :
     QwtPlot(/*title,*/ parent),
-    plotCurve_(NULL),
-    plotData_(PlotData(NULL, NULL, 0))
+    plotCurve_(nullptr),
+    plotData_(PlotData(nullptr, nullptr, 0))
 {
     //Used in export of images.
     setWindowTitle(title);
@@ -38,7 +38,7 @@ PlotBase::~PlotBase()
 
 	delete magnifier_;
 
-	if(NULL != plotCurve_)
+	if(nullptr != plotCurve_)
     {
 		delete plotCurve_;
     }

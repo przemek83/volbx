@@ -10,7 +10,7 @@
 
 QuantilesPlot::QuantilesPlot(QWidget* parent) :
     PlotBase(QObject::tr("Quantiles"), parent),
-    marker_(NULL)
+    marker_(nullptr)
 {
     marker_ = new NotchedMarker(&quantiles_);
 
@@ -35,10 +35,10 @@ QuantilesPlot::QuantilesPlot(QWidget* parent) :
 
 QuantilesPlot::~QuantilesPlot()
 {
-    if( NULL != picker_ )
+    if( nullptr != picker_ )
         delete picker_;
 
-    if( NULL != marker_ )
+    if( nullptr != marker_ )
         delete marker_;
 }
 

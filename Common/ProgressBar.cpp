@@ -24,7 +24,7 @@ ProgressBar::ProgressBar(ProgressBar::ProgressTitle title,
     title_ = progressTitles[title];
     setWindowTitle(QString(title_).replace(newLine, ' '));
 
-    if( NULL == parent )
+    if( nullptr == parent )
     {
         setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
         setWindowModality(Qt::ApplicationModal);
@@ -64,7 +64,7 @@ ProgressBar::ProgressBar(ProgressBar::ProgressTitle title,
                           lineWeidth_*4);
 
     QWidget* activeWidget = QApplication::activeWindow();
-    if(NULL != activeWidget)
+    if(nullptr != activeWidget)
     {
         move(QApplication::activeWindow()->geometry().center() -
              geometry().center());

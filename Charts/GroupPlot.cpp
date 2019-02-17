@@ -13,7 +13,7 @@ const int GroupPlot::maxCharsInLabel_ = 20;
 
 GroupPlot::GroupPlot(QWidget *parent)
     : PlotBase(tr("Grouping"), parent),
-      marker_(NULL),
+      marker_(nullptr),
       shortIntervalNames_(QVector<QString>())
 {
     marker_ = new NotchedMarker(&quantiles_);
@@ -36,10 +36,10 @@ GroupPlot::GroupPlot(QWidget *parent)
 
 GroupPlot::~GroupPlot()
 {
-    if( NULL != picker_ )
+    if( nullptr != picker_ )
         delete picker_;
 
-    if( NULL != marker_ )
+    if( nullptr != marker_ )
         delete marker_;
 }
 

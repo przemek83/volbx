@@ -51,7 +51,7 @@ private:
     class ScrollArea : public QScrollArea
     {
     public:
-        ScrollArea(QWidget* parent = NULL);
+        ScrollArea(QWidget* parent = nullptr);
         virtual ~ScrollArea();
         void forceResize();
     };

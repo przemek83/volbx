@@ -1,7 +1,7 @@
 #include <QTableWidgetItem>
 #include <QDebug>
 
-#include "DataSets/DatasetDefinition.h"
+#include "Datasets/DatasetDefinition.h"
 
 #include "ColumnsPreview.h"
 
@@ -67,7 +67,7 @@ void ColumnsPreview::clearDataAndDisable()
 void ColumnsPreview::selectCurrentColumn(int column)
 {
     QTableWidgetItem* itemToSelect = item(0, column);
-    if ( NULL != itemToSelect &&
+    if ( nullptr != itemToSelect &&
          false == itemToSelect->isSelected() )
     {
         selectColumn(column);
@@ -84,7 +84,7 @@ void ColumnsPreview::selectionChanged()
     }
 
     QTableWidgetItem* selectedItem = selectedItems().first();
-    if ( NULL != selectedItem )
+    if ( nullptr != selectedItem )
     {
         emit currentColumnNeedSync(selectedItem->column());
     }
