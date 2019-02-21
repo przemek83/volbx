@@ -73,10 +73,8 @@ bool FilteringProxyModel::filterAcceptsRow(int sourceRow,
             {
                 return false;
             }
-            else
-            {
-                return true;
-            }
+
+            return true;
         }
 
         QDate itemDate = dateVariant.toDate();

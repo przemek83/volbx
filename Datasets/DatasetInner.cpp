@@ -86,10 +86,8 @@ bool DatasetInner::datasetDirExistAndUserHavePermisions()
     {
          return true;
     }
-    else
-    {
-        return false;
-    }
+
+    return false;
 }
 
 bool DatasetInner::removeDataset(QString name)

@@ -16,10 +16,7 @@ TableModel::TableModel(Dataset* dataset, QObject *parent) :
 
 TableModel::~TableModel()
 {
-    if( nullptr != dataset_ )
-    {
-        delete dataset_;
-    }
+    delete dataset_;
 }
 
 int TableModel::rowCount(const QModelIndex& /*parent*/) const
@@ -36,9 +33,9 @@ QVariant TableModel::data(const QModelIndex& index, int role) const
 {
     if(Qt::DisplayRole == role) {
         return *dataset_->getData(index.row(), index.column());
-    } else {
-        return QVariant();
-}
+    }
+
+    return QVariant();
 }
 
 QVariant TableModel::headerData(int section,

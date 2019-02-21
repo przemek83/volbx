@@ -50,10 +50,7 @@ DataView::DataView(QWidget *parent) :
 
 DataView::~DataView()
 {
-    if( nullptr != plotDataProvider_ )
-    {
-        delete plotDataProvider_;
-    }
+    delete plotDataProvider_;
 }
 
 void DataView::setModel(QAbstractItemModel* model)

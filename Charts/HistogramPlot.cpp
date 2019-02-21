@@ -29,9 +29,7 @@ HistogramPlot::HistogramPlot(QWidget *parent) :
 
 HistogramPlot::~HistogramPlot()
 {
-    if( nullptr != picker_ ) {
-        delete picker_;
-}
+    delete picker_;
 }
 
 void HistogramPlot::initHistogramPlot()

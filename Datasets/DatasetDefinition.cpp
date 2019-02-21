@@ -44,10 +44,7 @@ bool DatasetDefinition::getSpecialColumnIfExists(SpecialColumn columnTag,
         column = specialColumns_[columnTag];
         return true;
     }
-    else
-    {
-        return false;
-    }
+    return false;
 }
 
 QString DatasetDefinition::getColumnName(int column) const
@@ -56,11 +53,9 @@ QString DatasetDefinition::getColumnName(int column) const
     {
         return headerColumnNames_[column];
     }
-    else
-    {
-        Q_ASSERT(false);
-        return "";
-    }
+
+    Q_ASSERT(false);
+    return "";
 }
 
 QString DatasetDefinition::dumpDatasetDefinition() const

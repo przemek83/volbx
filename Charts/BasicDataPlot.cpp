@@ -39,9 +39,7 @@ BasicDataPlot::BasicDataPlot(QWidget *parent) :
 
 BasicDataPlot::~BasicDataPlot()
 {
-    if(nullptr != picker_) {
-        delete picker_;
-}
+    delete picker_;
 }
 
 void BasicDataPlot::initPlotCurve()

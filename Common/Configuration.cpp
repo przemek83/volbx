@@ -157,12 +157,10 @@ bool Configuration::save()
         file.close();
         return true;
     }
-    else
-    {
-        LOG(LOG_CONFIG, "Error during config file save.");
-        file.close();
-        return false;
-    }
+
+    LOG(LOG_CONFIG, "Error during config file save.");
+    file.close();
+    return false;
 }
 
 QString Configuration::configDump() const
@@ -223,10 +221,8 @@ QString Configuration::getImportFilePath() const
     {
         return importFilePath_;
     }
-    else
-    {
-        return QDir::homePath();
-    }
+
+    return QDir::homePath();
 }
 
 void Configuration::setImportFilePath(QString path)

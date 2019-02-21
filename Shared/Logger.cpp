@@ -54,10 +54,7 @@ Logger::Logger() :
 
 Logger::~Logger()
 {
-    if( nullptr != display_ ) {
-        delete display_;
-}
-
+    delete display_;
     delete activeLogs_;
 }
 

@@ -36,10 +36,8 @@ QString Application::getStylePath(QString styleName)
     {
         return getResStylePath(styleName);
     }
-    else
-    {
-        return getLocalStyleFilePath(styleName);
-    }
+
+    return getLocalStyleFilePath(styleName);
 }
 
 QString Application::getResStylePath(QString styleName)

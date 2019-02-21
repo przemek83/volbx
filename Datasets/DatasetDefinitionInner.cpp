@@ -37,10 +37,7 @@ DatasetDefinitionInner::DatasetDefinitionInner(QString name)
 
 DatasetDefinitionInner::~DatasetDefinitionInner()
 {
-    if( nullptr != stringsTable_ )
-    {
-        delete[] stringsTable_;
-    }
+    delete[] stringsTable_;
 
     //QuaZip destructor checks if zip is still open.
 }

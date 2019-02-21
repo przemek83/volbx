@@ -35,13 +35,8 @@ PlotBase::PlotBase(QString title, QWidget* parent) :
 PlotBase::~PlotBase()
 {
 	delete panner_;
-
 	delete magnifier_;
-
-	if(nullptr != plotCurve_)
-    {
-		delete plotCurve_;
-    }
+    delete plotCurve_;
 }
 
 void PlotBase::setNewData(PlotData plotData)
