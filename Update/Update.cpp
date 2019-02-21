@@ -59,7 +59,7 @@ void Update::initialInfoNetworkReplyFinished(QNetworkReply* reply)
     reply->deleteLater();
 
     //Check errors.
-    if( true == Networking::errorsOccuredCheck(reply) )
+    if( Networking::errorsOccuredCheck(reply) )
     {
         insertNewLineIntoDetails();
         insertErrorInfoIntoDetails(tr("Error") +
@@ -76,7 +76,7 @@ void Update::initialInfoNetworkReplyFinished(QNetworkReply* reply)
     QString newestVersion =
         Networking::checkReplyAndReturnAvailableVersion(reply, replyStringList);
 
-    if( true == newestVersion.isEmpty() )
+    if( newestVersion.isEmpty() )
     {
         showErrorMsg(tr("Wrong answer received from server."));
         return;
@@ -167,7 +167,7 @@ void Update::downloadFinished(QNetworkReply* reply)
 {
     reply->deleteLater();
 
-    if( true == Networking::errorsOccuredCheck(reply) )
+    if( Networking::errorsOccuredCheck(reply) )
     {
         insertNewLineIntoDetails();
         insertErrorInfoIntoDetails(tr("Error") +
@@ -197,7 +197,7 @@ void Update::downloadFinished(QNetworkReply* reply)
     else
     {
         //Do not continue if max tries reached.
-        if( false == handleVerificationError(fileName, fileSize) )
+        if( !handleVerificationError(fileName, fileSize) )
         {
             return;
         }
@@ -306,7 +306,7 @@ void Update::on_buttonQuit_clicked()
 
 void Update::showErrorMsg(QString error)
 {
-    if( false == ui->details->isVisible() )
+    if( !ui->details->isVisible() )
     {
         ui->showDetails->setChecked(true);
     }

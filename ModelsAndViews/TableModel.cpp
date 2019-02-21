@@ -44,9 +44,8 @@ QVariant TableModel::headerData(int section,
 {
     if(Qt::DisplayRole == role && Qt::Horizontal == orientation) {
         return dataset_->getHeaderName(section);
-    } else {
-        return QVariant();
-}
+    }
+    return QVariant();
 }
 
 void TableModel::getNumericRange(int column, double& min, double& max) const
@@ -92,15 +91,12 @@ bool TableModel::isSpecialColumnsSet() const
     {
         return false;
     }
-    else
-    {
-        return true;
-    }
+    return true;
 }
 
 bool TableModel::isEmptyCellsDetected() const
 {
-	//TODO or delete.
+    //TODO or delete.
     return true;
 }
 

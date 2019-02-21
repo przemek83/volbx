@@ -67,7 +67,7 @@ bool FilteringProxyModel::filterAcceptsRow(int sourceRow,
         std::tuple<QDate, QDate, bool> datesRestrictions =
             iterDates->second;
         const QVariant& dateVariant = index.data();
-        if ( true == dateVariant.isNull() )
+        if ( dateVariant.isNull() )
         {
             if ( true == std::get<2>(datesRestrictions) )
             {

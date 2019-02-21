@@ -22,8 +22,6 @@ QwtText StringsScaleDraw::label(double v) const
     {
         return QwtText(intervals_->at(point-1));
     }
-    else
-    {
-        return QwtText("                     ");
-    }
+
+    return QwtText("                     ");
 }

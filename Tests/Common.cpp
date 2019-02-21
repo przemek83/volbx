@@ -7,7 +7,7 @@ QString Common::loadFile(QString name)
 {
     QFile file(name);
 
-    if( false == file.open(QIODevice::ReadOnly) )
+    if( !file.open(QIODevice::ReadOnly) )
     {
         return "";
     }

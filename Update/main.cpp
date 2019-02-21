@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     Application::setAdditionalApplicatioInfo(VER_PRODUCTNAME_STR);
     Application::setQtStyle(QLatin1String("Fusion"));
 
-    if( false == isUniqueInstance() )
+    if( !isUniqueInstance() )
     {
         showDifferentInstanceRunnningError();
 
