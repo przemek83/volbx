@@ -34,10 +34,11 @@ QString SaveDatasetAs::getChosenDatasetName()
 
 void SaveDatasetAs::on_nameLineEdit_textChanged(const QString &actualText)
 {
-    if(true == actualText.isEmpty())
+    if(true == actualText.isEmpty()) {
         ui->save->setEnabled(false);
-    else
+    } else {
         ui->save->setEnabled(true);
+}
 
     QPalette palette = ui->nameLineEdit->palette();
     if(alreadyUsedNames_.contains(actualText, Qt::CaseInsensitive))

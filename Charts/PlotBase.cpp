@@ -58,8 +58,9 @@ void PlotBase::setNewData(PlotData plotData)
 void PlotBase::mouseDoubleClickEvent(QMouseEvent* event)
 {
     QwtPlot::mouseDoubleClickEvent(event);
-    if(Qt::LeftButton == event->button())
+    if(Qt::LeftButton == event->button()) {
         resetPlot();
+}
 }
 
 void PlotBase::resetPlot()
@@ -67,10 +68,11 @@ void PlotBase::resetPlot()
     magnifier_->reset();
     for(int i = 0; i < QwtPlot::axisCnt; ++i)
     {
-        if(initialScaleMap_.contains(i))
+        if(initialScaleMap_.contains(i)) {
             setAxisScale(i, initialScaleMap_[i].rx(), initialScaleMap_[i].ry());
-        else
+        } else {
             setAxisAutoScale(i);
+}
     }
     replot();
 }
@@ -98,10 +100,8 @@ QwtText PlotBase::IntervalsScaleDraw::label(double v) const
     {
         return QwtText(Constants::floatToStringUsingLocale(v, 1));
     }
-    else
-    {
-        return QwtText(Constants::floatToStringUsingLocale(v, 0));
-    }
+
+    return QwtText(Constants::floatToStringUsingLocale(v, 0));
 }
 
 PlotBase::PlotMagnifier::PlotMagnifier(QWidget *canvas)

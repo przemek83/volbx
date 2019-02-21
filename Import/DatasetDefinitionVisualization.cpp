@@ -235,8 +235,9 @@ DatasetDefinition* DatasetDefinitionVisualization::getDatasetDefinition()
 void DatasetDefinitionVisualization::currentColumnOnTreeChanged(
         QTreeWidgetItem* current, QTreeWidgetItem* /*previous*/)
 {
-    if ( nullptr == current )
+    if ( nullptr == current ) {
         return;
+}
 
     emit currentColumnNeedSync(current->data(0, Qt::UserRole).toInt());
 }

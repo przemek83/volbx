@@ -48,11 +48,13 @@ void Quantiles::computeQuantiles(QVector<float>& valuePerUnit)
 
     foreach(float pricePerMeter, valuePerUnit)
     {
-        if(min_ > pricePerMeter || 0 == min_)
+        if(min_ > pricePerMeter || 0 == min_) {
             min_ = pricePerMeter;
+}
 
-        if(max_ < pricePerMeter || 0 == max_ )
+        if(max_ < pricePerMeter || 0 == max_ ) {
             max_ = pricePerMeter;
+}
 
         EX += pricePerMeter;
         EX2 += pricePerMeter * pricePerMeter;

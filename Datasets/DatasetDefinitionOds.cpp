@@ -204,8 +204,9 @@ bool DatasetDefinitionOds::openZipAndMoveToSecondRow( QuaZip& zip,
 		if( xmlStreamReader.name() == "table-row" &&
 			xmlStreamReader.tokenType() == QXmlStreamReader::StartElement )
 		{
-			if(true == secondRow)
+			if(true == secondRow) {
 				break;
+}
 			secondRow = true;
 		}
 		xmlStreamReader.readNext();

@@ -59,20 +59,23 @@ FilterNames::~FilterNames()
 
 void FilterNames::itemChecked(QListWidgetItem* item)
 {
-    if(!item)
+    if(!item) {
         return;
+}
 
     QSet<QString> currentList;
     for(int i = 0; i < ui->listWidget->count(); ++i)
     {
         QListWidgetItem* currentItem = ui->listWidget->item(i);
-        if(Qt::Unchecked == currentItem->checkState())
+        if(Qt::Unchecked == currentItem->checkState()) {
             currentList << currentItem->text();
+}
     }
 
     //If sizes are same it means nothing happen lately.
-    if( currentList.count() == lastEmitted_.count() )
+    if( currentList.count() == lastEmitted_.count() ) {
         return;
+}
 
     lastEmitted_ = currentList;
 
@@ -140,10 +143,11 @@ void FilterNames::on_selectAll_toggled(bool checked)
     ui->listWidget->blockSignals(true);
     for(int i = 0; i < ui->listWidget->count(); ++i)
     {
-        if(checked)
+        if(checked) {
             ui->listWidget->item(i)->setCheckState(Qt::Checked);
-        else
+        } else {
             ui->listWidget->item(i)->setCheckState(Qt::Unchecked);
+}
     }
     ui->listWidget->blockSignals(false);
     itemChecked(ui->listWidget->item(0));

@@ -31,11 +31,13 @@ FilterNumbers::FilterNumbers(QString name,
 
     if(!doubleMode_)
     {
-        if(fmod(minOnInit_, 1) && minOnInit_ < 0)
+        if(fmod(minOnInit_, 1) && minOnInit_ < 0) {
             minOnInit_ = minOnInit_ - 1;
+}
 
-        if(fmod(maxOnInit_, 1) && maxOnInit_ > 0)
+        if(fmod(maxOnInit_, 1) && maxOnInit_ > 0) {
             maxOnInit_ = maxOnInit_ + 1;
+}
 
         minOnInit_ = static_cast<int>(minOnInit_);
         maxOnInit_ = static_cast<int>(maxOnInit_);

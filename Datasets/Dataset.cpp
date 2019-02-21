@@ -64,11 +64,13 @@ void Dataset::getNumericRange(int column, double& min, double& max) const
             continue;
         }
 
-        if(value < min)
+        if(value < min) {
             min = value;
+}
 
-        if(value > max)
+        if(value > max) {
             max = value;
+}
     }
 }
 
@@ -100,11 +102,13 @@ void Dataset::getDateRange(int column,
             continue;
         }
 
-        if( date < min )
+        if( date < min ) {
             min = date;
+}
 
-        if( date > max )
+        if( date > max ) {
             max = date;
+}
     }
 }
 
@@ -116,8 +120,9 @@ void Dataset::getStringList(int column, QStringList& listToFill) const
 
     //Optimization used -> use string indexes first, compare, remove duplicates.
     //At end convert to proper strings.
-    for(int i = 0; i < rowCount(); ++i)
+    for(int i = 0; i < rowCount(); ++i) {
         listToFill.append(data_[i][column].toString());
+}
 
     listToFill.removeDuplicates();
 

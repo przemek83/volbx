@@ -33,8 +33,9 @@ DatasetsListBrowser::~DatasetsListBrowser()
 QString DatasetsListBrowser::getSelectedDataset() const
 {
     QListWidgetItem* item = ui->datasetsList->currentItem();
-    if(item)
+    if(item) {
         return item->text();
+}
     return QString();
 }
 
@@ -105,8 +106,9 @@ void DatasetsListBrowser::on_datasetsList_itemSelectionChanged()
 {
     QString newCurrent("");
     QList<QListWidgetItem*> selectedItems = ui->datasetsList->selectedItems();
-    if( false == selectedItems.isEmpty() )
+    if( false == selectedItems.isEmpty() ) {
         newCurrent = selectedItems.at(0)->text();
+}
 
     emit currentDatasetChanged(newCurrent);
 }

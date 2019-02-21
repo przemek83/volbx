@@ -42,8 +42,9 @@ Logger::Logger() :
 
     //Default config, set all active.
     activeLogs_ = new QMap<LogTypes, bool>();
-    for(int i = 0; i < (int)LOG_END; ++i)
+    for(int i = 0; i < (int)LOG_END; ++i) {
         (*activeLogs_)[(LogTypes)i] = true;
+}
 
     reloadCheckBoxes();
 
@@ -53,8 +54,9 @@ Logger::Logger() :
 
 Logger::~Logger()
 {
-    if( nullptr != display_ )
+    if( nullptr != display_ ) {
         delete display_;
+}
 
     delete activeLogs_;
 }
@@ -73,8 +75,9 @@ void Logger::log(LogTypes type,
 {
     Q_ASSERT(nullptr != display_ && nullptr != textEdit_);
 
-    if( nullptr == display_ || nullptr == textEdit_)
+    if( nullptr == display_ || nullptr == textEdit_) {
         return;
+}
 
     //TODO Use __file__ and __line__
     if(!(*activeLogs_)[type])
@@ -112,8 +115,9 @@ void Logger::reloadCheckBoxes()
 
     Q_ASSERT(verticalLayout != nullptr);
 
-    if( verticalLayout == nullptr )
+    if( verticalLayout == nullptr ) {
         return;
+}
 
     //Delete all.
     QList<QCheckBox*> checkBoxy = verticalLayout->findChildren<QCheckBox*>();
@@ -154,9 +158,9 @@ LogTypes Logger::CheckBox::logType()
 
 void Logger::changeActiveLogs(bool state)
 {
-    CheckBox* checkBox = dynamic_cast<CheckBox*>(sender());
+    auto checkBox = dynamic_cast<CheckBox*>(sender());
     (*activeLogs_)[checkBox->logType()] = state;
-    QString msg(QLatin1String(LogTypeNames_[checkBox->logType()]));
+    QString msg(LogTypeNames_[checkBox->logType()]);
     msg.append(QLatin1String(" is ") + (state ? QLatin1String("active") : QLatin1String("disabled")));
     LOG(LOG_APP, msg);
 }

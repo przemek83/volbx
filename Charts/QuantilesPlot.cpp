@@ -35,11 +35,13 @@ QuantilesPlot::QuantilesPlot(QWidget* parent) :
 
 QuantilesPlot::~QuantilesPlot()
 {
-    if( nullptr != picker_ )
+    if( nullptr != picker_ ) {
         delete picker_;
+}
 
-    if( nullptr != marker_ )
+    if( nullptr != marker_ ) {
         delete marker_;
+}
 }
 
 void QuantilesPlot::forceResize()
@@ -87,8 +89,9 @@ QuantilesPlot::IntervalsScaleDraw::IntervalsScaleDraw(int count) :
 
 QwtText QuantilesPlot::IntervalsScaleDraw::label(double v) const
 {
-    if( 1 == v && 0 != count_ )
+    if( 1 == v && 0 != count_ ) {
         return QwtText(QString::number(count_));
-    else
+    } else {
         return QwtText();
+}
 }

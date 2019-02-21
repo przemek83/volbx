@@ -19,8 +19,9 @@ FilterDates::FilterDates(QString name,
 {
     ui->setupUi(this);
 
-    if(minOnInit_ == maxOnInit_)
+    if(minOnInit_ == maxOnInit_) {
         setDisabled(true);
+}
 
     //Lower.
     calendarLeft_.setFirstDayOfWeek(Qt::Monday);
@@ -77,8 +78,9 @@ void FilterDates::lowerDateChanged(QDate newDate)
 void FilterDates::higherDateChanged(QDate newDate)
 {
     //signal block?
-    if(newDate < ui->lowerDateEdit->date())
+    if(newDate < ui->lowerDateEdit->date()) {
         ui->lowerDateEdit->setDate(newDate);
+}
 
     QApplication::processEvents();
 

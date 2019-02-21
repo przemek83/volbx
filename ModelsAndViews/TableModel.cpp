@@ -34,20 +34,22 @@ int TableModel::columnCount(const QModelIndex& /*parent*/) const
 
 QVariant TableModel::data(const QModelIndex& index, int role) const
 {
-    if(Qt::DisplayRole == role)
+    if(Qt::DisplayRole == role) {
         return *dataset_->getData(index.row(), index.column());
-    else
+    } else {
         return QVariant();
+}
 }
 
 QVariant TableModel::headerData(int section,
                                 Qt::Orientation orientation,
                                 int role) const
 {
-    if(Qt::DisplayRole == role && Qt::Horizontal == orientation)
+    if(Qt::DisplayRole == role && Qt::Horizontal == orientation) {
         return dataset_->getHeaderName(section);
-    else
+    } else {
         return QVariant();
+}
 }
 
 void TableModel::getNumericRange(int column, double& min, double& max) const
@@ -113,8 +115,9 @@ int TableModel::getDefaultGroupingColumn() const
     int defaultGroupingColumn = noColumn_;
     for(int i = 0; i < columnCount(); ++i)
     {
-        if( i == pricePerMeterColumn || DATA_FORMAT_STRING != getColumnFormat(i) )
+        if( i == pricePerMeterColumn || DATA_FORMAT_STRING != getColumnFormat(i) ) {
             continue;
+}
 
         defaultGroupingColumn = i;
         break;

@@ -39,8 +39,9 @@ BasicDataPlot::BasicDataPlot(QWidget *parent) :
 
 BasicDataPlot::~BasicDataPlot()
 {
-    if(nullptr != picker_)
+    if(nullptr != picker_) {
         delete picker_;
+}
 }
 
 void BasicDataPlot::initPlotCurve()
@@ -163,8 +164,7 @@ void BasicDataPlot::setNewData(PlotData plotData,
 }
 
 
-BasicDataPlot::TimeScaleDraw::TimeScaleDraw() :
-    QwtScaleDraw()
+BasicDataPlot::TimeScaleDraw::TimeScaleDraw()
 {
     setLabelRotation(-50.0);
     setLabelAlignment(Qt::AlignLeft | Qt::AlignBottom);
@@ -205,11 +205,11 @@ void BasicDataPlot::legendItemChecked(QVariant itemInfo, bool on, int /*index*/)
 void BasicDataPlot::setLegendItemChecked(QwtPlotCurve* plot)
 {
     QWidget* legendWidget =
-        static_cast<QwtLegend*>(legend())->legendWidget(itemToInfo(plot));
+        dynamic_cast<QwtLegend*>(legend())->legendWidget(itemToInfo(plot));
 
     if ( legendWidget != nullptr )
     {
-        auto legendLabel = static_cast<QwtLegendLabel*>(legendWidget);
+        auto legendLabel = dynamic_cast<QwtLegendLabel*>(legendWidget);
         if(nullptr != legendLabel)
         {
             legendLabel->setChecked(true);

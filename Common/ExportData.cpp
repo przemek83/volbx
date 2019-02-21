@@ -232,8 +232,9 @@ void ExportData::dataToByteArray(const QAbstractItemView* view,
         for(int j = 0; j < proxyColumnCount; ++j)
         {
             destinationArray->append(proxyModel->headerData(j, Qt::Horizontal).toString());
-            if(j != proxyColumnCount-1)
+            if(j != proxyColumnCount-1) {
                 destinationArray->append(separator);
+}
         }
         destinationArray->append("\n");
     }
@@ -267,8 +268,9 @@ void ExportData::dataToByteArray(const QAbstractItemView* view,
                                 innerFormat);
             }
 
-            if(j != proxyColumnCount-1)
+            if(j != proxyColumnCount-1) {
                 destinationArray->append(separator);
+}
 
         }
         destinationArray->append("\n");
@@ -342,11 +344,13 @@ bool ExportData::exportAsCsv(const QAbstractItemView* view,
     dataToByteArray(view, &content, csvSeparator_, innerFormat);
 
     QFile file(fileName);
-    if(file.exists())
+    if(file.exists()) {
         file.remove();
+}
 
-    if (!file.open(QIODevice::WriteOnly))
+    if (!file.open(QIODevice::WriteOnly)) {
         return false;
+}
 
     bool ret = false;
     if(false == innerFormat)
@@ -457,8 +461,9 @@ bool ExportData::saveDatasetDataFile(QuaZipFile& zipFile,
     for( int i = 0; i < proxyRowCount; ++i )
     {
         if( true == multiSelection &&
-            false == selectionModel->isSelected(proxyModel->index(i, 0)) )
+            false == selectionModel->isSelected(proxyModel->index(i, 0)) ) {
             continue;
+}
 
         for( int j = 0; j < proxyColumnCount; ++j )
         {
@@ -511,8 +516,9 @@ bool ExportData::saveDatasetDataFile(QuaZipFile& zipFile,
                 }
             }
 
-            if( j != proxyColumnCount - 1 )
+            if( j != proxyColumnCount - 1 ) {
                 zipFile.write(csvSeparator_);
+}
         }
 
         zipFile.write(newLine);

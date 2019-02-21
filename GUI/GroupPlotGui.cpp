@@ -57,8 +57,9 @@ GroupPlotGui::GroupPlotGui(const TableModel* model, QWidget* parent) :
     {
         columnsNumberToFormatMap_[i] = model->getColumnFormat(i);
 
-        if( DATA_FORMAT_STRING != model->getColumnFormat(i) )
+        if( DATA_FORMAT_STRING != model->getColumnFormat(i) ) {
             continue;
+}
 
         QString columnName = model->headerData(i, Qt::Horizontal).toString();
         ui->comboBox->addItem(columnName, QVariant(i));

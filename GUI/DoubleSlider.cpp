@@ -94,8 +94,9 @@ void DoubleSlider::setCurrentMax(double currentMaxToSet)
         }
     }
 
-    if (newCurrentMax  < currentMin_)
+    if (newCurrentMax  < currentMin_) {
         setCurrentMin(currentMaxToSet);
+}
 
     this->update();
 }
@@ -199,8 +200,9 @@ void DoubleSlider::mouseMoveEvent(QMouseEvent *event)
                 maxX = 100;
             }
             setCurrentMax(maxX / 100 * (maxValue_ - minValue_) + minValue_);
-            if (currentMin_ > currentMax_)
+            if (currentMin_ > currentMax_) {
                 setCurrentMin(maxX);
+}
 
             moving_ = 2;
         }

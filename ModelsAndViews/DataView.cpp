@@ -141,8 +141,9 @@ QVector<TransactionData>* DataView::fillDataFromSelection(int groupByColumn)
             QApplication::processEvents();
         }
 
-        if(false == selectionModelOfView->isSelected(proxyModel->index(i, 0)))
+        if(false == selectionModelOfView->isSelected(proxyModel->index(i, 0))) {
             continue;
+}
 
         TransactionData temp;
         const QVariant& data = proxyModel->index(i, transactionDateColumn).data();
@@ -158,8 +159,9 @@ QVector<TransactionData>* DataView::fillDataFromSelection(int groupByColumn)
             //with data when it will be done.
 
             //Temp, remove when all types of column managed in grouping.
-            if( -1 != groupByColumn )
+            if( -1 != groupByColumn ) {
                 temp.groupedBy_ = proxyModel->index(i, groupByColumn).data();
+}
 
             calcDataContainer->append(temp);
         }
