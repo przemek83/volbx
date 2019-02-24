@@ -51,9 +51,9 @@ private:
     public:
         TimeScaleDraw();
 
-        virtual ~TimeScaleDraw() = default;
+        ~TimeScaleDraw() override = default;
 
-        virtual QwtText label(double v) const;
+        QwtText label(double v) const override;
     };
 
     class LinearPicker : public Picker
