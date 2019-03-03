@@ -9,6 +9,12 @@
 class Configuration
 {
 public:
+    Configuration& operator=(const Configuration& other) = delete;
+    Configuration(const Configuration& other) = delete;
+
+    Configuration& operator=(Configuration&& other) = delete;
+    Configuration(Configuration&& other) = delete;
+
     /**
      * Used to access Config singleton.
      * @return singleton instance.
@@ -47,7 +53,6 @@ public:
 private:
     Configuration();
     virtual ~Configuration() = default;
-    Q_DISABLE_COPY(Configuration)
 
     ///Flag indicating that config existed and was valid.
     bool configValid_ {false};

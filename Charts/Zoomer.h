@@ -10,19 +10,22 @@
 class Zoomer: public QwtPlotZoomer
 {
 public:
-    explicit Zoomer(QwtPlotCanvas *canvas);
+    explicit Zoomer(QwtPlotCanvas* canvas);
 
     ~Zoomer() override = default;
 
-    QwtText trackerTextF(const QPointF &pos) const override;
+    Zoomer& operator=(const Zoomer& other) = delete;
+    Zoomer(const Zoomer& other) = delete;
+
+    Zoomer& operator=(Zoomer&& other) = delete;
+    Zoomer(Zoomer&& other) = delete;
+
+    QwtText trackerTextF(const QPointF& pos) const override;
 
     void restart();
 
 protected:
     virtual void widgetWheelEvent(QWheelEvent* event);
-
-private:
-    Q_DISABLE_COPY(Zoomer)
 };
 
 

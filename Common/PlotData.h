@@ -15,15 +15,17 @@ public:
 
     virtual ~PlotData();
 
+    PlotData(const PlotData& right);
+    PlotData& operator=(const PlotData& right);
+
+    PlotData& operator=(PlotData&& other) = delete;
+    PlotData(PlotData&& other) = delete;
+
     const double* getDataX() const;
 
     const double* getDataY() const;
 
     int getDataSize() const;
-
-    PlotData(const PlotData& right);
-
-    PlotData& operator=(const PlotData& right);
 
 private:
     double* dataX_;

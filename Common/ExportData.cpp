@@ -26,16 +26,6 @@ const char* ExportData::csvSeparator_ = ";";
 
 const char* ExportData::tsvSeparator_ = "\t";
 
-ExportData::ExportData()
-{
-    Q_ASSERT(false);
-}
-
-ExportData::~ExportData()
-{
-    Q_ASSERT(false);
-}
-
 void ExportData::gatherSheetContent(QByteArray& rowsContent,
                                     const QAbstractItemView* view)
 {

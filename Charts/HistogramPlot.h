@@ -27,13 +27,17 @@ public:
 
     ~HistogramPlot() override;
 
+    HistogramPlot& operator=(const HistogramPlot& other) = delete;
+    HistogramPlot(const HistogramPlot& other) = delete;
+
+    HistogramPlot& operator=(HistogramPlot&& other) = delete;
+    HistogramPlot(HistogramPlot&& other) = delete;
+
     void setNewData(PlotData plotData,
                     Quantiles quantiles,
                     int intervalsCount);
 
 private:
-    Q_DISABLE_COPY(HistogramPlot)
-
     void initHistogramPlot();
 
     void initActualDensity();
@@ -52,6 +56,12 @@ private:
         explicit HistPicker(QWidget* parent);
 
         ~HistPicker() override = default;
+
+        HistPicker& operator=(const HistPicker& other) = delete;
+        HistPicker(const HistPicker& other) = delete;
+
+        HistPicker& operator=(HistPicker&& other) = delete;
+        HistPicker(HistPicker&& other) = delete;
 
     protected:
         QwtText trackerTextF(const QPointF& pos) const override;

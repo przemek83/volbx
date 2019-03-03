@@ -15,6 +15,12 @@ public:
 
     ~CustomMarker() override = default;
 
+    CustomMarker& operator=(const CustomMarker& other) = delete;
+    CustomMarker(const CustomMarker& other) = delete;
+
+    CustomMarker& operator=(CustomMarker&& other) = delete;
+    CustomMarker(CustomMarker&& other) = delete;
+
     int rtti() const override;
 
     void draw(QPainter* p, const QwtScaleMap& xMap, const QwtScaleMap& yMap,
@@ -32,9 +38,6 @@ protected:
                              Quantiles& quantiles) const = 0;
 
     QVector<Quantiles>* quantiles_;
-
-protected:
-    Q_DISABLE_COPY(CustomMarker)
 };
 
 #endif // CUSTOMMARKER_H

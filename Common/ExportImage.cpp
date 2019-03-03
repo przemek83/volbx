@@ -8,16 +8,6 @@
 
 #include "ExportImage.h"
 
-ExportImage::ExportImage()
-{
-    Q_ASSERT(false);
-}
-
-ExportImage::~ExportImage()
-{
-    Q_ASSERT(false);
-}
-
 void ExportImage::exportAsImage(PlotBase* plot, QString fileName)
 {
 
@@ -38,7 +28,7 @@ void ExportImage::quickExportAsImage(QList<PlotBase*> list)
     rend.setDiscardFlags(QwtPlotRenderer::DiscardBackground |
                          QwtPlotRenderer::DiscardCanvasBackground);
 
-    switch( list.size() )
+    switch (list.size())
     {
         case 1:
         {
@@ -106,7 +96,7 @@ void ExportImage::exportFourPlotsImage(QList<PlotBase*> list,
 {
     int width = list.front()->size().width();
     int height = list.front()->size().height();
-    QSize size(width*2, height*2);
+    QSize size(width * 2, height * 2);
     QImage img(size, QImage::Format_ARGB32);
     img.fill(QColor(Qt::white).rgb());
     QPainter painter(&img);

@@ -24,6 +24,12 @@ public:
 
     ~PlotBase() override;
 
+    PlotBase& operator=(const PlotBase& other) = delete;
+    PlotBase(const PlotBase& other) = delete;
+
+    PlotBase& operator=(PlotBase&& other) = delete;
+    PlotBase(PlotBase&& other) = delete;
+
     void resetPlot();
 
     void setAxisScale(int axisId, double min, double max, double step = 0);
@@ -39,6 +45,12 @@ protected:
         PlotMagnifier(QWidget* canvas);
 
         ~PlotMagnifier() override = default;
+
+        PlotMagnifier& operator=(const PlotMagnifier& other) = delete;
+        PlotMagnifier(const PlotMagnifier& other) = delete;
+
+        PlotMagnifier& operator=(PlotMagnifier&& other) = delete;
+        PlotMagnifier(PlotMagnifier&& other) = delete;
 
         void reset();
 
@@ -62,14 +74,18 @@ protected:
     void setPlotTitle(QString title);
 
 private:
-    Q_DISABLE_COPY(PlotBase)
-
     class IntervalsScaleDraw: public QwtScaleDraw
     {
     public:
         IntervalsScaleDraw() = default;
 
         ~IntervalsScaleDraw() override = default;
+
+        IntervalsScaleDraw& operator=(const IntervalsScaleDraw& other) = delete;
+        IntervalsScaleDraw(const IntervalsScaleDraw& other) = delete;
+
+        IntervalsScaleDraw& operator=(IntervalsScaleDraw&& other) = delete;
+        IntervalsScaleDraw(IntervalsScaleDraw&& other) = delete;
 
         QwtText label(double v) const override;
     };

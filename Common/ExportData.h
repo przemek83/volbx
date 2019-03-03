@@ -21,6 +21,15 @@ class QItemSelectionModel;
 class ExportData
 {
 public:
+    ExportData() = delete;
+    ~ExportData() = delete;
+
+    ExportData& operator=(const ExportData& other) = delete;
+    ExportData(const ExportData& other) = delete;
+
+    ExportData& operator=(ExportData&& other) = delete;
+    ExportData(ExportData&& other) = delete;
+
     static bool exportAsXLSX(const QAbstractItemView* view, QString fileName);
 
     static void quickExportAsTSV(const QAbstractItemView* view);
@@ -32,10 +41,6 @@ public:
     static bool saveDataset(QString name, const QAbstractItemView* view);
 
 private:
-    ExportData();
-    virtual ~ExportData();
-    Q_DISABLE_COPY(ExportData)
-
     static void dataToByteArray(const QAbstractItemView* view,
                                 QByteArray* destinationArray,
                                 QString separator,
@@ -54,7 +59,7 @@ private:
                                     const QAbstractItemView* view,
                                     int& rowCount,
                                     FilteringProxyModel* proxyModel,
-                                    QByteArray &stringsContent,
+                                    QByteArray& stringsContent,
                                     ProgressBar* bar);
 
     static bool saveDatasetStringsFile(QuaZipFile& zipFile,

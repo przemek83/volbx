@@ -15,6 +15,12 @@ public:
 
     ~NotchedMarker() override = default;
 
+    NotchedMarker& operator=(const NotchedMarker& other) = delete;
+    NotchedMarker(const NotchedMarker& other) = delete;
+
+    NotchedMarker& operator=(NotchedMarker&& other) = delete;
+    NotchedMarker(NotchedMarker&& other) = delete;
+
 protected:
     void drawLegend(QPainter* p, const QRectF& rect) const override;
 
@@ -23,8 +29,6 @@ protected:
                      float width, Quantiles& quantiles) const override;
 
 private:
-    Q_DISABLE_COPY(NotchedMarker)
-
     QBrush markerBrush_;
 };
 

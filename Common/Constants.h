@@ -10,6 +10,15 @@
 struct Constants
 {
 public:
+    Constants() = delete;
+    ~Constants() = delete;
+
+    Constants& operator=(const Constants& other) = delete;
+    Constants(const Constants& other) = delete;
+
+    Constants& operator=(Constants&& other) = delete;
+    Constants(Constants&& other) = delete;
+
     ///Name of updater binary.
     static const char* updaterName_;
 
@@ -63,10 +72,6 @@ public:
 
     static void generateExcelColumnNames(QStringList& excelColNames,
                                          int columnsNumber);
-private:
-    Constants();
-    virtual ~Constants();
-    Q_DISABLE_COPY(Constants)
 };
 
 #endif // CONSTANTS_H

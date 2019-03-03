@@ -26,14 +26,18 @@ public:
 
     ~BasicDataPlot() override;
 
+    BasicDataPlot& operator=(const BasicDataPlot& other) = delete;
+    BasicDataPlot(const BasicDataPlot& other) = delete;
+
+    BasicDataPlot& operator=(BasicDataPlot&& other) = delete;
+    BasicDataPlot(BasicDataPlot&& other) = delete;
+
 public slots:
     virtual void setNewData(PlotData plotData,
                             Quantiles quantiles,
                             QVector<QPointF> linearRegression);
 
 private:
-    Q_DISABLE_COPY(BasicDataPlot)
-
     void initPlotCurve();
     void initQ25();
     void initQ50();
@@ -53,6 +57,12 @@ private:
 
         ~TimeScaleDraw() override = default;
 
+        TimeScaleDraw& operator=(const TimeScaleDraw& other) = delete;
+        TimeScaleDraw(const TimeScaleDraw& other) = delete;
+
+        TimeScaleDraw& operator=(TimeScaleDraw&& other) = delete;
+        TimeScaleDraw(TimeScaleDraw&& other) = delete;
+
         QwtText label(double v) const override;
     };
 
@@ -62,6 +72,12 @@ private:
         explicit LinearPicker(QWidget* parent);
 
         ~LinearPicker() override = default;
+
+        LinearPicker& operator=(const LinearPicker& other) = delete;
+        LinearPicker(const LinearPicker& other) = delete;
+
+        LinearPicker& operator=(LinearPicker&& other) = delete;
+        LinearPicker(LinearPicker&& other) = delete;
 
     protected:
         QwtText trackerTextF(const QPointF& pos) const override;

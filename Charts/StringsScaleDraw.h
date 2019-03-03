@@ -13,11 +13,15 @@ public:
 
     ~StringsScaleDraw() override = default;
 
+    StringsScaleDraw& operator=(const StringsScaleDraw& other) = delete;
+    StringsScaleDraw(const StringsScaleDraw& other) = delete;
+
+    StringsScaleDraw& operator=(StringsScaleDraw&& other) = delete;
+    StringsScaleDraw(StringsScaleDraw&& other) = delete;
+
     QwtText label(double v) const override;
 
 private:
-    Q_DISABLE_COPY(StringsScaleDraw)
-
     QVector<QString>* intervals_;
 };
 

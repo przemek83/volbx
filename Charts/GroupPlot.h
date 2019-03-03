@@ -24,6 +24,12 @@ public:
 
     ~GroupPlot() override;
 
+    GroupPlot& operator=(const GroupPlot& other) = delete;
+    GroupPlot(const GroupPlot& other) = delete;
+
+    GroupPlot& operator=(GroupPlot&& other) = delete;
+    GroupPlot(GroupPlot&& other) = delete;
+
     void setNewData(QVector<Quantiles>& quantiles,
                     QVector<QString>& intervalStrings);
 
@@ -33,8 +39,6 @@ protected:
     bool event(QEvent* event) override;
 
 private:
-    Q_DISABLE_COPY(GroupPlot)
-
     void shortenIntervalsNamesIfNeeded(QVector<QString>& intervalsNames,
                                        const QVector<Quantiles>& quantilesForIntervals);
 
@@ -58,6 +62,12 @@ private:
         explicit GroupPicker(QWidget* parent);
 
         ~GroupPicker() override = default;
+
+        GroupPicker& operator=(const GroupPicker& other) = delete;
+        GroupPicker(const GroupPicker& other) = delete;
+
+        GroupPicker& operator=(GroupPicker&& other) = delete;
+        GroupPicker(GroupPicker&& other) = delete;
 
     protected:
         QwtText trackerTextF(const QPointF& pos) const override;

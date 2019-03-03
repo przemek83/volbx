@@ -12,15 +12,20 @@ class QwtPlotRenderer;
 class ExportImage
 {
 public:
+    ExportImage() = delete;
+    ~ExportImage() = delete;
+
+    ExportImage& operator=(const ExportImage& other) = delete;
+    ExportImage(const ExportImage& other) = delete;
+
+    ExportImage& operator=(ExportImage&& other) = delete;
+    ExportImage(ExportImage&& other) = delete;
+
     static void exportAsImage(PlotBase* plot, QString fileName);
 
     static void quickExportAsImage(QList<PlotBase*> list);
 
 private:
-    ExportImage();
-    virtual ~ExportImage();
-    Q_DISABLE_COPY(ExportImage)
-
     static void exportSingleImage(QwtPlotRenderer& rend, QList<PlotBase*> list);
 
     static void exportTwinImage(QList<PlotBase*> list, QwtPlotRenderer& rend);
