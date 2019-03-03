@@ -29,7 +29,7 @@ public:
 
     virtual inline QVariant* getData(int row, int column)
     {
-        if( DATA_FORMAT_STRING == datasetDefinition_->getColumnFormat(column) )
+        if (DATA_FORMAT_STRING == datasetDefinition_->getColumnFormat(column))
         {
             return &sharedStrings_[data_[row][column].toInt()];
         }
@@ -63,16 +63,16 @@ public:
 
 protected:
     ///Definition done to create dataset. Memory owned by dataset object.
-    DatasetDefinition* datasetDefinition_;
+    DatasetDefinition* datasetDefinition_ {nullptr};
 
     ///Data of dataset. String columns got indexes of strings in sharedStrings_.
     QVector<QVector<QVariant> > data_;
 
     ///Dataset is valid.
-    bool valid_;
+    bool valid_ {false};
 
     ///Array with shared strings, Done for memory optimization.
-    QVariant* sharedStrings_;
+    QVariant* sharedStrings_ {nullptr};
 
 private:
     Q_DISABLE_COPY(Dataset)

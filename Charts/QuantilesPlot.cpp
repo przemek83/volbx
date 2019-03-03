@@ -62,13 +62,13 @@ QSize QuantilesPlot::minimumSizeHint() const
     return QSize(50, 100);
 }
 
-QuantilesPlot::BoxPicker::BoxPicker(QWidget *parent)
+QuantilesPlot::BoxPicker::BoxPicker(QWidget* parent)
     : Picker(parent)
 {
 
 }
 
-QwtText QuantilesPlot::BoxPicker::trackerTextF(const QPointF &pos)const
+QwtText QuantilesPlot::BoxPicker::trackerTextF(const QPointF& pos)const
 {
     QwtText coords(QString::number(pos.y(), 'f', 2));
     QColor bg(Qt::white);
@@ -77,14 +77,15 @@ QwtText QuantilesPlot::BoxPicker::trackerTextF(const QPointF &pos)const
 }
 
 QuantilesPlot::IntervalsScaleDraw::IntervalsScaleDraw(int count) :
-    QwtScaleDraw(), count_(count)
+    count_(count)
 {
 
 }
 
 QwtText QuantilesPlot::IntervalsScaleDraw::label(double v) const
 {
-    if( 1 == v && 0 != count_ ) {
+    if (1 == v && 0 != count_)
+    {
         return QwtText(QString::number(count_));
     }
 

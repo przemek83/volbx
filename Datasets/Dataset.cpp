@@ -15,10 +15,7 @@
 #include "Dataset.h"
 
 Dataset::Dataset(DatasetDefinition* definition) :
-    datasetDefinition_(definition),
-    data_(QVector<QVector<QVariant> >()),
-    valid_(false),
-    sharedStrings_(nullptr)
+    datasetDefinition_(definition)
 {
 
 }
@@ -49,10 +46,10 @@ void Dataset::getNumericRange(int column, double& min, double& max) const
     Q_ASSERT(DATA_FORMAT_FLOAT == getColumnFormat(column));
 
     bool first = true;
-    for(int i = 0; i < rowCount(); ++i)
+    for (int i = 0; i < rowCount(); ++i)
     {
         double value = data_[i][column].toDouble();
-        if(first)
+        if (first)
         {
             min = value;
             max = value;
@@ -60,13 +57,15 @@ void Dataset::getNumericRange(int column, double& min, double& max) const
             continue;
         }
 
-        if(value < min) {
+        if (value < min)
+        {
             min = value;
-}
+        }
 
-        if(value > max) {
+        if (value > max)
+        {
             max = value;
-}
+        }
     }
 }
 
@@ -78,11 +77,11 @@ void Dataset::getDateRange(int column,
     Q_ASSERT(DATA_FORMAT_DATE == getColumnFormat(column));
 
     bool first = true;
-    for( int i = 0; i < rowCount(); ++i )
+    for (int i = 0; i < rowCount(); ++i)
     {
         const QVariant& dateVariant = data_[i][column];
 
-        if( true == dateVariant.isNull() )
+        if (true == dateVariant.isNull())
         {
             emptyDates = true;
             continue;
@@ -90,7 +89,7 @@ void Dataset::getDateRange(int column,
 
         QDate date = dateVariant.toDate();
 
-        if( first )
+        if (first)
         {
             min = date;
             max = date;
@@ -98,13 +97,15 @@ void Dataset::getDateRange(int column,
             continue;
         }
 
-        if( date < min ) {
+        if (date < min)
+        {
             min = date;
-}
+        }
 
-        if( date > max ) {
+        if (date > max)
+        {
             max = date;
-}
+        }
     }
 }
 
@@ -116,16 +117,17 @@ void Dataset::getStringList(int column, QStringList& listToFill) const
 
     //Optimization used -> use string indexes first, compare, remove duplicates.
     //At end convert to proper strings.
-    for(int i = 0; i < rowCount(); ++i) {
+    for (int i = 0; i < rowCount(); ++i)
+    {
         listToFill.append(data_[i][column].toString());
-}
+    }
 
     listToFill.removeDuplicates();
 
-    if( nullptr != sharedStrings_ )
+    if (nullptr != sharedStrings_)
     {
         int listSize = listToFill.count();
-        for( int i = 0; i < listSize; ++i )
+        for (int i = 0; i < listSize; ++i)
         {
             listToFill[i] = sharedStrings_[listToFill[i].toInt()].toString();
         }
@@ -164,7 +166,7 @@ QString Dataset::getNameForTabBar()
     int column = 0;
     bool exist = getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT, column);
 
-    if ( true == exist )
+    if (true == exist)
     {
         tabName.append(" (" + getHeaderName(column) + ")");
     }

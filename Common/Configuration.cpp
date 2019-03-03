@@ -19,9 +19,7 @@ const char* Configuration::xmlNames_[] =
     "IMPORTPATH"
 };
 
-Configuration::Configuration() :
-    configValid_(false),
-    updateOption_(UPDATES_CHOICE_NOT_PICKED)
+Configuration::Configuration()
 {
     load();
 }
@@ -34,12 +32,12 @@ Configuration& Configuration::getInstance()
 
 bool Configuration::needToShowUpdatePickerDialog() const
 {
-    return ( true == configValid_ && UPDATES_CHOICE_NOT_PICKED == updateOption_ );
+    return (true == configValid_ && UPDATES_CHOICE_NOT_PICKED == updateOption_);
 }
 
 bool Configuration::needToCheckForUpdates() const
 {
-    return ( UPDATES_ALWAYS_CHECK == updateOption_ );
+    return (UPDATES_ALWAYS_CHECK == updateOption_);
 }
 
 bool Configuration::load()
@@ -47,7 +45,7 @@ bool Configuration::load()
     configValid_ = false;
 
     //Default style.
-    if( style_.isEmpty() )
+    if (style_.isEmpty())
     {
         style_ = "Fusion";
     }
@@ -58,7 +56,7 @@ bool Configuration::load()
 
     QFile file(filename);
 
-    if(!file.open(QIODevice::ReadOnly))
+    if (!file.open(QIODevice::ReadOnly))
     {
         LOG(LOG_CONFIG,
             "Config file " + filename + " can not be opened. Default config used.");
@@ -73,10 +71,10 @@ bool Configuration::load()
     QDomDocument configXML(__FUNCTION__);
 
     //If could not parse config.
-    if(!configXML.setContent(initial))
+    if (!configXML.setContent(initial))
     {
         LOG(LOG_CONFIG, "Config file " + filename +
-                        " is damaged and will be deleted. Default config used.");
+            " is damaged and will be deleted. Default config used.");
 
         file.close();
 
@@ -89,7 +87,7 @@ bool Configuration::load()
 
     QDomNodeList list = configXML.elementsByTagName(xmlNames_[XML_NAME_UPDATE]);
     QDomElement updateElement = list.at(0).toElement();
-    if( false == updateElement.isNull() )
+    if (false == updateElement.isNull())
     {
         updateOption_ =
             static_cast<UpdateOption>(updateElement.attribute(xmlNames_[XML_NAME_VALUE]).toInt());
@@ -97,14 +95,14 @@ bool Configuration::load()
 
     list = configXML.elementsByTagName(xmlNames_[XML_NAME_STYLE]);
     QDomElement styleElement = list.at(0).toElement();
-    if( false == styleElement.isNull() )
+    if (false == styleElement.isNull())
     {
         style_ = styleElement.attribute(xmlNames_[XML_NAME_VALUE]);
     }
 
     list = configXML.elementsByTagName(xmlNames_[XML_NAME_IMPORTPATH]);
     QDomElement importPathElement = list.at(0).toElement();
-    if( false == importPathElement.isNull() )
+    if (false == importPathElement.isNull())
     {
         importFilePath_ = importPathElement.attribute(xmlNames_[XML_NAME_VALUE]);
     }
@@ -144,14 +142,14 @@ bool Configuration::save()
     QFile::remove(filename);
     QFile file(filename);
 
-    if(!file.open(QIODevice::WriteOnly))
+    if (!file.open(QIODevice::WriteOnly))
     {
         LOG(LOG_CONFIG, "Config file " + QString(Constants::configurationFile_) +
-                        " can not be opened for writing. Config not saved.");
+            " can not be opened for writing. Config not saved.");
         return false;
     }
 
-    if(-1 != file.write(xml.toStdString().c_str()))
+    if (-1 != file.write(xml.toStdString().c_str()))
     {
         LOG(LOG_CONFIG, "Config saved.");
         file.close();
@@ -176,7 +174,7 @@ QString Configuration::configDump() const
 
     dump.append("Import file path = " + importFilePath_ + "\n");
 
-    if( updateOption_ != UPDATES_CHOICE_NOT_PICKED )
+    if (updateOption_ != UPDATES_CHOICE_NOT_PICKED)
     {
         dump.append("AutoUpdate active = ");
         dump.append((updateOption_ == UPDATES_ALWAYS_CHECK ? "Yes" : "No"));
@@ -190,7 +188,7 @@ QString Configuration::configDump() const
 
 void Configuration::setUpdatesCheckingOption(bool alwaysCheck)
 {
-    if( true == alwaysCheck )
+    if (true == alwaysCheck)
     {
         updateOption_ = UPDATES_ALWAYS_CHECK;
     }
@@ -217,7 +215,7 @@ bool Configuration::configWasValid() const
 
 QString Configuration::getImportFilePath() const
 {
-    if( false == importFilePath_.isEmpty() && QFile::exists(importFilePath_) )
+    if (false == importFilePath_.isEmpty() && QFile::exists(importFilePath_))
     {
         return importFilePath_;
     }

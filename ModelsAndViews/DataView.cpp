@@ -28,12 +28,12 @@
 #include "GUI/PlotDockWidget.h"
 #include "GUI/GroupPlotGui.h"
 
-DataView::DataView(QWidget *parent) :
+DataView::DataView(QWidget* parent) :
     QTableView(parent), plotDataProvider_(nullptr)
 {
     setSelectionMode(QAbstractItemView::SingleSelection);
     setSelectionBehavior(QAbstractItemView::SelectRows);
-    const int rowHeight = fontMetrics().height()*1.5;
+    const int rowHeight = fontMetrics().height() * 1.5;
     verticalHeader()->setDefaultSectionSize(rowHeight);
     setEditTriggers(QAbstractItemView::NoEditTriggers);
     verticalHeader()->setVisible(false);
@@ -59,9 +59,9 @@ void DataView::setModel(QAbstractItemModel* model)
         (dynamic_cast<FilteringProxyModel*>(model))->getParentModel();
     FilteringProxyModel* proxyModel = dynamic_cast<FilteringProxyModel*>(model);
 
-    for(int i = 0; i < proxyModel->columnCount() ; ++i)
+    for (int i = 0; i < proxyModel->columnCount() ; ++i)
     {
-        switch(parentModel->getColumnFormat(i))
+        switch (parentModel->getColumnFormat(i))
         {
             case DATA_FORMAT_FLOAT:
             {
@@ -102,22 +102,22 @@ void DataView::groupingColumnChanged(int column)
 
 QVector<TransactionData>* DataView::fillDataFromSelection(int groupByColumn)
 {
-    FilteringProxyModel* proxyModel = static_cast<FilteringProxyModel*>(model());
+    auto proxyModel = dynamic_cast<FilteringProxyModel*>(model());
     Q_ASSERT(nullptr != proxyModel);
 
     const TableModel* parentModel = proxyModel->getParentModel();
     Q_ASSERT(nullptr != parentModel);
 
     int pricePerMeterColumn;
-    if(false == parentModel->getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT,
-                                                      pricePerMeterColumn))
+    if (false == parentModel->getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT,
+                                                       pricePerMeterColumn))
     {
         return nullptr;
     }
 
     int transactionDateColumn;
-    if(false == parentModel->getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE,
-                                                      transactionDateColumn))
+    if (false == parentModel->getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE,
+                                                       transactionDateColumn))
     {
         return nullptr;
     }
@@ -131,22 +131,23 @@ QVector<TransactionData>* DataView::fillDataFromSelection(int groupByColumn)
 
     int proxyRowCount = proxyModel->rowCount();
 
-    for(int i = 0; i < proxyRowCount; ++i)
+    for (int i = 0; i < proxyRowCount; ++i)
     {
-        if ( 0 == i % 1000 )
+        if (0 == i % 1000)
         {
             QApplication::processEvents();
         }
 
-        if(false == selectionModelOfView->isSelected(proxyModel->index(i, 0))) {
+        if (false == selectionModelOfView->isSelected(proxyModel->index(i, 0)))
+        {
             continue;
-}
+        }
 
         TransactionData temp;
         const QVariant& data = proxyModel->index(i, transactionDateColumn).data();
 
         //Do not take into calculations and plots rows with empty date or price.
-        if ( false == data.isNull() )
+        if (false == data.isNull())
         {
             temp.pricePerMeter_ =
                 proxyModel->index(i, pricePerMeterColumn).data().toFloat();
@@ -156,23 +157,24 @@ QVector<TransactionData>* DataView::fillDataFromSelection(int groupByColumn)
             //with data when it will be done.
 
             //Temp, remove when all types of column managed in grouping.
-            if( -1 != groupByColumn ) {
+            if (-1 != groupByColumn)
+            {
                 temp.groupedBy_ = proxyModel->index(i, groupByColumn).data();
-}
+            }
 
             calcDataContainer->append(temp);
         }
     }
 
     LOG(LOG_CALC, "Data updated in time " +
-                  QString::number(performanceTimer.elapsed()*1.0/1000) + " seconds.");
+        QString::number(performanceTimer.elapsed() * 1.0 / 1000) + " seconds.");
 
     return calcDataContainer;
 }
 
 void DataView::reloadSelectionDataAndRecompute()
 {
-    if( nullptr == plotDataProvider_ )
+    if (nullptr == plotDataProvider_)
     {
         return;
     }
@@ -183,11 +185,11 @@ void DataView::reloadSelectionDataAndRecompute()
     //TODO optimize by impact + depact or additionall columns in model.
     int groupByColumn = plotDataProvider_->getGroupByColumn();
     QVector<TransactionData>* newCalcData =
-            fillDataFromSelection(groupByColumn);
+        fillDataFromSelection(groupByColumn);
 
     //Temp, until all column types managed.
     DataFormat columnFormat = DATA_FORMAT_UNKNOWN;
-    if( -1 != groupByColumn)
+    if (-1 != groupByColumn)
     {
         const TableModel* parentModel =
             (dynamic_cast<FilteringProxyModel*>(model()))->getParentModel();
@@ -204,14 +206,14 @@ void DataView::reloadSelectionDataAndRecompute()
                                  columnFormat);
 
     LOG(LOG_CALC, "Plots recomputed in " +
-                  QString::number(performanceTimer.elapsed()*1.0/1000) + " seconds.");
+        QString::number(performanceTimer.elapsed() * 1.0 / 1000) + " seconds.");
 
     QApplication::restoreOverrideCursor();
 }
 
 void DataView::showSortIndicatorIfNeeded(int section)
 {
-    if ( false == horizontalHeader()->isSortIndicatorShown() )
+    if (false == horizontalHeader()->isSortIndicatorShown())
     {
         horizontalHeader()->setSortIndicatorShown(true);
         model()->sort(section);
@@ -222,7 +224,7 @@ void DataView::mouseReleaseEvent(QMouseEvent* event)
 {
     QTableView::mouseReleaseEvent(event);
 
-    if ( Qt::LeftButton == event->button() )
+    if (Qt::LeftButton == event->button())
     {
         reloadSelectionDataAndRecompute();
     }
@@ -232,7 +234,7 @@ void DataView::keyPressEvent(QKeyEvent* event)
 {
     QTableView::keyPressEvent(event);
 
-    if( Qt::Key_A == event->key() && Qt::CTRL == event->modifiers() )
+    if (Qt::Key_A == event->key() && Qt::CTRL == event->modifiers())
     {
         reloadSelectionDataAndRecompute();
     }
@@ -240,7 +242,7 @@ void DataView::keyPressEvent(QKeyEvent* event)
 
 const PlotDataProvider* DataView::getPlotDataProvider()
 {
-    if( nullptr == plotDataProvider_)
+    if (nullptr == plotDataProvider_)
     {
         const TableModel* tableModel =
             (dynamic_cast<FilteringProxyModel*>(model()))->getParentModel();

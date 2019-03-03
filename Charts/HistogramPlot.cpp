@@ -10,7 +10,7 @@
 
 #include "HistogramPlot.h"
 
-HistogramPlot::HistogramPlot(QWidget *parent) :
+HistogramPlot::HistogramPlot(QWidget* parent) :
     PlotBase(QObject::tr("Histogram"), parent),
     plotData_(PlotData(nullptr, nullptr, 0))
 {
@@ -59,21 +59,21 @@ void HistogramPlot::initLegend()
 {
     auto legend = new QwtLegend();
     legend->setDefaultItemMode(QwtLegendData::Checkable);
-    legend->setFrameStyle(QFrame::Box|QFrame::Sunken);
+    legend->setFrameStyle(QFrame::Box | QFrame::Sunken);
     connect(legend,
-            SIGNAL(checked(QVariant,bool,int)),
+            SIGNAL(checked(QVariant, bool, int)),
             this,
-            SLOT(legendItemChecked(QVariant,bool,int)));
+            SLOT(legendItemChecked(QVariant, bool, int)));
     insertLegend(legend, QwtPlot::BottomLegend);
 }
 
-HistogramPlot::HistPicker::HistPicker(QWidget *parent)
+HistogramPlot::HistPicker::HistPicker(QWidget* parent)
     : Picker(parent)
 {
 
 }
 
-QwtText HistogramPlot::HistPicker::trackerTextF(const QPointF &pos)const
+QwtText HistogramPlot::HistPicker::trackerTextF(const QPointF& pos)const
 {
     QwtText coords(QString::number(pos.x(), 'f', 0) +
                    ", " + QString::number(pos.y(), 'f', 0));
@@ -84,10 +84,10 @@ QwtText HistogramPlot::HistPicker::trackerTextF(const QPointF &pos)const
 
 void HistogramPlot::legendItemChecked(QVariant itemInfo, bool on, int /*index*/)
 {
-    QwtPlotItem *plotItem = infoToItem( itemInfo );
-    if ( plotItem )
+    QwtPlotItem* plotItem = infoToItem(itemInfo);
+    if (plotItem)
     {
-        plotItem->setVisible( on );
+        plotItem->setVisible(on);
         replot();
     }
 }
@@ -95,12 +95,12 @@ void HistogramPlot::legendItemChecked(QVariant itemInfo, bool on, int /*index*/)
 void HistogramPlot::setLegendItemChecked(QwtPlotItem* plot)
 {
     QWidget* legendWidget =
-        static_cast<QwtLegend*>(legend())->legendWidget(itemToInfo(plot));
+        dynamic_cast<QwtLegend*>(legend())->legendWidget(itemToInfo(plot));
 
-    if ( legendWidget != nullptr )
+    if (legendWidget != nullptr)
     {
-        auto legendLabel = static_cast<QwtLegendLabel*>(legendWidget);
-        if( nullptr != legendLabel )
+        auto legendLabel = dynamic_cast<QwtLegendLabel*>(legendWidget);
+        if (nullptr != legendLabel)
         {
             legendLabel->setChecked(true);
         }
@@ -122,14 +122,14 @@ void HistogramPlot::recompute(int intervalsCount)
     float step = (max - min) / static_cast<float>(intervalsCount);
 
     QVector<int> intervals(count);
-    for( int i = 0; i < count; ++i )
+    for (int i = 0; i < count; ++i)
     {
         int index = (data[i] - min) / step;
-        if( index > count - 1 )
+        if (index > count - 1)
         {
             index = count - 1;
         }
-        if( index < 0 )
+        if (index < 0)
         {
             index = 0;
         }
@@ -138,7 +138,7 @@ void HistogramPlot::recompute(int intervalsCount)
 
     QVector< QwtIntervalSample > samples;
     QVector< QPointF > actualPoints;
-    for( int i = 0; i < intervalsCount; ++i )
+    for (int i = 0; i < intervalsCount; ++i)
     {
         float x = min + step * i;
         samples.append(QwtIntervalSample(intervals[i], x, x + step));

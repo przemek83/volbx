@@ -34,8 +34,8 @@ PlotBase::PlotBase(QString title, QWidget* parent) :
 
 PlotBase::~PlotBase()
 {
-	delete panner_;
-	delete magnifier_;
+    delete panner_;
+    delete magnifier_;
     delete plotCurve_;
 }
 
@@ -53,45 +53,43 @@ void PlotBase::setNewData(PlotData plotData)
 void PlotBase::mouseDoubleClickEvent(QMouseEvent* event)
 {
     QwtPlot::mouseDoubleClickEvent(event);
-    if(Qt::LeftButton == event->button()) {
+    if (Qt::LeftButton == event->button())
+    {
         resetPlot();
-}
+    }
 }
 
 void PlotBase::resetPlot()
 {
     magnifier_->reset();
-    for(int i = 0; i < QwtPlot::axisCnt; ++i)
+    for (int i = 0; i < QwtPlot::axisCnt; ++i)
     {
-        if(initialScaleMap_.contains(i)) {
+        if (initialScaleMap_.contains(i))
+        {
             setAxisScale(i, initialScaleMap_[i].rx(), initialScaleMap_[i].ry());
-        } else {
+        }
+        else
+        {
             setAxisAutoScale(i);
-}
+        }
     }
     replot();
 }
 
 void PlotBase::setStdScaleDraw(QwtPlot::Axis axis)
 {
-     setAxisScaleDraw(axis, new IntervalsScaleDraw());
+    setAxisScaleDraw(axis, new IntervalsScaleDraw());
 }
 
-void PlotBase::setAxisScale (int axisId, double min, double max, double step)
+void PlotBase::setAxisScale(int axisId, double min, double max, double step)
 {
     initialScaleMap_.insert(axisId, QPointF(min, max));
     QwtPlot::setAxisScale(axisId, min, max, step);
 }
 
-PlotBase::IntervalsScaleDraw::IntervalsScaleDraw() :
-    QwtScaleDraw()
-{
-
-}
-
 QwtText PlotBase::IntervalsScaleDraw::label(double v) const
 {
-    if( fmod(v, 1) )
+    if (fmod(v, 1))
     {
         return QwtText(Constants::floatToStringUsingLocale(v, 1));
     }
@@ -99,7 +97,7 @@ QwtText PlotBase::IntervalsScaleDraw::label(double v) const
     return QwtText(Constants::floatToStringUsingLocale(v, 0));
 }
 
-PlotBase::PlotMagnifier::PlotMagnifier(QWidget *canvas)
+PlotBase::PlotMagnifier::PlotMagnifier(QWidget* canvas)
     : QwtPlotMagnifier(canvas)
 {
     actualFactor_ = 1.0;
@@ -113,7 +111,7 @@ void PlotBase::PlotMagnifier::rescale(double factor)
 
 void PlotBase::PlotMagnifier::reset()
 {
-    rescale(1/actualFactor_);
+    rescale(1 / actualFactor_);
     actualFactor_ = 1.0;
 }
 
@@ -121,7 +119,7 @@ void PlotBase::setPlotTitle(QString title)
 {
     QwtText titleToSet = QwtText(title);
     QFont titleFont = titleToSet.font();
-    titleFont.setPointSizeF(titleFont.pointSizeF()/1);
+    titleFont.setPointSizeF(titleFont.pointSizeF() / 1);
     titleToSet.setFont(titleFont);
     setTitle(titleToSet);
 }

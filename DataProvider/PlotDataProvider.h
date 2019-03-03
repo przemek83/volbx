@@ -74,7 +74,7 @@ private:
 
     Quantiles quantiles_;
 
-    QVector<TransactionData>* calcData_;
+    QVector<TransactionData>* calcData_ {nullptr};
 
     ///Column used for grouping.
     int groupingColumn_;

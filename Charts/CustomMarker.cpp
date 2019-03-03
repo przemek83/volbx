@@ -12,8 +12,7 @@
 #include "PlotBase.h"
 
 CustomMarker::CustomMarker(QVector<Quantiles>* quantiles)
-    : QwtPlotItem(),
-      quantiles_(quantiles)
+    : quantiles_(quantiles)
 {
     setZ(1000);
     setRenderHint(QwtPlotItem::RenderAntialiased, true);

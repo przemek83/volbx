@@ -14,10 +14,7 @@ const char* Update::tmpPrefix_ = ".tmp";
 
 Update::Update(QWidget* parent) :
     QWidget(parent),
-    ui(new Ui::Update),
-    filesToDownload_(QVector<QString>()),
-    tempFiles_(QStringList()),
-    currentTriesCount_(0)
+    ui(new Ui::Update)
 {
     ui->setupUi(this);
 

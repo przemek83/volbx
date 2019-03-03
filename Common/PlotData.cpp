@@ -13,7 +13,7 @@ PlotData::PlotData(double* dataX, double* dataY, int dataSize):
 
 PlotData::~PlotData()
 {
-    if( 0 >= counter_->decrease() )
+    if (0 >= counter_->decrease())
     {
         delete[] dataX_;
         delete[] dataY_;
@@ -21,7 +21,7 @@ PlotData::~PlotData()
     }
 }
 
-PlotData::PlotData(const PlotData & right):
+PlotData::PlotData(const PlotData& right):
     dataX_(right.dataX_),
     dataY_(right.dataY_),
     dataSize_(right.dataSize_),
@@ -33,11 +33,11 @@ PlotData::PlotData(const PlotData & right):
 PlotData& PlotData::operator=(const PlotData& right)
 {
     //Avoid self assignment
-    if ( this != &right )
+    if (this != &right)
     {
         //Decrement the old reference count
         //if reference become zero delete the old data.
-        if(counter_->decrease() == 0)
+        if (counter_->decrease() == 0)
         {
             delete[] dataX_;
             delete[] dataY_;
@@ -69,12 +69,6 @@ const double* PlotData::getDataY() const
 int PlotData::getDataSize() const
 {
     return dataSize_;
-}
-
-PlotData::ReferenceCounter::ReferenceCounter() :
-    count_(0)
-{
-
 }
 
 void PlotData::ReferenceCounter::increase()

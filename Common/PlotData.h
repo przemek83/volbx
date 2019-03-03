@@ -35,9 +35,9 @@ private:
     class ReferenceCounter
     {
     public:
-        ReferenceCounter();
+        ReferenceCounter() = default;
 
-        virtual ~ReferenceCounter() = default;
+        ~ReferenceCounter() = default;
 
         void increase();
 

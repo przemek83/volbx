@@ -18,10 +18,7 @@ const char* Logger::LogTypeNames_[] =
     "IMPORT_EXPORT"
 };
 
-Logger::Logger() :
-    QObject(),
-    display_(nullptr),
-    textEdit_(nullptr)
+Logger::Logger()
 {
     display_ = new QWidget();
     display_->setWindowTitle(QLatin1String("Logs"));

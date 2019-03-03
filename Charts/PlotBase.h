@@ -20,13 +20,13 @@ class QwtPlotPanner;
 class PlotBase : public QwtPlot
 {
 public:
-    PlotBase(QString /*title*/, QWidget *parent = nullptr);
+    PlotBase(QString /*title*/, QWidget* parent = nullptr);
 
     ~PlotBase() override;
 
     void resetPlot();
 
-    void setAxisScale (int axisId, double min, double max, double step = 0);
+    void setAxisScale(int axisId, double min, double max, double step = 0);
 
     virtual void setNewData(PlotData plotData);
 
@@ -43,7 +43,7 @@ protected:
         void reset();
 
     protected:
-        virtual void rescale (double factor);
+        virtual void rescale(double factor);
 
     private:
         double actualFactor_;
@@ -55,7 +55,7 @@ protected:
 
     void setStdScaleDraw(QwtPlot::Axis axis);
 
-    void mouseDoubleClickEvent(QMouseEvent *event) override;
+    void mouseDoubleClickEvent(QMouseEvent* event) override;
 
     QwtPlotCurve* plotCurve_;
 
@@ -67,7 +67,7 @@ private:
     class IntervalsScaleDraw: public QwtScaleDraw
     {
     public:
-        IntervalsScaleDraw();
+        IntervalsScaleDraw() = default;
 
         ~IntervalsScaleDraw() override = default;
 

@@ -17,7 +17,7 @@
 #include "GroupPlotGui.h"
 #include "ViewDockWidget.h"
 
-MainTabWidget::MainTabWidget(QWidget *parent) :
+MainTabWidget::MainTabWidget(QWidget* parent) :
     QTabWidget(parent)
 {
     setTabBar(new TabBar(this));
@@ -27,9 +27,9 @@ MainTabWidget::MainTabWidget(QWidget *parent) :
 
 FilteringProxyModel* MainTabWidget::getCurrentProxyModel()
 {
-    MainTab* currentTab = static_cast<MainTab*>(currentWidget());
+    auto currentTab = dynamic_cast<MainTab*>(currentWidget());
     Q_ASSERT(nullptr != currentTab);
-    if( nullptr == currentTab )
+    if (nullptr == currentTab)
     {
         return nullptr;
     }
@@ -38,9 +38,9 @@ FilteringProxyModel* MainTabWidget::getCurrentProxyModel()
 
 TableModel* MainTabWidget::getCurrentDataModel()
 {
-    MainTab* currentTab = static_cast<MainTab*>(currentWidget());
+    auto currentTab = dynamic_cast<MainTab*>(currentWidget());
     Q_ASSERT(nullptr != currentTab);
-    if( nullptr == currentTab )
+    if (nullptr == currentTab)
     {
         return nullptr;
     }
@@ -49,9 +49,9 @@ TableModel* MainTabWidget::getCurrentDataModel()
 
 DataView* MainTabWidget::getCurrentDataView()
 {
-    MainTab* currentTab = static_cast<MainTab*>(currentWidget());
+    auto currentTab = dynamic_cast<MainTab*>(currentWidget());
     Q_ASSERT(nullptr != currentTab);
-    if( nullptr == currentTab )
+    if (nullptr == currentTab)
     {
         return nullptr;
     }
@@ -60,7 +60,7 @@ DataView* MainTabWidget::getCurrentDataView()
 
 MainTab* MainTabWidget::getCurrentMainTab()
 {
-    MainTab* currentTab = static_cast<MainTab*>(currentWidget());
+    auto currentTab = dynamic_cast<MainTab*>(currentWidget());
     Q_ASSERT(nullptr != currentTab);
     return currentTab;
 }
@@ -69,7 +69,7 @@ ViewDockWidget* MainTabWidget::getCurrentDataViewDock()
 {
     DataView* dataView = getCurrentDataView();
     Q_ASSERT(nullptr != dataView);
-    if( nullptr == dataView )
+    if (nullptr == dataView)
     {
         return nullptr;
     }
@@ -80,7 +80,7 @@ void MainTabWidget::setTextFilterInProxy(int column, QSet<QString> bannedStrings
 {
     DataView* view = getCurrentDataView();
     FilteringProxyModel* model = getCurrentProxyModel();
-    if ( nullptr == view || nullptr == model )
+    if (nullptr == view || nullptr == model)
     {
         return;
     }
@@ -101,8 +101,8 @@ void MainTabWidget::setTextFilterInProxy(int column, QSet<QString> bannedStrings
     QApplication::restoreOverrideCursor();
 
     LOG(LOG_CALC, "Filtration change took " +
-                  QString::number(performanceTimer.elapsed()*1.0/1000) +
-                  " seconds.");
+        QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
+        " seconds.");
 }
 
 void MainTabWidget::setDateFilterInProxy(int column,
@@ -112,7 +112,7 @@ void MainTabWidget::setDateFilterInProxy(int column,
 {
     DataView* view = getCurrentDataView();
     FilteringProxyModel* model = getCurrentProxyModel();
-    if ( nullptr == view || nullptr == model )
+    if (nullptr == view || nullptr == model)
     {
         return;
     }
@@ -131,15 +131,15 @@ void MainTabWidget::setDateFilterInProxy(int column,
     QApplication::restoreOverrideCursor();
 
     LOG(LOG_CALC, "Filtration change took " +
-                  QString::number(performanceTimer.elapsed()*1.0/1000) +
-                  " seconds.");
+        QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
+        " seconds.");
 }
 
 void MainTabWidget::setNumericFilterInProxy(int column, double from, double to)
 {
     DataView* view = getCurrentDataView();
     FilteringProxyModel* model = getCurrentProxyModel();
-    if ( nullptr == view || nullptr == model )
+    if (nullptr == view || nullptr == model)
     {
         return;
     }
@@ -159,27 +159,27 @@ void MainTabWidget::setNumericFilterInProxy(int column, double from, double to)
     QApplication::restoreOverrideCursor();
 
     LOG(LOG_CALC, "Filtration change took " +
-                  QString::number(performanceTimer.elapsed()*1.0/1000) +
-                  " seconds.");
+        QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
+        " seconds.");
 }
 
 void MainTabWidget::addBasicPlot()
 {
     DataView* view = getCurrentDataView();
     MainTab* mainTab = getCurrentMainTab();
-    if ( nullptr == view /*|| nullptr == model*/ || nullptr == mainTab )
+    if (nullptr == view /*|| nullptr == model*/ || nullptr == mainTab)
     {
         return;
     }
 
     //If basic data plot already created than just show it and return.
     BasicDataPlot* basicDataPlot = mainTab->findChild<BasicDataPlot*>();
-    if( nullptr != basicDataPlot )
+    if (nullptr != basicDataPlot)
     {
         PlotDockWidget* basicPlotDock =
             dynamic_cast<PlotDockWidget*>(basicDataPlot->parent());
         Q_ASSERT(nullptr != basicPlotDock);
-        if( nullptr != basicPlotDock )
+        if (nullptr != basicPlotDock)
         {
             basicPlotDock->setVisible(true);
             basicPlotDock->raise();
@@ -195,7 +195,7 @@ void MainTabWidget::addBasicPlot()
     basicDataPlot = new BasicDataPlot(plotDock);
     plotDock->setWidget(basicDataPlot);
     mainTab->addDockWidget(Qt::RightDockWidgetArea, plotDock);
-    if( nullptr != tabifyOn )
+    if (nullptr != tabifyOn)
     {
         plotDock->setVisible(false);
         mainTab->tabifyDockWidget(tabifyOn, plotDock);
@@ -207,14 +207,14 @@ void MainTabWidget::addBasicPlot()
     }
 
     connect(view->getPlotDataProvider(),
-            SIGNAL(basicPlotDataChanged(PlotData,Quantiles,QVector<QPointF>)),
+            SIGNAL(basicPlotDataChanged(PlotData, Quantiles, QVector<QPointF>)),
             basicDataPlot,
-            SLOT(setNewData(PlotData,Quantiles,QVector<QPointF>)));
+            SLOT(setNewData(PlotData, Quantiles, QVector<QPointF>)));
 
     view->reloadSelectionDataAndRecompute();
 
     //Problem with blinking display. Workaround used.
-    if( nullptr != tabifyOn )
+    if (nullptr != tabifyOn)
     {
         plotDock->setVisible(true);
         plotDock->raise();
@@ -228,7 +228,7 @@ void MainTabWidget::addHistogramPlot()
     DataView* view = getCurrentDataView();
     MainTab* mainTab = getCurrentMainTab();
     TableModel* model = getCurrentDataModel();
-    if ( nullptr == view || nullptr == model || nullptr == mainTab )
+    if (nullptr == view || nullptr == model || nullptr == mainTab)
     {
         return;
     }
@@ -236,7 +236,7 @@ void MainTabWidget::addHistogramPlot()
     //If basic data plot already created than just show it and return.
     HistogramPlotGui* histogramPlotGui =
         mainTab->findChild<HistogramPlotGui*>();
-    if( nullptr != histogramPlotGui )
+    if (nullptr != histogramPlotGui)
     {
         histogramPlotGui->setVisible(true);
         histogramPlotGui->raise();
@@ -249,7 +249,7 @@ void MainTabWidget::addHistogramPlot()
     PlotDockWidget* tabifyOn = mainTab->findChild<PlotDockWidget*>();
     histogramPlotGui = new HistogramPlotGui(mainTab);
     mainTab->addDockWidget(Qt::RightDockWidgetArea, histogramPlotGui);
-    if( nullptr != tabifyOn )
+    if (nullptr != tabifyOn)
     {
         histogramPlotGui->setVisible(false);
         mainTab->tabifyDockWidget(tabifyOn, histogramPlotGui);
@@ -261,14 +261,14 @@ void MainTabWidget::addHistogramPlot()
     }
 
     connect(view->getPlotDataProvider(),
-            SIGNAL(basicDataChanged(PlotData,Quantiles)),
+            SIGNAL(basicDataChanged(PlotData, Quantiles)),
             histogramPlotGui,
-            SLOT(dataChanged(PlotData,Quantiles)));
+            SLOT(dataChanged(PlotData, Quantiles)));
 
     view->reloadSelectionDataAndRecompute();
 
     //Problem with blinking display. Workaround used.
-    if( nullptr != tabifyOn )
+    if (nullptr != tabifyOn)
     {
         histogramPlotGui->setVisible(true);
         histogramPlotGui->raise();
@@ -283,14 +283,14 @@ void MainTabWidget::addGroupingPlot()
     DataView* view = getCurrentDataView();
     MainTab* mainTab = getCurrentMainTab();
     TableModel* model = getCurrentDataModel();
-    if ( nullptr == view || nullptr == model || nullptr == mainTab )
+    if (nullptr == view || nullptr == model || nullptr == mainTab)
     {
         return;
     }
 
     //If basic data plot already created than just show it and return.
     GroupPlotGui* groupPlotGui = mainTab->findChild<GroupPlotGui*>();
-    if( nullptr != groupPlotGui )
+    if (nullptr != groupPlotGui)
     {
         groupPlotGui->setVisible(true);
         groupPlotGui->raise();
@@ -303,7 +303,7 @@ void MainTabWidget::addGroupingPlot()
     PlotDockWidget* tabifyOn = mainTab->findChild<PlotDockWidget*>();
     groupPlotGui = new GroupPlotGui(model, mainTab);
     mainTab->addDockWidget(Qt::RightDockWidgetArea, groupPlotGui);
-    if( nullptr != tabifyOn )
+    if (nullptr != tabifyOn)
     {
         groupPlotGui->setVisible(false);
         mainTab->tabifyDockWidget(tabifyOn, groupPlotGui);
@@ -335,7 +335,7 @@ void MainTabWidget::addGroupingPlot()
     view->reloadSelectionDataAndRecompute();
 
     //Problem with blinking display. Workaround used.
-    if( nullptr != tabifyOn )
+    if (nullptr != tabifyOn)
     {
         groupPlotGui->setVisible(true);
         groupPlotGui->raise();
@@ -348,7 +348,7 @@ void MainTabWidget::changeDataViewMode(DataView* view)
 {
     //Activate select all and unselect all buttons on data view dock.
     ViewDockWidget* viewDock = getCurrentDataViewDock();
-    if( nullptr == viewDock )
+    if (nullptr == viewDock)
     {
         return;
     }

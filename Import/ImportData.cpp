@@ -17,7 +17,7 @@
 #include "DatasetImportTab.h"
 #include "SpreadsheetsImportTab.h"
 
-ImportData::ImportData(QWidget *parent) :
+ImportData::ImportData(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::ImportData),
     buttonBox_(nullptr)
@@ -35,7 +35,7 @@ ImportData::ImportData(QWidget *parent) :
                              tr("Datasets"));
 
     auto spreadsheetsTab =
-            new SpreadsheetsImportTab(ui->tabWidget);
+        new SpreadsheetsImportTab(ui->tabWidget);
     connect(spreadsheetsTab,
             SIGNAL(definitionIsReady(bool)),
             this,
@@ -45,7 +45,7 @@ ImportData::ImportData(QWidget *parent) :
                              tr("Spreadsheets"));
 
     //If no datasets, than switch to spreadsheets tab.
-    if( true == datasetsTab->datasetsAreAvailable() )
+    if (true == datasetsTab->datasetsAreAvailable())
     {
         ui->tabWidget->setCurrentWidget(datasetsTab);
     }
@@ -76,7 +76,7 @@ ImportData::~ImportData()
 
 DatasetDefinition* ImportData::getSelectedDataset()
 {
-    ImportTab* tab = static_cast<ImportTab*>(ui->tabWidget->currentWidget());
+    auto tab = dynamic_cast<ImportTab*>(ui->tabWidget->currentWidget());
     return tab->getDatasetDefinition();
 }
 

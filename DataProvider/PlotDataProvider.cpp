@@ -14,8 +14,6 @@
 #include "PlotDataProvider.h"
 
 PlotDataProvider::PlotDataProvider(int defaultGroupingColumn) :
-    QObject(),
-    calcData_(nullptr),
     groupingColumn_(defaultGroupingColumn)
 {
 
@@ -31,9 +29,9 @@ void PlotDataProvider::reCompute(QVector<TransactionData>* newCalcData,
 
     int dataSize = calcData_->size();
 
-    if( 0 != dataSize )
+    if (0 != dataSize)
     {
-        for( int i = 0; i < dataSize; ++i )
+        for (int i = 0; i < dataSize; ++i)
         {
             valuePerUnit.push_back(calcData_->at(i).pricePerMeter_);
         }
@@ -50,7 +48,7 @@ void PlotDataProvider::reCompute(QVector<TransactionData>* newCalcData,
 
 void PlotDataProvider::setNewCalcData(QVector<TransactionData>* calcData)
 {
-    if( calcData != calcData_ )
+    if (calcData != calcData_)
     {
         delete calcData_;
         calcData_ = calcData;
@@ -69,7 +67,7 @@ void PlotDataProvider::recomputeGroupData(QVector<TransactionData>* calcData,
     groupingColumn_ = groupingColumn;
 
     //Remove when other column types will be managed.
-    if( -1 == groupingColumn_ )
+    if (-1 == groupingColumn_)
     {
         return;
     }
@@ -78,7 +76,7 @@ void PlotDataProvider::recomputeGroupData(QVector<TransactionData>* calcData,
     QVector<Quantiles> quantilesForIntervals;
 
     //For now only string type columns managed.
-    if( DATA_FORMAT_STRING == columnFormat )
+    if (DATA_FORMAT_STRING == columnFormat)
     {
         fillDataForStringGrouping(calcData, names, quantilesForIntervals);
     }
@@ -101,7 +99,7 @@ void PlotDataProvider::fillDataForStringGrouping(QVector<TransactionData>* calcD
     int dataSize = calcData->size();
 
     //Group by name/string.
-    for(int i = 0; i < dataSize; ++i)
+    for (int i = 0; i < dataSize; ++i)
     {
         map[calcData->at(i).groupedBy_.toString()].append(calcData->at(i).pricePerMeter_);
     }
@@ -124,7 +122,7 @@ void PlotDataProvider::computeBasicData()
     double* pointsQuantilesY = nullptr;
 
     int dataSize = calcData_->size();
-    if( dataSize <= 0 )
+    if (dataSize <= 0)
     {
         PlotData plotData(nullptr, nullptr, 0);
 
@@ -146,7 +144,7 @@ void PlotDataProvider::computeBasicData()
     double maxX = 0;
     bool set = false;
 
-    for( int i = 0; i < dataSize; ++i )
+    for (int i = 0; i < dataSize; ++i)
     {
         x = Constants::startOfTheWorld_.daysTo(calcData_->at(i).date_);
         y = calcData_->at(i).pricePerMeter_;
@@ -181,8 +179,8 @@ void PlotDataProvider::computeBasicData()
     quantiles_.maxX_ = maxX;
 
     //Calc linear regression and create points.
-    a = (dataSize * sumXY - sumX * sumY)/(dataSize * sumXX - sumX * sumX);
-    b = sumY/dataSize - a * sumX / dataSize;
+    a = (dataSize * sumXY - sumX * sumY) / (dataSize * sumXX - sumX * sumX);
+    b = sumY / dataSize - a * sumX / dataSize;
 
     QPointF linearRegressionFrom(minX, a * minX + b);
     QPointF linearRegressionTo(maxX, a * maxX + b);
