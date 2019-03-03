@@ -72,9 +72,9 @@ private:
     void reloadCheckBoxes();
 
     ///Widget to display logs (text edit on it).
-    QWidget* display_;
+    QWidget* display_ {nullptr};
 
-    QTextEdit* textEdit_;
+    QTextEdit* textEdit_ {nullptr};
 
     const static char* LogTypeNames_[];
 

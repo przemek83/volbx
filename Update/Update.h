@@ -6,8 +6,9 @@
 
 class QNetworkReply;
 
-namespace Ui {
-    class Update;
+namespace Ui
+{
+class Update;
 }
 
 /**
@@ -15,17 +16,17 @@ namespace Ui {
  */
 class Update : public QWidget
 {
-Q_OBJECT
+    Q_OBJECT
 public:
     explicit Update(QWidget* parent = nullptr);
 
     ~Update() override;
 
 protected:
-    void closeEvent(QCloseEvent *event) override;
+    void closeEvent(QCloseEvent* event) override;
 
 private:
-    Ui::Update *ui;
+    Ui::Update* ui;
 
     ///Network manager used for getting initial info.
     QNetworkAccessManager initialInfoNetworkManager_;
@@ -47,7 +48,7 @@ private:
     ///Temporary files prefix.
     static const char* tmpPrefix_;
 
-    int currentTriesCount_;
+    int currentTriesCount_ {0};
 
     void showErrorMsg(QString error);
 

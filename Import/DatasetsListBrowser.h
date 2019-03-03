@@ -7,7 +7,7 @@ class QListWidgetItem;
 
 namespace Ui {
     class DatasetsListBrowser;
-}
+} // namespace Ui
 
 /**
  * @brief Widget for browsing actual datasets list.

@@ -6,7 +6,7 @@
 
 namespace Ui {
 class HistogramPlotGui;
-}
+} // namespace Ui
 
 /**
  * @brief Gui dock containing histogram.

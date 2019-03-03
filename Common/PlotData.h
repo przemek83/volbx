@@ -48,7 +48,7 @@ private:
     private:
         Q_DISABLE_COPY(ReferenceCounter)
 
-        int count_;
+        int count_ {0};
     };
 
     ReferenceCounter* counter_;

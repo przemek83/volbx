@@ -50,7 +50,7 @@ private:
     Q_DISABLE_COPY(Configuration)
 
     ///Flag indicating that config existed and was valid.
-    bool configValid_;
+    bool configValid_ {false};
 
     enum UpdateOption
     {
@@ -59,7 +59,7 @@ private:
         UPDATES_NEVER_CHECK
     };
 
-    UpdateOption updateOption_;
+    UpdateOption updateOption_ {UPDATES_CHOICE_NOT_PICKED};
 
     QString style_;
 

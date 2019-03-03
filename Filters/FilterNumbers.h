@@ -9,7 +9,7 @@ class DoubleSlider;
 
 namespace Ui {
     class FilterNumbers;
-}
+} // namespace Ui
 
 /**
  * @brief Numbers filter for value type columns in model.

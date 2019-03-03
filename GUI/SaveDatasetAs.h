@@ -5,7 +5,7 @@
 
 namespace Ui {
     class SaveDatasetAs;
-}
+} // namespace Ui
 
 /**
  * @brief Window in which user can enter name of dataset to save.

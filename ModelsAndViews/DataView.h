@@ -21,11 +21,11 @@ class DataView : public QTableView
 {
     Q_OBJECT
 public:
-    explicit DataView(QWidget *parent = nullptr);
+    explicit DataView(QWidget* parent = nullptr);
 
     ~DataView() override;
 
-    void setModel(QAbstractItemModel *model) override;
+    void setModel(QAbstractItemModel* model) override;
 
     const PlotDataProvider* getPlotDataProvider();
 
@@ -35,15 +35,15 @@ public slots:
     void groupingColumnChanged(int column);
 
 protected:
-    void mouseReleaseEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
 
-    void keyPressEvent(QKeyEvent *event) override;
+    void keyPressEvent(QKeyEvent* event) override;
 
 private:
     Q_DISABLE_COPY(DataView)
 
     ///Object for recomputing plot data.
-    PlotDataProvider* plotDataProvider_;
+    PlotDataProvider* plotDataProvider_ {nullptr};
 
     /**
      * @brief get selected on view data.

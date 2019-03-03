@@ -10,7 +10,7 @@ FilterDates::FilterDates(QString name,
                          QDate min,
                          QDate max,
                          bool emptyDates,
-                         QWidget *parent) :
+                         QWidget* parent) :
     Filter(name, column, parent),
     minOnInit_(min),
     maxOnInit_(max),
@@ -19,9 +19,10 @@ FilterDates::FilterDates(QString name,
 {
     ui->setupUi(this);
 
-    if(minOnInit_ == maxOnInit_) {
+    if (minOnInit_ == maxOnInit_)
+    {
         setDisabled(true);
-}
+    }
 
     //Lower.
     calendarLeft_.setFirstDayOfWeek(Qt::Monday);
@@ -43,7 +44,7 @@ FilterDates::FilterDates(QString name,
             this,
             SLOT(higherDateChanged(QDate)));
 
-    if ( false == emptyDates_ )
+    if (false == emptyDates_)
     {
         ui->emptyDates->hide();
     }
@@ -61,7 +62,7 @@ FilterDates::~FilterDates()
 void FilterDates::lowerDateChanged(QDate newDate)
 {
     //signal block?
-    if(newDate > ui->higherDateEdit->date())
+    if (newDate > ui->higherDateEdit->date())
     {
         ui->higherDateEdit->setDate(newDate);
     }
@@ -78,9 +79,10 @@ void FilterDates::lowerDateChanged(QDate newDate)
 void FilterDates::higherDateChanged(QDate newDate)
 {
     //signal block?
-    if(newDate < ui->lowerDateEdit->date()) {
+    if (newDate < ui->lowerDateEdit->date())
+    {
         ui->lowerDateEdit->setDate(newDate);
-}
+    }
 
     QApplication::processEvents();
 
@@ -97,7 +99,7 @@ void FilterDates::setChecked(bool checked)
 
     QList<QDateEdit*> dateWidgets = findChildren<QDateEdit*>();
 
-    foreach(QWidget* current, dateWidgets)
+    for (QWidget* current : dateWidgets)
     {
         current->setVisible(checked);
     }

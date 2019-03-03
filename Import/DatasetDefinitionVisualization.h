@@ -6,8 +6,9 @@
 class DatasetDefinition;
 class QTreeWidgetItem;
 
-namespace Ui {
-    class DatasetDefinitionVisualization;
+namespace Ui
+{
+class DatasetDefinitionVisualization;
 }
 
 /**
@@ -17,7 +18,7 @@ class DatasetDefinitionVisualization : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DatasetDefinitionVisualization(QWidget *parent = nullptr);
+    explicit DatasetDefinitionVisualization(QWidget* parent = nullptr);
 
     ~DatasetDefinitionVisualization() override;
 
@@ -38,7 +39,7 @@ public slots:
 private:
     Q_DISABLE_COPY(DatasetDefinitionVisualization)
 
-    Ui::DatasetDefinitionVisualization *ui;
+    Ui::DatasetDefinitionVisualization* ui;
 
     const QString typeNameString_;
 
@@ -46,7 +47,7 @@ private:
 
     const QString typeNameDate_;
 
-    DatasetDefinition* datasetDefinition_;
+    DatasetDefinition* datasetDefinition_ {nullptr};
 
 private slots:
     void searchTextChanged(const QString& newText);

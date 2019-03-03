@@ -16,7 +16,7 @@ const int FilterNames::maximumHeigh_ = 180;
 FilterNames::FilterNames(QString name,
                          int column,
                          const QStringList& initialList,
-                         QWidget *parent) :
+                         QWidget* parent) :
     Filter(name, column, parent),
     initialList_(initialList),
     lastEmitted_(QSet<QString>()),
@@ -28,7 +28,7 @@ FilterNames::FilterNames(QString name,
     initialList_.sort();
 
     int longestNameWidth = 0;
-    foreach(QString itemName, initialList_)
+    for (const QString& itemName : initialList_)
     {
         auto item = new QListWidgetItem(itemName, ui->listWidget);
         item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
@@ -36,7 +36,7 @@ FilterNames::FilterNames(QString name,
         longestNameWidth = qMax(longestNameWidth, itemName.length());
     }
 
-    if( minNameWidthForScrollMargin_ <= longestNameWidth )
+    if (minNameWidthForScrollMargin_ <= longestNameWidth)
     {
         addMarginForScrollBar_ = true;
     }
@@ -46,7 +46,7 @@ FilterNames::FilterNames(QString name,
             this,
             SLOT(itemChecked(QListWidgetItem*)));
 
-    if(initialList_.size() <=1)
+    if (initialList_.size() <= 1)
     {
         ui->selectAll->hide();
     }
@@ -59,30 +59,33 @@ FilterNames::~FilterNames()
 
 void FilterNames::itemChecked(QListWidgetItem* item)
 {
-    if(!item) {
+    if (!item)
+    {
         return;
-}
+    }
 
     QSet<QString> currentList;
-    for(int i = 0; i < ui->listWidget->count(); ++i)
+    for (int i = 0; i < ui->listWidget->count(); ++i)
     {
         QListWidgetItem* currentItem = ui->listWidget->item(i);
-        if(Qt::Unchecked == currentItem->checkState()) {
+        if (Qt::Unchecked == currentItem->checkState())
+        {
             currentList << currentItem->text();
-}
+        }
     }
 
     //If sizes are same it means nothing happen lately.
-    if( currentList.count() == lastEmitted_.count() ) {
+    if (currentList.count() == lastEmitted_.count())
+    {
         return;
-}
+    }
 
     lastEmitted_ = currentList;
 
     bool allChecked = true;
-    for(int i = 0; i < ui->listWidget->count(); ++i)
+    for (int i = 0; i < ui->listWidget->count(); ++i)
     {
-        if(Qt::Unchecked == ui->listWidget->item(i)->checkState())
+        if (Qt::Unchecked == ui->listWidget->item(i)->checkState())
         {
             allChecked = false;
             break;
@@ -99,7 +102,7 @@ void FilterNames::itemChecked(QListWidgetItem* item)
 
 QSize FilterNames::sizeHint() const
 {
-    if ( true == isChecked() )
+    if (true == isChecked())
     {
         int maxListHeight =
             std::min(ui->listWidget->sizeHintForRow(0) *
@@ -108,7 +111,7 @@ QSize FilterNames::sizeHint() const
 
         /* Add space for scroll in case of 3 or less items and long
            names detected in constructor.*/
-        if( true == addMarginForScrollBar_ && 3 >= ui->listWidget->count() )
+        if (true == addMarginForScrollBar_ && 3 >= ui->listWidget->count())
         {
             //Scroll size retrieved here is not actual one, use rtow heigh instead.
             maxListHeight += ui->listWidget->sizeHintForRow(0);
@@ -125,15 +128,15 @@ void FilterNames::setChecked(bool checked)
 
     auto checkBox = findChild<QCheckBox*>();
 
-    QList<QWidget *> widgets = findChildren<QWidget*>();
+    QList<QWidget*> widgets = findChildren<QWidget*>();
     widgets.removeOne(checkBox);
 
-    foreach(QWidget* current, widgets)
+    for (QWidget* current : widgets)
     {
         current->setVisible(checked);
     }
 
-    checkBox->setVisible( true == checked && initialList_.size() > 1 );
+    checkBox->setVisible(true == checked && initialList_.size() > 1);
 }
 
 void FilterNames::on_selectAll_toggled(bool checked)
@@ -141,13 +144,16 @@ void FilterNames::on_selectAll_toggled(bool checked)
     Q_ASSERT(ui->listWidget->count() > 0);
 
     ui->listWidget->blockSignals(true);
-    for(int i = 0; i < ui->listWidget->count(); ++i)
+    for (int i = 0; i < ui->listWidget->count(); ++i)
     {
-        if(checked) {
+        if (checked)
+        {
             ui->listWidget->item(i)->setCheckState(Qt::Checked);
-        } else {
+        }
+        else
+        {
             ui->listWidget->item(i)->setCheckState(Qt::Unchecked);
-}
+        }
     }
     ui->listWidget->blockSignals(false);
     itemChecked(ui->listWidget->item(0));

@@ -19,7 +19,7 @@
 
 const char* Export::exportFilesDateFormat_ = "yyyyMMdd";
 
-Export::Export(QMainWindow* tab, QWidget *parent) :
+Export::Export(QMainWindow* tab, QWidget* parent) :
     QDialog(parent),
     ui(new Ui::Export),
     tab_(tab)
@@ -44,9 +44,9 @@ void Export::on_save_clicked()
 {
     QDir dir(ui->locationLineEdit->text());
 
-    if(ui->locationLineEdit->text().isEmpty() ||
-            false == dir.exists() ||
-            false == QFile::permissions(dir.path()).testFlag(QFile::WriteUser) )
+    if (ui->locationLineEdit->text().isEmpty() ||
+        false == dir.exists() ||
+        false == QFile::permissions(dir.path()).testFlag(QFile::WriteUser))
     {
         QMessageBox::warning(this,
                              QObject::tr("Error"),
@@ -78,10 +78,10 @@ void Export::saveOnDisk()
     QString fileName(ui->locationLineEdit->text() + "/" + ui->prefix->text() +
                      "_" + dateString);
     QList<PlotDockWidget*> docks = tab_->findChildren<PlotDockWidget*>();
-    foreach(PlotDockWidget* dock, docks)
+    for (PlotDockWidget* dock : docks)
     {
         QList<PlotBase*> list = dock->exportContent();
-        foreach(PlotBase* plot, list)
+        for (PlotBase* plot : list)
         {
             QString name(fileName + "_" + plot->windowTitle() + ".png");
             ExportImage::exportAsImage(plot, name);
@@ -91,7 +91,7 @@ void Export::saveOnDisk()
     auto view = tab_->findChild<DataView*>();
     Q_ASSERT(nullptr != view);
 
-    if(ui->xlsx->isChecked())
+    if (ui->xlsx->isChecked())
     {
         ExportData::exportAsXLSX(view, fileName + "_" + tr("data") + ".xlsx");
     }

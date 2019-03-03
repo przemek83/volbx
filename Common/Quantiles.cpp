@@ -32,10 +32,10 @@ void Quantiles::clear()
 void Quantiles::print()
 {
     qDebug() << "min " << min_ << " q10 = " << q10_ << " q25_ = " << q25_ << \
-                " q50 = " << q50_ << " q75 = " << q75_ << " q90 = " << q90_ << \
-                " max = " << max_ << " number = " << number_ << " avg = " << \
-                avg_ << " std dev = " << stdDev_ <<  " minX = " << minX_ << \
-                " maxX = " << maxX_;
+             " q50 = " << q50_ << " q75 = " << q75_ << " q90 = " << q90_ << \
+             " max = " << max_ << " number = " << number_ << " avg = " << \
+             avg_ << " std dev = " << stdDev_ <<  " minX = " << minX_ << \
+             " maxX = " << maxX_;
 }
 
 void Quantiles::computeQuantiles(QVector<float>& valuePerUnit)
@@ -46,15 +46,17 @@ void Quantiles::computeQuantiles(QVector<float>& valuePerUnit)
 
     number_ = valuePerUnit.count();
 
-    foreach(float pricePerMeter, valuePerUnit)
+    for (float pricePerMeter : valuePerUnit)
     {
-        if(min_ > pricePerMeter || 0 == min_) {
+        if (min_ > pricePerMeter || 0 == min_)
+        {
             min_ = pricePerMeter;
-}
+        }
 
-        if(max_ < pricePerMeter || 0 == max_ ) {
+        if (max_ < pricePerMeter || 0 == max_)
+        {
             max_ = pricePerMeter;
-}
+        }
 
         EX += pricePerMeter;
         EX2 += pricePerMeter * pricePerMeter;
@@ -63,7 +65,7 @@ void Quantiles::computeQuantiles(QVector<float>& valuePerUnit)
     EX /= number_;
     EX2 /= number_;
 
-    if(number_ > 1)
+    if (number_ > 1)
     {
         stdDev_ = sqrt(EX2 - EX * EX);
     }
@@ -75,11 +77,11 @@ void Quantiles::computeQuantiles(QVector<float>& valuePerUnit)
     avg_ = EX;
 
 
-    if(stdDev_ > 0)
+    if (stdDev_ > 0)
     {
         qSort(valuePerUnit);
 
-        if(number_ < 2)
+        if (number_ < 2)
         {
             float tmp = (number_ ? valuePerUnit.at(0) : 0);
             q10_ = tmp;
@@ -90,25 +92,25 @@ void Quantiles::computeQuantiles(QVector<float>& valuePerUnit)
         }
         else
         {
-            float tmp = (number_-1)*0.1;
-            q10_ = valuePerUnit.at(floor(tmp))+(tmp-floor(tmp))*
-                (valuePerUnit.at(ceil(tmp))-valuePerUnit.at(floor(tmp)));
+            float tmp = (number_ - 1) * 0.1;
+            q10_ = valuePerUnit.at(floor(tmp)) + (tmp - floor(tmp)) *
+                   (valuePerUnit.at(ceil(tmp)) - valuePerUnit.at(floor(tmp)));
 
-            tmp = (number_-1)*0.25;
-            q25_ = valuePerUnit.at(floor(tmp))+(tmp-floor(tmp))*
-                (valuePerUnit.at(ceil(tmp))-valuePerUnit.at(floor(tmp)));
+            tmp = (number_ - 1) * 0.25;
+            q25_ = valuePerUnit.at(floor(tmp)) + (tmp - floor(tmp)) *
+                   (valuePerUnit.at(ceil(tmp)) - valuePerUnit.at(floor(tmp)));
 
-            tmp = (number_-1)*0.5;
-            q50_ = valuePerUnit.at(floor(tmp))+(tmp-floor(tmp))*
-                (valuePerUnit.at(ceil(tmp))-valuePerUnit.at(floor(tmp)));
+            tmp = (number_ - 1) * 0.5;
+            q50_ = valuePerUnit.at(floor(tmp)) + (tmp - floor(tmp)) *
+                   (valuePerUnit.at(ceil(tmp)) - valuePerUnit.at(floor(tmp)));
 
-            tmp = (number_-1)*0.75;
-            q75_ = valuePerUnit.at(floor(tmp))+(tmp-floor(tmp))*
-                (valuePerUnit.at(ceil(tmp))-valuePerUnit.at(floor(tmp)));
+            tmp = (number_ - 1) * 0.75;
+            q75_ = valuePerUnit.at(floor(tmp)) + (tmp - floor(tmp)) *
+                   (valuePerUnit.at(ceil(tmp)) - valuePerUnit.at(floor(tmp)));
 
-            tmp = (number_-1)*0.9;
-            q90_ = valuePerUnit.at(floor(tmp))+(tmp-floor(tmp))*
-                (valuePerUnit.at(ceil(tmp))-valuePerUnit.at(floor(tmp)));
+            tmp = (number_ - 1) * 0.9;
+            q90_ = valuePerUnit.at(floor(tmp)) + (tmp - floor(tmp)) *
+                   (valuePerUnit.at(ceil(tmp)) - valuePerUnit.at(floor(tmp)));
         }
     }
 }
@@ -121,7 +123,7 @@ QString Quantiles::getValuesAsToolTip() const
     toolTipText += valueAsHtmlRow(PLOT_INFO_AVG, avg_);
     toolTipText += valueAsHtmlRow(PLOT_INFO_MAX, max_);
 
-    if ( number_ > 1 )
+    if (number_ > 1)
     {
         toolTipText += valueAsHtmlRow(PLOT_INFO_Q90, q90_);
         toolTipText += valueAsHtmlRow(PLOT_INFO_Q75, q75_);
@@ -132,7 +134,7 @@ QString Quantiles::getValuesAsToolTip() const
 
     toolTipText += valueAsHtmlRow(PLOT_INFO_MIN, min_);
 
-    if ( number_ > 1 )
+    if (number_ > 1)
     {
         toolTipText += valueAsHtmlRow(PLOT_INFO_STD_DEV, stdDev_);
     }
@@ -147,7 +149,7 @@ QString Quantiles::valueAsHtmlRow(PlotInfo row, double value)
     static QString plotInfoNames_[PLIT_INFO_END];
     static bool initialized = false;
 
-    if ( false == initialized )
+    if (false == initialized)
     {
         plotInfoNames_[PLOT_INFO_COUNT] =
             QObject::tr("Data count") + QLatin1Char(':');

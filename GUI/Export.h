@@ -7,7 +7,7 @@ class QMainWindow;
 
 namespace Ui {
     class Export;
-}
+} // namespace Ui
 
 /**
  * @brief Export window. Exports data of active tab and all plots (if opened)

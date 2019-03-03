@@ -9,7 +9,7 @@ class QListWidgetItem;
 
 namespace Ui {
     class FilterNames;
-}
+} // namespace Ui
 
 /**
  * @brief Names filter for string type columns in model.

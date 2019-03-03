@@ -5,7 +5,7 @@
 
 namespace Ui {
 class CheckUpdatesDialog;
-}
+} // namespace Ui
 
 /**
  * @brief Dialog class with question about auto updating.

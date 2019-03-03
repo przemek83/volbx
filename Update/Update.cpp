@@ -12,7 +12,7 @@
 
 const char* Update::tmpPrefix_ = ".tmp";
 
-Update::Update(QWidget *parent) :
+Update::Update(QWidget* parent) :
     QWidget(parent),
     ui(new Ui::Update),
     filesToDownload_(QVector<QString>()),
@@ -59,7 +59,7 @@ void Update::initialInfoNetworkReplyFinished(QNetworkReply* reply)
     reply->deleteLater();
 
     //Check errors.
-    if( Networking::errorsOccuredCheck(reply) )
+    if (Networking::errorsOccuredCheck(reply))
     {
         insertNewLineIntoDetails();
         insertErrorInfoIntoDetails(tr("Error") +
@@ -76,21 +76,21 @@ void Update::initialInfoNetworkReplyFinished(QNetworkReply* reply)
     QString newestVersion =
         Networking::checkReplyAndReturnAvailableVersion(reply, replyStringList);
 
-    if( newestVersion.isEmpty() )
+    if (newestVersion.isEmpty())
     {
         showErrorMsg(tr("Wrong answer received from server."));
         return;
     }
 
-    if( newestVersion != QApplication::applicationVersion() )
+    if (newestVersion != QApplication::applicationVersion())
     {
         ui->valueAvailable->setText(newestVersion);
 
         fillFilesToUpdateLists(replyStringList);
 
-        if( 0 == filesToDownload_.count() ||
+        if (0 == filesToDownload_.count() ||
             0 == filesToDownloadSize_.count() ||
-            filesToDownload_.count() != filesToDownloadSize_.count() )
+            filesToDownload_.count() != filesToDownloadSize_.count())
         {
             showErrorMsg(tr("Wrong data received from update server."));
             return;
@@ -125,7 +125,7 @@ void Update::fillFilesToUpdateLists(QStringList& serverInfoList)
 
     filesToDownload_.clear();
     filesToDownloadSize_.clear();
-    for(int i = 0; i < filesCount; ++i)
+    for (int i = 0; i < filesCount; ++i)
     {
         QString fileInfoLine = serverInfoList.at(2 + i);
         QString fileName = fileInfoLine.section(QLatin1Char(';'), 0, 0);
@@ -133,7 +133,7 @@ void Update::fillFilesToUpdateLists(QStringList& serverInfoList)
         filesToDownload_.push_back(fileName);
         filesToDownloadSize_.push_back(fileSize);
 
-        insertInfoIntoDetails(QString::number(i+1) + QLatin1String(". ") + fileName +
+        insertInfoIntoDetails(QString::number(i + 1) + QLatin1String(". ") + fileName +
                               QLatin1String(" (") + tr("size") + QLatin1String(": ") +
                               fileSize + QLatin1Char(' ') + tr("bytes") +
                               QLatin1Char(')'));
@@ -146,7 +146,7 @@ void Update::downloadFile(QString fileName)
     insertInfoIntoDetails(fileName + QLatin1String("... "));
 
     //Update number of downloaded file only when previous was downloaded correctly.
-    if( 0 == currentTriesCount_ )
+    if (0 == currentTriesCount_)
     {
         ui->currentFile->setText(QString::number(ui->currentFile->text().toInt() + 1));
     }
@@ -159,15 +159,15 @@ void Update::downloadFile(QString fileName)
 
     ui->progressBar->reset();
 
-    connect(reply, SIGNAL(downloadProgress(qint64,qint64)),
-             this, SLOT(updateProgress(qint64,qint64)));
+    connect(reply, SIGNAL(downloadProgress(qint64, qint64)),
+            this, SLOT(updateProgress(qint64, qint64)));
 }
 
 void Update::downloadFinished(QNetworkReply* reply)
 {
     reply->deleteLater();
 
-    if( Networking::errorsOccuredCheck(reply) )
+    if (Networking::errorsOccuredCheck(reply))
     {
         insertNewLineIntoDetails();
         insertErrorInfoIntoDetails(tr("Error") +
@@ -190,20 +190,20 @@ void Update::downloadFinished(QNetworkReply* reply)
         QString::number(fileDownloadedContent.size()) + QLatin1Char('.'));
 
     //Verification of file size.
-    if(fileDownloadedContent.size() == fileSize.toInt())
+    if (fileDownloadedContent.size() == fileSize.toInt())
     {
         saveVerfiedFile(fileDownloadedContent, fileName);
     }
     else
     {
         //Do not continue if max tries reached.
-        if( !handleVerificationError(fileName, fileSize) )
+        if (!handleVerificationError(fileName, fileSize))
         {
             return;
         }
     }
 
-    if(filesToDownload_.isEmpty())
+    if (filesToDownload_.isEmpty())
     {
         finalizeUpdate();
 
@@ -233,12 +233,12 @@ void Update::saveVerfiedFile(QByteArray& fileData, QString& fileName)
     currentTriesCount_ = 0;
 }
 
-bool Update::handleVerificationError(QString &fileName, QString& fileSize)
+bool Update::handleVerificationError(QString& fileName, QString& fileSize)
 {
     insertErrorInfoIntoDetails(tr("Error during verification!"));
 
     //Add corrupted file to front of vector if max tries not reached yet.
-    if(currentTriesCount_ >= Networking::getMaxTries() )
+    if (currentTriesCount_ >= Networking::getMaxTries())
     {
         insertErrorInfoIntoDetails(tr("Can not download file."));
         QString msg(tr("Updating interrupted - downloading error. Please retry later."));
@@ -260,7 +260,7 @@ void Update::finalizeUpdate()
 {
     insertNewLineIntoDetails();
     insertNewSectionIntoDetails(tr("Renaming temporary filenames") + QLatin1Char(':'));
-    foreach(QString tempFileName, tempFiles_)
+    for (const QString& tempFileName : tempFiles_)
     {
         QString targetFileName(tempFileName);
         targetFileName.chop(QLatin1String(tmpPrefix_).size());
@@ -291,7 +291,7 @@ void Update::updateProgress(qint64 bytesRead, qint64 totalBytes)
     ui->progressBar->setValue(bytesRead);
 }
 
-void Update::closeEvent(QCloseEvent *event)
+void Update::closeEvent(QCloseEvent* event)
 {
     QWidget::closeEvent(event);
 
@@ -306,7 +306,7 @@ void Update::on_buttonQuit_clicked()
 
 void Update::showErrorMsg(QString error)
 {
-    if( !ui->details->isVisible() )
+    if (!ui->details->isVisible())
     {
         ui->showDetails->setChecked(true);
     }
@@ -357,7 +357,7 @@ void Update::insertErrorInfoIntoDetails(QString msg)
 void Update::on_showDetails_toggled(bool checked)
 {
     static int detailsSize = 0;
-    if( true == checked )
+    if (true == checked)
     {
         int minimumSize = ui->verticalLayout->minimumSize().height();
         ui->details->show();

@@ -24,13 +24,13 @@ public:
 
     ~GroupPlot() override;
 
-    void setNewData(QVector<Quantiles> &quantiles,
-                    QVector<QString> &intervalStrings);
+    void setNewData(QVector<Quantiles>& quantiles,
+                    QVector<QString>& intervalStrings);
 
     QSize minimumSizeHint() const override;
 
 protected:
-    bool event(QEvent *event) override;
+    bool event(QEvent* event) override;
 
 private:
     Q_DISABLE_COPY(GroupPlot)
@@ -41,7 +41,7 @@ private:
     ///Maximum number of chars in label.
     const static int maxCharsInLabel_;
 
-    CustomMarker* marker_;
+    CustomMarker* marker_ {nullptr};
 
     //Quantiles.
     QVector<Quantiles> quantiles_;
@@ -60,7 +60,7 @@ private:
         ~GroupPicker() override = default;
 
     protected:
-        QwtText trackerTextF(const QPointF &pos) const override;
+        QwtText trackerTextF(const QPointF& pos) const override;
     };
 
     GroupPicker* picker_;

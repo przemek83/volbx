@@ -42,7 +42,7 @@ private:
         int count_;
     };
 
-    CustomMarker* marker_;
+    CustomMarker* marker_ {nullptr};
 
     //One, but marker expects vector.
     QVector<Quantiles> quantiles_;

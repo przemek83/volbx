@@ -7,7 +7,7 @@ class QPushButton;
 
 namespace Ui {
     class DockTitleBar;
-}
+} // namespace Ui
 
 /**
  * @brief Title bar for dockwidgets with some buttons.

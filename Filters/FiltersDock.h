@@ -15,7 +15,7 @@ class QVBoxLayout;
 
 namespace Ui {
     class FiltersDock;
-}
+} // namespace Ui
 
 /**
  * @brief Filters dock used as parent for filters widget created for each dataset.

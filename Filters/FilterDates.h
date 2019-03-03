@@ -9,7 +9,7 @@
 
 namespace Ui {
     class FilterDates;
-}
+} // namespace Ui
 
 /**
  * @brief filter for date type columns in model.

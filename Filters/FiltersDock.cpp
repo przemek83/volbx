@@ -13,7 +13,7 @@
 #include "FilterNames.h"
 #include "Filter.h"
 
-FiltersDock::FiltersDock(QWidget *parent) :
+FiltersDock::FiltersDock(QWidget* parent) :
     DockWidget(QObject::tr("Filters"), parent),
     ui(new Ui::FiltersDock)
 {
@@ -27,7 +27,7 @@ FiltersDock::~FiltersDock()
 
 void FiltersDock::addModel(const FilteringProxyModel* model)
 {
-    if( nullptr == model )
+    if (nullptr == model)
     {
         return;
     }
@@ -35,7 +35,7 @@ void FiltersDock::addModel(const FilteringProxyModel* model)
     modelsMap_[mainWidget] = model;
 
     auto mainLayout = new QVBoxLayout(mainWidget);
-    mainLayout->setContentsMargins(0,0,0,0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
 
     //Search line edit.
     auto lineEdit = new QLineEdit(mainWidget);
@@ -51,7 +51,7 @@ void FiltersDock::addModel(const FilteringProxyModel* model)
 
     //Create layout.
     auto filterListLayout = new QVBoxLayout(filterListWidget);
-    filterListLayout->setContentsMargins(0,0,0,0);
+    filterListLayout->setContentsMargins(0, 0, 0, 0);
     filterListLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
     filterListWidget->setLayout(filterListLayout);
     filterListLayout->addStretch();
@@ -77,10 +77,10 @@ void FiltersDock::createFiltersWidgets(const TableModel* model,
                                        QWidget* filterListWidget,
                                        QVBoxLayout* layout)
 {
-    for(int i = 0; i < model->columnCount(); ++i)
+    for (int i = 0; i < model->columnCount(); ++i)
     {
         Filter* filter = nullptr;
-        switch( model->getColumnFormat(i) )
+        switch (model->getColumnFormat(i))
         {
             case DATA_FORMAT_STRING:
             {
@@ -109,7 +109,7 @@ void FiltersDock::createFiltersWidgets(const TableModel* model,
     }
 }
 
-FilterNames* FiltersDock::createNewNamesFilter(const TableModel *parentModel,
+FilterNames* FiltersDock::createNewNamesFilter(const TableModel* parentModel,
                                                int index,
                                                QWidget* filterListWidget)
 {
@@ -123,7 +123,7 @@ FilterNames* FiltersDock::createNewNamesFilter(const TableModel *parentModel,
             this,
             SIGNAL(newNamesFiltering(int, QSet<QString>)));
 
-    if ( 1 >= list.size() )
+    if (1 >= list.size())
     {
         filter->setChecked(false);
     }
@@ -147,14 +147,14 @@ FilterDates* FiltersDock::createNewDatesFilter(const TableModel* parentModel,
                                           filterListWidget);
 
     connect(filter,
-            SIGNAL(newDateFilter(int,QDate,QDate,bool)),
+            SIGNAL(newDateFilter(int, QDate, QDate, bool)),
             this,
-            SIGNAL(newDateFiltering(int,QDate,QDate,bool)));
+            SIGNAL(newDateFiltering(int, QDate, QDate, bool)));
 
     return filter;
 }
 
-FilterNumbers* FiltersDock::createNewNumbersFilter(const TableModel *parentModel,
+FilterNumbers* FiltersDock::createNewNumbersFilter(const TableModel* parentModel,
                                                    int index,
                                                    QWidget* filterListWidget)
 {
@@ -168,16 +168,16 @@ FilterNumbers* FiltersDock::createNewNumbersFilter(const TableModel *parentModel
                                               filterListWidget);
 
     connect(filter,
-            SIGNAL(newNumericFilter(int,double,double)),
+            SIGNAL(newNumericFilter(int, double, double)),
             this,
-            SIGNAL(newNumbersFiltering(int,double,double)));
+            SIGNAL(newNumbersFiltering(int, double, double)));
 
     return filter;
 }
 
 void FiltersDock::removeModel(const FilteringProxyModel* model)
 {
-    if( nullptr != model )
+    if (nullptr != model)
     {
         QWidget* widgetWithFiltersToDelete = modelsMap_.key(model);
         modelsMap_.remove(widgetWithFiltersToDelete);
@@ -188,7 +188,7 @@ void FiltersDock::removeModel(const FilteringProxyModel* model)
 
 void FiltersDock::activateFiltersForModel(const FilteringProxyModel* model)
 {
-    if( nullptr != model )
+    if (nullptr != model)
     {
         ui->stackedWidget->setCurrentWidget(modelsMap_.key(model));
     }
@@ -198,7 +198,7 @@ void FiltersDock::searchTextChanged(const QString arg1)
 {
     QWidget* currentWidget = ui->stackedWidget->currentWidget();
 
-    if ( nullptr == currentWidget )
+    if (nullptr == currentWidget)
     {
         Q_ASSERT(false);
         return;
@@ -206,9 +206,9 @@ void FiltersDock::searchTextChanged(const QString arg1)
 
     QList<Filter*> widgets = currentWidget->findChildren<Filter*>();
 
-    foreach(Filter* current, widgets)
+    for (Filter* current : widgets)
     {
-        if ( nullptr != current )
+        if (nullptr != current)
         {
             current->setVisible(current->title().contains(arg1, Qt::CaseInsensitive));
         }

@@ -40,7 +40,7 @@
 #include "CheckUpdatesDialog.h"
 #include "MainTab.h"
 
-VolbxMain::VolbxMain(QWidget *parent) :
+VolbxMain::VolbxMain(QWidget* parent) :
     QMainWindow(parent),
     filters_(nullptr),
     ui(new Ui::VolbxMain),
@@ -62,14 +62,14 @@ VolbxMain::VolbxMain(QWidget *parent) :
             SLOT(setTextFilterInProxy(int, QSet<QString>)));
 
     connect(filters_,
-            SIGNAL(newDateFiltering(int,QDate,QDate,bool)),
+            SIGNAL(newDateFiltering(int, QDate, QDate, bool)),
             tabWidget_,
-            SLOT(setDateFilterInProxy(int,QDate,QDate,bool)));
+            SLOT(setDateFilterInProxy(int, QDate, QDate, bool)));
 
     connect(filters_,
-            SIGNAL(newNumbersFiltering(int,double,double)),
+            SIGNAL(newNumbersFiltering(int, double, double)),
             tabWidget_,
-            SLOT(setNumericFilterInProxy(int,double,double)));
+            SLOT(setNumericFilterInProxy(int, double, double)));
 
     connect(ui->actionBasic_plot,
             SIGNAL(triggered()),
@@ -144,7 +144,7 @@ void VolbxMain::createOptionsMenu()
     QString styleName("Dark Orange");
     QAction* action = new QAction(styleName, ui->menuOptions);
     action->setCheckable(true);
-    if( activeStyl == styleName )
+    if (activeStyl == styleName)
     {
         action->setChecked(true);
     }
@@ -155,7 +155,7 @@ void VolbxMain::createOptionsMenu()
     styleName  = "Rounded Blue";
     action = new QAction(styleName, ui->menuOptions);
     action->setCheckable(true);
-    if( activeStyl == styleName )
+    if (activeStyl == styleName)
     {
         action->setChecked(true);
     }
@@ -167,11 +167,11 @@ void VolbxMain::createOptionsMenu()
     QDir directory(QCoreApplication::applicationDirPath());
     QFileInfoList styleFiles = directory.entryInfoList(nameFilter);
 
-    foreach( QFileInfo styleFile, styleFiles )
+    for (const QFileInfo& styleFile : styleFiles)
     {
         QAction* action = new QAction(styleFile.baseName(), ui->menuOptions);
         action->setCheckable(true);
-        if( activeStyl == styleFile.baseName() )
+        if (activeStyl == styleFile.baseName())
         {
             action->setChecked(true);
         }
@@ -181,11 +181,11 @@ void VolbxMain::createOptionsMenu()
 
     //Add qt available styles.
     QStringList qtStylesList = QStyleFactory::keys();
-    foreach (QString style, qtStylesList)
+    for (const QString& style : qtStylesList)
     {
         QAction* action = new QAction(style, ui->menuOptions);
         action->setCheckable(true);
-        if( activeStyl == style )
+        if (activeStyl == style)
         {
             action->setChecked(true);
         }
@@ -200,19 +200,19 @@ void VolbxMain::checkForUpdates()
 {
     bool checkForUpdates = false;
 
-    if( Configuration::getInstance().needToShowUpdatePickerDialog() )
+    if (Configuration::getInstance().needToShowUpdatePickerDialog())
     {
         CheckUpdatesDialog dialog(this);
 
         int reply = dialog.exec();
 
-        if( QDialog::Accepted == reply )
+        if (QDialog::Accepted == reply)
         {
             checkForUpdates = true;
         }
 
         //Remember if choice was checked.
-        if( true == dialog.saveFlagSet() )
+        if (true == dialog.saveFlagSet())
         {
             Configuration::getInstance().setUpdatesCheckingOption(checkForUpdates);
         }
@@ -222,7 +222,7 @@ void VolbxMain::checkForUpdates()
         checkForUpdates = Configuration::getInstance().needToCheckForUpdates();
     }
 
-    if( true == checkForUpdates )
+    if (true == checkForUpdates)
     {
         on_actionCheckForNewVersion_triggered();
     }
@@ -237,7 +237,7 @@ void VolbxMain::on_actionExit_triggered()
 
 void VolbxMain::on_actionFilters_triggered()
 {
-    if(filters_->isVisible())
+    if (filters_->isVisible())
     {
         filters_->hide();
     }
@@ -256,10 +256,10 @@ void VolbxMain::on_actionLogs_triggered()
 
 void VolbxMain::tabWasChanged(int index)
 {
-    if ( -1 != index )
+    if (-1 != index)
     {
         const FilteringProxyModel* model = tabWidget_->getCurrentProxyModel();
-        if ( nullptr == model )
+        if (nullptr == model)
         {
             return;
         }
@@ -272,7 +272,7 @@ void VolbxMain::tabWasChanged(int index)
     }
 }
 
-void VolbxMain::closeEvent(QCloseEvent *event)
+void VolbxMain::closeEvent(QCloseEvent* event)
 {
     Configuration::getInstance().save();
 
@@ -313,25 +313,25 @@ void VolbxMain::manageActions(bool tabExists)
     ui->actionExport->setEnabled(tabExists);
     ui->actionSaveDatasetAs->setEnabled(tabExists);
 
-	//Check if plot icons should be enabled.
+    //Check if plot icons should be enabled.
     bool activateCharts = tabExists;
-    if( true == tabExists )
+    if (true == tabExists)
     {
         const TableModel* dataModel = tabWidget_->getCurrentDataModel();
-        if( nullptr != dataModel )
+        if (nullptr != dataModel)
         {
             activateCharts = (true == activateCharts &&
                               true == dataModel->isSpecialColumnsSet());
         }
     }
 
-	//Enable/disable plot icons.
+    //Enable/disable plot icons.
     ui->actionBasic_plot->setEnabled(activateCharts);
     ui->actionHistogram->setEnabled(activateCharts);
     ui->actionGroup_plot->setEnabled(activateCharts);
 
-	//Set tooltips for plot icons.
-    if ( false == activateCharts )
+    //Set tooltips for plot icons.
+    if (false == activateCharts)
     {
         const static QString cannotCreateCharts =
             tr("Time and examined variable columns are not specified.");
@@ -349,7 +349,7 @@ void VolbxMain::manageActions(bool tabExists)
 
 void VolbxMain::on_actionSaveDatasetAs_triggered()
 {
-    if ( false == DatasetInner::datasetDirExistAndUserHavePermisions() )
+    if (false == DatasetInner::datasetDirExistAndUserHavePermisions())
     {
         QString msg(tr("Can not access folder "));
         msg.append(DatasetInner::getDatasetsDir());
@@ -363,13 +363,13 @@ void VolbxMain::on_actionSaveDatasetAs_triggered()
 
     SaveDatasetAs save(DatasetInner::getListOfAvailableDatasets());
 
-    if(QDialog::Accepted == save.exec())
+    if (QDialog::Accepted == save.exec())
     {
         QTime performanceTimer;
         performanceTimer.start();
 
         DataView* view = tabWidget_->getCurrentDataView();
-        if( nullptr == view )
+        if (nullptr == view)
         {
             return;
         }
@@ -377,8 +377,8 @@ void VolbxMain::on_actionSaveDatasetAs_triggered()
         ExportData::saveDataset(save.getChosenDatasetName(), view);
 
         LOG(LOG_IMPORT_EXPORT, "File saved in total time " +
-                               QString::number(performanceTimer.elapsed()*1.0/1000) +
-                               " seconds.");
+            QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
+            " seconds.");
     }
 }
 
@@ -401,7 +401,7 @@ bool VolbxMain::loadDataset(Dataset* dataset)
         return false;
     }
 
-    if ( nullptr != dataset && false == dataset->isValid() )
+    if (nullptr != dataset && false == dataset->isValid())
     {
         return false;
     }
@@ -413,12 +413,12 @@ void VolbxMain::on_actionImportData_triggered()
 {
     ImportData import(this);
 
-    if ( QDialog::Accepted == import.exec() )
+    if (QDialog::Accepted == import.exec())
     {
         DatasetDefinition* datasetDefinition = import.getSelectedDataset();
 
-        if ( nullptr == datasetDefinition ||
-             (nullptr != datasetDefinition && false == datasetDefinition->isValid()) )
+        if (nullptr == datasetDefinition ||
+            (nullptr != datasetDefinition && false == datasetDefinition->isValid()))
         {
             QMessageBox::critical(this,
                                   tr("Import error"),
@@ -431,13 +431,13 @@ void VolbxMain::on_actionImportData_triggered()
 
         Dataset* dataset = nullptr;
 
-        switch( import.getImportDataType() )
+        switch (import.getImportDataType())
         {
             case ImportData::IMPORT_TYPE_INNER:
             {
                 DatasetDefinitionInner* innerDataset =
-                        dynamic_cast<DatasetDefinitionInner*>(datasetDefinition);
-                if ( nullptr != innerDataset )
+                    dynamic_cast<DatasetDefinitionInner*>(datasetDefinition);
+                if (nullptr != innerDataset)
                 {
                     dataset = new DatasetInner(innerDataset);
                 }
@@ -448,8 +448,8 @@ void VolbxMain::on_actionImportData_triggered()
             case ImportData::IMPORT_TYPE_SPREADSHEET:
             {
                 DatasetDefinitionSpreadsheet* definitionSpreadsheet =
-                        dynamic_cast<DatasetDefinitionSpreadsheet*>(datasetDefinition);
-                if ( nullptr != definitionSpreadsheet )
+                    dynamic_cast<DatasetDefinitionSpreadsheet*>(datasetDefinition);
+                if (nullptr != definitionSpreadsheet)
                 {
                     dataset = new DatasetSpreadsheet(definitionSpreadsheet);
                 }
@@ -464,7 +464,7 @@ void VolbxMain::on_actionImportData_triggered()
             }
         }
 
-        if( nullptr == dataset )
+        if (nullptr == dataset)
         {
             QMessageBox::critical(this,
                                   tr("Import error"),
@@ -472,7 +472,7 @@ void VolbxMain::on_actionImportData_triggered()
             return;
         }
 
-        if ( false == loadDataset(dataset) )
+        if (false == loadDataset(dataset))
         {
             delete dataset;
             return;
@@ -487,7 +487,7 @@ void VolbxMain::addMainTabForDataset(Dataset* dataset)
 {
     MainTab* mainTab = new MainTab(dataset, tabWidget_);
     const FilteringProxyModel* proxyModel = mainTab->getCurrentProxyModel();
-    if( nullptr != proxyModel )
+    if (nullptr != proxyModel)
     {
         filters_->addModel(proxyModel);
     }
@@ -510,7 +510,7 @@ void VolbxMain::updateCheckReplyFinished(QNetworkReply* reply)
     reply->deleteLater();
 
     //Check errors.
-    if( true == Networking::errorsOccuredCheck(reply) )
+    if (true == Networking::errorsOccuredCheck(reply))
     {
         ui->statusBar->showMessage(tr("Connection error encountered."));
         return;
@@ -520,26 +520,26 @@ void VolbxMain::updateCheckReplyFinished(QNetworkReply* reply)
     QString newestVersion =
         Networking::checkReplyAndReturnAvailableVersion(reply, notNeededHereList);
 
-    if( true == newestVersion.isEmpty() )
+    if (true == newestVersion.isEmpty())
     {
         ui->statusBar->showMessage(tr("Wrong answer received from server."));
         return;
     }
 
-    if( newestVersion != QApplication::applicationVersion() )
+    if (newestVersion != QApplication::applicationVersion())
     {
-         QMessageBox::StandardButton answer =
-                QMessageBox::question(nullptr,
-                                      tr("New version"),
-                                      tr("New version is available. Download and install it now?"));
+        QMessageBox::StandardButton answer =
+            QMessageBox::question(nullptr,
+                                  tr("New version"),
+                                  tr("New version is available. Download and install it now?"));
 
         //When user want to update.
-        if( QMessageBox::Yes == answer )
+        if (QMessageBox::Yes == answer)
         {
-            if( QFile::exists(QCoreApplication::applicationDirPath() +
+            if (QFile::exists(QCoreApplication::applicationDirPath() +
                               '/' +
                               Constants::updaterName_ +
-                              Constants::exeFileSuffix_) )
+                              Constants::exeFileSuffix_))
             {
                 QProcess::startDetached(QString(Constants::updaterName_));
                 QCoreApplication::quit();
@@ -573,7 +573,7 @@ void VolbxMain::on_actionUpdateAuto_toggled(bool alwaysCheck)
 void VolbxMain::qtStylePicked()
 {
     QAction* action = dynamic_cast<QAction*>(sender());
-    if( nullptr != action)
+    if (nullptr != action)
     {
         QString style = action->text();
         Application::setQtStyle(style);
@@ -584,7 +584,7 @@ void VolbxMain::qtStylePicked()
 void VolbxMain::customStylePicked()
 {
     QAction* action = dynamic_cast<QAction*>(sender());
-    if( nullptr != action)
+    if (nullptr != action)
     {
         QString styleName = action->text();
         Application::setCssStyle(styleName);

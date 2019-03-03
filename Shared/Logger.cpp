@@ -42,9 +42,10 @@ Logger::Logger() :
 
     //Default config, set all active.
     activeLogs_ = new QMap<LogTypes, bool>();
-    for(int i = 0; i < (int)LOG_END; ++i) {
-        (*activeLogs_)[(LogTypes)i] = true;
-}
+    for (int i = 0; i < static_cast<int>(LOG_END); ++i)
+    {
+        (*activeLogs_)[static_cast<LogTypes>(i)] = true;
+    }
 
     reloadCheckBoxes();
 
@@ -72,12 +73,13 @@ void Logger::log(LogTypes type,
 {
     Q_ASSERT(nullptr != display_ && nullptr != textEdit_);
 
-    if( nullptr == display_ || nullptr == textEdit_) {
+    if (nullptr == display_ || nullptr == textEdit_)
+    {
         return;
-}
+    }
 
     //TODO Use __file__ and __line__
-    if(!(*activeLogs_)[type])
+    if (!(*activeLogs_)[type])
     {
         return;
     }
@@ -91,7 +93,7 @@ void Logger::log(LogTypes type,
     QString time;
     time.append(QTime::currentTime().toString(QLatin1String("hh:mm:ss")));
     textEdit_->insertHtml(timeStyleBegin + time + styleEnd +
-                          QLatin1String(" (") + QLatin1String(LogTypeNames_[(int)type]) + QLatin1String(")") +
+                          QLatin1String(" (") + QLatin1String(LogTypeNames_[static_cast<int>(type)]) + QLatin1String(")") +
                           QLatin1String(" - ") +
                           functionStyleBegin + QLatin1String(function) + styleEnd +
                           QLatin1String(", ") +
@@ -112,13 +114,14 @@ void Logger::reloadCheckBoxes()
 
     Q_ASSERT(verticalLayout != nullptr);
 
-    if( verticalLayout == nullptr ) {
+    if (verticalLayout == nullptr)
+    {
         return;
-}
+    }
 
     //Delete all.
     QList<QCheckBox*> checkBoxy = verticalLayout->findChildren<QCheckBox*>();
-    foreach(QCheckBox* checkBox, checkBoxy)
+    for (QCheckBox* checkBox : checkBoxy)
     {
         verticalLayout->removeWidget(checkBox);
         delete checkBox;
@@ -130,10 +133,10 @@ void Logger::reloadCheckBoxes()
     {
         i.next();
 
-        CheckBox* check = new CheckBox(i.key(), QLatin1String(LogTypeNames_[(int)i.key()]), display_);
+        CheckBox* check = new CheckBox(i.key(), QLatin1String(LogTypeNames_[static_cast<int>(i.key())]), display_);
         check->setChecked(i.value());
         connect(check, SIGNAL(toggled(bool)), this, SLOT(changeActiveLogs(bool)));
-        verticalLayout->insertWidget((int)i.key(), check);
+        verticalLayout->insertWidget(static_cast<int>(i.key()), check);
     }
 }
 
@@ -165,7 +168,7 @@ void Logger::changeActiveLogs(bool state)
 
 void Logger::switchVisibility()
 {
-    if( nullptr != display_ )
+    if (nullptr != display_)
     {
         display_->setVisible(!display_->isVisible());
     }

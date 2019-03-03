@@ -14,7 +14,7 @@
 
 namespace Ui {
     class GroupPlotGui;
-}
+} // namespace Ui
 
 class TableModel;
 

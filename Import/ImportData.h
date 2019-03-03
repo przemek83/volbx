@@ -11,8 +11,9 @@ class DatasetDefinitionInner;
 class DatasetDefinition;
 class QDialogButtonBox;
 
-namespace Ui {
-    class ImportData;
+namespace Ui
+{
+class ImportData;
 }
 
 /**
@@ -23,7 +24,7 @@ class ImportData : public QDialog
 {
     Q_OBJECT
 public:
-    explicit ImportData(QWidget *parent = nullptr);
+    explicit ImportData(QWidget* parent = nullptr);
 
     ~ImportData() override;
 
@@ -44,9 +45,9 @@ public:
 private:
     Q_DISABLE_COPY(ImportData)
 
-    Ui::ImportData *ui;
+    Ui::ImportData* ui;
 
-    QDialogButtonBox* buttonBox_;
+    QDialogButtonBox* buttonBox_ {nullptr};
 
 private slots:
     void checkAndAccept();

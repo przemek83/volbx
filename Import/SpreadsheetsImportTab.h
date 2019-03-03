@@ -5,7 +5,7 @@
 
 namespace Ui {
 class SpreadsheetsImportTab;
-}
+} // namespace Ui
 
 /**
  * @brief Spreadsheets import tab.

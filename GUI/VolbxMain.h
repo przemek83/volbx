@@ -6,8 +6,9 @@
 #include <QSet>
 #include <QNetworkAccessManager>
 
-namespace Ui {
-    class VolbxMain;
+namespace Ui
+{
+class VolbxMain;
 }
 
 class FiltersDock;
@@ -26,14 +27,14 @@ class VolbxMain : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit VolbxMain(QWidget *parent = nullptr);
+    explicit VolbxMain(QWidget* parent = nullptr);
 
     ~VolbxMain() override;
 
     void checkForUpdates();
 
 protected:
-    void closeEvent(QCloseEvent *event) override;
+    void closeEvent(QCloseEvent* event) override;
 
 private:
     Q_DISABLE_COPY(VolbxMain)
@@ -45,18 +46,18 @@ private:
     void addMainTabForDataset(Dataset* dataset);
 
     ///Side dock with filters.
-    FiltersDock* filters_;
+    FiltersDock* filters_ {nullptr};
 
     void manageActions(bool tabExists);
 
     bool loadDataset(Dataset* dataset);
 
-    Ui::VolbxMain *ui;
+    Ui::VolbxMain* ui;
 
     void setupStatusBar();
 
     ///Main tab widget/center widget.
-    MainTabWidget* tabWidget_;
+    MainTabWidget* tabWidget_ {nullptr};
 
     ///Network manager used to retrieve current version available.
     QNetworkAccessManager networkManager_;

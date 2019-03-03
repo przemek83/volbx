@@ -5,7 +5,7 @@
 
 namespace Ui {
     class About;
-}
+} // namespace Ui
 
 /**
  * @brief The About dialog class.

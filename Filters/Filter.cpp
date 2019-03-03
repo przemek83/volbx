@@ -5,7 +5,7 @@
 
 #include "Filter.h"
 
-Filter::Filter(QString title, int column, QWidget *parent) :
+Filter::Filter(QString title, int column, QWidget* parent) :
     QGroupBox(title, parent), column_(column)
 {
     setCheckable(true);
@@ -16,9 +16,9 @@ Filter::Filter(QString title, int column, QWidget *parent) :
 void Filter::setChecked(bool checked)
 {
     QGroupBox::setChecked(checked);
-    QList<QWidget *> widgets = findChildren<QWidget*>();
+    QList<QWidget*> widgets = findChildren<QWidget*>();
 
-    foreach(QWidget* current, widgets)
+    for (QWidget* current : widgets)
     {
         current->setVisible(checked);
     }
