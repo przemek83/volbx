@@ -17,7 +17,7 @@ class Update : public QWidget
 {
 Q_OBJECT
 public:
-    explicit Update(QWidget* parent = 0);
+    explicit Update(QWidget* parent = nullptr);
 
     virtual ~Update();
 

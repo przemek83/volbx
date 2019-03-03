@@ -14,7 +14,7 @@ class SpreadsheetsImportTab : public ImportTab
 {
     Q_OBJECT
 public:
-    explicit SpreadsheetsImportTab(QWidget *parent = 0);
+    explicit SpreadsheetsImportTab(QWidget *parent = nullptr);
 
     virtual ~SpreadsheetsImportTab();
 

@@ -25,13 +25,14 @@ void showDifferentInstanceRunnningError()
 bool isUniqueInstance()
 {
     //Only one instance can run. Intentionally leak.
-    QSharedMemory* sharedMemory = new QSharedMemory(QLatin1String(VER_PRODUCTNAME_STR));
+    QSharedMemory* sharedMemory =
+        new QSharedMemory(QStringLiteral(VER_PRODUCTNAME_STR));
 
     LOG(LOG_APP,
         QLatin1String("Setting shared memory key named ") +
         QApplication::applicationName() + QLatin1Char('.'));
 
-    if(sharedMemory->attach())
+    if (sharedMemory->attach())
     {
         LOG(LOG_APP,
             QLatin1String("Attached to shared memory. Different instance already running, exiting."));
@@ -41,7 +42,7 @@ bool isUniqueInstance()
 
     LOG(LOG_APP, QLatin1String("Attaching to shared memory successful. Continue."));
 
-    if(!sharedMemory->create(1))
+    if (!sharedMemory->create(1))
     {
         LOG(LOG_APP,
             QLatin1String("Creating shared memory failed. Different instance already running, exiting."));
@@ -54,14 +55,14 @@ bool isUniqueInstance()
     return true;
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
 
     Application::setAdditionalApplicatioInfo(VER_PRODUCTNAME_STR);
-    Application::setQtStyle(QLatin1String("Fusion"));
+    Application::setQtStyle(QStringLiteral("Fusion"));
 
-    if( !isUniqueInstance() )
+    if (!isUniqueInstance())
     {
         showDifferentInstanceRunnningError();
 
@@ -71,5 +72,5 @@ int main(int argc, char *argv[])
     Update w;
     w.show();
 
-    return a.exec();
+    return QApplication::exec();
 }

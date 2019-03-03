@@ -15,7 +15,7 @@ public:
      * Construktor. Sets default values.
      * @param parent parent widget.
      */
-    DoubleSlider(int min, int max, QWidget *parent = 0);
+    DoubleSlider(int min, int max, QWidget *parent = nullptr);
 
     /**
      * Destruktor.

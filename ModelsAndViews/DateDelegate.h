@@ -9,7 +9,7 @@
 class DateDelegate : public QStyledItemDelegate
 {
 public:
-    explicit DateDelegate(QObject* parent = 0);
+    explicit DateDelegate(QObject* parent = nullptr);
 
     virtual ~DateDelegate() = default;
 

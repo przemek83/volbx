@@ -190,10 +190,10 @@ QwtText BasicDataPlot::LinearPicker::trackerTextF(const QPointF &pos) const
     return coords;
 }
 
-void BasicDataPlot::legendItemChecked(QVariant itemInfo, bool on, int /*index*/)
+void BasicDataPlot::legendItemChecked(const QVariant& itemInfo, bool on, int /*index*/)
 {
     QwtPlotItem *plotItem = infoToItem( itemInfo );
-    if ( plotItem )
+    if ( plotItem != nullptr )
     {
         plotItem->setVisible( on );
         replot();

@@ -76,7 +76,7 @@ private:
     void setLegendItemChecked(QwtPlotCurve* plot);
 
 private slots:
-    void legendItemChecked(QVariant itemInfo, bool on, int index);
+    void legendItemChecked(const QVariant& itemInfo, bool on, int index);
 };
 
 #endif // BASICDATAPLOT_H

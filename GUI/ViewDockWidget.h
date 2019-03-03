@@ -12,9 +12,10 @@ class ViewDockWidget : public DockWidget
 {
     Q_OBJECT
 public:
-    explicit ViewDockWidget(QString title,  QWidget* parent = 0, Qt::WindowFlags flags = 0);
+    explicit ViewDockWidget(QString title, QWidget* parent = nullptr,
+                            Qt::WindowFlags flags = Qt::Widget);
 
-    virtual ~ViewDockWidget() = default;
+    ~ViewDockWidget() override = default;
 
     void activateSelectButtons();
 

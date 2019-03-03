@@ -6,9 +6,18 @@
 
 class QNetworkReply;
 
-class Networking
+class Networking final
 {
 public:
+    Networking() = delete;
+    ~Networking() = delete;
+
+    Networking& operator=(const Networking& other) = delete;
+    Networking(const Networking& other) = delete;
+
+    Networking& operator=(Networking&& other) = delete;
+    Networking(Networking&& other) = delete;
+
     static QNetworkRequest getCurrentVersionRequest();
 
     static QNetworkRequest getDownloadFileRequest(QString file);
@@ -21,10 +30,6 @@ public:
     static int getMaxTries();
 
 private:
-    Networking();
-    virtual ~Networking();
-    Q_DISABLE_COPY(Networking)
-
     ///Max network tries before reporting error.
     static const int maxTries_;
 };

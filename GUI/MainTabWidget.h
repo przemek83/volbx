@@ -17,7 +17,7 @@ class MainTabWidget : public QTabWidget
 {
     Q_OBJECT
 public:
-    explicit MainTabWidget(QWidget *parent = 0);
+    explicit MainTabWidget(QWidget *parent = nullptr);
 
     virtual ~MainTabWidget() = default;
 

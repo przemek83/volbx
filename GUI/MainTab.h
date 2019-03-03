@@ -16,7 +16,7 @@ class MainTab : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit MainTab(Dataset *dataset, QWidget *parent = 0);
+    explicit MainTab(Dataset *dataset, QWidget *parent = nullptr);
 
     virtual ~MainTab() = default;
 

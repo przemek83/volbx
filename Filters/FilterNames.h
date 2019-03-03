@@ -21,7 +21,7 @@ public:
     FilterNames(QString name,
                 int column,
                 const QStringList& initialList,
-                QWidget *parent = 0);
+                QWidget *parent = nullptr);
 
     virtual ~FilterNames();
 

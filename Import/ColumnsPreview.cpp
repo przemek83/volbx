@@ -26,7 +26,7 @@ void ColumnsPreview::setDatasetDefinitionSampleInfo(const DatasetDefinition* dat
     setColumnCount(columns);
 
     QStringList labels;
-    for(int i = 0; i < columns; ++i )
+    for (int i = 0; i < columns; ++i)
     {
         labels.append(datasetDefinition->getColumnName(i));
     }
@@ -40,9 +40,9 @@ void ColumnsPreview::setDatasetDefinitionSampleInfo(const DatasetDefinition* dat
 
     Q_ASSERT(columns == sampleData->at(0).size());
 
-    for( int i = 0; i < rows; ++i )
+    for (int i = 0; i < rows; ++i)
     {
-        for( int j = 0; j < columns; ++j )
+        for (int j = 0; j < columns; ++j)
         {
             QTableWidgetItem* item = new QTableWidgetItem(sampleData->at(i).at(j).toString());
             item->setFlags(item->flags() & ~Qt::ItemIsEditable);
@@ -62,8 +62,8 @@ void ColumnsPreview::clearDataAndDisable()
 void ColumnsPreview::selectCurrentColumn(int column)
 {
     QTableWidgetItem* itemToSelect = item(0, column);
-    if ( nullptr != itemToSelect &&
-         false == itemToSelect->isSelected() )
+    if (nullptr != itemToSelect &&
+        false == itemToSelect->isSelected())
     {
         selectColumn(column);
     }
@@ -71,15 +71,15 @@ void ColumnsPreview::selectCurrentColumn(int column)
 
 void ColumnsPreview::selectionChanged()
 {
-    QList<QTableWidgetItem *> selectedItemsList = selectedItems();
+    QList<QTableWidgetItem*> selectedItemsList = selectedItems();
 
-    if ( true == selectedItemsList.isEmpty() )
+    if (true == selectedItemsList.isEmpty())
     {
-         return;
+        return;
     }
 
     QTableWidgetItem* selectedItem = selectedItems().first();
-    if ( nullptr != selectedItem )
+    if (nullptr != selectedItem)
     {
         emit currentColumnNeedSync(selectedItem->column());
     }

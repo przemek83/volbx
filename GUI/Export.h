@@ -16,7 +16,7 @@ class Export : public QDialog
 {
     Q_OBJECT
 public:
-    Export(QMainWindow* tab, QWidget *parent = 0);
+    Export(QMainWindow* tab, QWidget *parent = nullptr);
 
     virtual ~Export();
 

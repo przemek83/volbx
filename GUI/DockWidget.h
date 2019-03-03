@@ -12,11 +12,10 @@ class DockWidget : public QDockWidget
 {
     Q_OBJECT
 public:
-    DockWidget(QString titleText,
-               QWidget* parent = 0,
-               Qt::WindowFlags flags = 0);
+    DockWidget(QString titleText, QWidget* parent = nullptr,
+               Qt::WindowFlags flags = Qt::Widget);
 
-    virtual ~DockWidget() = default;
+    ~DockWidget() override = default;
 
 public slots:
     void setNewToolTip(QString text);

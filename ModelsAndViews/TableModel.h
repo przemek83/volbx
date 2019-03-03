@@ -18,7 +18,7 @@ class TableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    TableModel(Dataset* dataset, QObject *parent = 0);
+    TableModel(Dataset* dataset, QObject *parent = nullptr);
 
     virtual ~TableModel();
 

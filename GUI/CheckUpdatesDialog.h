@@ -14,7 +14,7 @@ class CheckUpdatesDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit CheckUpdatesDialog(QWidget *parent = 0);
+    explicit CheckUpdatesDialog(QWidget *parent = nullptr);
 
     virtual ~CheckUpdatesDialog();
 

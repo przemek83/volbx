@@ -12,7 +12,7 @@ class ImportTab : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ImportTab(QWidget *parent = 0);
+    explicit ImportTab(QWidget *parent = nullptr);
 
     virtual ~ImportTab() = default;
 

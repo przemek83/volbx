@@ -24,7 +24,7 @@ class FiltersDock : public DockWidget
 {
     Q_OBJECT
 public:
-    explicit FiltersDock(QWidget *parent = 0);
+    explicit FiltersDock(QWidget *parent = nullptr);
 
     virtual ~FiltersDock();
 

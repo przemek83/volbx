@@ -13,7 +13,7 @@ class ColumnsPreview : public QTableWidget
 {
     Q_OBJECT
 public:
-    explicit ColumnsPreview(QWidget* parent = 0);
+    explicit ColumnsPreview(QWidget* parent = nullptr);
 
     virtual ~ColumnsPreview() = default;
 

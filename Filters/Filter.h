@@ -10,7 +10,7 @@ class Filter : public QGroupBox
 {
     Q_OBJECT
 public:
-    Filter(QString title, int column, QWidget *parent = 0);
+    Filter(QString title, int column, QWidget *parent = nullptr);
 
     virtual ~Filter() = default;
 

@@ -23,7 +23,7 @@ public:
                 int column,
                 QDate min, QDate max,
                 bool emptyDates,
-                QWidget *parent = 0);
+                QWidget *parent = nullptr);
 
     virtual ~FilterDates();
 

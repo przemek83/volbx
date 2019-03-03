@@ -17,7 +17,7 @@ class DatasetDefinitionVisualization : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DatasetDefinitionVisualization(QWidget *parent = 0);
+    explicit DatasetDefinitionVisualization(QWidget *parent = nullptr);
 
     virtual ~DatasetDefinitionVisualization();
 

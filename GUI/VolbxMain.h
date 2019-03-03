@@ -26,7 +26,7 @@ class VolbxMain : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit VolbxMain(QWidget *parent = 0);
+    explicit VolbxMain(QWidget *parent = nullptr);
 
     virtual ~VolbxMain();
 

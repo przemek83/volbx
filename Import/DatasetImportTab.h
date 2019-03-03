@@ -10,7 +10,7 @@ class DatasetImportTab : public ImportTab
 {
     Q_OBJECT
 public:
-    explicit DatasetImportTab(QWidget *parent = 0);
+    explicit DatasetImportTab(QWidget *parent = nullptr);
 
     virtual ~DatasetImportTab() = default;
 

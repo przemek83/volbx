@@ -19,7 +19,7 @@ public:
      * @param alreadyUsedNames names of existing datasets.
      * @param parent pointer to parent.
      */
-    SaveDatasetAs(QStringList alreadyUsedNames, QWidget *parent = 0);
+    SaveDatasetAs(QStringList alreadyUsedNames, QWidget *parent = nullptr);
 
     virtual ~SaveDatasetAs();
 

@@ -1,4 +1,4 @@
-#ifndef GROUPPLOT_H
+﻿#ifndef GROUPPLOT_H
 #define GROUPPLOT_H
 
 #include <QEvent>
@@ -20,7 +20,7 @@ class QwtPlotCurve;
 class GroupPlot : public PlotBase
 {
 public:
-    explicit GroupPlot(QWidget* parent = 0);
+    explicit GroupPlot(QWidget* parent = nullptr);
 
     virtual ~GroupPlot();
 

@@ -26,7 +26,7 @@ class GroupPlotGui : public PlotDockWidget
 {
     Q_OBJECT
 public:
-    GroupPlotGui(const TableModel* model, QWidget *parent = 0);
+    GroupPlotGui(const TableModel* model, QWidget *parent = nullptr);
 
     virtual ~GroupPlotGui();
 

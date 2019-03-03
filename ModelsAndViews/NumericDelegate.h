@@ -9,7 +9,7 @@
 class NumericDelegate : public QStyledItemDelegate
 {
 public:
-    explicit NumericDelegate(QObject * parent = 0);
+    explicit NumericDelegate(QObject * parent = nullptr);
 
     virtual ~NumericDelegate() = default;
 

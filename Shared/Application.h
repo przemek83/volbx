@@ -6,9 +6,18 @@
 /**
  * @brief Set of static methods used to change application look or behaviour.
  */
-class Application
+class Application final
 {
 public:
+    Application() = delete;
+    ~Application() = delete;
+
+    Application& operator=(const Application& other) = delete;
+    Application(const Application& other) = delete;
+
+    Application& operator=(Application&& other) = delete;
+    Application(Application&& other) = delete;
+
     ///Set version, application name, company name.
     static void setAdditionalApplicatioInfo(const char* productName);
 
@@ -29,10 +38,6 @@ public:
     static void initStyle(QString nameFromConfig);
 
 private:
-    Application() = default;
-    virtual ~Application() = default;
-    Q_DISABLE_COPY(Application)
-
     static QString getStylePath(QString styleName);
 
     static QString getResStylePath(QString styleName);

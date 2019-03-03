@@ -7,16 +7,6 @@
 
 const int Networking::maxTries_ = 5;
 
-Networking::Networking()
-{
-    Q_ASSERT(false);
-}
-
-Networking::~Networking()
-{
-    Q_ASSERT(false);
-}
-
 int Networking::getMaxTries()
 {
     return maxTries_;
@@ -34,7 +24,7 @@ QNetworkRequest Networking::getDownloadFileRequest(QString file)
 
 bool Networking::errorsOccuredCheck(QNetworkReply* reply)
 {
-    if(QNetworkReply::NoError != reply->error())
+    if (QNetworkReply::NoError != reply->error())
     {
         return true;
     }
@@ -42,21 +32,7 @@ bool Networking::errorsOccuredCheck(QNetworkReply* reply)
     int httpStatusCode =
         reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toUInt();
 
-    switch(httpStatusCode)
-    {
-        case 200:
-        {
-            if (reply->isReadable())
-            {
-                return false;
-            }
-        }
-
-        default:
-        {
-            return true;
-        }
-    }
+    return !(httpStatusCode == 200 && reply->isReadable());
 }
 
 QString Networking::checkReplyAndReturnAvailableVersion(QNetworkReply* reply,
@@ -68,7 +44,7 @@ QString Networking::checkReplyAndReturnAvailableVersion(QNetworkReply* reply,
 
     filesList = replyString.split(QLatin1Char('\n'));
 
-    if(filesList.isEmpty() || filesList.at(0) != QLatin1String("Volbx-Updade-Info"))
+    if (filesList.isEmpty() || filesList.at(0) != QLatin1String("Volbx-Updade-Info"))
     {
         return QLatin1String("");
     }

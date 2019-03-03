@@ -16,7 +16,7 @@ class FilteringProxyModel : public QSortFilterProxyModel
 {
     Q_OBJECT
 public:
-    explicit FilteringProxyModel(QObject *parent = 0);
+    explicit FilteringProxyModel(QObject *parent = nullptr);
 
     virtual ~FilteringProxyModel() = default;
 

@@ -15,7 +15,7 @@ class HistogramPlotGui : public PlotDockWidget
 {
     Q_OBJECT
 public:
-    explicit HistogramPlotGui(QWidget* parent = 0);
+    explicit HistogramPlotGui(QWidget* parent = nullptr);
 
     virtual ~HistogramPlotGui();
 

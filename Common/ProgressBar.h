@@ -23,7 +23,7 @@ public:
         PROGRESS_TITLE_END
     };
 
-    ProgressBar(ProgressBar::ProgressTitle title, int max, QWidget* parent = 0);
+    ProgressBar(ProgressBar::ProgressTitle title, int max, QWidget* parent = nullptr);
 
     virtual ~ProgressBar() = default;
 

@@ -39,7 +39,7 @@ enum LogTypes
  */
 class Logger : public QObject
 {
-Q_OBJECT
+    Q_OBJECT
 public:
     static Logger* getInstance();
 
@@ -61,7 +61,7 @@ private:
     class CheckBox : public QCheckBox
     {
     public:
-        CheckBox(LogTypes type, QString content, QWidget* parent = 0);
+        CheckBox(LogTypes type, QString content, QWidget* parent = nullptr);
         virtual ~CheckBox();
         LogTypes logType();
 

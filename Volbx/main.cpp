@@ -17,13 +17,14 @@
 void overwriteUpdaterfIfNeeded()
 {
     QString updaterFile(QCoreApplication::applicationDirPath() + "/" +
-                        QString(Constants::updaterName_) +
-                        QString(Constants::exeFileSuffix_));
+                        QString::fromLatin1(Constants::updaterName_) +
+                        QString::fromLatin1(Constants::exeFileSuffix_));
 
-    if(QFile::exists(updaterFile + QString(Constants::tmpFileSuffix_)))
+    if (QFile::exists(updaterFile +
+                      QString::fromLatin1(Constants::tmpFileSuffix_)))
     {
         LOG(LOG_APP, "Overwriting " + updaterFile + " by file " +
-                     updaterFile + Constants::tmpFileSuffix_);
+            updaterFile + Constants::tmpFileSuffix_);
 
         QFile::remove(updaterFile);
         QFile::rename(updaterFile + QString(Constants::tmpFileSuffix_),
@@ -31,7 +32,7 @@ void overwriteUpdaterfIfNeeded()
     }
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
 
@@ -53,5 +54,5 @@ int main(int argc, char *argv[])
     w.show();
     w.checkForUpdates();
 
-    return a.exec();
+    return QApplication::exec();
 }

@@ -16,7 +16,7 @@ class DatasetsListBrowser : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DatasetsListBrowser(QWidget* parent = 0);
+    explicit DatasetsListBrowser(QWidget* parent = nullptr);
 
     virtual ~DatasetsListBrowser();
 

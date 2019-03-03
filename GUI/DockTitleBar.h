@@ -16,7 +16,7 @@ class DockTitleBar : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DockTitleBar(QWidget *parent = 0);
+    explicit DockTitleBar(QWidget *parent = nullptr);
 
     virtual ~DockTitleBar();
 
