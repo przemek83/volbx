@@ -19,7 +19,7 @@ class DatasetDefinitionVisualization : public QWidget
 public:
     explicit DatasetDefinitionVisualization(QWidget *parent = nullptr);
 
-    virtual ~DatasetDefinitionVisualization();
+    ~DatasetDefinitionVisualization() override;
 
     void setDatasetDefiniton(DatasetDefinition* datasetDefinition);
 

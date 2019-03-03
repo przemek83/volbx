@@ -20,7 +20,7 @@ public:
     /**
      * Destruktor.
      */
-    virtual ~DoubleSlider() = default;
+    ~DoubleSlider() override = default;
 
     /**
      * Get actual minimum.

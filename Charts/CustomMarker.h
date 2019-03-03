@@ -13,23 +13,21 @@ class CustomMarker: public QwtPlotItem
 public:
     explicit CustomMarker(QVector<Quantiles>* quantiles);
 
-    virtual ~CustomMarker() = default;
+    ~CustomMarker() override = default;
 
-    virtual int rtti() const;
+    int rtti() const override;
 
-    virtual void draw(QPainter *p,
-                      const QwtScaleMap &xMap,
-                      const QwtScaleMap &yMap,
-                      const QRectF &rect) const;
+    void draw(QPainter* p, const QwtScaleMap& xMap, const QwtScaleMap& yMap,
+              const QRectF& rect) const override;
 
 protected:
     virtual void drawLegend(QPainter* p,
                             const QRectF& rect) const = 0;
 
-    virtual void drawElement(QPainter *p,
+    virtual void drawElement(QPainter* p,
                              int elementNumber,
-                             const QwtScaleMap &xMap,
-                             const QwtScaleMap &yMap,
+                             const QwtScaleMap& xMap,
+                             const QwtScaleMap& yMap,
                              float width,
                              Quantiles& quantiles) const = 0;
 

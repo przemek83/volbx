@@ -14,7 +14,7 @@ class ImportTab : public QWidget
 public:
     explicit ImportTab(QWidget *parent = nullptr);
 
-    virtual ~ImportTab() = default;
+    ~ImportTab() override = default;
 
     virtual DatasetDefinition* getDatasetDefinition() = 0;
 

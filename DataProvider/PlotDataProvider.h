@@ -26,7 +26,7 @@ class PlotDataProvider : public QObject
 public:
     explicit PlotDataProvider(int defaultGroupingColumn);
 
-    virtual ~PlotDataProvider() = default;
+    ~PlotDataProvider() override = default;
 
     /**
      * @brief reCompute all data for plots.

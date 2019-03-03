@@ -23,9 +23,9 @@ class DataView : public QTableView
 public:
     explicit DataView(QWidget *parent = nullptr);
 
-    virtual ~DataView();
+    ~DataView() override;
 
-    virtual void setModel(QAbstractItemModel* model);
+    void setModel(QAbstractItemModel *model) override;
 
     const PlotDataProvider* getPlotDataProvider();
 
@@ -35,9 +35,9 @@ public slots:
     void groupingColumnChanged(int column);
 
 protected:
-    virtual void mouseReleaseEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
-    virtual void keyPressEvent(QKeyEvent* event);
+    void keyPressEvent(QKeyEvent *event) override;
 
 private:
     Q_DISABLE_COPY(DataView)

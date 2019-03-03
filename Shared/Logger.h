@@ -53,7 +53,7 @@ public:
 
 private:
     Logger();
-    virtual ~Logger();
+    ~Logger() override;
     Q_DISABLE_COPY(Logger)
 
     QMap<LogTypes, bool>* activeLogs_;
@@ -62,7 +62,7 @@ private:
     {
     public:
         CheckBox(LogTypes type, QString content, QWidget* parent = nullptr);
-        virtual ~CheckBox();
+        ~CheckBox() override;
         LogTypes logType();
 
     private:

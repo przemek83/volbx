@@ -12,9 +12,9 @@ class Zoomer: public QwtPlotZoomer
 public:
     explicit Zoomer(QwtPlotCanvas *canvas);
 
-    virtual ~Zoomer() = default;
+    ~Zoomer() override = default;
 
-    virtual QwtText trackerTextF(const QPointF &pos) const;
+    QwtText trackerTextF(const QPointF &pos) const override;
 
     void restart();
 

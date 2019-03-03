@@ -21,7 +21,7 @@ public:
      */
     SaveDatasetAs(QStringList alreadyUsedNames, QWidget *parent = nullptr);
 
-    virtual ~SaveDatasetAs();
+    ~SaveDatasetAs() override;
 
     /**
      * @brief acces to entered by user name of dataset.

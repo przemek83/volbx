@@ -15,37 +15,34 @@ class DatasetDefinitionXlsx : public DatasetDefinitionSpreadsheet
 public:
     DatasetDefinitionXlsx(const QString& name, QString& zipFileName);
 
-    virtual ~DatasetDefinitionXlsx() = default;
+    ~DatasetDefinitionXlsx() override = default;
 
 protected:
-    virtual const QString& getSheetName();
+    const QString& getSheetName() override;
 
-    virtual bool getDataFromZip( QuaZip& zip,
-                                 const QString& sheetName,
-                                 QVector<QVector<QVariant> >* dataContainer,
-                                 bool fillSamplesOnly );
+    bool getDataFromZip(QuaZip& zip, const QString& sheetName,
+                        QVector<QVector<QVariant>>* dataContainer,
+                        bool fillSamplesOnly) override;
 
 private:
     Q_DISABLE_COPY(DatasetDefinitionXlsx)
 
-    virtual bool getSheetList(QuaZip& zip);
+    bool getSheetList(QuaZip& zip) override;
 
-    virtual bool getColumnList(QuaZip& zip,
-                               const QString& sheetName);
+    bool getColumnList(QuaZip& zip, const QString& sheetName) override;
 
     bool loadStyles(QuaZip& zip);
 
     bool loadSharedStrings(QuaZip& zip);
 
-    virtual bool getColumnTypes(QuaZip& zip,
-                                const QString& sheetName);
+    bool getColumnTypes(QuaZip& zip, const QString& sheetName) override;
 
     bool openZipAndMoveToSecondRow(QuaZip& zip,
                                    const QString& sheetName,
                                    QuaZipFile& zipFile,
                                    QXmlStreamReader& xmlStreamReader);
 
-    virtual bool loadSpecificData(QuaZip& zip);
+    bool loadSpecificData(QuaZip& zip) override;
 
     ///Map sheet <-> fileName used to access sheets in zip.
     QMap<QString, QString> sheetToFileMapInZip_;

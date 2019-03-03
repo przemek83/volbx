@@ -18,31 +18,30 @@ class TableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    TableModel(Dataset* dataset, QObject *parent = nullptr);
+    TableModel(Dataset* dataset, QObject* parent = nullptr);
 
-    virtual ~TableModel();
+    ~TableModel() override;
 
     /**
      * @brief Overridem method for row count check.
      * @param parent index of parent.
      * @return row count.
      */
-    virtual int rowCount(const QModelIndex& = QModelIndex()) const;
+    int rowCount(const QModelIndex& = QModelIndex()) const override;
 
     /**
      * @brief Overridem method for column count check.
      * @param parent index of parent.
      * @return column count.
      */
-    virtual int columnCount(const QModelIndex& = QModelIndex()) const;
+    int columnCount(const QModelIndex& = QModelIndex()) const override;
 
     /**
      * @brief Overridem method returning data from model for given index.
      * @param index index used to retrieve data.
      * @return data.
      */
-    virtual QVariant data(const QModelIndex& index,
-                          int role = Qt::DisplayRole) const;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
 
     /**
      * @brief Overridem method returning data used for column header.
@@ -51,9 +50,8 @@ public:
      * @param role role of returned data.
      * @return data.
      */
-    virtual QVariant headerData(int section,
-                                Qt::Orientation orientation,
-                                int role = Qt::DisplayRole) const;
+    QVariant headerData(int section, Qt::Orientation orientation,
+                        int role = Qt::DisplayRole) const override;
 
     /**
      * @brief fill max and min for given numeric column.

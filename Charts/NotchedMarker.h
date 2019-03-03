@@ -13,18 +13,15 @@ class NotchedMarker : public CustomMarker
 public:
     explicit NotchedMarker(QVector<Quantiles>* quantiles);
 
-    virtual ~NotchedMarker() = default;
+    ~NotchedMarker() override = default;
 
 protected:
-    virtual void drawLegend(QPainter* p,
-                            const QRectF& rect) const;
+    void drawLegend(QPainter* p, const QRectF& rect) const override;
 
-    virtual void drawElement(QPainter *p,
-                             int elementNumber,
-                             const QwtScaleMap &xMap,
-                             const QwtScaleMap &yMap,
-                             float width,
-                             Quantiles& quantiles) const;
+    void drawElement(QPainter* p, int elementNumber,
+                     const QwtScaleMap& xMap, const QwtScaleMap& yMap,
+                     float width, Quantiles& quantiles) const override;
+
 private:
     Q_DISABLE_COPY(NotchedMarker)
 

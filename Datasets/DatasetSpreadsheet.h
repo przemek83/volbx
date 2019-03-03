@@ -15,9 +15,9 @@ class DatasetSpreadsheet : public Dataset
 public:
     explicit DatasetSpreadsheet(DatasetDefinitionSpreadsheet* datasetDefinition);
 
-    virtual ~DatasetSpreadsheet() = default;
+    ~DatasetSpreadsheet() override = default;
 
-    virtual void init();
+    void init() override;
 
 private:
     Q_DISABLE_COPY(DatasetSpreadsheet)

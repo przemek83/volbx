@@ -25,10 +25,10 @@ public:
                 bool emptyDates,
                 QWidget *parent = nullptr);
 
-    virtual ~FilterDates();
+    ~FilterDates() override;
 
 public slots:
-    virtual void setChecked(bool checked);
+    void setChecked(bool checked) override;
 
 private:
     Q_DISABLE_COPY(FilterDates)

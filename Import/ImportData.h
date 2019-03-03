@@ -25,7 +25,7 @@ class ImportData : public QDialog
 public:
     explicit ImportData(QWidget *parent = nullptr);
 
-    virtual ~ImportData();
+    ~ImportData() override;
 
     DatasetDefinition* getSelectedDataset();
 

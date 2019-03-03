@@ -18,7 +18,7 @@ class MainTab : public QMainWindow
 public:
     explicit MainTab(Dataset *dataset, QWidget *parent = nullptr);
 
-    virtual ~MainTab() = default;
+    ~MainTab() override = default;
 
     FilteringProxyModel* getCurrentProxyModel();
 

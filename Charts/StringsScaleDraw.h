@@ -11,9 +11,9 @@ class StringsScaleDraw : public QwtScaleDraw
 public:
     explicit StringsScaleDraw(QVector<QString>* intervals);
 
-    virtual ~StringsScaleDraw() = default;
+    ~StringsScaleDraw() override = default;
 
-    virtual QwtText label(double v) const;
+    QwtText label(double v) const override;
 
 private:
     Q_DISABLE_COPY(StringsScaleDraw)

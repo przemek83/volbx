@@ -19,10 +19,10 @@ Q_OBJECT
 public:
     explicit Update(QWidget* parent = nullptr);
 
-    virtual ~Update();
+    ~Update() override;
 
 protected:
-    virtual void closeEvent(QCloseEvent *event);
+    void closeEvent(QCloseEvent *event) override;
 
 private:
     Ui::Update *ui;

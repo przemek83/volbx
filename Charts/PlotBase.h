@@ -22,7 +22,7 @@ class PlotBase : public QwtPlot
 public:
     PlotBase(QString /*title*/, QWidget *parent = nullptr);
 
-    virtual ~PlotBase();
+    ~PlotBase() override;
 
     void resetPlot();
 
@@ -30,7 +30,7 @@ public:
 
     virtual void setNewData(PlotData plotData);
 
-    virtual QSize minimumSizeHint() const;
+    QSize minimumSizeHint() const override;
 
 protected:
     class PlotMagnifier : public QwtPlotMagnifier
@@ -38,7 +38,7 @@ protected:
     public:
         PlotMagnifier(QWidget* canvas);
 
-        virtual ~PlotMagnifier() = default;
+        ~PlotMagnifier() override = default;
 
         void reset();
 
@@ -55,7 +55,7 @@ protected:
 
     void setStdScaleDraw(QwtPlot::Axis axis);
 
-    virtual void mouseDoubleClickEvent(QMouseEvent* event);
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
 
     QwtPlotCurve* plotCurve_;
 
@@ -69,9 +69,9 @@ private:
     public:
         IntervalsScaleDraw();
 
-        virtual ~IntervalsScaleDraw() = default;
+        ~IntervalsScaleDraw() override = default;
 
-        virtual QwtText label(double v) const;
+        QwtText label(double v) const override;
     };
 
     QMap<int, QPointF> initialScaleMap_;

@@ -9,20 +9,20 @@
 class Picker : public QwtPlotPicker
 {
 public:
-    explicit Picker(QWidget *parent);
+    explicit Picker(QWidget* parent);
 
-    virtual ~Picker() = default;
+    ~Picker() override = default;
 
     virtual int getAreaOfMouse();
 
     bool getMouseInWidget();
 
 protected:
-    virtual QwtText trackerTextF(const QPointF &pos)const = 0;
+    QwtText trackerTextF(const QPointF& pos) const override = 0;
 
-    virtual void widgetEnterEvent(QEvent* event);
+    void widgetEnterEvent(QEvent* event) override;
 
-    virtual void widgetLeaveEvent(QEvent* event);
+    void widgetLeaveEvent(QEvent* event) override;
 
 private:
     Q_DISABLE_COPY(Picker)

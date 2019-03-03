@@ -15,27 +15,25 @@ class DatasetDefinitionOds : public DatasetDefinitionSpreadsheet
 public:
     DatasetDefinitionOds(const QString& name, QString& zipFileName);
 
-    virtual ~DatasetDefinitionOds() = default;
+    ~DatasetDefinitionOds() override = default;
 
 protected:
-    virtual const QString& getSheetName();
+    const QString& getSheetName() override;
 
-    virtual bool getDataFromZip( QuaZip& zip,
-                                 const QString& sheetName,
-                                 QVector<QVector<QVariant> >* dataContainer,
-                                 bool fillSamplesOnly );
+    bool getDataFromZip(QuaZip& zip, const QString& sheetName,
+                        QVector<QVector<QVariant>>* dataContainer,
+                        bool fillSamplesOnly) override;
+
 private:
     Q_DISABLE_COPY(DatasetDefinitionOds)
 
-    virtual bool getSheetList(QuaZip& zip);
+    bool getSheetList(QuaZip& zip) override;
 
-    virtual bool getColumnList(QuaZip& zip,
-                               const QString& sheetName);
+    bool getColumnList(QuaZip& zip, const QString& sheetName) override;
 
-    virtual bool loadSpecificData(QuaZip& zip);
+    bool loadSpecificData(QuaZip& zip) override;
 
-    virtual bool getColumnTypes( QuaZip& zip,
-                                 const QString& sheetName );
+    bool getColumnTypes(QuaZip& zip, const QString& sheetName) override;
 
     bool openZipAndMoveToSecondRow(QuaZip& zip,
                                    const QString& sheetName,

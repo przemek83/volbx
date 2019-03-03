@@ -13,7 +13,7 @@ class DatasetInner : public Dataset
 public:
     explicit DatasetInner(DatasetDefinitionInner* datasetDefinition);
 
-    virtual ~DatasetInner() = default;
+    ~DatasetInner() override = default;
 
     ///Return names without extension of available datasets in datasets dir.
     static QStringList getListOfAvailableDatasets();
@@ -21,7 +21,7 @@ public:
     ///Returns datasets directory/folder.
     static QString getDatasetsDir();
 
-    virtual void init();
+    void init() override;
 
     ///Checks if it is possible to use default datasets directory to store data.
     static bool datasetDirExistAndUserHavePermisions();

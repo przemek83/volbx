@@ -9,12 +9,11 @@
 class NumericDelegate : public QStyledItemDelegate
 {
 public:
-    explicit NumericDelegate(QObject * parent = nullptr);
+    explicit NumericDelegate(QObject* parent = nullptr);
 
-    virtual ~NumericDelegate() = default;
+    ~NumericDelegate() override = default;
 
-    virtual QString displayText(const QVariant& value,
-                                const QLocale& locale ) const;
+    QString displayText(const QVariant& value, const QLocale& locale) const override;
 
 private:
     Q_DISABLE_COPY(NumericDelegate)

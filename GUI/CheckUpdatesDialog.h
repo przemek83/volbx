@@ -16,7 +16,7 @@ class CheckUpdatesDialog : public QDialog
 public:
     explicit CheckUpdatesDialog(QWidget *parent = nullptr);
 
-    virtual ~CheckUpdatesDialog();
+    ~CheckUpdatesDialog() override;
 
     bool saveFlagSet();
 

@@ -17,7 +17,7 @@ class HistogramPlotGui : public PlotDockWidget
 public:
     explicit HistogramPlotGui(QWidget* parent = nullptr);
 
-    virtual ~HistogramPlotGui();
+    ~HistogramPlotGui() override;
 
 private:
     Q_DISABLE_COPY(HistogramPlotGui)

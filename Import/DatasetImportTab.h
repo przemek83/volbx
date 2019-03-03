@@ -12,9 +12,9 @@ class DatasetImportTab : public ImportTab
 public:
     explicit DatasetImportTab(QWidget *parent = nullptr);
 
-    virtual ~DatasetImportTab() = default;
+    ~DatasetImportTab() override = default;
 
-    virtual DatasetDefinition* getDatasetDefinition();
+    DatasetDefinition *getDatasetDefinition() override;
 
     bool datasetsAreAvailable();
 

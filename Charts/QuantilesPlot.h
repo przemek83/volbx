@@ -18,11 +18,11 @@ class QuantilesPlot : public PlotBase
 public:
     explicit QuantilesPlot(QWidget* parent = nullptr);
 
-    virtual ~QuantilesPlot();
+    ~QuantilesPlot() override;
 
     void setNewData(Quantiles quantiles);
 
-    virtual QSize minimumSizeHint() const;
+    QSize minimumSizeHint() const override;
 
     void forceResize();
 
@@ -34,9 +34,9 @@ private:
     public:
         IntervalsScaleDraw(int count);
 
-        virtual ~IntervalsScaleDraw() = default;
+        ~IntervalsScaleDraw() override = default;
 
-        virtual QwtText label(double v) const;
+        QwtText label(double v) const override;
 
     private:
         int count_;
@@ -45,16 +45,16 @@ private:
     CustomMarker* marker_;
 
     //One, but marker expects vector.
-    QVector<Quantiles> quantiles_; 
+    QVector<Quantiles> quantiles_;
 
     class BoxPicker : Picker
     {
     public:
         BoxPicker(QWidget* parent);
-        virtual ~BoxPicker() = default;
+        ~BoxPicker() override = default;
 
     protected:
-        virtual QwtText trackerTextF(const QPointF &pos)const;
+        QwtText trackerTextF(const QPointF& pos) const override;
     };
 
     BoxPicker* picker_;

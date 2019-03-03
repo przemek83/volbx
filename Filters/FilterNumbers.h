@@ -24,7 +24,7 @@ public:
                   double max,
                   QWidget* parent = nullptr);
 
-    virtual ~FilterNumbers();
+    ~FilterNumbers() override;
 
 private:
     Q_DISABLE_COPY(FilterNumbers)

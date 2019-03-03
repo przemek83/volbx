@@ -24,7 +24,7 @@ class BasicDataPlot : public PlotBase
 public:
     explicit BasicDataPlot(QWidget* parent = nullptr);
 
-    virtual ~BasicDataPlot();
+    ~BasicDataPlot() override;
 
 public slots:
     virtual void setNewData(PlotData plotData,
@@ -61,10 +61,10 @@ private:
     public:
         explicit LinearPicker(QWidget* parent);
 
-        virtual ~LinearPicker() = default;
+        ~LinearPicker() override = default;
 
     protected:
-        virtual QwtText trackerTextF(const QPointF &pos)const;
+        QwtText trackerTextF(const QPointF& pos) const override;
     };
 
     LinearPicker* picker_;

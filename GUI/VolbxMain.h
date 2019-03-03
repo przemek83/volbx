@@ -28,12 +28,12 @@ class VolbxMain : public QMainWindow
 public:
     explicit VolbxMain(QWidget *parent = nullptr);
 
-    virtual ~VolbxMain();
+    ~VolbxMain() override;
 
     void checkForUpdates();
 
 protected:
-    virtual void closeEvent(QCloseEvent *event);
+    void closeEvent(QCloseEvent *event) override;
 
 private:
     Q_DISABLE_COPY(VolbxMain)

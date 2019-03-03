@@ -22,15 +22,15 @@ class GroupPlot : public PlotBase
 public:
     explicit GroupPlot(QWidget* parent = nullptr);
 
-    virtual ~GroupPlot();
+    ~GroupPlot() override;
 
     void setNewData(QVector<Quantiles> &quantiles,
                     QVector<QString> &intervalStrings);
 
-    virtual QSize minimumSizeHint() const;
+    QSize minimumSizeHint() const override;
 
 protected:
-    virtual bool event(QEvent* event);
+    bool event(QEvent *event) override;
 
 private:
     Q_DISABLE_COPY(GroupPlot)
@@ -57,10 +57,10 @@ private:
     public:
         explicit GroupPicker(QWidget* parent);
 
-        virtual ~GroupPicker() = default;
+        ~GroupPicker() override = default;
 
     protected:
-        virtual QwtText trackerTextF(const QPointF &pos) const;
+        QwtText trackerTextF(const QPointF &pos) const override;
     };
 
     GroupPicker* picker_;

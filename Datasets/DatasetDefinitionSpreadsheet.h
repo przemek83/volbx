@@ -15,18 +15,18 @@ class DatasetDefinitionSpreadsheet : public DatasetDefinition
 public:
     DatasetDefinitionSpreadsheet(const QString& name, QString& zipFileName);
 
-    virtual ~DatasetDefinitionSpreadsheet();
+    ~DatasetDefinitionSpreadsheet() override;
 
-    virtual bool isValid() const;
+    bool isValid() const override;
 
     bool init();
 
     virtual bool getData(QVector<QVector<QVariant> >* dataContainer);
 
-    virtual QVariant* getSharedStringTable();
+    QVariant *getSharedStringTable() override;
 
 protected:
-    virtual void updateSampleDataStrings();
+    void updateSampleDataStrings() override;
 
     virtual const QString& getSheetName() = 0;
 

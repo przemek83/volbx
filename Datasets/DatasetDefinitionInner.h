@@ -13,11 +13,11 @@ class DatasetDefinitionInner : public DatasetDefinition
 public:
     explicit DatasetDefinitionInner(QString name);
 
-    virtual ~DatasetDefinitionInner();
+    ~DatasetDefinitionInner() override;
 
-    virtual bool isValid() const;
+    bool isValid() const override;
 
-    virtual QVariant* getSharedStringTable();
+    QVariant *getSharedStringTable() override;
 
     ///Definition to bytes array.
     void toXml(QByteArray& data, int rowCountNumber) const;
@@ -25,7 +25,7 @@ public:
     bool getData(QVector<QVector<QVariant> >* dataContainer);
 
 protected:
-    virtual void updateSampleDataStrings();
+    void updateSampleDataStrings() override;
 
 private:
     Q_DISABLE_COPY(DatasetDefinitionInner)

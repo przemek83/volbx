@@ -25,7 +25,7 @@ class HistogramPlot : public PlotBase
 public:
     explicit HistogramPlot(QWidget* parent = nullptr);
 
-    virtual ~HistogramPlot();
+    ~HistogramPlot() override;
 
     void setNewData(PlotData plotData,
                     Quantiles quantiles,
@@ -51,15 +51,15 @@ private:
     public:
         explicit HistPicker(QWidget* parent);
 
-        virtual ~HistPicker() = default;
+        ~HistPicker() override = default;
 
     protected:
-        virtual QwtText trackerTextF(const QPointF &pos)const;
+        QwtText trackerTextF(const QPointF& pos) const override;
     };
 
     HistPicker* picker_;
 
-    void setLegendItemChecked(QwtPlotItem *plot);
+    void setLegendItemChecked(QwtPlotItem* plot);
 
     PlotData plotData_;
 

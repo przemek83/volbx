@@ -28,7 +28,7 @@ class GroupPlotGui : public PlotDockWidget
 public:
     GroupPlotGui(const TableModel* model, QWidget *parent = nullptr);
 
-    virtual ~GroupPlotGui();
+    ~GroupPlotGui() override;
 
 public slots:
     void setNewData(float minY,
@@ -52,7 +52,7 @@ private:
     {
     public:
         explicit ScrollArea(QWidget* parent = nullptr);
-        virtual ~ScrollArea() = default;
+        ~ScrollArea() override = default;
         void forceResize();
     };
 

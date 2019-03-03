@@ -16,9 +16,9 @@ class FilteringProxyModel : public QSortFilterProxyModel
 {
     Q_OBJECT
 public:
-    explicit FilteringProxyModel(QObject *parent = nullptr);
+    explicit FilteringProxyModel(QObject* parent = nullptr);
 
-    virtual ~FilteringProxyModel() = default;
+    ~FilteringProxyModel() override = default;
 
     /**
      * @brief get pointer to parent model.
@@ -57,8 +57,7 @@ protected:
      * @param sourceParent index to check.
      * @return filter row (true), show row (false).
      */
-    virtual bool filterAcceptsRow(int sourceRow,
-                                  const QModelIndex &sourceParent) const;
+    bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const override;
 
 private:
     Q_DISABLE_COPY(FilteringProxyModel)

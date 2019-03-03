@@ -23,12 +23,12 @@ public:
                 const QStringList& initialList,
                 QWidget *parent = nullptr);
 
-    virtual ~FilterNames();
+    ~FilterNames() override;
 
-    virtual QSize sizeHint() const;
+    QSize sizeHint() const override;
 
 public slots:
-    virtual void setChecked(bool checked);
+    void setChecked(bool checked) override;
 
 private:
     Q_DISABLE_COPY(FilterNames)

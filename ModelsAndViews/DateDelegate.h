@@ -11,9 +11,9 @@ class DateDelegate : public QStyledItemDelegate
 public:
     explicit DateDelegate(QObject* parent = nullptr);
 
-    virtual ~DateDelegate() = default;
+    ~DateDelegate() override = default;
 
-    virtual QString displayText(const QVariant& value, const QLocale& locale) const;
+    QString displayText(const QVariant &value, const QLocale &locale) const override;
 
 private:
     Q_DISABLE_COPY(DateDelegate)

@@ -18,7 +18,7 @@ class DockTitleBar : public QWidget
 public:
     explicit DockTitleBar(QWidget *parent = nullptr);
 
-    virtual ~DockTitleBar();
+    ~DockTitleBar() override;
 
     QPushButton* getCloseButton();
 

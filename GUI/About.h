@@ -16,7 +16,7 @@ class About : public QDialog
 public:
     explicit About(QWidget *parent = nullptr);
 
-    virtual ~About();
+    ~About() override;
 
 private:
     Q_DISABLE_COPY(About)

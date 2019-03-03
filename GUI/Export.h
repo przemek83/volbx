@@ -18,7 +18,7 @@ class Export : public QDialog
 public:
     Export(QMainWindow* tab, QWidget *parent = nullptr);
 
-    virtual ~Export();
+    ~Export() override;
 
 private slots:
     void on_save_clicked();

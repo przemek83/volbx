@@ -18,7 +18,7 @@ class DatasetsListBrowser : public QWidget
 public:
     explicit DatasetsListBrowser(QWidget* parent = nullptr);
 
-    virtual ~DatasetsListBrowser();
+    ~DatasetsListBrowser() override;
 
     QString getSelectedDataset() const;
 

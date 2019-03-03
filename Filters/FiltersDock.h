@@ -26,7 +26,7 @@ class FiltersDock : public DockWidget
 public:
     explicit FiltersDock(QWidget *parent = nullptr);
 
-    virtual ~FiltersDock();
+    ~FiltersDock() override;
 
     ///Adds new widget with filters for given model.
     void addModel(const FilteringProxyModel* model);

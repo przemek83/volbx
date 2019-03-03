@@ -16,9 +16,9 @@ class SpreadsheetsImportTab : public ImportTab
 public:
     explicit SpreadsheetsImportTab(QWidget *parent = nullptr);
 
-    virtual ~SpreadsheetsImportTab();
+    ~SpreadsheetsImportTab() override;
 
-    virtual DatasetDefinition* getDatasetDefinition();
+    DatasetDefinition *getDatasetDefinition() override;
 
 private slots:
     void on_openFileButton_clicked();
