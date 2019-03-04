@@ -13,10 +13,13 @@ public:
 
     ~NumericDelegate() override = default;
 
-    QString displayText(const QVariant& value, const QLocale& locale) const override;
+    NumericDelegate& operator=(const NumericDelegate& other) = delete;
+    NumericDelegate(const NumericDelegate& other) = delete;
 
-private:
-    Q_DISABLE_COPY(NumericDelegate)
+    NumericDelegate& operator=(NumericDelegate&& other) = delete;
+    NumericDelegate(NumericDelegate&& other) = delete;
+
+    QString displayText(const QVariant& value, const QLocale& locale) const override;
 };
 
 #endif // NUMERICDELEGATE_H

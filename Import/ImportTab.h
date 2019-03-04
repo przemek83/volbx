@@ -12,14 +12,17 @@ class ImportTab : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ImportTab(QWidget *parent = nullptr);
+    explicit ImportTab(QWidget* parent = nullptr);
 
     ~ImportTab() override = default;
 
-    virtual DatasetDefinition* getDatasetDefinition() = 0;
+    ImportTab& operator=(const ImportTab& other) = delete;
+    ImportTab(const ImportTab& other) = delete;
 
-private:
-    Q_DISABLE_COPY(ImportTab)
+    ImportTab& operator=(ImportTab&& other) = delete;
+    ImportTab(ImportTab&& other) = delete;
+
+    virtual DatasetDefinition* getDatasetDefinition() = 0;
 
 signals:
     void definitionIsReady(bool);

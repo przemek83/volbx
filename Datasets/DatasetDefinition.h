@@ -20,6 +20,12 @@ public:
 
     virtual ~DatasetDefinition() = default;
 
+    DatasetDefinition& operator=(const DatasetDefinition& other) = delete;
+    DatasetDefinition(const DatasetDefinition& other) = delete;
+
+    DatasetDefinition& operator=(DatasetDefinition&& other) = delete;
+    DatasetDefinition(DatasetDefinition&& other) = delete;
+
     virtual bool isValid() const = 0;
 
     int rowCount() const;
@@ -48,7 +54,7 @@ public:
 
     const QVector<QVector<QVariant> >* getSampleData() const;
 
-    void setActiveColumns(const QVector<bool> &activeColumns);
+    void setActiveColumns(const QVector<bool>& activeColumns);
 
     const QVector<bool>* getActiveColumns() const;
 
@@ -95,9 +101,6 @@ protected:
     static const int sampleSize_;
 
     QVariant getDefaultVariantForFormat(const DataFormat format) const;
-
-private:
-    Q_DISABLE_COPY(DatasetDefinition)
 };
 
 #endif // DATASETDEFINITION_H

@@ -5,8 +5,9 @@
 
 class QMainWindow;
 
-namespace Ui {
-    class Export;
+namespace Ui
+{
+class Export;
 } // namespace Ui
 
 /**
@@ -16,9 +17,15 @@ class Export : public QDialog
 {
     Q_OBJECT
 public:
-    Export(QMainWindow* tab, QWidget *parent = nullptr);
+    Export(QMainWindow* tab, QWidget* parent = nullptr);
 
     ~Export() override;
+
+    Export& operator=(const Export& other) = delete;
+    Export(const Export& other) = delete;
+
+    Export& operator=(Export&& other) = delete;
+    Export(Export&& other) = delete;
 
 private slots:
     void on_save_clicked();
@@ -26,9 +33,7 @@ private slots:
     void on_locationSearch_clicked();
 
 private:
-    Q_DISABLE_COPY(Export)
-
-    Ui::Export *ui;
+    Ui::Export* ui;
 
     QMainWindow* tab_;
 

@@ -27,10 +27,16 @@ public:
 
     ~ProgressBar() override = default;
 
+    ProgressBar& operator=(const ProgressBar& other) = delete;
+    ProgressBar(const ProgressBar& other) = delete;
+
+    ProgressBar& operator=(ProgressBar&& other) = delete;
+    ProgressBar(ProgressBar&& other) = delete;
+
     inline void updateProgress(int newValue)
     {
         int newPercent = newValue * 1.0 / maxValue_ * 100;
-        if( newPercent > currentPercent_ )
+        if (newPercent > currentPercent_)
         {
             currentPercent_ = newPercent;
             update();
@@ -39,13 +45,11 @@ public:
     }
 
 protected:
-    void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent* event);
 
-    void timerEvent(QTimerEvent *event);
+    void timerEvent(QTimerEvent* event);
 
 private:
-    Q_DISABLE_COPY(ProgressBar)
-
     int currentPercent_;
 
     int maxValue_;

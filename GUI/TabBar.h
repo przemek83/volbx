@@ -11,18 +11,22 @@ class TabBar : public QTabBar
 {
     Q_OBJECT
 public:
-    explicit TabBar(QWidget *parent = nullptr);
+    explicit TabBar(QWidget* parent = nullptr);
 
     ~TabBar() override = default;
 
-protected:
-    void mouseDoubleClickEvent(QMouseEvent *event) override;
+    TabBar& operator=(const TabBar& other) = delete;
+    TabBar(const TabBar& other) = delete;
 
-    bool eventFilter(QObject *obj, QEvent *event);
+    TabBar& operator=(TabBar&& other) = delete;
+    TabBar(TabBar&& other) = delete;
+
+protected:
+    void mouseDoubleClickEvent(QMouseEvent* event) override;
+
+    bool eventFilter(QObject* obj, QEvent* event);
 
 private:
-    Q_DISABLE_COPY(TabBar)
-
     ///Line edit for changing tab name.
     QLineEdit lineEdit_;
 

@@ -16,18 +16,21 @@ class MainTab : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit MainTab(Dataset *dataset, QWidget *parent = nullptr);
+    explicit MainTab(Dataset* dataset, QWidget* parent = nullptr);
 
     ~MainTab() override = default;
 
+    MainTab& operator=(const MainTab& other) = delete;
+    MainTab(const MainTab& other) = delete;
+
+    MainTab& operator=(MainTab&& other) = delete;
+    MainTab(MainTab&& other) = delete;
+
     FilteringProxyModel* getCurrentProxyModel();
 
-    TableModel *getCurrentDataModel();
+    TableModel* getCurrentDataModel();
 
-    DataView *getCurrentDataView();
-
-private:
-    Q_DISABLE_COPY(MainTab)
+    DataView* getCurrentDataView();
 };
 
 #endif // MAINTAB_H

@@ -3,8 +3,9 @@
 
 #include <QDialog>
 
-namespace Ui {
-    class About;
+namespace Ui
+{
+class About;
 } // namespace Ui
 
 /**
@@ -14,14 +15,18 @@ class About : public QDialog
 {
     Q_OBJECT
 public:
-    explicit About(QWidget *parent = nullptr);
+    explicit About(QWidget* parent = nullptr);
 
     ~About() override;
 
-private:
-    Q_DISABLE_COPY(About)
+    About& operator=(const About& other) = delete;
+    About(const About& other) = delete;
 
-    Ui::About *ui;
+    About& operator=(About&& other) = delete;
+    About(About&& other) = delete;
+
+private:
+    Ui::About* ui;
 };
 
 #endif // ABOUT_H

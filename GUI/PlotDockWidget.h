@@ -17,10 +17,13 @@ public:
 
     ~PlotDockWidget() override = default;
 
-    QList<PlotBase*> exportContent();
+    PlotDockWidget& operator=(const PlotDockWidget& other) = delete;
+    PlotDockWidget(const PlotDockWidget& other) = delete;
 
-private:
-    Q_DISABLE_COPY(PlotDockWidget)
+    PlotDockWidget& operator=(PlotDockWidget&& other) = delete;
+    PlotDockWidget(PlotDockWidget&& other) = delete;
+
+    QList<PlotBase*> exportContent();
 
 private slots:
     void quickExportData();

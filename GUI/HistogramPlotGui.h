@@ -4,7 +4,8 @@
 #include "PlotDockWidget.h"
 #include "Charts/HistogramPlot.h"
 
-namespace Ui {
+namespace Ui
+{
 class HistogramPlotGui;
 } // namespace Ui
 
@@ -19,10 +20,14 @@ public:
 
     ~HistogramPlotGui() override;
 
-private:
-    Q_DISABLE_COPY(HistogramPlotGui)
+    HistogramPlotGui& operator=(const HistogramPlotGui& other) = delete;
+    HistogramPlotGui(const HistogramPlotGui& other) = delete;
 
-    Ui::HistogramPlotGui *ui;
+    HistogramPlotGui& operator=(HistogramPlotGui&& other) = delete;
+    HistogramPlotGui(HistogramPlotGui&& other) = delete;
+
+private:
+    Ui::HistogramPlotGui* ui;
 
     HistogramPlot histogramPlot_;
 

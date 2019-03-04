@@ -28,6 +28,12 @@ public:
 
     ~ImportData() override;
 
+    ImportData& operator=(const ImportData& other) = delete;
+    ImportData(const ImportData& other) = delete;
+
+    ImportData& operator=(ImportData&& other) = delete;
+    ImportData(ImportData&& other) = delete;
+
     DatasetDefinition* getSelectedDataset();
 
     ///Type enum used during creation of Dataset objects.
@@ -43,8 +49,6 @@ public:
     QString getZipFileName() const;
 
 private:
-    Q_DISABLE_COPY(ImportData)
-
     Ui::ImportData* ui;
 
     QDialogButtonBox* buttonBox_ {nullptr};

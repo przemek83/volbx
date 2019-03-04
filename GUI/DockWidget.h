@@ -17,14 +17,17 @@ public:
 
     ~DockWidget() override = default;
 
+    DockWidget& operator=(const DockWidget& other) = delete;
+    DockWidget(const DockWidget& other) = delete;
+
+    DockWidget& operator=(DockWidget&& other) = delete;
+    DockWidget(DockWidget&& other) = delete;
+
 public slots:
     void setNewToolTip(QString text);
 
 protected:
     DockTitleBar titleBarWidget_;
-
-private:
-    Q_DISABLE_COPY(DockWidget)
 
 private slots:
     void manageFloating();

@@ -11,7 +11,7 @@
 SaveDatasetAs::SaveDatasetAs(QStringList alreadyUsedNames, QWidget* parent) :
     QDialog(parent),
     ui(new Ui::SaveDatasetAs),
-    alreadyUsedNames_(alreadyUsedNames)
+    alreadyUsedNames_(std::move(alreadyUsedNames))
 {
     ui->setupUi(this);
 
@@ -32,18 +32,21 @@ QString SaveDatasetAs::getChosenDatasetName()
     return ui->nameLineEdit->text();
 }
 
-void SaveDatasetAs::on_nameLineEdit_textChanged(const QString &actualText)
+void SaveDatasetAs::on_nameLineEdit_textChanged(const QString& actualText)
 {
-    if(true == actualText.isEmpty()) {
+    if (true == actualText.isEmpty())
+    {
         ui->save->setEnabled(false);
-    } else {
+    }
+    else
+    {
         ui->save->setEnabled(true);
-}
+    }
 
     QPalette palette = ui->nameLineEdit->palette();
-    if(alreadyUsedNames_.contains(actualText, Qt::CaseInsensitive))
+    if (alreadyUsedNames_.contains(actualText, Qt::CaseInsensitive))
     {
-        if(QColor(Qt::red) != palette.color(ui->nameLineEdit->backgroundRole()))
+        if (QColor(Qt::red) != palette.color(ui->nameLineEdit->backgroundRole()))
         {
             palette.setColor(ui->nameLineEdit->backgroundRole(), Qt::red);
             ui->nameLineEdit->setPalette(palette);
@@ -51,7 +54,7 @@ void SaveDatasetAs::on_nameLineEdit_textChanged(const QString &actualText)
     }
     else
     {
-        if(QColor(Qt::red) == palette.color(ui->nameLineEdit->backgroundRole()))
+        if (QColor(Qt::red) == palette.color(ui->nameLineEdit->backgroundRole()))
         {
             palette.setColor(ui->nameLineEdit->backgroundRole(), Qt::white);
             ui->nameLineEdit->setPalette(palette);
@@ -61,7 +64,7 @@ void SaveDatasetAs::on_nameLineEdit_textChanged(const QString &actualText)
 
 void SaveDatasetAs::on_save_clicked()
 {
-    if(QColor(Qt::red) == ui->nameLineEdit->palette().color(ui->nameLineEdit->backgroundRole()))
+    if (QColor(Qt::red) == ui->nameLineEdit->palette().color(ui->nameLineEdit->backgroundRole()))
     {
         QMessageBox::StandardButton decision;
         QString msg(QObject::tr("Dataset named "));
@@ -71,7 +74,7 @@ void SaveDatasetAs::on_save_clicked()
                                          QObject::tr("Overwrite dataset?"),
                                          msg,
                                          QMessageBox::Yes | QMessageBox::No);
-        if(decision == QMessageBox::Yes)
+        if (decision == QMessageBox::Yes)
         {
             accept();
         }

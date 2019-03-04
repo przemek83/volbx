@@ -13,11 +13,15 @@ public:
 
     ~DateDelegate() override = default;
 
-    QString displayText(const QVariant &value, const QLocale &locale) const override;
+    DateDelegate& operator=(const DateDelegate& other) = delete;
+    DateDelegate(const DateDelegate& other) = delete;
+
+    DateDelegate& operator=(DateDelegate&& other) = delete;
+    DateDelegate(DateDelegate&& other) = delete;
+
+    QString displayText(const QVariant& value, const QLocale& locale) const override;
 
 private:
-    Q_DISABLE_COPY(DateDelegate)
-
     QString defaultDateFormat_;
 };
 

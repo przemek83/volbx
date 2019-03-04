@@ -22,6 +22,12 @@ public:
 
     ~TableModel() override;
 
+    TableModel& operator=(const TableModel& other) = delete;
+    TableModel(const TableModel& other) = delete;
+
+    TableModel& operator=(TableModel&& other) = delete;
+    TableModel(TableModel&& other) = delete;
+
     /**
      * @brief Overridem method for row count check.
      * @param parent index of parent.
@@ -103,8 +109,6 @@ public:
     int getDefaultGroupingColumn() const;
 
 private:
-    Q_DISABLE_COPY(TableModel)
-
     ///Dataset.
     Dataset* dataset_;
 

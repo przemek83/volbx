@@ -7,8 +7,9 @@
 
 class QListWidgetItem;
 
-namespace Ui {
-    class FilterNames;
+namespace Ui
+{
+class FilterNames;
 } // namespace Ui
 
 /**
@@ -21,9 +22,15 @@ public:
     FilterNames(QString name,
                 int column,
                 const QStringList& initialList,
-                QWidget *parent = nullptr);
+                QWidget* parent = nullptr);
 
     ~FilterNames() override;
+
+    FilterNames& operator=(const FilterNames& other) = delete;
+    FilterNames(const FilterNames& other) = delete;
+
+    FilterNames& operator=(FilterNames&& other) = delete;
+    FilterNames(FilterNames&& other) = delete;
 
     QSize sizeHint() const override;
 
@@ -31,13 +38,11 @@ public slots:
     void setChecked(bool checked) override;
 
 private:
-    Q_DISABLE_COPY(FilterNames)
-
     QStringList initialList_;
 
     QSet<QString> lastEmitted_;
 
-    Ui::FilterNames *ui;
+    Ui::FilterNames* ui;
 
     ///Flag indocating if additionall place for scroll should be added.
     bool addMarginForScrollBar_;

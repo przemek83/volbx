@@ -13,8 +13,9 @@ class FilterNumbers;
 class TableModel;
 class QVBoxLayout;
 
-namespace Ui {
-    class FiltersDock;
+namespace Ui
+{
+class FiltersDock;
 } // namespace Ui
 
 /**
@@ -24,15 +25,21 @@ class FiltersDock : public DockWidget
 {
     Q_OBJECT
 public:
-    explicit FiltersDock(QWidget *parent = nullptr);
+    explicit FiltersDock(QWidget* parent = nullptr);
 
     ~FiltersDock() override;
+
+    FiltersDock& operator=(const FiltersDock& other) = delete;
+    FiltersDock(const FiltersDock& other) = delete;
+
+    FiltersDock& operator=(FiltersDock&& other) = delete;
+    FiltersDock(FiltersDock&& other) = delete;
 
     ///Adds new widget with filters for given model.
     void addModel(const FilteringProxyModel* model);
 
     ///Removes widget related to given model.
-    void removeModel(const FilteringProxyModel *model);
+    void removeModel(const FilteringProxyModel* model);
 
     ///Shows widget with filters related with given model.
     void activateFiltersForModel(const FilteringProxyModel* model);
@@ -41,9 +48,7 @@ private slots:
     void searchTextChanged(const QString arg1);
 
 private:
-    Q_DISABLE_COPY(FiltersDock)
-
-    Ui::FiltersDock *ui;
+    Ui::FiltersDock* ui;
 
     ///Used to find widget related with model.
     QMap<QWidget*, const FilteringProxyModel*> modelsMap_;

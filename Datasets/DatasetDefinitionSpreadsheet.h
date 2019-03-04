@@ -17,23 +17,29 @@ public:
 
     ~DatasetDefinitionSpreadsheet() override;
 
+    DatasetDefinitionSpreadsheet& operator=(const DatasetDefinitionSpreadsheet& other) = delete;
+    DatasetDefinitionSpreadsheet(const DatasetDefinitionSpreadsheet& other) = delete;
+
+    DatasetDefinitionSpreadsheet& operator=(DatasetDefinitionSpreadsheet&& other) = delete;
+    DatasetDefinitionSpreadsheet(DatasetDefinitionSpreadsheet&& other) = delete;
+
     bool isValid() const override;
 
     bool init();
 
     virtual bool getData(QVector<QVector<QVariant> >* dataContainer);
 
-    QVariant *getSharedStringTable() override;
+    QVariant* getSharedStringTable() override;
 
 protected:
     void updateSampleDataStrings() override;
 
     virtual const QString& getSheetName() = 0;
 
-    virtual bool getDataFromZip( QuaZip& zip,
-                                 const QString& sheetName,
-                                 QVector<QVector<QVariant> >* dataContainer,
-                                 bool fillSamplesOnly ) = 0;
+    virtual bool getDataFromZip(QuaZip& zip,
+                                const QString& sheetName,
+                                QVector<QVector<QVariant> >* dataContainer,
+                                bool fillSamplesOnly) = 0;
 
     bool checkCorrectness(QuaZip& zip) const;
 
@@ -61,7 +67,7 @@ protected:
     inline int getStringIndex(const QString& string)
     {
         int& index = stringsMap_[string];
-        if( 0 == index )
+        if (0 == index)
         {
             index = nextIndex_;
         }
@@ -71,9 +77,6 @@ protected:
 
     ///Zip file.
     QuaZip zip_;
-
-private:
-    Q_DISABLE_COPY(DatasetDefinitionSpreadsheet)
 };
 
 #endif // DATASETDEFINITIONSPREADSHEET_H

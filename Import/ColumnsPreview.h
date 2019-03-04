@@ -17,6 +17,12 @@ public:
 
     ~ColumnsPreview() override = default;
 
+    ColumnsPreview& operator=(const ColumnsPreview& other) = delete;
+    ColumnsPreview(const ColumnsPreview& other) = delete;
+
+    ColumnsPreview& operator=(ColumnsPreview&& other) = delete;
+    ColumnsPreview(ColumnsPreview&& other) = delete;
+
     void setDatasetDefinitionSampleInfo(const DatasetDefinition* datasetDefinition);
 
     void clearDataAndDisable();
@@ -28,9 +34,6 @@ public slots:
      * @param column currently selected column.
      */
     void selectCurrentColumn(int column);
-
-private:
-    Q_DISABLE_COPY(ColumnsPreview)
 
 private slots:
     /**

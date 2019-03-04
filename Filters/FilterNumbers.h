@@ -7,8 +7,9 @@
 
 class DoubleSlider;
 
-namespace Ui {
-    class FilterNumbers;
+namespace Ui
+{
+class FilterNumbers;
 } // namespace Ui
 
 /**
@@ -26,9 +27,13 @@ public:
 
     ~FilterNumbers() override;
 
-private:
-    Q_DISABLE_COPY(FilterNumbers)
+    FilterNumbers& operator=(const FilterNumbers& other) = delete;
+    FilterNumbers(const FilterNumbers& other) = delete;
 
+    FilterNumbers& operator=(FilterNumbers&& other) = delete;
+    FilterNumbers(FilterNumbers&& other) = delete;
+
+private:
     ///Double slider.
     DoubleSlider* slider_;
 
@@ -41,7 +46,7 @@ private:
     ///Numbers are doubles.
     bool doubleMode_;
 
-    Ui::FilterNumbers *ui;
+    Ui::FilterNumbers* ui;
 
     static const int factor_;
 

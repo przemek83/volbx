@@ -22,6 +22,12 @@ public:
 
     ~Update() override;
 
+    Update& operator=(const Update& other) = delete;
+    Update(const Update& other) = delete;
+
+    Update& operator=(Update&& other) = delete;
+    Update(Update&& other) = delete;
+
 protected:
     void closeEvent(QCloseEvent* event) override;
 

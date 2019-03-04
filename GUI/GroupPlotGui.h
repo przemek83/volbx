@@ -12,8 +12,9 @@
 #include "Charts/GroupPlot.h"
 #include "Charts/QuantilesPlot.h"
 
-namespace Ui {
-    class GroupPlotGui;
+namespace Ui
+{
+class GroupPlotGui;
 } // namespace Ui
 
 class TableModel;
@@ -26,9 +27,15 @@ class GroupPlotGui : public PlotDockWidget
 {
     Q_OBJECT
 public:
-    GroupPlotGui(const TableModel* model, QWidget *parent = nullptr);
+    GroupPlotGui(const TableModel* model, QWidget* parent = nullptr);
 
     ~GroupPlotGui() override;
+
+    GroupPlotGui& operator=(const GroupPlotGui& other) = delete;
+    GroupPlotGui(const GroupPlotGui& other) = delete;
+
+    GroupPlotGui& operator=(GroupPlotGui&& other) = delete;
+    GroupPlotGui(GroupPlotGui&& other) = delete;
 
 public slots:
     void setNewData(float minY,
@@ -38,9 +45,7 @@ public slots:
                     Quantiles quantiles);
 
 private:
-    Q_DISABLE_COPY(GroupPlotGui)
-
-    Ui::GroupPlotGui *ui;
+    Ui::GroupPlotGui* ui;
 
     GroupPlot groupPlot_;
 
@@ -52,7 +57,15 @@ private:
     {
     public:
         explicit ScrollArea(QWidget* parent = nullptr);
+
         ~ScrollArea() override = default;
+
+        ScrollArea& operator=(const ScrollArea& other) = delete;
+        ScrollArea(const ScrollArea& other) = delete;
+
+        ScrollArea& operator=(ScrollArea&& other) = delete;
+        ScrollArea(ScrollArea&& other) = delete;
+
         void forceResize();
     };
 

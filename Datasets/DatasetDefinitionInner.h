@@ -15,9 +15,15 @@ public:
 
     ~DatasetDefinitionInner() override;
 
+    DatasetDefinitionInner& operator=(const DatasetDefinitionInner& other) = delete;
+    DatasetDefinitionInner(const DatasetDefinitionInner& other) = delete;
+
+    DatasetDefinitionInner& operator=(DatasetDefinitionInner&& other) = delete;
+    DatasetDefinitionInner(DatasetDefinitionInner&& other) = delete;
+
     bool isValid() const override;
 
-    QVariant *getSharedStringTable() override;
+    QVariant* getSharedStringTable() override;
 
     ///Definition to bytes array.
     void toXml(QByteArray& data, int rowCountNumber) const;
@@ -28,8 +34,6 @@ protected:
     void updateSampleDataStrings() override;
 
 private:
-    Q_DISABLE_COPY(DatasetDefinitionInner)
-
     bool fillData(QuaZip& zip,
                   QVector<QVector<QVariant> >* dataContainer,
                   bool fillSamplesOnly);
@@ -69,7 +73,7 @@ private:
 
     ///Add current element into given container.
     void addElementToContainer(const DataFormat columnFormat,
-                               const QString &element,
+                               const QString& element,
                                QVector<QVector<QVariant> >* dataContainer,
                                const int lineCounter,
                                const int columnToFill) const;

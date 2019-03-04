@@ -41,6 +41,12 @@ class Logger : public QObject
 {
     Q_OBJECT
 public:
+    Logger& operator=(const Logger& other) = delete;
+    Logger(const Logger& other) = delete;
+
+    Logger& operator=(Logger&& other) = delete;
+    Logger(Logger&& other) = delete;
+
     static Logger* getInstance();
 
     void log(LogTypes type,
@@ -54,7 +60,6 @@ public:
 private:
     Logger();
     ~Logger() override;
-    Q_DISABLE_COPY(Logger)
 
     QMap<LogTypes, bool>* activeLogs_;
 
@@ -62,7 +67,15 @@ private:
     {
     public:
         CheckBox(LogTypes type, QString content, QWidget* parent = nullptr);
+
         ~CheckBox() override;
+
+        CheckBox& operator=(const CheckBox& other) = delete;
+        CheckBox(const CheckBox& other) = delete;
+
+        CheckBox& operator=(CheckBox&& other) = delete;
+        CheckBox(CheckBox&& other) = delete;
+
         LogTypes logType();
 
     private:

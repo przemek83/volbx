@@ -3,7 +3,8 @@
 
 #include "ImportTab.h"
 
-namespace Ui {
+namespace Ui
+{
 class SpreadsheetsImportTab;
 } // namespace Ui
 
@@ -14,19 +15,23 @@ class SpreadsheetsImportTab : public ImportTab
 {
     Q_OBJECT
 public:
-    explicit SpreadsheetsImportTab(QWidget *parent = nullptr);
+    explicit SpreadsheetsImportTab(QWidget* parent = nullptr);
 
     ~SpreadsheetsImportTab() override;
 
-    DatasetDefinition *getDatasetDefinition() override;
+    SpreadsheetsImportTab& operator=(const SpreadsheetsImportTab& other) = delete;
+    SpreadsheetsImportTab(const SpreadsheetsImportTab& other) = delete;
+
+    SpreadsheetsImportTab& operator=(SpreadsheetsImportTab&& other) = delete;
+    SpreadsheetsImportTab(SpreadsheetsImportTab&& other) = delete;
+
+    DatasetDefinition* getDatasetDefinition() override;
 
 private slots:
     void on_openFileButton_clicked();
 
 private:
-    Q_DISABLE_COPY(SpreadsheetsImportTab)
-
-    Ui::SpreadsheetsImportTab *ui;
+    Ui::SpreadsheetsImportTab* ui;
 };
 
 #endif // SPREADSHEETSIMPORTTAB_H

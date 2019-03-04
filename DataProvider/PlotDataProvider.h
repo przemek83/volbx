@@ -28,6 +28,12 @@ public:
 
     ~PlotDataProvider() override = default;
 
+    PlotDataProvider& operator=(const PlotDataProvider& other) = delete;
+    PlotDataProvider(const PlotDataProvider& other) = delete;
+
+    PlotDataProvider& operator=(PlotDataProvider&& other) = delete;
+    PlotDataProvider(PlotDataProvider&& other) = delete;
+
     /**
      * @brief reCompute all data for plots.
      * @param newCalcData new data used for computations.
@@ -53,8 +59,6 @@ public:
     int getGroupByColumn();
 
 private:
-    Q_DISABLE_COPY(PlotDataProvider)
-
     void setNewCalcData(QVector<TransactionData>* calcData);
 
     /**

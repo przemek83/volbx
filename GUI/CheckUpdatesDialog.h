@@ -3,7 +3,8 @@
 
 #include <QDialog>
 
-namespace Ui {
+namespace Ui
+{
 class CheckUpdatesDialog;
 } // namespace Ui
 
@@ -14,16 +15,20 @@ class CheckUpdatesDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit CheckUpdatesDialog(QWidget *parent = nullptr);
+    explicit CheckUpdatesDialog(QWidget* parent = nullptr);
 
     ~CheckUpdatesDialog() override;
+
+    CheckUpdatesDialog& operator=(const CheckUpdatesDialog& other) = delete;
+    CheckUpdatesDialog(const CheckUpdatesDialog& other) = delete;
+
+    CheckUpdatesDialog& operator=(CheckUpdatesDialog&& other) = delete;
+    CheckUpdatesDialog(CheckUpdatesDialog&& other) = delete;
 
     bool saveFlagSet();
 
 private:
-    Q_DISABLE_COPY(CheckUpdatesDialog)
-
-    Ui::CheckUpdatesDialog *ui;
+    Ui::CheckUpdatesDialog* ui;
 };
 
 #endif // CHECKUPDATESDIALOG_H

@@ -14,6 +14,12 @@ public:
 
     virtual ~Quantiles() = default;
 
+    Quantiles& operator=(const Quantiles& other) = default;
+    Quantiles(const Quantiles& other) = default;
+
+    Quantiles& operator=(Quantiles&& other) = default;
+    Quantiles(Quantiles&& other) = default;
+
     //Y axis variables.
     float min_;
     float q10_;

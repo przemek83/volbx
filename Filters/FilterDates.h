@@ -7,8 +7,9 @@
 
 #include "Filter.h"
 
-namespace Ui {
-    class FilterDates;
+namespace Ui
+{
+class FilterDates;
 } // namespace Ui
 
 /**
@@ -23,23 +24,27 @@ public:
                 int column,
                 QDate min, QDate max,
                 bool emptyDates,
-                QWidget *parent = nullptr);
+                QWidget* parent = nullptr);
 
     ~FilterDates() override;
+
+    FilterDates& operator=(const FilterDates& other) = delete;
+    FilterDates(const FilterDates& other) = delete;
+
+    FilterDates& operator=(FilterDates&& other) = delete;
+    FilterDates(FilterDates&& other) = delete;
 
 public slots:
     void setChecked(bool checked) override;
 
 private:
-    Q_DISABLE_COPY(FilterDates)
-
     ///Initial filter minimum date.
     QDate minOnInit_;
 
     ///Initial filter maximum date.
     QDate maxOnInit_;
 
-    Ui::FilterDates *ui;
+    Ui::FilterDates* ui;
 
     QCalendarWidget calendarLeft_;
 

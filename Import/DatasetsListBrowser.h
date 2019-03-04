@@ -5,8 +5,9 @@
 
 class QListWidgetItem;
 
-namespace Ui {
-    class DatasetsListBrowser;
+namespace Ui
+{
+class DatasetsListBrowser;
 } // namespace Ui
 
 /**
@@ -20,6 +21,12 @@ public:
 
     ~DatasetsListBrowser() override;
 
+    DatasetsListBrowser& operator=(const DatasetsListBrowser& other) = delete;
+    DatasetsListBrowser(const DatasetsListBrowser& other) = delete;
+
+    DatasetsListBrowser& operator=(DatasetsListBrowser&& other) = delete;
+    DatasetsListBrowser(DatasetsListBrowser&& other) = delete;
+
     QString getSelectedDataset() const;
 
     void clearSelection();
@@ -27,9 +34,7 @@ public:
     bool isDatasetsListEmpty();
 
 private:
-    Q_DISABLE_COPY(DatasetsListBrowser)
-
-    Ui::DatasetsListBrowser *ui;
+    Ui::DatasetsListBrowser* ui;
 
 private slots:
     void searchTextChanged(const QString& arg1);

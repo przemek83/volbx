@@ -22,6 +22,12 @@ public:
 
     ~DatasetDefinitionVisualization() override;
 
+    DatasetDefinitionVisualization& operator=(const DatasetDefinitionVisualization& other) = delete;
+    DatasetDefinitionVisualization(const DatasetDefinitionVisualization& other) = delete;
+
+    DatasetDefinitionVisualization& operator=(DatasetDefinitionVisualization&& other) = delete;
+    DatasetDefinitionVisualization(DatasetDefinitionVisualization&& other) = delete;
+
     void setDatasetDefiniton(DatasetDefinition* datasetDefinition);
 
     void clear();
@@ -37,8 +43,6 @@ public slots:
     void selectCurrentColumn(int column);
 
 private:
-    Q_DISABLE_COPY(DatasetDefinitionVisualization)
-
     Ui::DatasetDefinitionVisualization* ui;
 
     const QString typeNameString_;

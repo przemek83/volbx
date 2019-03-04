@@ -17,10 +17,13 @@ public:
 
     ~DatasetSpreadsheet() override = default;
 
-    void init() override;
+    DatasetSpreadsheet& operator=(const DatasetSpreadsheet& other) = delete;
+    DatasetSpreadsheet(const DatasetSpreadsheet& other) = delete;
 
-private:
-    Q_DISABLE_COPY(DatasetSpreadsheet)
+    DatasetSpreadsheet& operator=(DatasetSpreadsheet&& other) = delete;
+    DatasetSpreadsheet(DatasetSpreadsheet&& other) = delete;
+
+    void init() override;
 };
 
 #endif // DATASETSPREADSHEET_H

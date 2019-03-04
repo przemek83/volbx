@@ -17,6 +17,12 @@ public:
 
     ~DatasetDefinitionXlsx() override = default;
 
+    DatasetDefinitionXlsx& operator=(const DatasetDefinitionXlsx& other) = delete;
+    DatasetDefinitionXlsx(const DatasetDefinitionXlsx& other) = delete;
+
+    DatasetDefinitionXlsx& operator=(DatasetDefinitionXlsx&& other) = delete;
+    DatasetDefinitionXlsx(DatasetDefinitionXlsx&& other) = delete;
+
 protected:
     const QString& getSheetName() override;
 
@@ -25,8 +31,6 @@ protected:
                         bool fillSamplesOnly) override;
 
 private:
-    Q_DISABLE_COPY(DatasetDefinitionXlsx)
-
     bool getSheetList(QuaZip& zip) override;
 
     bool getColumnList(QuaZip& zip, const QString& sheetName) override;

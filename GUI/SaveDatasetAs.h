@@ -3,8 +3,9 @@
 
 #include <QDialog>
 
-namespace Ui {
-    class SaveDatasetAs;
+namespace Ui
+{
+class SaveDatasetAs;
 } // namespace Ui
 
 /**
@@ -19,9 +20,15 @@ public:
      * @param alreadyUsedNames names of existing datasets.
      * @param parent pointer to parent.
      */
-    SaveDatasetAs(QStringList alreadyUsedNames, QWidget *parent = nullptr);
+    SaveDatasetAs(QStringList alreadyUsedNames, QWidget* parent = nullptr);
 
     ~SaveDatasetAs() override;
+
+    SaveDatasetAs& operator=(const SaveDatasetAs& other) = delete;
+    SaveDatasetAs(const SaveDatasetAs& other) = delete;
+
+    SaveDatasetAs& operator=(SaveDatasetAs&& other) = delete;
+    SaveDatasetAs(SaveDatasetAs&& other) = delete;
 
     /**
      * @brief acces to entered by user name of dataset.
@@ -34,16 +41,14 @@ private slots:
      * @brief action on string/name change.
      * @param actualText actual string.
      */
-    void on_nameLineEdit_textChanged(const QString &actualText);
+    void on_nameLineEdit_textChanged(const QString& actualText);
 
     void on_save_clicked();
 
     void on_cancel_clicked();
 
 private:
-    Q_DISABLE_COPY(SaveDatasetAs)
-
-    Ui::SaveDatasetAs *ui;
+    Ui::SaveDatasetAs* ui;
 
     ///Existing datasets names.
     QStringList alreadyUsedNames_;

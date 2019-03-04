@@ -17,6 +17,12 @@ public:
 
     ~DatasetDefinitionOds() override = default;
 
+    DatasetDefinitionOds& operator=(const DatasetDefinitionOds& other) = delete;
+    DatasetDefinitionOds(const DatasetDefinitionOds& other) = delete;
+
+    DatasetDefinitionOds& operator=(DatasetDefinitionOds&& other) = delete;
+    DatasetDefinitionOds(DatasetDefinitionOds&& other) = delete;
+
 protected:
     const QString& getSheetName() override;
 
@@ -25,8 +31,6 @@ protected:
                         bool fillSamplesOnly) override;
 
 private:
-    Q_DISABLE_COPY(DatasetDefinitionOds)
-
     bool getSheetList(QuaZip& zip) override;
 
     bool getColumnList(QuaZip& zip, const QString& sheetName) override;

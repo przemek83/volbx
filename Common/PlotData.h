@@ -41,6 +41,12 @@ private:
 
         ~ReferenceCounter() = default;
 
+        ReferenceCounter& operator=(const ReferenceCounter& other) = delete;
+        ReferenceCounter(const ReferenceCounter& other) = delete;
+
+        ReferenceCounter& operator=(ReferenceCounter&& other) = delete;
+        ReferenceCounter(ReferenceCounter&& other) = delete;
+
         void increase();
 
         int decrease();
@@ -48,8 +54,6 @@ private:
         int current();
 
     private:
-        Q_DISABLE_COPY(ReferenceCounter)
-
         int count_ {0};
     };
 

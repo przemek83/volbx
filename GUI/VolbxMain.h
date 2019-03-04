@@ -31,14 +31,18 @@ public:
 
     ~VolbxMain() override;
 
+    VolbxMain& operator=(const VolbxMain& other) = delete;
+    VolbxMain(const VolbxMain& other) = delete;
+
+    VolbxMain& operator=(VolbxMain&& other) = delete;
+    VolbxMain(VolbxMain&& other) = delete;
+
     void checkForUpdates();
 
 protected:
     void closeEvent(QCloseEvent* event) override;
 
 private:
-    Q_DISABLE_COPY(VolbxMain)
-
     /**
      * @brief add new tab for given dataset.
      * @param dataset dataset.

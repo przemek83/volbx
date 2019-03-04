@@ -14,6 +14,12 @@ public:
 
     virtual ~TransactionData() = default;
 
+    TransactionData& operator=(const TransactionData& other) = default;
+    TransactionData(const TransactionData& other) = default;
+
+    TransactionData& operator=(TransactionData&& other) = default;
+    TransactionData(TransactionData&& other) = default;
+
     float pricePerMeter_;
 
     QDate date_;

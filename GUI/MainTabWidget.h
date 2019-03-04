@@ -17,9 +17,15 @@ class MainTabWidget : public QTabWidget
 {
     Q_OBJECT
 public:
-    explicit MainTabWidget(QWidget *parent = nullptr);
+    explicit MainTabWidget(QWidget* parent = nullptr);
 
     ~MainTabWidget() override = default;
+
+    MainTabWidget& operator=(const MainTabWidget& other) = delete;
+    MainTabWidget(const MainTabWidget& other) = delete;
+
+    MainTabWidget& operator=(MainTabWidget&& other) = delete;
+    MainTabWidget(MainTabWidget&& other) = delete;
 
     FilteringProxyModel* getCurrentProxyModel();
 
@@ -28,8 +34,6 @@ public:
     DataView* getCurrentDataView();
 
 private:
-    Q_DISABLE_COPY(MainTabWidget)
-
     void changeDataViewMode(DataView* view);
 
     ViewDockWidget* getCurrentDataViewDock();

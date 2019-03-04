@@ -10,16 +10,19 @@ class DatasetImportTab : public ImportTab
 {
     Q_OBJECT
 public:
-    explicit DatasetImportTab(QWidget *parent = nullptr);
+    explicit DatasetImportTab(QWidget* parent = nullptr);
 
     ~DatasetImportTab() override = default;
 
-    DatasetDefinition *getDatasetDefinition() override;
+    DatasetImportTab& operator=(const DatasetImportTab& other) = delete;
+    DatasetImportTab(const DatasetImportTab& other) = delete;
+
+    DatasetImportTab& operator=(DatasetImportTab&& other) = delete;
+    DatasetImportTab(DatasetImportTab&& other) = delete;
+
+    DatasetDefinition* getDatasetDefinition() override;
 
     bool datasetsAreAvailable();
-
-private:
-    Q_DISABLE_COPY(DatasetImportTab)
 
 private slots:
     void selectedDatasetChanged(QString current);

@@ -15,12 +15,18 @@ public:
      * Construktor. Sets default values.
      * @param parent parent widget.
      */
-    DoubleSlider(int min, int max, QWidget *parent = nullptr);
+    DoubleSlider(int min, int max, QWidget* parent = nullptr);
 
     /**
      * Destruktor.
      */
     ~DoubleSlider() override = default;
+
+    DoubleSlider& operator=(const DoubleSlider& other) = delete;
+    DoubleSlider(const DoubleSlider& other) = delete;
+
+    DoubleSlider& operator=(DoubleSlider&& other) = delete;
+    DoubleSlider(DoubleSlider&& other) = delete;
 
     /**
      * Get actual minimum.
@@ -82,29 +88,27 @@ protected:
      * Overriden paint method.
      * @param event paint event.
      */
-    void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent* event);
 
     /**
      * Overriden mouse press method.
      * @param event mouse event.
      */
-    void mousePressEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent* event);
 
     /**
      * Overriden mouse release method.
      * @param event mouse event.
      */
-    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent* event);
 
     /**
      * Overriden mouse move method.
      * @param event mouse event.
      */
-    void mouseMoveEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent* event);
 
 private:
-    Q_DISABLE_COPY(DoubleSlider)
-
     ///Actual minimum.
     double currentMin_;
 

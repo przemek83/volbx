@@ -10,18 +10,21 @@ class Filter : public QGroupBox
 {
     Q_OBJECT
 public:
-    Filter(QString title, int column, QWidget *parent = nullptr);
+    Filter(QString title, int column, QWidget* parent = nullptr);
 
     ~Filter() override = default;
+
+    Filter& operator=(const Filter& other) = delete;
+    Filter(const Filter& other) = delete;
+
+    Filter& operator=(Filter&& other) = delete;
+    Filter(Filter&& other) = delete;
 
 public slots:
     virtual void setChecked(bool checked);
 
 protected:
     int column_;
-
-private:
-    Q_DISABLE_COPY(Filter)
 };
 
 #endif // FILTER_H

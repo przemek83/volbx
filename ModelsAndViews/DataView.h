@@ -25,6 +25,12 @@ public:
 
     ~DataView() override;
 
+    DataView& operator=(const DataView& other) = delete;
+    DataView(const DataView& other) = delete;
+
+    DataView& operator=(DataView&& other) = delete;
+    DataView(DataView&& other) = delete;
+
     void setModel(QAbstractItemModel* model) override;
 
     const PlotDataProvider* getPlotDataProvider();
@@ -40,8 +46,6 @@ protected:
     void keyPressEvent(QKeyEvent* event) override;
 
 private:
-    Q_DISABLE_COPY(DataView)
-
     ///Object for recomputing plot data.
     PlotDataProvider* plotDataProvider_ {nullptr};
 
