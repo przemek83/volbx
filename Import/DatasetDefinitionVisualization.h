@@ -9,7 +9,7 @@ class QTreeWidgetItem;
 namespace Ui
 {
 class DatasetDefinitionVisualization;
-}
+} // namespace Ui
 
 /**
  * @brief Widget for visualization of dataset definition.

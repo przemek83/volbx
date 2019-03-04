@@ -14,7 +14,7 @@ class QDialogButtonBox;
 namespace Ui
 {
 class ImportData;
-}
+} // namespace Ui
 
 /**
  * @brief Main dialog for loading data into application.

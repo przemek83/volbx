@@ -9,7 +9,7 @@ class QNetworkReply;
 namespace Ui
 {
 class Update;
-}
+} // namespace Ui
 
 /**
  * @brief Updater window. Acts as main window for all operations and display.

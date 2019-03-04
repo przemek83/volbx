@@ -173,10 +173,10 @@ void MainTabWidget::addBasicPlot()
     }
 
     //If basic data plot already created than just show it and return.
-    BasicDataPlot* basicDataPlot = mainTab->findChild<BasicDataPlot*>();
+    auto basicDataPlot = mainTab->findChild<BasicDataPlot*>();
     if (nullptr != basicDataPlot)
     {
-        PlotDockWidget* basicPlotDock =
+        auto basicPlotDock =
             dynamic_cast<PlotDockWidget*>(basicDataPlot->parent());
         Q_ASSERT(nullptr != basicPlotDock);
         if (nullptr != basicPlotDock)
@@ -190,8 +190,8 @@ void MainTabWidget::addBasicPlot()
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
 
-    PlotDockWidget* tabifyOn = mainTab->findChild<PlotDockWidget*>();
-    PlotDockWidget* plotDock = new PlotDockWidget("Quantiles", mainTab);
+    auto tabifyOn = mainTab->findChild<PlotDockWidget*>();
+    auto plotDock = new PlotDockWidget("Quantiles", mainTab);
     basicDataPlot = new BasicDataPlot(plotDock);
     plotDock->setWidget(basicDataPlot);
     mainTab->addDockWidget(Qt::RightDockWidgetArea, plotDock);
@@ -234,8 +234,7 @@ void MainTabWidget::addHistogramPlot()
     }
 
     //If basic data plot already created than just show it and return.
-    HistogramPlotGui* histogramPlotGui =
-        mainTab->findChild<HistogramPlotGui*>();
+    auto histogramPlotGui = mainTab->findChild<HistogramPlotGui*>();
     if (nullptr != histogramPlotGui)
     {
         histogramPlotGui->setVisible(true);
@@ -246,7 +245,7 @@ void MainTabWidget::addHistogramPlot()
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
 
-    PlotDockWidget* tabifyOn = mainTab->findChild<PlotDockWidget*>();
+    auto tabifyOn = mainTab->findChild<PlotDockWidget*>();
     histogramPlotGui = new HistogramPlotGui(mainTab);
     mainTab->addDockWidget(Qt::RightDockWidgetArea, histogramPlotGui);
     if (nullptr != tabifyOn)
@@ -289,7 +288,7 @@ void MainTabWidget::addGroupingPlot()
     }
 
     //If basic data plot already created than just show it and return.
-    GroupPlotGui* groupPlotGui = mainTab->findChild<GroupPlotGui*>();
+    auto groupPlotGui = mainTab->findChild<GroupPlotGui*>();
     if (nullptr != groupPlotGui)
     {
         groupPlotGui->setVisible(true);
@@ -300,7 +299,7 @@ void MainTabWidget::addGroupingPlot()
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
 
-    PlotDockWidget* tabifyOn = mainTab->findChild<PlotDockWidget*>();
+    auto tabifyOn = mainTab->findChild<PlotDockWidget*>();
     groupPlotGui = new GroupPlotGui(model, mainTab);
     mainTab->addDockWidget(Qt::RightDockWidgetArea, groupPlotGui);
     if (nullptr != tabifyOn)

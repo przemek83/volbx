@@ -23,8 +23,8 @@ Logger::Logger()
     display_ = new QWidget();
     display_->setWindowTitle(QLatin1String("Logs"));
 
-    QVBoxLayout* verticalLayout = new QVBoxLayout();
-    QHBoxLayout* horizontalLayout = new QHBoxLayout();
+    auto verticalLayout = new QVBoxLayout();
+    auto horizontalLayout = new QHBoxLayout();
 
     textEdit_ = new QTextEdit(display_);
     textEdit_->setLineWrapMode(QTextEdit::NoWrap);
@@ -58,7 +58,7 @@ Logger::~Logger()
 
 Logger* Logger::getInstance()
 {
-    static Logger* instance = new Logger();
+    static auto instance = new Logger();
     return instance;
 }
 
@@ -107,7 +107,7 @@ void Logger::log(LogTypes type,
 
 void Logger::reloadCheckBoxes()
 {
-    QVBoxLayout* verticalLayout = display_->findChild<QVBoxLayout*>();
+    auto verticalLayout = display_->findChild<QVBoxLayout*>();
 
     Q_ASSERT(verticalLayout != nullptr);
 

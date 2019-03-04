@@ -6,20 +6,20 @@
 #include "MainTab.h"
 #include "ViewDockWidget.h"
 
-MainTab::MainTab(Dataset* dataset, QWidget *parent) :
+MainTab::MainTab(Dataset* dataset, QWidget* parent) :
     QMainWindow(parent)
 {
     setWindowTitle(dataset->getName());
 
-    TableModel* model = new TableModel(dataset, this);
+    auto model = new TableModel(dataset, this);
 
     setDockNestingEnabled(true);
 
-    FilteringProxyModel* proxyModel = new FilteringProxyModel(this);
+    auto proxyModel = new FilteringProxyModel(this);
     proxyModel->setSourceModel(model);
 
     ViewDockWidget* dock = new ViewDockWidget(tr("Data"), this);
-    DataView* view = new DataView(dock);
+    auto view = new DataView(dock);
     view->setModel(proxyModel);
     dock->setWidget(view);
     addDockWidget(Qt::LeftDockWidgetArea, dock);
@@ -27,21 +27,21 @@ MainTab::MainTab(Dataset* dataset, QWidget *parent) :
 
 FilteringProxyModel* MainTab::getCurrentProxyModel()
 {
-    FilteringProxyModel* proxyModel = findChild<FilteringProxyModel*>();
+    auto proxyModel = findChild<FilteringProxyModel*>();
     Q_ASSERT(nullptr != proxyModel);
     return proxyModel;
 }
 
 TableModel* MainTab::getCurrentDataModel()
 {
-    TableModel* dataModel = findChild<TableModel*>();
+    auto dataModel = findChild<TableModel*>();
     Q_ASSERT(nullptr != dataModel);
     return dataModel;
 }
 
 DataView* MainTab::getCurrentDataView()
 {
-    DataView* dataView = findChild<DataView*>();
+    auto dataView = findChild<DataView*>();
     Q_ASSERT(nullptr != dataView);
     return dataView;
 }

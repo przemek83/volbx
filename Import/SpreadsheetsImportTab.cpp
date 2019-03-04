@@ -17,7 +17,7 @@
 #include "SpreadsheetsImportTab.h"
 #include "ui_SpreadsheetsImportTab.h"
 
-SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget *parent) :
+SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent) :
     ImportTab(parent),
     ui(new Ui::SpreadsheetsImportTab)
 {
@@ -35,7 +35,7 @@ SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget *parent) :
 
     ui->verticalLayout->addWidget(splitter2);
 
-    const int rowHeight = fontMetrics().height()*1.5;
+    const int rowHeight = fontMetrics().height() * 1.5;
     columnsPreview->verticalHeader()->setDefaultSectionSize(rowHeight);
 
     visualization->setEnabled(false);
@@ -67,13 +67,13 @@ void SpreadsheetsImportTab::on_openFileButton_clicked()
                                      Configuration::getInstance().getImportFilePath(),
                                      tr("Spreadsheets (*.xlsx *.ods )"));
 
-    if ( true == fileName.isEmpty() )
+    if (true == fileName.isEmpty())
     {
         return;
     }
 
     QFileInfo fileInfo(fileName);
-    if ( false == fileInfo.exists() || false == fileInfo.isReadable() )
+    if (false == fileInfo.exists() || false == fileInfo.isReadable())
     {
         QMessageBox::information(this,
                                  tr("Access error"),
@@ -91,18 +91,18 @@ void SpreadsheetsImportTab::on_openFileButton_clicked()
     QString regexpString = QString(Constants::datasetNameRegExp_).replace("[", "[^");
     QString datasetName = fileInfo.completeBaseName().remove(QRegExp(regexpString));
 
-    if ( true == datasetName.isEmpty() )
+    if (true == datasetName.isEmpty())
     {
         datasetName = tr("Dataset");
     }
 
-    if ( 0 == fileInfo.suffix().toLower().compare("ods") )
+    if (0 == fileInfo.suffix().toLower().compare("ods"))
     {
         datasetDefinition = new DatasetDefinitionOds(datasetName, fileName);
     }
     else
     {
-        if ( 0 == fileInfo.suffix().toLower().compare("xlsx") )
+        if (0 == fileInfo.suffix().toLower().compare("xlsx"))
         {
             datasetDefinition = new DatasetDefinitionXlsx(datasetName, fileName);
         }
@@ -118,17 +118,16 @@ void SpreadsheetsImportTab::on_openFileButton_clicked()
 
     datasetDefinition->init();
 
-    DatasetDefinitionVisualization* visualization =
-        findChild<DatasetDefinitionVisualization*>();
-    if( nullptr == visualization )
+    auto visualization = findChild<DatasetDefinitionVisualization*>();
+    if (nullptr == visualization)
     {
         return;
     }
     visualization->setDatasetDefiniton(datasetDefinition);
     visualization->setEnabled(true);
 
-    ColumnsPreview* columnsPreview = findChild<ColumnsPreview*>();
-    if( nullptr == columnsPreview )
+    auto columnsPreview = findChild<ColumnsPreview*>();
+    if (nullptr == columnsPreview)
     {
         return;
     }
@@ -140,7 +139,6 @@ void SpreadsheetsImportTab::on_openFileButton_clicked()
 
 DatasetDefinition* SpreadsheetsImportTab::getDatasetDefinition()
 {
-    DatasetDefinitionVisualization* definition =
-        findChild<DatasetDefinitionVisualization*>();
+    auto definition = findChild<DatasetDefinitionVisualization*>();
     return definition->getDatasetDefinition();
 }

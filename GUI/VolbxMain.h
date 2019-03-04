@@ -9,7 +9,7 @@
 namespace Ui
 {
 class VolbxMain;
-}
+} // namespace Ui
 
 class FiltersDock;
 class DataView;

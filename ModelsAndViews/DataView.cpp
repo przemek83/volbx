@@ -57,7 +57,7 @@ void DataView::setModel(QAbstractItemModel* model)
 {
     const TableModel* parentModel =
         (dynamic_cast<FilteringProxyModel*>(model))->getParentModel();
-    FilteringProxyModel* proxyModel = dynamic_cast<FilteringProxyModel*>(model);
+    auto proxyModel = dynamic_cast<FilteringProxyModel*>(model);
 
     for (int i = 0; i < proxyModel->columnCount() ; ++i)
     {
@@ -127,7 +127,7 @@ QVector<TransactionData>* DataView::fillDataFromSelection(int groupByColumn)
 
     QItemSelectionModel* selectionModelOfView = selectionModel();
 
-    QVector<TransactionData>* calcDataContainer = new QVector<TransactionData>();
+    auto calcDataContainer = new QVector<TransactionData>();
 
     int proxyRowCount = proxyModel->rowCount();
 

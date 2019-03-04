@@ -26,9 +26,9 @@ DatasetDefinitionVisualization::DatasetDefinitionVisualization(QWidget* parent) 
             SLOT(searchTextChanged(QString)));
 
     connect(ui->columnsList,
-            SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)),
+            SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
             this,
-            SLOT(currentColumnOnTreeChanged(QTreeWidgetItem*,QTreeWidgetItem*)));
+            SLOT(currentColumnOnTreeChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
 
     connect(ui->dateCombo,
             SIGNAL(currentIndexChanged(int)),
@@ -47,7 +47,7 @@ DatasetDefinitionVisualization::~DatasetDefinitionVisualization()
 }
 
 void DatasetDefinitionVisualization::setDatasetDefiniton(
-        DatasetDefinition* datasetDefinition)
+    DatasetDefinition* datasetDefinition)
 {
     clear();
 
@@ -69,12 +69,12 @@ void DatasetDefinitionVisualization::setDatasetDefiniton(
     ui->columnsList->setSortingEnabled(false);
 
     //Column list.
-    for(int i = 0; i < datasetDefinition_->columnCount(); ++i)
+    for (int i = 0; i < datasetDefinition_->columnCount(); ++i)
     {
         QStringList list;
         list << datasetDefinition_->getColumnName(i);
         QString typeName("");
-        switch(datasetDefinition_->getColumnFormat(i))
+        switch (datasetDefinition_->getColumnFormat(i))
         {
             case DATA_FORMAT_STRING:
             {
@@ -107,7 +107,7 @@ void DatasetDefinitionVisualization::setDatasetDefiniton(
 
         list << typeName;
 
-        QTreeWidgetItem* item = new QTreeWidgetItem(list);
+        auto item = new QTreeWidgetItem(list);
         item->setData(0, Qt::UserRole, QVariant(i));
         ui->columnsList->addTopLevelItem(item);
     }
@@ -118,11 +118,11 @@ void DatasetDefinitionVisualization::setDatasetDefiniton(
     ui->columnsList->sortByColumn(-1);
 
     //Set proper special columns.
-    if ( true == dateOfTransactionPointed )
+    if (true == dateOfTransactionPointed)
     {
-        for(int i = 0; i < ui->dateCombo->count(); ++i)
+        for (int i = 0; i < ui->dateCombo->count(); ++i)
         {
-            if(specialColumnTransaction == ui->dateCombo->itemData(i).toInt())
+            if (specialColumnTransaction == ui->dateCombo->itemData(i).toInt())
             {
                 ui->dateCombo->setCurrentIndex(i);
                 break;
@@ -130,11 +130,11 @@ void DatasetDefinitionVisualization::setDatasetDefiniton(
         }
     }
 
-    if ( pricePerUnitPointed )
+    if (pricePerUnitPointed)
     {
-        for(int i = 0; i < ui->pricePerUnitCombo->count(); ++i)
+        for (int i = 0; i < ui->pricePerUnitCombo->count(); ++i)
         {
-            if(specialColumnPrice == ui->pricePerUnitCombo->itemData(i).toInt())
+            if (specialColumnPrice == ui->pricePerUnitCombo->itemData(i).toInt())
             {
                 ui->pricePerUnitCombo->setCurrentIndex(i);
                 break;
@@ -164,7 +164,7 @@ void DatasetDefinitionVisualization::clear()
 
     ui->specialColumnsWidget->setEnabled(false);
 
-    if ( nullptr != datasetDefinition_ )
+    if (nullptr != datasetDefinition_)
     {
         delete datasetDefinition_;
         datasetDefinition_ = nullptr;
@@ -189,16 +189,16 @@ DatasetDefinition* DatasetDefinitionVisualization::getDatasetDefinition()
     int topLevelItemsCount =  ui->columnsList->topLevelItemCount();
     activeColumns.resize(topLevelItemsCount);
 
-    for ( int i = 0; i < topLevelItemsCount; ++i )
+    for (int i = 0; i < topLevelItemsCount; ++i)
     {
         QTreeWidgetItem* currentLoopItem = ui->columnsList->topLevelItem(i);
 
         bool active = false;
 
-        if ( currentLoopItem->flags() & Qt::ItemIsUserCheckable )
+        if (currentLoopItem->flags() & Qt::ItemIsUserCheckable)
         {
             active =
-                ( currentLoopItem->checkState(0) == Qt::Checked ? true : false );
+                (currentLoopItem->checkState(0) == Qt::Checked ? true : false);
         }
         else
         {
@@ -210,7 +210,7 @@ DatasetDefinition* DatasetDefinitionVisualization::getDatasetDefinition()
 
     datasetDefinition_->setActiveColumns(activeColumns);
 
-    if ( ui->dateCombo->currentIndex() != -1 )
+    if (ui->dateCombo->currentIndex() != -1)
     {
         int column =
             ui->dateCombo->itemData(ui->dateCombo->currentIndex()).toInt();
@@ -219,7 +219,7 @@ DatasetDefinition* DatasetDefinitionVisualization::getDatasetDefinition()
 
     }
 
-    if ( ui->pricePerUnitCombo->currentIndex() != -1 )
+    if (ui->pricePerUnitCombo->currentIndex() != -1)
     {
         int index = ui->pricePerUnitCombo->currentIndex();
         int column = ui->pricePerUnitCombo->itemData(index).toInt();
@@ -233,11 +233,12 @@ DatasetDefinition* DatasetDefinitionVisualization::getDatasetDefinition()
 
 
 void DatasetDefinitionVisualization::currentColumnOnTreeChanged(
-        QTreeWidgetItem* current, QTreeWidgetItem* /*previous*/)
+    QTreeWidgetItem* current, QTreeWidgetItem* /*previous*/)
 {
-    if ( nullptr == current ) {
+    if (nullptr == current)
+    {
         return;
-}
+    }
 
     emit currentColumnNeedSync(current->data(0, Qt::UserRole).toInt());
 }
@@ -245,18 +246,18 @@ void DatasetDefinitionVisualization::currentColumnOnTreeChanged(
 void DatasetDefinitionVisualization::selectCurrentColumn(int column)
 {
     QList<QTreeWidgetItem*> selectedItemsList = ui->columnsList->selectedItems();
-    if ( 0 != selectedItemsList.count() &&
-         column == selectedItemsList.first()->data(0, Qt::UserRole).toInt() )
+    if (0 != selectedItemsList.count() &&
+        column == selectedItemsList.first()->data(0, Qt::UserRole).toInt())
     {
         return;
     }
 
     int topLevelItemsCount =  ui->columnsList->topLevelItemCount();
 
-    for ( int i = 0; i < topLevelItemsCount; ++i )
+    for (int i = 0; i < topLevelItemsCount; ++i)
     {
         QTreeWidgetItem* currentLoopItem = ui->columnsList->topLevelItem(i);
-        if ( column == currentLoopItem->data(0, Qt::UserRole).toInt() )
+        if (column == currentLoopItem->data(0, Qt::UserRole).toInt())
         {
             ui->columnsList->setCurrentItem(currentLoopItem);
             break;
@@ -268,10 +269,10 @@ void DatasetDefinitionVisualization::on_SelectAll_clicked()
 {
     int topLevelItemsCount =  ui->columnsList->topLevelItemCount();
 
-    for ( int i = 0; i < topLevelItemsCount; ++i )
+    for (int i = 0; i < topLevelItemsCount; ++i)
     {
         QTreeWidgetItem* currentLoopItem = ui->columnsList->topLevelItem(i);
-        if ( currentLoopItem->flags() & Qt::ItemIsUserCheckable )
+        if (currentLoopItem->flags() & Qt::ItemIsUserCheckable)
         {
             currentLoopItem->setCheckState(0, Qt::Checked);
         }
@@ -282,10 +283,10 @@ void DatasetDefinitionVisualization::on_UnselectAll_clicked()
 {
     int topLevelItemsCount =  ui->columnsList->topLevelItemCount();
 
-    for ( int i = 0; i < topLevelItemsCount; ++i )
+    for (int i = 0; i < topLevelItemsCount; ++i)
     {
         QTreeWidgetItem* currentLoopItem = ui->columnsList->topLevelItem(i);
-        if ( currentLoopItem->flags() & Qt::ItemIsUserCheckable )
+        if (currentLoopItem->flags() & Qt::ItemIsUserCheckable)
         {
             currentLoopItem->setCheckState(0, Qt::Unchecked);
         }
@@ -295,14 +296,14 @@ void DatasetDefinitionVisualization::on_UnselectAll_clicked()
 void DatasetDefinitionVisualization::specialColumnChanged(int /*newIndex*/)
 {
     int dateColumn = -1;
-    if( ui->dateCombo->currentIndex() != -1 )
+    if (ui->dateCombo->currentIndex() != -1)
     {
         dateColumn =
             ui->dateCombo->itemData(ui->dateCombo->currentIndex()).toInt();
     }
 
     int priceColumn = -1;
-    if( ui->pricePerUnitCombo->currentIndex() != -1 )
+    if (ui->pricePerUnitCombo->currentIndex() != -1)
     {
         int index = ui->pricePerUnitCombo->currentIndex();
         priceColumn = ui->pricePerUnitCombo->itemData(index).toInt();
@@ -310,11 +311,11 @@ void DatasetDefinitionVisualization::specialColumnChanged(int /*newIndex*/)
 
     int topLevelItemsCount = ui->columnsList->topLevelItemCount();
 
-    for ( int i = 0; i < topLevelItemsCount; ++i )
+    for (int i = 0; i < topLevelItemsCount; ++i)
     {
         QTreeWidgetItem* currentLoopItem = ui->columnsList->topLevelItem(i);
         int itemColumn = currentLoopItem->data(0, Qt::UserRole).toInt();
-        if ( priceColumn == itemColumn || dateColumn == itemColumn )
+        if (priceColumn == itemColumn || dateColumn == itemColumn)
         {
             currentLoopItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
             currentLoopItem->setData(0, Qt::CheckStateRole, QVariant());

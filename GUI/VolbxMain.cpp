@@ -138,11 +138,11 @@ void VolbxMain::createOptionsMenu()
 
     QString activeStyl = Configuration::getInstance().getStyle();
 
-    QActionGroup* actionsGroup = new QActionGroup(this);
+    auto actionsGroup = new QActionGroup(this);
 
     //Add orange style.
     QString styleName("Dark Orange");
-    QAction* action = new QAction(styleName, ui->menuOptions);
+    auto action = new QAction(styleName, ui->menuOptions);
     action->setCheckable(true);
     if (activeStyl == styleName)
     {
@@ -183,7 +183,7 @@ void VolbxMain::createOptionsMenu()
     QStringList qtStylesList = QStyleFactory::keys();
     for (const QString& style : qtStylesList)
     {
-        QAction* action = new QAction(style, ui->menuOptions);
+        auto action = new QAction(style, ui->menuOptions);
         action->setCheckable(true);
         if (activeStyl == style)
         {
@@ -435,7 +435,7 @@ void VolbxMain::on_actionImportData_triggered()
         {
             case ImportData::IMPORT_TYPE_INNER:
             {
-                DatasetDefinitionInner* innerDataset =
+                auto innerDataset =
                     dynamic_cast<DatasetDefinitionInner*>(datasetDefinition);
                 if (nullptr != innerDataset)
                 {
@@ -447,7 +447,7 @@ void VolbxMain::on_actionImportData_triggered()
 
             case ImportData::IMPORT_TYPE_SPREADSHEET:
             {
-                DatasetDefinitionSpreadsheet* definitionSpreadsheet =
+                auto definitionSpreadsheet =
                     dynamic_cast<DatasetDefinitionSpreadsheet*>(datasetDefinition);
                 if (nullptr != definitionSpreadsheet)
                 {
@@ -485,7 +485,7 @@ void VolbxMain::on_actionImportData_triggered()
 
 void VolbxMain::addMainTabForDataset(Dataset* dataset)
 {
-    MainTab* mainTab = new MainTab(dataset, tabWidget_);
+    auto mainTab = new MainTab(dataset, tabWidget_);
     const FilteringProxyModel* proxyModel = mainTab->getCurrentProxyModel();
     if (nullptr != proxyModel)
     {
@@ -572,7 +572,7 @@ void VolbxMain::on_actionUpdateAuto_toggled(bool alwaysCheck)
 
 void VolbxMain::qtStylePicked()
 {
-    QAction* action = dynamic_cast<QAction*>(sender());
+    auto action = dynamic_cast<QAction*>(sender());
     if (nullptr != action)
     {
         QString style = action->text();
@@ -583,7 +583,7 @@ void VolbxMain::qtStylePicked()
 
 void VolbxMain::customStylePicked()
 {
-    QAction* action = dynamic_cast<QAction*>(sender());
+    auto action = dynamic_cast<QAction*>(sender());
     if (nullptr != action)
     {
         QString styleName = action->text();

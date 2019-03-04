@@ -10,30 +10,29 @@
 #include "ColumnsPreview.h"
 #include "DatasetImportTab.h"
 
-DatasetImportTab::DatasetImportTab(QWidget *parent) :
+DatasetImportTab::DatasetImportTab(QWidget* parent) :
     ImportTab(parent)
 {
     //Create vertical and horizontal splitters and insert widgets into it.
-    DatasetsListBrowser* datasetsListBrowser = new DatasetsListBrowser(this);
-    DatasetDefinitionVisualization* visualization =
-        new DatasetDefinitionVisualization(this);
+    auto datasetsListBrowser = new DatasetsListBrowser(this);
+    auto visualization = new DatasetDefinitionVisualization(this);
 
-    QSplitter* splitter = new QSplitter(Qt::Horizontal, this);
+    auto splitter = new QSplitter(Qt::Horizontal, this);
     splitter->addWidget(datasetsListBrowser);
     splitter->addWidget(visualization);
     QList<int> sizes;
     sizes << 100 << 300;
     splitter->setSizes(sizes);
 
-    QSplitter* splitter2 = new QSplitter(Qt::Vertical, this);
+    auto splitter2 = new QSplitter(Qt::Vertical, this);
     splitter2->addWidget(splitter);
-    ColumnsPreview* columnsPreview = new ColumnsPreview(this);
+    auto columnsPreview = new ColumnsPreview(this);
     splitter2->addWidget(columnsPreview);
     sizes.clear();
     sizes << 300 << 150;
     splitter2->setSizes(sizes);
 
-    QVBoxLayout* layout = new QVBoxLayout(this);
+    auto layout = new QVBoxLayout(this);
     layout->setContentsMargins(2, 2, 2, 2);
     layout->addWidget(splitter2);
     setLayout(layout);
@@ -73,14 +72,14 @@ void DatasetImportTab::selectedDatasetChanged(QString current)
     auto columnsPreview = findChild<ColumnsPreview*>();
     auto datasetsListBrowser = findChild<DatasetsListBrowser*>();
 
-    if( nullptr == datasetsListBrowser ||
+    if (nullptr == datasetsListBrowser ||
         nullptr == visualization ||
-        nullptr == columnsPreview )
+        nullptr == columnsPreview)
     {
         return;
     }
 
-    if(true == current.isEmpty())
+    if (true == current.isEmpty())
     {
         columnsPreview->clearDataAndDisable();
         datasetsListBrowser->clearSelection();
@@ -94,7 +93,7 @@ void DatasetImportTab::selectedDatasetChanged(QString current)
             new DatasetDefinitionInner(current);
 
         //If definition is valid, than fill details.
-        if ( nullptr != datasetDefinition && datasetDefinition->isValid() )
+        if (nullptr != datasetDefinition && datasetDefinition->isValid())
         {
             visualization->setDatasetDefiniton(datasetDefinition);
             visualization->setEnabled(true);
@@ -124,7 +123,7 @@ void DatasetImportTab::selectedDatasetChanged(QString current)
 bool DatasetImportTab::datasetsAreAvailable()
 {
     auto datasetsListBrowser = findChild<DatasetsListBrowser*>();
-    if( nullptr == datasetsListBrowser )
+    if (nullptr == datasetsListBrowser)
     {
         return false;
     }
