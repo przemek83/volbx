@@ -32,7 +32,7 @@ public:
      */
     const TableModel* getParentModel() const;
 
-public slots:
+public Q_SLOTS:
     /**
      * @brief set filter for string column.
      * @param column column number to set filter.

@@ -36,14 +36,14 @@ public:
 private:
     Ui::DatasetsListBrowser* ui;
 
-private slots:
+private Q_SLOTS:
     void searchTextChanged(const QString& arg1);
 
     void showContextMenu(const QPoint& pos);
 
     void on_datasetsList_itemSelectionChanged();
 
-signals:
+Q_SIGNALS:
     void currentDatasetChanged(QString current);
 };
 

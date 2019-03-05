@@ -24,7 +24,7 @@ public:
 
     virtual DatasetDefinition* getDatasetDefinition() = 0;
 
-signals:
+Q_SIGNALS:
     void definitionIsReady(bool);
 };
 

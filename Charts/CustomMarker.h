@@ -3,7 +3,7 @@
 
 #include <qwt_plot_item.h>
 
-class Quantiles;
+struct Quantiles;
 
 /**
  * @brief Base class for custom QwtPlotItems.

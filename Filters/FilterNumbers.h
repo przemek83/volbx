@@ -50,7 +50,7 @@ private:
 
     static const int factor_;
 
-private slots:
+private Q_SLOTS:
     /**
      * Trigerred on change of left handle on slider.
      * @param newValue new value.
@@ -73,7 +73,7 @@ private slots:
      */
     void toEditingFinished();
 
-signals:
+Q_SIGNALS:
     void newNumericFilter(int column, double from, double to);
 };
 

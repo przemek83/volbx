@@ -593,7 +593,7 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
                         break;
                     }
 
-                    default:
+                    case DATA_FORMAT_UNKNOWN:
                     {
                         Q_ASSERT(false);
                         break;

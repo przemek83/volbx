@@ -34,7 +34,7 @@ public:
     FilterDates& operator=(FilterDates&& other) = delete;
     FilterDates(FilterDates&& other) = delete;
 
-public slots:
+public Q_SLOTS:
     void setChecked(bool checked) override;
 
 private:
@@ -53,7 +53,7 @@ private:
     ///Flag indicating there were wmpty dates in column.
     bool emptyDates_;
 
-private slots:
+private Q_SLOTS:
 
     /**
      * Trigerred on change of date in left date edit.
@@ -73,7 +73,7 @@ private slots:
      */
     void on_emptyDates_toggled(bool checked);
 
-signals:
+Q_SIGNALS:
     void newDateFilter(int kolumn, QDate from, QDate to, bool filterEmptyDates);
 };
 

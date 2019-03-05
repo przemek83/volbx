@@ -81,6 +81,6 @@ void ColumnsPreview::selectionChanged()
     QTableWidgetItem* selectedItem = selectedItems().first();
     if (nullptr != selectedItem)
     {
-        emit currentColumnNeedSync(selectedItem->column());
+        Q_EMIT currentColumnNeedSync(selectedItem->column());
     }
 }

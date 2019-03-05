@@ -191,25 +191,21 @@ QVariant DatasetDefinition::getDefaultVariantForFormat(const DataFormat format) 
         case DATA_FORMAT_STRING:
         {
             return QVariant(QVariant::Int);
-            break;
         }
 
         case DATA_FORMAT_FLOAT:
         {
             return QVariant(QVariant::Double);
-            break;
         }
         case DATA_FORMAT_DATE:
         {
             return QVariant(QVariant::Date);
-            break;
         }
 
-        default:
+        case DATA_FORMAT_UNKNOWN:
         {
             Q_ASSERT(false);
             return QVariant(QVariant::String);
-            break;
         }
     }
 }

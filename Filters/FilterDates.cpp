@@ -70,10 +70,9 @@ void FilterDates::lowerDateChanged(QDate newDate)
     QApplication::processEvents();
 
     //Emit to model via filters dock.
-    emit newDateFilter(column_,
-                       ui->lowerDateEdit->date(),
-                       ui->higherDateEdit->date(),
-                       ui->emptyDates->isChecked());
+    Q_EMIT newDateFilter(column_, ui->lowerDateEdit->date(),
+                         ui->higherDateEdit->date(),
+                         ui->emptyDates->isChecked());
 }
 
 void FilterDates::higherDateChanged(QDate newDate)
@@ -87,10 +86,8 @@ void FilterDates::higherDateChanged(QDate newDate)
     QApplication::processEvents();
 
     //Emit to model via filters dock.
-    emit newDateFilter(column_,
-                       ui->lowerDateEdit->date(),
-                       ui->higherDateEdit->date(),
-                       ui->emptyDates->isChecked());
+    Q_EMIT newDateFilter(column_, ui->lowerDateEdit->date(),
+                         ui->higherDateEdit->date(), ui->emptyDates->isChecked());
 }
 
 void FilterDates::setChecked(bool checked)
@@ -110,8 +107,8 @@ void FilterDates::setChecked(bool checked)
 void FilterDates::on_emptyDates_toggled(bool checked)
 {
     QApplication::processEvents();
-    emit newDateFilter(column_,
-                       ui->lowerDateEdit->date(),
-                       ui->higherDateEdit->date(),
-                       checked);
+    Q_EMIT newDateFilter(column_,
+                         ui->lowerDateEdit->date(),
+                         ui->higherDateEdit->date(),
+                         checked);
 }

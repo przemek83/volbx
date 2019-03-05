@@ -75,7 +75,7 @@ private:
 
     Quantiles quantiles_;
 
-private slots:
+private Q_SLOTS:
     void legendItemChecked(QVariant itemInfo, bool on, int index);
 
     void recompute(int intervalsCount);

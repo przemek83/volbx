@@ -27,7 +27,7 @@ public:
 
     void deactivateSelectButtons();
 
-private slots:
+private Q_SLOTS:
     void quickExportData();
 
     void selectAll();

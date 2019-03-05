@@ -240,7 +240,7 @@ void DatasetDefinitionVisualization::currentColumnOnTreeChanged(
         return;
     }
 
-    emit currentColumnNeedSync(current->data(0, Qt::UserRole).toInt());
+    Q_EMIT currentColumnNeedSync(current->data(0, Qt::UserRole).toInt());
 }
 
 void DatasetDefinitionVisualization::selectCurrentColumn(int column)

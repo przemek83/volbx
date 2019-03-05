@@ -171,7 +171,6 @@ const QString& ExportData::getCellTypeTag(QVariant& cell)
             const static QDate startOfTheExcelWorld(1899, 12, 30);
             cell = QVariant(-1 * cell.toDate().daysTo(startOfTheExcelWorld));
             return dateTag;
-            break;
         }
 
         case QVariant::Int:
@@ -179,14 +178,12 @@ const QString& ExportData::getCellTypeTag(QVariant& cell)
         {
             const static QString numericTag("s=\"4\"");
             return numericTag;
-            break;
         }
 
         default:
         {
             const static QString stringTag("t=\"str\"");
             return stringTag;
-            break;
         }
     }
 }

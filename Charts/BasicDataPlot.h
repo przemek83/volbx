@@ -32,7 +32,7 @@ public:
     BasicDataPlot& operator=(BasicDataPlot&& other) = delete;
     BasicDataPlot(BasicDataPlot&& other) = delete;
 
-public slots:
+public Q_SLOTS:
     virtual void setNewData(PlotData plotData,
                             Quantiles quantiles,
                             QVector<QPointF> linearRegression);
@@ -91,7 +91,7 @@ private:
      */
     void setLegendItemChecked(QwtPlotCurve* plot);
 
-private slots:
+private Q_SLOTS:
     void legendItemChecked(const QVariant& itemInfo, bool on, int index);
 };
 

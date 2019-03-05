@@ -37,7 +37,7 @@ public:
 
     void reloadSelectionDataAndRecompute();
 
-public slots:
+public Q_SLOTS:
     void groupingColumnChanged(int column);
 
 protected:
@@ -56,7 +56,7 @@ private:
      */
     QVector<TransactionData>* fillDataFromSelection(int groupByColumn);
 
-private slots:
+private Q_SLOTS:
     void showSortIndicatorIfNeeded(int section);
 };
 

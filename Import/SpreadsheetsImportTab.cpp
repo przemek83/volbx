@@ -111,7 +111,7 @@ void SpreadsheetsImportTab::on_openFileButton_clicked()
             QMessageBox::information(this,
                                      tr("Wrong file"),
                                      tr("File type is not supported."));
-            emit definitionIsReady(false);
+            Q_EMIT definitionIsReady(false);
             return;
         }
     }
@@ -134,7 +134,7 @@ void SpreadsheetsImportTab::on_openFileButton_clicked()
     columnsPreview->setDatasetDefinitionSampleInfo(datasetDefinition);
     columnsPreview->setEnabled(true);
 
-    emit definitionIsReady(true);
+    Q_EMIT definitionIsReady(true);
 }
 
 DatasetDefinition* SpreadsheetsImportTab::getDatasetDefinition()

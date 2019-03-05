@@ -97,7 +97,7 @@ void FilterNames::itemChecked(QListWidgetItem* item)
 
     QApplication::processEvents();
 
-    emit newStringFilter(column_, lastEmitted_);
+    Q_EMIT newStringFilter(column_, lastEmitted_);
 }
 
 QSize FilterNames::sizeHint() const

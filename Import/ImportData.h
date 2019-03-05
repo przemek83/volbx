@@ -53,7 +53,7 @@ private:
 
     QDialogButtonBox* buttonBox_ {nullptr};
 
-private slots:
+private Q_SLOTS:
     void checkAndAccept();
 
     void activateOkButton(bool activate);

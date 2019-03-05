@@ -34,7 +34,7 @@ public:
 
     QSize sizeHint() const override;
 
-public slots:
+public Q_SLOTS:
     void setChecked(bool checked) override;
 
 private:
@@ -53,7 +53,7 @@ private:
     ///Maximum widget heigh.
     static const int maximumHeigh_;
 
-private slots:
+private Q_SLOTS:
     /**
      * Triggered when user click on item.
      * @param item item clicked.
@@ -62,7 +62,7 @@ private slots:
 
     void on_selectAll_toggled(bool checked);
 
-signals:
+Q_SIGNALS:
     void newStringFilter(int kolumn, QSet<QString> bannedList);
 };
 

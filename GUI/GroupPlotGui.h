@@ -27,7 +27,7 @@ class GroupPlotGui : public PlotDockWidget
 {
     Q_OBJECT
 public:
-    GroupPlotGui(const TableModel* model, QWidget* parent = nullptr);
+    explicit GroupPlotGui(const TableModel* model, QWidget* parent = nullptr);
 
     ~GroupPlotGui() override;
 
@@ -37,7 +37,7 @@ public:
     GroupPlotGui& operator=(GroupPlotGui&& other) = delete;
     GroupPlotGui(GroupPlotGui&& other) = delete;
 
-public slots:
+public Q_SLOTS:
     void setNewData(float minY,
                     float maxY,
                     QVector<QString> intervalsNames,
@@ -89,10 +89,10 @@ private:
 
     DataFormat getSelectedColumnFormat();
 
-private slots:
+private Q_SLOTS:
     void on_comboBox_currentIndexChanged(int index);
 
-signals:
+Q_SIGNALS:
     void newGroupingColumn(int column);
 };
 

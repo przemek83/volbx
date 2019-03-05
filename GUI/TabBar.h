@@ -30,7 +30,7 @@ private:
     ///Line edit for changing tab name.
     QLineEdit lineEdit_;
 
-private slots:
+private Q_SLOTS:
     void editingOfnameFinished();
 };
 

@@ -85,7 +85,7 @@ void DatasetImportTab::selectedDatasetChanged(QString current)
         datasetsListBrowser->clearSelection();
         visualization->clear();
         visualization->setEnabled(false);
-        emit definitionIsReady(false);
+        Q_EMIT definitionIsReady(false);
     }
     else
     {
@@ -101,7 +101,7 @@ void DatasetImportTab::selectedDatasetChanged(QString current)
             columnsPreview->setDatasetDefinitionSampleInfo(datasetDefinition);
             columnsPreview->setEnabled(true);
 
-            emit definitionIsReady(true);
+            Q_EMIT definitionIsReady(true);
         }
         else
         {
@@ -110,7 +110,7 @@ void DatasetImportTab::selectedDatasetChanged(QString current)
             columnsPreview->clearDataAndDisable();
             visualization->clear();
             visualization->setEnabled(false);
-            emit definitionIsReady(false);
+            Q_EMIT definitionIsReady(false);
 
             QMessageBox::information(this,
                                      tr("Damaged dataset"),

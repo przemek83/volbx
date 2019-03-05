@@ -91,7 +91,7 @@ private:
 
     const static char* LogTypeNames_[];
 
-private slots:
+private Q_SLOTS:
     void changeActiveLogs(bool state);
 };
 

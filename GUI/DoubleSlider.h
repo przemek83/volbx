@@ -70,7 +70,7 @@ public:
      */
     QSize sizeHint() const;
 
-public slots:
+public Q_SLOTS:
     /**
      * Set actual minimum.
      * @param currentMinToSet minimum to set.
@@ -145,7 +145,7 @@ private:
     ///Last emitted maximum.
     int lastEmittedMax_;
 
-signals:
+Q_SIGNALS:
     ///Emitted after actual minimum changed.
     void minChanged(int);
 

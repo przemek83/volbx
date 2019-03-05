@@ -24,26 +24,28 @@ FilterNumbers::FilterNumbers(QString name,
 {
     ui->setupUi(this);
 
-    if(maxOnInit_ - minOnInit_ <= 1)
+    if (maxOnInit_ - minOnInit_ <= 1)
     {
         doubleMode_ = true;
     }
 
-    if(!doubleMode_)
+    if (!doubleMode_)
     {
-        if(fmod(minOnInit_, 1) && minOnInit_ < 0) {
+        if (fmod(minOnInit_, 1) && minOnInit_ < 0)
+        {
             minOnInit_ = minOnInit_ - 1;
-}
+        }
 
-        if(fmod(maxOnInit_, 1) && maxOnInit_ > 0) {
+        if (fmod(maxOnInit_, 1) && maxOnInit_ > 0)
+        {
             maxOnInit_ = maxOnInit_ + 1;
-}
+        }
 
         minOnInit_ = static_cast<int>(minOnInit_);
         maxOnInit_ = static_cast<int>(maxOnInit_);
     }
 
-    if(doubleMode_)
+    if (doubleMode_)
     {
         ui->fromValue->setText(QString::number(minOnInit_, 'f', 2));
         ui->toValue->setText(QString::number(maxOnInit_, 'f', 2));
@@ -54,7 +56,7 @@ FilterNumbers::FilterNumbers(QString name,
         ui->toValue->setText(QString::number(maxOnInit_));
     }
 
-    if(doubleMode_)
+    if (doubleMode_)
     {
         slider_ = new DoubleSlider(ui->fromValue->text().toDouble() * factor_,
                                    ui->toValue->text().toDouble() * factor_,
@@ -65,7 +67,7 @@ FilterNumbers::FilterNumbers(QString name,
         slider_ = new DoubleSlider(minOnInit_, maxOnInit_, this);
     }
 
-    if(doubleMode_)
+    if (doubleMode_)
     {
         ui->fromValue->setValidator(new QDoubleValidator(minOnInit_,
                                                          maxOnInit_,
@@ -94,7 +96,7 @@ FilterNumbers::FilterNumbers(QString name,
 
     ui->verticalLayout->addWidget(slider_);
 
-    if(ui->fromValue->text().toDouble() == ui->toValue->text().toDouble())
+    if (ui->fromValue->text().toDouble() == ui->toValue->text().toDouble())
     {
         setDisabled(true);
     }
@@ -108,9 +110,9 @@ FilterNumbers::~FilterNumbers()
 
 void FilterNumbers::sliderMinChanged(int newValue)
 {
-    if(doubleMode_)
+    if (doubleMode_)
     {
-        ui->fromValue->setText(QString::number(newValue/static_cast<double>(factor_), 'f', 2));
+        ui->fromValue->setText(QString::number(newValue / static_cast<double>(factor_), 'f', 2));
     }
     else
     {
@@ -120,16 +122,15 @@ void FilterNumbers::sliderMinChanged(int newValue)
     QApplication::processEvents();
 
     //Emit to model via filters dock.
-    emit newNumericFilter(column_,
-                          ui->fromValue->text().toDouble(),
-                          ui->toValue->text().toDouble());
+    Q_EMIT newNumericFilter(column_, ui->fromValue->text().toDouble(),
+                            ui->toValue->text().toDouble());
 }
 
 void FilterNumbers::sliderMaxChanged(int newValue)
 {
-    if(doubleMode_)
+    if (doubleMode_)
     {
-        ui->toValue->setText(QString::number(newValue/static_cast<double>(factor_), 'f', 2));
+        ui->toValue->setText(QString::number(newValue / static_cast<double>(factor_), 'f', 2));
     }
     else
     {
@@ -139,14 +140,14 @@ void FilterNumbers::sliderMaxChanged(int newValue)
     QApplication::processEvents();
 
     //Emit to model via filters dock.
-    emit newNumericFilter(column_,
-                          ui->fromValue->text().toDouble(),
-                          ui->toValue->text().toDouble());
+    Q_EMIT newNumericFilter(column_,
+                            ui->fromValue->text().toDouble(),
+                            ui->toValue->text().toDouble());
 }
 
 void FilterNumbers::fromEditingFinished()
 {
-    if(doubleMode_)
+    if (doubleMode_)
     {
         slider_->setCurrentMin(ui->fromValue->text().toDouble() * factor_);
     }
@@ -158,7 +159,7 @@ void FilterNumbers::fromEditingFinished()
 
 void FilterNumbers::toEditingFinished()
 {
-    if(doubleMode_)
+    if (doubleMode_)
     {
         slider_->setCurrentMax(ui->toValue->text().toDouble() * factor_);
     }

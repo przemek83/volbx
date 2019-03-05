@@ -11,7 +11,7 @@
 
 const int GroupPlot::maxCharsInLabel_ = 20;
 
-GroupPlot::GroupPlot(QWidget *parent)
+GroupPlot::GroupPlot(QWidget* parent)
     : PlotBase(tr("Grouping"), parent),
       marker_(nullptr)
 {
@@ -51,8 +51,10 @@ void GroupPlot::setNewData(QVector<Quantiles>& quantiles,
     //No leak here.
     setAxisScaleDraw(xBottom, new StringsScaleDraw(&shortIntervalNames_));
 
-    if(QToolTip::isVisible())
+    if (QToolTip::isVisible())
+    {
         QToolTip::hideText();
+    }
 
     replot();
 }
@@ -60,13 +62,13 @@ void GroupPlot::setNewData(QVector<Quantiles>& quantiles,
 void GroupPlot::shortenIntervalsNamesIfNeeded(QVector<QString>& intervalsNames,
                                               const QVector<Quantiles>& quantilesForIntervals)
 {
-    for ( int i = 0; i < intervalsNames.size(); ++i )
+    for (int i = 0; i < intervalsNames.size(); ++i)
     {
         static const QString moreChars("...");
         QString count =
             QString(" (" + QString::number(quantilesForIntervals[i].number_) + ")");
 
-        if( intervalsNames[i].size() - maxCharsInLabel_ + count.count() > 0 )
+        if (intervalsNames[i].size() - maxCharsInLabel_ + count.count() > 0)
         {
             intervalsNames[i].chop(intervalsNames[i].size() -
                                    maxCharsInLabel_ +
@@ -85,19 +87,23 @@ QSize GroupPlot::minimumSizeHint() const
 
 bool GroupPlot::event(QEvent* event)
 {
-    if(event->type() == QEvent::ToolTip)
+    if (event->type() == QEvent::ToolTip)
     {
         int x =  picker_->getAreaOfMouse();
 
-        if(x >= 1 && x <= quantiles_.size() && picker_->getMouseInWidget())
-            setToolTip("<B>"+longIntervalNames_.at(x-1)+
-                       "</B></BR>"+quantiles_.at(x-1).getValuesAsToolTip());
+        if (x >= 1 && x <= quantiles_.size() && picker_->getMouseInWidget())
+        {
+            setToolTip("<B>" + longIntervalNames_.at(x - 1) +
+                       "</B></BR>" + quantiles_.at(x - 1).getValuesAsToolTip());
+        }
         else
         {
             setToolTip("");
             event->ignore();
-            if(QToolTip::isVisible())
+            if (QToolTip::isVisible())
+            {
                 QToolTip::hideText();
+            }
             return true;
         }
     }
@@ -105,16 +111,16 @@ bool GroupPlot::event(QEvent* event)
     return PlotBase::event(event);
 }
 
-GroupPlot::GroupPicker::GroupPicker(QWidget *parent)
+GroupPlot::GroupPicker::GroupPicker(QWidget* parent)
     : Picker(parent)
 {
 
 }
 
-QwtText GroupPlot::GroupPicker::trackerTextF(const QPointF &pos)const
+QwtText GroupPlot::GroupPicker::trackerTextF(const QPointF& pos)const
 {
     QwtText coords(QString::number(pos.y(), 'f', 2));
     QColor bg(Qt::white);
-    coords.setBackgroundBrush( QBrush( bg ));
+    coords.setBackgroundBrush(QBrush(bg));
     return coords;
 }

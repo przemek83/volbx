@@ -20,7 +20,7 @@ class QwtPlotPanner;
 class PlotBase : public QwtPlot
 {
 public:
-    PlotBase(QString /*title*/, QWidget* parent = nullptr);
+    explicit PlotBase(QString /*title*/, QWidget* parent = nullptr);
 
     ~PlotBase() override;
 

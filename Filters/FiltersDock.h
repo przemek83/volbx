@@ -44,7 +44,7 @@ public:
     ///Shows widget with filters related with given model.
     void activateFiltersForModel(const FilteringProxyModel* model);
 
-private slots:
+private Q_SLOTS:
     void searchTextChanged(const QString arg1);
 
 private:
@@ -72,7 +72,7 @@ private:
                               QWidget* filterListWidget,
                               QVBoxLayout* layout);
 
-signals:
+Q_SIGNALS:
     void newNumbersFiltering(int column, double from, double to);
 
     void newNamesFiltering(int column, QSet<QString> exclusionList);

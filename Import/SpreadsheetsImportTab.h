@@ -27,7 +27,7 @@ public:
 
     DatasetDefinition* getDatasetDefinition() override;
 
-private slots:
+private Q_SLOTS:
     void on_openFileButton_clicked();
 
 private:

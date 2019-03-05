@@ -17,7 +17,7 @@ class Export : public QDialog
 {
     Q_OBJECT
 public:
-    Export(QMainWindow* tab, QWidget* parent = nullptr);
+    explicit Export(QMainWindow* tab, QWidget* parent = nullptr);
 
     ~Export() override;
 
@@ -27,7 +27,7 @@ public:
     Export& operator=(Export&& other) = delete;
     Export(Export&& other) = delete;
 
-private slots:
+private Q_SLOTS:
     void on_save_clicked();
 
     void on_locationSearch_clicked();

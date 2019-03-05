@@ -34,7 +34,7 @@ public:
 
     DatasetDefinition* getDatasetDefinition();
 
-public slots:
+public Q_SLOTS:
     /**
      * Trigerred when currently selected column in coupled widget changed.
      * Used to sync widgets displaying columns.
@@ -53,7 +53,7 @@ private:
 
     DatasetDefinition* datasetDefinition_ {nullptr};
 
-private slots:
+private Q_SLOTS:
     void searchTextChanged(const QString& newText);
 
     void currentColumnOnTreeChanged(QTreeWidgetItem* current,
@@ -65,7 +65,7 @@ private slots:
 
     void specialColumnChanged(int newIndex);
 
-signals:
+Q_SIGNALS:
     /**
      * Emit signal when selected column was changed to sync widgets
      * displaying columns.

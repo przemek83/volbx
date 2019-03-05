@@ -18,7 +18,7 @@ class TableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    TableModel(Dataset* dataset, QObject* parent = nullptr);
+    explicit TableModel(Dataset* dataset, QObject* parent = nullptr);
 
     ~TableModel() override;
 

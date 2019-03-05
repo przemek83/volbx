@@ -88,7 +88,7 @@ private:
 
     bool handleVerificationError(QString& fileName, QString& fileSize);
 
-private slots:
+private Q_SLOTS:
     void initialInfoNetworkReplyFinished(QNetworkReply* reply);
 
     void downloadFinished(QNetworkReply* reply);

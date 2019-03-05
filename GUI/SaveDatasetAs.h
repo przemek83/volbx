@@ -20,7 +20,7 @@ public:
      * @param alreadyUsedNames names of existing datasets.
      * @param parent pointer to parent.
      */
-    SaveDatasetAs(QStringList alreadyUsedNames, QWidget* parent = nullptr);
+    explicit SaveDatasetAs(QStringList alreadyUsedNames, QWidget* parent = nullptr);
 
     ~SaveDatasetAs() override;
 
@@ -36,7 +36,7 @@ public:
      */
     QString getChosenDatasetName();
 
-private slots:
+private Q_SLOTS:
     /**
      * @brief action on string/name change.
      * @param actualText actual string.

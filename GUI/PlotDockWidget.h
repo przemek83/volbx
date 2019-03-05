@@ -25,7 +25,7 @@ public:
 
     QList<PlotBase*> exportContent();
 
-private slots:
+private Q_SLOTS:
     void quickExportData();
 
     void resetPlot();

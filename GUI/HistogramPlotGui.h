@@ -31,7 +31,7 @@ private:
 
     HistogramPlot histogramPlot_;
 
-private slots:
+private Q_SLOTS:
     void dataChanged(PlotData plotData, Quantiles quantiles);
 };
 

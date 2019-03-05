@@ -24,7 +24,7 @@ public:
 
     bool datasetsAreAvailable();
 
-private slots:
+private Q_SLOTS:
     void selectedDatasetChanged(QString current);
 };
 

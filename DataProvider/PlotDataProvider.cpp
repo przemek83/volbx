@@ -81,11 +81,8 @@ void PlotDataProvider::recomputeGroupData(QVector<TransactionData>* calcData,
         fillDataForStringGrouping(calcData, names, quantilesForIntervals);
     }
 
-    emit setNewDataForGrouping(quantiles_.min_,
-                               quantiles_.max_,
-                               names,
-                               quantilesForIntervals,
-                               quantiles_);
+    Q_EMIT setNewDataForGrouping(quantiles_.min_, quantiles_.max_, names,
+                                 quantilesForIntervals, quantiles_);
 
     return;
 }
@@ -126,9 +123,8 @@ void PlotDataProvider::computeBasicData()
     {
         PlotData plotData(nullptr, nullptr, 0);
 
-        emit basicPlotDataChanged(plotData,
-                                  quantiles_,
-                                  QVector<QPointF>());
+        Q_EMIT basicPlotDataChanged(plotData, quantiles_,
+                                    QVector<QPointF>());
 
         return;
     }
@@ -192,13 +188,11 @@ void PlotDataProvider::computeBasicData()
     PlotData plotData(pointsQuantilesX, pointsQuantilesY, dataSize);
 
     //Basic data plot.
-    emit basicPlotDataChanged(plotData,
-                              quantiles_,
-                              linearRegression);
+    Q_EMIT basicPlotDataChanged(plotData, quantiles_, linearRegression);
 
     //Currently histogram only.
-    emit basicDataChanged(plotData,
-                          quantiles_);
+    Q_EMIT basicDataChanged(plotData,
+                            quantiles_);
 }
 
 int PlotDataProvider::getGroupByColumn()

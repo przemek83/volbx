@@ -70,7 +70,7 @@ private:
 
     void setStandardIcons();
 
-private slots:
+private Q_SLOTS:
     void on_actionExit_triggered();
 
     void on_actionFilters_triggered();

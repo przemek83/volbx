@@ -12,7 +12,7 @@ class DockWidget : public QDockWidget
 {
     Q_OBJECT
 public:
-    DockWidget(QString titleText, QWidget* parent = nullptr,
+    explicit DockWidget(QString titleText, QWidget* parent = nullptr,
                Qt::WindowFlags flags = Qt::Widget);
 
     ~DockWidget() override = default;
@@ -23,13 +23,13 @@ public:
     DockWidget& operator=(DockWidget&& other) = delete;
     DockWidget(DockWidget&& other) = delete;
 
-public slots:
+public Q_SLOTS:
     void setNewToolTip(QString text);
 
 protected:
     DockTitleBar titleBarWidget_;
 
-private slots:
+private Q_SLOTS:
     void manageFloating();
 };
 

@@ -68,7 +68,7 @@ void DoubleSlider::setCurrentMin(double currentMinToSet)
         if(lastEmittedMin_ != static_cast<int>(currentMinToSet))
         {
             lastEmittedMin_ = currentMinToSet;
-            emit minChanged(currentMinToSet);
+            Q_EMIT minChanged(currentMinToSet);
         }
     }
 
@@ -90,7 +90,7 @@ void DoubleSlider::setCurrentMax(double currentMaxToSet)
         if(lastEmittedMax_ != static_cast<int>(currentMaxToSet))
         {
             lastEmittedMax_ = currentMaxToSet;
-            emit maxChanged(currentMaxToSet);
+            Q_EMIT maxChanged(currentMaxToSet);
         }
     }
 

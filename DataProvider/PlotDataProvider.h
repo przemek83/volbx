@@ -83,7 +83,7 @@ private:
     ///Column used for grouping.
     int groupingColumn_;
 
-signals:
+Q_SIGNALS:
     void setNewDataForGrouping(float minY,
                                float maxY,
                                QVector<QString> intervalsNames,

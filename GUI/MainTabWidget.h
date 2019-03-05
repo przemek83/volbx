@@ -40,7 +40,7 @@ private:
 
     MainTab* getCurrentMainTab();
 
-private slots:
+private Q_SLOTS:
     void setTextFilterInProxy(int column, QSet<QString> bannedStrings);
 
     void setDateFilterInProxy(int column,

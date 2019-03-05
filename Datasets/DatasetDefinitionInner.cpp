@@ -51,7 +51,7 @@ bool DatasetDefinitionInner::load()
 {
     //Open archive.
     bool result = zip_.open(QuaZip::mdUnzip);
-    if( false == result)
+    if (false == result)
     {
         return result;
     }
@@ -60,7 +60,7 @@ bool DatasetDefinitionInner::load()
 
     result = loadXmlFile(definitionContent, zip_);
 
-    if( false == result )
+    if (false == result)
     {
         zip_.close();
         return result;
@@ -68,14 +68,14 @@ bool DatasetDefinitionInner::load()
 
     result = fromXml(definitionContent);
 
-    if( false == result )
+    if (false == result)
     {
         zip_.close();
         return result;
     }
 
     result = loadStrings(zip_);
-    if( false == result )
+    if (false == result)
     {
         zip_.close();
         return result;
@@ -84,14 +84,14 @@ bool DatasetDefinitionInner::load()
     int rowsCountForSamples = (rowCount() > sampleSize_ ? sampleSize_ : rowCount());
     sampleData_.resize(rowsCountForSamples);
 
-    for( int i = 0 ; i < rowsCountForSamples ; ++i )
+    for (int i = 0 ; i < rowsCountForSamples ; ++i)
     {
         sampleData_[i].resize(columnsCount_);
     }
 
     result = fillData(zip_, &sampleData_, true);
 
-    if( false == result )
+    if (false == result)
     {
         zip_.close();
         return result;
@@ -107,11 +107,11 @@ bool DatasetDefinitionInner::load()
 
 void DatasetDefinitionInner::updateSampleDataStrings()
 {
-    for( int i = 0; i < columnsCount_; ++i)
+    for (int i = 0; i < columnsCount_; ++i)
     {
-        if( DATA_FORMAT_STRING == columnsFormat_.at(i) )
+        if (DATA_FORMAT_STRING == columnsFormat_.at(i))
         {
-            for( int j = 0; j < sampleData_.size(); ++j )
+            for (int j = 0; j < sampleData_.size(); ++j)
             {
                 sampleData_[j][i] = stringsTable_[sampleData_[j][i].toInt()];
             }
@@ -125,7 +125,7 @@ bool DatasetDefinitionInner::loadXmlFile(QByteArray& definitionContent, QuaZip& 
     zip.setCurrentFile(Constants::datasetDefinitionFilename_);
 
     bool result = zipFile.open(QIODevice::ReadOnly);
-    if( false == result)
+    if (false == result)
     {
         LOG(LOG_IMPORT_EXPORT,
             "Can not open xml file " +
@@ -151,7 +151,7 @@ bool DatasetDefinitionInner::fromXml(QByteArray& definitionContent)
     QDomDocument xmlDocument(__FUNCTION__);
 
     //If parsing failure than exit.
-    if(false == xmlDocument.setContent(definitionContent))
+    if (false == xmlDocument.setContent(definitionContent))
     {
         LOG(LOG_IMPORT_EXPORT, "Xml file is corrupted.");
         return false;
@@ -169,19 +169,19 @@ bool DatasetDefinitionInner::fromXml(QByteArray& definitionContent)
 
     columnsCount_ = columns.size();
 
-    for(int i = 0; i < columnsCount_; ++i )
+    for (int i = 0; i < columnsCount_; ++i)
     {
         QDomElement column = columns.at(i).toElement();
         headerColumnNames_.push_back(
-                    column.attribute(datasetDefinitionXmlNames_[DATASET_COLUMN_NAME]));
+            column.attribute(datasetDefinitionXmlNames_[DATASET_COLUMN_NAME]));
         static const QString columnFormatTag =
             datasetDefinitionXmlNames_[DATASET_COLUMN_FORMAT];
         columnsFormat_.push_back(
-                    static_cast<DataFormat>(column.attribute(columnFormatTag).toInt()));
+            static_cast<DataFormat>(column.attribute(columnFormatTag).toInt()));
 
         QString special =
             column.attribute(datasetDefinitionXmlNames_[DATASET_COLUMN_SPECIAL_TAG]);
-        if(0 != special.compare(""))
+        if (0 != special.compare(""))
         {
             specialColumns_[static_cast<SpecialColumn>(special.toInt())] = i;
         }
@@ -202,7 +202,7 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
     zip.setCurrentFile(Constants::datasetDataFilename_);
 
     bool result = zipFile.open(QIODevice::ReadOnly);
-    if( false == result )
+    if (false == result)
     {
         LOG(LOG_IMPORT_EXPORT,
             "Can not open csv file " + QString(Constants::datasetDataFilename_) + ".");
@@ -217,18 +217,18 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
 
     std::unique_ptr<ProgressBar> bar;
 
-	if ( false == fillSamplesOnly )
-	{
-		bar.reset(new ProgressBar(ProgressBar::PROGRESS_TITLE_LOADING, rowCount(), nullptr));
-	}
+    if (false == fillSamplesOnly)
+    {
+        bar.reset(new ProgressBar(ProgressBar::PROGRESS_TITLE_LOADING, rowCount(), nullptr));
+    }
 
     QTime performanceTimer;
     performanceTimer.start();
 
     int lineCounter = 0;
-    while(false == stream.atEnd() && lineCounter < dataContainer->size())
+    while (false == stream.atEnd() && lineCounter < dataContainer->size())
     {
-        if ( true == fillSamplesOnly && lineCounter >= sampleSize_ )
+        if (true == fillSamplesOnly && lineCounter >= sampleSize_)
         {
             break;
         }
@@ -236,14 +236,14 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
         QStringList line = stream.readLine().split(';');
 
         int columnToFill = 0;
-        for(int i = 0; i < columnCount(); ++i)
+        for (int i = 0; i < columnCount(); ++i)
         {
             QString element = line.at(i);
 
             //If column is not active do nothing.
-            if ( false == fillSamplesOnly && false == activeColumns_[i] )
+            if (false == fillSamplesOnly && false == activeColumns_[i])
             {
-                 continue;
+                continue;
             }
 
             addElementToContainer(getColumnFormat(i),
@@ -257,20 +257,20 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
 
         lineCounter++;
 
-        if ( false == fillSamplesOnly )
+        if (false == fillSamplesOnly)
         {
             bar->updateProgress(lineCounter);
         }
     }
 
     LOG(LOG_IMPORT_EXPORT, "Loaded " + QString::number(dataContainer->size()) +
-                           " rows in time " +
-                           QString::number(performanceTimer.elapsed()*1.0/1000) +
-						   " seconds.");
+        " rows in time " +
+        QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
+        " seconds.");
 
     zipFile.close();
 
-    if ( false == fillSamplesOnly )
+    if (false == fillSamplesOnly)
     {
         rebuildDefinitonUsingActiveColumnsOnly();
     }
@@ -285,14 +285,14 @@ DatasetDefinitionInner::addElementToContainer(const DataFormat columnFormat,
                                               const int lineCounter,
                                               const int columnToFill) const
 {
-    if ( true == element.isEmpty() )
+    if (true == element.isEmpty())
     {
         (*dataContainer)[lineCounter][columnToFill] =
             getDefaultVariantForFormat(columnFormat);
     }
     else
     {
-        switch( columnFormat )
+        switch (columnFormat)
         {
             case DATA_FORMAT_FLOAT:
             {
@@ -315,7 +315,7 @@ DatasetDefinitionInner::addElementToContainer(const DataFormat columnFormat,
                 break;
             }
 
-            default:
+            case DATA_FORMAT_UNKNOWN:
             {
                 Q_ASSERT(false);
                 (*dataContainer)[lineCounter][columnToFill] =
@@ -332,7 +332,7 @@ bool DatasetDefinitionInner::loadStrings(QuaZip& zip)
     zip.setCurrentFile(Constants::datasetStringsFilename_);
 
     bool result = zipFile.open(QIODevice::ReadOnly);
-    if( false == result)
+    if (false == result)
     {
         LOG(LOG_IMPORT_EXPORT,
             "Can not open strings file " +
@@ -351,7 +351,7 @@ bool DatasetDefinitionInner::loadStrings(QuaZip& zip)
     stringsTable_ = new QVariant[strings.size() + 1];
     stringsTable_[0] = QVariant(QString());
     int counter = 1;
-    foreach(QByteArray currentString, strings)
+    Q_FOREACH (QByteArray currentString, strings)
     {
         stringsTable_[counter] = QVariant(QString(currentString));
         counter++;
@@ -380,7 +380,7 @@ void DatasetDefinitionInner::toXml(QByteArray& data, int rowCountNumber) const
         xmlDocument.createElement(datasetDefinitionXmlNames_[DATASET_COLUMNS]);
     root.appendChild(columns);
 
-    for(int i = 0; i < columnsCount_; ++i)
+    for (int i = 0; i < columnsCount_; ++i)
     {
         QDomElement node =
             xmlDocument.createElement(datasetDefinitionXmlNames_[DATASET_COLUMN]);
@@ -390,7 +390,7 @@ void DatasetDefinitionInner::toXml(QByteArray& data, int rowCountNumber) const
                           columnsFormat_.at(i));
 
         QMapIterator<SpecialColumn, int> it(specialColumns_);
-        if(it.findNext(i))
+        if (it.findNext(i))
         {
             node.setAttribute(datasetDefinitionXmlNames_[DATASET_COLUMN_SPECIAL_TAG],
                               QString::number(static_cast<int>(it.key())));
@@ -411,7 +411,7 @@ void DatasetDefinitionInner::toXml(QByteArray& data, int rowCountNumber) const
 bool DatasetDefinitionInner::getData(QVector<QVector<QVariant> >* dataContainer)
 {
     //Open archive.
-    if ( false == zip_.open(QuaZip::mdUnzip) )
+    if (false == zip_.open(QuaZip::mdUnzip))
     {
         LOG(LOG_IMPORT_EXPORT, "Can not open file " + zip_.getZipName());
         return false;

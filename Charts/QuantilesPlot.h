@@ -36,7 +36,7 @@ private:
     class IntervalsScaleDraw: public QwtScaleDraw
     {
     public:
-        IntervalsScaleDraw(int count);
+        explicit IntervalsScaleDraw(int count);
 
         ~IntervalsScaleDraw() override = default;
 

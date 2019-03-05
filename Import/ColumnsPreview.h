@@ -27,7 +27,7 @@ public:
 
     void clearDataAndDisable();
 
-public slots:
+public Q_SLOTS:
     /**
      * Trigerred when currently selected column in coupled widget changed.
      * Used to sync widgets displaying columns.
@@ -35,13 +35,13 @@ public slots:
      */
     void selectCurrentColumn(int column);
 
-private slots:
+private Q_SLOTS:
     /**
      * Trigerred when selection in table changed.
      */
     void selectionChanged();
 
-signals:
+Q_SIGNALS:
     /**
      * Emit signal when selected column was changed to sync widgets
      * displaying columns.

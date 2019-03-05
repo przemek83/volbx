@@ -20,7 +20,7 @@ public:
     Filter& operator=(Filter&& other) = delete;
     Filter(Filter&& other) = delete;
 
-public slots:
+public Q_SLOTS:
     virtual void setChecked(bool checked);
 
 protected:

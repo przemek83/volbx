@@ -110,5 +110,5 @@ void DatasetsListBrowser::on_datasetsList_itemSelectionChanged()
         newCurrent = selectedItems.at(0)->text();
 }
 
-    emit currentDatasetChanged(newCurrent);
+    Q_EMIT currentDatasetChanged(newCurrent);
 }
