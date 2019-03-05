@@ -7,7 +7,7 @@
 
 const int TableModel::noColumn_ = -1;
 
-TableModel::TableModel(Dataset* dataset, QObject *parent) :
+TableModel::TableModel(Dataset* dataset, QObject* parent) :
     QAbstractTableModel(parent),
     dataset_(dataset)
 {
@@ -31,7 +31,8 @@ int TableModel::columnCount(const QModelIndex& /*parent*/) const
 
 QVariant TableModel::data(const QModelIndex& index, int role) const
 {
-    if(Qt::DisplayRole == role) {
+    if (Qt::DisplayRole == role)
+    {
         return *dataset_->getData(index.row(), index.column());
     }
 
@@ -42,7 +43,8 @@ QVariant TableModel::headerData(int section,
                                 Qt::Orientation orientation,
                                 int role) const
 {
-    if(Qt::DisplayRole == role && Qt::Horizontal == orientation) {
+    if (Qt::DisplayRole == role && Qt::Horizontal == orientation)
+    {
         return dataset_->getHeaderName(section);
     }
     return QVariant();
@@ -74,7 +76,7 @@ DataFormat TableModel::getColumnFormat(int column) const
 bool TableModel::getSpecialColumnIfExists(SpecialColumn columnTag,
                                           int& column) const
 {
-   return dataset_->getSpecialColumnIfExists(columnTag, column);
+    return dataset_->getSpecialColumnIfExists(columnTag, column);
 }
 
 const DatasetDefinition* TableModel::getDatasetDefinition() const
@@ -86,8 +88,8 @@ bool TableModel::isSpecialColumnsSet() const
 {
     int transDateColumn = noColumn_;
     int priceColumn = noColumn_;
-    if ( false == getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE, transDateColumn) ||
-         false == getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT, priceColumn) )
+    if (!getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE, transDateColumn) ||
+        !getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT, priceColumn))
     {
         return false;
     }
@@ -106,11 +108,12 @@ int TableModel::getDefaultGroupingColumn() const
     getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT, pricePerMeterColumn);
 
     int defaultGroupingColumn = noColumn_;
-    for(int i = 0; i < columnCount(); ++i)
+    for (int i = 0; i < columnCount(); ++i)
     {
-        if( i == pricePerMeterColumn || DATA_FORMAT_STRING != getColumnFormat(i) ) {
+        if (i == pricePerMeterColumn || DATA_FORMAT_STRING != getColumnFormat(i))
+        {
             continue;
-}
+        }
 
         defaultGroupingColumn = i;
         break;

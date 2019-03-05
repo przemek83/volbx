@@ -44,7 +44,7 @@ FilterDates::FilterDates(QString name,
             this,
             SLOT(higherDateChanged(QDate)));
 
-    if (false == emptyDates_)
+    if (!emptyDates_)
     {
         ui->emptyDates->hide();
     }

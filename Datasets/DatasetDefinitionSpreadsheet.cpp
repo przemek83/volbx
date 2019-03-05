@@ -20,61 +20,60 @@ DatasetDefinitionSpreadsheet::~DatasetDefinitionSpreadsheet()
 bool DatasetDefinitionSpreadsheet::init()
 {
     //Open archive.
-    if ( false == zip_.open(QuaZip::mdUnzip) )
+    if (!zip_.open(QuaZip::mdUnzip))
     {
-		error_ = QObject::tr("Can not open file ") + zip_.getZipName();
+        error_ = QObject::tr("Can not open file ") + zip_.getZipName();
         LOG(LOG_IMPORT_EXPORT, "Can not open file " + zip_.getZipName());
         return false;
     }
 
-    if ( false == checkCorrectness(zip_) ||
-         false == getSheetList(zip_) ||
-         false == loadSpecificData(zip_) ||
-         false == getColumnList(zip_, getSheetName()) )
-	{
+    if (!checkCorrectness(zip_) ||
+        !getSheetList(zip_) ||
+        !loadSpecificData(zip_) ||
+        !getColumnList(zip_, getSheetName()))
+    {
+        error_ = QObject::tr("File ") + zip_.getZipName() + QObject::tr(" is damaged.");
+        zip_.close();
+        return false;
+    }
+
+    columnsCount_ = headerColumnNames_.size();
+
+    if (!getColumnTypes(zip_, getSheetName()))
+    {
         error_ =
             QObject::tr("File ") + zip_.getZipName() + QObject::tr(" is damaged.");
         zip_.close();
-		return false;
-	}
+        return false;
+    }
 
-	columnsCount_ = headerColumnNames_.size();
-
-    if ( false == getColumnTypes(zip_, getSheetName()) )
-	{
+    //Sample data.
+    sampleData_.resize(sampleSize_ < rowsCount_ ? sampleSize_ : rowsCount_);
+    if (!getDataFromZip(zip_, getSheetName(), &sampleData_, true))
+    {
         error_ =
             QObject::tr("File ") + zip_.getZipName() + QObject::tr(" is damaged.");
         zip_.close();
-		return false;
-	}
-
-	//Sample data.
-	sampleData_.resize(sampleSize_ < rowsCount_ ? sampleSize_ : rowsCount_);
-    if ( false == getDataFromZip(zip_, getSheetName(), &sampleData_, true) )
-	{
-        error_ =
-            QObject::tr("File ") + zip_.getZipName() + QObject::tr(" is damaged.");
-        zip_.close();
-		return false;
-	}
+        return false;
+    }
 
     //Set proper strings for sample data.
     updateSampleDataStrings();
 
     zip_.close();
 
-	valid_ = true;
+    valid_ = true;
 
-	return true;
+    return true;
 }
 
 void DatasetDefinitionSpreadsheet::updateSampleDataStrings()
 {
-    for( int i = 0; i < columnsCount_; ++i)
+    for (int i = 0; i < columnsCount_; ++i)
     {
-        if( DATA_FORMAT_STRING == columnsFormat_.at(i) )
+        if (DATA_FORMAT_STRING == columnsFormat_.at(i))
         {
-            for( int j = 0; j < sampleData_.size(); ++j )
+            for (int j = 0; j < sampleData_.size(); ++j)
             {
                 sampleData_[j][i] = stringsMap_.key(sampleData_[j][i].toInt());
             }
@@ -84,12 +83,12 @@ void DatasetDefinitionSpreadsheet::updateSampleDataStrings()
 
 bool DatasetDefinitionSpreadsheet::checkCorrectness(QuaZip& /*zip*/) const
 {
-	return true;
+    return true;
 }
 
 bool DatasetDefinitionSpreadsheet::isValid() const
 {
-	return valid_;
+    return valid_;
 }
 
 QVariant* DatasetDefinitionSpreadsheet::getSharedStringTable()
@@ -111,7 +110,7 @@ QVariant* DatasetDefinitionSpreadsheet::getSharedStringTable()
 bool DatasetDefinitionSpreadsheet::getData(QVector<QVector<QVariant> >* dataContainer)
 {
     //Open archive.
-    if ( false == zip_.open(QuaZip::mdUnzip) )
+    if (!zip_.open(QuaZip::mdUnzip))
     {
         LOG(LOG_IMPORT_EXPORT, "Can not open file " + zip_.getZipName());
         return false;

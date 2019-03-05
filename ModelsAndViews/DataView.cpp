@@ -109,15 +109,15 @@ QVector<TransactionData>* DataView::fillDataFromSelection(int groupByColumn)
     Q_ASSERT(nullptr != parentModel);
 
     int pricePerMeterColumn;
-    if (false == parentModel->getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT,
-                                                       pricePerMeterColumn))
+    if (!parentModel->getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT,
+                                               pricePerMeterColumn))
     {
         return nullptr;
     }
 
     int transactionDateColumn;
-    if (false == parentModel->getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE,
-                                                       transactionDateColumn))
+    if (!parentModel->getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE,
+                                               transactionDateColumn))
     {
         return nullptr;
     }
@@ -138,7 +138,7 @@ QVector<TransactionData>* DataView::fillDataFromSelection(int groupByColumn)
             QApplication::processEvents();
         }
 
-        if (false == selectionModelOfView->isSelected(proxyModel->index(i, 0)))
+        if (!selectionModelOfView->isSelected(proxyModel->index(i, 0)))
         {
             continue;
         }
@@ -147,7 +147,7 @@ QVector<TransactionData>* DataView::fillDataFromSelection(int groupByColumn)
         const QVariant& data = proxyModel->index(i, transactionDateColumn).data();
 
         //Do not take into calculations and plots rows with empty date or price.
-        if (false == data.isNull())
+        if (!data.isNull())
         {
             temp.pricePerMeter_ =
                 proxyModel->index(i, pricePerMeterColumn).data().toFloat();
@@ -213,7 +213,7 @@ void DataView::reloadSelectionDataAndRecompute()
 
 void DataView::showSortIndicatorIfNeeded(int section)
 {
-    if (false == horizontalHeader()->isSortIndicatorShown())
+    if (!horizontalHeader()->isSortIndicatorShown())
     {
         horizontalHeader()->setSortIndicatorShown(true);
         model()->sort(section);

@@ -35,21 +35,20 @@ bool Networking::errorsOccuredCheck(QNetworkReply* reply)
     return !(httpStatusCode == 200 && reply->isReadable());
 }
 
-QString Networking::checkReplyAndReturnAvailableVersion(QNetworkReply* reply,
-                                                        QStringList& filesList)
+std::tuple<QString, QStringList> Networking::checkReplyAndReturnAvailableVersion(QNetworkReply* reply)
 {
     QString replyString(QLatin1String(reply->readAll()));
 
     LOG(LOG_NETWORK, QLatin1String("Network reply:\n") + replyString);
 
-    filesList = replyString.split(QLatin1Char('\n'));
+    QStringList filesList = replyString.split(QLatin1Char('\n'));
 
     if (filesList.isEmpty() || filesList.at(0) != QLatin1String("Volbx-Updade-Info"))
     {
-        return QLatin1String("");
+        return {QLatin1String(""), filesList};
     }
 
     LOG(LOG_NETWORK, QLatin1String("Available version is ") + filesList.value(1));
 
-    return filesList.value(1);
+    return {filesList.value(1), filesList};
 }

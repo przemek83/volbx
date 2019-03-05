@@ -76,7 +76,7 @@ void ProgressBar::initNames(QVector<QString>& titles, const char newLine)
 {
     static bool initialized = false;
 
-    if ( false == initialized )
+    if ( !initialized )
     {
         titles[PROGRESS_TITLE_LOADING] =
             QObject::tr("Loading") + newLine + QObject::tr("data");

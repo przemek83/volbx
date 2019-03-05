@@ -25,7 +25,7 @@ bool DatasetDefinitionOds::getSheetList(QuaZip& zip)
     {
         //Open file in zip archive.
         QuaZipFile zipFile(&zip);
-        if (false == zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
+        if (!zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
         {
             LOG(LOG_IMPORT_EXPORT,
                 "Can not open file " + zipFile.getFileName() + ".");
@@ -34,7 +34,7 @@ bool DatasetDefinitionOds::getSheetList(QuaZip& zip)
 
         //Create, set content and read DOM.
         QDomDocument xmlDocument(__FUNCTION__);
-        if (false == xmlDocument.setContent(zipFile.readAll()))
+        if (!xmlDocument.setContent(zipFile.readAll()))
         {
             LOG(LOG_IMPORT_EXPORT, "Xml file is damaged.");
             return false;
@@ -52,7 +52,8 @@ bool DatasetDefinitionOds::getSheetList(QuaZip& zip)
         for (int i = 0 ; i < elementsCount; i++)
         {
             QDomElement currentElement =
-                root.elementsByTagName(configMapNamed).at(i).toElement();
+                root.elementsByTagName(configMapNamed)
+                .at(i).toElement();
             if (currentElement.hasAttribute(configName) &&
                 currentElement.attribute(configName) == tables)
             {
@@ -83,7 +84,7 @@ bool DatasetDefinitionOds::getColumnList(QuaZip& zip,
     {
         //Open file in zip archive.
         QuaZipFile zipFile(&zip);
-        if (false == zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
+        if (!zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
         {
             LOG(LOG_IMPORT_EXPORT,
                 "Can not open file " + zipFile.getFileName() + ".");
@@ -96,14 +97,14 @@ bool DatasetDefinitionOds::getColumnList(QuaZip& zip,
         QXmlStreamReader::TokenType lastToken = QXmlStreamReader::StartElement;
 
         //Move to first row in selected sheet.
-        while (false == xmlStreamReader.atEnd() &&
+        while (!xmlStreamReader.atEnd() &&
                xmlStreamReader.name() != "table:table" &&
                xmlStreamReader.attributes().value("table:name") != sheetName)
         {
             xmlStreamReader.readNext();
         }
 
-        while (false == xmlStreamReader.atEnd() &&
+        while (!xmlStreamReader.atEnd() &&
                xmlStreamReader.name() != "table-row")
         {
             xmlStreamReader.readNext();
@@ -116,7 +117,7 @@ bool DatasetDefinitionOds::getColumnList(QuaZip& zip,
         lastToken = xmlStreamReader.tokenType();
 
         //Parse first row.
-        while (false == xmlStreamReader.atEnd() &&
+        while (!xmlStreamReader.atEnd() &&
                xmlStreamReader.name() != "table-row")
         {
             //When we encounter first cell of worksheet.
@@ -126,7 +127,7 @@ bool DatasetDefinitionOds::getColumnList(QuaZip& zip,
                 static const QString numberColumnsRepeated("table:number-columns-repeated");
                 QString emptyColNumber =
                     xmlStreamReader.attributes().value(numberColumnsRepeated).toString();
-                if (false == emptyColNumber.isEmpty())
+                if (!emptyColNumber.isEmpty())
                 {
                     break;
                 }
@@ -136,7 +137,7 @@ bool DatasetDefinitionOds::getColumnList(QuaZip& zip,
             }
 
             //If we encounter start of cell content we add it to list.
-            if (false == xmlStreamReader.atEnd() &&
+            if (!xmlStreamReader.atEnd() &&
                 xmlStreamReader.name().toString() == QString("p") &&
                 xmlStreamReader.tokenType() == QXmlStreamReader::StartElement)
             {
@@ -175,13 +176,13 @@ bool DatasetDefinitionOds::openZipAndMoveToSecondRow(QuaZip& zip,
                                                      QXmlStreamReader& xmlStreamReader)
 {
     //Open file in zip archive.
-    if (false == zip.setCurrentFile("content.xml"))
+    if (!zip.setCurrentFile("content.xml"))
     {
         LOG(LOG_IMPORT_EXPORT, "Can not open file " + sheetName + " in archive.");
         return false;
     }
     zipFile.setZip(&zip);
-    if (false == zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
+    if (!zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         LOG(LOG_IMPORT_EXPORT, "Can not open file " + zipFile.getFileName() + ".");
         return false;
@@ -190,7 +191,7 @@ bool DatasetDefinitionOds::openZipAndMoveToSecondRow(QuaZip& zip,
     xmlStreamReader.setDevice(&zipFile);
 
     //Move to first row in selected sheet.
-    while (false == xmlStreamReader.atEnd() &&
+    while (!xmlStreamReader.atEnd() &&
            xmlStreamReader.name() != "table:table" &&
            xmlStreamReader.attributes().value("table:name") != sheetName)
     {
@@ -198,12 +199,12 @@ bool DatasetDefinitionOds::openZipAndMoveToSecondRow(QuaZip& zip,
     }
 
     bool secondRow = false;
-    while (false == xmlStreamReader.atEnd())
+    while (!xmlStreamReader.atEnd())
     {
         if (xmlStreamReader.name() == "table-row" &&
             xmlStreamReader.tokenType() == QXmlStreamReader::StartElement)
         {
-            if (true == secondRow)
+            if (secondRow)
             {
                 break;
             }
@@ -227,7 +228,7 @@ bool DatasetDefinitionOds::getColumnTypes(QuaZip& zip,
     QuaZipFile zipFile;
     QXmlStreamReader xmlStreamReader;
 
-    if (false == openZipAndMoveToSecondRow(zip, sheetName, zipFile, xmlStreamReader))
+    if (!openZipAndMoveToSecondRow(zip, sheetName, zipFile, xmlStreamReader))
     {
         return false;
     }
@@ -264,16 +265,16 @@ bool DatasetDefinitionOds::getColumnTypes(QuaZip& zip,
 
     bool rowEmpty = true;
 
-    while (false == xmlStreamReader.atEnd() &&
-           0 != xmlStreamReader.name().compare(tableTag))
+    while (!xmlStreamReader.atEnd() &&
+           xmlStreamReader.name().compare(tableTag) != 0)
     {
         //If start of row encountered than reset column counter add increment row counter.
         if (0 == xmlStreamReader.name().compare(tableRowTag) &&
-            true == xmlStreamReader.isStartElement())
+            xmlStreamReader.isStartElement())
         {
             column = -1;
 
-            if (false == rowEmpty)
+            if (!rowEmpty)
             {
                 rowCounter++;
 
@@ -295,9 +296,9 @@ bool DatasetDefinitionOds::getColumnTypes(QuaZip& zip,
             //If we encounter column outside expected grid we move to row end.
             if (column >= columnsCount_)
             {
-                while (false == xmlStreamReader.atEnd() &&
+                while (!xmlStreamReader.atEnd() &&
                        !(0 == xmlStreamReader.name().compare(tableRowTag) &&
-                         true == xmlStreamReader.isEndElement()))
+                         xmlStreamReader.isEndElement()))
                 {
                     xmlStreamReader.readNext();
                 }
@@ -412,17 +413,16 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
     QTime performanceTimer;
     performanceTimer.start();
 
-    if (false == fillSamplesOnly)
+    if (!fillSamplesOnly)
     {
         bar.reset(new ProgressBar(ProgressBar::PROGRESS_TITLE_LOADING,
-                                  rowsCount_,
-                                  nullptr));
+                                  rowsCount_, nullptr));
     }
 
     QuaZipFile zipFile;
     QXmlStreamReader xmlStreamReader;
 
-    if (false == openZipAndMoveToSecondRow(zip, sheetName, zipFile, xmlStreamReader))
+    if (!openZipAndMoveToSecondRow(zip, sheetName, zipFile, xmlStreamReader))
     {
         return false;
     }
@@ -434,10 +434,10 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
 
     int columnToFill = 0;
 
-    templateDataRow.resize((true == fillSamplesOnly ? columnsCount_ : getActiveColumnCount()));
+    templateDataRow.resize((fillSamplesOnly ? columnsCount_ : getActiveColumnCount()));
     for (int i = 0; i < columnsCount_; ++i)
     {
-        if (true == fillSamplesOnly || true == activeColumns_[i])
+        if (fillSamplesOnly || activeColumns_[i])
         {
             templateDataRow[columnToFill] =
                 getDefaultVariantForFormat(columnsFormat_[i]);
@@ -483,14 +483,14 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
     QVariant value;
     static const QString emptyString("");
 
-    while (false == xmlStreamReader.atEnd() &&
+    while (!xmlStreamReader.atEnd() &&
            0 != xmlStreamReader.name().compare(tableTag) &&
            rowCounter < rowsCount_)
     {
         //If start of row encountered than reset column counter add
         //increment row counter.
         if (0 == xmlStreamReader.name().compare(tableRowTag) &&
-            true == xmlStreamReader.isStartElement())
+            xmlStreamReader.isStartElement())
         {
             column = -1;
 
@@ -501,12 +501,12 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
                 cellsFilledInRow = 0;
                 rowCounter++;
 
-                if (false == fillSamplesOnly)
+                if (!fillSamplesOnly)
                 {
                     bar->updateProgress(rowCounter);
                 }
 
-                if (true == fillSamplesOnly && rowCounter >= sampleSize_)
+                if (fillSamplesOnly && rowCounter >= sampleSize_)
                 {
                     break;
                 }
@@ -515,14 +515,14 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
 
         //When we encounter start of cell description.
         if (0 == xmlStreamReader.name().compare(tableCellTag) &&
-            true == xmlStreamReader.isStartElement())
+            xmlStreamReader.isStartElement())
         {
             column++;
 
             //If we encounter column outside expected grid we move to row end.
             if (column >= columnsCount_)
             {
-                while (false == xmlStreamReader.atEnd() &&
+                while (!xmlStreamReader.atEnd() &&
                        !(0 == xmlStreamReader.name().compare(tableRowTag) &&
                          true == xmlStreamReader.isEndElement()))
                 {
@@ -549,7 +549,7 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
                 repeatCount = columnsCount_ - column;
             }
 
-            if (false == currentColType.isEmpty())
+            if (!currentColType.isEmpty())
             {
                 DataFormat format = columnsFormat_.at(column);
 
@@ -557,7 +557,7 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
                 {
                     case DATA_FORMAT_STRING:
                     {
-                        while (false == xmlStreamReader.atEnd() &&
+                        while (!xmlStreamReader.atEnd() &&
                                0 != xmlStreamReader.name().compare(pTag))
 
                         {
@@ -602,7 +602,7 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
 
                 for (int i = 0; i < repeatCount; ++i)
                 {
-                    if (false == fillSamplesOnly && false == activeColumns_[column + i])
+                    if (!fillSamplesOnly && !activeColumns_[column + i])
                     {
                         continue;
                     }
@@ -618,7 +618,7 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
         xmlStreamReader.readNextStartElement();
     }
 
-    if (false == fillSamplesOnly)
+    if (!fillSamplesOnly)
     {
         Q_ASSERT(rowsCount_ == dataContainer->size());
 

@@ -20,7 +20,7 @@ void Application::setAdditionalApplicatioInfo(const char* productName)
 void Application::initStyle(QString nameFromConfig)
 {
     QStringList qtStyles = QStyleFactory::keys();
-    if( qtStyles.contains(nameFromConfig) )
+    if (qtStyles.contains(nameFromConfig))
     {
         setQtStyle(nameFromConfig);
     }
@@ -32,7 +32,7 @@ void Application::initStyle(QString nameFromConfig)
 
 QString Application::getStylePath(QString styleName)
 {
-    if( true == QFile::exists(getResStylePath(styleName)) )
+    if (QFile::exists(getResStylePath(styleName)))
     {
         return getResStylePath(styleName);
     }
@@ -62,7 +62,7 @@ void Application::setCssStyle(QString styleName)
 
     QFile styleFile(getStylePath(styleName));
 
-    if ( true == styleFile.open(QIODevice::ReadOnly | QIODevice::Text) )
+    if (styleFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         QString style(QLatin1String(styleFile.readAll()));
 
@@ -80,7 +80,7 @@ void Application::setQtStyle(QString name)
 void Application::clearAppFocus()
 {
     QWidget* focusWidget = qApp->focusWidget();
-    if( nullptr != focusWidget)
+    if (nullptr != focusWidget)
     {
         focusWidget->clearFocus();
     }

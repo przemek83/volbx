@@ -45,7 +45,7 @@ ImportData::ImportData(QWidget* parent) :
                              tr("Spreadsheets"));
 
     //If no datasets, than switch to spreadsheets tab.
-    if (true == datasetsTab->datasetsAreAvailable())
+    if (datasetsTab->datasetsAreAvailable())
     {
         ui->tabWidget->setCurrentWidget(datasetsTab);
     }

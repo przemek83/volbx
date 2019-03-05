@@ -81,7 +81,7 @@ void Dataset::getDateRange(int column,
     {
         const QVariant& dateVariant = data_[i][column];
 
-        if (true == dateVariant.isNull())
+        if (dateVariant.isNull())
         {
             emptyDates = true;
             continue;
@@ -166,7 +166,7 @@ QString Dataset::getNameForTabBar()
     int column = 0;
     bool exist = getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT, column);
 
-    if (true == exist)
+    if (exist)
     {
         tabName.append(" (" + getHeaderName(column) + ")");
     }

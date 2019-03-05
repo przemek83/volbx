@@ -118,7 +118,7 @@ void DatasetDefinitionVisualization::setDatasetDefiniton(
     ui->columnsList->sortByColumn(-1);
 
     //Set proper special columns.
-    if (true == dateOfTransactionPointed)
+    if (dateOfTransactionPointed)
     {
         for (int i = 0; i < ui->dateCombo->count(); ++i)
         {
@@ -197,8 +197,7 @@ DatasetDefinition* DatasetDefinitionVisualization::getDatasetDefinition()
 
         if (currentLoopItem->flags() & Qt::ItemIsUserCheckable)
         {
-            active =
-                (currentLoopItem->checkState(0) == Qt::Checked ? true : false);
+            active = (currentLoopItem->checkState(0) == Qt::Checked);
         }
         else
         {

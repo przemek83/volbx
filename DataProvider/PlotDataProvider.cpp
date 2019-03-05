@@ -152,7 +152,7 @@ void PlotDataProvider::computeBasicData()
         sumXX += x * x;
         sumXY += x * y;
 
-        if (set == false)
+        if (!set)
         {
             set = true;
             minX = x;

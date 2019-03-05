@@ -63,8 +63,8 @@ void ExportData::gatherSheetContent(QByteArray& rowsContent,
     //For each row.
     for (int i = 0; i < proxyRowCount; ++i)
     {
-        if (true == multiSelection &&
-            false == selectionModel->isSelected(proxyModel->index(i, 0)))
+        if (multiSelection &&
+            !selectionModel->isSelected(proxyModel->index(i, 0)))
         {
             skippedRows++;
             continue;
@@ -79,7 +79,7 @@ void ExportData::gatherSheetContent(QByteArray& rowsContent,
         for (int j = 0; j < proxyColumnCount; ++j)
         {
             QVariant cell = proxyModel->index(i, j).data();
-            if (true == cell.isNull())
+            if (cell.isNull())
             {
                 continue;
             }
@@ -119,7 +119,7 @@ bool ExportData::exportAsXLSX(const QAbstractItemView* view, QString fileName)
         inZip.setCurrentFile(file);
 
         QuaZipFile inZipFile(&inZip);
-        if (false == inZipFile.open(QIODevice::ReadOnly | QIODevice::Text))
+        if (!inZipFile.open(QIODevice::ReadOnly | QIODevice::Text))
         {
             LOG(LOG_IMPORT_EXPORT,
                 "Can not open file " + inZipFile.getFileName() + ".");
@@ -127,10 +127,9 @@ bool ExportData::exportAsXLSX(const QAbstractItemView* view, QString fileName)
         }
 
         QuaZipFile outZipFile(&outZip);
-        if (false == outZipFile.open(QIODevice::WriteOnly, QuaZipNewInfo(file)))
+        if (!outZipFile.open(QIODevice::WriteOnly, QuaZipNewInfo(file)))
         {
-            LOG(LOG_IMPORT_EXPORT,
-                "Can not open file " + inZipFile.getFileName() + ".");
+            LOG(LOG_IMPORT_EXPORT, "Can not open file " + inZipFile.getFileName() + ".");
             return false;
         }
 
@@ -214,7 +213,7 @@ void ExportData::dataToByteArray(const QAbstractItemView* view,
     int proxyColumnCount = proxyModel->columnCount();
 
     //Save column names.
-    if (false == innerFormat)
+    if (!innerFormat)
     {
         for (int j = 0; j < proxyColumnCount; ++j)
         {
@@ -238,8 +237,8 @@ void ExportData::dataToByteArray(const QAbstractItemView* view,
     int proxyRowCount = proxyModel->rowCount();
     for (int i = 0; i < proxyRowCount; ++i)
     {
-        if (true == multiSelection &&
-            false == selectionModel->isSelected(proxyModel->index(i, 0)))
+        if (multiSelection &&
+            !selectionModel->isSelected(proxyModel->index(i, 0)))
         {
             continue;
         }
@@ -248,7 +247,7 @@ void ExportData::dataToByteArray(const QAbstractItemView* view,
         {
             QVariant actualField = proxyModel->index(i, j).data();
 
-            if (false == actualField.isNull())
+            if (!actualField.isNull())
             {
                 variantToString(actualField,
                                 destinationArray,
@@ -267,7 +266,7 @@ void ExportData::dataToByteArray(const QAbstractItemView* view,
     }
 }
 
-void ExportData::variantToString(QVariant& variant,
+void ExportData::variantToString(const QVariant& variant,
                                  QByteArray* destinationArray,
                                  QString separator,
                                  bool innerFormat)
@@ -277,7 +276,7 @@ void ExportData::variantToString(QVariant& variant,
         case QVariant::Double:
         case QVariant::Int:
         {
-            if (true == innerFormat)
+            if (innerFormat)
             {
                 destinationArray->append(variant.toString());
             }
@@ -344,9 +343,9 @@ bool ExportData::exportAsCsv(const QAbstractItemView* view,
     }
 
     bool ret = false;
-    if (false == innerFormat)
+    if (!innerFormat)
     {
-        //TODO localization.
+        // TODO localization.
         QTextCodec* codec = QTextCodec::codecForName("UTF-8");
         QString unicodeOutput = codec->toUnicode(content);
         codec = QTextCodec::codecForName("Windows-1250");
@@ -375,7 +374,7 @@ bool ExportData::saveDataset(QString name,
     //Open archive.
     QuaZip zip(DatasetInner::getDatasetsDir() + name + Constants::datasetExtension_);
     bool result = zip.open(QuaZip::mdCreate);
-    if (false == result)
+    if (!result)
     {
         return result;
     }
@@ -392,27 +391,26 @@ bool ExportData::saveDataset(QString name,
     //Save data.
     int rowCount = 0;
     QByteArray stringsContent;
-    result = saveDatasetDataFile(zipFile,
-                                 view,
-                                 rowCount,
-                                 proxyModel,
-                                 stringsContent,
-                                 &bar);
-    if (false == result)
+    std::tie(result, rowCount) = saveDatasetDataFile(zipFile,
+                                                     view,
+                                                     proxyModel,
+                                                     stringsContent,
+                                                     &bar);
+    if (!result)
     {
         return false;
     }
 
     //Save strings.
     result = saveDatasetStringsFile(zipFile, stringsContent);
-    if (false == result)
+    if (!result)
     {
         return false;
     }
 
     //Save definition.
     result = saveDatasetDefinitionFile(zipFile, view, rowCount);
-    if (false == result)
+    if (!result)
     {
         return false;
     }
@@ -426,19 +424,19 @@ bool ExportData::saveDataset(QString name,
     return result;
 }
 
-bool ExportData::saveDatasetDataFile(QuaZipFile& zipFile,
-                                     const QAbstractItemView* view,
-                                     int& rowCount,
-                                     FilteringProxyModel* proxyModel,
-                                     QByteArray& stringsContent,
-                                     ProgressBar* bar)
+std::tuple<bool, int>
+ExportData::saveDatasetDataFile(QuaZipFile& zipFile,
+                                const QAbstractItemView* view,
+                                FilteringProxyModel* proxyModel,
+                                QByteArray& stringsContent,
+                                ProgressBar* bar)
 {
     bool result = zipFile.open(QIODevice::WriteOnly,
                                QuaZipNewInfo(Constants::datasetDataFilename_));
-    if (false == result)
+    if (!result)
     {
         LOG(LOG_IMPORT_EXPORT, "Error while saving data file.");
-        return false;
+        return {false, 0};
     }
 
     bool multiSelection = (QAbstractItemView::MultiSelection == view->selectionMode());
@@ -449,10 +447,10 @@ bool ExportData::saveDatasetDataFile(QuaZipFile& zipFile,
     QHash<QString, int> stringsMap;
     int nextIndex = 1;
     static const char* newLine = "\n";
+    int rowCount = 0;
     for (int i = 0; i < proxyRowCount; ++i)
     {
-        if (true == multiSelection &&
-            false == selectionModel->isSelected(proxyModel->index(i, 0)))
+        if (multiSelection && !selectionModel->isSelected(proxyModel->index(i, 0)))
         {
             continue;
         }
@@ -461,7 +459,7 @@ bool ExportData::saveDatasetDataFile(QuaZipFile& zipFile,
         {
             const QVariant& actualField = proxyModel->index(i, j).data();
 
-            if (false == actualField.isNull())
+            if (!actualField.isNull())
             {
                 switch (actualField.type())
                 {
@@ -522,7 +520,7 @@ bool ExportData::saveDatasetDataFile(QuaZipFile& zipFile,
 
     zipFile.close();
 
-    return true;
+    return {true, rowCount};
 }
 
 bool ExportData::saveDatasetStringsFile(QuaZipFile& zipFile,
@@ -531,7 +529,7 @@ bool ExportData::saveDatasetStringsFile(QuaZipFile& zipFile,
     //Save strings file.
     bool result = zipFile.open(QIODevice::WriteOnly,
                                QuaZipNewInfo(Constants::datasetStringsFilename_));
-    if (false == result || -1 == zipFile.write(stringsContent))
+    if (!result || zipFile.write(stringsContent) == -1)
     {
         LOG(LOG_IMPORT_EXPORT, "Error while saving strings file.");
         return false;
@@ -555,7 +553,7 @@ bool ExportData::saveDatasetDefinitionFile(QuaZipFile& zipFile,
 
     bool result = zipFile.open(QIODevice::WriteOnly,
                                QuaZipNewInfo(Constants::datasetDefinitionFilename_));
-    if (false == result || -1 == zipFile.write(definitionContent))
+    if (!result || zipFile.write(definitionContent) == -1)
     {
         LOG(LOG_IMPORT_EXPORT, "Error while saving definition file.");
         return false;

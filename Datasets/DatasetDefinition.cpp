@@ -65,11 +65,11 @@ QString DatasetDefinition::dumpDatasetDefinition() const
     {
         dump += "Column " + QString::number(i) + " name=" + headerColumnNames_.at(i);
         dump += " format=" + QString::number(static_cast<int>(columnsFormat_.at(i)));
-        if (false == activeColumns_.isEmpty())
+        if (!activeColumns_.isEmpty())
         {
             static const QString notActive(" not active");
             static const QString active(" active");
-            dump += " active=" + (activeColumns_[i] == true ? active : notActive);
+            dump += " active=" + (activeColumns_[i] ? active : notActive);
         }
 
         QMapIterator<SpecialColumn, int> it(specialColumns_);
@@ -119,7 +119,7 @@ int DatasetDefinition::getActiveColumnCount() const
 
     for (bool activeColumn : activeColumns_)
     {
-        if (true == activeColumn)
+        if (activeColumn)
         {
             activeColumnCount++;
         }
@@ -145,20 +145,20 @@ void DatasetDefinition::rebuildDefinitonUsingActiveColumnsOnly()
 
     for (int i = 0; i < activeColumns_.count(); ++i)
     {
-        if (true == activeColumns_[i])
+        if (activeColumns_[i])
         {
             tempColumnsFormat.push_back(columnsFormat_[i]);
             tempHeaderColumnNames << headerColumnNames_[i];
 
-            if (true == specialColumnDateMarked &&
-                i == specialColumns_[SPECIAL_COLUMN_TRANSACTION_DATE])
+            if (specialColumnDateMarked &&
+                specialColumns_[SPECIAL_COLUMN_TRANSACTION_DATE] == i)
             {
                 specialColumnsTemp[SPECIAL_COLUMN_TRANSACTION_DATE] =
                     activeColumnNumber;
             }
 
-            if (true == specialColumnPriceMarked &&
-                i == specialColumns_[SPECIAL_COLUMN_PRICE_PER_UNIT])
+            if (specialColumnPriceMarked &&
+                specialColumns_[SPECIAL_COLUMN_PRICE_PER_UNIT] == i)
             {
                 specialColumnsTemp[SPECIAL_COLUMN_PRICE_PER_UNIT] =
                     activeColumnNumber;

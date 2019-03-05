@@ -67,16 +67,15 @@ void SpreadsheetsImportTab::on_openFileButton_clicked()
                                      Configuration::getInstance().getImportFilePath(),
                                      tr("Spreadsheets (*.xlsx *.ods )"));
 
-    if (true == fileName.isEmpty())
+    if (fileName.isEmpty())
     {
         return;
     }
 
     QFileInfo fileInfo(fileName);
-    if (false == fileInfo.exists() || false == fileInfo.isReadable())
+    if (!fileInfo.exists() || !fileInfo.isReadable())
     {
-        QMessageBox::information(this,
-                                 tr("Access error"),
+        QMessageBox::information(this, tr("Access error"),
                                  tr("Can not access file."));
         return;
     }

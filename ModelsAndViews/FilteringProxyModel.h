@@ -32,13 +32,12 @@ public:
      */
     const TableModel* getParentModel() const;
 
-public Q_SLOTS:
     /**
      * @brief set filter for string column.
      * @param column column number to set filter.
-     * @param bannedList list of strings to filter.
+     * @param bannedStrings list of strings to filter.
      */
-    void setStringFilter(int column, QSet<QString>& bannedStrings);
+    void setStringFilter(int column, const QSet<QString>& bannedStrings);
 
     /**
      * @brief set filter for date column.

@@ -1,7 +1,7 @@
 #ifndef LOGWINDOW_H
 #define LOGWINDOW_H
 
-#include <Qmap>
+#include <QMap>
 #include <QObject>
 #include <QCheckBox>
 #include <QLatin1String>

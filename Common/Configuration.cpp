@@ -32,7 +32,7 @@ Configuration& Configuration::getInstance()
 
 bool Configuration::needToShowUpdatePickerDialog() const
 {
-    return (true == configValid_ && UPDATES_CHOICE_NOT_PICKED == updateOption_);
+    return (configValid_ && UPDATES_CHOICE_NOT_PICKED == updateOption_);
 }
 
 bool Configuration::needToCheckForUpdates() const
@@ -87,24 +87,25 @@ bool Configuration::load()
 
     QDomNodeList list = configXML.elementsByTagName(xmlNames_[XML_NAME_UPDATE]);
     QDomElement updateElement = list.at(0).toElement();
-    if (false == updateElement.isNull())
+    if (!updateElement.isNull())
     {
-        updateOption_ =
-            static_cast<UpdateOption>(updateElement.attribute(xmlNames_[XML_NAME_VALUE]).toInt());
+        updateOption_ = static_cast<UpdateOption>(
+                            updateElement.attribute(xmlNames_[XML_NAME_VALUE]).toInt());
     }
 
     list = configXML.elementsByTagName(xmlNames_[XML_NAME_STYLE]);
     QDomElement styleElement = list.at(0).toElement();
-    if (false == styleElement.isNull())
+    if (!styleElement.isNull())
     {
         style_ = styleElement.attribute(xmlNames_[XML_NAME_VALUE]);
     }
 
     list = configXML.elementsByTagName(xmlNames_[XML_NAME_IMPORTPATH]);
     QDomElement importPathElement = list.at(0).toElement();
-    if (false == importPathElement.isNull())
+    if (!importPathElement.isNull())
     {
-        importFilePath_ = importPathElement.attribute(xmlNames_[XML_NAME_VALUE]);
+        importFilePath_ =
+            importPathElement.attribute(xmlNames_[XML_NAME_VALUE]);
     }
 
     LOG(LOG_CONFIG, configDump());
@@ -188,7 +189,7 @@ QString Configuration::configDump() const
 
 void Configuration::setUpdatesCheckingOption(bool alwaysCheck)
 {
-    if (true == alwaysCheck)
+    if (alwaysCheck)
     {
         updateOption_ = UPDATES_ALWAYS_CHECK;
     }
@@ -215,7 +216,7 @@ bool Configuration::configWasValid() const
 
 QString Configuration::getImportFilePath() const
 {
-    if (false == importFilePath_.isEmpty() && QFile::exists(importFilePath_))
+    if (!importFilePath_.isEmpty() && QFile::exists(importFilePath_))
     {
         return importFilePath_;
     }

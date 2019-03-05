@@ -46,7 +46,7 @@ private:
                                 QString separator,
                                 bool innerFormat);
 
-    static void variantToString(QVariant& variant,
+    static void variantToString(const QVariant& variant,
                                 QByteArray* destinationArray,
                                 QString separator,
                                 bool innerFormat);
@@ -55,12 +55,11 @@ private:
 
     static const char* tsvSeparator_;
 
-    static bool saveDatasetDataFile(QuaZipFile& zipFile,
-                                    const QAbstractItemView* view,
-                                    int& rowCount,
-                                    FilteringProxyModel* proxyModel,
-                                    QByteArray& stringsContent,
-                                    ProgressBar* bar);
+    static std::tuple<bool, int> saveDatasetDataFile(QuaZipFile& zipFile,
+                                                     const QAbstractItemView* view,
+                                                     FilteringProxyModel* proxyModel,
+                                                     QByteArray& stringsContent,
+                                                     ProgressBar* bar);
 
     static bool saveDatasetStringsFile(QuaZipFile& zipFile,
                                        QByteArray& stringsContent);

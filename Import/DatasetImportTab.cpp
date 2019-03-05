@@ -79,7 +79,7 @@ void DatasetImportTab::selectedDatasetChanged(QString current)
         return;
     }
 
-    if (true == current.isEmpty())
+    if (current.isEmpty())
     {
         columnsPreview->clearDataAndDisable();
         datasetsListBrowser->clearSelection();
@@ -128,5 +128,5 @@ bool DatasetImportTab::datasetsAreAvailable()
         return false;
     }
 
-    return (false == datasetsListBrowser->isDatasetsListEmpty());
+    return (!datasetsListBrowser->isDatasetsListEmpty());
 }

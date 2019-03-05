@@ -36,12 +36,12 @@ QString Constants::floatToStringUsingLocale(float value, int precison)
 {
     static bool initialized = false;
     static QLocale locale = QLocale::system();
-    if ( false == initialized )
+    if (!initialized)
     {
         locale.setNumberOptions(locale.numberOptions() & ~QLocale::OmitGroupSeparator);
         initialized = true;
     }
- 
+
     return locale.toString(value, 'f', precison);
 }
 
@@ -52,22 +52,21 @@ void Constants::generateExcelColumnNames(QStringList& excelColNames,
 
     static QStringList templateNames;
 
-    if( true == templateNames.isEmpty() )
+    if (templateNames.isEmpty())
     {
-
-        templateNames << "A"<<"B"<<"C"<<"D"<<"E"<<"F"<<"G"<<"H"<<"I"<<"J"<<
-                         "K"<<"L"<<"M"<<"N"<<"O"<<"P"<<"Q"<<"R"<<
-                         "S"<<"T"<<"U"<<"V"<<"W"<<"X"<<"Y"<<"Z";
+        templateNames << "A" << "B" << "C" << "D" << "E" << "F" << "G" << "H" << "I" << "J" <<
+                      "K" << "L" << "M" << "N" << "O" << "P" << "Q" << "R" <<
+                      "S" << "T" << "U" << "V" << "W" << "X" << "Y" << "Z";
     }
 
     QString currentPrefix("");
-    for( int i = 0; i < columnsNumber; ++i )
+    for (int i = 0; i < columnsNumber; ++i)
     {
-        excelColNames << currentPrefix + templateNames[i%templateNames.count()];
+        excelColNames << currentPrefix + templateNames[i % templateNames.count()];
 
-        if ( i != 0 && 0 == (i+1)%templateNames.count() )
+        if (i != 0 && 0 == (i + 1) % templateNames.count())
         {
-            currentPrefix = templateNames[i/(templateNames.count()-1) - 1];
+            currentPrefix = templateNames[i / (templateNames.count() - 1) - 1];
         }
     }
 }

@@ -56,8 +56,8 @@ void ExportImage::quickExportAsImage(QList<PlotBase*> list)
     }
 }
 
-void ExportImage::exportSingleImage(QwtPlotRenderer& rend,
-                                    QList<PlotBase*> list)
+void ExportImage::exportSingleImage(const QwtPlotRenderer& rend,
+                                    const QList<PlotBase*>& list)
 {
     QImage img(list.front()->size(), QImage::Format_ARGB32);
     img.fill(QColor(Qt::white).rgb());
@@ -68,8 +68,8 @@ void ExportImage::exportSingleImage(QwtPlotRenderer& rend,
     QApplication::clipboard()->setImage(img);
 }
 
-void ExportImage::exportTwinImage(QList<PlotBase*> list,
-                                  QwtPlotRenderer& rend)
+void ExportImage::exportTwinImage(const QList<PlotBase*>& list,
+                                  const QwtPlotRenderer& rend)
 {
     PlotBase* left = list.first();
     PlotBase* right = list.at(1);
@@ -91,8 +91,8 @@ void ExportImage::exportTwinImage(QList<PlotBase*> list,
     QApplication::clipboard()->setImage(img);
 }
 
-void ExportImage::exportFourPlotsImage(QList<PlotBase*> list,
-                                       QwtPlotRenderer& rend)
+void ExportImage::exportFourPlotsImage(const QList<PlotBase*>& list,
+                                       const QwtPlotRenderer& rend)
 {
     int width = list.front()->size().width();
     int height = list.front()->size().height();

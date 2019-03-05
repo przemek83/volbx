@@ -69,9 +69,8 @@ void Update::initialInfoNetworkReplyFinished(QNetworkReply* reply)
     insertNewLineIntoDetails();
     insertNewLineIntoDetails();
 
-    QStringList replyStringList;
-    QString newestVersion =
-        Networking::checkReplyAndReturnAvailableVersion(reply, replyStringList);
+    auto [newestVersion, replyStringList] =
+        Networking::checkReplyAndReturnAvailableVersion(reply);
 
     if (newestVersion.isEmpty())
     {
@@ -354,7 +353,7 @@ void Update::insertErrorInfoIntoDetails(QString msg)
 void Update::on_showDetails_toggled(bool checked)
 {
     static int detailsSize = 0;
-    if (true == checked)
+    if (checked)
     {
         int minimumSize = ui->verticalLayout->minimumSize().height();
         ui->details->show();

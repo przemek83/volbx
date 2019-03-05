@@ -24,8 +24,8 @@ public:
 
     static bool errorsOccuredCheck(QNetworkReply* reply);
 
-    static QString checkReplyAndReturnAvailableVersion(QNetworkReply* reply,
-                                                       QStringList& filesList);
+    static std::tuple<QString, QStringList>
+    checkReplyAndReturnAvailableVersion(QNetworkReply* reply);
 
     static int getMaxTries();
 

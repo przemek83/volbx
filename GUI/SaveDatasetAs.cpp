@@ -34,7 +34,7 @@ QString SaveDatasetAs::getChosenDatasetName()
 
 void SaveDatasetAs::on_nameLineEdit_textChanged(const QString& actualText)
 {
-    if (true == actualText.isEmpty())
+    if (actualText.isEmpty())
     {
         ui->save->setEnabled(false);
     }

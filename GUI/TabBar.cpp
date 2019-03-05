@@ -38,7 +38,7 @@ void TabBar::mouseDoubleClickEvent(QMouseEvent* event)
 
 void TabBar::editingOfnameFinished()
 {
-    if (true == lineEdit_.isVisible())
+    if (lineEdit_.isVisible())
     {
         //Currently in eksport window is used name set as window title.
         int index = currentIndex();

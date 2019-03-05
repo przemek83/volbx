@@ -516,9 +516,8 @@ void VolbxMain::updateCheckReplyFinished(QNetworkReply* reply)
         return;
     }
 
-    QStringList notNeededHereList;
-    QString newestVersion =
-        Networking::checkReplyAndReturnAvailableVersion(reply, notNeededHereList);
+    auto [newestVersion, notNeededHereList] =
+        Networking::checkReplyAndReturnAvailableVersion(reply);
 
     if (true == newestVersion.isEmpty())
     {

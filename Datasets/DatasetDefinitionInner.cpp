@@ -51,7 +51,7 @@ bool DatasetDefinitionInner::load()
 {
     //Open archive.
     bool result = zip_.open(QuaZip::mdUnzip);
-    if (false == result)
+    if (!result)
     {
         return result;
     }
@@ -60,7 +60,7 @@ bool DatasetDefinitionInner::load()
 
     result = loadXmlFile(definitionContent, zip_);
 
-    if (false == result)
+    if (!result)
     {
         zip_.close();
         return result;
@@ -68,14 +68,14 @@ bool DatasetDefinitionInner::load()
 
     result = fromXml(definitionContent);
 
-    if (false == result)
+    if (!result)
     {
         zip_.close();
         return result;
     }
 
     result = loadStrings(zip_);
-    if (false == result)
+    if (!result)
     {
         zip_.close();
         return result;
@@ -91,7 +91,7 @@ bool DatasetDefinitionInner::load()
 
     result = fillData(zip_, &sampleData_, true);
 
-    if (false == result)
+    if (!result)
     {
         zip_.close();
         return result;
@@ -125,7 +125,7 @@ bool DatasetDefinitionInner::loadXmlFile(QByteArray& definitionContent, QuaZip& 
     zip.setCurrentFile(Constants::datasetDefinitionFilename_);
 
     bool result = zipFile.open(QIODevice::ReadOnly);
-    if (false == result)
+    if (!result)
     {
         LOG(LOG_IMPORT_EXPORT,
             "Can not open xml file " +
@@ -151,7 +151,7 @@ bool DatasetDefinitionInner::fromXml(QByteArray& definitionContent)
     QDomDocument xmlDocument(__FUNCTION__);
 
     //If parsing failure than exit.
-    if (false == xmlDocument.setContent(definitionContent))
+    if (!xmlDocument.setContent(definitionContent))
     {
         LOG(LOG_IMPORT_EXPORT, "Xml file is corrupted.");
         return false;
@@ -202,22 +202,24 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
     zip.setCurrentFile(Constants::datasetDataFilename_);
 
     bool result = zipFile.open(QIODevice::ReadOnly);
-    if (false == result)
+    if (!result)
     {
         LOG(LOG_IMPORT_EXPORT,
-            "Can not open csv file " + QString(Constants::datasetDataFilename_) + ".");
+            "Can not open csv file " +
+            QString(Constants::datasetDataFilename_) + ".");
         return result;
     }
 
     LOG(LOG_IMPORT_EXPORT,
-        "Csv file " + QString(Constants::datasetDataFilename_) + " opened.");
+        "Csv file " + QString(Constants::datasetDataFilename_) +
+        " opened.");
 
     QTextStream stream(&zipFile);
     stream.setCodec("UTF-8");
 
     std::unique_ptr<ProgressBar> bar;
 
-    if (false == fillSamplesOnly)
+    if (!fillSamplesOnly)
     {
         bar.reset(new ProgressBar(ProgressBar::PROGRESS_TITLE_LOADING, rowCount(), nullptr));
     }
@@ -226,9 +228,9 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
     performanceTimer.start();
 
     int lineCounter = 0;
-    while (false == stream.atEnd() && lineCounter < dataContainer->size())
+    while (!stream.atEnd() && lineCounter < dataContainer->size())
     {
-        if (true == fillSamplesOnly && lineCounter >= sampleSize_)
+        if (fillSamplesOnly && lineCounter >= sampleSize_)
         {
             break;
         }
@@ -241,7 +243,7 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
             QString element = line.at(i);
 
             //If column is not active do nothing.
-            if (false == fillSamplesOnly && false == activeColumns_[i])
+            if (!fillSamplesOnly && !activeColumns_[i])
             {
                 continue;
             }
@@ -257,7 +259,7 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
 
         lineCounter++;
 
-        if (false == fillSamplesOnly)
+        if (!fillSamplesOnly)
         {
             bar->updateProgress(lineCounter);
         }
@@ -270,7 +272,7 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
 
     zipFile.close();
 
-    if (false == fillSamplesOnly)
+    if (!fillSamplesOnly)
     {
         rebuildDefinitonUsingActiveColumnsOnly();
     }
@@ -285,7 +287,7 @@ DatasetDefinitionInner::addElementToContainer(const DataFormat columnFormat,
                                               const int lineCounter,
                                               const int columnToFill) const
 {
-    if (true == element.isEmpty())
+    if (element.isEmpty())
     {
         (*dataContainer)[lineCounter][columnToFill] =
             getDefaultVariantForFormat(columnFormat);
@@ -332,7 +334,7 @@ bool DatasetDefinitionInner::loadStrings(QuaZip& zip)
     zip.setCurrentFile(Constants::datasetStringsFilename_);
 
     bool result = zipFile.open(QIODevice::ReadOnly);
-    if (false == result)
+    if (!result)
     {
         LOG(LOG_IMPORT_EXPORT,
             "Can not open strings file " +
@@ -411,7 +413,7 @@ void DatasetDefinitionInner::toXml(QByteArray& data, int rowCountNumber) const
 bool DatasetDefinitionInner::getData(QVector<QVector<QVariant> >* dataContainer)
 {
     //Open archive.
-    if (false == zip_.open(QuaZip::mdUnzip))
+    if (!zip_.open(QuaZip::mdUnzip))
     {
         LOG(LOG_IMPORT_EXPORT, "Can not open file " + zip_.getZipName());
         return false;

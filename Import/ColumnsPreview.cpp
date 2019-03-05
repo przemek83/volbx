@@ -62,8 +62,7 @@ void ColumnsPreview::clearDataAndDisable()
 void ColumnsPreview::selectCurrentColumn(int column)
 {
     QTableWidgetItem* itemToSelect = item(0, column);
-    if (nullptr != itemToSelect &&
-        false == itemToSelect->isSelected())
+    if (nullptr != itemToSelect && !itemToSelect->isSelected())
     {
         selectColumn(column);
     }
@@ -73,7 +72,7 @@ void ColumnsPreview::selectionChanged()
 {
     QList<QTableWidgetItem*> selectedItemsList = selectedItems();
 
-    if (true == selectedItemsList.isEmpty())
+    if (selectedItemsList.isEmpty())
     {
         return;
     }
