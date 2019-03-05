@@ -26,7 +26,7 @@ protected:
 
     void drawElement(QPainter* p, int elementNumber,
                      const QwtScaleMap& xMap, const QwtScaleMap& yMap,
-                     float width, Quantiles& quantiles) const override;
+                     float width, const Quantiles& quantiles) const override;
 
 private:
     QBrush markerBrush_;

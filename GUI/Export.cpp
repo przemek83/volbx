@@ -5,8 +5,8 @@
 #include <QMainWindow>
 #include <QDate>
 
-#include "common/ExportData.h"
-#include "common/ExportImage.h"
+#include "Common/ExportData.h"
+#include "Common/ExportImage.h"
 #include "Charts/PlotBase.h"
 #include "Common/Constants.h"
 #include "Common/Configuration.h"

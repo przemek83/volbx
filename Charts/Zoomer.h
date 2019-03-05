@@ -9,6 +9,7 @@
  */
 class Zoomer: public QwtPlotZoomer
 {
+    Q_OBJECT
 public:
     explicit Zoomer(QwtPlotCanvas* canvas);
 
@@ -25,7 +26,7 @@ public:
     void restart();
 
 protected:
-    virtual void widgetWheelEvent(QWheelEvent* event);
+    void widgetWheelEvent(QWheelEvent* event) override;
 };
 
 

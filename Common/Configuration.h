@@ -52,7 +52,7 @@ public:
 
 private:
     Configuration();
-    virtual ~Configuration() = default;
+    ~Configuration() = default;
 
     ///Flag indicating that config existed and was valid.
     bool configValid_ {false};
@@ -64,14 +64,14 @@ private:
         UPDATES_NEVER_CHECK
     };
 
-    UpdateOption updateOption_ {UPDATES_CHOICE_NOT_PICKED};
-
     QString style_;
 
     QString importFilePath_;
 
     ///Names used in xml.
     const static char* xmlNames_[];
+
+    UpdateOption updateOption_ {UPDATES_CHOICE_NOT_PICKED};
 
     ///Enum used for xml field names.
     enum XmlNames

@@ -35,7 +35,7 @@ protected:
                              const QwtScaleMap& xMap,
                              const QwtScaleMap& yMap,
                              float width,
-                             Quantiles& quantiles) const = 0;
+                             const Quantiles& quantiles) const = 0;
 
     QVector<Quantiles>* quantiles_;
 };

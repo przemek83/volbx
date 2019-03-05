@@ -24,7 +24,7 @@ public:
 protected:
     void mouseDoubleClickEvent(QMouseEvent* event) override;
 
-    bool eventFilter(QObject* obj, QEvent* event);
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
 private:
     ///Line edit for changing tab name.

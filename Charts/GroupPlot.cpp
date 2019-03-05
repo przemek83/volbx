@@ -64,7 +64,7 @@ void GroupPlot::shortenIntervalsNamesIfNeeded(QVector<QString>& intervalsNames,
 {
     for (int i = 0; i < intervalsNames.size(); ++i)
     {
-        static const QString moreChars("...");
+        const QString moreChars("...");
         QString count =
             QString(" (" + QString::number(quantilesForIntervals[i].number_) + ")");
 

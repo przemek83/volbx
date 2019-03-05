@@ -2,7 +2,7 @@
 #define PLOTDATAPROVIDER_H
 
 #include <QVector>
-#include <Qmap>
+#include <QMap>
 #include <QDate>
 #include <QVariant>
 #include <QObject>
