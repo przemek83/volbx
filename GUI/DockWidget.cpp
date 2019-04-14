@@ -7,7 +7,7 @@
 #include "DockWidget.h"
 #include "ModelsAndViews/DataView.h"
 
-DockWidget::DockWidget(QString titleText,
+DockWidget::DockWidget(const QString& titleText,
                        QWidget* parent,
                        Qt::WindowFlags flags)
     : QDockWidget(titleText, parent, flags)
@@ -26,7 +26,7 @@ DockWidget::DockWidget(QString titleText,
     setTitleBarWidget(&titleBarWidget_);
 }
 
-void DockWidget::setNewToolTip(QString text)
+void DockWidget::setNewToolTip(const QString& text)
 {
     setToolTip(text);
 }

@@ -3,7 +3,7 @@
 
 #include "CustomMarker.h"
 
-class Quantiles;
+struct Quantiles;
 
 /**
  * @brief Notched marker for display of quantiles, min, max and avg in one item.

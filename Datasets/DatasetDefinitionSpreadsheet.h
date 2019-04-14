@@ -13,9 +13,9 @@
 class DatasetDefinitionSpreadsheet : public DatasetDefinition
 {
 public:
-    DatasetDefinitionSpreadsheet(const QString& name, QString& zipFileName);
+    DatasetDefinitionSpreadsheet(const QString& name, const QString& zipFileName);
 
-    ~DatasetDefinitionSpreadsheet() override;
+    ~DatasetDefinitionSpreadsheet() override = default;
 
     DatasetDefinitionSpreadsheet& operator=(const DatasetDefinitionSpreadsheet& other) = delete;
     DatasetDefinitionSpreadsheet(const DatasetDefinitionSpreadsheet& other) = delete;

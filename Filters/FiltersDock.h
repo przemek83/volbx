@@ -45,7 +45,7 @@ public:
     void activateFiltersForModel(const FilteringProxyModel* model);
 
 private Q_SLOTS:
-    void searchTextChanged(const QString arg1);
+    void searchTextChanged(QString arg1);
 
 private:
     Ui::FiltersDock* ui;

@@ -24,8 +24,8 @@ PlotData::~PlotData()
 PlotData::PlotData(const PlotData& right):
     dataX_(right.dataX_),
     dataY_(right.dataY_),
-    dataSize_(right.dataSize_),
-    counter_(right.counter_)
+    counter_(right.counter_),
+    dataSize_(right.dataSize_)
 {
     counter_->increase();
 }

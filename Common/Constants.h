@@ -54,7 +54,7 @@ public:
      * @param daysToAdd amount of days to add.
      * @return date in for of string.
      **/
-    static QString stringFromDays(const int daysToAdd);
+    static QString stringFromDays(int daysToAdd);
 
     ///Minimum amount of data when threading should be used.
     static const int minDataPerThread_;

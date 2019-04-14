@@ -13,7 +13,7 @@
 #include "DatasetDefinitionOds.h"
 
 DatasetDefinitionOds::DatasetDefinitionOds(const QString& name,
-                                           QString& zipFileName)
+                                           const QString& zipFileName)
     : DatasetDefinitionSpreadsheet(name, zipFileName)
 {
 

@@ -10,7 +10,7 @@ class Filter : public QGroupBox
 {
     Q_OBJECT
 public:
-    Filter(QString title, int column, QWidget* parent = nullptr);
+    Filter(const QString& title, int column, QWidget* parent = nullptr);
 
     ~Filter() override = default;
 
@@ -24,7 +24,7 @@ public Q_SLOTS:
     virtual void setChecked(bool checked);
 
 protected:
-    int column_;
+    long long column_;
 };
 
 #endif // FILTER_H

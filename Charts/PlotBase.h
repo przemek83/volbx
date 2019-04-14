@@ -19,6 +19,7 @@ class QwtPlotPanner;
  */
 class PlotBase : public QwtPlot
 {
+    Q_OBJECT
 public:
     explicit PlotBase(QString /*title*/, QWidget* parent = nullptr);
 

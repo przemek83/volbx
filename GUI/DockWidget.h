@@ -12,8 +12,8 @@ class DockWidget : public QDockWidget
 {
     Q_OBJECT
 public:
-    explicit DockWidget(QString titleText, QWidget* parent = nullptr,
-               Qt::WindowFlags flags = Qt::Widget);
+    explicit DockWidget(const QString& titleText, QWidget* parent = nullptr,
+                        Qt::WindowFlags flags = Qt::Widget);
 
     ~DockWidget() override = default;
 
@@ -24,7 +24,7 @@ public:
     DockWidget(DockWidget&& other) = delete;
 
 public Q_SLOTS:
-    void setNewToolTip(QString text);
+    void setNewToolTip(const QString& text);
 
 protected:
     DockTitleBar titleBarWidget_;

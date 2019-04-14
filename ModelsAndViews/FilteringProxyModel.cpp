@@ -14,7 +14,7 @@ FilteringProxyModel::FilteringProxyModel(QObject* parent)
 
 const TableModel* FilteringProxyModel::getParentModel() const
 {
-    return dynamic_cast<const TableModel*>(sourceModel());
+    return qobject_cast<const TableModel*>(sourceModel());
 }
 
 void FilteringProxyModel::setStringFilter(int column, const QSet<QString>& bannedStrings)

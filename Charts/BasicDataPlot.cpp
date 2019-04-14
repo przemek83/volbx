@@ -82,7 +82,7 @@ void BasicDataPlot::initQ50()
     plotQ50_.setZ(1000);
     plotQ50_.setRenderHint(QwtPlotItem::RenderAntialiased, true);
     plotQ50_.attach(this);
-    plotQ50_.setTitle("Q50");
+    plotQ50_.setTitle(QStringLiteral("Q50"));
 }
 
 void BasicDataPlot::initQ75()

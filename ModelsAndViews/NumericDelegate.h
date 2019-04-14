@@ -8,6 +8,7 @@
  */
 class NumericDelegate : public QStyledItemDelegate
 {
+    Q_OBJECT
 public:
     explicit NumericDelegate(QObject* parent = nullptr);
 

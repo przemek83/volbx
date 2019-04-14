@@ -13,7 +13,7 @@
 class DatasetDefinitionOds : public DatasetDefinitionSpreadsheet
 {
 public:
-    DatasetDefinitionOds(const QString& name, QString& zipFileName);
+    DatasetDefinitionOds(const QString& name, const QString& zipFileName);
 
     ~DatasetDefinitionOds() override = default;
 

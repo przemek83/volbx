@@ -27,7 +27,7 @@ void overwriteUpdaterfIfNeeded()
             updaterFile + Constants::tmpFileSuffix_);
 
         QFile::remove(updaterFile);
-        QFile::rename(updaterFile + QString(Constants::tmpFileSuffix_),
+        QFile::rename(updaterFile + Constants::tmpFileSuffix_,
                       updaterFile);
     }
 }

@@ -8,6 +8,7 @@
  */
 class Picker : public QwtPlotPicker
 {
+    Q_OBJECT
 public:
     explicit Picker(QWidget* parent);
 

@@ -39,10 +39,10 @@ public:
 
     QPushButton* getResetButton();
 
-    void setTitle(QString titleText);
+    void setTitle(const QString& titleText);
 
 protected:
-    void paintEvent(QPaintEvent* event);
+    void paintEvent(QPaintEvent* event) override;
 
 private:
     Ui::DockTitleBar* ui;

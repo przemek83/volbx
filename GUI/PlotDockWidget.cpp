@@ -10,7 +10,7 @@
 #include "PlotDockWidget.h"
 #include "DockTitleBar.h"
 
-PlotDockWidget::PlotDockWidget(QString title,
+PlotDockWidget::PlotDockWidget(const QString& title,
                                QWidget* parent,
                                Qt::WindowFlags flags)
     : DockWidget(title, parent, flags)

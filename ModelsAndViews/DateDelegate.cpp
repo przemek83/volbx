@@ -6,9 +6,8 @@
 #include "DateDelegate.h"
 
 DateDelegate::DateDelegate(QObject* parent)
-    : QStyledItemDelegate(parent)
+    : QStyledItemDelegate(parent), defaultDateFormat_(Constants::defaultDateFormat_)
 {
-    defaultDateFormat_ = QString(Constants::defaultDateFormat_);
 }
 
 QString DateDelegate::displayText(const QVariant& value,

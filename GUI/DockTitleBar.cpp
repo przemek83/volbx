@@ -7,7 +7,7 @@
 #include "DockTitleBar.h"
 #include "ui_DockTitleBar.h"
 
-DockTitleBar::DockTitleBar(QWidget *parent) :
+DockTitleBar::DockTitleBar(QWidget* parent) :
     QWidget(parent),
     ui(new Ui::DockTitleBar)
 {
@@ -57,18 +57,18 @@ QPushButton* DockTitleBar::getResetButton()
     return ui->reset;
 }
 
-void DockTitleBar::paintEvent(QPaintEvent *event)
+void DockTitleBar::paintEvent(QPaintEvent* event)
 {
     QWidget::paintEvent(event);
     QPainter painter(this);
     painter.setPen(Qt::darkGray);
     QRect rectangle = rect();
-    rectangle.setHeight(rectangle.height()-1);
-    rectangle.setWidth(rectangle.width()-1);
+    rectangle.setHeight(rectangle.height() - 1);
+    rectangle.setWidth(rectangle.width() - 1);
     painter.drawRect(rectangle);
 }
 
-void DockTitleBar::setTitle(QString titleText)
+void DockTitleBar::setTitle(const QString& titleText)
 {
     ui->label->setText(titleText);
 }

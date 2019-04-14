@@ -12,7 +12,7 @@ class PlotDockWidget :  public DockWidget
 {
     Q_OBJECT
 public:
-    explicit PlotDockWidget(QString title, QWidget* parent = nullptr,
+    explicit PlotDockWidget(const QString& title, QWidget* parent = nullptr,
                             Qt::WindowFlags flags = Qt::Widget);
 
     ~PlotDockWidget() override = default;

@@ -19,6 +19,7 @@ class QwtPlotCurve;
  */
 class GroupPlot : public PlotBase
 {
+    Q_OBJECT
 public:
     explicit GroupPlot(QWidget* parent = nullptr);
 

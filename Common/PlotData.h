@@ -32,8 +32,6 @@ private:
 
     double* dataY_;
 
-    int dataSize_;
-
     class ReferenceCounter
     {
     public:
@@ -58,6 +56,8 @@ private:
     };
 
     ReferenceCounter* counter_;
+
+    int dataSize_;
 };
 
 #endif // PLOTDATA_H

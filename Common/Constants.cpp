@@ -27,7 +27,7 @@ const int Constants::minDataPerThread_ = 100;
 
 const char* Constants::datasetNameRegExp_ = "[\\w\\s-]+";
 
-QString Constants::stringFromDays(const int daysToAdd)
+QString Constants::stringFromDays(int daysToAdd)
 {
     return startOfTheWorld_.addDays(daysToAdd).toString(QString(defaultDateFormat_));
 }

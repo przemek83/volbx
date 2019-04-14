@@ -5,16 +5,11 @@
 #include "DatasetDefinitionSpreadsheet.h"
 
 DatasetDefinitionSpreadsheet::DatasetDefinitionSpreadsheet(const QString& name,
-                                                           QString& zipFileName)
+                                                           const QString& zipFileName)
     : DatasetDefinition(name),
       nextIndex_(1)
 {
     zip_.setZipName(zipFileName);
-}
-
-DatasetDefinitionSpreadsheet::~DatasetDefinitionSpreadsheet()
-{
-    //QuaZip destructor checks if zip is still open.
 }
 
 bool DatasetDefinitionSpreadsheet::init()

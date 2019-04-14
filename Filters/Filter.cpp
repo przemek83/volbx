@@ -5,7 +5,7 @@
 
 #include "Filter.h"
 
-Filter::Filter(QString title, int column, QWidget* parent) :
+Filter::Filter(const QString& title, int column, QWidget* parent) :
     QGroupBox(title, parent), column_(column)
 {
     setCheckable(true);
