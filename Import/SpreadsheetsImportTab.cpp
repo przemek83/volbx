@@ -91,7 +91,7 @@ void SpreadsheetsImportTab::on_openFileButton_clicked()
                            .replace(QLatin1String("["), QLatin1String("[^"));
     QString datasetName = fileInfo.completeBaseName().remove(QRegExp(regexpString));
 
-    if (true == datasetName.isEmpty())
+    if (datasetName.isEmpty())
     {
         datasetName = tr("Dataset");
     }

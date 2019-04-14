@@ -24,7 +24,7 @@ public Q_SLOTS:
     virtual void setChecked(bool checked);
 
 protected:
-    long long column_;
+    int64_t column_;
 };
 
 #endif // FILTER_H

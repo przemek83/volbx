@@ -12,9 +12,9 @@ const char* Application::cssSuffix_ = ".css";
 void Application::setAdditionalApplicatioInfo(const char* productName)
 {
     QApplication::setApplicationName(QLatin1String(productName));
-    QApplication::setApplicationVersion(QLatin1String(VER_PRODUCTVERSION_STR));
-    QApplication::setOrganizationName(QLatin1String(VER_COMPANYNAME_STR));
-    QApplication::setOrganizationDomain(QLatin1String(VER_COMPANYDOMAIN_STR));
+    QApplication::setApplicationVersion(QStringLiteral(VER_PRODUCTVERSION_STR));
+    QApplication::setOrganizationName(QStringLiteral(VER_COMPANYNAME_STR));
+    QApplication::setOrganizationDomain(QStringLiteral(VER_COMPANYDOMAIN_STR));
 }
 
 void Application::initStyle(QString nameFromConfig)
@@ -88,7 +88,7 @@ void Application::clearAppFocus()
 
 QString Application::getGroupBoxStyle()
 {
-    QString styleSheet(QLatin1String("QGroupBox::indicator:unchecked { image: "));
+    QString styleSheet(QStringLiteral("QGroupBox::indicator:unchecked { image: "));
     styleSheet.append(QLatin1String("url(:/Stylesheet/Images/uncheckedGroupBox.png);}"));
     styleSheet.append(QLatin1String("QGroupBox::indicator:checked {image: "));
     styleSheet.append(QLatin1String("url(:/Stylesheet/Images/checkedGroupBox.png);}"));

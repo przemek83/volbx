@@ -8,7 +8,7 @@
 
 #include "ExportImage.h"
 
-void ExportImage::exportAsImage(PlotBase* plot, QString fileName)
+void ExportImage::exportAsImage(PlotBase* plot, const QString& fileName)
 {
 
     QwtPlotRenderer rend;

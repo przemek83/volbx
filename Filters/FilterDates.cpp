@@ -5,7 +5,7 @@
 #include "FilterDates.h"
 #include "ui_FilterDates.h"
 
-FilterDates::FilterDates(QString name,
+FilterDates::FilterDates(const QString& name,
                          int column,
                          QDate min,
                          QDate max,

@@ -14,12 +14,12 @@ int Networking::getMaxTries()
 
 QNetworkRequest Networking::getCurrentVersionRequest()
 {
-    return QNetworkRequest(QUrl(QLatin1String("http://example.com/update/currentVersion.php")));
+    return QNetworkRequest(QUrl(QStringLiteral("http://example.com/update/currentVersion.php")));
 }
 
 QNetworkRequest Networking::getDownloadFileRequest(QString file)
 {
-    return QNetworkRequest(QUrl(QLatin1String("http://example.com/update/current/") + file));
+    return QNetworkRequest(QUrl(QStringLiteral("http://example.com/update/current/") + file));
 }
 
 bool Networking::errorsOccuredCheck(QNetworkReply* reply)

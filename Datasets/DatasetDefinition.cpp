@@ -77,7 +77,7 @@ QString DatasetDefinition::dumpDatasetDefinition() const
         {
             dump += " special=" + QString::number(static_cast<int>(it.key()));
         }
-        dump.append(QString::fromLatin1("\n"));
+        dump.append(QLatin1String("\n"));
     }
     return dump;
 }

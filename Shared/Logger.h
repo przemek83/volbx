@@ -7,6 +7,8 @@
 #include <QLatin1String>
 
 #include "Debugging.h"
+#include "LogType.h"
+#include "CheckBox.h"
 
 //If debug is not activated use empty logger. For debugging on use logging window.
 #ifdef DEBUGGING
@@ -17,22 +19,6 @@
 
 class QTextEdit;
 class QWidget;
-
-/**
- * @brief types of logs.
- */
-enum LogTypes
-{
-    LOG_DB = 0,
-    LOG_CONFIG,
-    LOG_MODEL,
-    LOG_CALC,
-    LOG_NETWORK,
-    LOG_LOGIN,
-    LOG_APP,
-    LOG_IMPORT_EXPORT,
-    LOG_END
-};
 
 /**
  * @brief GUI Logger class.
@@ -62,25 +48,6 @@ private:
     ~Logger() override;
 
     QMap<LogTypes, bool>* activeLogs_;
-
-    class CheckBox : public QCheckBox
-    {
-    public:
-        CheckBox(LogTypes type, QString content, QWidget* parent = nullptr);
-
-        ~CheckBox() override;
-
-        CheckBox& operator=(const CheckBox& other) = delete;
-        CheckBox(const CheckBox& other) = delete;
-
-        CheckBox& operator=(CheckBox&& other) = delete;
-        CheckBox(CheckBox&& other) = delete;
-
-        LogTypes logType();
-
-    private:
-        LogTypes type_;
-    };
 
     void reloadCheckBoxes();
 

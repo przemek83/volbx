@@ -176,8 +176,8 @@ void DatasetDefinitionVisualization::searchTextChanged(const QString& newText)
     QTreeWidgetItemIterator it(ui->columnsList);
     while (*it)
     {
-        (*it)->setHidden(false == (*it)->text(0).contains(newText,
-                                                          Qt::CaseInsensitive));
+        (*it)->setHidden(!(*it)->text(0).contains(newText,
+                                                  Qt::CaseInsensitive));
         ++it;
     }
 }

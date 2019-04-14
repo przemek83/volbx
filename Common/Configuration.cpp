@@ -47,12 +47,12 @@ bool Configuration::load()
     //Default style.
     if (style_.isEmpty())
     {
-        style_ = "Fusion";
+        style_ = QLatin1String("Fusion");
     }
 
     QString filename(QApplication::applicationDirPath() +
                      "/" +
-                     QString(Constants::configurationFile_));
+                     Constants::configurationFile_);
 
     QFile file(filename);
 
@@ -68,7 +68,7 @@ bool Configuration::load()
 
     QTextStream stream(&file);
     QString initial(stream.readAll());
-    QDomDocument configXML(__FUNCTION__);
+    QDomDocument configXML(QLatin1String(__FUNCTION__));
 
     //If could not parse config.
     if (!configXML.setContent(initial))
@@ -168,18 +168,18 @@ QString Configuration::configDump() const
 
     dump.append("Configuration(" + QString(Constants::configurationFile_) + "):\n");
 
-    dump.append("Updates choice picked = ");
-    dump.append((updateOption_ == UPDATES_CHOICE_NOT_PICKED ? "No" : "Yes"));
+    dump.append(QLatin1String("Updates choice picked = "));
+    dump.append((updateOption_ == UPDATES_CHOICE_NOT_PICKED ? QLatin1String("No") : QLatin1String("Yes")));
 
-    dump.append("\n");
+    dump.append(QLatin1String("\n"));
 
     dump.append("Import file path = " + importFilePath_ + "\n");
 
     if (updateOption_ != UPDATES_CHOICE_NOT_PICKED)
     {
-        dump.append("AutoUpdate active = ");
-        dump.append((updateOption_ == UPDATES_ALWAYS_CHECK ? "Yes" : "No"));
-        dump.append("\n");
+        dump.append(QLatin1String("AutoUpdate active = "));
+        dump.append((updateOption_ == UPDATES_ALWAYS_CHECK ? QLatin1String("Yes") : QLatin1String("No")));
+        dump.append(QLatin1String("\n"));
     }
 
     dump.append("Style: " + style_);

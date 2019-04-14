@@ -194,7 +194,7 @@ void FiltersDock::activateFiltersForModel(const FilteringProxyModel* model)
     }
 }
 
-void FiltersDock::searchTextChanged(QString arg1)
+void FiltersDock::searchTextChanged(const QString& arg1)
 {
     QWidget* currentWidget = ui->stackedWidget->currentWidget();
 

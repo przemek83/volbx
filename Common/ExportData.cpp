@@ -33,7 +33,7 @@ void ExportData::gatherSheetContent(QByteArray& rowsContent,
 
     QStringList columnNames;
     Constants::generateExcelColumnNames(columnNames, 600);
-    auto proxyModel = dynamic_cast<FilteringProxyModel*>(view->model());
+    auto proxyModel = qobject_cast<FilteringProxyModel*>(view->model());
 
     Q_ASSERT(nullptr != proxyModel);
 
@@ -49,7 +49,7 @@ void ExportData::gatherSheetContent(QByteArray& rowsContent,
     for (int j = 0; j < proxyColumnCount; ++j)
     {
         QString header = proxyModel->headerData(j, Qt::Horizontal).toString();
-        QString clearedHeader(header.replace(QRegExp("[<>&\"']"), " ").replace("\r\n", " "));
+        QString clearedHeader(header.replace(QRegExp("[<>&\"']"), QStringLiteral(" ")).replace(QStringLiteral("\r\n"), QStringLiteral(" ")));
         rowsContent.append("<c r=\"" + columnNames.at(j));
         rowsContent.append("1\" t=\"str\" s=\"6\"><v>" + clearedHeader + "</v></c>");
     }
@@ -103,7 +103,7 @@ bool ExportData::exportAsXLSX(const QAbstractItemView* view, QString fileName)
     Q_ASSERT(nullptr != view);
 
     //Open xlsx template.
-    QuaZip inZip(":/template.xlsx");
+    QuaZip inZip(QStringLiteral(":/template.xlsx"));
     inZip.open(QuaZip::mdUnzip);
 
     //Files list in template.
@@ -134,7 +134,7 @@ bool ExportData::exportAsXLSX(const QAbstractItemView* view, QString fileName)
         }
 
         //Modify sheet1 by inserting data from view, copy rest of files.
-        if (file.endsWith("sheet1.xml"))
+        if (file.endsWith(QLatin1String("sheet1.xml")))
         {
             QByteArray rowsContent;
             gatherSheetContent(rowsContent, view);
@@ -166,7 +166,7 @@ const QString& ExportData::getCellTypeTag(QVariant& cell)
         case QVariant::Date:
         case QVariant::DateTime:
         {
-            const static QString dateTag("s=\"3\"");
+            const static QString dateTag(QStringLiteral("s=\"3\""));
             const static QDate startOfTheExcelWorld(1899, 12, 30);
             cell = QVariant(-1 * cell.toDate().daysTo(startOfTheExcelWorld));
             return dateTag;
@@ -175,13 +175,13 @@ const QString& ExportData::getCellTypeTag(QVariant& cell)
         case QVariant::Int:
         case QVariant::Double:
         {
-            const static QString numericTag("s=\"4\"");
+            const static QString numericTag(QStringLiteral("s=\"4\""));
             return numericTag;
         }
 
         default:
         {
-            const static QString stringTag("t=\"str\"");
+            const static QString stringTag(QStringLiteral("t=\"str\""));
             return stringTag;
         }
     }
@@ -207,7 +207,7 @@ void ExportData::dataToByteArray(const QAbstractItemView* view,
      * http://tools.ietf.org/html/rfc4180
      */
 
-    auto proxyModel = dynamic_cast<FilteringProxyModel*>(view->model());
+    auto proxyModel = qobject_cast<FilteringProxyModel*>(view->model());
     Q_ASSERT(nullptr != proxyModel);
 
     int proxyColumnCount = proxyModel->columnCount();
@@ -299,17 +299,17 @@ void ExportData::variantToString(const QVariant& variant,
         case QVariant::String:
         {
             QString tmpString(variant.toString());
-            if (separator == tsvSeparator_)
+            if (separator == QLatin1String(tsvSeparator_))
             {
                 //Simplification -> change tabs and new lines into spaces.
                 tmpString =
                     tmpString.replace(QRegExp("[" + QString(tsvSeparator_) + "\n" + "]"),
-                                      " ");
+                                      QStringLiteral(" "));
                 destinationArray->append(tmpString);
             }
             else
             {
-                tmpString.replace('"', "\"\"");
+                tmpString.replace('"', QStringLiteral("\"\""));
                 destinationArray->append("\"" + tmpString + "\"");
             }
 
@@ -382,7 +382,7 @@ bool ExportData::saveDataset(QString name,
     //Data file, write directly in loop.
     //Only one zip file in archive can be accessed at a time.
     QuaZipFile zipFile(&zip);
-    auto proxyModel = dynamic_cast<FilteringProxyModel*>(view->model());
+    auto proxyModel = qobject_cast<FilteringProxyModel*>(view->model());
     Q_ASSERT(nullptr != proxyModel);
     ProgressBar bar(ProgressBar::PROGRESS_TITLE_SAVING,
                     proxyModel->rowCount(),
@@ -484,7 +484,7 @@ ExportData::saveDatasetDataFile(QuaZipFile& zipFile,
                         if (0 == index)
                         {
                             index = nextIndex;
-                            tmpString.replace(newLine, "\t");
+                            tmpString.replace(newLine, QLatin1String("\t"));
                             //No new line for first string.
                             if (1 != nextIndex)
                             {
@@ -545,7 +545,7 @@ bool ExportData::saveDatasetDefinitionFile(QuaZipFile& zipFile,
 {
     //Save definition file.
     const TableModel* parentModel =
-        (dynamic_cast<FilteringProxyModel*>(view->model()))->getParentModel();
+        (qobject_cast<FilteringProxyModel*>(view->model()))->getParentModel();
     const auto definition =
         dynamic_cast<const DatasetDefinitionInner*>(parentModel->getDatasetDefinition());
     QByteArray definitionContent;

@@ -73,10 +73,10 @@ ViewDockWidget* MainTabWidget::getCurrentDataViewDock()
     {
         return nullptr;
     }
-    return dynamic_cast<ViewDockWidget*>(dataView->parent());
+    return qobject_cast<ViewDockWidget*>(dataView->parent());
 }
 
-void MainTabWidget::setTextFilterInProxy(int column, QSet<QString> bannedStrings)
+void MainTabWidget::setTextFilterInProxy(int column, const QSet<QString>& bannedStrings)
 {
     DataView* view = getCurrentDataView();
     FilteringProxyModel* model = getCurrentProxyModel();
@@ -177,7 +177,7 @@ void MainTabWidget::addBasicPlot()
     if (nullptr != basicDataPlot)
     {
         auto basicPlotDock =
-            dynamic_cast<PlotDockWidget*>(basicDataPlot->parent());
+            qobject_cast<PlotDockWidget*>(basicDataPlot->parent());
         Q_ASSERT(nullptr != basicPlotDock);
         if (nullptr != basicPlotDock)
         {

@@ -41,7 +41,7 @@ private:
     MainTab* getCurrentMainTab();
 
 private Q_SLOTS:
-    void setTextFilterInProxy(int column, QSet<QString> bannedStrings);
+    void setTextFilterInProxy(int column, const QSet<QString>& bannedStrings);
 
     void setDateFilterInProxy(int column,
                               QDate from,

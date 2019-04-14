@@ -88,12 +88,9 @@ bool TableModel::isSpecialColumnsSet() const
 {
     int transDateColumn = noColumn_;
     int priceColumn = noColumn_;
-    if (!getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE, transDateColumn) ||
-        !getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT, priceColumn))
-    {
-        return false;
-    }
-    return true;
+
+    return getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE, transDateColumn) &&
+           getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT, priceColumn);
 }
 
 bool TableModel::isEmptyCellsDetected() const

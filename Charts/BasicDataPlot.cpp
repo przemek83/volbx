@@ -10,7 +10,7 @@
 
 #include "BasicDataPlot.h"
 
-BasicDataPlot::BasicDataPlot(QWidget *parent) :
+BasicDataPlot::BasicDataPlot(QWidget* parent) :
     PlotBase(QObject::tr("Basic"), parent)
 {
     picker_ = new LinearPicker(canvas());
@@ -115,11 +115,11 @@ void BasicDataPlot::initLegend()
 {
     auto legend = new QwtLegend();
     legend->setDefaultItemMode(QwtLegendData::Checkable);
-    legend->setFrameStyle(QFrame::Box|QFrame::Sunken);
+    legend->setFrameStyle(QFrame::Box | QFrame::Sunken);
     connect(legend,
-            SIGNAL(checked(QVariant,bool,int)),
+            SIGNAL(checked(QVariant, bool, int)),
             this,
-            SLOT(legendItemChecked(QVariant,bool,int)));
+            SLOT(legendItemChecked(QVariant, bool, int)));
     insertLegend(legend, QwtPlot::BottomLegend);
 }
 
@@ -131,7 +131,7 @@ void BasicDataPlot::setNewData(PlotData plotData,
 
     QVector<QPointF> qVector;
 
-    if( plotData.getDataSize() > 0 )
+    if (plotData.getDataSize() > 0)
     {
         float min = quantiles.minX_;
         float max = quantiles.maxX_;
@@ -174,28 +174,28 @@ QwtText BasicDataPlot::TimeScaleDraw::label(double v) const
 }
 
 
-BasicDataPlot::LinearPicker::LinearPicker(QWidget *parent)
+BasicDataPlot::LinearPicker::LinearPicker(QWidget* parent)
     : Picker(parent)
 {
 
 }
 
-QwtText BasicDataPlot::LinearPicker::trackerTextF(const QPointF &pos) const
+QwtText BasicDataPlot::LinearPicker::trackerTextF(const QPointF& pos) const
 {
     QwtText coords(Constants::stringFromDays(pos.x() + 0.5) + ", " +
                    QString::number(pos.y(), 'f', 2));
 
     QColor bg(Qt::white);
-    coords.setBackgroundBrush( QBrush( bg ));
+    coords.setBackgroundBrush(QBrush(bg));
     return coords;
 }
 
 void BasicDataPlot::legendItemChecked(const QVariant& itemInfo, bool on, int /*index*/)
 {
-    QwtPlotItem *plotItem = infoToItem( itemInfo );
-    if ( plotItem != nullptr )
+    QwtPlotItem* plotItem = infoToItem(itemInfo);
+    if (plotItem != nullptr)
     {
-        plotItem->setVisible( on );
+        plotItem->setVisible(on);
         replot();
     }
 }
@@ -203,12 +203,12 @@ void BasicDataPlot::legendItemChecked(const QVariant& itemInfo, bool on, int /*i
 void BasicDataPlot::setLegendItemChecked(QwtPlotCurve* plot)
 {
     QWidget* legendWidget =
-        dynamic_cast<QwtLegend*>(legend())->legendWidget(itemToInfo(plot));
+        qobject_cast<QwtLegend*>(legend())->legendWidget(itemToInfo(plot));
 
-    if ( legendWidget != nullptr )
+    if (legendWidget != nullptr)
     {
         auto legendLabel = dynamic_cast<QwtLegendLabel*>(legendWidget);
-        if(nullptr != legendLabel)
+        if (nullptr != legendLabel)
         {
             legendLabel->setChecked(true);
         }

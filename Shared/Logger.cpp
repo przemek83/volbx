@@ -21,7 +21,7 @@ const char* Logger::LogTypeNames_[] =
 Logger::Logger()
 {
     display_ = new QWidget();
-    display_->setWindowTitle(QLatin1String("Logs"));
+    display_->setWindowTitle(QStringLiteral("Logs"));
 
     auto verticalLayout = new QVBoxLayout();
     auto horizontalLayout = new QHBoxLayout();
@@ -81,24 +81,24 @@ void Logger::log(LogTypes type,
         return;
     }
 
-    static QString timeStyleBegin(QLatin1String("<b><font size=\"3\" color=\"blue\">"));
-    static QString fileStyleBegin(QLatin1String("<b><font size=\"3\" color=\"black\">"));
-    static QString functionStyleBegin(QLatin1String("<b><font size=\"3\" color=\"red\">"));
-    static QString lineStyleBegin(QLatin1String("<b><font size=\"3\" color=\"green\">"));
-    static QString styleEnd(QLatin1String("</b></font>"));
+    static QString timeStyleBegin(QStringLiteral("<b><font size=\"3\" color=\"blue\">"));
+    static QString fileStyleBegin(QStringLiteral("<b><font size=\"3\" color=\"black\">"));
+    static QString functionStyleBegin(QStringLiteral("<b><font size=\"3\" color=\"red\">"));
+    static QString lineStyleBegin(QStringLiteral("<b><font size=\"3\" color=\"green\">"));
+    static QString styleEnd(QStringLiteral("</b></font>"));
 
     QString time;
-    time.append(QTime::currentTime().toString(QLatin1String("hh:mm:ss")));
+    time.append(QTime::currentTime().toString(QStringLiteral("hh:mm:ss")));
     textEdit_->insertHtml(timeStyleBegin + time + styleEnd +
-                          QLatin1String(" (") + QLatin1String(LogTypeNames_[static_cast<int>(type)]) + QLatin1String(")") +
-                          QLatin1String(" - ") +
+                          QStringLiteral(" (") + QLatin1String(LogTypeNames_[static_cast<int>(type)]) + QStringLiteral(")") +
+                          QStringLiteral(" - ") +
                           functionStyleBegin + QLatin1String(function) + styleEnd +
-                          QLatin1String(", ") +
+                          QStringLiteral(", ") +
                           fileStyleBegin + QLatin1String(file) + styleEnd +
-                          QLatin1String(" (") + lineStyleBegin + QString::number(line) + styleEnd + QLatin1String(")") +
-                          QLatin1String(":<br>"));
+                          QStringLiteral(" (") + lineStyleBegin + QString::number(line) + styleEnd + QStringLiteral(")") +
+                          QStringLiteral(":<br>"));
 
-    textEdit_->insertPlainText(msg + QLatin1String("\n\n"));
+    textEdit_->insertPlainText(msg + QStringLiteral("\n\n"));
 
     QTextCursor c =  textEdit_->textCursor();
     c.movePosition(QTextCursor::End);
@@ -136,29 +136,12 @@ void Logger::reloadCheckBoxes()
         verticalLayout->insertWidget(static_cast<int>(i.key()), check);
     }
 }
-
-Logger::CheckBox::CheckBox(LogTypes type, QString content, QWidget* parent)
-    : QCheckBox(content, parent), type_(type)
-{
-
-}
-
-Logger::CheckBox::~CheckBox()
-{
-
-}
-
-LogTypes Logger::CheckBox::logType()
-{
-    return type_;
-}
-
 void Logger::changeActiveLogs(bool state)
 {
-    auto checkBox = dynamic_cast<CheckBox*>(sender());
+    auto checkBox = qobject_cast<CheckBox*>(sender());
     (*activeLogs_)[checkBox->logType()] = state;
     QString msg(LogTypeNames_[checkBox->logType()]);
-    msg.append(QLatin1String(" is ") + (state ? QLatin1String("active") : QLatin1String("disabled")));
+    msg.append(QStringLiteral(" is ") + (state ? QStringLiteral("active") : QStringLiteral("disabled")));
     LOG(LOG_APP, msg);
 }
 

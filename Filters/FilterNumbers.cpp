@@ -11,7 +11,7 @@
 
 const int FilterNumbers::factor_ = 100;
 
-FilterNumbers::FilterNumbers(QString name,
+FilterNumbers::FilterNumbers(const QString& name,
                              int column,
                              double min,
                              double max,

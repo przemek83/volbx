@@ -19,7 +19,7 @@ class FilterNumbers : public Filter
 {
     Q_OBJECT
 public:
-    FilterNumbers(QString name,
+    FilterNumbers(const QString& name,
                   int column,
                   double min,
                   double max,

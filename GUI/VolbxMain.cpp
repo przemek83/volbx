@@ -152,7 +152,7 @@ void VolbxMain::createOptionsMenu()
     actionsGroup->addAction(action);
 
     //Add blue style.
-    styleName = QLatin1String("Rounded Blue");
+    styleName = QStringLiteral("Rounded Blue");
     action = new QAction(styleName, ui->menuOptions);
     action->setCheckable(true);
     if (activeStyl == styleName)
@@ -212,7 +212,7 @@ void VolbxMain::checkForUpdates()
         }
 
         //Remember if choice was checked.
-        if (true == dialog.saveFlagSet())
+        if (dialog.saveFlagSet())
         {
             Configuration::getInstance().setUpdatesCheckingOption(checkForUpdates);
         }
@@ -222,7 +222,7 @@ void VolbxMain::checkForUpdates()
         checkForUpdates = Configuration::getInstance().needToCheckForUpdates();
     }
 
-    if (true == checkForUpdates)
+    if (checkForUpdates)
     {
         on_actionCheckForNewVersion_triggered();
     }
@@ -315,13 +315,12 @@ void VolbxMain::manageActions(bool tabExists)
 
     //Check if plot icons should be enabled.
     bool activateCharts = tabExists;
-    if (true == tabExists)
+    if (tabExists)
     {
         const TableModel* dataModel = tabWidget_->getCurrentDataModel();
         if (nullptr != dataModel)
         {
-            activateCharts = (true == activateCharts &&
-                              true == dataModel->isSpecialColumnsSet());
+            activateCharts = (activateCharts && dataModel->isSpecialColumnsSet());
         }
     }
 
@@ -331,7 +330,7 @@ void VolbxMain::manageActions(bool tabExists)
     ui->actionGroup_plot->setEnabled(activateCharts);
 
     //Set tooltips for plot icons.
-    if (false == activateCharts)
+    if (!activateCharts)
     {
         const static QString cannotCreateCharts =
             tr("Time and examined variable columns are not specified.");
@@ -349,7 +348,7 @@ void VolbxMain::manageActions(bool tabExists)
 
 void VolbxMain::on_actionSaveDatasetAs_triggered()
 {
-    if (false == DatasetInner::datasetDirExistAndUserHavePermisions())
+    if (!DatasetInner::datasetDirExistAndUserHavePermisions())
     {
         QString msg(tr("Can not access folder "));
         msg.append(DatasetInner::getDatasetsDir());
@@ -394,19 +393,14 @@ bool VolbxMain::loadDataset(Dataset* dataset)
     catch (std::bad_alloc&)
     {
         QString message(tr("Not enough memory to open data. "));
-        message.append(tr("Close not needed data"));
+        message.append(tr("Close not needed data,"));
         message.append(tr(" pick smaller set or use another instance of application."));
         QMessageBox::critical(this, tr("Memory problem"), message);
 
         return false;
     }
 
-    if (nullptr != dataset && false == dataset->isValid())
-    {
-        return false;
-    }
-
-    return true;
+    return dataset && dataset->isValid();
 }
 
 void VolbxMain::on_actionImportData_triggered()
@@ -472,7 +466,7 @@ void VolbxMain::on_actionImportData_triggered()
             return;
         }
 
-        if (false == loadDataset(dataset))
+        if (!loadDataset(dataset))
         {
             delete dataset;
             return;
@@ -510,7 +504,7 @@ void VolbxMain::updateCheckReplyFinished(QNetworkReply* reply)
     reply->deleteLater();
 
     //Check errors.
-    if (true == Networking::errorsOccuredCheck(reply))
+    if (Networking::errorsOccuredCheck(reply))
     {
         ui->statusBar->showMessage(tr("Connection error encountered."));
         return;
@@ -519,7 +513,7 @@ void VolbxMain::updateCheckReplyFinished(QNetworkReply* reply)
     auto [newestVersion, notNeededHereList] =
         Networking::checkReplyAndReturnAvailableVersion(reply);
 
-    if (true == newestVersion.isEmpty())
+    if (newestVersion.isEmpty())
     {
         ui->statusBar->showMessage(tr("Wrong answer received from server."));
         return;
@@ -571,7 +565,7 @@ void VolbxMain::on_actionUpdateAuto_toggled(bool alwaysCheck)
 
 void VolbxMain::qtStylePicked()
 {
-    auto action = dynamic_cast<QAction*>(sender());
+    auto action = qobject_cast<QAction*>(sender());
     if (nullptr != action)
     {
         QString style = action->text();
@@ -582,7 +576,7 @@ void VolbxMain::qtStylePicked()
 
 void VolbxMain::customStylePicked()
 {
-    auto action = dynamic_cast<QAction*>(sender());
+    auto action = qobject_cast<QAction*>(sender());
     if (nullptr != action)
     {
         QString styleName = action->text();

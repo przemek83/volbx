@@ -39,7 +39,7 @@ Update::Update(QWidget* parent) :
     //Get available version and files to update list.
     initialInfoNetworkManager_.get(Networking::getCurrentVersionRequest());
 
-    insertInfoIntoDetails(tr("Connecting to update server") + QLatin1String("... "));
+    insertInfoIntoDetails(tr("Connecting to update server") + QStringLiteral("... "));
 
     LOG(LOG_NETWORK, QLatin1String("Initial network request send."));
 
@@ -129,8 +129,8 @@ void Update::fillFilesToUpdateLists(QStringList& serverInfoList)
         filesToDownload_.push_back(fileName);
         filesToDownloadSize_.push_back(fileSize);
 
-        insertInfoIntoDetails(QString::number(i + 1) + QLatin1String(". ") + fileName +
-                              QLatin1String(" (") + tr("size") + QLatin1String(": ") +
+        insertInfoIntoDetails(QString::number(i + 1) + QStringLiteral(". ") + fileName +
+                              QStringLiteral(" (") + tr("size") + QStringLiteral(": ") +
                               fileSize + QLatin1Char(' ') + tr("bytes") +
                               QLatin1Char(')'));
         insertNewLineIntoDetails();
@@ -139,7 +139,7 @@ void Update::fillFilesToUpdateLists(QStringList& serverInfoList)
 
 void Update::downloadFile(QString fileName)
 {
-    insertInfoIntoDetails(fileName + QLatin1String("... "));
+    insertInfoIntoDetails(fileName + QStringLiteral("... "));
 
     //Update number of downloaded file only when previous was downloaded correctly.
     if (0 == currentTriesCount_)
@@ -173,7 +173,7 @@ void Update::downloadFinished(QNetworkReply* reply)
     }
 
     insertSuccessInfoIntoDetails(tr("Downloaded"));
-    insertInfoIntoDetails(QLatin1String("... "));
+    insertInfoIntoDetails(QStringLiteral("... "));
 
     QString fileName(filesToDownload_.takeFirst());
     QString fileSize(filesToDownloadSize_.takeFirst());
@@ -262,7 +262,7 @@ void Update::finalizeUpdate()
         targetFileName.chop(QLatin1String(tmpPrefix_).size());
 
         insertInfoIntoDetails(tempFileName.section(QLatin1Char('/'), -1) +
-                              QLatin1String(" -> ") +
+                              QStringLiteral(" -> ") +
                               targetFileName.section(QLatin1Char('/'), -1));
         insertNewLineIntoDetails();
 
@@ -313,39 +313,39 @@ void Update::showErrorMsg(QString error)
 
 void Update::insertNewSectionIntoDetails(QString msg)
 {
-    ui->details->insertHtml(QLatin1String("<b><FONT COLOR=blue>") +
+    ui->details->insertHtml(QStringLiteral("<b><FONT COLOR=blue>") +
                             msg +
-                            QLatin1String("</FONT></b><br>"));
+                            QStringLiteral("</FONT></b><br>"));
     ui->details->ensureCursorVisible();
 }
 
 void Update::insertInfoIntoDetails(QString msg)
 {
-    ui->details->insertHtml(QLatin1String("<FONT COLOR=black>") +
+    ui->details->insertHtml(QStringLiteral("<FONT COLOR=black>") +
                             msg +
-                            QLatin1String("</FONT>"));
+                            QStringLiteral("</FONT>"));
     ui->details->ensureCursorVisible();
 }
 
 void Update::insertNewLineIntoDetails()
 {
-    ui->details->insertHtml(QLatin1String("<br>"));
+    ui->details->insertHtml(QStringLiteral("<br>"));
     ui->details->ensureCursorVisible();
 }
 
 void Update::insertSuccessInfoIntoDetails(QString msg)
 {
-    ui->details->insertHtml(QLatin1String("<b><FONT COLOR=green>") +
+    ui->details->insertHtml(QStringLiteral("<b><FONT COLOR=green>") +
                             msg +
-                            QLatin1String("</FONT></b>"));
+                            QStringLiteral("</FONT></b>"));
     ui->details->ensureCursorVisible();
 }
 
 void Update::insertErrorInfoIntoDetails(QString msg)
 {
-    ui->details->insertHtml(QLatin1String("<b><FONT COLOR=red>") +
+    ui->details->insertHtml(QStringLiteral("<b><FONT COLOR=red>") +
                             msg +
-                            QLatin1String("</FONT></b>"));
+                            QStringLiteral("</FONT></b>"));
     ui->details->ensureCursorVisible();
 }
 

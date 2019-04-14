@@ -118,7 +118,7 @@ void Quantiles::computeQuantiles(QVector<float>& valuePerUnit)
 QString Quantiles::getValuesAsToolTip() const
 {
     QString toolTipText;
-    toolTipText.append("<table>");
+    toolTipText.append(QLatin1String("<table>"));
     toolTipText += valueAsHtmlRow(PLOT_INFO_COUNT, static_cast<double>(number_));
     toolTipText += valueAsHtmlRow(PLOT_INFO_AVG, avg_);
     toolTipText += valueAsHtmlRow(PLOT_INFO_MAX, max_);
@@ -139,7 +139,7 @@ QString Quantiles::getValuesAsToolTip() const
         toolTipText += valueAsHtmlRow(PLOT_INFO_STD_DEV, stdDev_);
     }
 
-    toolTipText.append("</table>");
+    toolTipText.append(QLatin1String("</table>"));
 
     return toolTipText;
 }
@@ -149,28 +149,28 @@ QString Quantiles::valueAsHtmlRow(PlotInfo row, double value)
     static QString plotInfoNames_[PLIT_INFO_END];
     static bool initialized = false;
 
-    if (false == initialized)
+    if (!initialized)
     {
         plotInfoNames_[PLOT_INFO_COUNT] =
             QObject::tr("Data count") + QLatin1Char(':');
-        plotInfoNames_[PLOT_INFO_MIN] = "Minimum";
-        plotInfoNames_[PLOT_INFO_Q10] = "Q10";
-        plotInfoNames_[PLOT_INFO_Q25] = "Q25";
-        plotInfoNames_[PLOT_INFO_Q50] = "Q50";
-        plotInfoNames_[PLOT_INFO_Q75] = "Q75";
-        plotInfoNames_[PLOT_INFO_Q90] = "Q90";
-        plotInfoNames_[PLOT_INFO_MAX] = "Maximum";
+        plotInfoNames_[PLOT_INFO_MIN] = QLatin1String("Minimum");
+        plotInfoNames_[PLOT_INFO_Q10] = QLatin1String("Q10");
+        plotInfoNames_[PLOT_INFO_Q25] = QLatin1String("Q25");
+        plotInfoNames_[PLOT_INFO_Q50] = QLatin1String("Q50");
+        plotInfoNames_[PLOT_INFO_Q75] = QLatin1String("Q75");
+        plotInfoNames_[PLOT_INFO_Q90] = QLatin1String("Q90");
+        plotInfoNames_[PLOT_INFO_MAX] = QLatin1String("Maximum");
         plotInfoNames_[PLOT_INFO_AVG] = QObject::tr("Average");
         plotInfoNames_[PLOT_INFO_STD_DEV] = QObject::tr("Std. deviation");
         initialized = true;
     }
 
-    QString html("<tr><td>");
+    QString html(QStringLiteral("<tr><td>"));
     html.append(QString(plotInfoNames_[row]));
-    html.append("</td><td ALIGN=RIGHT>");
+    html.append(QLatin1String("</td><td ALIGN=RIGHT>"));
     int precision = (PLOT_INFO_COUNT == row ? 0 : 2);
     html.append(Constants::floatToStringUsingLocale(value, precision));
-    html.append("</td></tr>\n");
+    html.append(QLatin1String("</td></tr>\n"));
 
     return html;
 }

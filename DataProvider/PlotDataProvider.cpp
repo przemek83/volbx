@@ -83,8 +83,6 @@ void PlotDataProvider::recomputeGroupData(QVector<TransactionData>* calcData,
 
     Q_EMIT setNewDataForGrouping(quantiles_.min_, quantiles_.max_, names,
                                  quantilesForIntervals, quantiles_);
-
-    return;
 }
 
 void PlotDataProvider::fillDataForStringGrouping(QVector<TransactionData>* calcData,

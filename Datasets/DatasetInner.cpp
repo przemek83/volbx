@@ -35,7 +35,7 @@ void DatasetInner::init()
 
         auto definition = dynamic_cast<DatasetDefinitionInner*>(datasetDefinition_);
 
-        if (nullptr != definition && true == definition->getData(&data_))
+        if (nullptr != definition && definition->getData(&data_))
         {
             valid_ = true;
             sharedStrings_ = definition->getSharedStringTable();
@@ -47,7 +47,7 @@ QStringList DatasetInner::getListOfAvailableDatasets()
 {
     QDir datasetsDir(getDatasetsDir());
 
-    if (false == datasetDirExistAndUserHavePermisions())
+    if (!datasetDirExistAndUserHavePermisions())
     {
         return QStringList();
     }
@@ -71,23 +71,18 @@ bool DatasetInner::datasetDirExistAndUserHavePermisions()
 {
     QDir directory(getDatasetsDir());
 
-    if (false == directory.exists())
+    if (!directory.exists())
     {
         bool created = directory.mkpath(directory.path());
 
-        if (false == created)
+        if (!created)
         {
             return false;
         }
     }
 
-    if (true == QFile::permissions(directory.path()).testFlag(QFile::ReadUser) &&
-        true == QFile::permissions(directory.path()).testFlag(QFile::WriteUser))
-    {
-        return true;
-    }
-
-    return false;
+    return QFile::permissions(directory.path()).testFlag(QFile::ReadUser) &&
+           QFile::permissions(directory.path()).testFlag(QFile::WriteUser);
 }
 
 bool DatasetInner::removeDataset(QString name)

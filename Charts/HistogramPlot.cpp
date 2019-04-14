@@ -95,7 +95,7 @@ void HistogramPlot::legendItemChecked(QVariant itemInfo, bool on, int /*index*/)
 void HistogramPlot::setLegendItemChecked(QwtPlotItem* plot)
 {
     QWidget* legendWidget =
-        dynamic_cast<QwtLegend*>(legend())->legendWidget(itemToInfo(plot));
+        qobject_cast<QwtLegend*>(legend())->legendWidget(itemToInfo(plot));
 
     if (legendWidget != nullptr)
     {

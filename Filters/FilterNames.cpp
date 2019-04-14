@@ -13,13 +13,12 @@ const int FilterNames::minNameWidthForScrollMargin_ = 25;
 
 const int FilterNames::maximumHeigh_ = 180;
 
-FilterNames::FilterNames(QString name,
+FilterNames::FilterNames(const QString& name,
                          int column,
                          const QStringList& initialList,
                          QWidget* parent) :
     Filter(name, column, parent),
     initialList_(initialList),
-    lastEmitted_(QSet<QString>()),
     ui(new Ui::FilterNames),
     addMarginForScrollBar_(false)
 {
@@ -102,7 +101,7 @@ void FilterNames::itemChecked(QListWidgetItem* item)
 
 QSize FilterNames::sizeHint() const
 {
-    if (true == isChecked())
+    if (isChecked())
     {
         int maxListHeight =
             std::min(ui->listWidget->sizeHintForRow(0) *
@@ -111,7 +110,7 @@ QSize FilterNames::sizeHint() const
 
         /* Add space for scroll in case of 3 or less items and long
            names detected in constructor.*/
-        if (true == addMarginForScrollBar_ && 3 >= ui->listWidget->count())
+        if (addMarginForScrollBar_ && 3 >= ui->listWidget->count())
         {
             //Scroll size retrieved here is not actual one, use rtow heigh instead.
             maxListHeight += ui->listWidget->sizeHintForRow(0);
@@ -136,7 +135,7 @@ void FilterNames::setChecked(bool checked)
         current->setVisible(checked);
     }
 
-    checkBox->setVisible(true == checked && initialList_.size() > 1);
+    checkBox->setVisible(checked && initialList_.size() > 1);
 }
 
 void FilterNames::on_selectAll_toggled(bool checked)

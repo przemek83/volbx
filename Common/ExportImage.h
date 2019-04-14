@@ -21,7 +21,7 @@ public:
     ExportImage& operator=(ExportImage&& other) = delete;
     ExportImage(ExportImage&& other) = delete;
 
-    static void exportAsImage(PlotBase* plot, QString fileName);
+    static void exportAsImage(PlotBase* plot, const QString& fileName);
 
     static void quickExportAsImage(QList<PlotBase*> list);
 

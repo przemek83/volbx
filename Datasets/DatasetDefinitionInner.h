@@ -11,7 +11,7 @@
 class DatasetDefinitionInner : public DatasetDefinition
 {
 public:
-    explicit DatasetDefinitionInner(QString name);
+    explicit DatasetDefinitionInner(const QString& name);
 
     ~DatasetDefinitionInner() override;
 

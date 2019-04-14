@@ -25,7 +25,7 @@ const char* DatasetDefinitionInner::datasetDefinitionXmlNames_[] =
 };
 
 
-DatasetDefinitionInner::DatasetDefinitionInner(QString name)
+DatasetDefinitionInner::DatasetDefinitionInner(const QString& name)
     : DatasetDefinition(name),
       stringsTable_(nullptr)
 {
@@ -148,7 +148,7 @@ bool DatasetDefinitionInner::fromXml(QByteArray& definitionContent)
     columnsFormat_.clear();
     specialColumns_.clear();
 
-    QDomDocument xmlDocument(__FUNCTION__);
+    QDomDocument xmlDocument(QLatin1String(__FUNCTION__));
 
     //If parsing failure than exit.
     if (!xmlDocument.setContent(definitionContent))

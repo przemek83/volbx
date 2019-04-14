@@ -45,8 +45,8 @@ void Export::on_save_clicked()
     QDir dir(ui->locationLineEdit->text());
 
     if (ui->locationLineEdit->text().isEmpty() ||
-        false == dir.exists() ||
-        false == QFile::permissions(dir.path()).testFlag(QFile::WriteUser))
+        !dir.exists() ||
+        !QFile::permissions(dir.path()).testFlag(QFile::WriteUser))
     {
         QMessageBox::warning(this,
                              QObject::tr("Error"),

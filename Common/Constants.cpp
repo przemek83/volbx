@@ -29,7 +29,7 @@ const char* Constants::datasetNameRegExp_ = "[\\w\\s-]+";
 
 QString Constants::stringFromDays(int daysToAdd)
 {
-    return startOfTheWorld_.addDays(daysToAdd).toString(QString(defaultDateFormat_));
+    return startOfTheWorld_.addDays(daysToAdd).toString(defaultDateFormat_);
 }
 
 QString Constants::floatToStringUsingLocale(float value, int precison)
@@ -54,12 +54,19 @@ void Constants::generateExcelColumnNames(QStringList& excelColNames,
 
     if (templateNames.isEmpty())
     {
-        templateNames << "A" << "B" << "C" << "D" << "E" << "F" << "G" << "H" << "I" << "J" <<
-                      "K" << "L" << "M" << "N" << "O" << "P" << "Q" << "R" <<
-                      "S" << "T" << "U" << "V" << "W" << "X" << "Y" << "Z";
+        templateNames << QStringLiteral("A") <<
+                      QStringLiteral("B") << QStringLiteral("C") << QStringLiteral("D") <<
+                      QStringLiteral("E") << QStringLiteral("F") << QStringLiteral("G") <<
+                      QStringLiteral("H") << QStringLiteral("I") << QStringLiteral("J") <<
+                      QStringLiteral("K") << QStringLiteral("L") << QStringLiteral("M") <<
+                      QStringLiteral("N") << QStringLiteral("O") << QStringLiteral("P") <<
+                      QStringLiteral("Q") << QStringLiteral("R") << QStringLiteral("S") <<
+                      QStringLiteral("T") << QStringLiteral("U") << QStringLiteral("V") <<
+                      QStringLiteral("W") << QStringLiteral("X") << QStringLiteral("Y") <<
+                      QStringLiteral("Z");
     }
 
-    QString currentPrefix("");
+    QString currentPrefix(QLatin1String(""));
     for (int i = 0; i < columnsNumber; ++i)
     {
         excelColNames << currentPrefix + templateNames[i % templateNames.count()];

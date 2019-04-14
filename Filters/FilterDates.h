@@ -20,7 +20,7 @@ class FilterDates : public Filter
     Q_OBJECT
 
 public:
-    FilterDates(QString name,
+    FilterDates(const QString& name,
                 int column,
                 QDate min, QDate max,
                 bool emptyDates,

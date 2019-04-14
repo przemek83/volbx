@@ -56,8 +56,8 @@ DataView::~DataView()
 void DataView::setModel(QAbstractItemModel* model)
 {
     const TableModel* parentModel =
-        (dynamic_cast<FilteringProxyModel*>(model))->getParentModel();
-    auto proxyModel = dynamic_cast<FilteringProxyModel*>(model);
+        (qobject_cast<FilteringProxyModel*>(model))->getParentModel();
+    auto proxyModel = qobject_cast<FilteringProxyModel*>(model);
 
     for (int i = 0; i < proxyModel->columnCount() ; ++i)
     {
@@ -93,7 +93,7 @@ void DataView::groupingColumnChanged(int column)
     QVector<TransactionData>* newCalcData = fillDataFromSelection(column);
 
     const TableModel* parentModel =
-        (dynamic_cast<FilteringProxyModel*>(model()))->getParentModel();
+        (qobject_cast<FilteringProxyModel*>(model()))->getParentModel();
 
     plotDataProvider_->recomputeGroupData(newCalcData,
                                           column,
@@ -102,7 +102,7 @@ void DataView::groupingColumnChanged(int column)
 
 QVector<TransactionData>* DataView::fillDataFromSelection(int groupByColumn)
 {
-    auto proxyModel = dynamic_cast<FilteringProxyModel*>(model());
+    auto proxyModel = qobject_cast<FilteringProxyModel*>(model());
     Q_ASSERT(nullptr != proxyModel);
 
     const TableModel* parentModel = proxyModel->getParentModel();
@@ -192,7 +192,7 @@ void DataView::reloadSelectionDataAndRecompute()
     if (-1 != groupByColumn)
     {
         const TableModel* parentModel =
-            (dynamic_cast<FilteringProxyModel*>(model()))->getParentModel();
+            (qobject_cast<FilteringProxyModel*>(model()))->getParentModel();
 
         columnFormat = parentModel->getColumnFormat(groupByColumn);
     }
@@ -245,7 +245,7 @@ const PlotDataProvider* DataView::getPlotDataProvider()
     if (nullptr == plotDataProvider_)
     {
         const TableModel* tableModel =
-            (dynamic_cast<FilteringProxyModel*>(model()))->getParentModel();
+            (qobject_cast<FilteringProxyModel*>(model()))->getParentModel();
 
         plotDataProvider_ =
             new PlotDataProvider(tableModel->getDefaultGroupingColumn());

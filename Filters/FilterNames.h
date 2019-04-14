@@ -19,7 +19,7 @@ class FilterNames : public Filter
 {
     Q_OBJECT
 public:
-    FilterNames(QString name,
+    FilterNames(const QString& name,
                 int column,
                 const QStringList& initialList,
                 QWidget* parent = nullptr);
