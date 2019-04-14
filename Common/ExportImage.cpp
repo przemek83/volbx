@@ -18,7 +18,7 @@ void ExportImage::exportAsImage(PlotBase* plot, QString fileName)
 
     QSize size(plot->widthMM(), plot->heightMM());
 
-    rend.renderDocument(plot, fileName, "png",  size);
+    rend.renderDocument(plot, fileName, QStringLiteral("png"),  size);
 }
 
 void ExportImage::quickExportAsImage(QList<PlotBase*> list)

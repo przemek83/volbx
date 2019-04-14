@@ -73,7 +73,7 @@ void DatasetDefinitionVisualization::setDatasetDefiniton(
     {
         QStringList list;
         list << datasetDefinition_->getColumnName(i);
-        QString typeName("");
+        QString typeName(QLatin1String(""));
         switch (datasetDefinition_->getColumnFormat(i))
         {
             case DATA_FORMAT_STRING:

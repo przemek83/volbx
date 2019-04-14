@@ -141,7 +141,7 @@ void VolbxMain::createOptionsMenu()
     auto actionsGroup = new QActionGroup(this);
 
     //Add orange style.
-    QString styleName("Dark Orange");
+    QString styleName(QStringLiteral("Dark Orange"));
     auto action = new QAction(styleName, ui->menuOptions);
     action->setCheckable(true);
     if (activeStyl == styleName)
@@ -152,7 +152,7 @@ void VolbxMain::createOptionsMenu()
     actionsGroup->addAction(action);
 
     //Add blue style.
-    styleName  = "Rounded Blue";
+    styleName = QLatin1String("Rounded Blue");
     action = new QAction(styleName, ui->menuOptions);
     action->setCheckable(true);
     if (activeStyl == styleName)
@@ -163,7 +163,7 @@ void VolbxMain::createOptionsMenu()
     actionsGroup->addAction(action);
 
     //Add styles found in app dir.
-    QStringList nameFilter("*.css");
+    QStringList nameFilter(QStringLiteral("*.css"));
     QDir directory(QCoreApplication::applicationDirPath());
     QFileInfoList styleFiles = directory.entryInfoList(nameFilter);
 

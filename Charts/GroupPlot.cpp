@@ -64,7 +64,7 @@ void GroupPlot::shortenIntervalsNamesIfNeeded(QVector<QString>& intervalsNames,
 {
     for (int i = 0; i < intervalsNames.size(); ++i)
     {
-        const QString moreChars("...");
+        const QString moreChars(QStringLiteral("..."));
         QString count =
             QString(" (" + QString::number(quantilesForIntervals[i].number_) + ")");
 
@@ -98,7 +98,7 @@ bool GroupPlot::event(QEvent* event)
         }
         else
         {
-            setToolTip("");
+            setToolTip(QLatin1String(""));
             event->ignore();
             if (QToolTip::isVisible())
             {

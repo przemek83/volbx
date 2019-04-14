@@ -55,7 +55,7 @@ QString DatasetDefinition::getColumnName(int column) const
     }
 
     Q_ASSERT(false);
-    return "";
+    return QLatin1String("");
 }
 
 QString DatasetDefinition::dumpDatasetDefinition() const
@@ -67,8 +67,8 @@ QString DatasetDefinition::dumpDatasetDefinition() const
         dump += " format=" + QString::number(static_cast<int>(columnsFormat_.at(i)));
         if (!activeColumns_.isEmpty())
         {
-            static const QString notActive(" not active");
-            static const QString active(" active");
+            static const QString notActive(QStringLiteral(" not active"));
+            static const QString active(QStringLiteral(" active"));
             dump += " active=" + (activeColumns_[i] ? active : notActive);
         }
 
@@ -77,7 +77,7 @@ QString DatasetDefinition::dumpDatasetDefinition() const
         {
             dump += " special=" + QString::number(static_cast<int>(it.key()));
         }
-        dump.append("\n");
+        dump.append(QString::fromLatin1("\n"));
     }
     return dump;
 }

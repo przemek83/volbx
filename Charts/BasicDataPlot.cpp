@@ -69,7 +69,7 @@ void BasicDataPlot::initQ25()
     plotQ25_.setZ(1000);
     plotQ25_.setRenderHint(QwtPlotItem::RenderAntialiased, true);
     plotQ25_.attach(this);
-    plotQ25_.setTitle("Q25");
+    plotQ25_.setTitle(QStringLiteral("Q25"));
 }
 
 void BasicDataPlot::initQ50()
@@ -95,7 +95,7 @@ void BasicDataPlot::initQ75()
     plotQ75_.setZ(1000);
     plotQ75_.setRenderHint(QwtPlotItem::RenderAntialiased, true);
     plotQ75_.attach(this);
-    plotQ75_.setTitle("Q75");
+    plotQ75_.setTitle(QStringLiteral("Q75"));
 }
 
 void BasicDataPlot::initLinearRegression()

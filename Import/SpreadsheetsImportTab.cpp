@@ -87,7 +87,8 @@ void SpreadsheetsImportTab::on_openFileButton_clicked()
     DatasetDefinitionSpreadsheet* datasetDefinition = nullptr;
 
     //Remove all not allowed characters from file name.
-    QString regexpString = QString(Constants::datasetNameRegExp_).replace("[", "[^");
+    QString regexpString = QString(Constants::datasetNameRegExp_)
+                           .replace(QLatin1String("["), QLatin1String("[^"));
     QString datasetName = fileInfo.completeBaseName().remove(QRegExp(regexpString));
 
     if (true == datasetName.isEmpty())
@@ -95,13 +96,13 @@ void SpreadsheetsImportTab::on_openFileButton_clicked()
         datasetName = tr("Dataset");
     }
 
-    if (0 == fileInfo.suffix().toLower().compare("ods"))
+    if (0 == fileInfo.suffix().toLower().compare(QLatin1String("ods")))
     {
         datasetDefinition = new DatasetDefinitionOds(datasetName, fileName);
     }
     else
     {
-        if (0 == fileInfo.suffix().toLower().compare("xlsx"))
+        if (0 == fileInfo.suffix().toLower().compare(QLatin1String("xlsx")))
         {
             datasetDefinition = new DatasetDefinitionXlsx(datasetName, fileName);
         }

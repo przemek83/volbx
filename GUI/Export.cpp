@@ -30,7 +30,7 @@ Export::Export(QMainWindow* tab, QWidget* parent) :
 
     ui->prefix->setValidator(new QRegExpValidator(QRegExp("[\\w]*"), ui->prefix));
 
-    ui->prefix->setText(tab_->windowTitle().replace(QRegExp("[^\\w]"), ""));
+    ui->prefix->setText(tab_->windowTitle().replace(QRegExp("[^\\w]"), QLatin1String("")));
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }

@@ -122,9 +122,9 @@ void GroupPlotGui::on_comboBox_currentIndexChanged(int index)
     {
         case DATA_FORMAT_STRING:
         {
-            ui->fromLabel->setText("");
-            ui->toLabel->setText("");
-            ui->intervals->setPlaceholderText("");
+            ui->fromLabel->setText(QLatin1String(""));
+            ui->toLabel->setText(QLatin1String(""));
+            ui->intervals->setPlaceholderText(QLatin1String(""));
             ui->intervals->setEnabled(false);
             ui->changeIntervals->setEnabled(false);
             ui->intervalsLabel->setEnabled(false);

@@ -191,7 +191,7 @@ void MainTabWidget::addBasicPlot()
     QApplication::processEvents();
 
     auto tabifyOn = mainTab->findChild<PlotDockWidget*>();
-    auto plotDock = new PlotDockWidget("Quantiles", mainTab);
+    auto plotDock = new PlotDockWidget(QStringLiteral("Quantiles"), mainTab);
     basicDataPlot = new BasicDataPlot(plotDock);
     plotDock->setWidget(basicDataPlot);
     mainTab->addDockWidget(Qt::RightDockWidgetArea, plotDock);

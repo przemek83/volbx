@@ -181,7 +181,7 @@ bool DatasetDefinitionInner::fromXml(QByteArray& definitionContent)
 
         QString special =
             column.attribute(datasetDefinitionXmlNames_[DATASET_COLUMN_SPECIAL_TAG]);
-        if (0 != special.compare(""))
+        if (0 != special.compare(QLatin1String("")))
         {
             specialColumns_[static_cast<SpecialColumn>(special.toInt())] = i;
         }

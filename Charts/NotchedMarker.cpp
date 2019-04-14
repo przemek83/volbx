@@ -127,9 +127,10 @@ void NotchedMarker::drawLegend(QPainter* p, const QRectF& rect) const
     //Max & Min.
     p->setPen(QPen(Qt::DotLine));
     p->drawLine(leftX, topY + sectionSize, leftX + width, topY + sectionSize);
-    p->drawText(textStartX, textStartY + sectionSize, "max");
+    p->drawText(textStartX, textStartY + sectionSize, QStringLiteral("max"));
     p->drawLine(leftX, topY + 7 * sectionSize, leftX + width, topY + 7 * sectionSize);
-    p->drawText(textStartX, textStartY + 7 * sectionSize, "min");
+    p->drawText(textStartX, textStartY + 7 * sectionSize,
+                QStringLiteral("min"));
     p->setPen(QPen(Qt::SolidLine));
 
     //Q90.
@@ -137,7 +138,7 @@ void NotchedMarker::drawLegend(QPainter* p, const QRectF& rect) const
                 topY + 2 * sectionSize,
                 leftX + width - 2,
                 topY + 2 * sectionSize);
-    p->drawText(textStartX, textStartY + 2 * sectionSize, "Q90");
+    p->drawText(textStartX, textStartY + 2 * sectionSize, QStringLiteral("Q90"));
 
     //Vertical line from q90 to q75
     p->drawLine(pointX, topY + 2 * sectionSize, pointX, topY + 3 * sectionSize);
@@ -159,17 +160,18 @@ void NotchedMarker::drawLegend(QPainter* p, const QRectF& rect) const
     p->drawPath(path);
 
     //Q75.
-    p->drawText(textStartX, textStartY + 3 * sectionSize, "Q75");
+    p->drawText(textStartX, textStartY + 3 * sectionSize, QStringLiteral("75"));
 
     //Q50.
     p->drawLine(leftX + 4,
                 topY + 4 * sectionSize,
                 leftX + width - 4,
                 topY + 4 * sectionSize);
-    p->drawText(textStartX, textStartY + 4 * sectionSize, "Q50");
+    p->drawText(textStartX, textStartY + 4 * sectionSize,
+                QStringLiteral("Q50"));
 
     //Q25.
-    p->drawText(textStartX, textStartY + 5 * sectionSize, "Q25");
+    p->drawText(textStartX, textStartY + 5 * sectionSize, QStringLiteral("Q25"));
 
     //Vertical line from q25 to q10.
     p->drawLine(pointX, topY + 5 * sectionSize, pointX, topY + 6 * sectionSize);
@@ -179,5 +181,5 @@ void NotchedMarker::drawLegend(QPainter* p, const QRectF& rect) const
                 topY + 6 * sectionSize,
                 leftX + width - 2,
                 topY + 6 * sectionSize);
-    p->drawText(textStartX, textStartY + 6 * sectionSize, "Q10");
+    p->drawText(textStartX, textStartY + 6 * sectionSize, QStringLiteral("10"));
 }

@@ -59,7 +59,7 @@ QStringList DatasetInner::getListOfAvailableDatasets()
     datasetsDir.setNameFilters(QStringList("*" + QString(Constants::datasetExtension_)));
     datasetsDir.setSorting(QDir::Name);
 
-    return datasetsDir.entryList().replaceInStrings(QString(Constants::datasetExtension_), "");
+    return datasetsDir.entryList().replaceInStrings(QString(Constants::datasetExtension_), QLatin1String(""));
 }
 
 QString DatasetInner::getDatasetsDir()

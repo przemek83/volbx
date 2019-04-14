@@ -14,7 +14,7 @@ QwtText StringsScaleDraw::label(double v) const
     if (intervals_->isEmpty() || fmod(v, 1) || !v || v < 0 ||
         v > intervals_->count())
     {
-        return QwtText("                     ");
+        return QwtText(QStringLiteral("                     "));
     }
 
     int point = static_cast<int>(v);
@@ -23,5 +23,5 @@ QwtText StringsScaleDraw::label(double v) const
         return QwtText(intervals_->at(point - 1));
     }
 
-    return QwtText("                     ");
+    return QwtText(QStringLiteral("                     "));
 }
