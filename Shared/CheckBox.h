@@ -10,7 +10,7 @@ class CheckBox : public QCheckBox
 public:
     CheckBox(LogTypes type, const QString& content, QWidget* parent = nullptr);
 
-    ~CheckBox() override;
+    ~CheckBox() override = default;
 
     CheckBox& operator=(const CheckBox& other) = delete;
     CheckBox(const CheckBox& other) = delete;

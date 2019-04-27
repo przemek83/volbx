@@ -6,11 +6,6 @@ CheckBox::CheckBox(LogTypes type, const QString& content, QWidget* parent)
 
 }
 
-CheckBox::~CheckBox()
-{
-
-}
-
 LogTypes CheckBox::logType()
 {
     return type_;

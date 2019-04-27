@@ -15,7 +15,7 @@
 const char* DatasetInner::datasetsDir_ = "Data";
 
 DatasetInner::DatasetInner(DatasetDefinitionInner* datasetDefinition)
-    : Dataset(static_cast<DatasetDefinition*>(datasetDefinition))
+    : Dataset(datasetDefinition)
 {
 
 }

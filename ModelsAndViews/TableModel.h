@@ -30,14 +30,12 @@ public:
 
     /**
      * @brief Overridem method for row count check.
-     * @param parent index of parent.
      * @return row count.
      */
     int rowCount(const QModelIndex& = QModelIndex()) const override;
 
     /**
-     * @brief Overridem method for column count check.
-     * @param parent index of parent.
+     * @brief Override method for column count check.
      * @return column count.
      */
     int columnCount(const QModelIndex& = QModelIndex()) const override;
