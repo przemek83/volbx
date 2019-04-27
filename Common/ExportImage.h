@@ -23,7 +23,7 @@ public:
 
     static void exportAsImage(PlotBase* plot, const QString& fileName);
 
-    static void quickExportAsImage(QList<PlotBase*> list);
+    static void quickExportAsImage(const QList<PlotBase*>& list);
 
 private:
     static void exportSingleImage(const QwtPlotRenderer& rend, const QList<PlotBase*>& list);

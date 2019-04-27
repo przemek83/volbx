@@ -21,7 +21,7 @@ void ExportImage::exportAsImage(PlotBase* plot, const QString& fileName)
     rend.renderDocument(plot, fileName, QStringLiteral("png"),  size);
 }
 
-void ExportImage::quickExportAsImage(QList<PlotBase*> list)
+void ExportImage::quickExportAsImage(const QList<PlotBase*>& list)
 {
     QwtPlotRenderer rend;
     rend.setDiscardFlags(QwtPlotRenderer::DiscardNone);

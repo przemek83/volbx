@@ -8,7 +8,7 @@ class CheckBox : public QCheckBox
 {
     Q_OBJECT
 public:
-    CheckBox(LogTypes type, QString content, QWidget* parent = nullptr);
+    CheckBox(LogTypes type, const QString& content, QWidget* parent = nullptr);
 
     ~CheckBox() override;
 

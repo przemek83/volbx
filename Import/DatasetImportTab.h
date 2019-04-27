@@ -25,7 +25,7 @@ public:
     bool datasetsAreAvailable();
 
 private Q_SLOTS:
-    void selectedDatasetChanged(QString current);
+    void selectedDatasetChanged(const QString& current);
 };
 
 #endif // DATASETIMPORTTAB_H

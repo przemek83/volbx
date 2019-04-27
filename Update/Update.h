@@ -40,7 +40,7 @@ private:
     ///Network manager used for downloading.
     QNetworkAccessManager downloadManager_;
 
-    void downloadFile(QString fileName);
+    void downloadFile(const QString& fileName);
 
     ///List of files to download.
     QVector<QString> filesToDownload_;
@@ -56,7 +56,7 @@ private:
 
     int currentTriesCount_ {0};
 
-    void showErrorMsg(QString error);
+    void showErrorMsg(const QString& error);
 
     /**
      * @brief retrieve info about files to download and sizes.
@@ -69,15 +69,15 @@ private:
      */
     void finalizeUpdate();
 
-    void insertNewSectionIntoDetails(QString msg);
+    void insertNewSectionIntoDetails(const QString& msg);
 
-    void insertInfoIntoDetails(QString msg);
+    void insertInfoIntoDetails(const QString& msg);
 
     void insertNewLineIntoDetails();
 
-    void insertSuccessInfoIntoDetails(QString msg);
+    void insertSuccessInfoIntoDetails(const QString& msg);
 
-    void insertErrorInfoIntoDetails(QString msg);
+    void insertErrorInfoIntoDetails(const QString& msg);
 
     /**
      * @brief save verfied file. Verified mean of same size as expected.

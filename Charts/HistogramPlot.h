@@ -33,8 +33,8 @@ public:
     HistogramPlot& operator=(HistogramPlot&& other) = delete;
     HistogramPlot(HistogramPlot&& other) = delete;
 
-    void setNewData(PlotData plotData,
-                    Quantiles quantiles,
+    void setNewData(const PlotData& plotData,
+                    const Quantiles& quantiles,
                     int intervalsCount);
 
 private:
@@ -76,7 +76,7 @@ private:
     Quantiles quantiles_;
 
 private Q_SLOTS:
-    void legendItemChecked(QVariant itemInfo, bool on, int index);
+    void legendItemChecked(const QVariant& itemInfo, bool on, int index);
 
     void recompute(int intervalsCount);
 };

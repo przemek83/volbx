@@ -25,24 +25,24 @@ public:
      * @brief set aplication style using css style file.
      * @param styleName name of style file.
      */
-    static void setCssStyle(QString styleName);
+    static void setCssStyle(const QString& styleName);
 
     /**
      * @brief set Qt inner style.
      * @param name name of inner style.
      */
-    static void setQtStyle(QString name);
+    static void setQtStyle(const QString& name);
 
     static QString getGroupBoxStyle();
 
-    static void initStyle(QString nameFromConfig);
+    static void initStyle(const QString& nameFromConfig);
 
 private:
-    static QString getStylePath(QString styleName);
+    static QString getStylePath(const QString& styleName);
 
-    static QString getResStylePath(QString styleName);
+    static QString getResStylePath(const QString& styleName);
 
-    static QString getLocalStyleFilePath(QString styleName);
+    static QString getLocalStyleFilePath(const QString& styleName);
 
     static void clearAppFocus();
 

@@ -82,7 +82,7 @@ QwtText HistogramPlot::HistPicker::trackerTextF(const QPointF& pos)const
     return coords;
 }
 
-void HistogramPlot::legendItemChecked(QVariant itemInfo, bool on, int /*index*/)
+void HistogramPlot::legendItemChecked(const QVariant& itemInfo, bool on, int /*index*/)
 {
     QwtPlotItem* plotItem = infoToItem(itemInfo);
     if (plotItem)
@@ -151,8 +151,8 @@ void HistogramPlot::recompute(int intervalsCount)
     replot();
 }
 
-void HistogramPlot::setNewData(PlotData plotData,
-                               Quantiles quantiles,
+void HistogramPlot::setNewData(const PlotData& plotData,
+                               const Quantiles& quantiles,
                                int intervalsCount)
 {
     plotData_ = plotData;

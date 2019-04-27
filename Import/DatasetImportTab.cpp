@@ -66,7 +66,7 @@ DatasetDefinition* DatasetImportTab::getDatasetDefinition()
     return definition->getDatasetDefinition();
 }
 
-void DatasetImportTab::selectedDatasetChanged(QString current)
+void DatasetImportTab::selectedDatasetChanged(const QString& current)
 {
     auto visualization = findChild<DatasetDefinitionVisualization*>();
     auto columnsPreview = findChild<ColumnsPreview*>();

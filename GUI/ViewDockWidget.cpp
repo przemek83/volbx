@@ -8,7 +8,7 @@
 #include "ModelsAndViews/DataView.h"
 #include "ViewDockWidget.h"
 
-ViewDockWidget::ViewDockWidget(QString title,
+ViewDockWidget::ViewDockWidget(const QString& title,
                                QWidget* parent,
                                Qt::WindowFlags flags)
     : DockWidget(title, parent, flags)

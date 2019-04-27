@@ -21,7 +21,7 @@ class PlotBase : public QwtPlot
 {
     Q_OBJECT
 public:
-    explicit PlotBase(QString /*title*/, QWidget* parent = nullptr);
+    explicit PlotBase(const QString& /*title*/, QWidget* parent = nullptr);
 
     ~PlotBase() override;
 
@@ -35,7 +35,7 @@ public:
 
     void setAxisScale(int axisId, double min, double max, double step = 0);
 
-    virtual void setNewData(PlotData plotData);
+    virtual void setNewData(const PlotData& plotData);
 
     QSize minimumSizeHint() const override;
 
@@ -72,7 +72,7 @@ protected:
 
     QwtPlotCurve* plotCurve_;
 
-    void setPlotTitle(QString title);
+    void setPlotTitle(const QString& title);
 
 private:
     class IntervalsScaleDraw: public QwtScaleDraw

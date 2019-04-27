@@ -32,7 +32,7 @@ private:
     HistogramPlot histogramPlot_;
 
 private Q_SLOTS:
-    void dataChanged(PlotData plotData, Quantiles quantiles);
+    void dataChanged(const PlotData& plotData, const Quantiles& quantiles);
 };
 
 #endif // HISTOGRAMPLOTGUI_H

@@ -66,7 +66,7 @@ void Logger::log(LogTypes type,
                  const char* file,
                  const char* function,
                  int line,
-                 QString msg)
+                 const QString& msg)
 {
     Q_ASSERT(nullptr != display_ && nullptr != textEdit_);
 

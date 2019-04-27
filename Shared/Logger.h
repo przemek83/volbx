@@ -39,7 +39,7 @@ public:
              const char* file,
              const char* function,
              int line,
-             QString msg);
+             const QString& msg);
 
     void switchVisibility();
 

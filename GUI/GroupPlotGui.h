@@ -41,8 +41,8 @@ public Q_SLOTS:
     void setNewData(float minY,
                     float maxY,
                     QVector<QString> intervalsNames,
-                    QVector<Quantiles> quantilesForIntervals,
-                    Quantiles quantiles);
+                    const QVector<Quantiles>& quantilesForIntervals,
+                    const Quantiles& quantiles);
 
 private:
     Ui::GroupPlotGui* ui;

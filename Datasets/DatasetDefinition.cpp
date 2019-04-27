@@ -11,6 +11,17 @@
 
 const int DatasetDefinition::sampleSize_ = 10;
 
+const char* DatasetDefinition::datasetDefinitionXmlNames_[] =
+{
+    "DATASET",
+    "COLUMNS",
+    "COLUMN",
+    "NAME",
+    "FORMAT",
+    "SPECIAL_TAG",
+    "ROW_COUNT"
+};
+
 DatasetDefinition::DatasetDefinition(QString name):
     valid_(false),
     rowsCount_(0),
@@ -208,4 +219,44 @@ QVariant DatasetDefinition::getDefaultVariantForFormat(const DataFormat format) 
             return QVariant(QVariant::String);
         }
     }
+}
+
+void DatasetDefinition::toXml(QByteArray& data, int rowCountNumber) const
+{
+    QDomDocument xmlDocument(datasetDefinitionXmlNames_[DATASET_NAME]);
+    QDomElement root =
+        xmlDocument.createElement(datasetDefinitionXmlNames_[DATASET_NAME]);
+    xmlDocument.appendChild(root);
+
+    //Columns.
+    QDomElement columns =
+        xmlDocument.createElement(datasetDefinitionXmlNames_[DATASET_COLUMNS]);
+    root.appendChild(columns);
+
+    for (int i = 0; i < columnsCount_; ++i)
+    {
+        QDomElement node =
+            xmlDocument.createElement(datasetDefinitionXmlNames_[DATASET_COLUMN]);
+        node.setAttribute(datasetDefinitionXmlNames_[DATASET_COLUMN_NAME],
+                          headerColumnNames_.at(i));
+        node.setAttribute(datasetDefinitionXmlNames_[DATASET_COLUMN_FORMAT],
+                          columnsFormat_.at(i));
+
+        QMapIterator<SpecialColumn, int> it(specialColumns_);
+        if (it.findNext(i))
+        {
+            node.setAttribute(datasetDefinitionXmlNames_[DATASET_COLUMN_SPECIAL_TAG],
+                              QString::number(static_cast<int>(it.key())));
+        }
+        columns.appendChild(node);
+    }
+
+    //Add row count.
+    QDomElement rowCount =
+        xmlDocument.createElement(datasetDefinitionXmlNames_[DATASET_ROW_COUNT]);
+    rowCount.setAttribute(datasetDefinitionXmlNames_[DATASET_ROW_COUNT],
+                          QString::number(rowCountNumber));
+    root.appendChild(rowCount);
+
+    data = xmlDocument.toByteArray();
 }

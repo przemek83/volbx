@@ -8,7 +8,7 @@
 #include "PlotBase.h"
 #include "Zoomer.h"
 
-PlotBase::PlotBase(QString title, QWidget* parent) :
+PlotBase::PlotBase(const QString& title, QWidget* parent) :
     QwtPlot(/*title,*/ parent),
     plotCurve_(nullptr),
     plotData_(PlotData(nullptr, nullptr, 0))
@@ -39,7 +39,7 @@ PlotBase::~PlotBase()
     delete plotCurve_;
 }
 
-void PlotBase::setNewData(PlotData plotData)
+void PlotBase::setNewData(const PlotData& plotData)
 {
     plotCurve_->setRawSamples(plotData.getDataX(),
                               plotData.getDataY(),
@@ -115,7 +115,7 @@ void PlotBase::PlotMagnifier::reset()
     actualFactor_ = 1.0;
 }
 
-void PlotBase::setPlotTitle(QString title)
+void PlotBase::setPlotTitle(const QString& title)
 {
     QwtText titleToSet = QwtText(title);
     QFont titleFont = titleToSet.font();

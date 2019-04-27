@@ -31,7 +31,7 @@ public:
     GroupPlot& operator=(GroupPlot&& other) = delete;
     GroupPlot(GroupPlot&& other) = delete;
 
-    void setNewData(QVector<Quantiles>& quantiles,
+    void setNewData(const QVector<Quantiles>& quantiles,
                     QVector<QString>& intervalStrings);
 
     QSize minimumSizeHint() const override;

@@ -33,7 +33,7 @@ public:
     static bool datasetDirExistAndUserHavePermisions();
 
     ///Removes given dataset from disk.
-    static bool removeDataset(QString name);
+    static bool removeDataset(const QString& name);
 
 private:
     ///Name of folder with datasets.

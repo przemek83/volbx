@@ -39,7 +39,7 @@ GroupPlot::~GroupPlot()
     delete marker_;
 }
 
-void GroupPlot::setNewData(QVector<Quantiles>& quantiles,
+void GroupPlot::setNewData(const QVector<Quantiles>& quantiles,
                            QVector<QString>& intervalStrings)
 {
     quantiles_.clear();

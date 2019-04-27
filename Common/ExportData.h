@@ -30,25 +30,25 @@ public:
     ExportData& operator=(ExportData&& other) = delete;
     ExportData(ExportData&& other) = delete;
 
-    static bool exportAsXLSX(const QAbstractItemView* view, QString fileName);
+    static bool exportAsXLSX(const QAbstractItemView* view, const QString& fileName);
 
     static void quickExportAsTSV(const QAbstractItemView* view);
 
     static bool exportAsCsv(const QAbstractItemView* view,
-                            QString fileName,
+                            const QString& fileName,
                             bool innerFormat);
 
-    static bool saveDataset(QString name, const QAbstractItemView* view);
+    static bool saveDataset(const QString& name, const QAbstractItemView* view);
 
 private:
     static void dataToByteArray(const QAbstractItemView* view,
                                 QByteArray* destinationArray,
-                                QString separator,
+                                const QString& separator,
                                 bool innerFormat);
 
     static void variantToString(const QVariant& variant,
                                 QByteArray* destinationArray,
-                                QString separator,
+                                const QString& separator,
                                 bool innerFormat);
 
     static const char* csvSeparator_;

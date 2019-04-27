@@ -123,9 +123,9 @@ void BasicDataPlot::initLegend()
     insertLegend(legend, QwtPlot::BottomLegend);
 }
 
-void BasicDataPlot::setNewData(PlotData plotData,
-                               Quantiles quantiles,
-                               QVector<QPointF> linearRegression)
+void BasicDataPlot::setNewData(const PlotData& plotData,
+                               const Quantiles& quantiles,
+                               const QVector<QPointF>& linearRegression)
 {
     setToolTip(quantiles.getValuesAsToolTip());
 

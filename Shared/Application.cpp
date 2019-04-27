@@ -17,7 +17,7 @@ void Application::setAdditionalApplicatioInfo(const char* productName)
     QApplication::setOrganizationDomain(QStringLiteral(VER_COMPANYDOMAIN_STR));
 }
 
-void Application::initStyle(QString nameFromConfig)
+void Application::initStyle(const QString& nameFromConfig)
 {
     QStringList qtStyles = QStyleFactory::keys();
     if (qtStyles.contains(nameFromConfig))
@@ -30,7 +30,7 @@ void Application::initStyle(QString nameFromConfig)
     }
 }
 
-QString Application::getStylePath(QString styleName)
+QString Application::getStylePath(const QString& styleName)
 {
     if (QFile::exists(getResStylePath(styleName)))
     {
@@ -40,13 +40,13 @@ QString Application::getStylePath(QString styleName)
     return getLocalStyleFilePath(styleName);
 }
 
-QString Application::getResStylePath(QString styleName)
+QString Application::getResStylePath(const QString& styleName)
 {
     const static QLatin1String resPrefix(":/Css/");
     return resPrefix + styleName + QLatin1String(cssSuffix_);
 }
 
-QString Application::getLocalStyleFilePath(QString styleName)
+QString Application::getLocalStyleFilePath(const QString& styleName)
 {
     QString stylePath;
     stylePath.append(QApplication::applicationDirPath());
@@ -56,7 +56,7 @@ QString Application::getLocalStyleFilePath(QString styleName)
     return stylePath;
 }
 
-void Application::setCssStyle(QString styleName)
+void Application::setCssStyle(const QString& styleName)
 {
     clearAppFocus();
 
@@ -70,7 +70,7 @@ void Application::setCssStyle(QString styleName)
     }
 }
 
-void Application::setQtStyle(QString name)
+void Application::setQtStyle(const QString& name)
 {
     clearAppFocus();
     qApp->setStyleSheet(QString());

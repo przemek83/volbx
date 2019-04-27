@@ -20,7 +20,7 @@ public:
 
     static QNetworkRequest getCurrentVersionRequest();
 
-    static QNetworkRequest getDownloadFileRequest(QString file);
+    static QNetworkRequest getDownloadFileRequest(const QString& file);
 
     static bool errorsOccuredCheck(QNetworkReply* reply);
 

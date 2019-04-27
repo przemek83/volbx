@@ -13,18 +13,6 @@
 #include "DatasetDefinitionInner.h"
 #include "DatasetInner.h"
 
-const char* DatasetDefinitionInner::datasetDefinitionXmlNames_[] =
-{
-    "DATASET",
-    "COLUMNS",
-    "COLUMN",
-    "NAME",
-    "FORMAT",
-    "SPECIAL_TAG",
-    "ROW_COUNT"
-};
-
-
 DatasetDefinitionInner::DatasetDefinitionInner(const QString& name)
     : DatasetDefinition(name),
       stringsTable_(nullptr)
@@ -368,46 +356,6 @@ QVariant* DatasetDefinitionInner::getSharedStringTable()
     QVariant* temp = stringsTable_;
     stringsTable_ = nullptr;
     return temp;
-}
-
-void DatasetDefinitionInner::toXml(QByteArray& data, int rowCountNumber) const
-{
-    QDomDocument xmlDocument(datasetDefinitionXmlNames_[DATASET_NAME]);
-    QDomElement root =
-        xmlDocument.createElement(datasetDefinitionXmlNames_[DATASET_NAME]);
-    xmlDocument.appendChild(root);
-
-    //Columns.
-    QDomElement columns =
-        xmlDocument.createElement(datasetDefinitionXmlNames_[DATASET_COLUMNS]);
-    root.appendChild(columns);
-
-    for (int i = 0; i < columnsCount_; ++i)
-    {
-        QDomElement node =
-            xmlDocument.createElement(datasetDefinitionXmlNames_[DATASET_COLUMN]);
-        node.setAttribute(datasetDefinitionXmlNames_[DATASET_COLUMN_NAME],
-                          headerColumnNames_.at(i));
-        node.setAttribute(datasetDefinitionXmlNames_[DATASET_COLUMN_FORMAT],
-                          columnsFormat_.at(i));
-
-        QMapIterator<SpecialColumn, int> it(specialColumns_);
-        if (it.findNext(i))
-        {
-            node.setAttribute(datasetDefinitionXmlNames_[DATASET_COLUMN_SPECIAL_TAG],
-                              QString::number(static_cast<int>(it.key())));
-        }
-        columns.appendChild(node);
-    }
-
-    //Add row count.
-    QDomElement rowCount =
-        xmlDocument.createElement(datasetDefinitionXmlNames_[DATASET_ROW_COUNT]);
-    rowCount.setAttribute(datasetDefinitionXmlNames_[DATASET_ROW_COUNT],
-                          QString::number(rowCountNumber));
-    root.appendChild(rowCount);
-
-    data = xmlDocument.toByteArray();
 }
 
 bool DatasetDefinitionInner::getData(QVector<QVector<QVariant> >* dataContainer)

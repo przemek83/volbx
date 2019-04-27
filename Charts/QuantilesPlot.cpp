@@ -44,7 +44,7 @@ void QuantilesPlot::forceResize()
     resizeEvent(new QResizeEvent(size(), size()));
 }
 
-void QuantilesPlot::setNewData(Quantiles quantiles)
+void QuantilesPlot::setNewData(const Quantiles& quantiles)
 {
     quantiles_.clear();
     quantiles_.append(quantiles);

@@ -204,7 +204,7 @@ QString Configuration::getStyle() const
     return style_;
 }
 
-void Configuration::setStyle(QString style)
+void Configuration::setStyle(const QString& style)
 {
     style_ = style;
 }
@@ -224,7 +224,7 @@ QString Configuration::getImportFilePath() const
     return QDir::homePath();
 }
 
-void Configuration::setImportFilePath(QString path)
+void Configuration::setImportFilePath(const QString& path)
 {
     importFilePath_ = path;
 }

@@ -17,7 +17,7 @@ QNetworkRequest Networking::getCurrentVersionRequest()
     return QNetworkRequest(QUrl(QStringLiteral("http://example.com/update/currentVersion.php")));
 }
 
-QNetworkRequest Networking::getDownloadFileRequest(QString file)
+QNetworkRequest Networking::getDownloadFileRequest(const QString& file)
 {
     return QNetworkRequest(QUrl(QStringLiteral("http://example.com/update/current/") + file));
 }

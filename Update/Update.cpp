@@ -137,7 +137,7 @@ void Update::fillFilesToUpdateLists(QStringList& serverInfoList)
     }
 }
 
-void Update::downloadFile(QString fileName)
+void Update::downloadFile(const QString& fileName)
 {
     insertInfoIntoDetails(fileName + QStringLiteral("... "));
 
@@ -300,7 +300,7 @@ void Update::on_buttonQuit_clicked()
     close();
 }
 
-void Update::showErrorMsg(QString error)
+void Update::showErrorMsg(const QString& error)
 {
     if (!ui->details->isVisible())
     {
@@ -311,7 +311,7 @@ void Update::showErrorMsg(QString error)
     QMessageBox::critical(this, tr("Error"), error);
 }
 
-void Update::insertNewSectionIntoDetails(QString msg)
+void Update::insertNewSectionIntoDetails(const QString& msg)
 {
     ui->details->insertHtml(QStringLiteral("<b><FONT COLOR=blue>") +
                             msg +
@@ -319,7 +319,7 @@ void Update::insertNewSectionIntoDetails(QString msg)
     ui->details->ensureCursorVisible();
 }
 
-void Update::insertInfoIntoDetails(QString msg)
+void Update::insertInfoIntoDetails(const QString& msg)
 {
     ui->details->insertHtml(QStringLiteral("<FONT COLOR=black>") +
                             msg +
@@ -333,7 +333,7 @@ void Update::insertNewLineIntoDetails()
     ui->details->ensureCursorVisible();
 }
 
-void Update::insertSuccessInfoIntoDetails(QString msg)
+void Update::insertSuccessInfoIntoDetails(const QString& msg)
 {
     ui->details->insertHtml(QStringLiteral("<b><FONT COLOR=green>") +
                             msg +
@@ -341,7 +341,7 @@ void Update::insertSuccessInfoIntoDetails(QString msg)
     ui->details->ensureCursorVisible();
 }
 
-void Update::insertErrorInfoIntoDetails(QString msg)
+void Update::insertErrorInfoIntoDetails(const QString& msg)
 {
     ui->details->insertHtml(QStringLiteral("<b><FONT COLOR=red>") +
                             msg +

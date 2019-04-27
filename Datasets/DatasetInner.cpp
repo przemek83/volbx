@@ -85,7 +85,7 @@ bool DatasetInner::datasetDirExistAndUserHavePermisions()
            QFile::permissions(directory.path()).testFlag(QFile::WriteUser);
 }
 
-bool DatasetInner::removeDataset(QString name)
+bool DatasetInner::removeDataset(const QString& name)
 {
     QString datasetFile =
         getDatasetsDir() + name + QString(Constants::datasetExtension_);

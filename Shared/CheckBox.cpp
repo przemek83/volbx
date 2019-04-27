@@ -1,6 +1,6 @@
 #include "CheckBox.h"
 
-CheckBox::CheckBox(LogTypes type, QString content, QWidget* parent)
+CheckBox::CheckBox(LogTypes type, const QString& content, QWidget* parent)
     : QCheckBox(content, parent), type_(type)
 {
 

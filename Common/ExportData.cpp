@@ -98,7 +98,7 @@ void ExportData::gatherSheetContent(QByteArray& rowsContent,
     rowsContent.append("</sheetData>");
 }
 
-bool ExportData::exportAsXLSX(const QAbstractItemView* view, QString fileName)
+bool ExportData::exportAsXLSX(const QAbstractItemView* view, const QString& fileName)
 {
     Q_ASSERT(nullptr != view);
 
@@ -197,7 +197,7 @@ void ExportData::quickExportAsTSV(const QAbstractItemView* view)
 
 void ExportData::dataToByteArray(const QAbstractItemView* view,
                                  QByteArray* destinationArray,
-                                 QString separator,
+                                 const QString& separator,
                                  bool innerFormat)
 {
     /*
@@ -268,7 +268,7 @@ void ExportData::dataToByteArray(const QAbstractItemView* view,
 
 void ExportData::variantToString(const QVariant& variant,
                                  QByteArray* destinationArray,
-                                 QString separator,
+                                 const QString& separator,
                                  bool innerFormat)
 {
     switch (variant.type())
@@ -325,7 +325,7 @@ void ExportData::variantToString(const QVariant& variant,
 }
 
 bool ExportData::exportAsCsv(const QAbstractItemView* view,
-                             QString fileName,
+                             const QString& fileName,
                              bool innerFormat)
 {
     QByteArray content;
@@ -361,7 +361,7 @@ bool ExportData::exportAsCsv(const QAbstractItemView* view,
     return ret;
 }
 
-bool ExportData::saveDataset(QString name,
+bool ExportData::saveDataset(const QString& name,
                              const QAbstractItemView* view)
 {
     Q_ASSERT(nullptr != view);
@@ -546,10 +546,9 @@ bool ExportData::saveDatasetDefinitionFile(QuaZipFile& zipFile,
     //Save definition file.
     const TableModel* parentModel =
         (qobject_cast<FilteringProxyModel*>(view->model()))->getParentModel();
-    const auto definition =
-        dynamic_cast<const DatasetDefinitionInner*>(parentModel->getDatasetDefinition());
+
     QByteArray definitionContent;
-    definition->toXml(definitionContent, rowCount);
+    parentModel->getDatasetDefinition()->toXml(definitionContent, rowCount);
 
     bool result = zipFile.open(QIODevice::WriteOnly,
                                QuaZipNewInfo(Constants::datasetDefinitionFilename_));

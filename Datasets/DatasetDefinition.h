@@ -64,6 +64,9 @@ public:
 
     virtual QVariant* getSharedStringTable() = 0;
 
+    ///Definition to bytes array.
+    void toXml(QByteArray& data, int rowCountNumber) const;
+
 protected:
     virtual void updateSampleDataStrings() = 0;
 
@@ -101,6 +104,21 @@ protected:
     static const int sampleSize_;
 
     QVariant getDefaultVariantForFormat(const DataFormat format) const;
+
+    ///Enum used with field names used in definiton.
+    enum DatasetXmlName
+    {
+        DATASET_NAME,
+        DATASET_COLUMNS,
+        DATASET_COLUMN,
+        DATASET_COLUMN_NAME,
+        DATASET_COLUMN_FORMAT,
+        DATASET_COLUMN_SPECIAL_TAG,
+        DATASET_ROW_COUNT
+    };
+
+    ///Names used in definition file.
+    const static char* datasetDefinitionXmlNames_[];
 };
 
 #endif // DATASETDEFINITION_H

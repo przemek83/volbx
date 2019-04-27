@@ -12,7 +12,7 @@ class ViewDockWidget : public DockWidget
 {
     Q_OBJECT
 public:
-    explicit ViewDockWidget(QString title, QWidget* parent = nullptr,
+    explicit ViewDockWidget(const QString& title, QWidget* parent = nullptr,
                             Qt::WindowFlags flags = Qt::Widget);
 
     ~ViewDockWidget() override = default;

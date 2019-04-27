@@ -25,9 +25,6 @@ public:
 
     QVariant* getSharedStringTable() override;
 
-    ///Definition to bytes array.
-    void toXml(QByteArray& data, int rowCountNumber) const;
-
     bool getData(QVector<QVector<QVariant> >* dataContainer);
 
 protected:
@@ -49,21 +46,6 @@ private:
 
     ///Load strings from zip file.
     bool loadStrings(QuaZip& zip);
-
-    ///Names used in definition file.
-    const static char* datasetDefinitionXmlNames_[];
-
-    ///Enum used with field names used in definiton.
-    enum DatasetXmlName
-    {
-        DATASET_NAME,
-        DATASET_COLUMNS,
-        DATASET_COLUMN,
-        DATASET_COLUMN_NAME,
-        DATASET_COLUMN_FORMAT,
-        DATASET_COLUMN_SPECIAL_TAG,
-        DATASET_ROW_COUNT
-    };
 
     ///Array with strings.
     QVariant* stringsTable_;

@@ -26,7 +26,7 @@ public:
     QuantilesPlot& operator=(QuantilesPlot&& other) = delete;
     QuantilesPlot(QuantilesPlot&& other) = delete;
 
-    void setNewData(Quantiles quantiles);
+    void setNewData(const Quantiles& quantiles);
 
     QSize minimumSizeHint() const override;
 

@@ -35,7 +35,7 @@ public:
 
     QString getStyle() const;
 
-    void setStyle(QString style);
+    void setStyle(const QString& style);
 
     ///For unit tests.
     bool configWasValid() const;
@@ -48,7 +48,7 @@ public:
 
     QString getImportFilePath() const;
 
-    void setImportFilePath(QString path);
+    void setImportFilePath(const QString& path);
 
 private:
     Configuration();

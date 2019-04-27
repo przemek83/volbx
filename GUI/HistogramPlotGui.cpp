@@ -22,7 +22,7 @@ HistogramPlotGui::~HistogramPlotGui()
     delete ui;
 }
 
-void HistogramPlotGui::dataChanged(PlotData plotData, Quantiles quantiles)
+void HistogramPlotGui::dataChanged(const PlotData& plotData, const Quantiles& quantiles)
 {
     histogramPlot_.setNewData(plotData, quantiles, ui->spinBox->value());
 }

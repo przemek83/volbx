@@ -53,13 +53,14 @@ GroupPlotGui::GroupPlotGui(const TableModel* model, QWidget* parent) :
 
     ui->intervals->setValidator(&numValidator_);
 
-    for(int i = 0; i < model->columnCount(); ++i)
+    for (int i = 0; i < model->columnCount(); ++i)
     {
         columnsNumberToFormatMap_[i] = model->getColumnFormat(i);
 
-        if( DATA_FORMAT_STRING != model->getColumnFormat(i) ) {
+        if (DATA_FORMAT_STRING != model->getColumnFormat(i))
+        {
             continue;
-}
+        }
 
         QString columnName = model->headerData(i, Qt::Horizontal).toString();
         ui->comboBox->addItem(columnName, QVariant(i));
@@ -76,8 +77,8 @@ GroupPlotGui::~GroupPlotGui()
 void GroupPlotGui::setNewData(float minY,
                               float maxY,
                               QVector<QString> intervalsNames,
-                              QVector<Quantiles> quantilesForIntervals,
-                              Quantiles quantiles)
+                              const QVector<Quantiles>& quantilesForIntervals,
+                              const Quantiles& quantiles)
 {
     groupPlot_.setAxisScale(QwtPlot::yLeft, minY, maxY);
     groupPlot_.setAxisScale(QwtPlot::yRight, minY, maxY);
@@ -92,8 +93,8 @@ void GroupPlotGui::setNewData(float minY,
 
     int scrollBarSize = 0;
 
-    if( scrollArea_->horizontalScrollBar()->minimum() !=
-        scrollArea_->horizontalScrollBar()->maximum() )
+    if (scrollArea_->horizontalScrollBar()->minimum() !=
+        scrollArea_->horizontalScrollBar()->maximum())
     {
         scrollBarSize = scrollArea_->horizontalScrollBar()->height();
     }
@@ -118,7 +119,7 @@ void GroupPlotGui::on_comboBox_currentIndexChanged(int index)
 {
     ui->intervals->clear();
 
-    switch( getSelectedColumnFormat() )
+    switch (getSelectedColumnFormat())
     {
         case DATA_FORMAT_STRING:
         {

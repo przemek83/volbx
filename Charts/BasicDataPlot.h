@@ -33,9 +33,9 @@ public:
     BasicDataPlot(BasicDataPlot&& other) = delete;
 
 public Q_SLOTS:
-    virtual void setNewData(PlotData plotData,
-                            Quantiles quantiles,
-                            QVector<QPointF> linearRegression);
+    virtual void setNewData(const PlotData& plotData,
+                            const Quantiles& quantiles,
+                            const QVector<QPointF>& linearRegression);
 
 private:
     void initPlotCurve();
