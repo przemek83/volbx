@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QPen>
 #include <QApplication>
+#include <cmath>
 
 /**
  * @brief Round progress bar to show progress. If max != 0 '%' are used.
@@ -35,7 +36,7 @@ public:
 
     inline void updateProgress(int newValue)
     {
-        int newPercent = newValue * 1.0 / maxValue_ * 100;
+        int newPercent = lround(newValue * 1.0 / maxValue_ * 100);
         if (newPercent > currentPercent_)
         {
             currentPercent_ = newPercent;
@@ -45,9 +46,9 @@ public:
     }
 
 protected:
-    void paintEvent(QPaintEvent* event);
+    void paintEvent(QPaintEvent* event) override;
 
-    void timerEvent(QTimerEvent* event);
+    void timerEvent(QTimerEvent* event) override;
 
 private:
     int currentPercent_;

@@ -47,15 +47,14 @@ bool DatasetDefinition::isSpecialColumnTagged(SpecialColumn column) const
     return specialColumns_.contains(column);
 }
 
-bool DatasetDefinition::getSpecialColumnIfExists(SpecialColumn columnTag,
-                                                 int& column) const
+std::tuple<bool, int> DatasetDefinition::getSpecialColumnIfExists(SpecialColumn columnTag) const
 {
     if (isSpecialColumnTagged(columnTag))
     {
-        column = specialColumns_[columnTag];
-        return true;
+        return {true, specialColumns_[columnTag]};
     }
-    return false;
+
+    return {false, -1};
 }
 
 QString DatasetDefinition::getColumnName(int column) const

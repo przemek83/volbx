@@ -43,17 +43,17 @@ public:
 private:
     static void dataToByteArray(const QAbstractItemView* view,
                                 QByteArray* destinationArray,
-                                const QString& separator,
+                                const char separator,
                                 bool innerFormat);
 
     static void variantToString(const QVariant& variant,
                                 QByteArray* destinationArray,
-                                const QString& separator,
+                                const char separator,
                                 bool innerFormat);
 
-    static const char* csvSeparator_;
+    static constexpr char csvSeparator_ {';'};
 
-    static const char* tsvSeparator_;
+    static constexpr char tsvSeparator_ {'\t'};
 
     static std::tuple<bool, int> saveDatasetDataFile(QuaZipFile& zipFile,
                                                      const QAbstractItemView* view,

@@ -21,8 +21,8 @@ DatasetsListBrowser::DatasetsListBrowser(QWidget* parent) :
     ui->datasetsList->insertItems(0, DatasetInner::getListOfAvailableDatasets());
 
     ui->datasetsList->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(ui->datasetsList, SIGNAL(customContextMenuRequested(const QPoint&)),
-            this, SLOT(showContextMenu(const QPoint&)));
+    connect(ui->datasetsList, SIGNAL(customContextMenuRequested(QPoint)),
+            this, SLOT(showContextMenu(QPoint)));
 }
 
 DatasetsListBrowser::~DatasetsListBrowser()
@@ -33,7 +33,7 @@ DatasetsListBrowser::~DatasetsListBrowser()
 QString DatasetsListBrowser::getSelectedDataset() const
 {
     QListWidgetItem* item = ui->datasetsList->currentItem();
-    if (item)
+    if (item != nullptr)
     {
         return item->text();
     }
@@ -59,7 +59,7 @@ bool DatasetsListBrowser::isDatasetsListEmpty()
     return (0 == ui->datasetsList->count());
 }
 
-void DatasetsListBrowser::showContextMenu(const QPoint& pos)
+void DatasetsListBrowser::showContextMenu(QPoint pos)
 {
     //Create delete context menu.
     QPoint globalPos = ui->datasetsList->viewport()->mapToGlobal(pos);

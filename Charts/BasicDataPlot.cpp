@@ -5,6 +5,7 @@
 #include <QDate>
 #include <QToolTip>
 #include <qwt_legend_label.h>
+#include <cmath>
 
 #include "Common/Constants.h"
 
@@ -170,7 +171,7 @@ BasicDataPlot::TimeScaleDraw::TimeScaleDraw()
 
 QwtText BasicDataPlot::TimeScaleDraw::label(double v) const
 {
-    return QwtText(Constants::stringFromDays(v));
+    return QwtText(Constants::stringFromDays(lround(v)));
 }
 
 
@@ -182,7 +183,7 @@ BasicDataPlot::LinearPicker::LinearPicker(QWidget* parent)
 
 QwtText BasicDataPlot::LinearPicker::trackerTextF(const QPointF& pos) const
 {
-    QwtText coords(Constants::stringFromDays(pos.x() + 0.5) + ", " +
+    QwtText coords(Constants::stringFromDays(lround(pos.x() + 0.5)) + ", " +
                    QString::number(pos.y(), 'f', 2));
 
     QColor bg(Qt::white);

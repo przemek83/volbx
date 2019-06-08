@@ -15,6 +15,8 @@ class CustomMarker;
  */
 class QuantilesPlot : public PlotBase
 {
+    Q_OBJECT
+
 public:
     explicit QuantilesPlot(QWidget* parent = nullptr);
 

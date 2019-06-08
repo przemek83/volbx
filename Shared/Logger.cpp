@@ -18,7 +18,7 @@ const char* Logger::LogTypeNames_[] =
     "IMPORT_EXPORT"
 };
 
-Logger::Logger()
+Logger::Logger([[maybe_unused]] QObject* parent)
 {
     display_ = new QWidget();
     display_->setWindowTitle(QStringLiteral("Logs"));
@@ -39,7 +39,7 @@ Logger::Logger()
 
     //Default config, set all active.
     activeLogs_ = new QMap<LogTypes, bool>();
-    for (int i = 0; i < static_cast<int>(LOG_END); ++i)
+    for (int i = 0; i < static_cast<int>(LogTypes::END); ++i)
     {
         (*activeLogs_)[static_cast<LogTypes>(i)] = true;
     }
@@ -140,7 +140,7 @@ void Logger::changeActiveLogs(bool state)
 {
     auto checkBox = qobject_cast<CheckBox*>(sender());
     (*activeLogs_)[checkBox->logType()] = state;
-    QString msg(LogTypeNames_[checkBox->logType()]);
+    QString msg(LogTypeNames_[static_cast<int>(checkBox->logType())]);
     msg.append(QStringLiteral(" is ") + (state ? QStringLiteral("active") : QStringLiteral("disabled")));
     LOG(LOG_APP, msg);
 }

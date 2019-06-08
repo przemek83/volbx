@@ -39,7 +39,7 @@ private:
 private Q_SLOTS:
     void searchTextChanged(const QString& arg1);
 
-    void showContextMenu(const QPoint& pos);
+    void showContextMenu(QPoint pos);
 
     void on_datasetsList_itemSelectionChanged();
 

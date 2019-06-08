@@ -98,6 +98,9 @@ file(GLOB SOURCES "Volbx/*.cpp"
     "Filters/*.cpp"
     "GUI/*.cpp"
     "Import/*.cpp"
+    "Filters/*.ui"
+    "GUI/*.ui"
+    "Import/*.ui"
    )
 
 

@@ -109,17 +109,23 @@ QVector<TransactionData>* DataView::fillDataFromSelection(int groupByColumn)
     Q_ASSERT(nullptr != parentModel);
 
     int pricePerMeterColumn;
-    if (!parentModel->getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT,
-                                               pricePerMeterColumn))
+    if (auto [ok, columnId] = parentModel->getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT); !ok)
     {
         return nullptr;
     }
+    else
+    {
+        pricePerMeterColumn = columnId;
+    }
 
     int transactionDateColumn;
-    if (!parentModel->getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE,
-                                               transactionDateColumn))
+    if (auto [ok, columnId] = parentModel->getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE); !ok)
     {
         return nullptr;
+    }
+    else
+    {
+        transactionDateColumn = columnId;
     }
 
     QTime performanceTimer;

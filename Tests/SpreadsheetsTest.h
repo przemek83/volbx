@@ -72,13 +72,13 @@ private:
 //    void testSpreadsheetFile05(DatasetDefinitionSpreadsheet* definition,
 //                               QString file);
 
-    void compareDataWithDumps(QString category, bool damaged);
+    void compareDataWithDumps(const QString& category, bool damaged);
 
     void testDatasetConstruction(DatasetSpreadsheet& dataset,
                                  QVector<int>& columnsToTest,
                                  QVector<double>& compareNumericValues,
                                  QVector<QDate>& compareDateValues,
-                                 QStringList &compareList,
+                                 QStringList& compareList,
                                  bool emptyDates);
 
     void compareExportDataWithDump(DatasetSpreadsheet* dataset);

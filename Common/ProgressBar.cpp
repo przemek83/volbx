@@ -3,6 +3,7 @@
 #include <QPainter>
 #include <QDebug>
 #include <QApplication>
+#include <cmath>
 
 #include "Common/Constants.h"
 
@@ -24,19 +25,19 @@ ProgressBar::ProgressBar(ProgressBar::ProgressTitle title,
     title_ = progressTitles[title];
     setWindowTitle(QString(title_).replace(newLine, ' '));
 
-    if( nullptr == parent )
+    if (nullptr == parent)
     {
         setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
         setWindowModality(Qt::ApplicationModal);
     }
 
     //Counter without %.
-    if( 0 == maxValue_ )
+    if (0 == maxValue_)
     {
         startTimer(50);
     }
 
-    QSize size(120,140);
+    QSize size(120, 140);
     resize(size);
 
     QColor color(127, 0, 127);
@@ -47,24 +48,24 @@ ProgressBar::ProgressBar(ProgressBar::ProgressTitle title,
     pen_.setStyle(Qt::SolidLine);
 
     int fontPointSizen = QApplication::font().pointSize();
-    counterFont_.setPointSize(fontPointSizen*2.5);
+    counterFont_.setPointSize(lround(fontPointSizen * 2.5));
     counterFont_.setStyleStrategy(QFont::PreferAntialias);
-    titleFont_.setPointSize(fontPointSizen*1.5);
+    titleFont_.setPointSize(lround(fontPointSizen * 1.5));
     titleFont_.setBold(true);
 
     QSize arcSize(width() - 4 * lineWeidth_, width() - 4 * lineWeidth_);
-    arcRectangle_ = QRect(width()/2-arcSize.width()/2,
-                         (width()-2*lineWeidth_)/2-arcSize.height()/2,
-                         arcSize.width(),
-                         arcSize.height());
+    arcRectangle_ = QRect(width() / 2 - arcSize.width() / 2,
+                          (width() - 2 * lineWeidth_) / 2 - arcSize.height() / 2,
+                          arcSize.width(),
+                          arcSize.height());
 
     titleRectangle_ = QRect(0,
-                          height()-lineWeidth_*4,
-                          width(),
-                          lineWeidth_*4);
+                            height() - lineWeidth_ * 4,
+                            width(),
+                            lineWeidth_ * 4);
 
     QWidget* activeWidget = QApplication::activeWindow();
-    if(nullptr != activeWidget)
+    if (nullptr != activeWidget)
     {
         move(QApplication::activeWindow()->geometry().center() -
              geometry().center());
@@ -76,7 +77,7 @@ void ProgressBar::initNames(QVector<QString>& titles, const char newLine)
 {
     static bool initialized = false;
 
-    if ( !initialized )
+    if (!initialized)
     {
         titles[PROGRESS_TITLE_LOADING] =
             QObject::tr("Loading") + newLine + QObject::tr("data");
@@ -95,7 +96,7 @@ void ProgressBar::initNames(QVector<QString>& titles, const char newLine)
     }
 }
 
-void ProgressBar::paintEvent(QPaintEvent *)
+void ProgressBar::paintEvent([[maybe_unused]] QPaintEvent* event)
 {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
@@ -107,19 +108,19 @@ void ProgressBar::paintEvent(QPaintEvent *)
     int spanAngle;
 
     //Counter without %.
-    if(0 == maxValue_)
+    if (0 == maxValue_)
     {
         int step = 45;
-        startAngle = currentPercent_*3.6 * 16;
+        startAngle = lround(currentPercent_ * 3.6 * 16);
         spanAngle = -step * 16;
         painter.drawArc(arcRectangle_, startAngle, spanAngle);
-        startAngle = (180+currentPercent_*3.6) * 16;
+        startAngle = lround((180 + currentPercent_ * 3.6) * 16);
         painter.drawArc(arcRectangle_, startAngle, spanAngle);
     }
     else
     {
         startAngle = 90 * 16;
-        spanAngle = -currentPercent_*3.6 * 16;
+        spanAngle = lround(-currentPercent_ * 3.6 * 16);
         painter.drawArc(arcRectangle_, startAngle, spanAngle);
         painter.drawText(arcRectangle_,
                          Qt::AlignCenter,
@@ -131,7 +132,7 @@ void ProgressBar::paintEvent(QPaintEvent *)
 
     painter.drawText(titleRectangle_, Qt::AlignCenter, title_ + "...");
 
-    if(0 != maxValue_)
+    if (0 != maxValue_)
     {
         setWindowTitle(QString::number(currentPercent_) + "% " +
                        QString(title_).replace('\n', ' ') + "...");
@@ -139,9 +140,9 @@ void ProgressBar::paintEvent(QPaintEvent *)
     }
 }
 
- void ProgressBar::timerEvent(QTimerEvent* /*event*/)
- {
-     currentPercent_++;
-     currentPercent_ %= 100;
-     update();
- }
+void ProgressBar::timerEvent(QTimerEvent* /*event*/)
+{
+    currentPercent_++;
+    currentPercent_ %= 100;
+    update();
+}

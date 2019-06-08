@@ -29,7 +29,7 @@ bool Networking::errorsOccuredCheck(QNetworkReply* reply)
         return true;
     }
 
-    int httpStatusCode =
+    unsigned int httpStatusCode =
         reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toUInt();
 
     return !(httpStatusCode == 200 && reply->isReadable());

@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <cmath>
 
 #include "Common/Configuration.h"
 #include "Datasets/DatasetDefinitionSpreadsheet.h"
@@ -23,6 +24,8 @@ SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent) :
 {
     ui->setupUi(this);
 
+    connect(ui->openFileButton, SIGNAL(clicked()), this, SLOT(openFileButtonClicked()));
+
     auto visualization = new DatasetDefinitionVisualization(this);
 
     auto splitter2 = new QSplitter(Qt::Vertical, this);
@@ -35,7 +38,7 @@ SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent) :
 
     ui->verticalLayout->addWidget(splitter2);
 
-    const int rowHeight = fontMetrics().height() * 1.5;
+    const int rowHeight = lround(fontMetrics().height() * 1.5);
     columnsPreview->verticalHeader()->setDefaultSectionSize(rowHeight);
 
     visualization->setEnabled(false);
@@ -59,7 +62,7 @@ SpreadsheetsImportTab::~SpreadsheetsImportTab()
     delete ui;
 }
 
-void SpreadsheetsImportTab::on_openFileButton_clicked()
+void SpreadsheetsImportTab::openFileButtonClicked()
 {
     QString fileName =
         QFileDialog::getOpenFileName(this,

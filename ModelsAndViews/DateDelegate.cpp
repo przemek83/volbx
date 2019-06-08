@@ -6,7 +6,7 @@
 #include "DateDelegate.h"
 
 DateDelegate::DateDelegate(QObject* parent)
-    : QStyledItemDelegate(parent), defaultDateFormat_(Constants::defaultDateFormat_)
+    : QStyledItemDelegate(parent), defaultDateFormat_(QString::fromLatin1(Constants::defaultDateFormat_))
 {
 }
 

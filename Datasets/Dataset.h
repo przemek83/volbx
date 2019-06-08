@@ -53,7 +53,7 @@ public:
 
     void getStringList(int column, QStringList& listToFill) const;
 
-    bool getSpecialColumnIfExists(SpecialColumn columnTag, int& column) const;
+    std::tuple<bool, int> getSpecialColumnIfExists(SpecialColumn columnTag) const;
 
     QString getHeaderName(int column) const;
 

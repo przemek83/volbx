@@ -56,15 +56,12 @@ void DatasetDefinitionVisualization::setDatasetDefiniton(
 
     datasetDefinition_ = datasetDefinition;
 
-    int specialColumnTransaction = -1;
-    bool dateOfTransactionPointed =
-        datasetDefinition_->getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE,
-                                                     specialColumnTransaction);
+    auto [dateOfTransactionPointed, specialColumnTransaction] =
+        datasetDefinition_->getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE);
 
-    int specialColumnPrice = -1;
-    bool pricePerUnitPointed =
-        datasetDefinition_->getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT,
-                                                     specialColumnPrice);
+    auto [pricePerUnitPointed, specialColumnPrice] =
+        datasetDefinition_->getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT);
+
     ui->columnsList->sortByColumn(-1);
     ui->columnsList->setSortingEnabled(false);
 

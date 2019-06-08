@@ -22,10 +22,6 @@
 
 #include "ExportData.h"
 
-const char* ExportData::csvSeparator_ = ";";
-
-const char* ExportData::tsvSeparator_ = "\t";
-
 void ExportData::gatherSheetContent(QByteArray& rowsContent,
                                     const QAbstractItemView* view)
 {
@@ -45,13 +41,13 @@ void ExportData::gatherSheetContent(QByteArray& rowsContent,
     int proxyRowCount = proxyModel->rowCount();
 
     //Add headers using string type.
-    rowsContent.append("<row r=\"1\" spans=\"1:1\" x14ac:dyDescent=\"0.25\">");
+    rowsContent.append(R"(<row r="1" spans="1:1" x14ac:dyDescent="0.25">)");
     for (int j = 0; j < proxyColumnCount; ++j)
     {
         QString header = proxyModel->headerData(j, Qt::Horizontal).toString();
-        QString clearedHeader(header.replace(QRegExp("[<>&\"']"), QStringLiteral(" ")).replace(QStringLiteral("\r\n"), QStringLiteral(" ")));
+        QString clearedHeader(header.replace(QRegExp(QStringLiteral("[<>&\"']")), QStringLiteral(" ")).replace(QStringLiteral("\r\n"), QStringLiteral(" ")));
         rowsContent.append("<c r=\"" + columnNames.at(j));
-        rowsContent.append("1\" t=\"str\" s=\"6\"><v>" + clearedHeader + "</v></c>");
+        rowsContent.append(R"(1" t="str" s="6"><v>)" + clearedHeader + "</v></c>");
     }
     rowsContent.append("</row>");
 
@@ -165,25 +161,25 @@ const QString& ExportData::getCellTypeTag(QVariant& cell)
     {
         case QVariant::Date:
         case QVariant::DateTime:
-        {
-            const static QString dateTag(QStringLiteral("s=\"3\""));
-            const static QDate startOfTheExcelWorld(1899, 12, 30);
-            cell = QVariant(-1 * cell.toDate().daysTo(startOfTheExcelWorld));
-            return dateTag;
-        }
+            {
+                const static QString dateTag(QStringLiteral("s=\"3\""));
+                const static QDate startOfTheExcelWorld(1899, 12, 30);
+                cell = QVariant(-1 * cell.toDate().daysTo(startOfTheExcelWorld));
+                return dateTag;
+            }
 
         case QVariant::Int:
         case QVariant::Double:
-        {
-            const static QString numericTag(QStringLiteral("s=\"4\""));
-            return numericTag;
-        }
+            {
+                const static QString numericTag(QStringLiteral("s=\"4\""));
+                return numericTag;
+            }
 
         default:
-        {
-            const static QString stringTag(QStringLiteral("t=\"str\""));
-            return stringTag;
-        }
+            {
+                const static QString stringTag(QStringLiteral("t=\"str\""));
+                return stringTag;
+            }
     }
 }
 
@@ -197,7 +193,7 @@ void ExportData::quickExportAsTSV(const QAbstractItemView* view)
 
 void ExportData::dataToByteArray(const QAbstractItemView* view,
                                  QByteArray* destinationArray,
-                                 const QString& separator,
+                                 const char separator,
                                  bool innerFormat)
 {
     /*
@@ -268,59 +264,59 @@ void ExportData::dataToByteArray(const QAbstractItemView* view,
 
 void ExportData::variantToString(const QVariant& variant,
                                  QByteArray* destinationArray,
-                                 const QString& separator,
+                                 const char separator,
                                  bool innerFormat)
 {
     switch (variant.type())
     {
         case QVariant::Double:
         case QVariant::Int:
-        {
-            if (innerFormat)
             {
-                destinationArray->append(variant.toString());
+                if (innerFormat)
+                {
+                    destinationArray->append(variant.toString());
+                }
+                else
+                {
+                    QString value(Constants::floatToStringUsingLocale(variant.toDouble(), 2));
+                    destinationArray->append(value);
+                }
+                break;
             }
-            else
-            {
-                QString value(Constants::floatToStringUsingLocale(variant.toDouble(), 2));
-                destinationArray->append(value);
-            }
-            break;
-        }
 
         case QVariant::Date:
         case QVariant::DateTime:
-        {
-            static const QString defDateFormat(Constants::defaultDateFormat_);
-            destinationArray->append(variant.toDate().toString(defDateFormat));
-            break;
-        }
+            {
+                static const QString defDateFormat(Constants::defaultDateFormat_);
+                destinationArray->append(variant.toDate().toString(defDateFormat));
+                break;
+            }
 
         case QVariant::String:
-        {
-            QString tmpString(variant.toString());
-            if (separator == QLatin1String(tsvSeparator_))
             {
-                //Simplification -> change tabs and new lines into spaces.
-                tmpString =
-                    tmpString.replace(QRegExp("[" + QString(tsvSeparator_) + "\n" + "]"),
-                                      QStringLiteral(" "));
-                destinationArray->append(tmpString);
-            }
-            else
-            {
-                tmpString.replace('"', QStringLiteral("\"\""));
-                destinationArray->append("\"" + tmpString + "\"");
-            }
+                QString tmpString(variant.toString());
+                if (separator == tsvSeparator_)
+                {
+                    //Simplification -> change tabs and new lines into spaces.
+                    tmpString =
+                        tmpString.replace(QRegExp("[" + QString(tsvSeparator_) + "\n" + "]"),
+                                          QStringLiteral(" "));
+                    destinationArray->append(tmpString);
+                }
+                else
+                {
+                    tmpString.replace('"', QStringLiteral("\"\""));
+                    destinationArray->append("\"" + tmpString + "\"");
+                }
 
-            break;
-        }
+                break;
+            }
 
         default:
-        {
-            Q_ASSERT(false);
-            break;
-        }
+            {
+                Q_ASSERT(false);
+                break;
+            }
     }
 }
 
@@ -465,50 +461,50 @@ ExportData::saveDatasetDataFile(QuaZipFile& zipFile,
                 {
                     case QVariant::Double:
                     case QVariant::Int:
-                    {
-                        zipFile.write(actualField.toByteArray());
-                        break;
-                    }
+                        {
+                            zipFile.write(actualField.toByteArray());
+                            break;
+                        }
 
                     case QVariant::Date:
                     case QVariant::DateTime:
-                    {
-                        zipFile.write(QByteArray::number(actualField.toDate().toJulianDay()));
-                        break;
-                    }
+                        {
+                            zipFile.write(QByteArray::number(actualField.toDate().toJulianDay()));
+                            break;
+                        }
 
                     case QVariant::String:
-                    {
-                        QString tmpString(actualField.toString());
-                        int& index = stringsMap[tmpString];
-                        if (0 == index)
                         {
-                            index = nextIndex;
-                            tmpString.replace(newLine, QLatin1String("\t"));
-                            //No new line for first string.
-                            if (1 != nextIndex)
+                            QString tmpString(actualField.toString());
+                            int& index = stringsMap[tmpString];
+                            if (0 == index)
                             {
-                                stringsContent.append(newLine);
+                                index = nextIndex;
+                                tmpString.replace(newLine, QLatin1String("\t"));
+                                //No new line for first string.
+                                if (1 != nextIndex)
+                                {
+                                    stringsContent.append(newLine);
+                                }
+                                stringsContent.append(tmpString);
+                                nextIndex++;
                             }
-                            stringsContent.append(tmpString);
-                            nextIndex++;
-                        }
-                        zipFile.write(QByteArray::number(index));
+                            zipFile.write(QByteArray::number(index));
 
-                        break;
-                    }
+                            break;
+                        }
 
                     default:
-                    {
-                        Q_ASSERT(false);
-                        break;
-                    }
+                        {
+                            Q_ASSERT(false);
+                            break;
+                        }
                 }
             }
 
             if (j != proxyColumnCount - 1)
             {
-                zipFile.write(csvSeparator_);
+                zipFile.write(QByteArray(1, csvSeparator_));
             }
         }
 

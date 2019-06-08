@@ -68,7 +68,7 @@ public:
      * Hint for default size of coursor.
      * @return size.
      */
-    QSize sizeHint() const;
+    QSize sizeHint() const override;
 
 public Q_SLOTS:
     /**
@@ -88,25 +88,25 @@ protected:
      * Overriden paint method.
      * @param event paint event.
      */
-    void paintEvent(QPaintEvent* event);
+    void paintEvent(QPaintEvent* event) override;
 
     /**
      * Overriden mouse press method.
      * @param event mouse event.
      */
-    void mousePressEvent(QMouseEvent* event);
+    void mousePressEvent(QMouseEvent* event) override;
 
     /**
      * Overriden mouse release method.
      * @param event mouse event.
      */
-    void mouseReleaseEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event) override;
 
     /**
      * Overriden mouse move method.
      * @param event mouse event.
      */
-    void mouseMoveEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event) override;
 
 private:
     ///Actual minimum.

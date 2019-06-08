@@ -3,15 +3,15 @@
 /**
  * @brief types of logs.
  */
-enum LogTypes
+enum class LogTypes : char
 {
-    LOG_DB = 0,
-    LOG_CONFIG,
-    LOG_MODEL,
-    LOG_CALC,
-    LOG_NETWORK,
-    LOG_LOGIN,
-    LOG_APP,
-    LOG_IMPORT_EXPORT,
-    LOG_END
+    DB = 0,
+    CONFIG,
+    MODEL,
+    CALC,
+    NETWORK,
+    LOGIN,
+    APP,
+    IMPORT_EXPORT,
+    END
 };

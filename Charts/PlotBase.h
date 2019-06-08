@@ -43,7 +43,7 @@ protected:
     class PlotMagnifier : public QwtPlotMagnifier
     {
     public:
-        PlotMagnifier(QWidget* canvas);
+        explicit PlotMagnifier(QWidget* canvas);
 
         ~PlotMagnifier() override = default;
 
@@ -56,7 +56,7 @@ protected:
         void reset();
 
     protected:
-        virtual void rescale(double factor);
+        void rescale(double factor) override;
 
     private:
         double actualFactor_;

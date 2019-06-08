@@ -32,13 +32,13 @@ public:
      * @brief Overridem method for row count check.
      * @return row count.
      */
-    int rowCount(const QModelIndex& = QModelIndex()) const override;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 
     /**
      * @brief Override method for column count check.
      * @return column count.
      */
-    int columnCount(const QModelIndex& = QModelIndex()) const override;
+    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 
     /**
      * @brief Overridem method returning data from model for given index.
@@ -92,7 +92,7 @@ public:
      * @param column column number to fill if found.
      * @return true if found (column number in int passed as ref.).
      */
-    bool getSpecialColumnIfExists(SpecialColumn columnTag, int& column) const;
+    std::tuple<bool, int> getSpecialColumnIfExists(SpecialColumn columnTag) const;
 
     /**
      * @brief get dataset used in model.

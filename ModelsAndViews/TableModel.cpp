@@ -19,12 +19,12 @@ TableModel::~TableModel()
     delete dataset_;
 }
 
-int TableModel::rowCount(const QModelIndex& /*parent*/) const
+int TableModel::rowCount([[maybe_unused]] const QModelIndex& parent) const
 {
     return dataset_->rowCount();
 }
 
-int TableModel::columnCount(const QModelIndex& /*parent*/) const
+int TableModel::columnCount([[maybe_unused]] const QModelIndex& parent) const
 {
     return dataset_->columnCount();
 }
@@ -73,10 +73,9 @@ DataFormat TableModel::getColumnFormat(int column) const
     return dataset_->getColumnFormat(column);
 }
 
-bool TableModel::getSpecialColumnIfExists(SpecialColumn columnTag,
-                                          int& column) const
+std::tuple<bool, int> TableModel::getSpecialColumnIfExists(SpecialColumn columnTag) const
 {
-    return dataset_->getSpecialColumnIfExists(columnTag, column);
+    return dataset_->getSpecialColumnIfExists(columnTag);
 }
 
 const DatasetDefinition* TableModel::getDatasetDefinition() const
@@ -86,11 +85,12 @@ const DatasetDefinition* TableModel::getDatasetDefinition() const
 
 bool TableModel::isSpecialColumnsSet() const
 {
-    int transDateColumn = noColumn_;
-    int priceColumn = noColumn_;
+    auto [transDateColumnSet, transDateColumnId] =
+        getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE);
+    auto [priceColumnSet, priceColumnId] =
+        getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT);
 
-    return getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE, transDateColumn) &&
-           getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT, priceColumn);
+    return transDateColumnSet && priceColumnSet;
 }
 
 bool TableModel::isEmptyCellsDetected() const
@@ -102,7 +102,10 @@ bool TableModel::isEmptyCellsDetected() const
 int TableModel::getDefaultGroupingColumn() const
 {
     int pricePerMeterColumn = noColumn_;
-    getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT, pricePerMeterColumn);
+    if (auto [ok, columnId] = getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT); ok)
+    {
+        pricePerMeterColumn = columnId;
+    }
 
     int defaultGroupingColumn = noColumn_;
     for (int i = 0; i < columnCount(); ++i)

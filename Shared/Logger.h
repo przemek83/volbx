@@ -44,7 +44,7 @@ public:
     void switchVisibility();
 
 private:
-    Logger();
+    explicit Logger(QObject* parent = nullptr);
     ~Logger() override;
 
     QMap<LogTypes, bool>* activeLogs_;

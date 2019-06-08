@@ -1,5 +1,6 @@
 #include <QDebug>
 #include <qwt_plot_canvas.h>
+#include <cmath>
 
 #include "Common/Constants.h"
 
@@ -16,14 +17,14 @@ Picker::Picker(QWidget* parent)
     setTrackerPen(pen);
 
     QFont actualFont = trackerFont();
-    actualFont.setPointSize(actualFont.pointSize()*1.4);
+    actualFont.setPointSize(lround(actualFont.pointSize() * 1.4));
     actualFont.setWeight(QFont::Bold);
     setTrackerFont(actualFont);
 }
 
 int Picker::getAreaOfMouse()
 {
-    int x = static_cast<int>(invTransform(trackerPosition()).x()+0.5);
+    int x = static_cast<int>(lround(invTransform(trackerPosition()).x() + 0.5));
     return x;
 }
 

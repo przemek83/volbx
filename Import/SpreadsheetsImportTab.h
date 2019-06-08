@@ -8,9 +8,6 @@ namespace Ui
 class SpreadsheetsImportTab;
 } // namespace Ui
 
-/**
- * @brief Spreadsheets import tab.
- */
 class SpreadsheetsImportTab : public ImportTab
 {
     Q_OBJECT
@@ -28,7 +25,7 @@ public:
     DatasetDefinition* getDatasetDefinition() override;
 
 private Q_SLOTS:
-    void on_openFileButton_clicked();
+    void openFileButtonClicked();
 
 private:
     Ui::SpreadsheetsImportTab* ui;

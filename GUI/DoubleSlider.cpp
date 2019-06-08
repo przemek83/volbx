@@ -8,7 +8,7 @@
 
 #include "DoubleSlider.h"
 
-DoubleSlider::DoubleSlider(int min, int max, QWidget *parent) :
+DoubleSlider::DoubleSlider(int min, int max, QWidget* parent) :
     QSlider(parent), minValue_(min), maxValue_(max)
 {
     setOrientation(Qt::Horizontal);
@@ -17,7 +17,7 @@ DoubleSlider::DoubleSlider(int min, int max, QWidget *parent) :
     setCurrentMax(maxValue_);
 
     cursorSize_ = 16;
-    mousePositionX_	= 0;
+    mousePositionX_ = 0;
     moving_ = 0;
     isOnMinHandle_ = false;
     isOnMaxHandle_ = false;
@@ -65,7 +65,7 @@ void DoubleSlider::setCurrentMin(double currentMinToSet)
     if (newCurrentMin >= minValue_ && currentMin_ != newCurrentMin)
     {
         currentMin_ = newCurrentMin;
-        if(lastEmittedMin_ != static_cast<int>(currentMinToSet))
+        if (lastEmittedMin_ != static_cast<int>(currentMinToSet))
         {
             lastEmittedMin_ = currentMinToSet;
             Q_EMIT minChanged(currentMinToSet);
@@ -87,16 +87,17 @@ void DoubleSlider::setCurrentMax(double currentMaxToSet)
     if (newCurrentMax  <= maxValue_ && currentMax_ != newCurrentMax)
     {
         currentMax_ = newCurrentMax;
-        if(lastEmittedMax_ != static_cast<int>(currentMaxToSet))
+        if (lastEmittedMax_ != static_cast<int>(currentMaxToSet))
         {
             lastEmittedMax_ = currentMaxToSet;
             Q_EMIT maxChanged(currentMaxToSet);
         }
     }
 
-    if (newCurrentMax  < currentMin_) {
+    if (newCurrentMax  < currentMin_)
+    {
         setCurrentMin(currentMaxToSet);
-}
+    }
 
     this->update();
 }
@@ -131,7 +132,7 @@ void DoubleSlider::setValueMax(int maximumToSet)
     this->update();
 }
 
-void DoubleSlider::mousePressEvent(QMouseEvent *event)
+void DoubleSlider::mousePressEvent(QMouseEvent* event)
 {
     if (event->buttons() & Qt::LeftButton)
     {
@@ -142,13 +143,13 @@ void DoubleSlider::mousePressEvent(QMouseEvent *event)
     moving_ = 0;
 }
 
-void DoubleSlider::mouseReleaseEvent(QMouseEvent *event)
+void DoubleSlider::mouseReleaseEvent(QMouseEvent* event)
 {
     moving_ = 0;
     this->mouseMoveEvent(event);
 }
 
-void DoubleSlider::mouseMoveEvent(QMouseEvent *event)
+void DoubleSlider::mouseMoveEvent(QMouseEvent* event)
 {
     float mouseX =
         static_cast<float>(event->x()) / static_cast<float>(this->width()) * (100.0 + cursorSize_);
@@ -156,14 +157,14 @@ void DoubleSlider::mouseMoveEvent(QMouseEvent *event)
     float maxX = ((currentMax_ - minValue_) / (maxValue_ - minValue_) * 100);
 
     isOnMinHandle_ = ((((mouseX > minX) && (mouseX < minX + cursorSize_)) ||
-                     ((mousePositionX_ > minX) && (mousePositionX_ < minX + cursorSize_)))
-                     && (moving_ != 2)
-                     && !isOnMaxHandle_);
+                       ((mousePositionX_ > minX) && (mousePositionX_ < minX + cursorSize_)))
+                      && (moving_ != 2)
+                      && !isOnMaxHandle_);
 
     isOnMaxHandle_ = ((((mouseX > maxX) && (mouseX < maxX + cursorSize_)) ||
-                     ((mousePositionX_ > maxX) && (mousePositionX_ < maxX + cursorSize_)))
-                     && (moving_ != 1)
-                     && !isOnMinHandle_);
+                       ((mousePositionX_ > maxX) && (mousePositionX_ < maxX + cursorSize_)))
+                      && (moving_ != 1)
+                      && !isOnMinHandle_);
 
     if (event->buttons() & Qt::LeftButton)
     {
@@ -200,9 +201,10 @@ void DoubleSlider::mouseMoveEvent(QMouseEvent *event)
                 maxX = 100;
             }
             setCurrentMax(maxX / 100 * (maxValue_ - minValue_) + minValue_);
-            if (currentMin_ > currentMax_) {
+            if (currentMin_ > currentMax_)
+            {
                 setCurrentMin(maxX);
-}
+            }
 
             moving_ = 2;
         }
@@ -215,9 +217,9 @@ void DoubleSlider::mouseMoveEvent(QMouseEvent *event)
     mousePositionX_ = mouseX;
 }
 
-void DoubleSlider::paintEvent(QPaintEvent *event)
+void DoubleSlider::paintEvent(QPaintEvent* event)
 {
-    if(minValue_ == maxValue_)
+    if (minValue_ == maxValue_)
     {
         return;
     }
@@ -244,21 +246,21 @@ void DoubleSlider::paintEvent(QPaintEvent *event)
     int coursorHalf = cursorSize_ / 2;
 
     double fromX =
-        innerRect.width()/(maxValue_ - minValue_)*(currentMin_ - minValue_);
+        innerRect.width() / (maxValue_ - minValue_) * (currentMin_ - minValue_);
     double width =
-        innerRect.width()/(maxValue_ - minValue_)*(currentMax_ - minValue_)- fromX;
+        innerRect.width() / (maxValue_ - minValue_) * (currentMax_ - minValue_) - fromX;
 
     QRect rSlot = QRect(innerRect.x() + fromX,
-                        innerRect.y() + (innerRect.height() - coursorHalf)/2,
-                        innerRect.x()+ width,
+                        innerRect.y() + (innerRect.height() - coursorHalf) / 2,
+                        innerRect.x() + width,
                         coursorHalf);
 
     QBrush brush = palette().brush(QPalette::Dark);
-    qDrawShadePanel(&painter, rSlot, palette(), true, 1 , &brush);
+    qDrawShadePanel(&painter, rSlot, palette(), true, 1, &brush);
 
     //Left handle.
     QStyleOptionSlider opt2 = defaultStyle;
-    if(minX == 100)
+    if (minX == 100)
     {
         opt2.sliderPosition = minX - 1;
     }
@@ -267,7 +269,7 @@ void DoubleSlider::paintEvent(QPaintEvent *event)
         opt2.sliderPosition = minX;
     }
 
-    if(moving_ == 1)
+    if (moving_ == 1)
     {
         opt2.state = QStyle::State_Raised;
     }
@@ -277,7 +279,7 @@ void DoubleSlider::paintEvent(QPaintEvent *event)
 
     //Righ handle.
     QStyleOptionSlider opt3 = defaultStyle;
-    if(maxX == 100)
+    if (maxX == 100)
     {
         opt3.sliderPosition = maxX - 1;
     }
@@ -286,7 +288,7 @@ void DoubleSlider::paintEvent(QPaintEvent *event)
         opt3.sliderPosition = maxX;
     }
 
-    if(moving_ == 2)
+    if (moving_ == 2)
     {
         opt3.state = QStyle::State_Raised;
     }

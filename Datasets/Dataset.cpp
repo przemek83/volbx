@@ -134,9 +134,9 @@ void Dataset::getStringList(int column, QStringList& listToFill) const
     }
 }
 
-bool Dataset::getSpecialColumnIfExists(SpecialColumn columnTag, int& column) const
+std::tuple<bool, int> Dataset::getSpecialColumnIfExists(SpecialColumn columnTag) const
 {
-    return datasetDefinition_->getSpecialColumnIfExists(columnTag, column);
+    return datasetDefinition_->getSpecialColumnIfExists(columnTag);
 }
 
 QString Dataset::getHeaderName(int column) const
@@ -163,10 +163,7 @@ QString Dataset::getNameForTabBar()
 {
     QString tabName = getName();
 
-    int column = 0;
-    bool exist = getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT, column);
-
-    if (exist)
+    if (auto [ok, column] = getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT); ok)
     {
         tabName.append(" (" + getHeaderName(column) + ")");
     }
