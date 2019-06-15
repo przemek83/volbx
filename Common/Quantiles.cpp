@@ -6,11 +6,6 @@
 
 #include "Quantiles.h"
 
-Quantiles::Quantiles()
-{
-    clear();
-}
-
 void Quantiles::clear()
 {
     min_ = .0;
@@ -48,12 +43,12 @@ void Quantiles::computeQuantiles(QVector<float>& valuePerUnit)
 
     for (float pricePerMeter : valuePerUnit)
     {
-        if (min_ > pricePerMeter || 0 == min_)
+        if (min_ > pricePerMeter ||  qFuzzyCompare(min_, 0))
         {
             min_ = pricePerMeter;
         }
 
-        if (max_ < pricePerMeter || 0 == max_)
+        if (max_ < pricePerMeter || qFuzzyCompare(max_, 0))
         {
             max_ = pricePerMeter;
         }
@@ -67,7 +62,7 @@ void Quantiles::computeQuantiles(QVector<float>& valuePerUnit)
 
     if (number_ > 1)
     {
-        stdDev_ = sqrt(EX2 - EX * EX);
+        stdDev_ = sqrtf(EX2 - EX * EX);
     }
     else
     {
@@ -92,25 +87,25 @@ void Quantiles::computeQuantiles(QVector<float>& valuePerUnit)
         }
         else
         {
-            float tmp = (number_ - 1) * 0.1;
-            q10_ = valuePerUnit.at(floor(tmp)) + (tmp - floor(tmp)) *
-                   (valuePerUnit.at(ceil(tmp)) - valuePerUnit.at(floor(tmp)));
+            float tmp = (number_ - 1) * 0.1f;
+            q10_ = valuePerUnit.at(static_cast<int>(floorf(tmp))) + (tmp - floorf(tmp)) *
+                   (valuePerUnit.at(static_cast<int>(ceilf(tmp))) - valuePerUnit.at(static_cast<int>(floorf(tmp))));
 
-            tmp = (number_ - 1) * 0.25;
-            q25_ = valuePerUnit.at(floor(tmp)) + (tmp - floor(tmp)) *
-                   (valuePerUnit.at(ceil(tmp)) - valuePerUnit.at(floor(tmp)));
+            tmp = (number_ - 1) * 0.25f;
+            q25_ = valuePerUnit.at(static_cast<int>(floorf(tmp))) + (tmp - floorf(tmp)) *
+                   (valuePerUnit.at(static_cast<int>(ceilf(tmp))) - valuePerUnit.at(static_cast<int>(floorf(tmp))));
 
-            tmp = (number_ - 1) * 0.5;
-            q50_ = valuePerUnit.at(floor(tmp)) + (tmp - floor(tmp)) *
-                   (valuePerUnit.at(ceil(tmp)) - valuePerUnit.at(floor(tmp)));
+            tmp = (number_ - 1) * 0.5f;
+            q50_ = valuePerUnit.at(static_cast<int>(floorf(tmp))) + (tmp - floorf(tmp)) *
+                   (valuePerUnit.at(static_cast<int>(ceilf(tmp))) - valuePerUnit.at(static_cast<int>(floorf(tmp))));
 
-            tmp = (number_ - 1) * 0.75;
-            q75_ = valuePerUnit.at(floor(tmp)) + (tmp - floor(tmp)) *
-                   (valuePerUnit.at(ceil(tmp)) - valuePerUnit.at(floor(tmp)));
+            tmp = (number_ - 1) * 0.75f;
+            q75_ = valuePerUnit.at(static_cast<int>(floorf(tmp))) + (tmp - floorf(tmp)) *
+                   (valuePerUnit.at(static_cast<int>(ceilf(tmp))) - valuePerUnit.at(static_cast<int>(floorf(tmp))));
 
-            tmp = (number_ - 1) * 0.9;
-            q90_ = valuePerUnit.at(floor(tmp)) + (tmp - floor(tmp)) *
-                   (valuePerUnit.at(ceil(tmp)) - valuePerUnit.at(floor(tmp)));
+            tmp = (number_ - 1) * 0.9f;
+            q90_ = valuePerUnit.at(static_cast<int>(floorf(tmp))) + (tmp - floorf(tmp)) *
+                   (valuePerUnit.at(static_cast<int>(ceilf(tmp))) - valuePerUnit.at(static_cast<int>(floorf(tmp))));
         }
     }
 }
@@ -119,7 +114,7 @@ QString Quantiles::getValuesAsToolTip() const
 {
     QString toolTipText;
     toolTipText.append(QLatin1String("<table>"));
-    toolTipText += valueAsHtmlRow(PLOT_INFO_COUNT, static_cast<double>(number_));
+    toolTipText += valueAsHtmlRow(PLOT_INFO_COUNT, static_cast<float>(number_));
     toolTipText += valueAsHtmlRow(PLOT_INFO_AVG, avg_);
     toolTipText += valueAsHtmlRow(PLOT_INFO_MAX, max_);
 
@@ -144,7 +139,7 @@ QString Quantiles::getValuesAsToolTip() const
     return toolTipText;
 }
 
-QString Quantiles::valueAsHtmlRow(PlotInfo row, double value)
+QString Quantiles::valueAsHtmlRow(PlotInfo row, float value)
 {
     static QString plotInfoNames_[PLIT_INFO_END];
     static bool initialized = false;

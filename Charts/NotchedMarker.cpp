@@ -33,67 +33,73 @@ void NotchedMarker::drawElement(QPainter* p,
                                 float width,
                                 const Quantiles& quantiles) const
 {
+    auto widthAsDouble = static_cast<double>(width);
     //Center of x axis for item.
-    float pointX = xMap.transform(elementNumber);
+    double pointX = xMap.transform(elementNumber);
 
     //Draw horizontal line for max.
     p->setPen(QPen(Qt::DotLine));
-    float yLevelMax = yMap.transform(quantiles.max_);
-    p->drawLine(pointX - width / 2, yLevelMax, pointX + width / 2, yLevelMax);
+    double yLevelMax = yMap.transform(static_cast<double>(quantiles.max_));
+    p->drawLine(QPointF(pointX - widthAsDouble / 2., yLevelMax),
+                QPointF(pointX + widthAsDouble / 2., yLevelMax));
     p->setPen(QPen(Qt::SolidLine));
 
     //Draw horizontal line for q90.
-    float yLevelQ90 = yMap.transform(quantiles.q90_);
-    p->drawLine(pointX - width / 2, yLevelQ90, pointX + width / 2, yLevelQ90);
+    double yLevelQ90 = yMap.transform(static_cast<double>(quantiles.q90_));
+    p->drawLine(QPointF(pointX - widthAsDouble / 2., yLevelQ90),
+                QPointF(pointX + widthAsDouble / 2., yLevelQ90));
 
     //Draw vertical line from q90 to q75.
-    float yLevelQ75 = yMap.transform(quantiles.q75_);
-    p->drawLine(pointX, yLevelQ90, pointX, yLevelQ75);
+    double yLevelQ75 = yMap.transform(static_cast<double>(quantiles.q75_));
+    p->drawLine(QPointF(pointX, yLevelQ90), QPointF(pointX, yLevelQ75));
 
     //Draw center figure.
-    float yLevelQ50 = yMap.transform(quantiles.q50_);
-    float yLevelQ25 = yMap.transform(quantiles.q25_);
-    float notchFactor = 0.85;
-    QPainterPath path(QPoint(pointX - width, yLevelQ25));
-    path.lineTo(pointX - width,  yLevelQ25 - (yLevelQ25 - yLevelQ50) * notchFactor);
-    path.lineTo(pointX - width / 2, yLevelQ50);
-    path.lineTo(pointX - width, yLevelQ75 + (yLevelQ50 - yLevelQ75) * notchFactor);
-    path.lineTo(pointX - width, yLevelQ75);
-    path.lineTo(pointX + width, yLevelQ75);
-    path.lineTo(pointX + width, yLevelQ75 + (yLevelQ50 - yLevelQ75) * notchFactor);
-    path.lineTo(pointX + width / 2, yLevelQ50);
-    path.lineTo(pointX + width, yLevelQ25 - (yLevelQ25 - yLevelQ50) * notchFactor);
-    path.lineTo(pointX + width, yLevelQ25);
+    double yLevelQ50 = yMap.transform(static_cast<double>(quantiles.q50_));
+    double yLevelQ25 = yMap.transform(static_cast<double>(quantiles.q25_));
+    double notchFactor = 0.85;
+    QPainterPath path(QPoint(static_cast<int>(pointX - widthAsDouble), static_cast<int>(yLevelQ25)));
+    path.lineTo(pointX - widthAsDouble,  yLevelQ25 - (yLevelQ25 - yLevelQ50) * notchFactor);
+    path.lineTo(pointX - widthAsDouble / 2., yLevelQ50);
+    path.lineTo(pointX - widthAsDouble, yLevelQ75 + (yLevelQ50 - yLevelQ75) * notchFactor);
+    path.lineTo(pointX - widthAsDouble, yLevelQ75);
+    path.lineTo(pointX + widthAsDouble, yLevelQ75);
+    path.lineTo(pointX + widthAsDouble, yLevelQ75 + (yLevelQ50 - yLevelQ75) * notchFactor);
+    path.lineTo(pointX + widthAsDouble / 2., yLevelQ50);
+    path.lineTo(pointX + widthAsDouble, yLevelQ25 - (yLevelQ25 - yLevelQ50) * notchFactor);
+    path.lineTo(pointX + widthAsDouble, yLevelQ25);
     path.closeSubpath();
     p->fillPath(path, markerBrush_);
     p->drawPath(path);
 
     //Draw q50.
-    p->drawLine(pointX - width / 2, yLevelQ50, pointX + width / 2, yLevelQ50);
+    p->drawLine(QPointF(pointX - widthAsDouble / 2., yLevelQ50),
+                QPointF(pointX + widthAsDouble / 2., yLevelQ50));
 
     //Draw vertical line from q25 to q10.
-    float yLevelQ10 = yMap.transform(quantiles.q10_);
-    p->drawLine(pointX, yLevelQ25, pointX, yLevelQ10);
+    double yLevelQ10 = yMap.transform(static_cast<double>(quantiles.q10_));
+    p->drawLine(QPointF(pointX, yLevelQ25), QPointF(pointX, yLevelQ10));
 
     //Draw horizontal line for q10.
-    p->drawLine(pointX - width / 2, yLevelQ10, pointX + width / 2, yLevelQ10);
+    p->drawLine(QPointF(pointX - widthAsDouble / 2., yLevelQ10),
+                QPointF(pointX + widthAsDouble / 2., yLevelQ10));
 
     //Draw horizontal line for min.
     p->setPen(QPen(Qt::DotLine));
-    float yLevelMin = yMap.transform(quantiles.min_);
-    p->drawLine(pointX - width / 2, yLevelMin, pointX + width / 2, yLevelMin);
+    double yLevelMin = yMap.transform(static_cast<double>(quantiles.min_));
+    p->drawLine(QPointF(pointX - widthAsDouble / 2., yLevelMin),
+                QPointF(pointX + widthAsDouble / 2., yLevelMin));
     p->setPen(QPen(Qt::SolidLine));
 
     //Draw avg cross.
-    float yLevelAvg = yMap.transform(quantiles.avg_);
-    p->drawLine(pointX - width / 7,
-                yLevelAvg - width / 7,
-                pointX + width / 7,
-                yLevelAvg + width / 7);
-    p->drawLine(pointX + width / 7,
-                yLevelAvg - width / 7,
-                pointX - width / 7,
-                yLevelAvg + width / 7);
+    double yLevelAvg = yMap.transform(static_cast<double>(quantiles.avg_));
+    p->drawLine(QPointF(pointX - widthAsDouble / 7.,
+                        yLevelAvg - widthAsDouble / 7.),
+                QPointF(pointX + widthAsDouble / 7.,
+                        yLevelAvg + widthAsDouble / 7.));
+    p->drawLine(QPointF(pointX + widthAsDouble / 7.,
+                        yLevelAvg - widthAsDouble / 7.),
+                QPointF(pointX - widthAsDouble / 7.,
+                        yLevelAvg + widthAsDouble / 7.));
 }
 
 void NotchedMarker::drawLegend(QPainter* p, const QRectF& rect) const
@@ -102,50 +108,50 @@ void NotchedMarker::drawLegend(QPainter* p, const QRectF& rect) const
     int sectionSize = 20;
 
     //Middle on x axis.
-    int pointX = rect.x() + 11;
+    double pointX = rect.x() + 11;
 
     //Left x, where legend starts.
-    int leftX = rect.x() + 4;
+    double leftX = rect.x() + 4;
 
     //Top y axis point from where legend starts.
-    int topY = rect.y() + 8;
+    double topY = rect.y() + 8;
 
     //Place on x axis where legend text starts.
-    int textStartX = rect.x() + 22;
+    double textStartX = rect.x() + 22;
 
     //Place on y axis where legend text starts.
-    int textStartY = topY + 4;
+    double textStartY = topY + 4;
 
     //Width of legent picture (except text).
     int width = 14;
 
     //Cross.
-    p->drawLine(leftX + 2, topY - 4, leftX + 10, topY + 4);
-    p->drawLine(leftX + 2, topY + 4, leftX + 10, topY - 4);
-    p->drawText(textStartX, textStartY, QObject::tr("mean"));
+    p->drawLine(QPointF(leftX + 2, topY - 4), QPointF(leftX + 10, topY + 4));
+    p->drawLine(QPointF(leftX + 2, topY + 4), QPointF(leftX + 10, topY - 4));
+    p->drawText(QPointF(textStartX, textStartY), QObject::tr("mean"));
 
     //Max & Min.
     p->setPen(QPen(Qt::DotLine));
-    p->drawLine(leftX, topY + sectionSize, leftX + width, topY + sectionSize);
-    p->drawText(textStartX, textStartY + sectionSize, QStringLiteral("max"));
-    p->drawLine(leftX, topY + 7 * sectionSize, leftX + width, topY + 7 * sectionSize);
-    p->drawText(textStartX, textStartY + 7 * sectionSize,
+    p->drawLine(QPointF(leftX, topY + sectionSize), QPointF(leftX + width, topY + sectionSize));
+    p->drawText(QPointF(textStartX, textStartY + sectionSize), QStringLiteral("max"));
+    p->drawLine(QPointF(leftX, topY + 7 * sectionSize), QPointF(leftX + width, topY + 7 * sectionSize));
+    p->drawText(QPointF(textStartX, textStartY + 7 * sectionSize),
                 QStringLiteral("min"));
     p->setPen(QPen(Qt::SolidLine));
 
     //Q90.
-    p->drawLine(leftX + 2,
-                topY + 2 * sectionSize,
-                leftX + width - 2,
-                topY + 2 * sectionSize);
-    p->drawText(textStartX, textStartY + 2 * sectionSize, QStringLiteral("Q90"));
+    p->drawLine(QPointF(leftX + 2,
+                        topY + 2 * sectionSize),
+                QPointF(leftX + width - 2,
+                        topY + 2 * sectionSize));
+    p->drawText(QPointF(textStartX, textStartY + 2 * sectionSize), QStringLiteral("Q90"));
 
     //Vertical line from q90 to q75
-    p->drawLine(pointX, topY + 2 * sectionSize, pointX, topY + 3 * sectionSize);
+    p->drawLine(QPointF(pointX, topY + 2 * sectionSize), QPointF(pointX, topY + 3 * sectionSize));
 
     //Main legend part.
-    float notchFactor = 0.85;
-    QPainterPath path(QPoint(leftX, topY + 5 * sectionSize));
+    double notchFactor = 0.85;
+    QPainterPath path(QPoint(static_cast<int>(leftX), static_cast<int>(topY + 5 * sectionSize)));
     path.lineTo(leftX,  topY + 5 * sectionSize - sectionSize * notchFactor);
     path.lineTo(leftX + 4, topY + 4 * sectionSize);
     path.lineTo(leftX, topY + 3 * sectionSize + sectionSize * notchFactor);
@@ -160,26 +166,26 @@ void NotchedMarker::drawLegend(QPainter* p, const QRectF& rect) const
     p->drawPath(path);
 
     //Q75.
-    p->drawText(textStartX, textStartY + 3 * sectionSize, QStringLiteral("75"));
+    p->drawText(QPointF(textStartX, textStartY + 3 * sectionSize), QStringLiteral("75"));
 
     //Q50.
-    p->drawLine(leftX + 4,
-                topY + 4 * sectionSize,
-                leftX + width - 4,
-                topY + 4 * sectionSize);
-    p->drawText(textStartX, textStartY + 4 * sectionSize,
+    p->drawLine(QPointF(leftX + 4,
+                        topY + 4 * sectionSize),
+                QPointF(leftX + width - 4,
+                        topY + 4 * sectionSize));
+    p->drawText(QPointF(textStartX, textStartY + 4 * sectionSize),
                 QStringLiteral("Q50"));
 
     //Q25.
-    p->drawText(textStartX, textStartY + 5 * sectionSize, QStringLiteral("Q25"));
+    p->drawText(QPointF(textStartX, textStartY + 5 * sectionSize), QStringLiteral("Q25"));
 
     //Vertical line from q25 to q10.
-    p->drawLine(pointX, topY + 5 * sectionSize, pointX, topY + 6 * sectionSize);
+    p->drawLine(QPointF(pointX, topY + 5 * sectionSize), QPointF(pointX, topY + 6 * sectionSize));
 
     //Q10.
-    p->drawLine(leftX + 2,
-                topY + 6 * sectionSize,
-                leftX + width - 2,
-                topY + 6 * sectionSize);
-    p->drawText(textStartX, textStartY + 6 * sectionSize, QStringLiteral("10"));
+    p->drawLine(QPointF(leftX + 2,
+                        topY + 6 * sectionSize),
+                QPointF(leftX + width - 2,
+                        topY + 6 * sectionSize));
+    p->drawText(QPointF(textStartX, textStartY + 6 * sectionSize), QStringLiteral("10"));
 }

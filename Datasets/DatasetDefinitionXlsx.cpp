@@ -249,7 +249,7 @@ bool DatasetDefinitionXlsx::getColumnList(QuaZip& zip,
 {
     //Loading column names is using Excell names names. Set 600 temporary.
     columnsCount_ = 600;
-    Constants::generateExcelColumnNames(excelColNames_, columnsCount_);
+    excelColNames_ = Constants::generateExcelColumnNames(columnsCount_);
 
     if (zip.setCurrentFile(sheetName))
     {
@@ -390,7 +390,7 @@ bool DatasetDefinitionXlsx::openZipAndMoveToSecondRow(QuaZip& zip,
 bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
                                            const QString& sheetName)
 {
-    Constants::generateExcelColumnNames(excelColNames_, columnsCount_);
+    excelColNames_ = Constants::generateExcelColumnNames(columnsCount_);
 
     ProgressBar bar(ProgressBar::PROGRESS_TITLE_DETECTING_COLUMN_TYPES, 0, nullptr);
     QTime performanceTimer;

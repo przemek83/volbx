@@ -5,8 +5,8 @@
 PlotData::PlotData(double* dataX, double* dataY, int dataSize):
     dataX_(dataX),
     dataY_(dataY),
-    dataSize_(dataSize),
-    counter_(new ReferenceCounter())
+    counter_(new ReferenceCounter()),
+    dataSize_(dataSize)
 {
     counter_->increase();
 }

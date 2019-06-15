@@ -59,8 +59,6 @@ private:
 
     int lineWeidth_;
 
-    QPen pen_;
-
     QBrush brush_;
 
     ///Font used to display %.
@@ -74,6 +72,8 @@ private:
 
     ///Title area.
     QRect titleRectangle_;
+
+    QPen pen_;
 
     void initNames(QVector<QString>& titles, const char newLine);
 };

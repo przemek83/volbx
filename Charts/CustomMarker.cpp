@@ -36,11 +36,11 @@ void CustomMarker::draw(QPainter* p,
     }
 
     auto basePlot = dynamic_cast<PlotBase*>(plot());
-    QwtScaleDiv scaleLeft = basePlot->axisScaleDiv(QwtPlot::yLeft);
-    QwtScaleDiv scaleBottom = basePlot->axisScaleDiv(QwtPlot::xBottom);
+    const QwtScaleDiv& scaleLeft = basePlot->axisScaleDiv(QwtPlot::yLeft);
+    const QwtScaleDiv& scaleBottom = basePlot->axisScaleDiv(QwtPlot::xBottom);
 
     //If max scale = min scale than do not draw.
-    if (scaleLeft.lowerBound() == scaleLeft.upperBound())
+    if (qFuzzyCompare(scaleLeft.lowerBound(), scaleLeft.upperBound()))
     {
         return;
     }
@@ -54,7 +54,7 @@ void CustomMarker::draw(QPainter* p,
         drawLegend(p, rect);
     }
 
-    float width =
+    double width =
         xMap.pDist() / ((scaleBottom.upperBound() - scaleBottom.lowerBound()) * 2);
 
     //Item should take 90% of place.
@@ -66,15 +66,16 @@ void CustomMarker::draw(QPainter* p,
         itemOnX++;
 
         //If min = max draw only one line.
-        if (quantiles.min_ == quantiles.max_)
+        if (qFuzzyCompare(quantiles.min_, quantiles.max_))
         {
-            float pointX = xMap.transform(itemOnX);
-            float pointY = yMap.transform(quantiles.min_);
-            p->drawLine(pointX - width / 2, pointY, pointX + width / 2, pointY);
+            double pointX = xMap.transform(itemOnX);
+            double pointY = yMap.transform(static_cast<double>(quantiles.min_));
+            p->drawLine(QPointF(pointX - width / 2., pointY),
+                        QPointF(pointX + width / 2., pointY));
             continue;
         }
 
-        drawElement(p, itemOnX, xMap, yMap, width, quantiles);
+        drawElement(p, itemOnX, xMap, yMap, static_cast<float>(width), quantiles);
     }
     p->restore();
 }

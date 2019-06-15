@@ -85,7 +85,7 @@ QwtText HistogramPlot::HistPicker::trackerTextF(const QPointF& pos)const
 void HistogramPlot::legendItemChecked(const QVariant& itemInfo, bool on, int /*index*/)
 {
     QwtPlotItem* plotItem = infoToItem(itemInfo);
-    if (plotItem)
+    if (plotItem != nullptr)
     {
         plotItem->setVisible(on);
         replot();
@@ -124,7 +124,7 @@ void HistogramPlot::recompute(int intervalsCount)
     QVector<int> intervals(count);
     for (int i = 0; i < count; ++i)
     {
-        int index = (data[i] - min) / step;
+        int index = static_cast<int>((static_cast<float>(data[i]) - min) / step);
         if (index > count - 1)
         {
             index = count - 1;
@@ -141,8 +141,8 @@ void HistogramPlot::recompute(int intervalsCount)
     for (int i = 0; i < intervalsCount; ++i)
     {
         float x = min + step * i;
-        samples.append(QwtIntervalSample(intervals[i], x, x + step));
-        actualPoints.append(QPointF(x + step / 2.0, intervals[i]));
+        samples.append(QwtIntervalSample(intervals[i], static_cast<double>(x), static_cast<double>(x + step)));
+        actualPoints.append(QPointF(static_cast<double>(x + step / 2.f), intervals[i]));
     }
 
     histPlot_.setSamples(samples);

@@ -11,7 +11,7 @@ StringsScaleDraw::StringsScaleDraw(QVector<QString>* intervals) :
 
 QwtText StringsScaleDraw::label(double v) const
 {
-    if (intervals_->isEmpty() || fmod(v, 1) || !v || v < 0 ||
+    if (intervals_->isEmpty() || !qFuzzyCompare(fmod(v, 1), 0) || qFuzzyCompare(v, 0) || v < 0 ||
         v > intervals_->count())
     {
         return QwtText(QStringLiteral("                     "));

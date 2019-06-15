@@ -39,7 +39,7 @@ PlotBase::~PlotBase()
     delete plotCurve_;
 }
 
-void PlotBase::setNewData(const PlotData& plotData)
+void PlotBase::setPlotData(const PlotData& plotData)
 {
     plotCurve_->setRawSamples(plotData.getDataX(),
                               plotData.getDataY(),

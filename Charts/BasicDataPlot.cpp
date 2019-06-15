@@ -137,16 +137,16 @@ void BasicDataPlot::setNewData(const PlotData& plotData,
         float min = quantiles.minX_;
         float max = quantiles.maxX_;
 
-        qVector.append(QPointF(min, quantiles.q50_));
-        qVector.append(QPointF(max, quantiles.q50_));
+        qVector.append(QPointF(static_cast<double>(min), static_cast<double>(quantiles.q50_)));
+        qVector.append(QPointF(static_cast<double>(max), static_cast<double>(quantiles.q50_)));
         plotQ50_.setSamples(qVector);
         qVector.clear();
-        qVector.append(QPointF(min, quantiles.q25_));
-        qVector.append(QPointF(max, quantiles.q25_));
+        qVector.append(QPointF(static_cast<double>(min), static_cast<double>(quantiles.q25_)));
+        qVector.append(QPointF(static_cast<double>(max), static_cast<double>(quantiles.q25_)));
         plotQ25_.setSamples(qVector);
         qVector.clear();
-        qVector.append(QPointF(min, quantiles.q75_));
-        qVector.append(QPointF(max, quantiles.q75_));
+        qVector.append(QPointF(static_cast<double>(min), static_cast<double>(quantiles.q75_)));
+        qVector.append(QPointF(static_cast<double>(max), static_cast<double>(quantiles.q75_)));
         plotQ75_.setSamples(qVector);
 
         plotLinearRegression_.setSamples(linearRegression);
@@ -159,7 +159,7 @@ void BasicDataPlot::setNewData(const PlotData& plotData,
         plotLinearRegression_.setSamples(qVector);
     }
 
-    PlotBase::setNewData(plotData);
+    setPlotData(plotData);
 }
 
 

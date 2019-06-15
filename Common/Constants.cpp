@@ -45,10 +45,9 @@ QString Constants::floatToStringUsingLocale(float value, int precison)
     return locale.toString(value, 'f', precison);
 }
 
-void Constants::generateExcelColumnNames(QStringList& excelColNames,
-                                         int columnsNumber)
+QStringList Constants::generateExcelColumnNames(int columnsNumber)
 {
-    excelColNames.clear();
+    QStringList columnNames;
 
     static QStringList templateNames;
 
@@ -69,11 +68,13 @@ void Constants::generateExcelColumnNames(QStringList& excelColNames,
     QString currentPrefix(QLatin1String(""));
     for (int i = 0; i < columnsNumber; ++i)
     {
-        excelColNames << currentPrefix + templateNames[i % templateNames.count()];
+        columnNames << currentPrefix + templateNames[i % templateNames.count()];
 
         if (i != 0 && 0 == (i + 1) % templateNames.count())
         {
             currentPrefix = templateNames[i / (templateNames.count() - 1) - 1];
         }
     }
+
+    return columnNames;
 }

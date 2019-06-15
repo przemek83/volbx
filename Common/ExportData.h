@@ -43,12 +43,12 @@ public:
 private:
     static void dataToByteArray(const QAbstractItemView* view,
                                 QByteArray* destinationArray,
-                                const char separator,
+                                char separator,
                                 bool innerFormat);
 
     static void variantToString(const QVariant& variant,
                                 QByteArray* destinationArray,
-                                const char separator,
+                                char separator,
                                 bool innerFormat);
 
     static constexpr char csvSeparator_ {';'};

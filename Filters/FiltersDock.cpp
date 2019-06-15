@@ -116,7 +116,7 @@ FilterNames* FiltersDock::createNewNamesFilter(const TableModel* parentModel,
     QString columnName = parentModel->headerData(index, Qt::Horizontal).toString();
     QStringList list;
     parentModel->getStringList(index, list);
-    FilterNames* filter = new FilterNames(columnName, index, list, filterListWidget);
+    auto filter = new FilterNames(columnName, index, list, filterListWidget);
 
     connect(filter,
             SIGNAL(newStringFilter(int, QSet<QString>)),
@@ -139,12 +139,12 @@ FilterDates* FiltersDock::createNewDatesFilter(const TableModel* parentModel,
     QDate min, max;
     bool emptyDates = false;
     parentModel->getDateRange(index, min, max, emptyDates);
-    FilterDates* filter = new FilterDates(columnName,
-                                          index,
-                                          min,
-                                          max,
-                                          emptyDates,
-                                          filterListWidget);
+    auto filter = new FilterDates(columnName,
+                                  index,
+                                  min,
+                                  max,
+                                  emptyDates,
+                                  filterListWidget);
 
     connect(filter,
             SIGNAL(newDateFilter(int, QDate, QDate, bool)),
@@ -161,11 +161,11 @@ FilterNumbers* FiltersDock::createNewNumbersFilter(const TableModel* parentModel
     QString columnName = parentModel->headerData(index, Qt::Horizontal).toString();
     double min = -1, max = -1;
     parentModel->getNumericRange(index, min, max);
-    FilterNumbers* filter = new FilterNumbers(columnName,
-                                              index,
-                                              min,
-                                              max,
-                                              filterListWidget);
+    auto filter = new FilterNumbers(columnName,
+                                    index,
+                                    min,
+                                    max,
+                                    filterListWidget);
 
     connect(filter,
             SIGNAL(newNumericFilter(int, double, double)),

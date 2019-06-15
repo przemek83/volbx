@@ -10,7 +10,7 @@
 struct Quantiles
 {
 public:
-    Quantiles();
+    Quantiles() = default;
 
     virtual ~Quantiles() = default;
 
@@ -21,21 +21,21 @@ public:
     Quantiles(Quantiles&& other) = default;
 
     //Y axis variables.
-    float min_;
-    float q10_;
-    float q25_;
-    float q50_;
-    float q75_;
-    float q90_;
-    float max_;
+    float min_ {.0};
+    float q10_ {.0};
+    float q25_ {.0};
+    float q50_ {.0};
+    float q75_ {.0};
+    float q90_ {.0};
+    float max_ {.0};
 
-    int number_;
-    float avg_;
-    float stdDev_;
+    int number_ {0};
+    float avg_ {.0};
+    float stdDev_ {.0};
 
     //X axis variables.
-    float minX_;
-    float maxX_;
+    float minX_ {.0};
+    float maxX_ {.0};
 
     void clear();
 
@@ -63,7 +63,7 @@ private:
 
     static const char* plotInfoNames_[];
 
-    static QString valueAsHtmlRow(PlotInfo name, double value);
+    static QString valueAsHtmlRow(PlotInfo name, float value);
 };
 
 #endif // QUANTILES_H

@@ -27,8 +27,7 @@ void ExportData::gatherSheetContent(QByteArray& rowsContent,
 {
     rowsContent.append("<sheetData>");
 
-    QStringList columnNames;
-    Constants::generateExcelColumnNames(columnNames, 600);
+    QStringList columnNames = Constants::generateExcelColumnNames(600);
     auto proxyModel = qobject_cast<FilteringProxyModel*>(view->model());
 
     Q_ASSERT(nullptr != proxyModel);
@@ -193,7 +192,7 @@ void ExportData::quickExportAsTSV(const QAbstractItemView* view)
 
 void ExportData::dataToByteArray(const QAbstractItemView* view,
                                  QByteArray* destinationArray,
-                                 const char separator,
+                                 char separator,
                                  bool innerFormat)
 {
     /*
@@ -264,7 +263,7 @@ void ExportData::dataToByteArray(const QAbstractItemView* view,
 
 void ExportData::variantToString(const QVariant& variant,
                                  QByteArray* destinationArray,
-                                 const char separator,
+                                 char separator,
                                  bool innerFormat)
 {
     switch (variant.type())
@@ -278,7 +277,7 @@ void ExportData::variantToString(const QVariant& variant,
                 }
                 else
                 {
-                    QString value(Constants::floatToStringUsingLocale(variant.toDouble(), 2));
+                    QString value(Constants::floatToStringUsingLocale(variant.toFloat(), 2));
                     destinationArray->append(value);
                 }
                 break;

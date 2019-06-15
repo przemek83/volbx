@@ -35,7 +35,7 @@ public:
 
     void setAxisScale(int axisId, double min, double max, double step = 0);
 
-    virtual void setNewData(const PlotData& plotData);
+    void setPlotData(const PlotData& plotData);
 
     QSize minimumSizeHint() const override;
 

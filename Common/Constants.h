@@ -70,8 +70,7 @@ public:
     ///String regexp for field used to input dataset name.
     static const char* datasetNameRegExp_;
 
-    static void generateExcelColumnNames(QStringList& excelColNames,
-                                         int columnsNumber);
+    static QStringList generateExcelColumnNames(int columnsNumber);
 };
 
 #endif // CONSTANTS_H
