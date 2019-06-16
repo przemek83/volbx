@@ -24,7 +24,7 @@ class BasicDataPlot : public PlotBase
 public:
     explicit BasicDataPlot(QWidget* parent = nullptr);
 
-    ~BasicDataPlot() override;
+    ~BasicDataPlot() override = default;
 
     BasicDataPlot& operator=(const BasicDataPlot& other) = delete;
     BasicDataPlot(const BasicDataPlot& other) = delete;
@@ -38,6 +38,8 @@ public Q_SLOTS:
                             const QVector<QPointF>& linearRegression);
 
 private:
+    void setPlotData(const PlotData& plotData);
+
     void initPlotCurve();
     void initQ25();
     void initQ50();
@@ -83,13 +85,17 @@ private:
         QwtText trackerTextF(const QPointF& pos) const override;
     };
 
-    LinearPicker* picker_;
+    LinearPicker picker_;
 
     /**
      * @brief set given item checked on legend.
      * @param plot plot related to item on legend.
      */
     void setLegendItemChecked(QwtPlotCurve* plot);
+
+    PlotData plotData_;
+
+    QwtPlotCurve plotCurve_;
 
 private Q_SLOTS:
     void legendItemChecked(const QVariant& itemInfo, bool on, int index);

@@ -35,8 +35,6 @@ public:
 
     void setAxisScale(int axisId, double min, double max, double step = 0);
 
-    void setPlotData(const PlotData& plotData);
-
     QSize minimumSizeHint() const override;
 
 protected:
@@ -70,8 +68,6 @@ protected:
 
     void mouseDoubleClickEvent(QMouseEvent* event) override;
 
-    QwtPlotCurve* plotCurve_;
-
     void setPlotTitle(const QString& title);
 
 private:
@@ -94,8 +90,6 @@ private:
     QMap<int, QPointF> initialScaleMap_;
 
     void clearDistData();
-
-    PlotData plotData_;
 };
 
 #endif // PLOTBASE_H

@@ -74,11 +74,11 @@ protected:
     ///Data of dataset. String columns got indexes of strings in sharedStrings_.
     QVector<QVector<QVariant> > data_;
 
-    ///Dataset is valid.
-    bool valid_ {false};
-
     ///Array with shared strings, Done for memory optimization.
     QVariant* sharedStrings_ {nullptr};
+
+    ///Dataset is valid.
+    bool valid_ {false};
 };
 
 #endif // DATASET_H

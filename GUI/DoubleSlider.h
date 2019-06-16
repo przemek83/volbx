@@ -127,15 +127,6 @@ private:
     ///Mouse position on axis x.
     double mousePositionX_;
 
-    ///Flag to remember handle is moving.
-    int moving_;
-
-    ///Mouse on left handle.
-    bool isOnMinHandle_;
-
-    ///Mouse on right handle.
-    bool isOnMaxHandle_;
-
     ///Timer for refreshing.
     QTimer refreshTimer_;
 
@@ -144,6 +135,15 @@ private:
 
     ///Last emitted maximum.
     int lastEmittedMax_;
+
+    ///Flag to remember handle is moving.
+    int moving_;
+
+    ///Mouse on left handle.
+    bool isOnMinHandle_;
+
+    ///Mouse on right handle.
+    bool isOnMaxHandle_;
 
 Q_SIGNALS:
     ///Emitted after actual minimum changed.

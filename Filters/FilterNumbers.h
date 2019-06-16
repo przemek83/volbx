@@ -43,12 +43,12 @@ private:
     ///Maximum set on filter creation.
     double maxOnInit_;
 
-    ///Numbers are doubles.
-    bool doubleMode_;
-
     Ui::FilterNumbers* ui;
 
     static const int factor_;
+
+    ///Numbers are doubles.
+    bool doubleMode_;
 
 private Q_SLOTS:
     /**

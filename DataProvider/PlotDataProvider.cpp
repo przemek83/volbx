@@ -128,11 +128,11 @@ void PlotDataProvider::computeBasicData()
     }
 
     //Create points for quantiles - x, y, min, max.
-    pointsQuantilesX = new double[dataSize];
-    pointsQuantilesY = new double[dataSize];
+    pointsQuantilesX = new double[static_cast<unsigned long long>(dataSize)];
+    pointsQuantilesY = new double[static_cast<unsigned long long>(dataSize)];
 
     double sumX = 0.0, sumY = 0.0, sumXX = 0.0, sumXY = 0.0;
-    double x = 0.0, y = 0.0, a = 0.0, b = 0.0;
+    double a = 0.0, b = 0.0;
 
     double minX = 0;
     double maxX = 0;
@@ -140,8 +140,8 @@ void PlotDataProvider::computeBasicData()
 
     for (int i = 0; i < dataSize; ++i)
     {
-        x = Constants::startOfTheWorld_.daysTo(calcData_->at(i).date_);
-        y = calcData_->at(i).pricePerMeter_;
+        double x = Constants::startOfTheWorld_.daysTo(calcData_->at(i).date_);
+        double y = static_cast<double>(calcData_->at(i).pricePerMeter_);
         pointsQuantilesX[i] = x;
         pointsQuantilesY[i] = y;
 
@@ -169,8 +169,8 @@ void PlotDataProvider::computeBasicData()
         }
     }
 
-    quantiles_.minX_ = minX;
-    quantiles_.maxX_ = maxX;
+    quantiles_.minX_ = static_cast<float>(minX);
+    quantiles_.maxX_ = static_cast<float>(maxX);
 
     //Calc linear regression and create points.
     a = (dataSize * sumXY - sumX * sumY) / (dataSize * sumXX - sumX * sumX);

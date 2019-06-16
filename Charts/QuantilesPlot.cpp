@@ -48,7 +48,7 @@ void QuantilesPlot::setNewData(const Quantiles& quantiles)
 {
     quantiles_.clear();
     quantiles_.append(quantiles);
-    setAxisScale(QwtPlot::yLeft, quantiles.min_, quantiles.max_);
+    setAxisScale(QwtPlot::yLeft, static_cast<double>(quantiles.min_), static_cast<double>(quantiles.max_));
 
     setToolTip(quantiles.getValuesAsToolTip());
 
@@ -84,7 +84,7 @@ QuantilesPlot::IntervalsScaleDraw::IntervalsScaleDraw(int count) :
 
 QwtText QuantilesPlot::IntervalsScaleDraw::label(double v) const
 {
-    if (1 == v && 0 != count_)
+    if (qFuzzyCompare(v, 1) && count_ != 0)
     {
         return QwtText(QString::number(count_));
     }

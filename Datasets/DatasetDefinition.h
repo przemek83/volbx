@@ -70,10 +70,6 @@ public:
 protected:
     virtual void updateSampleDataStrings() = 0;
 
-    bool valid_;
-
-    bool isSpecialColumnTagged(SpecialColumn column) const;
-
     int rowsCount_;
 
     int columnsCount_;
@@ -102,6 +98,10 @@ protected:
 
     ///Number of lines in sample data.
     static const int sampleSize_;
+
+    bool valid_;
+
+    bool isSpecialColumnTagged(SpecialColumn column) const;
 
     QVariant getDefaultVariantForFormat(const DataFormat format) const;
 

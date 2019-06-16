@@ -12,10 +12,8 @@
 
 HistogramPlot::HistogramPlot(QWidget* parent) :
     PlotBase(QObject::tr("Histogram"), parent),
-    plotData_(PlotData(nullptr, nullptr, 0))
+    picker_(canvas()), plotData_(nullptr, nullptr, 0)
 {
-    picker_ = new HistPicker(canvas());
-
     initHistogramPlot();
 
     initActualDensity();
@@ -25,11 +23,6 @@ HistogramPlot::HistogramPlot(QWidget* parent) :
 
     setLegendItemChecked(&histPlot_);
     setLegendItemChecked(&actualDensity_);
-}
-
-HistogramPlot::~HistogramPlot()
-{
-    delete picker_;
 }
 
 void HistogramPlot::initHistogramPlot()

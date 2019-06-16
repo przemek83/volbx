@@ -9,9 +9,7 @@
 #include "Zoomer.h"
 
 PlotBase::PlotBase(const QString& title, QWidget* parent) :
-    QwtPlot(/*title,*/ parent),
-    plotCurve_(nullptr),
-    plotData_(PlotData(nullptr, nullptr, 0))
+    QwtPlot(/*title,*/ parent)
 {
     //Used in export of images.
     setWindowTitle(title);
@@ -36,18 +34,6 @@ PlotBase::~PlotBase()
 {
     delete panner_;
     delete magnifier_;
-    delete plotCurve_;
-}
-
-void PlotBase::setPlotData(const PlotData& plotData)
-{
-    plotCurve_->setRawSamples(plotData.getDataX(),
-                              plotData.getDataY(),
-                              plotData.getDataSize());
-
-    plotData_ = plotData;
-
-    replot();
 }
 
 void PlotBase::mouseDoubleClickEvent(QMouseEvent* event)
@@ -89,12 +75,12 @@ void PlotBase::setAxisScale(int axisId, double min, double max, double step)
 
 QwtText PlotBase::IntervalsScaleDraw::label(double v) const
 {
-    if (fmod(v, 1))
+    if (!qFuzzyCompare(fmod(v, 1), 0))
     {
-        return QwtText(Constants::floatToStringUsingLocale(v, 1));
+        return QwtText(Constants::floatToStringUsingLocale(static_cast<float>(v), 1));
     }
 
-    return QwtText(Constants::floatToStringUsingLocale(v, 0));
+    return QwtText(Constants::floatToStringUsingLocale(static_cast<float>(v), 0));
 }
 
 PlotBase::PlotMagnifier::PlotMagnifier(QWidget* canvas)

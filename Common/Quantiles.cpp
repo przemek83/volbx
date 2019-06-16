@@ -78,7 +78,7 @@ void Quantiles::computeQuantiles(QVector<float>& valuePerUnit)
 
         if (number_ < 2)
         {
-            float tmp = (number_ ? valuePerUnit.at(0) : 0);
+            float tmp = (number_ != 0 ? valuePerUnit.at(0) : 0);
             q10_ = tmp;
             q25_ = tmp;
             q50_ = tmp;
@@ -148,13 +148,13 @@ QString Quantiles::valueAsHtmlRow(PlotInfo row, float value)
     {
         plotInfoNames_[PLOT_INFO_COUNT] =
             QObject::tr("Data count") + QLatin1Char(':');
-        plotInfoNames_[PLOT_INFO_MIN] = QLatin1String("Minimum");
-        plotInfoNames_[PLOT_INFO_Q10] = QLatin1String("Q10");
-        plotInfoNames_[PLOT_INFO_Q25] = QLatin1String("Q25");
-        plotInfoNames_[PLOT_INFO_Q50] = QLatin1String("Q50");
-        plotInfoNames_[PLOT_INFO_Q75] = QLatin1String("Q75");
-        plotInfoNames_[PLOT_INFO_Q90] = QLatin1String("Q90");
-        plotInfoNames_[PLOT_INFO_MAX] = QLatin1String("Maximum");
+        plotInfoNames_[PLOT_INFO_MIN] = QStringLiteral("Minimum");
+        plotInfoNames_[PLOT_INFO_Q10] = QStringLiteral("Q10");
+        plotInfoNames_[PLOT_INFO_Q25] = QStringLiteral("Q25");
+        plotInfoNames_[PLOT_INFO_Q50] = QStringLiteral("Q50");
+        plotInfoNames_[PLOT_INFO_Q75] = QStringLiteral("Q75");
+        plotInfoNames_[PLOT_INFO_Q90] = QStringLiteral("Q90");
+        plotInfoNames_[PLOT_INFO_MAX] = QStringLiteral("Maximum");
         plotInfoNames_[PLOT_INFO_AVG] = QObject::tr("Average");
         plotInfoNames_[PLOT_INFO_STD_DEV] = QObject::tr("Std. deviation");
         initialized = true;

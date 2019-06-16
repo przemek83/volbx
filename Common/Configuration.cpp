@@ -47,7 +47,7 @@ bool Configuration::load()
     //Default style.
     if (style_.isEmpty())
     {
-        style_ = QLatin1String("Fusion");
+        style_ = QStringLiteral("Fusion");
     }
 
     QString filename(QApplication::applicationDirPath() +
@@ -68,7 +68,7 @@ bool Configuration::load()
 
     QTextStream stream(&file);
     QString initial(stream.readAll());
-    QDomDocument configXML(QLatin1String(__FUNCTION__));
+    QDomDocument configXML(__FUNCTION__);
 
     //If could not parse config.
     if (!configXML.setContent(initial))

@@ -441,7 +441,7 @@ ExportData::saveDatasetDataFile(QuaZipFile& zipFile,
     int proxyColumnCount = proxyModel->columnCount();
     QHash<QString, int> stringsMap;
     int nextIndex = 1;
-    static const char* newLine = "\n";
+    constexpr char newLine = '\n';
     int rowCount = 0;
     for (int i = 0; i < proxyRowCount; ++i)
     {
@@ -507,7 +507,7 @@ ExportData::saveDatasetDataFile(QuaZipFile& zipFile,
             }
         }
 
-        zipFile.write(newLine);
+        zipFile.write(QByteArray(1, newLine));
         rowCount++;
 
         bar->updateProgress(i + 1);

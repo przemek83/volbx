@@ -12,7 +12,7 @@ class TransactionData
 public:
     TransactionData() = default;
 
-    virtual ~TransactionData() = default;
+    ~TransactionData() = default;
 
     TransactionData& operator=(const TransactionData& other) = default;
     TransactionData(const TransactionData& other) = default;
@@ -20,11 +20,11 @@ public:
     TransactionData& operator=(TransactionData&& other) = default;
     TransactionData(TransactionData&& other) = default;
 
-    float pricePerMeter_;
-
     QDate date_;
 
     QVariant groupedBy_;
+
+    float pricePerMeter_ {0.f};
 
     void clear();
 

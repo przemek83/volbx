@@ -44,14 +44,14 @@ private:
 
     Ui::FilterNames* ui;
 
-    ///Flag indocating if additionall place for scroll should be added.
-    bool addMarginForScrollBar_;
-
     ///Min number of chars to include scrioll margin.
     static const int minNameWidthForScrollMargin_;
 
     ///Maximum widget heigh.
     static const int maximumHeigh_;
+
+    ///Flag indocating if additionall place for scroll should be added.
+    bool addMarginForScrollBar_;
 
 private Q_SLOTS:
     /**

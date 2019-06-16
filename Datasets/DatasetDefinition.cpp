@@ -23,11 +23,11 @@ const char* DatasetDefinition::datasetDefinitionXmlNames_[] =
 };
 
 DatasetDefinition::DatasetDefinition(QString name):
-    valid_(false),
     rowsCount_(0),
     columnsCount_(0),
     name_(std::move(name)),
-    emptyColName_(QObject::tr("no name"))
+    emptyColName_(QObject::tr("no name")),
+    valid_(false)
 {
 
 }

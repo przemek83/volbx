@@ -12,10 +12,9 @@
 #include "BasicDataPlot.h"
 
 BasicDataPlot::BasicDataPlot(QWidget* parent) :
-    PlotBase(QObject::tr("Basic"), parent)
+    PlotBase(QObject::tr("Basic"), parent), picker_(canvas()),
+    plotData_(nullptr, nullptr, 0)
 {
-    picker_ = new LinearPicker(canvas());
-
     setAxisScaleDraw(xBottom, new TimeScaleDraw());
 
     initPlotCurve();
@@ -31,33 +30,27 @@ BasicDataPlot::BasicDataPlot(QWidget* parent) :
     initLegend();
 
     //All items checked as all plots visible on start.
-    setLegendItemChecked(plotCurve_);
+    setLegendItemChecked(&plotCurve_);
     setLegendItemChecked(&plotQ25_);
     setLegendItemChecked(&plotQ50_);
     setLegendItemChecked(&plotQ75_);
     setLegendItemChecked(&plotLinearRegression_);
 }
 
-BasicDataPlot::~BasicDataPlot()
-{
-    delete picker_;
-}
-
 void BasicDataPlot::initPlotCurve()
 {
-    plotCurve_ = new QwtPlotCurve();
-    plotCurve_->setStyle(QwtPlotCurve::Dots);
+    plotCurve_.setStyle(QwtPlotCurve::Dots);
     auto symbol = new QwtSymbol(QwtSymbol::Ellipse);
     symbol->setSize(3, 3);
-    plotCurve_->setSymbol(symbol);
-    QPen pen0 = plotCurve_->pen();
+    plotCurve_.setSymbol(symbol);
+    QPen pen0 = plotCurve_.pen();
     pen0.setColor(QColor(Qt::blue));
     pen0.setWidth(3);
-    plotCurve_->setPen(pen0);
-    plotCurve_->setZ(500);
-    plotCurve_->setRenderHint(QwtPlotItem::RenderAntialiased, true);
-    plotCurve_->attach(this);
-    plotCurve_->setTitle(QObject::tr("Data"));
+    plotCurve_.setPen(pen0);
+    plotCurve_.setZ(500);
+    plotCurve_.setRenderHint(QwtPlotItem::RenderAntialiased, true);
+    plotCurve_.attach(this);
+    plotCurve_.setTitle(QObject::tr("Data"));
 }
 
 void BasicDataPlot::initQ25()
@@ -122,6 +115,17 @@ void BasicDataPlot::initLegend()
             this,
             SLOT(legendItemChecked(QVariant, bool, int)));
     insertLegend(legend, QwtPlot::BottomLegend);
+}
+
+void BasicDataPlot::setPlotData(const PlotData& plotData)
+{
+    plotCurve_.setRawSamples(plotData.getDataX(),
+                             plotData.getDataY(),
+                             plotData.getDataSize());
+
+    plotData_ = plotData;
+
+    replot();
 }
 
 void BasicDataPlot::setNewData(const PlotData& plotData,

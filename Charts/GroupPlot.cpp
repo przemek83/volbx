@@ -6,37 +6,26 @@
 #include "Common/Constants.h"
 
 #include "GroupPlot.h"
-#include "NotchedMarker.h"
 #include "StringsScaleDraw.h"
 
 const int GroupPlot::maxCharsInLabel_ = 20;
 
 GroupPlot::GroupPlot(QWidget* parent)
     : PlotBase(tr("Grouping"), parent),
-      marker_(nullptr)
+      marker_(&quantiles_), picker_(canvas())
 {
-    marker_ = new NotchedMarker(&quantiles_);
-
-    picker_ = new GroupPicker(canvas());
-
     quantiles_.clear();
 
     setStdScaleDraw(yRight);
     setAxisScaleDraw(xBottom, new StringsScaleDraw(&shortIntervalNames_));
 
-    marker_->attach(this);
+    marker_.attach(this);
 
     //Font.
     enableAxis(QwtPlot::yRight, true);
     QFont font = axisFont(QwtPlot::xBottom);
     font.setStyleStrategy(QFont::PreferAntialias);
     setAxisFont(QwtPlot::xBottom, font);
-}
-
-GroupPlot::~GroupPlot()
-{
-    delete picker_;
-    delete marker_;
 }
 
 void GroupPlot::setNewData(const QVector<Quantiles>& quantiles,
@@ -89,9 +78,9 @@ bool GroupPlot::event(QEvent* event)
 {
     if (event->type() == QEvent::ToolTip)
     {
-        int x =  picker_->getAreaOfMouse();
+        int x =  picker_.getAreaOfMouse();
 
-        if (x >= 1 && x <= quantiles_.size() && picker_->getMouseInWidget())
+        if (x >= 1 && x <= quantiles_.size() && picker_.getMouseInWidget())
         {
             setToolTip("<B>" + longIntervalNames_.at(x - 1) +
                        "</B></BR>" + quantiles_.at(x - 1).getValuesAsToolTip());

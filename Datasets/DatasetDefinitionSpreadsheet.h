@@ -53,11 +53,11 @@ protected:
     virtual bool getColumnTypes(QuaZip& zip,
                                 const QString& sheetName) = 0;
 
-    ///Next index to be used in strings hash map.
-    int nextIndex_;
-
     ///Temporary string <-> index map used to build shared string table.
     QHash<QString, int> stringsMap_;
+
+    ///Next index to be used in strings hash map.
+    int nextIndex_;
 
     /**
      *  Get index in map for given string.

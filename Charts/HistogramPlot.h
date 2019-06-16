@@ -25,7 +25,7 @@ class HistogramPlot : public PlotBase
 public:
     explicit HistogramPlot(QWidget* parent = nullptr);
 
-    ~HistogramPlot() override;
+    ~HistogramPlot() override = default;
 
     HistogramPlot& operator=(const HistogramPlot& other) = delete;
     HistogramPlot(const HistogramPlot& other) = delete;
@@ -67,7 +67,7 @@ private:
         QwtText trackerTextF(const QPointF& pos) const override;
     };
 
-    HistPicker* picker_;
+    HistPicker picker_;
 
     void setLegendItemChecked(QwtPlotItem* plot);
 

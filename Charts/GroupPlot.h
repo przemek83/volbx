@@ -11,6 +11,7 @@
 #include "CustomMarker.h"
 #include "PlotBase.h"
 #include "Picker.h"
+#include "NotchedMarker.h"
 
 class QwtPlotCurve;
 
@@ -23,7 +24,7 @@ class GroupPlot : public PlotBase
 public:
     explicit GroupPlot(QWidget* parent = nullptr);
 
-    ~GroupPlot() override;
+    ~GroupPlot() override = default;
 
     GroupPlot& operator=(const GroupPlot& other) = delete;
     GroupPlot(const GroupPlot& other) = delete;
@@ -46,7 +47,7 @@ private:
     ///Maximum number of chars in label.
     const static int maxCharsInLabel_;
 
-    CustomMarker* marker_ {nullptr};
+    NotchedMarker marker_;
 
     //Quantiles.
     QVector<Quantiles> quantiles_;
@@ -74,6 +75,6 @@ private:
         QwtText trackerTextF(const QPointF& pos) const override;
     };
 
-    GroupPicker* picker_;
+    GroupPicker picker_;
 };
 #endif // GROUPPLOT_H
