@@ -12,7 +12,7 @@ struct Quantiles
 public:
     Quantiles() = default;
 
-    virtual ~Quantiles() = default;
+    ~Quantiles() = default;
 
     Quantiles& operator=(const Quantiles& other) = default;
     Quantiles(const Quantiles& other) = default;

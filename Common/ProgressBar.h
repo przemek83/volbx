@@ -75,7 +75,7 @@ private:
 
     QBrush brush_;
 
-    void initNames(QVector<QString>& titles, const char newLine);
+    QVector<QString> initNames(char newLine);
 };
 
 #endif // PROGRESSBAR_H

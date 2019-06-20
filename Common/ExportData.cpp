@@ -371,7 +371,7 @@ bool ExportData::saveDataset(const QString& name,
     bool result = zip.open(QuaZip::mdCreate);
     if (!result)
     {
-        return result;
+        return false;
     }
 
     //Data file, write directly in loop.

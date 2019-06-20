@@ -18,9 +18,7 @@ ProgressBar::ProgressBar(ProgressBar::ProgressTitle title,
       lineWeidth_(10)
 {
     static const char newLine('\n');
-    static QVector<QString> progressTitles(static_cast<int>(PROGRESS_TITLE_END));
-
-    initNames(progressTitles, newLine);
+    static QVector<QString> progressTitles = initNames(newLine);
 
     title_ = progressTitles[title];
     setWindowTitle(QString(title_).replace(newLine, ' '));
@@ -73,27 +71,24 @@ ProgressBar::ProgressBar(ProgressBar::ProgressTitle title,
     show();
 }
 
-void ProgressBar::initNames(QVector<QString>& titles, const char newLine)
+QVector<QString> ProgressBar::initNames(char newLine)
 {
-    static bool initialized = false;
+    QVector<QString> progressTitles(static_cast<int>(PROGRESS_TITLE_END));
 
-    if (!initialized)
-    {
-        titles[PROGRESS_TITLE_LOADING] =
-            QObject::tr("Loading") + newLine + QObject::tr("data");
-        titles[PROGRESS_TITLE_SAVING] =
-            QObject::tr("Saving") + newLine + QObject::tr("data");
-        titles[PROGRESS_TITLE_RECOMPUTING] =
-            QObject::tr("Calculating") + newLine + QObject::tr("data");
-        titles[PROGRESS_TITLE_RECOMPUTING_TREND] =
-            QObject::tr("Calculating") + newLine + QObject::tr("trend");
-        titles[PROGRESS_TITLE_VIEW_CREATION] =
-            QObject::tr("Creating") + newLine + QObject::tr("view");
-        titles[PROGRESS_TITLE_DETECTING_COLUMN_TYPES] =
-            QObject::tr("File") + newLine + QObject::tr("analysis");
+    progressTitles[PROGRESS_TITLE_LOADING] =
+        QObject::tr("Loading") + newLine + QObject::tr("data");
+    progressTitles[PROGRESS_TITLE_SAVING] =
+        QObject::tr("Saving") + newLine + QObject::tr("data");
+    progressTitles[PROGRESS_TITLE_RECOMPUTING] =
+        QObject::tr("Calculating") + newLine + QObject::tr("data");
+    progressTitles[PROGRESS_TITLE_RECOMPUTING_TREND] =
+        QObject::tr("Calculating") + newLine + QObject::tr("trend");
+    progressTitles[PROGRESS_TITLE_VIEW_CREATION] =
+        QObject::tr("Creating") + newLine + QObject::tr("view");
+    progressTitles[PROGRESS_TITLE_DETECTING_COLUMN_TYPES] =
+        QObject::tr("File") + newLine + QObject::tr("analysis");
 
-        initialized = true;
-    }
+    return progressTitles;
 }
 
 void ProgressBar::paintEvent([[maybe_unused]] QPaintEvent* event)
