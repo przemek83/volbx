@@ -97,8 +97,11 @@ bool ExportData::exportAsXLSX(const QAbstractItemView* view, const QString& file
 {
     Q_ASSERT(nullptr != view);
 
+    // QuaZip has problems with opening file from resources. Workaround it...
+    QFile::copy(QStringLiteral(":/template.xlsx"), QStringLiteral("template.xlsx"));
+
     //Open xlsx template.
-    QuaZip inZip(QStringLiteral(":/template.xlsx"));
+    QuaZip inZip(QStringLiteral("template.xlsx"));
     inZip.open(QuaZip::mdUnzip);
 
     //Files list in template.
