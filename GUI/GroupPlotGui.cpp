@@ -15,8 +15,8 @@
 #include "ui_GroupPlotGui.h"
 #include "DockTitleBar.h"
 
-const char* GroupPlotGui::numRegExp_ =
-    "^([\\d]+(,[\\d]+)?){1}(;([\\d]+(,[\\d]+)?))*$";
+const char *GroupPlotGui::numRegExp_ =
+    R"(^([\d]+(,[\d]+)?){1}(;([\d]+(,[\d]+)?))*$)";
 
 const char* GroupPlotGui::dateRegExp_ =
     "^(([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)[0-9][0-9]?){1}(;((0?[1-9]|[12][0-9]|3[01])[- /.](0?[1-9]|1[012])[- /.](19|20)[0-9][0-9]))*$";
@@ -46,7 +46,7 @@ GroupPlotGui::GroupPlotGui(const TableModel* model, QWidget* parent) :
 
     ui->comboBox->clear();
 
-    numValidator_.setRegExp(QRegExp(QString(numRegExp_)));
+    numValidator_.setRegExp(QRegExp(QString::fromLatin1(numRegExp_)));
     dateValidator_.setRegExp(QRegExp(QString(dateRegExp_)));
 
     ui->intervals->setPlaceholderText(tr(numPlaceHolder_));

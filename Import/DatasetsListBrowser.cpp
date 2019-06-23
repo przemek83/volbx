@@ -23,6 +23,9 @@ DatasetsListBrowser::DatasetsListBrowser(QWidget* parent) :
     ui->datasetsList->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->datasetsList, SIGNAL(customContextMenuRequested(QPoint)),
             this, SLOT(showContextMenu(QPoint)));
+
+    connect(ui->datasetsList, SIGNAL(itemSelectionChanged()),
+            this, SLOT(datasetsListItemSelectionChanged()));
 }
 
 DatasetsListBrowser::~DatasetsListBrowser()
@@ -70,7 +73,7 @@ void DatasetsListBrowser::showContextMenu(QPoint pos)
         return;
     }
 
-    static QIcon deleteIcon =
+    const QIcon deleteIcon =
         QApplication::style()->standardIcon(QStyle::SP_DialogCloseButton);
 
     QMenu myMenu;
@@ -103,7 +106,7 @@ void DatasetsListBrowser::showContextMenu(QPoint pos)
     }
 }
 
-void DatasetsListBrowser::on_datasetsList_itemSelectionChanged()
+void DatasetsListBrowser::datasetsListItemSelectionChanged()
 {
     QString newCurrent(QLatin1String(""));
     QList<QListWidgetItem*> selectedItems = ui->datasetsList->selectedItems();

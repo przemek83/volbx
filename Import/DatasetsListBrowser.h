@@ -41,7 +41,7 @@ private Q_SLOTS:
 
     void showContextMenu(QPoint pos);
 
-    void on_datasetsList_itemSelectionChanged();
+    void datasetsListItemSelectionChanged();
 
 Q_SIGNALS:
     void currentDatasetChanged(QString current);

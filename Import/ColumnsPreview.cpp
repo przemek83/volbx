@@ -13,7 +13,7 @@ ColumnsPreview::ColumnsPreview(QWidget* parent) :
     connect(this,
             SIGNAL(itemSelectionChanged()),
             this,
-            SLOT(itemSelectionChanged()));
+            SLOT(onItemSelectionChanged()));
 }
 
 void ColumnsPreview::setDatasetDefinitionSampleInfo(const DatasetDefinition* datasetDefinition)
@@ -26,6 +26,7 @@ void ColumnsPreview::setDatasetDefinitionSampleInfo(const DatasetDefinition* dat
     setColumnCount(columns);
 
     QStringList labels;
+    labels.reserve(columns);
     for (int i = 0; i < columns; ++i)
     {
         labels.append(datasetDefinition->getColumnName(i));
@@ -68,7 +69,7 @@ void ColumnsPreview::selectCurrentColumn(int column)
     }
 }
 
-void ColumnsPreview::itemSelectionChanged()
+void ColumnsPreview::onItemSelectionChanged()
 {
     QList<QTableWidgetItem*> selectedItemsList = selectedItems();
 
