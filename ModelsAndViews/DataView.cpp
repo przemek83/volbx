@@ -33,7 +33,7 @@ DataView::DataView(QWidget* parent) :
 {
     setSelectionMode(QAbstractItemView::SingleSelection);
     setSelectionBehavior(QAbstractItemView::SelectRows);
-    const int rowHeight = fontMetrics().height() * 1.5;
+    const int rowHeight = static_cast<int>(fontMetrics().height() * 1.5);
     verticalHeader()->setDefaultSectionSize(rowHeight);
     setEditTriggers(QAbstractItemView::NoEditTriggers);
     verticalHeader()->setVisible(false);

@@ -43,7 +43,7 @@ void ViewDockWidget::selectAll()
 {
     auto view = findChild<DataView*>();
 
-    if (!view)
+    if (view == nullptr)
     {
         return;
     }
@@ -56,7 +56,7 @@ void ViewDockWidget::unselectAll()
 {
     auto view = findChild<DataView*>();
 
-    if (!view)
+    if (view == nullptr)
     {
         return;
     }

@@ -37,7 +37,7 @@ DatasetImportTab::DatasetImportTab(QWidget* parent) :
     layout->addWidget(splitter2);
     setLayout(layout);
 
-    const int rowHeight = fontMetrics().height() * 1.5;
+    const int rowHeight = static_cast<int>(fontMetrics().height() * 1.5);
     columnsPreview->verticalHeader()->setDefaultSectionSize(rowHeight);
 
     visualization->setEnabled(false);

@@ -39,7 +39,7 @@ private Q_SLOTS:
     /**
      * Trigerred when selection in table changed.
      */
-    void selectionChanged();
+    void itemSelectionChanged();
 
 Q_SIGNALS:
     /**

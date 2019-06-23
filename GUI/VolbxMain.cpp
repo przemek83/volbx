@@ -169,7 +169,7 @@ void VolbxMain::createOptionsMenu()
 
     for (const QFileInfo& styleFile : styleFiles)
     {
-        QAction* action = new QAction(styleFile.baseName(), ui->menuOptions);
+        action = new QAction(styleFile.baseName(), ui->menuOptions);
         action->setCheckable(true);
         if (activeStyl == styleFile.baseName())
         {
@@ -183,7 +183,7 @@ void VolbxMain::createOptionsMenu()
     QStringList qtStylesList = QStyleFactory::keys();
     for (const QString& style : qtStylesList)
     {
-        auto action = new QAction(style, ui->menuOptions);
+        action = new QAction(style, ui->menuOptions);
         action->setCheckable(true);
         if (activeStyl == style)
         {
@@ -400,7 +400,7 @@ bool VolbxMain::loadDataset(Dataset* dataset)
         return false;
     }
 
-    return dataset && dataset->isValid();
+    return dataset != nullptr && dataset->isValid();
 }
 
 void VolbxMain::on_actionImportData_triggered()
@@ -411,8 +411,7 @@ void VolbxMain::on_actionImportData_triggered()
     {
         DatasetDefinition* datasetDefinition = import.getSelectedDataset();
 
-        if (nullptr == datasetDefinition ||
-            (nullptr != datasetDefinition && false == datasetDefinition->isValid()))
+        if (datasetDefinition == nullptr || !datasetDefinition->isValid())
         {
             QMessageBox::critical(this,
                                   tr("Import error"),

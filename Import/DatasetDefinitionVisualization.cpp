@@ -95,7 +95,7 @@ void DatasetDefinitionVisualization::setDatasetDefiniton(
                 break;
             }
 
-            default:
+            case DATA_FORMAT_UNKNOWN:
             {
                 Q_ASSERT(false);
                 break;
@@ -171,7 +171,7 @@ void DatasetDefinitionVisualization::clear()
 void DatasetDefinitionVisualization::searchTextChanged(const QString& newText)
 {
     QTreeWidgetItemIterator it(ui->columnsList);
-    while (*it)
+    while (*it != nullptr)
     {
         (*it)->setHidden(!(*it)->text(0).contains(newText,
                                                   Qt::CaseInsensitive));
@@ -192,7 +192,7 @@ DatasetDefinition* DatasetDefinitionVisualization::getDatasetDefinition()
 
         bool active = false;
 
-        if (currentLoopItem->flags() & Qt::ItemIsUserCheckable)
+        if (currentLoopItem->flags().testFlag(Qt::ItemIsUserCheckable))
         {
             active = (currentLoopItem->checkState(0) == Qt::Checked);
         }
@@ -268,7 +268,7 @@ void DatasetDefinitionVisualization::on_SelectAll_clicked()
     for (int i = 0; i < topLevelItemsCount; ++i)
     {
         QTreeWidgetItem* currentLoopItem = ui->columnsList->topLevelItem(i);
-        if (currentLoopItem->flags() & Qt::ItemIsUserCheckable)
+        if (currentLoopItem->flags().testFlag(Qt::ItemIsUserCheckable))
         {
             currentLoopItem->setCheckState(0, Qt::Checked);
         }
@@ -282,7 +282,7 @@ void DatasetDefinitionVisualization::on_UnselectAll_clicked()
     for (int i = 0; i < topLevelItemsCount; ++i)
     {
         QTreeWidgetItem* currentLoopItem = ui->columnsList->topLevelItem(i);
-        if (currentLoopItem->flags() & Qt::ItemIsUserCheckable)
+        if (currentLoopItem->flags().testFlag(Qt::ItemIsUserCheckable))
         {
             currentLoopItem->setCheckState(0, Qt::Unchecked);
         }
