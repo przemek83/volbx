@@ -65,7 +65,7 @@ private:
         TimeScaleDraw& operator=(TimeScaleDraw&& other) = delete;
         TimeScaleDraw(TimeScaleDraw&& other) = delete;
 
-        QwtText label(double v) const override;
+        [[nodiscard]] QwtText label(double v) const override;
     };
 
     class LinearPicker : public Picker
@@ -82,7 +82,7 @@ private:
         LinearPicker(LinearPicker&& other) = delete;
 
     protected:
-        QwtText trackerTextF(const QPointF& pos) const override;
+        [[nodiscard]] QwtText trackerTextF(const QPointF& pos) const override;
     };
 
     LinearPicker picker_;
