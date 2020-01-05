@@ -19,8 +19,15 @@ This tool was originally created for real estate appraisal to give possibility, 
     Zlib 1.2.11
 
 ## Installation/Compilation
-Use Cmake directly or via QtCreator. Cmake **should** configure everything automatically, download dependencies using Git (QuaZip, Zlib) and SVN (Qwt), build dependencies, compile Volbx and create binaries. This is of course "happy path" ;)    
-To launch and work properly Volbx needs dynamically linked Qwt and QuaZip libs in lib search path or in working directory (usually directory where Volbx binary is and it is launched from).
+Use Cmake directly or via QtCreator. Cmake **should**:
+- configure everything automatically, 
+- download dependencies using Git (QuaZip, Zlib) and SVN (Qwt), 
+- build dependencies, 
+- compile Volbx and create binaries.  
+
+This is of course "happy path" ;)  
+
+**TIPS**: set CMAKE_PREFIX_PATH env variable (should point to Qt) and add qmake location to PATH variable (QWT building expects it).   
 
 ## Licensing
 Volbx can be used using LGPLv3. 
@@ -35,7 +42,7 @@ Volbx uses following software and licenses:
 
 ## Setup update server
 1) Get a domain and hosting ;)
-2) Add simple .php file which contains
+2) Add simple .php file which contains something like this:
 ```
 <?
 echo("Volbx-Updade-Info\n");
@@ -54,10 +61,10 @@ foreach (glob("*") as $filename) {
 6) Compile VersionChecker and run it - it should connect to given adress and download content of `current` folder.
 
 **Remarks**:   
-- Instead of size of files returned by PHP script checksums should be returned and used for checking of correctenss of downloaded files.   
+- Checksum should be used in correctness checks instead of size of files.   
 - When I've created VersionChecker I've decided to use simplest solution which I was able to create. I do not know if it is safe and 'proper' enough but it worked :D I'm not web deweloper ;)   
-- Windows needs admin rights (as of ~2012) when executing files having in name strings like "update", "install" or "setup". Quite ugly name `VersionChecker` was picked to workaround that problem. ;)   
-- On Windows updater cannot overwrite file which is being used (as of ~2012). There is a special mechanism for replacing used files: closing Volbx, running updater, changing not used/blocked binaries/libs, replacing automatically used/blocked ones during next run of Volbx.
+- Windows needs admin rights (as of ~2012) when executing files having in name strings like "update", "install" or "setup". Quite ugly name `VersionChecker` was picked to workaround that problem.   
+- On Windows updater cannot overwrite file which is being used (as of ~2012). There is a special mechanism for replacing used/locked files: closing Volbx, running updater, changing not used/blocked binaries/libs, replacing automatically used/blocked ones during next run of Volbx.
 
 ## Testing
 1) Compile project.
@@ -67,9 +74,9 @@ foreach (glob("*") as $filename) {
 Tests are done using Qt test framework.
 
 ## Potential further improvements
-* Clean and simplify whole code (it was created between 2010 and 2013 when I had only few years of experience and veeery little knowledge how good code should look like...).
-* Upgrade whole code to use C++17.
-* Increase test coverage.
+* Clean and simplify whole code (it was created between 2010 and 2013 when I had only few years of experience and veeery little knowledge how good code should look like...). (undergoing)
+* Upgrade whole code to use C++17/C++20 (undergoing)
+* Measure and increase test coverage.
 
 ## More screenshots:
 ![Alt text](Screenshot2.jpg?raw=true "")![Alt text](Screenshot3.jpg?raw=true "")![Alt text](Screenshot4.jpg?raw=true "")
