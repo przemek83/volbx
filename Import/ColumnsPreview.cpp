@@ -11,9 +11,9 @@ ColumnsPreview::ColumnsPreview(QWidget* parent) :
     setSelectionBehavior(QAbstractItemView::SelectColumns);
 
     connect(this,
-            SIGNAL(itemSelectionChanged()),
+            &QTableWidget::itemSelectionChanged,
             this,
-            SLOT(onItemSelectionChanged()));
+            &ColumnsPreview::onItemSelectionChanged);
 }
 
 void ColumnsPreview::setDatasetDefinitionSampleInfo(const DatasetDefinition* datasetDefinition)
