@@ -24,27 +24,25 @@ ImportData::ImportData(QWidget* parent) :
 {
     ui->setupUi(this);
 
-    //Create tabs.
+    auto enableOpenButton = [ = ](bool activate)
+    {
+        buttonBox_->button(QDialogButtonBox::Open)->setEnabled(activate);
+    };
+
+    // Create tabs.
     auto datasetsTab = new DatasetImportTab(ui->tabWidget);
-    connect(datasetsTab,
-            SIGNAL(definitionIsReady(bool)),
-            this,
-            SLOT(activateOkButton(bool)));
+    connect(datasetsTab, &ImportTab::definitionIsReady, enableOpenButton);
     ui->tabWidget->insertTab(static_cast<int>(IMPORT_TYPE_INNER),
                              datasetsTab,
                              tr("Datasets"));
 
-    auto spreadsheetsTab =
-        new SpreadsheetsImportTab(ui->tabWidget);
-    connect(spreadsheetsTab,
-            SIGNAL(definitionIsReady(bool)),
-            this,
-            SLOT(activateOkButton(bool)));
+    auto spreadsheetsTab = new SpreadsheetsImportTab(ui->tabWidget);
+    connect(spreadsheetsTab, &ImportTab::definitionIsReady, enableOpenButton);
     ui->tabWidget->insertTab(static_cast<int>(IMPORT_TYPE_SPREADSHEET),
                              spreadsheetsTab,
                              tr("Spreadsheets"));
 
-    //If no datasets, than switch to spreadsheets tab.
+    // If no datasets, than switch to spreadsheets tab.
     if (datasetsTab->datasetsAreAvailable())
     {
         ui->tabWidget->setCurrentWidget(datasetsTab);
@@ -59,8 +57,8 @@ ImportData::ImportData(QWidget* parent) :
                              Qt::Horizontal,
                              this);
 
-    connect(buttonBox_, SIGNAL(accepted()), this, SLOT(checkAndAccept()));
-    connect(buttonBox_, SIGNAL(rejected()), this, SLOT(reject()));
+    connect(buttonBox_, &QDialogButtonBox::accepted, this, &QDialog::accept);
+    connect(buttonBox_, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
     ui->verticalLayout->addWidget(buttonBox_);
 
@@ -83,15 +81,4 @@ DatasetDefinition* ImportData::getSelectedDataset()
 ImportData::ImportDataType ImportData::getImportDataType() const
 {
     return static_cast<ImportDataType>(ui->tabWidget->currentIndex());
-}
-
-void ImportData::checkAndAccept()
-{
-    //Make check for data feed if needed.
-    QDialog::accept();
-}
-
-void ImportData::activateOkButton(bool activate)
-{
-    buttonBox_->button(QDialogButtonBox::Open)->setEnabled(activate);
 }

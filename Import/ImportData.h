@@ -52,11 +52,6 @@ private:
     Ui::ImportData* ui;
 
     QDialogButtonBox* buttonBox_ {nullptr};
-
-private Q_SLOTS:
-    void checkAndAccept();
-
-    void activateOkButton(bool activate);
 };
 
 #endif // IMPORTDATA_H
