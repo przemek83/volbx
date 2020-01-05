@@ -55,9 +55,6 @@ private:
      * @return vector of structs containg data, price and grouping data.
      */
     QVector<TransactionData>* fillDataFromSelection(int groupByColumn);
-
-private Q_SLOTS:
-    void showSortIndicatorIfNeeded(int section);
 };
 
 #endif // DATAVIEW_H

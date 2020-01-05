@@ -42,10 +42,12 @@ DataView::DataView(QWidget* parent) :
 
     horizontalHeader()->setSectionsMovable(true);
 
-    connect(horizontalHeader(),
-            SIGNAL(sectionClicked(int)),
-            this,
-            SLOT(showSortIndicatorIfNeeded(int)));
+    auto showSortIndicator = [ = ]()
+    {
+        if (!horizontalHeader()->isSortIndicatorShown())
+            horizontalHeader()->setSortIndicatorShown(true);
+    };
+    connect(horizontalHeader(), &QHeaderView::sectionClicked, showSortIndicator);
 }
 
 DataView::~DataView()
@@ -215,15 +217,6 @@ void DataView::reloadSelectionDataAndRecompute()
         QString::number(performanceTimer.elapsed() * 1.0 / 1000) + " seconds.");
 
     QApplication::restoreOverrideCursor();
-}
-
-void DataView::showSortIndicatorIfNeeded(int section)
-{
-    if (!horizontalHeader()->isSortIndicatorShown())
-    {
-        horizontalHeader()->setSortIndicatorShown(true);
-        model()->sort(section);
-    }
 }
 
 void DataView::mouseReleaseEvent(QMouseEvent* event)
