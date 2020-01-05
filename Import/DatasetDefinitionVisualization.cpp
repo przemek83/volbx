@@ -181,6 +181,9 @@ void DatasetDefinitionVisualization::searchTextChanged(const QString& newText)
 
 DatasetDefinition* DatasetDefinitionVisualization::getDatasetDefinition()
 {
+    if (datasetDefinition_ == nullptr)
+        return nullptr;
+
     QVector<bool> activeColumns = QVector<bool>();
 
     int topLevelItemsCount =  ui->columnsList->topLevelItemCount();
