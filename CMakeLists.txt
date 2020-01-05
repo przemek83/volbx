@@ -6,61 +6,50 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 project(volbx)
 
-# Find includes in corresponding build directories
+# find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-# Instruct CMake to run moc automatically when needed
+# instruct CMake to run moc automatically when needed
 set(CMAKE_AUTOMOC ON)
-# Create code from a list of Qt designer ui files
+# create code from a list of Qt designer ui files
 set(CMAKE_AUTOUIC ON)
 
-# Find the QtWidgets library
-find_package(Qt5Widgets CONFIG REQUIRED)
-find_package(Qt5Core CONFIG REQUIRED)
-find_package(Qt5Gui CONFIG REQUIRED)
-find_package(Qt5Network CONFIG REQUIRED)
-find_package(Qt5Xml CONFIG REQUIRED)
-find_package(Qt5Test CONFIG REQUIRED)
-
+# find Qt packages
+find_package(Qt5 COMPONENTS Widgets Core Gui Network Xml Test REQUIRED)
 add_definitions( ${QT_DEFINITIONS} )
 
 # Zlib
 configure_file(CMakeLists.txt.zlib zlib/CMakeLists.txt)
-
 execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/zlib )
-
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/zlib)
 execute_process(COMMAND ${CMAKE_COMMAND} --build .
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/zlib )
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/zlib)
 
 # QuaZip
 configure_file(CMakeLists.txt.quazip quazip/CMakeLists.txt)
-
 execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/quazip )
-
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/quazip)
 execute_process(COMMAND ${CMAKE_COMMAND} --build .
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/quazip )
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/quazip)
 
 # QWT
 configure_file(CMakeLists.txt.qwt qwt/CMakeLists.txt)
-
 execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/qwt )
-
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/qwt)
 execute_process(COMMAND ${CMAKE_COMMAND} --build .
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/qwt )
-
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/qwt)
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/qwt/install)
 file(COPY ${CMAKE_BINARY_DIR}/qwt/qwt/src/qwt-build/lib DESTINATION ${CMAKE_BINARY_DIR}/qwt/install)
-
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/qwt/install/include)
 file(GLOB QWT_HEADERS "${CMAKE_BINARY_DIR}/qwt/qwt/src/qwt/src/*.h" )
 file(COPY ${QWT_HEADERS} DESTINATION ${CMAKE_BINARY_DIR}/qwt/install/include)
 
+# copy dlls for easy launch
+file(GLOB_RECURSE DLLS "${CMAKE_BINARY_DIR}/*.dll" )
+file(COPY ${DLLS} DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY ${DLLS} DESTINATION ${CMAKE_BINARY_DIR}/Tests)
 
 # workaround for not working passing "CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<dir>" in ExternalProject_Add
 set(workaround ON CACHE BOOL "" FORCE)
-
 
 include_directories(${CMAKE_BINARY_DIR}/qwt/install/include)
 include_directories(${CMAKE_BINARY_DIR}/zlib/install/include)
@@ -70,28 +59,22 @@ LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/qwt/install/lib)
 LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/zlib/install/bin)
 LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/quazip/install/lib)
 
-
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(Charts)
 include_directories(Filters)
 include_directories(GUI)
 include_directories(Import)
-
+include_directories(Shared)
+include_directories(Common)
+include_directories(Datasets)
+include_directories(ModelsAndViews)
+include_directories(DataProvider)
 
 add_subdirectory(Shared)
-include_directories(Shared)
-
 add_subdirectory(Common)
-include_directories(Common)
-
 add_subdirectory(Datasets)
-include_directories(Datasets)
-
 add_subdirectory(ModelsAndViews)
-include_directories(ModelsAndViews)
-
 add_subdirectory(DataProvider)
-include_directories(DataProvider)
 
 file(GLOB SOURCES "Volbx/*.cpp"
     "Charts/*.cpp"
@@ -103,8 +86,7 @@ file(GLOB SOURCES "Volbx/*.cpp"
     "Import/*.ui"
    )
 
-
-# Remove background console window.
+# remove background console window.
 IF(WIN32)
 SET(GUI_TYPE WIN32)
 ENDIF(WIN32)
