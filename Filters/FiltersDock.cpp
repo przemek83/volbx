@@ -100,7 +100,7 @@ void FiltersDock::createFiltersWidgets(const TableModel* model,
 
                 break;
             }
-            default:
+            case DATA_FORMAT_UNKNOWN:
             {
                 Q_ASSERT(false);
             }
@@ -136,7 +136,8 @@ FilterDates* FiltersDock::createNewDatesFilter(const TableModel* parentModel,
                                                QWidget* filterListWidget)
 {
     QString columnName = parentModel->headerData(index, Qt::Horizontal).toString();
-    QDate min, max;
+    QDate min;
+    QDate max;
     bool emptyDates = false;
     parentModel->getDateRange(index, min, max, emptyDates);
     auto filter = new FilterDates(columnName,
@@ -159,7 +160,8 @@ FilterNumbers* FiltersDock::createNewNumbersFilter(const TableModel* parentModel
                                                    QWidget* filterListWidget)
 {
     QString columnName = parentModel->headerData(index, Qt::Horizontal).toString();
-    double min = -1, max = -1;
+    double min = -1;
+    double max = -1;
     parentModel->getNumericRange(index, min, max);
     auto filter = new FilterNumbers(columnName,
                                     index,

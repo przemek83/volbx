@@ -15,7 +15,8 @@ TabBar::TabBar(QWidget* parent) :
     lineEdit_.setValidator(new QRegExpValidator(QRegExp(Constants::datasetNameRegExp_), this));
     lineEdit_.hide();
 
-    connect(&lineEdit_, SIGNAL(editingFinished()), this, SLOT(editingOfnameFinished()));
+    connect(&lineEdit_, &QLineEdit::editingFinished,
+            this, &TabBar::editingOfnameFinished);
 
     lineEdit_.installEventFilter(this);
 }

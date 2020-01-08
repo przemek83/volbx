@@ -77,7 +77,8 @@ void DataView::setModel(QAbstractItemModel* model)
                 break;
             }
 
-            default:
+            case DATA_FORMAT_STRING:
+            case DATA_FORMAT_UNKNOWN:
             {
                 break;
             }
