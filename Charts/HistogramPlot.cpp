@@ -28,7 +28,7 @@ HistogramPlot::HistogramPlot(QWidget* parent) :
 void HistogramPlot::initHistogramPlot()
 {
     histPlot_.setStyle(QwtPlotHistogram::Columns);
-    histPlot_.setZ(1000);
+    histPlot_.setZ(Constants::LOW_ORDER);
     histPlot_.setRenderHint(QwtPlotItem::RenderAntialiased, true);
     histPlot_.attach(this);
     histPlot_.setTitle(QObject::tr("Histogram"));
@@ -43,7 +43,7 @@ void HistogramPlot::initActualDensity()
     pen.setColor(QColor(Qt::blue));
     pen.setWidth(2);
     actualDensity_.setPen(pen);
-    actualDensity_.setZ(1000);
+    actualDensity_.setZ(Constants::HIGH_ORDER);
     actualDensity_.setRenderHint(QwtPlotItem::RenderAntialiased, true);
     actualDensity_.attach(this);
 }

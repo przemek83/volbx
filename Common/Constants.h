@@ -58,6 +58,10 @@ QString floatToStringUsingLocale(float value, int precison);
 static const char* datasetNameRegExp{"[\\w\\s-]+"};
 
 QStringList generateExcelColumnNames(int columnsNumber);
+
+static constexpr int LOW_ORDER{1};
+static constexpr int MEDIUM_ORDER{2};
+static constexpr int HIGH_ORDER{3};
 };
 
 #endif // CONSTANTS_H

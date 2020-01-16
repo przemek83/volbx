@@ -14,7 +14,7 @@
 CustomMarker::CustomMarker(QVector<Quantiles>* quantiles)
     : quantiles_(quantiles)
 {
-    setZ(1000);
+    setZ(Constants::HIGH_ORDER);
     setRenderHint(QwtPlotItem::RenderAntialiased, true);
 }
 
