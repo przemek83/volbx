@@ -1,38 +1,16 @@
-#include <QSettings>
-#include <QLocale>
-
 #include "Constants.h"
 
-const char* Constants::updaterName_ = "VersionCheck";
+#include <QLocale>
+#include <QSettings>
 
-const char* Constants::exeFileSuffix_ = ".exe";
-
-const char* Constants::tmpFileSuffix_ = ".tmp";
-
-const QDate Constants::startOfTheWorld_ = QDate(1970, 1, 1);
-
-const char* Constants::defaultDateFormat_ = "d/M/yyyy";
-
-const char* Constants::configurationFile_ = "config";
-
-const char* Constants::datasetDefinitionFilename_ = "definition.xml";
-
-const char* Constants::datasetDataFilename_ = "data.csv";
-
-const char* Constants::datasetStringsFilename_ = "strings.txt";
-
-const char* Constants::datasetExtension_ = ".vbx";
-
-const int Constants::minDataPerThread_ = 100;
-
-const char* Constants::datasetNameRegExp_ = "[\\w\\s-]+";
-
-QString Constants::stringFromDays(int daysToAdd)
+namespace Constants
 {
-    return startOfTheWorld_.addDays(daysToAdd).toString(defaultDateFormat_);
+QString stringFromDays(int daysToAdd)
+{
+    return startOfTheWorld.addDays(daysToAdd).toString(defaultDateFormat);
 }
 
-QString Constants::floatToStringUsingLocale(float value, int precison)
+QString floatToStringUsingLocale(float value, int precison)
 {
     static bool initialized = false;
     static QLocale locale = QLocale::system();
@@ -45,10 +23,8 @@ QString Constants::floatToStringUsingLocale(float value, int precison)
     return locale.toString(value, 'f', precison);
 }
 
-QStringList Constants::generateExcelColumnNames(int columnsNumber)
+QStringList generateExcelColumnNames(int columnsNumber)
 {
-    QStringList columnNames;
-
     static QStringList templateNames;
 
     if (templateNames.isEmpty())
@@ -66,6 +42,7 @@ QStringList Constants::generateExcelColumnNames(int columnsNumber)
     }
 
     QString currentPrefix(QLatin1String(""));
+    QStringList columnNames;
     for (int i = 0; i < columnsNumber; ++i)
     {
         columnNames << currentPrefix + templateNames[i % templateNames.count()];
@@ -78,3 +55,4 @@ QStringList Constants::generateExcelColumnNames(int columnsNumber)
 
     return columnNames;
 }
+}  // namespace Constants

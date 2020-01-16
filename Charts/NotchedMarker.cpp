@@ -1,15 +1,14 @@
 #include "NotchedMarker.h"
 
-#include <qpainter.h>
-#include <qwt_scale_map.h>
-#include <qwt_scale_div.h>
-#include <qwt_plot_curve.h>
 #include <QVector>
+#include <qpainter.h>
+#include <qwt_plot_curve.h>
+#include <qwt_scale_div.h>
+#include <qwt_scale_map.h>
 
-#include "Common/Quantiles.h"
 #include "Common/Constants.h"
+#include "Common/Quantiles.h"
 
-#include "NotchedMarker.h"
 #include "PlotBase.h"
 
 NotchedMarker::NotchedMarker(QVector<Quantiles>* quantiles)

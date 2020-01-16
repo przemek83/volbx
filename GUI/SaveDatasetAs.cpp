@@ -1,11 +1,12 @@
-﻿#include <QRegExpValidator>
+﻿#include "SaveDatasetAs.h"
+
 #include <QDebug>
-#include <QPushButton>
 #include <QMessageBox>
+#include <QPushButton>
+#include <QRegExpValidator>
 
 #include "Common/Constants.h"
 
-#include "SaveDatasetAs.h"
 #include "ui_SaveDatasetAs.h"
 
 SaveDatasetAs::SaveDatasetAs(QStringList alreadyUsedNames, QWidget* parent) :
@@ -15,7 +16,7 @@ SaveDatasetAs::SaveDatasetAs(QStringList alreadyUsedNames, QWidget* parent) :
 {
     ui->setupUi(this);
 
-    ui->nameLineEdit->setValidator(new QRegExpValidator(QRegExp(Constants::datasetNameRegExp_),
+    ui->nameLineEdit->setValidator(new QRegExpValidator(QRegExp(Constants::datasetNameRegExp),
                                                         this));
     ui->save->setEnabled(false);
 

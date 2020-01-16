@@ -1,13 +1,14 @@
-#include <QTimer>
-#include <QTime>
-#include <QPainter>
-#include <QDebug>
-#include <QApplication>
+#include "ProgressBar.h"
+
 #include <cmath>
 
-#include "Common/Constants.h"
+#include <QApplication>
+#include <QDebug>
+#include <QPainter>
+#include <QTime>
+#include <QTimer>
 
-#include "ProgressBar.h"
+#include "Common/Constants.h"
 
 ProgressBar::ProgressBar(ProgressBar::ProgressTitle title,
                          int max,

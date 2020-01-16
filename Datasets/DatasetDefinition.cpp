@@ -1,13 +1,14 @@
-#include <QDebug>
+#include "DatasetDefinition.h"
+
 #include <QApplication>
+#include <QDebug>
 #include <QFile>
 #include <QtXml/QDomDocument>
 
-#include "Shared/Logger.h"
 #include "Common/Constants.h"
+#include "Shared/Logger.h"
 
 #include "Dataset.h"
-#include "DatasetDefinition.h"
 
 const int DatasetDefinition::sampleSize_ = 10;
 

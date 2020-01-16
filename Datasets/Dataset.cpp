@@ -1,18 +1,19 @@
-#include <QVariant>
+#include "Dataset.h"
+
 #include <vector>
+
+#include <QApplication>
 #include <QDate>
 #include <QDebug>
-#include <QStringList>
-#include <QApplication>
-#include <QFile>
 #include <QDir>
+#include <QFile>
+#include <QStringList>
 #include <QTime>
+#include <QVariant>
 
 #include "Common/Constants.h"
-#include "Shared/Logger.h"
 #include "Common/ProgressBar.h"
-
-#include "Dataset.h"
+#include "Shared/Logger.h"
 
 Dataset::Dataset(DatasetDefinition* definition) :
     datasetDefinition_(definition)

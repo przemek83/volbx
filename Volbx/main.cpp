@@ -1,33 +1,34 @@
-#include <windows.h>
 #include <cstddef>
+#include <windows.h>
 
-#include <QMessageBox>
-#include <QFile>
-#include <QDebug>
 #include <QApplication>
+#include <QDebug>
+#include <QFile>
+#include <QMessageBox>
 
-#include "GUI/VolbxMain.h"
 #include "Common/Configuration.h"
-#include "Shared/Logger.h"
 #include "Common/Constants.h"
-#include "Shared/CommonProperties.h"
-#include "VolbxProperties.h"
+#include "GUI/VolbxMain.h"
 #include "Shared/Application.h"
+#include "Shared/CommonProperties.h"
+#include "Shared/Logger.h"
+
+#include "VolbxProperties.h"
 
 void overwriteUpdaterfIfNeeded()
 {
     QString updaterFile(QCoreApplication::applicationDirPath() + "/" +
-                        QString::fromLatin1(Constants::updaterName_) +
-                        QString::fromLatin1(Constants::exeFileSuffix_));
+                        QString::fromLatin1(Constants::updaterName) +
+                        QString::fromLatin1(Constants::exeFileSuffix));
 
     if (QFile::exists(updaterFile +
-                      QString::fromLatin1(Constants::tmpFileSuffix_)))
+                      QString::fromLatin1(Constants::tmpFileSuffix)))
     {
         LOG(LOG_APP, "Overwriting " + updaterFile + " by file " +
             updaterFile + Constants::tmpFileSuffix_);
 
         QFile::remove(updaterFile);
-        QFile::rename(updaterFile + Constants::tmpFileSuffix_,
+        QFile::rename(updaterFile + Constants::tmpFileSuffix,
                       updaterFile);
     }
 }

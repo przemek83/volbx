@@ -1,20 +1,21 @@
+#include "MainTabWidget.h"
+
 #include <QApplication>
 #include <QDebug>
 
-#include "ModelsAndViews/TableModel.h"
-#include "ModelsAndViews/DataView.h"
-#include "ModelsAndViews/FilteringProxyModel.h"
-#include "Shared/Logger.h"
-#include "DataProvider/PlotDataProvider.h"
 #include "Charts/BasicDataPlot.h"
 #include "Charts/QuantilesPlot.h"
+#include "DataProvider/PlotDataProvider.h"
+#include "ModelsAndViews/DataView.h"
+#include "ModelsAndViews/FilteringProxyModel.h"
+#include "ModelsAndViews/TableModel.h"
+#include "Shared/Logger.h"
 
-#include "TabBar.h"
-#include "MainTabWidget.h"
+#include "GroupPlotGui.h"
+#include "HistogramPlotGui.h"
 #include "MainTab.h"
 #include "PlotDockWidget.h"
-#include "HistogramPlotGui.h"
-#include "GroupPlotGui.h"
+#include "TabBar.h"
 #include "ViewDockWidget.h"
 
 MainTabWidget::MainTabWidget(QWidget* parent) :

@@ -59,6 +59,9 @@ protected:
     ///Next index to be used in strings hash map.
     int nextIndex_;
 
+    ///Zip file.
+    QuaZip zip_;
+
     /**
      *  Get index in map for given string.
      *  @param string string to search in map.
@@ -74,9 +77,6 @@ protected:
         nextIndex_++;
         return index;
     }
-
-    ///Zip file.
-    QuaZip zip_;
 };
 
 #endif // DATASETDEFINITIONSPREADSHEET_H

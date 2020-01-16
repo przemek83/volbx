@@ -2,9 +2,9 @@
 #include <QMessageBox>
 #include <QSharedMemory>
 
+#include "Shared/Application.h"
 #include "Shared/Logger.h"
 #include "Update/UpdateProperties.h"
-#include "Shared/Application.h"
 
 #include "Update.h"
 

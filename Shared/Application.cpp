@@ -1,11 +1,11 @@
+#include "Application.h"
+
 #include <QApplication>
-#include <QWidget>
 #include <QFile>
 #include <QStyleFactory>
+#include <QWidget>
 
 #include "CommonProperties.h"
-
-#include "Application.h"
 
 const char* Application::cssSuffix_ = ".css";
 

@@ -1,11 +1,12 @@
-#include <qwt_scale_div.h>
+#include "QuantilesPlot.h"
+
 #include <QDebug>
 #include <QResizeEvent>
+#include <qwt_scale_div.h>
 
 #include "Common/Constants.h"
 
 #include "NotchedMarker.h"
-#include "QuantilesPlot.h"
 #include "StringsScaleDraw.h"
 
 QuantilesPlot::QuantilesPlot(QWidget* parent) :

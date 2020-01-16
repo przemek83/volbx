@@ -1,8 +1,8 @@
+#include "NumericDelegate.h"
+
 #include <QDebug>
 
 #include "Common/Constants.h"
-
-#include "NumericDelegate.h"
 
 NumericDelegate::NumericDelegate(QObject* parent)
     : QStyledItemDelegate(parent)

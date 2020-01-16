@@ -1,12 +1,13 @@
-#include <QPushButton>
-#include <QDebug>
+#include "ViewDockWidget.h"
 
-#include "Common/ExportData.h"
+#include <QDebug>
+#include <QPushButton>
+
 #include "Common/Constants.h"
+#include "Common/ExportData.h"
+#include "ModelsAndViews/DataView.h"
 
 #include "DockTitleBar.h"
-#include "ModelsAndViews/DataView.h"
-#include "ViewDockWidget.h"
 
 ViewDockWidget::ViewDockWidget(const QString& title,
                                QWidget* parent,

@@ -1,17 +1,17 @@
-#include <cmath>
-#include <algorithm>
+#include "PlotDataProvider.h"
 
+#include <algorithm>
+#include <cmath>
+
+#include <QApplication>
 #include <QDebug>
 #include <QLocale>
 #include <QVariant>
-#include <QApplication>
 #include <QtCore>
 
 #include "Common/Constants.h"
-#include "Shared/Logger.h"
 #include "Common/ProgressBar.h"
-
-#include "PlotDataProvider.h"
+#include "Shared/Logger.h"
 
 PlotDataProvider::PlotDataProvider(int defaultGroupingColumn) :
     groupingColumn_(defaultGroupingColumn)
@@ -140,7 +140,7 @@ void PlotDataProvider::computeBasicData()
 
     for (int i = 0; i < dataSize; ++i)
     {
-        double x = Constants::startOfTheWorld_.daysTo(calcData_->at(i).date_);
+        double x = Constants::startOfTheWorld.daysTo(calcData_->at(i).date_);
         double y = static_cast<double>(calcData_->at(i).pricePerMeter_);
         pointsQuantilesX[i] = x;
         pointsQuantilesY[i] = y;

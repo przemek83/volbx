@@ -1,8 +1,8 @@
+#include "DatasetDefinitionSpreadsheet.h"
+
 #include <QDebug>
 
 #include "Shared/Logger.h"
-
-#include "DatasetDefinitionSpreadsheet.h"
 
 DatasetDefinitionSpreadsheet::DatasetDefinitionSpreadsheet(const QString& name,
                                                            const QString& zipFileName)

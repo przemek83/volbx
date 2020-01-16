@@ -1,10 +1,11 @@
-#include <QPainter>
+#include "DockTitleBar.h"
+
 #include <QDebug>
+#include <QPainter>
 #include <QStyle>
 
 #include "Common/Constants.h"
 
-#include "DockTitleBar.h"
 #include "ui_DockTitleBar.h"
 
 DockTitleBar::DockTitleBar(QWidget* parent) :

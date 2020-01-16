@@ -1,10 +1,11 @@
+#include "DatasetsListBrowser.h"
+
 #include <QMenu>
 #include <QMessageBox>
 
-#include "Datasets/DatasetInner.h"
 #include "Common/Constants.h"
+#include "Datasets/DatasetInner.h"
 
-#include "DatasetsListBrowser.h"
 #include "ui_DatasetsListBrowser.h"
 
 DatasetsListBrowser::DatasetsListBrowser(QWidget* parent) :

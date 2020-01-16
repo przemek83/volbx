@@ -1,26 +1,26 @@
-#include <QDebug>
-#include <QDate>
-#include <QClipboard>
+#include "ExportData.h"
+
+#include <QAbstractItemView>
 #include <QApplication>
+#include <QClipboard>
+#include <QDate>
+#include <QDebug>
 #include <QFile>
+#include <QItemSelectionModel>
 #include <QMimeData>
 #include <QtXml/QDomDocument>
-#include <QFile>
-#include <QAbstractItemView>
-#include <QItemSelectionModel>
 #include <quazip5/quazip.h>
 
-#include "Constants.h"
-#include "Shared/Logger.h"
-#include "Datasets/DatasetDefinition.h"
 #include "Datasets/Dataset.h"
-#include "Datasets/DatasetInner.h"
+#include "Datasets/DatasetDefinition.h"
 #include "Datasets/DatasetDefinitionInner.h"
-#include "ProgressBar.h"
-#include "ModelsAndViews/TableModel.h"
+#include "Datasets/DatasetInner.h"
 #include "ModelsAndViews/FilteringProxyModel.h"
+#include "ModelsAndViews/TableModel.h"
+#include "Shared/Logger.h"
 
-#include "ExportData.h"
+#include "Constants.h"
+#include "ProgressBar.h"
 
 void ExportData::gatherSheetContent(QByteArray& rowsContent,
                                     const QAbstractItemView* view)
@@ -289,7 +289,7 @@ void ExportData::variantToString(const QVariant& variant,
         case QVariant::Date:
         case QVariant::DateTime:
             {
-                static const QString defDateFormat(Constants::defaultDateFormat_);
+                static const QString defDateFormat(Constants::defaultDateFormat);
                 destinationArray->append(variant.toDate().toString(defDateFormat));
                 break;
             }
@@ -370,7 +370,7 @@ bool ExportData::saveDataset(const QString& name,
     LOG(LOG_IMPORT_EXPORT, "Saving dataset " + name);
 
     //Open archive.
-    QuaZip zip(DatasetInner::getDatasetsDir() + name + Constants::datasetExtension_);
+    QuaZip zip(DatasetInner::getDatasetsDir() + name + Constants::datasetExtension);
     bool result = zip.open(QuaZip::mdCreate);
     if (!result)
     {
@@ -430,7 +430,7 @@ ExportData::saveDatasetDataFile(QuaZipFile& zipFile,
                                 ProgressBar* bar)
 {
     bool result = zipFile.open(QIODevice::WriteOnly,
-                               QuaZipNewInfo(Constants::datasetDataFilename_));
+                               QuaZipNewInfo(Constants::datasetDataFilename));
     if (!result)
     {
         LOG(LOG_IMPORT_EXPORT, "Error while saving data file.");
@@ -526,7 +526,7 @@ bool ExportData::saveDatasetStringsFile(QuaZipFile& zipFile,
 {
     //Save strings file.
     bool result = zipFile.open(QIODevice::WriteOnly,
-                               QuaZipNewInfo(Constants::datasetStringsFilename_));
+                               QuaZipNewInfo(Constants::datasetStringsFilename));
     if (!result || zipFile.write(stringsContent) == -1)
     {
         LOG(LOG_IMPORT_EXPORT, "Error while saving strings file.");
@@ -549,7 +549,7 @@ bool ExportData::saveDatasetDefinitionFile(QuaZipFile& zipFile,
     parentModel->getDatasetDefinition()->toXml(definitionContent, rowCount);
 
     bool result = zipFile.open(QIODevice::WriteOnly,
-                               QuaZipNewInfo(Constants::datasetDefinitionFilename_));
+                               QuaZipNewInfo(Constants::datasetDefinitionFilename));
     if (!result || zipFile.write(definitionContent) == -1)
     {
         LOG(LOG_IMPORT_EXPORT, "Error while saving definition file.");

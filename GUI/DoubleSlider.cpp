@@ -1,12 +1,12 @@
+#include "DoubleSlider.h"
+
+#include <QDebug>
+#include <QMouseEvent>
 #include <QPainter>
 #include <QStyleOptionSlider>
-#include <QMouseEvent>
-#include <QDebug>
 #include <qdrawutil.h>
 
 #include "Common/Constants.h"
-
-#include "DoubleSlider.h"
 
 DoubleSlider::DoubleSlider(int min, int max, QWidget* parent) :
     QSlider(parent), minValue_(min), maxValue_(max)

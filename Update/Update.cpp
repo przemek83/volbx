@@ -1,13 +1,14 @@
-#include <QNetworkRequest>
-#include <QFile>
-#include <QNetworkReply>
-#include <QMessageBox>
+#include "Update.h"
+
 #include <QDebug>
+#include <QFile>
+#include <QMessageBox>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 
 #include "Shared/Logger.h"
 #include "Shared/Networking.h"
 
-#include "Update.h"
 #include "ui_Update.h"
 
 const char* Update::tmpPrefix_ = ".tmp";

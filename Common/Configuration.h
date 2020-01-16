@@ -68,20 +68,13 @@ private:
 
     QString importFilePath_;
 
-    ///Names used in xml.
-    const static char* xmlNames_[];
-
     UpdateOption updateOption_ {UPDATES_CHOICE_NOT_PICKED};
 
-    ///Enum used for xml field names.
-    enum XmlNames
-    {
-        XML_NAME_CONFIG,
-        XML_NAME_UPDATE,
-        XML_NAME_VALUE,
-        XML_NAME_STYLE,
-        XML_NAME_IMPORTPATH
-    };
+    const QString XML_NAME_CONFIG{QStringLiteral("CONFIG")};
+    const QString XML_NAME_UPDATE{QStringLiteral("UPDATE")};
+    const QString XML_NAME_VALUE{QStringLiteral("VALUE")};
+    const QString XML_NAME_STYLE{QStringLiteral("STYLE")};
+    const QString XML_NAME_IMPORTPATH{QStringLiteral("IMPORTPATH")};
 
     /**
      * Get viewable for of config.

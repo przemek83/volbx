@@ -1,15 +1,16 @@
-#include <qwt_plot_panner.h>
-#include <QMouseEvent>
-#include <qwt_symbol.h>
-#include <qwt_legend.h>
-#include <QDate>
-#include <QToolTip>
-#include <qwt_legend_label.h>
+#include "BasicDataPlot.h"
+
 #include <cmath>
 
-#include "Common/Constants.h"
+#include <QDate>
+#include <QMouseEvent>
+#include <QToolTip>
+#include <qwt_legend.h>
+#include <qwt_legend_label.h>
+#include <qwt_plot_panner.h>
+#include <qwt_symbol.h>
 
-#include "BasicDataPlot.h"
+#include "Common/Constants.h"
 
 BasicDataPlot::BasicDataPlot(QWidget* parent) :
     PlotBase(QObject::tr("Basic"), parent), picker_(canvas()),

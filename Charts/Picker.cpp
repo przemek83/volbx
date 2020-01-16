@@ -1,10 +1,11 @@
-#include <QDebug>
-#include <qwt_plot_canvas.h>
+#include "Picker.h"
+
 #include <cmath>
 
-#include "Common/Constants.h"
+#include <QDebug>
+#include <qwt_plot_canvas.h>
 
-#include "Picker.h"
+#include "Common/Constants.h"
 
 Picker::Picker(QWidget* parent)
     : QwtPlotPicker(parent), mouseInWidget_(false)

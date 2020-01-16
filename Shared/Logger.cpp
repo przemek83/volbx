@@ -1,10 +1,10 @@
-#include <QDebug>
-#include <QTime>
-#include <QTextEdit>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-
 #include "Logger.h"
+
+#include <QDebug>
+#include <QHBoxLayout>
+#include <QTextEdit>
+#include <QTime>
+#include <QVBoxLayout>
 
 const char* Logger::LogTypeNames_[] =
 {

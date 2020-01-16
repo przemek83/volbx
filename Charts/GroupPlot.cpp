@@ -1,11 +1,12 @@
-﻿#include <QDebug>
+﻿#include "GroupPlot.h"
+
+#include <QDebug>
 #include <QToolTip>
 #include <qwt_plot_layout.h>
 
-#include "DataProvider/PlotDataProvider.h"
 #include "Common/Constants.h"
+#include "DataProvider/PlotDataProvider.h"
 
-#include "GroupPlot.h"
 #include "StringsScaleDraw.h"
 
 const int GroupPlot::maxCharsInLabel_ = 20;
@@ -80,6 +81,7 @@ bool GroupPlot::event(QEvent* event)
     {
         int x =  picker_.getAreaOfMouse();
 
+        // TODO: Bug: wrong position on group plot...
         if (x >= 1 && x <= quantiles_.size() && picker_.getMouseInWidget())
         {
             setToolTip("<B>" + longIntervalNames_.at(x - 1) +

@@ -1,10 +1,10 @@
+#include "Quantiles.h"
+
 #include <cmath>
 
 #include <QDebug>
 
 #include "Common/Constants.h"
-
-#include "Quantiles.h"
 
 void Quantiles::clear()
 {
@@ -35,7 +35,8 @@ void Quantiles::print()
 
 void Quantiles::computeQuantiles(QVector<float>& valuePerUnit)
 {
-    float EX = 0, EX2 = 0;
+    float EX = 0;
+    float EX2 = 0;
 
     clear();
 
@@ -87,23 +88,23 @@ void Quantiles::computeQuantiles(QVector<float>& valuePerUnit)
         }
         else
         {
-            float tmp = (number_ - 1) * 0.1f;
+            float tmp = (number_ - 1) * 0.1F;
             q10_ = valuePerUnit.at(static_cast<int>(floorf(tmp))) + (tmp - floorf(tmp)) *
                    (valuePerUnit.at(static_cast<int>(ceilf(tmp))) - valuePerUnit.at(static_cast<int>(floorf(tmp))));
 
-            tmp = (number_ - 1) * 0.25f;
+            tmp = (number_ - 1) * 0.25F;
             q25_ = valuePerUnit.at(static_cast<int>(floorf(tmp))) + (tmp - floorf(tmp)) *
                    (valuePerUnit.at(static_cast<int>(ceilf(tmp))) - valuePerUnit.at(static_cast<int>(floorf(tmp))));
 
-            tmp = (number_ - 1) * 0.5f;
+            tmp = (number_ - 1) * 0.5F;
             q50_ = valuePerUnit.at(static_cast<int>(floorf(tmp))) + (tmp - floorf(tmp)) *
                    (valuePerUnit.at(static_cast<int>(ceilf(tmp))) - valuePerUnit.at(static_cast<int>(floorf(tmp))));
 
-            tmp = (number_ - 1) * 0.75f;
+            tmp = (number_ - 1) * 0.75F;
             q75_ = valuePerUnit.at(static_cast<int>(floorf(tmp))) + (tmp - floorf(tmp)) *
                    (valuePerUnit.at(static_cast<int>(ceilf(tmp))) - valuePerUnit.at(static_cast<int>(floorf(tmp))));
 
-            tmp = (number_ - 1) * 0.9f;
+            tmp = (number_ - 1) * 0.9F;
             q90_ = valuePerUnit.at(static_cast<int>(floorf(tmp))) + (tmp - floorf(tmp)) *
                    (valuePerUnit.at(static_cast<int>(ceilf(tmp))) - valuePerUnit.at(static_cast<int>(floorf(tmp))));
         }

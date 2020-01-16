@@ -1,14 +1,14 @@
+#include "ConfigurationTest.h"
+
 #include <QtTest/QtTest>
 
 #include "Common/Configuration.h"
 #include "Common/Constants.h"
 
-#include "ConfigurationTest.h"
-
 void ConfigurationTest::initTestCase()
 {
     configurationFileName_ = QCoreApplication::applicationDirPath() + "/" +
-                             QString(Constants::configurationFile_);
+                             QString(Constants::configurationFile);
 
     QFile file(configurationFileName_);
     QVERIFY(true == file.open(QIODevice::ReadOnly));
@@ -37,7 +37,7 @@ void ConfigurationTest::testReadingFilledConfigurationFile()
     QCOMPARE(Configuration::getInstance().getStyle(), QString("Fusion"));
     QVERIFY(false == Configuration::getInstance().needToShowUpdatePickerDialog());
     QVERIFY(false == Configuration::getInstance().needToCheckForUpdates());
- }
+}
 
 void ConfigurationTest::testReadingEmptyConfigurationFile()
 {

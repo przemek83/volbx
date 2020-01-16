@@ -1,12 +1,13 @@
+#include "FilterNames.h"
+
 #include <algorithm>
 
-#include <QListWidgetItem>
 #include <QDebug>
+#include <QListWidgetItem>
 #include <QScrollBar>
 
 #include "Common/Constants.h"
 
-#include "FilterNames.h"
 #include "ui_FilterNames.h"
 
 const int FilterNames::minNameWidthForScrollMargin_ = 25;

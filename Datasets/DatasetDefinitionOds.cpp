@@ -1,16 +1,17 @@
+#include "DatasetDefinitionOds.h"
+
+#include <memory>
+
+#include <QApplication>
+#include <QDebug>
 #include <QDomDocument>
 #include <QDomElement>
 #include <QXmlStreamReader>
-#include <QDebug>
 #include <quazip5/quazipfile.h>
-#include <QApplication>
-#include <memory>
 
-#include "Shared/Logger.h"
 #include "Common/Constants.h"
 #include "Common/ProgressBar.h"
-
-#include "DatasetDefinitionOds.h"
+#include "Shared/Logger.h"
 
 DatasetDefinitionOds::DatasetDefinitionOds(const QString& name,
                                            const QString& zipFileName)

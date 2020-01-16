@@ -1,9 +1,9 @@
+#include "Filter.h"
+
 #include <QDebug>
 
 #include "Common/Constants.h"
 #include "Shared/Application.h"
-
-#include "Filter.h"
 
 Filter::Filter(const QString& title, int column, QWidget* parent) :
     QGroupBox(title, parent), column_(column)

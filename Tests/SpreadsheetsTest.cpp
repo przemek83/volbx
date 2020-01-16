@@ -1,19 +1,20 @@
-#include <QtTest/QtTest>
-#include <QString>
-#include <QTableView>
+#include "SpreadsheetsTest.h"
+
 #include <QApplication>
 #include <QClipboard>
+#include <QString>
+#include <QTableView>
+#include <QtTest/QtTest>
 
 #include "Common/Configuration.h"
 #include "Common/Constants.h"
-#include "Datasets/DatasetDefinitionXlsx.h"
-#include "Datasets/DatasetDefinitionOds.h"
-#include "Datasets/Dataset.h"
-#include "ModelsAndViews/TableModel.h"
-#include "ModelsAndViews/FilteringProxyModel.h"
 #include "Common/ExportData.h"
+#include "Datasets/Dataset.h"
+#include "Datasets/DatasetDefinitionOds.h"
+#include "Datasets/DatasetDefinitionXlsx.h"
+#include "ModelsAndViews/FilteringProxyModel.h"
+#include "ModelsAndViews/TableModel.h"
 
-#include "SpreadsheetsTest.h"
 #include "Common.h"
 
 void SpreadsheetsTest::initTestCase()

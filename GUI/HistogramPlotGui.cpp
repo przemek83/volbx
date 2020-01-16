@@ -1,4 +1,5 @@
 #include "HistogramPlotGui.h"
+
 #include "ui_HistogramPlotGui.h"
 
 HistogramPlotGui::HistogramPlotGui(QWidget* parent) :

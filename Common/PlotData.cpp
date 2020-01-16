@@ -1,6 +1,6 @@
-#include <QDebug>
-
 #include "PlotData.h"
+
+#include <QDebug>
 
 PlotData::PlotData(double* dataX, double* dataY, int dataSize):
     dataX_(dataX),

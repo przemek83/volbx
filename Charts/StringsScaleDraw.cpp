@@ -1,6 +1,6 @@
-#include <cmath>
-
 #include "StringsScaleDraw.h"
+
+#include <cmath>
 
 StringsScaleDraw::StringsScaleDraw(QVector<QString>* intervals) :
     intervals_(intervals)

@@ -1,9 +1,9 @@
-#include <QTableWidgetItem>
+#include "ColumnsPreview.h"
+
 #include <QDebug>
+#include <QTableWidgetItem>
 
 #include "Datasets/DatasetDefinition.h"
-
-#include "ColumnsPreview.h"
 
 ColumnsPreview::ColumnsPreview(QWidget* parent) :
     QTableWidget(parent)

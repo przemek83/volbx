@@ -1,17 +1,18 @@
-#include <QDebug>
-#include <QScrollArea>
-#include <QLineEdit>
-
-#include "ModelsAndViews/TableModel.h"
-#include "ModelsAndViews/FilteringProxyModel.h"
-#include "Common/Constants.h"
-
 #include "FiltersDock.h"
-#include "ui_FiltersDock.h"
-#include "FilterNumbers.h"
+
+#include <QDebug>
+#include <QLineEdit>
+#include <QScrollArea>
+
+#include "Common/Constants.h"
+#include "ModelsAndViews/FilteringProxyModel.h"
+#include "ModelsAndViews/TableModel.h"
+
+#include "Filter.h"
 #include "FilterDates.h"
 #include "FilterNames.h"
-#include "Filter.h"
+#include "FilterNumbers.h"
+#include "ui_FiltersDock.h"
 
 FiltersDock::FiltersDock(QWidget* parent) :
     DockWidget(QObject::tr("Filters"), parent),

@@ -1,23 +1,14 @@
+#include "Configuration.h"
+
+#include <QApplication>
+#include <QDebug>
+#include <QDir>
+#include <QFile>
 #include <QString>
 #include <QtXml/QDomDocument>
-#include <QFile>
-#include <QDir>
-#include <QDebug>
-#include <QApplication>
 
 #include "Constants.h"
 #include "Shared/Logger.h"
-
-#include "Configuration.h"
-
-const char* Configuration::xmlNames_[] =
-{
-    "CONFIG",
-    "UPDATE",
-    "VALUE",
-    "STYLE",
-    "IMPORTPATH"
-};
 
 Configuration::Configuration()
 {
@@ -52,7 +43,7 @@ bool Configuration::load()
 
     QString filename(QApplication::applicationDirPath() +
                      "/" +
-                     Constants::configurationFile_);
+                     Constants::configurationFile);
 
     QFile file(filename);
 
@@ -68,7 +59,7 @@ bool Configuration::load()
 
     QTextStream stream(&file);
     QString initial(stream.readAll());
-    QDomDocument configXML(__FUNCTION__);
+    QDomDocument configXML(filename);
 
     //If could not parse config.
     if (!configXML.setContent(initial))
@@ -85,27 +76,27 @@ bool Configuration::load()
 
     LOG(LOG_CONFIG, "Loaded config file:\n" + configXML.toString());
 
-    QDomNodeList list = configXML.elementsByTagName(xmlNames_[XML_NAME_UPDATE]);
+    QDomNodeList list = configXML.elementsByTagName(XML_NAME_UPDATE);
     QDomElement updateElement = list.at(0).toElement();
     if (!updateElement.isNull())
     {
         updateOption_ = static_cast<UpdateOption>(
-                            updateElement.attribute(xmlNames_[XML_NAME_VALUE]).toInt());
+                            updateElement.attribute(XML_NAME_VALUE).toInt());
     }
 
-    list = configXML.elementsByTagName(xmlNames_[XML_NAME_STYLE]);
+    list = configXML.elementsByTagName(XML_NAME_STYLE);
     QDomElement styleElement = list.at(0).toElement();
     if (!styleElement.isNull())
     {
-        style_ = styleElement.attribute(xmlNames_[XML_NAME_VALUE]);
+        style_ = styleElement.attribute(XML_NAME_VALUE);
     }
 
-    list = configXML.elementsByTagName(xmlNames_[XML_NAME_IMPORTPATH]);
+    list = configXML.elementsByTagName(XML_NAME_IMPORTPATH);
     QDomElement importPathElement = list.at(0).toElement();
     if (!importPathElement.isNull())
     {
         importFilePath_ =
-            importPathElement.attribute(xmlNames_[XML_NAME_VALUE]);
+            importPathElement.attribute(XML_NAME_VALUE);
     }
 
     LOG(LOG_CONFIG, configDump());
@@ -117,21 +108,21 @@ bool Configuration::load()
 
 bool Configuration::save()
 {
-    QDomDocument doc(xmlNames_[XML_NAME_CONFIG]);
-    QDomElement root = doc.createElement(xmlNames_[XML_NAME_CONFIG]);
+    QDomDocument doc(XML_NAME_CONFIG);
+    QDomElement root = doc.createElement(XML_NAME_CONFIG);
     doc.appendChild(root);
 
-    QDomElement updates = doc.createElement(xmlNames_[XML_NAME_UPDATE]);
-    updates.setAttribute(xmlNames_[XML_NAME_VALUE],
+    QDomElement updates = doc.createElement(XML_NAME_UPDATE);
+    updates.setAttribute(XML_NAME_VALUE,
                          QString::number(static_cast<int>(updateOption_)));
     root.appendChild(updates);
 
-    QDomElement style = doc.createElement(xmlNames_[XML_NAME_STYLE]);
-    style.setAttribute(xmlNames_[XML_NAME_VALUE], style_);
+    QDomElement style = doc.createElement(XML_NAME_STYLE);
+    style.setAttribute(XML_NAME_VALUE, style_);
     root.appendChild(style);
 
-    QDomElement importPath = doc.createElement(xmlNames_[XML_NAME_IMPORTPATH]);
-    importPath.setAttribute(xmlNames_[XML_NAME_VALUE], importFilePath_);
+    QDomElement importPath = doc.createElement(XML_NAME_IMPORTPATH);
+    importPath.setAttribute(XML_NAME_VALUE, importFilePath_);
     root.appendChild(importPath);
 
     QString xml = doc.toString();
@@ -139,13 +130,13 @@ bool Configuration::save()
     LOG(LOG_CONFIG, "Config to save:\n" + xml);
 
     QString filename(QApplication::applicationDirPath() + "/" +
-                     QString(Constants::configurationFile_));
+                     QString(Constants::configurationFile));
     QFile::remove(filename);
     QFile file(filename);
 
     if (!file.open(QIODevice::WriteOnly))
     {
-        LOG(LOG_CONFIG, "Config file " + QString(Constants::configurationFile_) +
+        LOG(LOG_CONFIG, "Config file " + QString(Constants::configurationFile) +
             " can not be opened for writing. Config not saved.");
         return false;
     }
@@ -166,7 +157,7 @@ QString Configuration::configDump() const
 {
     QString dump;
 
-    dump.append("Configuration(" + QString(Constants::configurationFile_) + "):\n");
+    dump.append("Configuration(" + QString(Constants::configurationFile) + "):\n");
 
     dump.append(QLatin1String("Updates choice picked = "));
     dump.append((updateOption_ == UPDATES_CHOICE_NOT_PICKED ? QLatin1String("No") : QLatin1String("Yes")));

@@ -2,10 +2,10 @@
 
 #include "ConfigurationTest.h"
 #include "ConstantsTest.h"
-#include "SpreadsheetsTest.h"
 #include "InnerTests.h"
+#include "SpreadsheetsTest.h"
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
 

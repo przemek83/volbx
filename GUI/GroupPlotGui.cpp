@@ -1,21 +1,22 @@
-#include <QScrollArea>
-#include <QHBoxLayout>
-#include <QResizeEvent>
-#include <QMessageBox>
-#include <QtAlgorithms>
-#include <QSplitter>
-#include <QScrollBar>
+#include "GroupPlotGui.h"
 
+#include <QHBoxLayout>
+#include <QMessageBox>
+#include <QResizeEvent>
+#include <QScrollArea>
+#include <QScrollBar>
+#include <QSplitter>
+#include <QtAlgorithms>
+
+#include "Charts/GroupPlot.h"
 #include "Common/Constants.h"
 #include "Common/SpecialColumns.h"
 #include "ModelsAndViews/TableModel.h"
-#include "Charts/GroupPlot.h"
 
-#include "GroupPlotGui.h"
-#include "ui_GroupPlotGui.h"
 #include "DockTitleBar.h"
+#include "ui_GroupPlotGui.h"
 
-const char *GroupPlotGui::numRegExp_ =
+const char* GroupPlotGui::numRegExp_ =
     R"(^([\d]+(,[\d]+)?){1}(;([\d]+(,[\d]+)?))*$)";
 
 const char* GroupPlotGui::dateRegExp_ =

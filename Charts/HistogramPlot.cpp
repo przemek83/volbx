@@ -1,14 +1,14 @@
-#include <qwt_plot_panner.h>
-#include <QMouseEvent>
-#include <qwt_symbol.h>
-#include <qwt_legend.h>
+#include "HistogramPlot.h"
+
 #include <QDate>
+#include <QMouseEvent>
 #include <QToolTip>
+#include <qwt_legend.h>
 #include <qwt_legend_label.h>
+#include <qwt_plot_panner.h>
+#include <qwt_symbol.h>
 
 #include "Common/Constants.h"
-
-#include "HistogramPlot.h"
 
 HistogramPlot::HistogramPlot(QWidget* parent) :
     PlotBase(QObject::tr("Histogram"), parent),

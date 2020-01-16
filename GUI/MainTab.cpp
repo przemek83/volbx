@@ -1,9 +1,10 @@
+#include "MainTab.h"
+
 #include "Datasets/Dataset.h"
-#include "ModelsAndViews/TableModel.h"
 #include "ModelsAndViews/DataView.h"
 #include "ModelsAndViews/FilteringProxyModel.h"
+#include "ModelsAndViews/TableModel.h"
 
-#include "MainTab.h"
 #include "ViewDockWidget.h"
 
 MainTab::MainTab(Dataset* dataset, QWidget* parent) :

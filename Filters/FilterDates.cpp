@@ -1,8 +1,9 @@
+#include "FilterDates.h"
+
 #include <QDebug>
 
 #include "Common/Constants.h"
 
-#include "FilterDates.h"
 #include "ui_FilterDates.h"
 
 FilterDates::FilterDates(const QString& name,

@@ -1,21 +1,23 @@
-#include <QSplitter>
-#include <QVBoxLayout>
-#include <QHeaderView>
-#include <QMessageBox>
-#include <QFileDialog>
-#include <QFileInfo>
+#include "SpreadsheetsImportTab.h"
+
 #include <cmath>
 
-#include "Common/Configuration.h"
-#include "Datasets/DatasetDefinitionSpreadsheet.h"
-#include "Datasets/DatasetDefinitionOds.h"
-#include "Datasets/DatasetDefinitionXlsx.h"
-#include "Common/Constants.h"
+#include <QFileDialog>
+#include <QFileInfo>
+#include <QHeaderView>
+#include <QMessageBox>
+#include <QSplitter>
+#include <QVBoxLayout>
 
+#include "Common/Configuration.h"
+#include "Common/Constants.h"
+#include "Datasets/DatasetDefinitionOds.h"
+#include "Datasets/DatasetDefinitionSpreadsheet.h"
+#include "Datasets/DatasetDefinitionXlsx.h"
+
+#include "ColumnsPreview.h"
 #include "DatasetDefinitionVisualization.h"
 #include "DatasetsListBrowser.h"
-#include "ColumnsPreview.h"
-#include "SpreadsheetsImportTab.h"
 #include "ui_SpreadsheetsImportTab.h"
 
 SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent) :
@@ -90,7 +92,7 @@ void SpreadsheetsImportTab::openFileButtonClicked()
     DatasetDefinitionSpreadsheet* datasetDefinition = nullptr;
 
     //Remove all not allowed characters from file name.
-    QString regexpString = QString(Constants::datasetNameRegExp_)
+    QString regexpString = QString(Constants::datasetNameRegExp)
                            .replace(QLatin1String("["), QLatin1String("[^"));
     QString datasetName = fileInfo.completeBaseName().remove(QRegExp(regexpString));
 

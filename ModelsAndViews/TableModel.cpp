@@ -1,9 +1,9 @@
+#include "TableModel.h"
+
 #include <QDebug>
 
-#include "Datasets/Dataset.h"
 #include "Common/Constants.h"
-
-#include "TableModel.h"
+#include "Datasets/Dataset.h"
 
 const int TableModel::noColumn_ = -1;
 

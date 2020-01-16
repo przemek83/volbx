@@ -1,21 +1,22 @@
-#include <QSplitter>
+#include "ImportData.h"
+
 #include <QDebug>
 #include <QDialogButtonBox>
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QSplitter>
 
+#include "Common/Configuration.h"
 #include "Common/Constants.h"
 #include "Datasets/DatasetDefinitionInner.h"
 #include "Datasets/DatasetDefinitionOds.h"
 #include "Datasets/DatasetDefinitionXlsx.h"
-#include "Common/Configuration.h"
 
-#include "ImportData.h"
-#include "ui_ImportData.h"
 #include "DatasetImportTab.h"
 #include "SpreadsheetsImportTab.h"
+#include "ui_ImportData.h"
 
 ImportData::ImportData(QWidget* parent) :
     QDialog(parent),

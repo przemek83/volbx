@@ -1,16 +1,16 @@
+#include "DatasetDefinitionXlsx.h"
+
 #include <cmath>
 #include <memory>
 
+#include <QApplication>
 #include <QDebug>
 #include <QDomDocument>
 #include <QVariant>
-#include <QApplication>
 
-#include "Shared/Logger.h"
 #include "Common/Constants.h"
 #include "Common/ProgressBar.h"
-
-#include "DatasetDefinitionXlsx.h"
+#include "Shared/Logger.h"
 
 DatasetDefinitionXlsx::DatasetDefinitionXlsx(const QString& name,
                                              QString& zipFileName)

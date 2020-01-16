@@ -1,10 +1,10 @@
+#include "FilteringProxyModel.h"
+
 #include <QDebug>
 
-#include "Shared/Logger.h"
 #include "Common/Constants.h"
 #include "ModelsAndViews/TableModel.h"
-
-#include "FilteringProxyModel.h"
+#include "Shared/Logger.h"
 
 FilteringProxyModel::FilteringProxyModel(QObject* parent)
     : QSortFilterProxyModel(parent)

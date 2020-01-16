@@ -1,11 +1,12 @@
+#include "DatasetDefinitionVisualization.h"
+
 #include <QDebug>
 #include <QTreeWidgetItem>
 #include <QTreeWidgetItemIterator>
 
-#include "Datasets/DatasetDefinition.h"
 #include "Common/Constants.h"
+#include "Datasets/DatasetDefinition.h"
 
-#include "DatasetDefinitionVisualization.h"
 #include "ui_DatasetDefinitionVisualization.h"
 
 DatasetDefinitionVisualization::DatasetDefinitionVisualization(QWidget* parent) :

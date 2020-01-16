@@ -1,32 +1,34 @@
+#include "DataView.h"
+
 #include <iostream>
 
-#include <QHeaderView>
-#include <QMainWindow>
-#include <QDebug>
-#include <QModelIndexList>
-#include <QMenu>
 #include <QAction>
-#include <QContextMenuEvent>
-#include <QLabel>
-#include <QSpinBox>
 #include <QApplication>
+#include <QContextMenuEvent>
+#include <QDebug>
+#include <QHeaderView>
+#include <QLabel>
+#include <QMainWindow>
+#include <QMenu>
+#include <QModelIndexList>
+#include <QSpinBox>
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
 #include <qwt_text.h>
 
 #include "Charts/BasicDataPlot.h"
 #include "Charts/QuantilesPlot.h"
-#include "TableModel.h"
-#include "FilteringProxyModel.h"
-#include "DataProvider/PlotDataProvider.h"
-#include "Common/SpecialColumns.h"
-#include "Shared/Logger.h"
 #include "Common/Constants.h"
-#include "DataView.h"
-#include "NumericDelegate.h"
-#include "DateDelegate.h"
-#include "GUI/PlotDockWidget.h"
+#include "Common/SpecialColumns.h"
+#include "DataProvider/PlotDataProvider.h"
 #include "GUI/GroupPlotGui.h"
+#include "GUI/PlotDockWidget.h"
+#include "Shared/Logger.h"
+
+#include "DateDelegate.h"
+#include "FilteringProxyModel.h"
+#include "NumericDelegate.h"
+#include "TableModel.h"
 
 DataView::DataView(QWidget* parent) :
     QTableView(parent), plotDataProvider_(nullptr)

@@ -1,3 +1,5 @@
+#include "FilterNumbers.h"
+
 #include <cmath>
 
 #include <QDebug>
@@ -6,7 +8,6 @@
 #include "Common/Constants.h"
 #include "GUI/DoubleSlider.h"
 
-#include "FilterNumbers.h"
 #include "ui_FilterNumbers.h"
 
 const int FilterNumbers::factor_ = 100;

@@ -1,16 +1,18 @@
-#include <QFile>
-#include <QTextStream>
-#include <QDomDocument>
-#include <QApplication>
-#include <QDebug>
-#include <quazip5/quazipfile.h>
+#include "DatasetDefinitionInner.h"
+
 #include <memory>
 
-#include "Common/Constants.h"
-#include "Shared/Logger.h"
-#include "Common/ProgressBar.h"
+#include <QApplication>
+#include <QDebug>
+#include <QDomDocument>
+#include <QFile>
+#include <QTextStream>
+#include <quazip5/quazipfile.h>
 
-#include "DatasetDefinitionInner.h"
+#include "Common/Constants.h"
+#include "Common/ProgressBar.h"
+#include "Shared/Logger.h"
+
 #include "DatasetInner.h"
 
 DatasetDefinitionInner::DatasetDefinitionInner(const QString& name)
@@ -19,7 +21,7 @@ DatasetDefinitionInner::DatasetDefinitionInner(const QString& name)
 {
     zip_.setZipName(DatasetInner::getDatasetsDir() +
                     name_ +
-                    Constants::datasetExtension_);
+                    Constants::datasetExtension);
     valid_ = load();
 }
 
@@ -110,7 +112,7 @@ void DatasetDefinitionInner::updateSampleDataStrings()
 bool DatasetDefinitionInner::loadXmlFile(QByteArray& definitionContent, QuaZip& zip)
 {
     QuaZipFile zipFile(&zip);
-    zip.setCurrentFile(Constants::datasetDefinitionFilename_);
+    zip.setCurrentFile(Constants::datasetDefinitionFilename);
 
     bool result = zipFile.open(QIODevice::ReadOnly);
     if (!result)
@@ -187,7 +189,7 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
                                       bool fillSamplesOnly)
 {
     QuaZipFile zipFile(&zip);
-    zip.setCurrentFile(Constants::datasetDataFilename_);
+    zip.setCurrentFile(Constants::datasetDataFilename);
 
     bool result = zipFile.open(QIODevice::ReadOnly);
     if (!result)
@@ -319,7 +321,7 @@ DatasetDefinitionInner::addElementToContainer(const DataFormat columnFormat,
 bool DatasetDefinitionInner::loadStrings(QuaZip& zip)
 {
     QuaZipFile zipFile(&zip);
-    zip.setCurrentFile(Constants::datasetStringsFilename_);
+    zip.setCurrentFile(Constants::datasetStringsFilename);
 
     bool result = zipFile.open(QIODevice::ReadOnly);
     if (!result)

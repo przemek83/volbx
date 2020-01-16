@@ -1,16 +1,17 @@
-#include <QFile>
-#include <QTextStream>
-#include <QDir>
-#include <QDebug>
+#include "DatasetInner.h"
+
 #include <QApplication>
+#include <QDebug>
+#include <QDir>
+#include <QFile>
 #include <QStandardPaths>
+#include <QTextStream>
 
 #include "Common/Constants.h"
-#include "Shared/Logger.h"
 #include "Common/ProgressBar.h"
+#include "Shared/Logger.h"
 
 #include "DatasetDefinitionInner.h"
-#include "DatasetInner.h"
 
 const char* DatasetInner::datasetsDir_ = "Data";
 
@@ -56,10 +57,10 @@ QStringList DatasetInner::getListOfAvailableDatasets()
                           QDir::Readable |
                           QDir::NoSymLinks |
                           QDir::NoDotAndDotDot);
-    datasetsDir.setNameFilters(QStringList("*" + QString(Constants::datasetExtension_)));
+    datasetsDir.setNameFilters(QStringList("*" + QString(Constants::datasetExtension)));
     datasetsDir.setSorting(QDir::Name);
 
-    return datasetsDir.entryList().replaceInStrings(QString(Constants::datasetExtension_), QLatin1String(""));
+    return datasetsDir.entryList().replaceInStrings(QString(Constants::datasetExtension), QLatin1String(""));
 }
 
 QString DatasetInner::getDatasetsDir()
@@ -88,6 +89,6 @@ bool DatasetInner::datasetDirExistAndUserHavePermisions()
 bool DatasetInner::removeDataset(const QString& name)
 {
     QString datasetFile =
-        getDatasetsDir() + name + QString(Constants::datasetExtension_);
+        getDatasetsDir() + name + QString(Constants::datasetExtension);
     return QFile::remove(datasetFile);
 }

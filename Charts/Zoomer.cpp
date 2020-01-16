@@ -1,10 +1,10 @@
+#include "Zoomer.h"
+
 #include <QWheelEvent>
 
 #include "Common/Constants.h"
 
-#include "Zoomer.h"
-
-Zoomer::Zoomer(QwtPlotCanvas *canvas):
+Zoomer::Zoomer(QwtPlotCanvas* canvas):
     QwtPlotZoomer(canvas)
 {
     setTrackerMode(AlwaysOn);
@@ -15,23 +15,23 @@ Zoomer::Zoomer(QwtPlotCanvas *canvas):
     // Ctrl+RighButton: zoom out to full size
 
     setMousePattern(QwtEventPattern::MouseSelect2,
-            Qt::RightButton, Qt::ControlModifier);
+                    Qt::RightButton, Qt::ControlModifier);
 
     setMousePattern(QwtEventPattern::MouseSelect3,
-            Qt::RightButton);
+                    Qt::RightButton);
 
     const QColor c(Qt::darkBlue);
     setRubberBandPen(c);
     setTrackerPen(c);
 }
 
-QwtText Zoomer::trackerTextF(const QPointF &pos) const
+QwtText Zoomer::trackerTextF(const QPointF& pos) const
 {
     QColor bg(Qt::white);
     bg.setAlpha(200);
 
     QwtText text = QwtPlotZoomer::trackerTextF(pos);
-    text.setBackgroundBrush( QBrush( bg ));
+    text.setBackgroundBrush(QBrush(bg));
     return text;
 }
 

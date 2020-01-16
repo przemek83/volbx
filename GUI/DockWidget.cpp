@@ -1,10 +1,10 @@
-﻿#include <QDebug>
+﻿#include "DockWidget.h"
+
+#include <QDebug>
 #include <QHBoxLayout>
 #include <QPushButton>
 
 #include "Common/Constants.h"
-
-#include "DockWidget.h"
 #include "ModelsAndViews/DataView.h"
 
 DockWidget::DockWidget(const QString& titleText,

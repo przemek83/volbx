@@ -1,13 +1,14 @@
-#include <QPushButton>
+#include "PlotDockWidget.h"
+
 #include <QDebug>
 #include <QPainter>
+#include <QPushButton>
 #include <QScrollArea>
 
-#include "Common/ExportImage.h"
-#include "Common/Constants.h"
 #include "Charts/PlotBase.h"
+#include "Common/Constants.h"
+#include "Common/ExportImage.h"
 
-#include "PlotDockWidget.h"
 #include "DockTitleBar.h"
 
 PlotDockWidget::PlotDockWidget(const QString& title,

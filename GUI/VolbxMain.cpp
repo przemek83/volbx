@@ -1,44 +1,45 @@
+#include "VolbxMain.h"
+
 #include <QDebug>
-#include <QMessageBox>
-#include <QVariant>
 #include <QDesktopServices>
-#include <QUrl>
+#include <QDir>
 #include <QLabel>
-#include <QNetworkRequest>
+#include <QMessageBox>
 #include <QNetworkReply>
+#include <QNetworkRequest>
 #include <QProcess>
 #include <QStyleFactory>
-#include <QDir>
+#include <QUrl>
+#include <QVariant>
 
-#include "Shared/Logger.h"
-#include "ModelsAndViews/FilteringProxyModel.h"
 #include "Common/Configuration.h"
-#include "Common/ExportData.h"
-#include "Datasets/Dataset.h"
-#include "Datasets/DatasetSpreadsheet.h"
-#include "Datasets/DatasetInner.h"
-#include "Datasets/DatasetDefinitionInner.h"
-#include "Datasets/DatasetDefinitionXlsx.h"
-#include "Datasets/DatasetDefinitionOds.h"
-#include "Common/ProgressBar.h"
 #include "Common/Constants.h"
-#include "ModelsAndViews/TableModel.h"
-#include "Shared/Debugging.h"
-#include "Shared/Networking.h"
-#include "ModelsAndViews/DataView.h"
-#include "Shared/Application.h"
+#include "Common/ExportData.h"
+#include "Common/ProgressBar.h"
+#include "Datasets/Dataset.h"
+#include "Datasets/DatasetDefinitionInner.h"
+#include "Datasets/DatasetDefinitionOds.h"
+#include "Datasets/DatasetDefinitionXlsx.h"
+#include "Datasets/DatasetInner.h"
+#include "Datasets/DatasetSpreadsheet.h"
 #include "Filters/FiltersDock.h"
-
-#include "SaveDatasetAs.h"
-#include "MainTabWidget.h"
-#include "Export.h"
 #include "Import/ImportData.h"
-#include "VolbxMain.h"
-#include "ui_VolbxMain.h"
-#include "ViewDockWidget.h"
+#include "ModelsAndViews/DataView.h"
+#include "ModelsAndViews/FilteringProxyModel.h"
+#include "ModelsAndViews/TableModel.h"
+#include "Shared/Application.h"
+#include "Shared/Debugging.h"
+#include "Shared/Logger.h"
+#include "Shared/Networking.h"
+
 #include "About.h"
 #include "CheckUpdatesDialog.h"
+#include "Export.h"
 #include "MainTab.h"
+#include "MainTabWidget.h"
+#include "SaveDatasetAs.h"
+#include "ViewDockWidget.h"
+#include "ui_VolbxMain.h"
 
 VolbxMain::VolbxMain(QWidget* parent) :
     QMainWindow(parent),
@@ -530,10 +531,10 @@ void VolbxMain::updateCheckReplyFinished(QNetworkReply* reply)
         {
             if (QFile::exists(QCoreApplication::applicationDirPath() +
                               '/' +
-                              Constants::updaterName_ +
-                              Constants::exeFileSuffix_))
+                              Constants::updaterName +
+                              Constants::exeFileSuffix))
             {
-                QProcess::startDetached(QString(Constants::updaterName_));
+                QProcess::startDetached(QString(Constants::updaterName));
                 QCoreApplication::quit();
             }
             else
@@ -541,7 +542,7 @@ void VolbxMain::updateCheckReplyFinished(QNetworkReply* reply)
                 QMessageBox::critical(nullptr,
                                       tr("Wrong installation"),
                                       tr("Installation is corrupted. Could not find file ") +
-                                      Constants::updaterName_ + Constants::exeFileSuffix_ + ".\n" +
+                                      Constants::updaterName + Constants::exeFileSuffix + ".\n" +
                                       tr("Can not use update functionality."));
             }
         }

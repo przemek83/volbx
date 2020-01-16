@@ -1,11 +1,12 @@
-#include <qwt_plot_panner.h>
-#include <qwt_plot_magnifier.h>
-#include <qwt_text_label.h>
+#include "PlotBase.h"
+
 #include <QMouseEvent>
+#include <qwt_plot_magnifier.h>
+#include <qwt_plot_panner.h>
+#include <qwt_text_label.h>
 
 #include "Common/Constants.h"
 
-#include "PlotBase.h"
 #include "Zoomer.h"
 
 PlotBase::PlotBase(const QString& title, QWidget* parent) :

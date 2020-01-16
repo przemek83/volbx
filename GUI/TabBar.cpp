@@ -1,18 +1,19 @@
+#include "TabBar.h"
+
 #include <QDebug>
 #include <QEvent>
 #include <QKeyEvent>
 #include <QMainWindow>
-#include <QTabWidget>
 #include <QRegExpValidator>
+#include <QTabWidget>
 
 #include "Common/Constants.h"
-#include "TabBar.h"
 
 TabBar::TabBar(QWidget* parent) :
     QTabBar(parent)
 {
     lineEdit_.setParent(this);
-    lineEdit_.setValidator(new QRegExpValidator(QRegExp(Constants::datasetNameRegExp_), this));
+    lineEdit_.setValidator(new QRegExpValidator(QRegExp(Constants::datasetNameRegExp), this));
     lineEdit_.hide();
 
     connect(&lineEdit_, &QLineEdit::editingFinished,

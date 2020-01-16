@@ -1,21 +1,22 @@
+#include "Export.h"
+
+#include <QDate>
 #include <QDebug>
 #include <QDir>
-#include <QMessageBox>
 #include <QFileDialog>
 #include <QMainWindow>
-#include <QDate>
+#include <QMessageBox>
 
+#include "Charts/PlotBase.h"
+#include "Common/Configuration.h"
+#include "Common/Constants.h"
 #include "Common/ExportData.h"
 #include "Common/ExportImage.h"
-#include "Charts/PlotBase.h"
-#include "Common/Constants.h"
-#include "Common/Configuration.h"
-
-#include "Export.h"
-#include "ui_Export.h"
-#include "DockWidget.h"
 #include "ModelsAndViews/DataView.h"
+
+#include "DockWidget.h"
 #include "PlotDockWidget.h"
+#include "ui_Export.h"
 
 const char* Export::exportFilesDateFormat_ = "yyyyMMdd";
 

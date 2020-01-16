@@ -1,9 +1,10 @@
+#include "Networking.h"
+
+#include <QApplication>
 #include <QNetworkAccessManager>
 #include <QtNetwork>
-#include <QApplication>
 
 #include "Logger.h"
-#include "Networking.h"
 
 const int Networking::maxTries_ = 5;
 

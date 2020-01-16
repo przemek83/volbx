@@ -57,8 +57,6 @@ private:
 
     QString title_;
 
-    int lineWeidth_;
-
     ///Font used to display %.
     QFont counterFont_;
 
@@ -76,6 +74,8 @@ private:
     QBrush brush_;
 
     QVector<QString> initNames(char newLine);
+
+    int lineWeidth_;
 };
 
 #endif // PROGRESSBAR_H

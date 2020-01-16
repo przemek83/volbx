@@ -1,14 +1,15 @@
-#include <QSplitter>
-#include <QVBoxLayout>
+#include "DatasetImportTab.h"
+
 #include <QHeaderView>
 #include <QMessageBox>
+#include <QSplitter>
+#include <QVBoxLayout>
 
 #include "Datasets/DatasetDefinitionInner.h"
 
+#include "ColumnsPreview.h"
 #include "DatasetDefinitionVisualization.h"
 #include "DatasetsListBrowser.h"
-#include "ColumnsPreview.h"
-#include "DatasetImportTab.h"
 
 DatasetImportTab::DatasetImportTab(QWidget* parent) :
     ImportTab(parent)
