@@ -16,12 +16,6 @@ DoubleSlider::DoubleSlider(int min, int max, QWidget* parent) :
     setCurrentMin(minValue_);
     setCurrentMax(maxValue_);
 
-    cursorSize_ = 16;
-    mousePositionX_ = 0;
-    moving_ = 0;
-    isOnMinHandle_ = false;
-    isOnMaxHandle_ = false;
-
     lastEmittedMin_ = getCurrentMin();
     lastEmittedMax_ = getCurrentMax();
 
@@ -30,12 +24,12 @@ DoubleSlider::DoubleSlider(int min, int max, QWidget* parent) :
     //Refresh.
     refreshTimer_.setSingleShot(false);
     QObject::connect(&refreshTimer_, SIGNAL(timeout()), this, SLOT(update()));
-    refreshTimer_.start(25);
+    refreshTimer_.start(REFRESH_TIMER_INTERVAL);
 }
 
 QSize DoubleSlider::sizeHint() const
 {
-    return QSize(120, 40);
+    return QSize(SIZE_HINT_WIDTH, SIZE_HINT_HEIGH);
 }
 
 int DoubleSlider::getCurrentMin()
@@ -153,8 +147,8 @@ void DoubleSlider::mouseMoveEvent(QMouseEvent* event)
 {
     float mouseX =
         static_cast<float>(event->x()) / static_cast<float>(this->width()) * (100.0 + cursorSize_);
-    float minX = ((currentMin_ - minValue_) / (maxValue_ - minValue_) * 100);
-    float maxX = ((currentMax_ - minValue_) / (maxValue_ - minValue_) * 100);
+    float minX = ((currentMin_ - minValue_) / (maxValue_ - minValue_) * MAX_PERCENT);
+    float maxX = ((currentMax_ - minValue_) / (maxValue_ - minValue_) * MAX_PERCENT);
 
     isOnMinHandle_ = ((((mouseX > minX) && (mouseX < minX + cursorSize_)) ||
                        ((mousePositionX_ > minX) && (mousePositionX_ < minX + cursorSize_)))
@@ -175,11 +169,11 @@ void DoubleSlider::mouseMoveEvent(QMouseEvent* event)
             {
                 minX = 0;
             }
-            if (minX > 100)
+            if (minX > MAX_PERCENT)
             {
-                minX = 100;
+                minX = MAX_PERCENT;
             }
-            setCurrentMin(minX / 100 * (maxValue_ - minValue_) + minValue_);
+            setCurrentMin(minX / MAX_PERCENT * (maxValue_ - minValue_) + minValue_);
 
             if (currentMax_ < currentMin_)
             {
@@ -196,11 +190,11 @@ void DoubleSlider::mouseMoveEvent(QMouseEvent* event)
             {
                 maxX = 0;
             }
-            if (maxX > 100)
+            if (maxX > MAX_PERCENT)
             {
-                maxX = 100;
+                maxX = MAX_PERCENT;
             }
-            setCurrentMax(maxX / 100 * (maxValue_ - minValue_) + minValue_);
+            setCurrentMax(maxX / MAX_PERCENT * (maxValue_ - minValue_) + minValue_);
             if (currentMin_ > currentMax_)
             {
                 setCurrentMin(maxX);
@@ -224,8 +218,8 @@ void DoubleSlider::paintEvent(QPaintEvent* event)
         return;
     }
 
-    double minX = ((currentMin_ - minValue_) / (maxValue_ - minValue_) * 100);
-    double maxX = ((currentMax_ - minValue_) / (maxValue_ - minValue_) * 100);
+    double minX = ((currentMin_ - minValue_) / (maxValue_ - minValue_) * MAX_PERCENT);
+    double maxX = ((currentMax_ - minValue_) / (maxValue_ - minValue_) * MAX_PERCENT);
 
     QPainter p(this);
 
@@ -260,7 +254,7 @@ void DoubleSlider::paintEvent(QPaintEvent* event)
 
     //Left handle.
     QStyleOptionSlider opt2 = defaultStyle;
-    if (minX == 100)
+    if (minX == MAX_PERCENT)
     {
         opt2.sliderPosition = minX - 1;
     }
@@ -279,7 +273,7 @@ void DoubleSlider::paintEvent(QPaintEvent* event)
 
     //Righ handle.
     QStyleOptionSlider opt3 = defaultStyle;
-    if (maxX == 100)
+    if (maxX == MAX_PERCENT)
     {
         opt3.sliderPosition = maxX - 1;
     }

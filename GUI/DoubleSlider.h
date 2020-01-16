@@ -122,10 +122,10 @@ private:
     double maxValue_;
 
     ///Coursor size.
-    double cursorSize_;
+    static constexpr int cursorSize_{16};
 
     ///Mouse position on axis x.
-    double mousePositionX_;
+    double mousePositionX_{0};
 
     ///Timer for refreshing.
     QTimer refreshTimer_;
@@ -137,13 +137,22 @@ private:
     int lastEmittedMax_;
 
     ///Flag to remember handle is moving.
-    int moving_;
+    int moving_{0};
 
     ///Mouse on left handle.
-    bool isOnMinHandle_;
+    bool isOnMinHandle_{false};
 
     ///Mouse on right handle.
-    bool isOnMaxHandle_;
+    bool isOnMaxHandle_{false};
+
+    static constexpr int MAX_PERCENT{100};
+
+    static constexpr int REFRESH_TIMER_INTERVAL{25};
+
+    static constexpr int SIZE_HINT_WIDTH{120};
+
+    static constexpr int SIZE_HINT_HEIGH{40};
+
 
 Q_SIGNALS:
     ///Emitted after actual minimum changed.
