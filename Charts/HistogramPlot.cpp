@@ -135,7 +135,7 @@ void HistogramPlot::recompute(int intervalsCount)
     {
         float x = min + step * i;
         samples.append(QwtIntervalSample(intervals[i], static_cast<double>(x), static_cast<double>(x + step)));
-        actualPoints.append(QPointF(static_cast<double>(x + step / 2.f), intervals[i]));
+        actualPoints.append(QPointF(static_cast<double>(x + step / 2.F), intervals[i]));
     }
 
     histPlot_.setSamples(samples);
