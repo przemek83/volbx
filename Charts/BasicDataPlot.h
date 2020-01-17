@@ -11,7 +11,7 @@
 #include "Common/PlotData.h"
 
 #include "PlotBase.h"
-#include "Picker.h"
+#include "LinearPicker.h"
 
 class QMouseEvent;
 
@@ -66,23 +66,6 @@ private:
         TimeScaleDraw(TimeScaleDraw&& other) = delete;
 
         [[nodiscard]] QwtText label(double v) const override;
-    };
-
-    class LinearPicker : public Picker
-    {
-    public:
-        explicit LinearPicker(QWidget* parent);
-
-        ~LinearPicker() override = default;
-
-        LinearPicker& operator=(const LinearPicker& other) = delete;
-        LinearPicker(const LinearPicker& other) = delete;
-
-        LinearPicker& operator=(LinearPicker&& other) = delete;
-        LinearPicker(LinearPicker&& other) = delete;
-
-    protected:
-        [[nodiscard]] QwtText trackerTextF(const QPointF& pos) const override;
     };
 
     LinearPicker picker_;

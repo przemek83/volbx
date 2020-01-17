@@ -11,6 +11,7 @@
 #include "Common/Quantiles.h"
 #include "Common/PlotData.h"
 
+#include "HistPicker.h"
 #include "PlotBase.h"
 #include "Picker.h"
 
@@ -49,23 +50,6 @@ private:
 
     ///Actual density plot (blue line).
     QwtPlotCurve actualDensity_;
-
-    class HistPicker : Picker
-    {
-    public:
-        explicit HistPicker(QWidget* parent);
-
-        ~HistPicker() override = default;
-
-        HistPicker& operator=(const HistPicker& other) = delete;
-        HistPicker(const HistPicker& other) = delete;
-
-        HistPicker& operator=(HistPicker&& other) = delete;
-        HistPicker(HistPicker&& other) = delete;
-
-    protected:
-        QwtText trackerTextF(const QPointF& pos) const override;
-    };
 
     HistPicker picker_;
 

@@ -12,7 +12,7 @@ class Picker : public QwtPlotPicker
 public:
     explicit Picker(QWidget* parent);
 
-    ~Picker() override = default;
+    virtual ~Picker() override = default;
 
     Picker& operator=(const Picker& other) = delete;
     Picker(const Picker& other) = delete;

@@ -179,23 +179,6 @@ QwtText BasicDataPlot::TimeScaleDraw::label(double v) const
     return QwtText(Constants::stringFromDays(lround(v)));
 }
 
-
-BasicDataPlot::LinearPicker::LinearPicker(QWidget* parent)
-    : Picker(parent)
-{
-
-}
-
-QwtText BasicDataPlot::LinearPicker::trackerTextF(const QPointF& pos) const
-{
-    QwtText coords(Constants::stringFromDays(lround(pos.x() + 0.5)) + ", " +
-                   QString::number(pos.y(), 'f', 2));
-
-    QColor bg(Qt::white);
-    coords.setBackgroundBrush(QBrush(bg));
-    return coords;
-}
-
 void BasicDataPlot::legendItemChecked(const QVariant& itemInfo, bool on, int /*index*/)
 {
     QwtPlotItem* plotItem = infoToItem(itemInfo);

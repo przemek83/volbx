@@ -5,6 +5,7 @@
 
 #include "Common/Quantiles.h"
 
+#include "BoxPicker.h"
 #include "PlotBase.h"
 #include "Picker.h"
 
@@ -58,23 +59,6 @@ private:
 
     //One, but marker expects vector.
     QVector<Quantiles> quantiles_;
-
-    class BoxPicker : Picker
-    {
-    public:
-        explicit BoxPicker(QWidget* parent);
-
-        ~BoxPicker() override = default;
-
-        BoxPicker& operator=(const BoxPicker& other) = delete;
-        BoxPicker(const BoxPicker& other) = delete;
-
-        BoxPicker& operator=(BoxPicker&& other) = delete;
-        BoxPicker(BoxPicker&& other) = delete;
-
-    protected:
-        QwtText trackerTextF(const QPointF& pos) const override;
-    };
 
     BoxPicker* picker_;
 };

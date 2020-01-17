@@ -13,8 +13,8 @@
 #include "Common/ProgressBar.h"
 #include "Shared/Logger.h"
 
-PlotDataProvider::PlotDataProvider(int defaultGroupingColumn) :
-    groupingColumn_(defaultGroupingColumn)
+PlotDataProvider::PlotDataProvider(int defaultGroupingColumn, QObject* parent) :
+    QObject(parent), groupingColumn_(defaultGroupingColumn)
 {
 
 }

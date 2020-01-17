@@ -84,24 +84,6 @@ QwtText PlotBase::IntervalsScaleDraw::label(double v) const
     return QwtText(Constants::floatToStringUsingLocale(static_cast<float>(v), 0));
 }
 
-PlotBase::PlotMagnifier::PlotMagnifier(QWidget* canvas)
-    : QwtPlotMagnifier(canvas)
-{
-    actualFactor_ = 1.0;
-}
-
-void PlotBase::PlotMagnifier::rescale(double factor)
-{
-    actualFactor_ *= factor;
-    QwtPlotMagnifier::rescale(factor);
-}
-
-void PlotBase::PlotMagnifier::reset()
-{
-    rescale(1 / actualFactor_);
-    actualFactor_ = 1.0;
-}
-
 void PlotBase::setPlotTitle(const QString& title)
 {
     QwtText titleToSet = QwtText(title);

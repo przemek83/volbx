@@ -63,20 +63,6 @@ QSize QuantilesPlot::minimumSizeHint() const
     return QSize(50, 100);
 }
 
-QuantilesPlot::BoxPicker::BoxPicker(QWidget* parent)
-    : Picker(parent)
-{
-
-}
-
-QwtText QuantilesPlot::BoxPicker::trackerTextF(const QPointF& pos)const
-{
-    QwtText coords(QString::number(pos.y(), 'f', 2));
-    QColor bg(Qt::white);
-    coords.setBackgroundBrush(QBrush(bg));
-    return coords;
-}
-
 QuantilesPlot::IntervalsScaleDraw::IntervalsScaleDraw(int count) :
     count_(count)
 {

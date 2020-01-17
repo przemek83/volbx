@@ -162,14 +162,3 @@ void GroupPlotGui::on_comboBox_currentIndexChanged(int index)
 
     Q_EMIT newGroupingColumn(ui->comboBox->itemData(index).toInt());
 }
-
-GroupPlotGui::ScrollArea::ScrollArea(QWidget* parent)
-    : QScrollArea(parent)
-{
-
-}
-
-void GroupPlotGui::ScrollArea::forceResize()
-{
-    resizeEvent(new QResizeEvent(size(), size()));
-}

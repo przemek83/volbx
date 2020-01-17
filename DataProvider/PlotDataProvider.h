@@ -24,7 +24,7 @@ class PlotDataProvider : public QObject
 {
     Q_OBJECT
 public:
-    explicit PlotDataProvider(int defaultGroupingColumn);
+    explicit PlotDataProvider(int defaultGroupingColumn, QObject* parent = nullptr);
 
     ~PlotDataProvider() override = default;
 

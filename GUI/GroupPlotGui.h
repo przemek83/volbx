@@ -4,13 +4,14 @@
 #include "PlotDockWidget.h"
 
 #include <QMap>
-#include <QScrollArea>
 #include <QRegExpValidator>
 
 #include "Common/Quantiles.h"
 #include "Common/Formats.h"
 #include "Charts/GroupPlot.h"
 #include "Charts/QuantilesPlot.h"
+
+#include "ScrollArea.h"
 
 namespace Ui
 {
@@ -52,22 +53,6 @@ private:
     QuantilesPlot quantilesPlot_;
 
     QHash<int, DataFormat> columnsNumberToFormatMap_;
-
-    class ScrollArea : public QScrollArea
-    {
-    public:
-        explicit ScrollArea(QWidget* parent = nullptr);
-
-        ~ScrollArea() override = default;
-
-        ScrollArea& operator=(const ScrollArea& other) = delete;
-        ScrollArea(const ScrollArea& other) = delete;
-
-        ScrollArea& operator=(ScrollArea&& other) = delete;
-        ScrollArea(ScrollArea&& other) = delete;
-
-        void forceResize();
-    };
 
     ScrollArea* scrollArea_;
 

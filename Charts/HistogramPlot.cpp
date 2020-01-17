@@ -60,21 +60,6 @@ void HistogramPlot::initLegend()
     insertLegend(legend, QwtPlot::BottomLegend);
 }
 
-HistogramPlot::HistPicker::HistPicker(QWidget* parent)
-    : Picker(parent)
-{
-
-}
-
-QwtText HistogramPlot::HistPicker::trackerTextF(const QPointF& pos)const
-{
-    QwtText coords(QString::number(pos.x(), 'f', 0) +
-                   ", " + QString::number(pos.y(), 'f', 0));
-    QColor bg(Qt::white);
-    coords.setBackgroundBrush(QBrush(bg));
-    return coords;
-}
-
 void HistogramPlot::legendItemChecked(const QVariant& itemInfo, bool on, int /*index*/)
 {
     QwtPlotItem* plotItem = infoToItem(itemInfo);

@@ -3,13 +3,14 @@
 
 #include <QPointF>
 #include <qwt_plot.h>
-#include <qwt_plot_magnifier.h>
 #include <qwt_scale_div.h>
 #include <qwt_scale_draw.h>
 #include <qwt_plot_curve.h>
 #include <qwt_plot_canvas.h>
 
 #include "Common/PlotData.h"
+
+#include "PlotMagnifier.h"
 
 class Zoomer;
 class QwtPlotPanner;
@@ -38,28 +39,6 @@ public:
     QSize minimumSizeHint() const override;
 
 protected:
-    class PlotMagnifier : public QwtPlotMagnifier
-    {
-    public:
-        explicit PlotMagnifier(QWidget* canvas);
-
-        ~PlotMagnifier() override = default;
-
-        PlotMagnifier& operator=(const PlotMagnifier& other) = delete;
-        PlotMagnifier(const PlotMagnifier& other) = delete;
-
-        PlotMagnifier& operator=(PlotMagnifier&& other) = delete;
-        PlotMagnifier(PlotMagnifier&& other) = delete;
-
-        void reset();
-
-    protected:
-        void rescale(double factor) override;
-
-    private:
-        double actualFactor_;
-    };
-
     QwtPlotPanner* panner_;
 
     PlotMagnifier* magnifier_;

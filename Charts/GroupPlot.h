@@ -9,6 +9,7 @@
 #include "Common/Quantiles.h"
 
 #include "CustomMarker.h"
+#include "GroupPicker.h"
 #include "PlotBase.h"
 #include "Picker.h"
 #include "NotchedMarker.h"
@@ -57,23 +58,6 @@ private:
 
     ///Names used in tooltip.
     QVector<QString> longIntervalNames_;
-
-    class GroupPicker : public Picker
-    {
-    public:
-        explicit GroupPicker(QWidget* parent);
-
-        ~GroupPicker() override = default;
-
-        GroupPicker& operator=(const GroupPicker& other) = delete;
-        GroupPicker(const GroupPicker& other) = delete;
-
-        GroupPicker& operator=(GroupPicker&& other) = delete;
-        GroupPicker(GroupPicker&& other) = delete;
-
-    protected:
-        QwtText trackerTextF(const QPointF& pos) const override;
-    };
 
     GroupPicker picker_;
 };
