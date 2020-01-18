@@ -2,11 +2,13 @@
 #define PLOTBASE_H
 
 #include <QPointF>
+#include <qwt_plot_magnifier.h>
 #include <qwt_plot.h>
-#include <qwt_scale_div.h>
-#include <qwt_scale_draw.h>
 #include <qwt_plot_curve.h>
 #include <qwt_plot_canvas.h>
+#include <qwt_plot_panner.h>
+#include <qwt_scale_div.h>
+#include <qwt_scale_draw.h>
 
 #include "Common/PlotData.h"
 
@@ -24,7 +26,7 @@ class PlotBase : public QwtPlot
 public:
     explicit PlotBase(const QString& /*title*/, QWidget* parent = nullptr);
 
-    ~PlotBase() override;
+    virtual ~PlotBase() override = default;
 
     PlotBase& operator=(const PlotBase& other) = delete;
     PlotBase(const PlotBase& other) = delete;
@@ -39,9 +41,9 @@ public:
     QSize minimumSizeHint() const override;
 
 protected:
-    QwtPlotPanner* panner_;
+    QwtPlotPanner panner_;
 
-    PlotMagnifier* magnifier_;
+    PlotMagnifier magnifier_;
 
     void setStdScaleDraw(QwtPlot::Axis axis);
 

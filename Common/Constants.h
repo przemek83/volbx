@@ -63,6 +63,14 @@ QStringList generateExcelColumnNames(int columnsNumber);
 static constexpr int LOW_ORDER{1};
 static constexpr int MEDIUM_ORDER{2};
 static constexpr int HIGH_ORDER{3};
+
+static constexpr int BIG_TRANSPARENCY_FACTOR {50};
+static constexpr int SMALL_TRANSPARENCY_FACTOR {200};
+
+bool doublesAreEqual(double left, double right);
+bool floatsAreEqual(float left, float right);
+
+static constexpr double DEFAULT_LABEL_ROTATION {-50.0};
 };
 
 #endif // CONSTANTS_H

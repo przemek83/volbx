@@ -40,7 +40,7 @@ void CustomMarker::draw(QPainter* p,
     const QwtScaleDiv& scaleBottom = basePlot->axisScaleDiv(QwtPlot::xBottom);
 
     //If max scale = min scale than do not draw.
-    if (qFuzzyCompare(scaleLeft.lowerBound(), scaleLeft.upperBound()))
+    if (Constants::doublesAreEqual(scaleLeft.lowerBound(), scaleLeft.upperBound()))
     {
         return;
     }
@@ -66,7 +66,7 @@ void CustomMarker::draw(QPainter* p,
         itemOnX++;
 
         //If min = max draw only one line.
-        if (qFuzzyCompare(quantiles.min_, quantiles.max_))
+        if (Constants::floatsAreEqual(quantiles.min_, quantiles.max_))
         {
             double pointX = xMap.transform(itemOnX);
             double pointY = yMap.transform(static_cast<double>(quantiles.min_));

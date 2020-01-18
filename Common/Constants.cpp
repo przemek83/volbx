@@ -1,5 +1,7 @@
 #include "Constants.h"
 
+#include <cmath>
+
 #include <QLocale>
 #include <QSettings>
 
@@ -54,5 +56,15 @@ QStringList generateExcelColumnNames(int columnsNumber)
     }
 
     return columnNames;
+}
+
+bool doublesAreEqual(double left, double right)
+{
+    return std::abs(left - right) <= 1e-12 * std::max({ 1.0, std::abs(left), std::abs(right) });
+}
+
+bool floatsAreEqual(float left, float right)
+{
+    return std::abs(left - right) <= 1e-6F * std::max({ 1.0F, std::abs(left), std::abs(right) });
 }
 }  // namespace Constants

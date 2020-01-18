@@ -17,9 +17,9 @@ NotchedMarker::NotchedMarker(QVector<Quantiles>* quantiles)
     QLinearGradient gradient;
     gradient.setCoordinateMode(QGradient::ObjectBoundingMode);
     QColor whiteAlpha(Qt::white);
-    whiteAlpha.setAlpha(200);
+    whiteAlpha.setAlpha(Constants::SMALL_TRANSPARENCY_FACTOR);
     QColor endAlpha(Qt::black);
-    endAlpha.setAlpha(50);
+    endAlpha.setAlpha(Constants::BIG_TRANSPARENCY_FACTOR);
     gradient.setColorAt(0, whiteAlpha);
     gradient.setColorAt(1, endAlpha);
     markerBrush_ = QBrush(gradient);

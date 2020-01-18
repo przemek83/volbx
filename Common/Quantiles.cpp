@@ -44,12 +44,12 @@ void Quantiles::computeQuantiles(QVector<float>& valuePerUnit)
 
     for (float pricePerMeter : valuePerUnit)
     {
-        if (min_ > pricePerMeter ||  qFuzzyCompare(min_, 0))
+        if (min_ > pricePerMeter || Constants::floatsAreEqual(min_, 0.F))
         {
             min_ = pricePerMeter;
         }
 
-        if (max_ < pricePerMeter || qFuzzyCompare(max_, 0))
+        if (max_ < pricePerMeter || Constants::floatsAreEqual(max_, 0.F))
         {
             max_ = pricePerMeter;
         }

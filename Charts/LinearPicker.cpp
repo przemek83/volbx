@@ -12,7 +12,7 @@ LinearPicker::LinearPicker(QWidget* parent)
 
 QwtText LinearPicker::trackerTextF(const QPointF& pos) const
 {
-    QwtText coords(Constants::stringFromDays(lround(pos.x() + 0.5)) + ", " +
+    QwtText coords(Constants::stringFromDays(lround(pos.x())) + ", " +
                    QString::number(pos.y(), 'f', 2));
 
     QColor bg(Qt::white);

@@ -1,8 +1,6 @@
 #include "PlotBase.h"
 
 #include <QMouseEvent>
-#include <qwt_plot_magnifier.h>
-#include <qwt_plot_panner.h>
 #include <qwt_text_label.h>
 
 #include "Common/Constants.h"
@@ -10,31 +8,21 @@
 #include "Zoomer.h"
 
 PlotBase::PlotBase(const QString& title, QWidget* parent) :
-    QwtPlot(/*title,*/ parent)
+    QwtPlot(/*title,*/ parent), panner_(canvas()), magnifier_(canvas())
 {
     //Used in export of images.
     setWindowTitle(title);
 
-    panner_ = new QwtPlotPanner(canvas());
-
-    magnifier_ = new PlotMagnifier(canvas());
-
-    panner_->setAxisEnabled(QwtPlot::yLeft, true);
-    panner_->setAxisEnabled(QwtPlot::xBottom, true);
+    panner_.setAxisEnabled(QwtPlot::yLeft, true);
+    panner_.setAxisEnabled(QwtPlot::xBottom, true);
 
     setStdScaleDraw(xBottom);
     setStdScaleDraw(yLeft);
 
-    setAxisLabelRotation(QwtPlot::xBottom, -50.0);
+    setAxisLabelRotation(QwtPlot::xBottom, Constants::DEFAULT_LABEL_ROTATION);
     setAxisLabelAlignment(QwtPlot::xBottom, Qt::AlignLeft | Qt::AlignBottom);
 
     initialScaleMap_.clear();
-}
-
-PlotBase::~PlotBase()
-{
-    delete panner_;
-    delete magnifier_;
 }
 
 void PlotBase::mouseDoubleClickEvent(QMouseEvent* event)
@@ -48,7 +36,7 @@ void PlotBase::mouseDoubleClickEvent(QMouseEvent* event)
 
 void PlotBase::resetPlot()
 {
-    magnifier_->reset();
+    magnifier_.reset();
     for (int i = 0; i < QwtPlot::axisCnt; ++i)
     {
         if (initialScaleMap_.contains(i))
@@ -76,7 +64,7 @@ void PlotBase::setAxisScale(int axisId, double min, double max, double step)
 
 QwtText PlotBase::IntervalsScaleDraw::label(double v) const
 {
-    if (!qFuzzyCompare(fmod(v, 1), 0))
+    if (!Constants::doublesAreEqual(fmod(v, 1), 0.))
     {
         return QwtText(Constants::floatToStringUsingLocale(static_cast<float>(v), 1));
     }

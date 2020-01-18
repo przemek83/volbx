@@ -32,7 +32,9 @@ protected:
     void widgetLeaveEvent(QEvent* event) override;
 
 private:
-    bool mouseInWidget_;
+    bool mouseInWidget_ {false};
+
+    static constexpr double FONT_FACTOR {1.4};
 };
 
 #endif // PICKER_H

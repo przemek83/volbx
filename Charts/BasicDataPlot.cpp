@@ -111,6 +111,8 @@ void BasicDataPlot::initLegend()
     auto legend = new QwtLegend();
     legend->setDefaultItemMode(QwtLegendData::Checkable);
     legend->setFrameStyle(QFrame::Box | QFrame::Sunken);
+
+    // New connect mechanism not working as QwtLegend::checked is not detected.
     connect(legend,
             SIGNAL(checked(QVariant, bool, int)),
             this,
@@ -170,7 +172,7 @@ void BasicDataPlot::setNewData(const PlotData& plotData,
 
 BasicDataPlot::TimeScaleDraw::TimeScaleDraw()
 {
-    setLabelRotation(-50.0);
+    setLabelRotation(Constants::DEFAULT_LABEL_ROTATION);
     setLabelAlignment(Qt::AlignLeft | Qt::AlignBottom);
 }
 

@@ -8,7 +8,7 @@
 #include "Common/Constants.h"
 
 Picker::Picker(QWidget* parent)
-    : QwtPlotPicker(parent), mouseInWidget_(false)
+    : QwtPlotPicker(parent)
 {
     setTrackerMode(AlwaysOn);
 
@@ -18,15 +18,16 @@ Picker::Picker(QWidget* parent)
     setTrackerPen(pen);
 
     QFont actualFont = trackerFont();
-    actualFont.setPointSize(lround(actualFont.pointSize() * 1.4));
+    actualFont.setPointSize(lround(actualFont.pointSize() * FONT_FACTOR));
     actualFont.setWeight(QFont::Bold);
     setTrackerFont(actualFont);
 }
 
 int Picker::getAreaOfMouse()
 {
-    int x = static_cast<int>(lround(invTransform(trackerPosition()).x() + 0.5));
-    return x;
+    const double rounding_shift {0.5};
+    const auto x = lround(invTransform(trackerPosition()).x() + rounding_shift);
+    return static_cast<int>(x);
 }
 
 void Picker::widgetEnterEvent(QEvent* event)

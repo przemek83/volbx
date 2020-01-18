@@ -28,7 +28,7 @@ Zoomer::Zoomer(QwtPlotCanvas* canvas):
 QwtText Zoomer::trackerTextF(const QPointF& pos) const
 {
     QColor bg(Qt::white);
-    bg.setAlpha(200);
+    bg.setAlpha(Constants::SMALL_TRANSPARENCY_FACTOR);
 
     QwtText text = QwtPlotZoomer::trackerTextF(pos);
     text.setBackgroundBrush(QBrush(bg));

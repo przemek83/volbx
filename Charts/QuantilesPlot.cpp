@@ -71,7 +71,7 @@ QuantilesPlot::IntervalsScaleDraw::IntervalsScaleDraw(int count) :
 
 QwtText QuantilesPlot::IntervalsScaleDraw::label(double v) const
 {
-    if (qFuzzyCompare(v, 1) && count_ != 0)
+    if (Constants::doublesAreEqual(v, 1.) && count_ != 0)
     {
         return QwtText(QString::number(count_));
     }
