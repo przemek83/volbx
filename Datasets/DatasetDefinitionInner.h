@@ -1,6 +1,8 @@
 #ifndef DATASETDEFINITIONINNER_H
 #define DATASETDEFINITIONINNER_H
 
+#include <memory>
+
 #include <quazip5/quazip.h>
 
 #include "DatasetDefinition.h"
@@ -13,7 +15,7 @@ class DatasetDefinitionInner : public DatasetDefinition
 public:
     explicit DatasetDefinitionInner(const QString& name);
 
-    ~DatasetDefinitionInner() override;
+    ~DatasetDefinitionInner() override = default;
 
     DatasetDefinitionInner& operator=(const DatasetDefinitionInner& other) = delete;
     DatasetDefinitionInner(const DatasetDefinitionInner& other) = delete;
@@ -23,7 +25,7 @@ public:
 
     bool isValid() const override;
 
-    QVariant* getSharedStringTable() override;
+    std::unique_ptr<QVariant[]> getSharedStringTable() override;
 
     bool getData(QVector<QVector<QVariant> >* dataContainer);
 
@@ -48,7 +50,7 @@ private:
     bool loadStrings(QuaZip& zip);
 
     ///Array with strings.
-    QVariant* stringsTable_;
+    std::unique_ptr<QVariant[]> stringsTable_ {nullptr};
 
     ///Zip file.
     QuaZip zip_;

@@ -34,7 +34,7 @@ bool DatasetDefinitionOds::getSheetList(QuaZip& zip)
         }
 
         //Create, set content and read DOM.
-        QDomDocument xmlDocument(QLatin1String(__FUNCTION__));
+        QDomDocument xmlDocument(name_);
         if (!xmlDocument.setContent(zipFile.readAll()))
         {
             LOG(LOG_IMPORT_EXPORT, "Xml file is damaged.");
@@ -410,15 +410,10 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
                                           QVector<QVector<QVariant> >* dataContainer,
                                           bool fillSamplesOnly)
 {
-    std::unique_ptr<ProgressBar> bar;
+    std::unique_ptr<ProgressBar> bar {fillSamplesOnly ? nullptr : std::make_unique<ProgressBar>(ProgressBar::PROGRESS_TITLE_LOADING, rowsCount_, nullptr)};
+
     QTime performanceTimer;
     performanceTimer.start();
-
-    if (!fillSamplesOnly)
-    {
-        bar.reset(new ProgressBar(ProgressBar::PROGRESS_TITLE_LOADING,
-                                  rowsCount_, nullptr));
-    }
 
     QuaZipFile zipFile;
     QXmlStreamReader xmlStreamReader;

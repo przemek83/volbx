@@ -35,7 +35,7 @@ bool DatasetDefinitionXlsx::getSheetList(QuaZip& zip)
         }
 
         //Create, set content and read DOM.
-        QDomDocument xmlDocument(QLatin1String(__FUNCTION__));
+        QDomDocument xmlDocument(name_);
         if (!xmlDocument.setContent(zipFile.readAll()))
         {
             LOG(LOG_IMPORT_EXPORT, "File is corrupted.");
@@ -81,7 +81,7 @@ bool DatasetDefinitionXlsx::getSheetList(QuaZip& zip)
         }
 
         //Create, set content and read DOM.
-        QDomDocument xmlDocument(QLatin1String(__FUNCTION__));
+        QDomDocument xmlDocument(name_);
         if (!xmlDocument.setContent(zipFile.readAll()))
         {
             LOG(LOG_IMPORT_EXPORT, "File is corrupted.");
@@ -147,7 +147,7 @@ bool DatasetDefinitionXlsx::loadStyles(QuaZip& zip)
         }
 
         //Create, set content and read DOM.
-        QDomDocument xmlDocument(QLatin1String(__FUNCTION__));
+        QDomDocument xmlDocument(name_);
         if (!xmlDocument.setContent(zipFile.readAll()))
         {
             LOG(LOG_IMPORT_EXPORT, "Xml file is corrupted.");
@@ -605,14 +605,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(QuaZip& zip,
                                            QVector<QVector<QVariant> >* dataContainer,
                                            bool fillSamplesOnly)
 {
-    std::unique_ptr<ProgressBar> bar;
-
-    if (!fillSamplesOnly)
-    {
-        bar.reset(new ProgressBar(ProgressBar::PROGRESS_TITLE_LOADING,
-                                  rowsCount_,
-                                  nullptr));
-    }
+    std::unique_ptr<ProgressBar> bar {fillSamplesOnly ? nullptr : std::make_unique<ProgressBar>(ProgressBar::PROGRESS_TITLE_LOADING, rowsCount_, nullptr)};
 
     QApplication::processEvents();
 

@@ -18,10 +18,9 @@ FilterNumbers::FilterNumbers(const QString& name,
                              double max,
                              QWidget* parent) :
     Filter(name, column, parent),
+    ui(new Ui::FilterNumbers),
     minOnInit_(min),
-    maxOnInit_(max),
-    doubleMode_(false),
-    ui(new Ui::FilterNumbers)
+    maxOnInit_(max)
 {
     ui->setupUi(this);
 

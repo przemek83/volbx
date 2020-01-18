@@ -24,7 +24,6 @@ Dataset::Dataset(DatasetDefinition* definition) :
 Dataset::~Dataset()
 {
     delete datasetDefinition_;
-    delete[] sharedStrings_;
 }
 
 int Dataset::rowCount() const

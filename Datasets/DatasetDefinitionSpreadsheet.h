@@ -29,7 +29,7 @@ public:
 
     virtual bool getData(QVector<QVector<QVariant> >* dataContainer);
 
-    QVariant* getSharedStringTable() override;
+    std::unique_ptr<QVariant[]> getSharedStringTable() override;
 
 protected:
     void updateSampleDataStrings() override;

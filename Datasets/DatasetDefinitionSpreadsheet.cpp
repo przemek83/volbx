@@ -86,9 +86,9 @@ bool DatasetDefinitionSpreadsheet::isValid() const
     return valid_;
 }
 
-QVariant* DatasetDefinitionSpreadsheet::getSharedStringTable()
+std::unique_ptr<QVariant[]> DatasetDefinitionSpreadsheet::getSharedStringTable()
 {
-    auto stringsTable = new QVariant[nextIndex_];
+    auto stringsTable = std::make_unique<QVariant[]>(nextIndex_);
     stringsTable[0] = QVariant(QString());
     QHash<QString, int>::const_iterator i = stringsMap_.constBegin();
     while (i != stringsMap_.constEnd())

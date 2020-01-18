@@ -1,6 +1,8 @@
 #ifndef DATASET_H
 #define DATASET_H
 
+#include <memory>
+
 #include <QVariant>
 #include <QVector>
 #include <QStringList>
@@ -75,7 +77,7 @@ protected:
     QVector<QVector<QVariant> > data_;
 
     ///Array with shared strings, Done for memory optimization.
-    QVariant* sharedStrings_ {nullptr};
+    std::unique_ptr<QVariant[]> sharedStrings_ {nullptr};
 
     ///Dataset is valid.
     bool valid_ {false};

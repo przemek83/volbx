@@ -16,20 +16,12 @@
 #include "DatasetInner.h"
 
 DatasetDefinitionInner::DatasetDefinitionInner(const QString& name)
-    : DatasetDefinition(name),
-      stringsTable_(nullptr)
+    : DatasetDefinition(name)
 {
     zip_.setZipName(DatasetInner::getDatasetsDir() +
                     name_ +
                     Constants::datasetExtension);
     valid_ = load();
-}
-
-DatasetDefinitionInner::~DatasetDefinitionInner()
-{
-    delete[] stringsTable_;
-
-    //QuaZip destructor checks if zip is still open.
 }
 
 bool DatasetDefinitionInner::isValid() const
@@ -138,7 +130,7 @@ bool DatasetDefinitionInner::fromXml(QByteArray& definitionContent)
     columnsFormat_.clear();
     specialColumns_.clear();
 
-    QDomDocument xmlDocument(QLatin1String(__FUNCTION__));
+    QDomDocument xmlDocument(name_);
 
     //If parsing failure than exit.
     if (!xmlDocument.setContent(definitionContent))
@@ -207,12 +199,7 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
     QTextStream stream(&zipFile);
     stream.setCodec("UTF-8");
 
-    std::unique_ptr<ProgressBar> bar;
-
-    if (!fillSamplesOnly)
-    {
-        bar.reset(new ProgressBar(ProgressBar::PROGRESS_TITLE_LOADING, rowCount(), nullptr));
-    }
+    std::unique_ptr<ProgressBar> bar {fillSamplesOnly ? nullptr : std::make_unique<ProgressBar>(ProgressBar::PROGRESS_TITLE_LOADING, rowCount(), nullptr)};
 
     QTime performanceTimer;
     performanceTimer.start();
@@ -339,11 +326,11 @@ bool DatasetDefinitionInner::loadStrings(QuaZip& zip)
     zipFile.close();
 
     QList<QByteArray> strings = stringsContent.split('\n');
-    //First element is empty element.
-    stringsTable_ = new QVariant[strings.size() + 1];
+    //First element is empty.
+    stringsTable_ = std::make_unique<QVariant[]>(strings.size() + 1);
     stringsTable_[0] = QVariant(QString());
-    int counter = 1;
-    Q_FOREACH (QByteArray currentString, strings)
+    size_t counter = 1;
+    for (const auto& currentString : strings)
     {
         stringsTable_[counter] = QVariant(QString(currentString));
         counter++;
@@ -352,12 +339,9 @@ bool DatasetDefinitionInner::loadStrings(QuaZip& zip)
     return true;
 }
 
-QVariant* DatasetDefinitionInner::getSharedStringTable()
+std::unique_ptr<QVariant[]> DatasetDefinitionInner::getSharedStringTable()
 {
-    ///Manage memory only when it was not retrieved.
-    QVariant* temp = stringsTable_;
-    stringsTable_ = nullptr;
-    return temp;
+    return std::move(stringsTable_);
 }
 
 bool DatasetDefinitionInner::getData(QVector<QVector<QVariant> >* dataContainer)

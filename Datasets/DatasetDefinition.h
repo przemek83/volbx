@@ -1,6 +1,8 @@
 #ifndef DATASETDEFINITION_H
 #define DATASETDEFINITION_H
 
+#include <memory>
+
 #include <QString>
 #include <QVector>
 #include <QStringList>
@@ -62,7 +64,7 @@ public:
 
     QString dumpDatasetDefinition() const;
 
-    virtual QVariant* getSharedStringTable() = 0;
+    virtual std::unique_ptr<QVariant[]> getSharedStringTable() = 0;
 
     ///Definition to bytes array.
     void toXml(QByteArray& data, int rowCountNumber) const;

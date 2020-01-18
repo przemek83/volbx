@@ -17,7 +17,6 @@ class CustomMarker;
 class QuantilesPlot : public PlotBase
 {
     Q_OBJECT
-
 public:
     explicit QuantilesPlot(QWidget* parent = nullptr);
 
@@ -60,7 +59,7 @@ private:
     //One, but marker expects vector.
     QVector<Quantiles> quantiles_;
 
-    BoxPicker* picker_;
+    BoxPicker picker_;
 };
 
 #endif // QUANTILESPLOT_H

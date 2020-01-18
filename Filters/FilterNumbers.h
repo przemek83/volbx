@@ -34,6 +34,8 @@ public:
     FilterNumbers(FilterNumbers&& other) = delete;
 
 private:
+    Ui::FilterNumbers* ui;
+
     ///Double slider.
     DoubleSlider* slider_;
 
@@ -43,12 +45,10 @@ private:
     ///Maximum set on filter creation.
     double maxOnInit_;
 
-    Ui::FilterNumbers* ui;
-
     static const int factor_;
 
     ///Numbers are doubles.
-    bool doubleMode_;
+    bool doubleMode_ {false};
 
 private Q_SLOTS:
     /**

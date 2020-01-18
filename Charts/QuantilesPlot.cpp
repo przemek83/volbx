@@ -10,12 +10,9 @@
 #include "StringsScaleDraw.h"
 
 QuantilesPlot::QuantilesPlot(QWidget* parent) :
-    PlotBase(QObject::tr("Quantiles"), parent),
-    marker_(nullptr)
+    PlotBase(QObject::tr("Quantiles"), parent), picker_(canvas())
 {
     marker_ = new NotchedMarker(&quantiles_);
-
-    picker_ = new BoxPicker(canvas());
 
     quantiles_.clear();
 
@@ -36,7 +33,6 @@ QuantilesPlot::QuantilesPlot(QWidget* parent) :
 
 QuantilesPlot::~QuantilesPlot()
 {
-    delete picker_;
     delete marker_;
 }
 

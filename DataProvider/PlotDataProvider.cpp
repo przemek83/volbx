@@ -113,9 +113,6 @@ void PlotDataProvider::fillDataForStringGrouping(QVector<TransactionData>* calcD
 
 void PlotDataProvider::computeBasicData()
 {
-    double* pointsQuantilesX = nullptr;
-    double* pointsQuantilesY = nullptr;
-
     int dataSize = calcData_->size();
     if (dataSize <= 0)
     {
@@ -128,14 +125,18 @@ void PlotDataProvider::computeBasicData()
     }
 
     //Create points for quantiles - x, y, min, max.
-    pointsQuantilesX = new double[static_cast<unsigned long long>(dataSize)];
-    pointsQuantilesY = new double[static_cast<unsigned long long>(dataSize)];
+    auto pointsQuantilesX = new double[static_cast<unsigned long long>(dataSize)];
+    auto pointsQuantilesY = new double[static_cast<unsigned long long>(dataSize)];
 
-    double sumX = 0.0, sumY = 0.0, sumXX = 0.0, sumXY = 0.0;
-    double a = 0.0, b = 0.0;
+    double sumX = 0.;
+    double sumY = 0.;
+    double sumXX = 0.;
+    double sumXY = 0.;
+    double a = 0.;
+    double b = 0.;
 
-    double minX = 0;
-    double maxX = 0;
+    double minX = 0.;
+    double maxX = 0.;
     bool set = false;
 
     for (int i = 0; i < dataSize; ++i)
