@@ -7,9 +7,61 @@
 
 namespace Constants
 {
+
+QString getUpdaterName()
+{
+    return QStringLiteral("VersionCheck");
+}
+
+QString getExeFileSuffix()
+{
+    return QStringLiteral(".exe");
+}
+
+QString getTemporaryFileSuffix()
+{
+    return QStringLiteral(".tmp");
+}
+
+QDate getStartOfTheWorld()
+{
+    static const QDate startOfTheWorld{QDate(1970, 1, 1)};
+    return startOfTheWorld;
+}
+
+QString getDefaultDateFormat()
+{
+    return QStringLiteral("d/M/yyyy");
+}
+
+QString getConfigurationFileName()
+{
+    return QStringLiteral("config");
+}
+
+QString getDatasetDefinitionFilename()
+{
+    return QStringLiteral("definition.xml");
+}
+
+QString getDatasetDataFilename()
+{
+    return QStringLiteral("data.csv");
+}
+
+QString getDatasetStringsFilename()
+{
+    return QStringLiteral("strings.txt");
+}
+
+QString getDatasetExtension()
+{
+    return QStringLiteral(".vbx");
+}
+
 QString stringFromDays(int daysToAdd)
 {
-    return startOfTheWorld.addDays(daysToAdd).toString(defaultDateFormat);
+    return getStartOfTheWorld().addDays(daysToAdd).toString(getDefaultDateFormat());
 }
 
 QString floatToStringUsingLocale(float value, int precison)
@@ -23,6 +75,11 @@ QString floatToStringUsingLocale(float value, int precison)
     }
 
     return locale.toString(value, 'f', precison);
+}
+
+QString getDatasetNameRegExp()
+{
+    return QStringLiteral("[\\w\\s-]+");
 }
 
 QStringList generateExcelColumnNames(int columnsNumber)
@@ -60,11 +117,15 @@ QStringList generateExcelColumnNames(int columnsNumber)
 
 bool doublesAreEqual(double left, double right)
 {
-    return std::abs(left - right) <= 1e-12 * std::max({ 1.0, std::abs(left), std::abs(right) });
+    static const double qtDoublePrecision {1e-12};
+    return std::abs(left - right) <=
+           qtDoublePrecision * std::max({ 1.0, std::abs(left), std::abs(right) });
 }
 
 bool floatsAreEqual(float left, float right)
 {
-    return std::abs(left - right) <= 1e-6F * std::max({ 1.0F, std::abs(left), std::abs(right) });
+    static const float qtFloatPrecision {1e-6F};
+    return std::abs(left - right) <=
+           qtFloatPrecision * std::max({ 1.0F, std::abs(left), std::abs(right) });
 }
 }  // namespace Constants

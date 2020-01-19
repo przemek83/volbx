@@ -8,7 +8,7 @@
 void ConfigurationTest::initTestCase()
 {
     configurationFileName_ = QCoreApplication::applicationDirPath() + "/" +
-                             QString(Constants::configurationFile);
+                             Constants::getConfigurationFileName();
 
     QFile file(configurationFileName_);
     QVERIFY(true == file.open(QIODevice::ReadOnly));

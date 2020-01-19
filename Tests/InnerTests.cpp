@@ -128,48 +128,48 @@ void InnerTests::checkExport(QString fileName)
     //Open original archive.
     QuaZip zipOriginal(DatasetInner::getDatasetsDir() +
                        fileName +
-                       Constants::datasetExtension);
+                       Constants::getDatasetExtension());
     QVERIFY(true == zipOriginal.open(QuaZip::mdUnzip));
 
     //Open generated archive.
     QuaZip zipGenerated(DatasetInner::getDatasetsDir() +
                         tempFilename_ +
-                        Constants::datasetExtension);
+                        Constants::getDatasetExtension());
     QVERIFY(true == zipGenerated.open(QuaZip::mdUnzip));
 
     //Open data files in archives and compare it.
     QuaZipFile zipFileOriginal(&zipOriginal);
-    zipOriginal.setCurrentFile(Constants::datasetDataFilename);
+    zipOriginal.setCurrentFile(Constants::getDatasetDataFilename());
     QVERIFY(true == zipFileOriginal.open(QIODevice::ReadOnly));
     QByteArray originalData = zipFileOriginal.readAll();
     zipFileOriginal.close();
 
     QuaZipFile zipFileGenerated(&zipGenerated);
-    zipGenerated.setCurrentFile(Constants::datasetDataFilename);
+    zipGenerated.setCurrentFile(Constants::getDatasetDataFilename());
     QVERIFY(true == zipFileGenerated.open(QIODevice::ReadOnly));
     QByteArray generatedData = zipFileGenerated.readAll();
     zipFileGenerated.close();
     QCOMPARE(originalData, generatedData);
 
     //Open strings files in archives and compare it.
-    zipOriginal.setCurrentFile(Constants::datasetStringsFilename);
+    zipOriginal.setCurrentFile(Constants::getDatasetStringsFilename());
     QVERIFY(true == zipFileOriginal.open(QIODevice::ReadOnly));
     originalData = zipFileOriginal.readAll();
     zipFileOriginal.close();
 
-    zipGenerated.setCurrentFile(Constants::datasetStringsFilename);
+    zipGenerated.setCurrentFile(Constants::getDatasetStringsFilename());
     QVERIFY(true == zipFileGenerated.open(QIODevice::ReadOnly));
     generatedData = zipFileGenerated.readAll();
     zipFileGenerated.close();
     QCOMPARE(originalData, generatedData);
 
     //Open definitions files.
-    zipOriginal.setCurrentFile(Constants::datasetDefinitionFilename);
+    zipOriginal.setCurrentFile(Constants::getDatasetDefinitionFilename());
     QVERIFY(true == zipFileOriginal.open(QIODevice::ReadOnly));
     originalData = zipFileOriginal.readAll();
     zipFileOriginal.close();
 
-    zipGenerated.setCurrentFile(Constants::datasetDefinitionFilename);
+    zipGenerated.setCurrentFile(Constants::getDatasetDefinitionFilename());
     QVERIFY(true == zipFileGenerated.open(QIODevice::ReadOnly));
     generatedData = zipFileGenerated.readAll();
     zipFileGenerated.close();
@@ -258,5 +258,5 @@ void InnerTests::cleanupTestCase()
 {
     QFile::remove(DatasetInner::getDatasetsDir() +
                   tempFilename_ +
-                  Constants::datasetExtension);
+                  Constants::getDatasetExtension());
 }

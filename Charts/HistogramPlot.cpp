@@ -6,6 +6,7 @@
 #include <qwt_legend.h>
 #include <qwt_legend_label.h>
 #include <qwt_plot_panner.h>
+#include <qwt_samples.h>
 #include <qwt_symbol.h>
 
 #include "Common/Constants.h"
@@ -53,6 +54,8 @@ void HistogramPlot::initLegend()
     auto legend = new QwtLegend();
     legend->setDefaultItemMode(QwtLegendData::Checkable);
     legend->setFrameStyle(QFrame::Box | QFrame::Sunken);
+
+    // New connect mechanism not working as QwtLegend::checked is not detected.
     connect(legend,
             SIGNAL(checked(QVariant, bool, int)),
             this,
@@ -116,11 +119,12 @@ void HistogramPlot::recompute(int intervalsCount)
 
     QVector< QwtIntervalSample > samples;
     QVector< QPointF > actualPoints;
+    const float middleOfStep {step / 2.F};
     for (int i = 0; i < intervalsCount; ++i)
     {
-        float x = min + step * i;
+        float x = min + step * static_cast<float>(i);
         samples.append(QwtIntervalSample(intervals[i], static_cast<double>(x), static_cast<double>(x + step)));
-        actualPoints.append(QPointF(static_cast<double>(x + step / 2.F), intervals[i]));
+        actualPoints.append(QPointF(static_cast<double>(x + middleOfStep), intervals[i]));
     }
 
     histPlot_.setSamples(samples);

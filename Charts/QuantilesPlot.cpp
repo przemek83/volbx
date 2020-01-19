@@ -56,7 +56,9 @@ void QuantilesPlot::setNewData(const Quantiles& quantiles)
 
 QSize QuantilesPlot::minimumSizeHint() const
 {
-    return QSize(50, 100);
+    const int minimumWidth {50};
+    const int minimumHeight {100};
+    return QSize(minimumWidth, minimumHeight);
 }
 
 QuantilesPlot::IntervalsScaleDraw::IntervalsScaleDraw(int count) :

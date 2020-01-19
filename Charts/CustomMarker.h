@@ -34,7 +34,7 @@ protected:
                              int elementNumber,
                              const QwtScaleMap& xMap,
                              const QwtScaleMap& yMap,
-                             float width,
+                             double width,
                              const Quantiles& quantiles) const = 0;
 
     QVector<Quantiles>* quantiles_;

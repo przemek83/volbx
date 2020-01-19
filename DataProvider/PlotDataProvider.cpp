@@ -136,7 +136,7 @@ void PlotDataProvider::computeBasicData()
 
     for (int i = 0; i < dataSize; ++i)
     {
-        double x = Constants::startOfTheWorld.daysTo(calcData_.at(i).date_);
+        double x = Constants::getStartOfTheWorld().daysTo(calcData_.at(i).date_);
         double y = static_cast<double>(calcData_.at(i).pricePerMeter_);
         pointsQuantilesX[i] = x;
         pointsQuantilesY[i] = y;

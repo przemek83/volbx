@@ -72,7 +72,9 @@ void GroupPlot::shortenIntervalsNamesIfNeeded(QVector<QString>& intervalsNames,
 
 QSize GroupPlot::minimumSizeHint() const
 {
-    return QSize(150, 100);
+    const int minimumWidth {150};
+    const int minimumHeight {100};
+    return QSize(minimumWidth, minimumHeight);
 }
 
 bool GroupPlot::event(QEvent* event)

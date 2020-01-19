@@ -29,17 +29,24 @@ void NotchedMarker::drawElement(QPainter* p,
                                 int elementNumber,
                                 const QwtScaleMap& xMap,
                                 const QwtScaleMap& yMap,
-                                float width,
+                                double width,
                                 const Quantiles& quantiles) const
 {
-    const auto widthAsDouble = static_cast<double>(width);
-
     //Center of x axis for item.
     const double centerX = xMap.transform(elementNumber);
-    const double leftEdgeX {centerX - widthAsDouble};
-    const double rightEdgeX {centerX + widthAsDouble};
-    const double middleOfLeftPartX {centerX - widthAsDouble / 2};
-    const double middleOfRightPartX {centerX + widthAsDouble / 2};
+    const double leftEdgeX {centerX - width};
+    const double rightEdgeX {centerX + width};
+    const double middleOfLeftPartX {centerX - width / 2};
+    const double middleOfRightPartX {centerX + width / 2};
+
+    //If min = max draw only one line.
+    if (Constants::floatsAreEqual(quantiles.min_, quantiles.max_))
+    {
+        double pointY = yMap.transform(static_cast<double>(quantiles.min_));
+        p->drawLine(QPointF(middleOfLeftPartX, pointY),
+                    QPointF(middleOfRightPartX, pointY));
+        return;
+    }
 
     //Draw horizontal line for max.
     p->setPen(QPen(Qt::DotLine));
@@ -96,7 +103,7 @@ void NotchedMarker::drawElement(QPainter* p,
 
     //Draw avg cross.
     const double yLevelAvg = yMap.transform(static_cast<double>(quantiles.avg_));
-    const double crossWidth {widthAsDouble / 7.};
+    const double crossWidth {width / 7.};
     p->drawLine(QPointF(centerX - crossWidth, yLevelAvg - crossWidth),
                 QPointF(centerX + crossWidth, yLevelAvg + crossWidth));
     p->drawLine(QPointF(centerX + crossWidth, yLevelAvg - crossWidth),

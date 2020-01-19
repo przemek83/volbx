@@ -13,7 +13,7 @@ TabBar::TabBar(QWidget* parent) :
     QTabBar(parent)
 {
     lineEdit_.setParent(this);
-    lineEdit_.setValidator(new QRegExpValidator(QRegExp(Constants::datasetNameRegExp), this));
+    lineEdit_.setValidator(new QRegExpValidator(QRegExp(Constants::getDatasetNameRegExp()), this));
     lineEdit_.hide();
 
     connect(&lineEdit_, &QLineEdit::editingFinished,

@@ -45,11 +45,11 @@ void CustomMarker::draw(QPainter* p,
         return;
     }
 
-    int itemOnX = 0;
     p->save();
     p->setBrush(QBrush(Qt::red, Qt::NoBrush));
 
-    if (quantiles_->size() == 1 && rect.size().width() > 100)
+    const int minWidthForLegend {100};
+    if (quantiles_->size() == 1 && rect.size().width() > minWidthForLegend)
     {
         drawLegend(p, rect);
     }
@@ -58,24 +58,15 @@ void CustomMarker::draw(QPainter* p,
         xMap.pDist() / ((scaleBottom.upperBound() - scaleBottom.lowerBound()) * 2);
 
     //Item should take 90% of place.
-    width *= 0.9;
+    const double widthFactor {.9};
+    width *= widthFactor;
 
     //Draw elements.
+    int elementNumber = 0;
     for (Quantiles& quantiles : *quantiles_)
     {
-        itemOnX++;
-
-        //If min = max draw only one line.
-        if (Constants::floatsAreEqual(quantiles.min_, quantiles.max_))
-        {
-            double pointX = xMap.transform(itemOnX);
-            double pointY = yMap.transform(static_cast<double>(quantiles.min_));
-            p->drawLine(QPointF(pointX - width / 2., pointY),
-                        QPointF(pointX + width / 2., pointY));
-            continue;
-        }
-
-        drawElement(p, itemOnX, xMap, yMap, static_cast<float>(width), quantiles);
+        elementNumber++;
+        drawElement(p, elementNumber, xMap, yMap, width, quantiles);
     }
     p->restore();
 }

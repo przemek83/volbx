@@ -43,7 +43,7 @@ bool Configuration::load()
 
     QString filename(QApplication::applicationDirPath() +
                      "/" +
-                     Constants::configurationFile);
+                     Constants::getConfigurationFileName());
 
     QFile file(filename);
 
@@ -130,13 +130,13 @@ bool Configuration::save()
     LOG(LogTypes::CONFIG, "Config to save:\n" + xml);
 
     QString filename(QApplication::applicationDirPath() + "/" +
-                     QString(Constants::configurationFile));
+                     Constants::getConfigurationFileName());
     QFile::remove(filename);
     QFile file(filename);
 
     if (!file.open(QIODevice::WriteOnly))
     {
-        LOG(LogTypes::CONFIG, "Config file " + QString(Constants::configurationFile) +
+        LOG(LogTypes::CONFIG, "Config file " + Constants::configurationFile +
             " can not be opened for writing. Config not saved.");
         return false;
     }
@@ -157,7 +157,7 @@ QString Configuration::configDump() const
 {
     QString dump;
 
-    dump.append("Configuration(" + QString(Constants::configurationFile) + "):\n");
+    dump.append("Configuration(" + Constants::getConfigurationFileName() + "):\n");
 
     dump.append(QLatin1String("Updates choice picked = "));
     dump.append((updateOption_ == UPDATES_CHOICE_NOT_PICKED ? QLatin1String("No") : QLatin1String("Yes")));

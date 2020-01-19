@@ -20,7 +20,7 @@ DatasetDefinitionInner::DatasetDefinitionInner(const QString& name)
 {
     zip_.setZipName(DatasetInner::getDatasetsDir() +
                     name_ +
-                    Constants::datasetExtension);
+                    Constants::getDatasetExtension());
     valid_ = load();
 }
 
@@ -104,19 +104,19 @@ void DatasetDefinitionInner::updateSampleDataStrings()
 bool DatasetDefinitionInner::loadXmlFile(QByteArray& definitionContent, QuaZip& zip)
 {
     QuaZipFile zipFile(&zip);
-    zip.setCurrentFile(Constants::datasetDefinitionFilename);
+    zip.setCurrentFile(Constants::getDatasetDefinitionFilename());
 
     bool result = zipFile.open(QIODevice::ReadOnly);
     if (!result)
     {
         LOG(LogTypes::IMPORT_EXPORT,
             "Can not open xml file " +
-            QString(Constants::datasetDefinitionFilename) + ".");
+            Constants::getDatasetDefinitionFilename() + ".");
         return result;
     }
 
     LOG(LogTypes::IMPORT_EXPORT,
-        "Xml file " +  QString(Constants::datasetDefinitionFilename) + " opened.");
+        "Xml file " + Constants::getDatasetDefinitionFilename() + " opened.");
 
     definitionContent = zipFile.readAll();
     zipFile.close();
@@ -181,19 +181,19 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
                                       bool fillSamplesOnly)
 {
     QuaZipFile zipFile(&zip);
-    zip.setCurrentFile(Constants::datasetDataFilename);
+    zip.setCurrentFile(Constants::getDatasetDataFilename());
 
     bool result = zipFile.open(QIODevice::ReadOnly);
     if (!result)
     {
         LOG(LogTypes::IMPORT_EXPORT,
             "Can not open csv file " +
-            QString(Constants::datasetDataFilename) + ".");
+            QString(Constants::getDatasetDataFilename()) + ".");
         return result;
     }
 
     LOG(LogTypes::IMPORT_EXPORT,
-        "Csv file " + QString(Constants::datasetDataFilename) +
+        "Csv file " + Constants::getDatasetDataFilename() +
         " opened.");
 
     QTextStream stream(&zipFile);
@@ -308,19 +308,19 @@ DatasetDefinitionInner::addElementToContainer(const DataFormat columnFormat,
 bool DatasetDefinitionInner::loadStrings(QuaZip& zip)
 {
     QuaZipFile zipFile(&zip);
-    zip.setCurrentFile(Constants::datasetStringsFilename);
+    zip.setCurrentFile(Constants::getDatasetStringsFilename());
 
     bool result = zipFile.open(QIODevice::ReadOnly);
     if (!result)
     {
         LOG(LogTypes::IMPORT_EXPORT,
             "Can not open strings file " +
-            QString(Constants::datasetStringsFilename) + ".");
+            Constants::getDatasetStringsFilename() + ".");
         return result;
     }
 
     LOG(LogTypes::IMPORT_EXPORT,
-        "Strings file " + QString(Constants::datasetStringsFilename) + " opened.");
+        "Strings file " + Constants::getDatasetStringsFilename() + " opened.");
 
     QByteArray stringsContent = zipFile.readAll();
     zipFile.close();

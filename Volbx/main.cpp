@@ -18,17 +18,16 @@
 void overwriteUpdaterfIfNeeded()
 {
     QString updaterFile(QCoreApplication::applicationDirPath() + "/" +
-                        QString::fromLatin1(Constants::updaterName) +
-                        QString::fromLatin1(Constants::exeFileSuffix));
+                        Constants::getUpdaterName() +
+                        Constants::getExeFileSuffix());
 
-    if (QFile::exists(updaterFile +
-                      QString::fromLatin1(Constants::tmpFileSuffix)))
+    if (QFile::exists(updaterFile + Constants::getTemporaryFileSuffix()))
     {
         LOG(LogTypes::APP, "Overwriting " + updaterFile + " by file " +
-            updaterFile + Constants::tmpFileSuffix);
+            updaterFile + Constants::getTemporaryFileSuffix());
 
         QFile::remove(updaterFile);
-        QFile::rename(updaterFile + Constants::tmpFileSuffix,
+        QFile::rename(updaterFile + Constants::getTemporaryFileSuffix(),
                       updaterFile);
     }
 }

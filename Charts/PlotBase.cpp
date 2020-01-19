@@ -83,5 +83,7 @@ void PlotBase::setPlotTitle(const QString& title)
 
 QSize PlotBase::minimumSizeHint() const
 {
-    return QSize(100, 100);
+    const int minimumWidth {100};
+    const int minimumHeight {100};
+    return QSize(minimumWidth, minimumHeight);
 }

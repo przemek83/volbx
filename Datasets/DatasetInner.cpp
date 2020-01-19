@@ -57,10 +57,10 @@ QStringList DatasetInner::getListOfAvailableDatasets()
                           QDir::Readable |
                           QDir::NoSymLinks |
                           QDir::NoDotAndDotDot);
-    datasetsDir.setNameFilters(QStringList("*" + QString(Constants::datasetExtension)));
+    datasetsDir.setNameFilters(QStringList("*" + Constants::getDatasetExtension()));
     datasetsDir.setSorting(QDir::Name);
 
-    return datasetsDir.entryList().replaceInStrings(QString(Constants::datasetExtension), QLatin1String(""));
+    return datasetsDir.entryList().replaceInStrings(Constants::getDatasetExtension(), QLatin1String(""));
 }
 
 QString DatasetInner::getDatasetsDir()
@@ -89,6 +89,6 @@ bool DatasetInner::datasetDirExistAndUserHavePermisions()
 bool DatasetInner::removeDataset(const QString& name)
 {
     QString datasetFile =
-        getDatasetsDir() + name + QString(Constants::datasetExtension);
+        getDatasetsDir() + name + Constants::getDatasetExtension();
     return QFile::remove(datasetFile);
 }

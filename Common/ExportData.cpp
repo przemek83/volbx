@@ -289,7 +289,7 @@ void ExportData::variantToString(const QVariant& variant,
         case QVariant::Date:
         case QVariant::DateTime:
             {
-                static const QString defDateFormat(Constants::defaultDateFormat);
+                static const QString defDateFormat(Constants::getDefaultDateFormat());
                 destinationArray->append(variant.toDate().toString(defDateFormat));
                 break;
             }
@@ -370,7 +370,7 @@ bool ExportData::saveDataset(const QString& name,
     LOG(LogTypes::IMPORT_EXPORT, "Saving dataset " + name);
 
     //Open archive.
-    QuaZip zip(DatasetInner::getDatasetsDir() + name + Constants::datasetExtension);
+    QuaZip zip(DatasetInner::getDatasetsDir() + name + Constants::getDatasetExtension());
     bool result = zip.open(QuaZip::mdCreate);
     if (!result)
     {
@@ -430,7 +430,7 @@ ExportData::saveDatasetDataFile(QuaZipFile& zipFile,
                                 ProgressBar* bar)
 {
     bool result = zipFile.open(QIODevice::WriteOnly,
-                               QuaZipNewInfo(Constants::datasetDataFilename));
+                               QuaZipNewInfo(Constants::getDatasetDataFilename()));
     if (!result)
     {
         LOG(LogTypes::IMPORT_EXPORT, "Error while saving data file.");
@@ -526,7 +526,7 @@ bool ExportData::saveDatasetStringsFile(QuaZipFile& zipFile,
 {
     //Save strings file.
     bool result = zipFile.open(QIODevice::WriteOnly,
-                               QuaZipNewInfo(Constants::datasetStringsFilename));
+                               QuaZipNewInfo(Constants::getDatasetStringsFilename()));
     if (!result || zipFile.write(stringsContent) == -1)
     {
         LOG(LogTypes::IMPORT_EXPORT, "Error while saving strings file.");
@@ -549,7 +549,7 @@ bool ExportData::saveDatasetDefinitionFile(QuaZipFile& zipFile,
     parentModel->getDatasetDefinition()->toXml(definitionContent, rowCount);
 
     bool result = zipFile.open(QIODevice::WriteOnly,
-                               QuaZipNewInfo(Constants::datasetDefinitionFilename));
+                               QuaZipNewInfo(Constants::getDatasetDefinitionFilename()));
     if (!result || zipFile.write(definitionContent) == -1)
     {
         LOG(LogTypes::IMPORT_EXPORT, "Error while saving definition file.");

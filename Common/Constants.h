@@ -6,35 +6,27 @@
 
 namespace Constants
 {
-///Name of updater binary.
-static const char* updaterName{"VersionCheck"};
 
-///Exe file extension.
-static const char* exeFileSuffix{".exe"};
+QString getUpdaterName();
 
-///Temporary file extension.
-static const char* tmpFileSuffix{".tmp"};
+QString getExeFileSuffix();
+
+QString getTemporaryFileSuffix();
 
 ///Date 1/1/1970 used as reference for dates conversion.
-static const QDate startOfTheWorld{QDate(1970, 1, 1)};
+QDate getStartOfTheWorld();
 
-///Default dates format.
-static const char* defaultDateFormat{"d/M/yyyy"};
+QString getDefaultDateFormat();
 
-///Name of config file.
-static const char* configurationFile{"config"};
+QString getConfigurationFileName();
 
-///Extension of dataset definition files.
-static const char* datasetDefinitionFilename{"definition.xml"};
+QString getDatasetDefinitionFilename();
 
-///Extension of dataset data files.
-static const char* datasetDataFilename{"data.csv"};
+QString getDatasetDataFilename();
 
-///Extension of dataset strings files.
-static const char* datasetStringsFilename{"strings.txt"};
+QString getDatasetStringsFilename();
 
-///Extension of dataset file.
-static const char* datasetExtension{".vbx"};
+QString getDatasetExtension();
 
 /**
  * Calculate date 1/1/1970 + given days and return string.
@@ -54,9 +46,9 @@ static constexpr int minDataPerThread{100};
  **/
 QString floatToStringUsingLocale(float value, int precison);
 
-///String regexp for field used to input dataset name.
-static const char* datasetNameRegExp{"[\\w\\s-]+"};
+QString getDatasetNameRegExp();
 
+///String regexp for field used to input dataset name.
 QStringList generateExcelColumnNames(int columnsNumber);
 
 /// Values used to enforce drawing order of items on plots.

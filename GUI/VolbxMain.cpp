@@ -528,10 +528,10 @@ void VolbxMain::updateCheckReplyFinished(QNetworkReply* reply)
         {
             if (QFile::exists(QCoreApplication::applicationDirPath() +
                               '/' +
-                              Constants::updaterName +
-                              Constants::exeFileSuffix))
+                              Constants::getUpdaterName() +
+                              Constants::getExeFileSuffix()))
             {
-                QProcess::startDetached(QString(Constants::updaterName));
+                QProcess::startDetached(Constants::getUpdaterName());
                 QCoreApplication::quit();
             }
             else
@@ -539,7 +539,7 @@ void VolbxMain::updateCheckReplyFinished(QNetworkReply* reply)
                 QMessageBox::critical(nullptr,
                                       tr("Wrong installation"),
                                       tr("Installation is corrupted. Could not find file ") +
-                                      Constants::updaterName + Constants::exeFileSuffix + ".\n" +
+                                      Constants::getUpdaterName() + Constants::getExeFileSuffix() + ".\n" +
                                       tr("Can not use update functionality."));
             }
         }

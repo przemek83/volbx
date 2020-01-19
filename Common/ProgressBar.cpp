@@ -100,23 +100,23 @@ void ProgressBar::paintEvent([[maybe_unused]] QPaintEvent* event)
     painter.setBrush(brush_);
     painter.setFont(counterFont_);
 
-    int startAngle;
-    int spanAngle;
+    constexpr int fullDegree {16};
+    constexpr double hundredthOfFullCircle {3.6};
 
     //Counter without %.
-    if (0 == maxValue_)
+    if (maxValue_ == 0)
     {
-        int step = 45;
-        startAngle = lround(currentPercent_ * 3.6 * 16);
-        spanAngle = -step * 16;
+        const int step {45};
+        int startAngle = lround(currentPercent_ * hundredthOfFullCircle * fullDegree);
+        const int spanAngle = -step * fullDegree;
         painter.drawArc(arcRectangle_, startAngle, spanAngle);
-        startAngle = lround((180 + currentPercent_ * 3.6) * 16);
+        startAngle = lround((180 + currentPercent_ * hundredthOfFullCircle) * fullDegree);
         painter.drawArc(arcRectangle_, startAngle, spanAngle);
     }
     else
     {
-        startAngle = 90 * 16;
-        spanAngle = lround(-currentPercent_ * 3.6 * 16);
+        constexpr int startAngle {90 * fullDegree};
+        const int spanAngle = lround(-currentPercent_ * hundredthOfFullCircle * fullDegree);
         painter.drawArc(arcRectangle_, startAngle, spanAngle);
         painter.drawText(arcRectangle_,
                          Qt::AlignCenter,
@@ -128,7 +128,7 @@ void ProgressBar::paintEvent([[maybe_unused]] QPaintEvent* event)
 
     painter.drawText(titleRectangle_, Qt::AlignCenter, title_ + "...");
 
-    if (0 != maxValue_)
+    if (maxValue_ != 0)
     {
         setWindowTitle(QString::number(currentPercent_) + "% " +
                        QString(title_).replace('\n', ' ') + "...");
