@@ -1,12 +1,15 @@
 #ifndef TABLEMODEL_H
 #define TABLEMODEL_H
 
+#include <memory>
 #include <vector>
 
 #include <QAbstractTableModel>
 
 #include "Common/Formats.h"
 #include "Common/SpecialColumns.h"
+
+#include "Dataset.h"
 
 class Dataset;
 class DatasetDefinition;
@@ -18,9 +21,9 @@ class TableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit TableModel(Dataset* dataset, QObject* parent = nullptr);
+    explicit TableModel(std::unique_ptr<Dataset> dataset, QObject* parent = nullptr);
 
-    ~TableModel() override;
+    ~TableModel() override = default;
 
     TableModel& operator=(const TableModel& other) = delete;
     TableModel(const TableModel& other) = delete;
@@ -107,8 +110,7 @@ public:
     int getDefaultGroupingColumn() const;
 
 private:
-    ///Dataset.
-    Dataset* dataset_;
+    std::unique_ptr<Dataset> dataset_;
 
     static const int noColumn_;
 };

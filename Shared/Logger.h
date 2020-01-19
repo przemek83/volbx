@@ -45,14 +45,14 @@ public:
 
 private:
     explicit Logger(QObject* parent = nullptr);
-    ~Logger() override;
+    ~Logger() override = default;
 
-    QMap<LogTypes, bool>* activeLogs_;
+    QMap<LogTypes, bool> activeLogs_;
 
     void reloadCheckBoxes();
 
     ///Widget to display logs (text edit on it).
-    QWidget* display_ {nullptr};
+    QWidget display_;
 
     QTextEdit* textEdit_ {nullptr};
 

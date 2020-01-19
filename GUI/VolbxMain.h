@@ -1,6 +1,8 @@
 #ifndef VOLBXMAIN_H
 #define VOLBXMAIN_H
 
+#include <memory>
+
 #include <QMainWindow>
 #include <QDate>
 #include <QSet>
@@ -47,14 +49,14 @@ private:
      * @brief add new tab for given dataset.
      * @param dataset dataset.
      */
-    void addMainTabForDataset(Dataset* dataset);
+    void addMainTabForDataset(std::unique_ptr<Dataset> dataset);
 
     ///Side dock with filters.
     FiltersDock* filters_ {nullptr};
 
     void manageActions(bool tabExists);
 
-    bool loadDataset(Dataset* dataset);
+    bool loadDataset(Dataset& dataset);
 
     Ui::VolbxMain* ui;
 

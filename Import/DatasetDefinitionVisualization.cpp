@@ -48,14 +48,14 @@ DatasetDefinitionVisualization::~DatasetDefinitionVisualization()
 }
 
 void DatasetDefinitionVisualization::setDatasetDefiniton(
-    DatasetDefinition* datasetDefinition)
+    std::unique_ptr<DatasetDefinition> datasetDefinition)
 {
     clear();
 
     ui->dateCombo->blockSignals(true);
     ui->pricePerUnitCombo->blockSignals(true);
 
-    datasetDefinition_ = datasetDefinition;
+    datasetDefinition_ = std::move(datasetDefinition);
 
     auto [dateOfTransactionPointed, specialColumnTransaction] =
         datasetDefinition_->getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE);
@@ -162,11 +162,7 @@ void DatasetDefinitionVisualization::clear()
 
     ui->specialColumnsWidget->setEnabled(false);
 
-    if (nullptr != datasetDefinition_)
-    {
-        delete datasetDefinition_;
-        datasetDefinition_ = nullptr;
-    }
+    datasetDefinition_ = nullptr;
 }
 
 void DatasetDefinitionVisualization::searchTextChanged(const QString& newText)
@@ -180,7 +176,7 @@ void DatasetDefinitionVisualization::searchTextChanged(const QString& newText)
     }
 }
 
-DatasetDefinition* DatasetDefinitionVisualization::getDatasetDefinition()
+std::unique_ptr<DatasetDefinition> DatasetDefinitionVisualization::retrieveDatasetDefinition()
 {
     if (datasetDefinition_ == nullptr)
         return nullptr;
@@ -228,7 +224,7 @@ DatasetDefinition* DatasetDefinitionVisualization::getDatasetDefinition()
 
     }
 
-    return datasetDefinition_;
+    return std::move(datasetDefinition_);
 }
 
 

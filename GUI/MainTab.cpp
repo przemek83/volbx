@@ -7,12 +7,12 @@
 
 #include "ViewDockWidget.h"
 
-MainTab::MainTab(Dataset* dataset, QWidget* parent) :
+MainTab::MainTab(std::unique_ptr<Dataset> dataset, QWidget* parent) :
     QMainWindow(parent)
 {
     setWindowTitle(dataset->getName());
 
-    auto model = new TableModel(dataset, this);
+    auto model = new TableModel(std::move(dataset), this);
 
     setDockNestingEnabled(true);
 

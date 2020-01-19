@@ -22,7 +22,7 @@ public:
     SpreadsheetsImportTab& operator=(SpreadsheetsImportTab&& other) = delete;
     SpreadsheetsImportTab(SpreadsheetsImportTab&& other) = delete;
 
-    DatasetDefinition* getDatasetDefinition() override;
+    std::unique_ptr<DatasetDefinition> getDatasetDefinition() override;
 
 private Q_SLOTS:
     void openFileButtonClicked();

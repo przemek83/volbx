@@ -24,8 +24,8 @@ void overwriteUpdaterfIfNeeded()
     if (QFile::exists(updaterFile +
                       QString::fromLatin1(Constants::tmpFileSuffix)))
     {
-        LOG(LOG_APP, "Overwriting " + updaterFile + " by file " +
-            updaterFile + Constants::tmpFileSuffix_);
+        LOG(LogTypes::APP, "Overwriting " + updaterFile + " by file " +
+            updaterFile + Constants::tmpFileSuffix);
 
         QFile::remove(updaterFile);
         QFile::rename(updaterFile + Constants::tmpFileSuffix,
@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
 
     Application::initStyle(Configuration::getInstance().getStyle());
 
-    LOG(LOG_APP, "Application start");
+    LOG(LogTypes::APP, "Application start");
 
     overwriteUpdaterfIfNeeded();
 
@@ -50,7 +50,7 @@ int main(int argc, char* argv[])
 
     VolbxMain w;
 
-    LOG(LOG_APP, "Showing main window");
+    LOG(LogTypes::APP, "Showing main window");
 
     w.show();
     w.checkForUpdates();

@@ -23,7 +23,7 @@ public:
     ColumnsPreview& operator=(ColumnsPreview&& other) = delete;
     ColumnsPreview(ColumnsPreview&& other) = delete;
 
-    void setDatasetDefinitionSampleInfo(const DatasetDefinition* datasetDefinition);
+    void setDatasetDefinitionSampleInfo(const DatasetDefinition& datasetDefinition);
 
     void clearDataAndDisable();
 

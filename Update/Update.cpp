@@ -42,7 +42,7 @@ Update::Update(QWidget* parent) :
 
     insertInfoIntoDetails(tr("Connecting to update server") + QStringLiteral("... "));
 
-    LOG(LOG_NETWORK, QLatin1String("Initial network request send."));
+    LOG(LogTypes::NETWORK, QLatin1String("Initial network request send."));
 
     ui->details->hide();
 }
@@ -151,7 +151,7 @@ void Update::downloadFile(const QString& fileName)
     QNetworkReply* reply =
         downloadManager_.get(Networking::getDownloadFileRequest(fileName));
 
-    LOG(LOG_NETWORK,
+    LOG(LogTypes::NETWORK,
         QLatin1String("Sent request for downloading file ") + QString(fileName));
 
     ui->progressBar->reset();
@@ -181,7 +181,7 @@ void Update::downloadFinished(QNetworkReply* reply)
 
     QByteArray fileDownloadedContent = reply->readAll();
 
-    LOG(LOG_NETWORK,
+    LOG(LogTypes::NETWORK,
         QLatin1String("Expected file size ") + QString::number(fileSize.toInt()) +
         QLatin1String(", size of downloaded file ") +
         QString::number(fileDownloadedContent.size()) + QLatin1Char('.'));
@@ -222,7 +222,7 @@ void Update::saveVerfiedFile(QByteArray& fileData, QString& fileName)
     file.open(QIODevice::WriteOnly);
     file.write(fileData);
 
-    LOG(LOG_NETWORK,
+    LOG(LogTypes::NETWORK,
         QLatin1String("Saved file: ") + fileName + QLatin1String(tmpPrefix_));
 
     file.close();

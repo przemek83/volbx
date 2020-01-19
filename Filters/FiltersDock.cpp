@@ -180,13 +180,13 @@ FilterNumbers* FiltersDock::createNewNumbersFilter(const TableModel* parentModel
 
 void FiltersDock::removeModel(const FilteringProxyModel* model)
 {
-    if (nullptr != model)
-    {
-        QWidget* widgetWithFiltersToDelete = modelsMap_.key(model);
-        modelsMap_.remove(widgetWithFiltersToDelete);
-        ui->stackedWidget->removeWidget(widgetWithFiltersToDelete);
-        delete widgetWithFiltersToDelete;
-    }
+    if (!model)
+        return;
+
+    QWidget* widgetWithFiltersToDelete = modelsMap_.key(model);
+    modelsMap_.remove(widgetWithFiltersToDelete);
+    ui->stackedWidget->removeWidget(widgetWithFiltersToDelete);
+    delete widgetWithFiltersToDelete;
 }
 
 void FiltersDock::activateFiltersForModel(const FilteringProxyModel* model)

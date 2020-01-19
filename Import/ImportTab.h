@@ -1,6 +1,8 @@
 #ifndef IMPORTTAB_H
 #define IMPORTTAB_H
 
+#include <memory>
+
 #include <QWidget>
 
 class DatasetDefinition;
@@ -22,7 +24,7 @@ public:
     ImportTab& operator=(ImportTab&& other) = delete;
     ImportTab(ImportTab&& other) = delete;
 
-    virtual DatasetDefinition* getDatasetDefinition() = 0;
+    virtual std::unique_ptr<DatasetDefinition> getDatasetDefinition() = 0;
 
 Q_SIGNALS:
     void definitionIsReady(bool);

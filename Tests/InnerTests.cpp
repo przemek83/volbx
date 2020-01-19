@@ -47,10 +47,10 @@ void InnerTests::generateDumpData()
             QVector<bool> activeColumns(definition->columnCount(), true);
             definition->setActiveColumns(activeColumns);
 
-            DatasetInner* dataset = new DatasetInner(definition);
+            std::unique_ptr<Dataset> dataset = std::make_unique<DatasetInner>(definition);
             dataset->init();
 
-            TableModel model(dataset);
+            TableModel model(std::move(dataset));
             FilteringProxyModel proxyModel;
             proxyModel.setSourceModel(&model);
 
@@ -82,12 +82,12 @@ void InnerTests::testDatasets()
         QVector<bool> activeColumns(definition->columnCount(), true);
         definition->setActiveColumns(activeColumns);
 
-        DatasetInner* dataset = new DatasetInner(definition);
+        std::unique_ptr<Dataset> dataset = std::make_unique<DatasetInner>(definition);
         dataset->init();
 
         QVERIFY(true == dataset->isValid());
 
-        TableModel model(dataset);
+        TableModel model(std::move(dataset));
         FilteringProxyModel proxyModel;
         proxyModel.setSourceModel(&model);
 

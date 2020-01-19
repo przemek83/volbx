@@ -20,13 +20,12 @@ const char* Logger::LogTypeNames_[] =
 
 Logger::Logger([[maybe_unused]] QObject* parent)
 {
-    display_ = new QWidget();
-    display_->setWindowTitle(QStringLiteral("Logs"));
+    display_.setWindowTitle(QStringLiteral("Logs"));
 
     auto verticalLayout = new QVBoxLayout();
     auto horizontalLayout = new QHBoxLayout();
 
-    textEdit_ = new QTextEdit(display_);
+    textEdit_ = new QTextEdit(&display_);
     textEdit_->setLineWrapMode(QTextEdit::NoWrap);
     textEdit_->setReadOnly(true);
 
@@ -35,25 +34,18 @@ Logger::Logger([[maybe_unused]] QObject* parent)
     horizontalLayout->addLayout(verticalLayout);
     horizontalLayout->addWidget(textEdit_);
 
-    display_->setLayout(horizontalLayout);
+    display_.setLayout(horizontalLayout);
 
     //Default config, set all active.
-    activeLogs_ = new QMap<LogTypes, bool>();
     for (int i = 0; i < static_cast<int>(LogTypes::END); ++i)
     {
-        (*activeLogs_)[static_cast<LogTypes>(i)] = true;
+        activeLogs_[static_cast<LogTypes>(i)] = true;
     }
 
     reloadCheckBoxes();
 
-    display_->resize(600, 400);
-    display_->show();
-}
-
-Logger::~Logger()
-{
-    delete display_;
-    delete activeLogs_;
+    display_.resize(600, 400);
+    display_.show();
 }
 
 Logger* Logger::getInstance()
@@ -68,15 +60,15 @@ void Logger::log(LogTypes type,
                  int line,
                  const QString& msg)
 {
-    Q_ASSERT(nullptr != display_ && nullptr != textEdit_);
+    Q_ASSERT(nullptr != textEdit_);
 
-    if (nullptr == display_ || nullptr == textEdit_)
+    if (nullptr == textEdit_)
     {
         return;
     }
 
     //TODO Use __file__ and __line__
-    if (!(*activeLogs_)[type])
+    if (!activeLogs_[type])
     {
         return;
     }
@@ -107,7 +99,7 @@ void Logger::log(LogTypes type,
 
 void Logger::reloadCheckBoxes()
 {
-    auto verticalLayout = display_->findChild<QVBoxLayout*>();
+    auto verticalLayout = display_.findChild<QVBoxLayout*>();
 
     Q_ASSERT(verticalLayout != nullptr);
 
@@ -117,20 +109,20 @@ void Logger::reloadCheckBoxes()
     }
 
     //Delete all.
-    QList<QCheckBox*> checkBoxy = verticalLayout->findChildren<QCheckBox*>();
-    for (QCheckBox* checkBox : checkBoxy)
+    QList<QCheckBox*> checkBoxes = verticalLayout->findChildren<QCheckBox*>();
+    for (QCheckBox* checkBox : checkBoxes)
     {
         verticalLayout->removeWidget(checkBox);
         delete checkBox;
     }
 
     //Create new.
-    QMapIterator<LogTypes, bool> i(*activeLogs_);
+    QMapIterator<LogTypes, bool> i(activeLogs_);
     while (i.hasNext())
     {
         i.next();
 
-        CheckBox* check = new CheckBox(i.key(), QLatin1String(LogTypeNames_[static_cast<int>(i.key())]), display_);
+        CheckBox* check = new CheckBox(i.key(), QLatin1String(LogTypeNames_[static_cast<int>(i.key())]), &display_);
         check->setChecked(i.value());
         connect(check, SIGNAL(toggled(bool)), this, SLOT(changeActiveLogs(bool)));
         verticalLayout->insertWidget(static_cast<int>(i.key()), check);
@@ -139,17 +131,14 @@ void Logger::reloadCheckBoxes()
 void Logger::changeActiveLogs(bool state)
 {
     auto checkBox = qobject_cast<CheckBox*>(sender());
-    (*activeLogs_)[checkBox->logType()] = state;
+    activeLogs_[checkBox->logType()] = state;
     QString msg(LogTypeNames_[static_cast<int>(checkBox->logType())]);
     msg.append(QStringLiteral(" is ") + (state ? QStringLiteral("active") : QStringLiteral("disabled")));
-    LOG(LOG_APP, msg);
+    LOG(LogTypes::APP, msg);
 }
 
 
 void Logger::switchVisibility()
 {
-    if (nullptr != display_)
-    {
-        display_->setVisible(!display_->isVisible());
-    }
+    display_.setVisible(!display_.isVisible());
 }

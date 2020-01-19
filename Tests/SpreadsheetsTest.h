@@ -74,14 +74,14 @@ private:
 
     void compareDataWithDumps(const QString& category, bool damaged);
 
-    void testDatasetConstruction(DatasetSpreadsheet& dataset,
+    void testDatasetConstruction(const Dataset& dataset,
                                  QVector<int>& columnsToTest,
                                  QVector<double>& compareNumericValues,
                                  QVector<QDate>& compareDateValues,
                                  QStringList& compareList,
                                  bool emptyDates);
 
-    void compareExportDataWithDump(DatasetSpreadsheet* dataset);
+    void compareExportDataWithDump(std::unique_ptr<Dataset> dataset);
 
     ///To be used when .ods and .xlsx has same data. Actualy data is not same :(
     void compareAllTsvDumps();

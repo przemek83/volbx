@@ -1,6 +1,8 @@
 #ifndef IMPORTDATA_H
 #define IMPORTDATA_H
 
+#include <memory>
+
 #include <QDialog>
 #include <QMap>
 
@@ -34,7 +36,7 @@ public:
     ImportData& operator=(ImportData&& other) = delete;
     ImportData(ImportData&& other) = delete;
 
-    DatasetDefinition* getSelectedDataset();
+    std::unique_ptr<DatasetDefinition> getSelectedDataset();
 
     ///Type enum used during creation of Dataset objects.
     enum ImportDataType
@@ -50,8 +52,6 @@ public:
 
 private:
     Ui::ImportData* ui;
-
-    QDialogButtonBox* buttonBox_ {nullptr};
 };
 
 #endif // IMPORTDATA_H

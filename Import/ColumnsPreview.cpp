@@ -16,25 +16,25 @@ ColumnsPreview::ColumnsPreview(QWidget* parent) :
             &ColumnsPreview::onItemSelectionChanged);
 }
 
-void ColumnsPreview::setDatasetDefinitionSampleInfo(const DatasetDefinition* datasetDefinition)
+void ColumnsPreview::setDatasetDefinitionSampleInfo(const DatasetDefinition& datasetDefinition)
 {
     clear();
     setColumnCount(0);
     setRowCount(0);
 
-    int columns = datasetDefinition->columnCount();
+    int columns = datasetDefinition.columnCount();
     setColumnCount(columns);
 
     QStringList labels;
     labels.reserve(columns);
     for (int i = 0; i < columns; ++i)
     {
-        labels.append(datasetDefinition->getColumnName(i));
+        labels.append(datasetDefinition.getColumnName(i));
     }
 
     setHorizontalHeaderLabels(labels);
 
-    const QVector<QVector<QVariant> >* sampleData = datasetDefinition->getSampleData();
+    const QVector<QVector<QVariant> >* sampleData = datasetDefinition.getSampleData();
 
     int rows = sampleData->size();
     setRowCount(rows);

@@ -101,7 +101,7 @@ void MainTabWidget::setTextFilterInProxy(int column, const QSet<QString>& banned
 
     QApplication::restoreOverrideCursor();
 
-    LOG(LOG_CALC, "Filtration change took " +
+    LOG(LogTypes::CALC, "Filtration change took " +
         QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
         " seconds.");
 }
@@ -131,7 +131,7 @@ void MainTabWidget::setDateFilterInProxy(int column,
 
     QApplication::restoreOverrideCursor();
 
-    LOG(LOG_CALC, "Filtration change took " +
+    LOG(LogTypes::CALC, "Filtration change took " +
         QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
         " seconds.");
 }
@@ -159,7 +159,7 @@ void MainTabWidget::setNumericFilterInProxy(int column, double from, double to)
 
     QApplication::restoreOverrideCursor();
 
-    LOG(LOG_CALC, "Filtration change took " +
+    LOG(LogTypes::CALC, "Filtration change took " +
         QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
         " seconds.");
 }

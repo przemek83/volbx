@@ -40,7 +40,7 @@ std::tuple<QString, QStringList> Networking::checkReplyAndReturnAvailableVersion
 {
     QString replyString(QLatin1String(reply->readAll()));
 
-    LOG(LOG_NETWORK, QLatin1String("Network reply:\n") + replyString);
+    LOG(LogTypes::NETWORK, QLatin1String("Network reply:\n") + replyString);
 
     QStringList filesList = replyString.split(QLatin1Char('\n'));
 
@@ -49,7 +49,7 @@ std::tuple<QString, QStringList> Networking::checkReplyAndReturnAvailableVersion
         return {QLatin1String(""), filesList};
     }
 
-    LOG(LOG_NETWORK, QLatin1String("Available version is ") + filesList.value(1));
+    LOG(LogTypes::NETWORK, QLatin1String("Available version is ") + filesList.value(1));
 
     return {filesList.value(1), filesList};
 }

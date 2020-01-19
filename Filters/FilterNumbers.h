@@ -1,6 +1,8 @@
 #ifndef FILTERNUMBERS_H
 #define FILTERNUMBERS_H
 
+#include <memory>
+
 #include <QWidget>
 
 #include "Filter.h"
@@ -35,9 +37,6 @@ public:
 
 private:
     Ui::FilterNumbers* ui;
-
-    ///Double slider.
-    DoubleSlider* slider_;
 
     ///Minimum set on filter creation.
     double minOnInit_;

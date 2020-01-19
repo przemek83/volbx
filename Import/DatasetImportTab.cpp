@@ -61,10 +61,11 @@ DatasetImportTab::DatasetImportTab(QWidget* parent) :
             SLOT(selectCurrentColumn(int)));
 }
 
-DatasetDefinition* DatasetImportTab::getDatasetDefinition()
+
+std::unique_ptr<DatasetDefinition> DatasetImportTab::getDatasetDefinition()
 {
     auto definition = findChild<DatasetDefinitionVisualization*>();
-    return definition->getDatasetDefinition();
+    return definition->retrieveDatasetDefinition();
 }
 
 void DatasetImportTab::selectedDatasetChanged(const QString& current)
@@ -90,24 +91,22 @@ void DatasetImportTab::selectedDatasetChanged(const QString& current)
     }
     else
     {
-        auto datasetDefinition =
-            new DatasetDefinitionInner(current);
+        std::unique_ptr<DatasetDefinition> datasetDefinition =
+            std::make_unique<DatasetDefinitionInner>(current);
 
         //If definition is valid, than fill details.
-        if (nullptr != datasetDefinition && datasetDefinition->isValid())
+        if (datasetDefinition && datasetDefinition->isValid())
         {
-            visualization->setDatasetDefiniton(datasetDefinition);
-            visualization->setEnabled(true);
-
-            columnsPreview->setDatasetDefinitionSampleInfo(datasetDefinition);
+            columnsPreview->setDatasetDefinitionSampleInfo(*datasetDefinition);
             columnsPreview->setEnabled(true);
+
+            visualization->setDatasetDefiniton(std::move(datasetDefinition));
+            visualization->setEnabled(true);
 
             Q_EMIT definitionIsReady(true);
         }
         else
         {
-            delete datasetDefinition;
-
             columnsPreview->clearDataAndDisable();
             visualization->clear();
             visualization->setEnabled(false);

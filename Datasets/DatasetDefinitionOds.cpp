@@ -28,7 +28,7 @@ bool DatasetDefinitionOds::getSheetList(QuaZip& zip)
         QuaZipFile zipFile(&zip);
         if (!zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
         {
-            LOG(LOG_IMPORT_EXPORT,
+            LOG(LogTypes::IMPORT_EXPORT,
                 "Can not open file " + zipFile.getFileName() + ".");
             return false;
         }
@@ -37,7 +37,7 @@ bool DatasetDefinitionOds::getSheetList(QuaZip& zip)
         QDomDocument xmlDocument(name_);
         if (!xmlDocument.setContent(zipFile.readAll()))
         {
-            LOG(LOG_IMPORT_EXPORT, "Xml file is damaged.");
+            LOG(LogTypes::IMPORT_EXPORT, "Xml file is damaged.");
             return false;
         }
         zipFile.close();
@@ -71,7 +71,7 @@ bool DatasetDefinitionOds::getSheetList(QuaZip& zip)
     }
     else
     {
-        LOG(LOG_IMPORT_EXPORT, "Can not open file xl/workbook.xml in archive.");
+        LOG(LogTypes::IMPORT_EXPORT, "Can not open file xl/workbook.xml in archive.");
         return false;
     }
 
@@ -87,7 +87,7 @@ bool DatasetDefinitionOds::getColumnList(QuaZip& zip,
         QuaZipFile zipFile(&zip);
         if (!zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
         {
-            LOG(LOG_IMPORT_EXPORT,
+            LOG(LogTypes::IMPORT_EXPORT,
                 "Can not open file " + zipFile.getFileName() + ".");
             return false;
         }
@@ -164,7 +164,7 @@ bool DatasetDefinitionOds::getColumnList(QuaZip& zip,
     }
     else
     {
-        LOG(LOG_IMPORT_EXPORT, "Can not open file " + sheetName + " in archive.");
+        LOG(LogTypes::IMPORT_EXPORT, "Can not open file " + sheetName + " in archive.");
         return false;
     }
 
@@ -179,13 +179,13 @@ bool DatasetDefinitionOds::openZipAndMoveToSecondRow(QuaZip& zip,
     //Open file in zip archive.
     if (!zip.setCurrentFile(QStringLiteral("content.xml")))
     {
-        LOG(LOG_IMPORT_EXPORT, "Can not open file " + sheetName + " in archive.");
+        LOG(LogTypes::IMPORT_EXPORT, "Can not open file " + sheetName + " in archive.");
         return false;
     }
     zipFile.setZip(&zip);
     if (!zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        LOG(LOG_IMPORT_EXPORT, "Can not open file " + zipFile.getFileName() + ".");
+        LOG(LogTypes::IMPORT_EXPORT, "Can not open file " + zipFile.getFileName() + ".");
         return false;
     }
 
@@ -397,7 +397,7 @@ bool DatasetDefinitionOds::getColumnTypes(QuaZip& zip,
 
     rowsCount_ = rowCounter;
 
-    LOG(LOG_IMPORT_EXPORT, "Analyzed file having " + QString::number(rowsCount_) +
+    LOG(LogTypes::IMPORT_EXPORT, "Analyzed file having " + QString::number(rowsCount_) +
         " rows in time " +
         QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
         " seconds.");
@@ -620,7 +620,7 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
 
         rebuildDefinitonUsingActiveColumnsOnly();
 
-        LOG(LOG_IMPORT_EXPORT, "Read file having " + QString::number(rowsCount_) +
+        LOG(LogTypes::IMPORT_EXPORT, "Read file having " + QString::number(rowsCount_) +
             " rows in time " + QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
             " seconds.");
     }

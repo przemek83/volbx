@@ -20,14 +20,17 @@
 
 ImportData::ImportData(QWidget* parent) :
     QDialog(parent),
-    ui(new Ui::ImportData),
-    buttonBox_(nullptr)
+    ui(new Ui::ImportData)
 {
     ui->setupUi(this);
 
+    auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Open | QDialogButtonBox::Cancel,
+                                          Qt::Horizontal,
+                                          this);
+
     auto enableOpenButton = [ = ](bool activate)
     {
-        buttonBox_->button(QDialogButtonBox::Open)->setEnabled(activate);
+        buttonBox->button(QDialogButtonBox::Open)->setEnabled(activate);
     };
 
     // Create tabs.
@@ -53,17 +56,12 @@ ImportData::ImportData(QWidget* parent) :
         ui->tabWidget->setCurrentWidget(spreadsheetsTab);
     }
 
-    buttonBox_ =
-        new QDialogButtonBox(QDialogButtonBox::Open | QDialogButtonBox::Cancel,
-                             Qt::Horizontal,
-                             this);
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
-    connect(buttonBox_, &QDialogButtonBox::accepted, this, &QDialog::accept);
-    connect(buttonBox_, &QDialogButtonBox::rejected, this, &QDialog::reject);
+    ui->verticalLayout->addWidget(buttonBox);
 
-    ui->verticalLayout->addWidget(buttonBox_);
-
-    buttonBox_->button(QDialogButtonBox::Open)->setEnabled(false);
+    buttonBox->button(QDialogButtonBox::Open)->setEnabled(false);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
@@ -73,7 +71,7 @@ ImportData::~ImportData()
     delete ui;
 }
 
-DatasetDefinition* ImportData::getSelectedDataset()
+std::unique_ptr<DatasetDefinition> ImportData::getSelectedDataset()
 {
     auto tab = dynamic_cast<ImportTab*>(ui->tabWidget->currentWidget());
     return tab->getDatasetDefinition();

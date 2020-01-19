@@ -18,7 +18,7 @@ bool DatasetDefinitionSpreadsheet::init()
     if (!zip_.open(QuaZip::mdUnzip))
     {
         error_ = QObject::tr("Can not open file ") + zip_.getZipName();
-        LOG(LOG_IMPORT_EXPORT, "Can not open file " + zip_.getZipName());
+        LOG(LogTypes::IMPORT_EXPORT, "Can not open file " + zip_.getZipName());
         return false;
     }
 
@@ -107,7 +107,7 @@ bool DatasetDefinitionSpreadsheet::getData(QVector<QVector<QVariant> >* dataCont
     //Open archive.
     if (!zip_.open(QuaZip::mdUnzip))
     {
-        LOG(LOG_IMPORT_EXPORT, "Can not open file " + zip_.getZipName());
+        LOG(LogTypes::IMPORT_EXPORT, "Can not open file " + zip_.getZipName());
         return false;
     }
 

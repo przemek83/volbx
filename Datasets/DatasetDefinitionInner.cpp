@@ -109,14 +109,14 @@ bool DatasetDefinitionInner::loadXmlFile(QByteArray& definitionContent, QuaZip& 
     bool result = zipFile.open(QIODevice::ReadOnly);
     if (!result)
     {
-        LOG(LOG_IMPORT_EXPORT,
+        LOG(LogTypes::IMPORT_EXPORT,
             "Can not open xml file " +
-            QString(Constants::datasetDefinitionFilename_) + ".");
+            QString(Constants::datasetDefinitionFilename) + ".");
         return result;
     }
 
-    LOG(LOG_IMPORT_EXPORT,
-        "Xml file " +  QString(Constants::datasetDefinitionFilename_) + " opened.");
+    LOG(LogTypes::IMPORT_EXPORT,
+        "Xml file " +  QString(Constants::datasetDefinitionFilename) + " opened.");
 
     definitionContent = zipFile.readAll();
     zipFile.close();
@@ -135,11 +135,11 @@ bool DatasetDefinitionInner::fromXml(QByteArray& definitionContent)
     //If parsing failure than exit.
     if (!xmlDocument.setContent(definitionContent))
     {
-        LOG(LOG_IMPORT_EXPORT, "Xml file is corrupted.");
+        LOG(LogTypes::IMPORT_EXPORT, "Xml file is corrupted.");
         return false;
     }
 
-    LOG(LOG_IMPORT_EXPORT, "Read xml file:\n" + xmlDocument.toString());
+    LOG(LogTypes::IMPORT_EXPORT, "Read xml file:\n" + xmlDocument.toString());
 
     QDomElement root = xmlDocument.documentElement();
 
@@ -147,7 +147,7 @@ bool DatasetDefinitionInner::fromXml(QByteArray& definitionContent)
     QDomNodeList columns =
         root.firstChildElement(datasetDefinitionXmlNames_[DATASET_COLUMNS]).childNodes();
 
-    LOG(LOG_IMPORT_EXPORT, "Read column count: " + QString::number(columns.count()));
+    LOG(LogTypes::IMPORT_EXPORT, "Read column count: " + QString::number(columns.count()));
 
     columnsCount_ = columns.size();
 
@@ -186,14 +186,14 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
     bool result = zipFile.open(QIODevice::ReadOnly);
     if (!result)
     {
-        LOG(LOG_IMPORT_EXPORT,
+        LOG(LogTypes::IMPORT_EXPORT,
             "Can not open csv file " +
-            QString(Constants::datasetDataFilename_) + ".");
+            QString(Constants::datasetDataFilename) + ".");
         return result;
     }
 
-    LOG(LOG_IMPORT_EXPORT,
-        "Csv file " + QString(Constants::datasetDataFilename_) +
+    LOG(LogTypes::IMPORT_EXPORT,
+        "Csv file " + QString(Constants::datasetDataFilename) +
         " opened.");
 
     QTextStream stream(&zipFile);
@@ -242,7 +242,7 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
         }
     }
 
-    LOG(LOG_IMPORT_EXPORT, "Loaded " + QString::number(dataContainer->size()) +
+    LOG(LogTypes::IMPORT_EXPORT, "Loaded " + QString::number(dataContainer->size()) +
         " rows in time " +
         QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
         " seconds.");
@@ -313,14 +313,14 @@ bool DatasetDefinitionInner::loadStrings(QuaZip& zip)
     bool result = zipFile.open(QIODevice::ReadOnly);
     if (!result)
     {
-        LOG(LOG_IMPORT_EXPORT,
+        LOG(LogTypes::IMPORT_EXPORT,
             "Can not open strings file " +
-            QString(Constants::datasetStringsFilename_) + ".");
+            QString(Constants::datasetStringsFilename) + ".");
         return result;
     }
 
-    LOG(LOG_IMPORT_EXPORT,
-        "Strings file " + QString(Constants::datasetStringsFilename_) + " opened.");
+    LOG(LogTypes::IMPORT_EXPORT,
+        "Strings file " + QString(Constants::datasetStringsFilename) + " opened.");
 
     QByteArray stringsContent = zipFile.readAll();
     zipFile.close();
@@ -349,7 +349,7 @@ bool DatasetDefinitionInner::getData(QVector<QVector<QVariant> >* dataContainer)
     //Open archive.
     if (!zip_.open(QuaZip::mdUnzip))
     {
-        LOG(LOG_IMPORT_EXPORT, "Can not open file " + zip_.getZipName());
+        LOG(LogTypes::IMPORT_EXPORT, "Can not open file " + zip_.getZipName());
         return false;
     }
 

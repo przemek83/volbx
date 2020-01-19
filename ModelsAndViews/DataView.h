@@ -1,10 +1,13 @@
 #ifndef DATAVIEW_H
 #define DATAVIEW_H
 
+#include <memory>
+
 #include <QTableView>
 #include <QVector>
 #include <QVariant>
 
+#include "DataProvider/PlotDataProvider.h"
 #include "DataProvider/TransactionData.h"
 
 class PlotDataProvider;
@@ -23,7 +26,7 @@ class DataView : public QTableView
 public:
     explicit DataView(QWidget* parent = nullptr);
 
-    ~DataView() override;
+    ~DataView() override = default;
 
     DataView& operator=(const DataView& other) = delete;
     DataView(const DataView& other) = delete;
@@ -47,14 +50,14 @@ protected:
 
 private:
     ///Object for recomputing plot data.
-    PlotDataProvider* plotDataProvider_ {nullptr};
+    PlotDataProvider plotDataProvider_;
 
     /**
      * @brief get selected on view data.
      * @param groupByColumn column used in grouping.
      * @return vector of structs containg data, price and grouping data.
      */
-    QVector<TransactionData>* fillDataFromSelection(int groupByColumn);
+    QVector<TransactionData> fillDataFromSelection(int groupByColumn) const;
 };
 
 #endif // DATAVIEW_H

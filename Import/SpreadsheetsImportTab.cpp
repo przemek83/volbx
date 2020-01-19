@@ -89,7 +89,7 @@ void SpreadsheetsImportTab::openFileButtonClicked()
 
     ui->fileNameLineEdit->setText(fileName);
 
-    DatasetDefinitionSpreadsheet* datasetDefinition = nullptr;
+    std::unique_ptr<DatasetDefinitionSpreadsheet> datasetDefinition = nullptr;
 
     //Remove all not allowed characters from file name.
     QString regexpString = QString(Constants::datasetNameRegExp)
@@ -103,13 +103,13 @@ void SpreadsheetsImportTab::openFileButtonClicked()
 
     if (0 == fileInfo.suffix().toLower().compare(QLatin1String("ods")))
     {
-        datasetDefinition = new DatasetDefinitionOds(datasetName, fileName);
+        datasetDefinition = std::make_unique<DatasetDefinitionOds>(datasetName, fileName);
     }
     else
     {
         if (0 == fileInfo.suffix().toLower().compare(QLatin1String("xlsx")))
         {
-            datasetDefinition = new DatasetDefinitionXlsx(datasetName, fileName);
+            datasetDefinition = std::make_unique<DatasetDefinitionXlsx>(datasetName, fileName);
         }
         else
         {
@@ -128,22 +128,24 @@ void SpreadsheetsImportTab::openFileButtonClicked()
     {
         return;
     }
-    visualization->setDatasetDefiniton(datasetDefinition);
-    visualization->setEnabled(true);
 
     auto columnsPreview = findChild<ColumnsPreview*>();
     if (nullptr == columnsPreview)
     {
         return;
     }
-    columnsPreview->setDatasetDefinitionSampleInfo(datasetDefinition);
+
+    columnsPreview->setDatasetDefinitionSampleInfo(*datasetDefinition);
     columnsPreview->setEnabled(true);
+
+    visualization->setDatasetDefiniton(std::move(datasetDefinition));
+    visualization->setEnabled(true);
 
     Q_EMIT definitionIsReady(true);
 }
 
-DatasetDefinition* SpreadsheetsImportTab::getDatasetDefinition()
+std::unique_ptr<DatasetDefinition> SpreadsheetsImportTab::getDatasetDefinition()
 {
     auto definition = findChild<DatasetDefinitionVisualization*>();
-    return definition->getDatasetDefinition();
+    return definition->retrieveDatasetDefinition();
 }

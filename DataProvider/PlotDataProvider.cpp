@@ -13,27 +13,32 @@
 #include "Common/ProgressBar.h"
 #include "Shared/Logger.h"
 
-PlotDataProvider::PlotDataProvider(int defaultGroupingColumn, QObject* parent) :
-    QObject(parent), groupingColumn_(defaultGroupingColumn)
+PlotDataProvider::PlotDataProvider(QObject* parent) :
+    QObject(parent)
 {
 
 }
 
-void PlotDataProvider::reCompute(QVector<TransactionData>* newCalcData,
+void PlotDataProvider::setGroupingColumn(int groupingColumn)
+{
+    groupingColumn_ = groupingColumn;
+}
+
+void PlotDataProvider::reCompute(QVector<TransactionData> newCalcData,
                                  DataFormat columnFormat)
 {
-    setNewCalcData(newCalcData);
+    calcData_ = std::move(newCalcData);
 
     QVector<float> valuePerUnit;
     quantiles_.clear();
 
-    int dataSize = calcData_->size();
+    int dataSize = calcData_.size();
 
     if (0 != dataSize)
     {
         for (int i = 0; i < dataSize; ++i)
         {
-            valuePerUnit.push_back(calcData_->at(i).pricePerMeter_);
+            valuePerUnit.push_back(calcData_.at(i).pricePerMeter_);
         }
 
         quantiles_.computeQuantiles(valuePerUnit);
@@ -46,21 +51,11 @@ void PlotDataProvider::reCompute(QVector<TransactionData>* newCalcData,
     computeBasicData();
 }
 
-void PlotDataProvider::setNewCalcData(QVector<TransactionData>* calcData)
-{
-    if (calcData != calcData_)
-    {
-        delete calcData_;
-        calcData_ = calcData;
-    }
-}
-
-void PlotDataProvider::recomputeGroupData(QVector<TransactionData>* calcData,
+void PlotDataProvider::recomputeGroupData(QVector<TransactionData> calcData,
                                           int groupingColumn,
                                           DataFormat columnFormat)
 {
-    //Set new data in case when only grouping column changed.
-    setNewCalcData(calcData);
+    calcData_ = std::move(calcData);
 
     //Set grouping column. Different only than actual one when changed on
     //group plot.
@@ -78,25 +73,25 @@ void PlotDataProvider::recomputeGroupData(QVector<TransactionData>* calcData,
     //For now only string type columns managed.
     if (DATA_FORMAT_STRING == columnFormat)
     {
-        fillDataForStringGrouping(calcData, names, quantilesForIntervals);
+        fillDataForStringGrouping(calcData_, names, quantilesForIntervals);
     }
 
     Q_EMIT setNewDataForGrouping(quantiles_.min_, quantiles_.max_, names,
                                  quantilesForIntervals, quantiles_);
 }
 
-void PlotDataProvider::fillDataForStringGrouping(QVector<TransactionData>* calcData,
+void PlotDataProvider::fillDataForStringGrouping(const QVector<TransactionData>& calcData,
                                                  QVector<QString>& names,
                                                  QVector<Quantiles>& quantilesForIntervals)
 {
     QMap<QString, QVector<float> > map;
 
-    int dataSize = calcData->size();
+    int dataSize = calcData.size();
 
     //Group by name/string.
     for (int i = 0; i < dataSize; ++i)
     {
-        map[calcData->at(i).groupedBy_.toString()].append(calcData->at(i).pricePerMeter_);
+        map[calcData.at(i).groupedBy_.toString()].append(calcData.at(i).pricePerMeter_);
     }
 
     //For each group calculate quantiles and create names.
@@ -113,7 +108,7 @@ void PlotDataProvider::fillDataForStringGrouping(QVector<TransactionData>* calcD
 
 void PlotDataProvider::computeBasicData()
 {
-    int dataSize = calcData_->size();
+    int dataSize = calcData_.size();
     if (dataSize <= 0)
     {
         PlotData plotData(nullptr, nullptr, 0);
@@ -141,8 +136,8 @@ void PlotDataProvider::computeBasicData()
 
     for (int i = 0; i < dataSize; ++i)
     {
-        double x = Constants::startOfTheWorld.daysTo(calcData_->at(i).date_);
-        double y = static_cast<double>(calcData_->at(i).pricePerMeter_);
+        double x = Constants::startOfTheWorld.daysTo(calcData_.at(i).date_);
+        double y = static_cast<double>(calcData_.at(i).pricePerMeter_);
         pointsQuantilesX[i] = x;
         pointsQuantilesY[i] = y;
 

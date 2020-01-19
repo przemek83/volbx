@@ -29,7 +29,7 @@ bool DatasetDefinitionXlsx::getSheetList(QuaZip& zip)
         QuaZipFile zipFile(&zip);
         if (!zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
         {
-            LOG(LOG_IMPORT_EXPORT,
+            LOG(LogTypes::IMPORT_EXPORT,
                 "Can not open file " + zipFile.getFileName() + ".");
             return false;
         }
@@ -38,7 +38,7 @@ bool DatasetDefinitionXlsx::getSheetList(QuaZip& zip)
         QDomDocument xmlDocument(name_);
         if (!xmlDocument.setContent(zipFile.readAll()))
         {
-            LOG(LOG_IMPORT_EXPORT, "File is corrupted.");
+            LOG(LogTypes::IMPORT_EXPORT, "File is corrupted.");
             return false;
         }
         zipFile.close();
@@ -48,7 +48,7 @@ bool DatasetDefinitionXlsx::getSheetList(QuaZip& zip)
 
         if (sheetNodes.size() <= 0)
         {
-            LOG(LOG_IMPORT_EXPORT, "File is corrupted, no sheets in xml.");
+            LOG(LogTypes::IMPORT_EXPORT, "File is corrupted, no sheets in xml.");
             return false;
         }
 
@@ -65,7 +65,7 @@ bool DatasetDefinitionXlsx::getSheetList(QuaZip& zip)
     }
     else
     {
-        LOG(LOG_IMPORT_EXPORT, "Can not open xl/workbook.xml file.");
+        LOG(LogTypes::IMPORT_EXPORT, "Can not open xl/workbook.xml file.");
         return false;
     }
 
@@ -75,7 +75,7 @@ bool DatasetDefinitionXlsx::getSheetList(QuaZip& zip)
         QuaZipFile zipFile(&zip);
         if (!zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
         {
-            LOG(LOG_IMPORT_EXPORT,
+            LOG(LogTypes::IMPORT_EXPORT,
                 "Can not open file " + zipFile.getFileName() + ".");
             return false;
         }
@@ -84,7 +84,7 @@ bool DatasetDefinitionXlsx::getSheetList(QuaZip& zip)
         QDomDocument xmlDocument(name_);
         if (!xmlDocument.setContent(zipFile.readAll()))
         {
-            LOG(LOG_IMPORT_EXPORT, "File is corrupted.");
+            LOG(LogTypes::IMPORT_EXPORT, "File is corrupted.");
             return false;
         }
         zipFile.close();
@@ -94,7 +94,7 @@ bool DatasetDefinitionXlsx::getSheetList(QuaZip& zip)
 
         if (sheetNodes.size() <= 0)
         {
-            LOG(LOG_IMPORT_EXPORT, "File is corrupted, no sheets in xml.");
+            LOG(LogTypes::IMPORT_EXPORT, "File is corrupted, no sheets in xml.");
             return false;
         }
 
@@ -117,7 +117,7 @@ bool DatasetDefinitionXlsx::getSheetList(QuaZip& zip)
     }
     else
     {
-        LOG(LOG_IMPORT_EXPORT,
+        LOG(LogTypes::IMPORT_EXPORT,
             "No file named xl/_rels/workbook.xml.rels in archive.");
         return false;
     }
@@ -142,7 +142,7 @@ bool DatasetDefinitionXlsx::loadStyles(QuaZip& zip)
         QuaZipFile zipFile(&zip);
         if (!zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
         {
-            LOG(LOG_IMPORT_EXPORT, "Can not open file.");
+            LOG(LogTypes::IMPORT_EXPORT, "Can not open file.");
             return false;
         }
 
@@ -150,7 +150,7 @@ bool DatasetDefinitionXlsx::loadStyles(QuaZip& zip)
         QDomDocument xmlDocument(name_);
         if (!xmlDocument.setContent(zipFile.readAll()))
         {
-            LOG(LOG_IMPORT_EXPORT, "Xml file is corrupted.");
+            LOG(LogTypes::IMPORT_EXPORT, "Xml file is corrupted.");
             return false;
         }
         zipFile.close();
@@ -194,7 +194,7 @@ bool DatasetDefinitionXlsx::loadStyles(QuaZip& zip)
     }
     else
     {
-        LOG(LOG_IMPORT_EXPORT, "No file named xl/workbook.xml in archive.");
+        LOG(LogTypes::IMPORT_EXPORT, "No file named xl/workbook.xml in archive.");
         return false;
     }
 
@@ -214,7 +214,7 @@ bool DatasetDefinitionXlsx::loadSharedStrings(QuaZip& zip)
         //Opening file.
         if (!zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
         {
-            LOG(LOG_IMPORT_EXPORT,
+            LOG(LogTypes::IMPORT_EXPORT,
                 "Can not open file " + zipFile.getFileName() + ".");
             return false;
         }
@@ -237,7 +237,7 @@ bool DatasetDefinitionXlsx::loadSharedStrings(QuaZip& zip)
     }
     else
     {
-        LOG(LOG_IMPORT_EXPORT, "No file xl/sharedStrings.xml in archive.");
+        LOG(LogTypes::IMPORT_EXPORT, "No file xl/sharedStrings.xml in archive.");
         return true;
     }
 
@@ -258,7 +258,7 @@ bool DatasetDefinitionXlsx::getColumnList(QuaZip& zip,
         //Opening file.
         if (!zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
         {
-            LOG(LOG_IMPORT_EXPORT,
+            LOG(LogTypes::IMPORT_EXPORT,
                 "Can not open file " + zipFile.getFileName() + ".");
             return false;
         }
@@ -340,7 +340,7 @@ bool DatasetDefinitionXlsx::getColumnList(QuaZip& zip,
     }
     else
     {
-        LOG(LOG_IMPORT_EXPORT,
+        LOG(LogTypes::IMPORT_EXPORT,
             "File named " + sheetName + " not found in archive.");
         return false;
     }
@@ -356,14 +356,14 @@ bool DatasetDefinitionXlsx::openZipAndMoveToSecondRow(QuaZip& zip,
     //Open archive.
     if (!zip.setCurrentFile(sheetName))
     {
-        LOG(LOG_IMPORT_EXPORT,
+        LOG(LogTypes::IMPORT_EXPORT,
             "File named " + sheetName + " not found in archive.");
         return false;
     }
     zipFile.setZip(&zip);
     if (!zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        LOG(LOG_IMPORT_EXPORT, "Can not open file " + zipFile.getFileName() + ".");
+        LOG(LogTypes::IMPORT_EXPORT, "Can not open file " + zipFile.getFileName() + ".");
         return false;
     }
 
@@ -592,7 +592,7 @@ bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
 
     rowsCount_ = rowCounter;
 
-    LOG(LOG_IMPORT_EXPORT, "Analyzed file having " + QString::number(rowsCount_) +
+    LOG(LogTypes::IMPORT_EXPORT, "Analyzed file having " + QString::number(rowsCount_) +
         " rows in time " +
         QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
         " seconds.");
@@ -806,7 +806,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(QuaZip& zip,
 
         rebuildDefinitonUsingActiveColumnsOnly();
 
-        LOG(LOG_IMPORT_EXPORT, "Loaded file having " +
+        LOG(LogTypes::IMPORT_EXPORT, "Loaded file having " +
             QString::number(rowsCount_) +
             " rows in time " +
             QString::number(performanceTimer.elapsed() * 1.0 / 1000) +

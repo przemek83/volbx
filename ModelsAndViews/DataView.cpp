@@ -20,7 +20,6 @@
 #include "Charts/QuantilesPlot.h"
 #include "Common/Constants.h"
 #include "Common/SpecialColumns.h"
-#include "DataProvider/PlotDataProvider.h"
 #include "GUI/GroupPlotGui.h"
 #include "GUI/PlotDockWidget.h"
 #include "Shared/Logger.h"
@@ -31,7 +30,7 @@
 #include "TableModel.h"
 
 DataView::DataView(QWidget* parent) :
-    QTableView(parent), plotDataProvider_(nullptr)
+    QTableView(parent), plotDataProvider_(this)
 {
     setSelectionMode(QAbstractItemView::SingleSelection);
     setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -50,11 +49,6 @@ DataView::DataView(QWidget* parent) :
             horizontalHeader()->setSortIndicatorShown(true);
     };
     connect(horizontalHeader(), &QHeaderView::sectionClicked, showSortIndicator);
-}
-
-DataView::~DataView()
-{
-    delete plotDataProvider_;
 }
 
 void DataView::setModel(QAbstractItemModel* model)
@@ -89,23 +83,23 @@ void DataView::setModel(QAbstractItemModel* model)
 
     QTableView::setModel(model);
 
+    plotDataProvider_.setGroupingColumn(parentModel->getDefaultGroupingColumn());
+
     //Performance problem.
     //resizeColumnsToContents();
 }
 
 void DataView::groupingColumnChanged(int column)
 {
-    QVector<TransactionData>* newCalcData = fillDataFromSelection(column);
-
     const TableModel* parentModel =
         (qobject_cast<FilteringProxyModel*>(model()))->getParentModel();
 
-    plotDataProvider_->recomputeGroupData(newCalcData,
-                                          column,
-                                          parentModel->getColumnFormat(column));
+    plotDataProvider_.recomputeGroupData(fillDataFromSelection(column),
+                                         column,
+                                         parentModel->getColumnFormat(column));
 }
 
-QVector<TransactionData>* DataView::fillDataFromSelection(int groupByColumn)
+QVector<TransactionData> DataView::fillDataFromSelection(int groupByColumn) const
 {
     auto proxyModel = qobject_cast<FilteringProxyModel*>(model());
     Q_ASSERT(nullptr != proxyModel);
@@ -116,7 +110,7 @@ QVector<TransactionData>* DataView::fillDataFromSelection(int groupByColumn)
     int pricePerMeterColumn;
     if (auto [ok, columnId] = parentModel->getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT); !ok)
     {
-        return nullptr;
+        return {};
     }
     else
     {
@@ -126,7 +120,7 @@ QVector<TransactionData>* DataView::fillDataFromSelection(int groupByColumn)
     int transactionDateColumn;
     if (auto [ok, columnId] = parentModel->getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE); !ok)
     {
-        return nullptr;
+        return {};
     }
     else
     {
@@ -138,9 +132,9 @@ QVector<TransactionData>* DataView::fillDataFromSelection(int groupByColumn)
 
     QItemSelectionModel* selectionModelOfView = selectionModel();
 
-    auto calcDataContainer = new QVector<TransactionData>();
+    QVector<TransactionData> calcDataContainer;
 
-    int proxyRowCount = proxyModel->rowCount();
+    const int proxyRowCount = proxyModel->rowCount();
 
     for (int i = 0; i < proxyRowCount; ++i)
     {
@@ -173,11 +167,11 @@ QVector<TransactionData>* DataView::fillDataFromSelection(int groupByColumn)
                 temp.groupedBy_ = proxyModel->index(i, groupByColumn).data();
             }
 
-            calcDataContainer->append(temp);
+            calcDataContainer.append(temp);
         }
     }
 
-    LOG(LOG_CALC, "Data updated in time " +
+    LOG(LogTypes::CALC, "Data updated in time " +
         QString::number(performanceTimer.elapsed() * 1.0 / 1000) + " seconds.");
 
     return calcDataContainer;
@@ -185,17 +179,12 @@ QVector<TransactionData>* DataView::fillDataFromSelection(int groupByColumn)
 
 void DataView::reloadSelectionDataAndRecompute()
 {
-    if (nullptr == plotDataProvider_)
-    {
-        return;
-    }
-
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
 
     //TODO optimize by impact + depact or additionall columns in model.
-    int groupByColumn = plotDataProvider_->getGroupByColumn();
-    QVector<TransactionData>* newCalcData =
+    const int groupByColumn = plotDataProvider_.getGroupByColumn();
+    QVector<TransactionData> newCalcData =
         fillDataFromSelection(groupByColumn);
 
     //Temp, until all column types managed.
@@ -208,15 +197,13 @@ void DataView::reloadSelectionDataAndRecompute()
         columnFormat = parentModel->getColumnFormat(groupByColumn);
     }
 
-    Q_ASSERT(nullptr != newCalcData);
-
     QTime performanceTimer;
     performanceTimer.start();
 
-    plotDataProvider_->reCompute(newCalcData,
-                                 columnFormat);
+    plotDataProvider_.reCompute(std::move(newCalcData),
+                                columnFormat);
 
-    LOG(LOG_CALC, "Plots recomputed in " +
+    LOG(LogTypes::CALC, "Plots recomputed in " +
         QString::number(performanceTimer.elapsed() * 1.0 / 1000) + " seconds.");
 
     QApplication::restoreOverrideCursor();
@@ -244,14 +231,5 @@ void DataView::keyPressEvent(QKeyEvent* event)
 
 const PlotDataProvider* DataView::getPlotDataProvider()
 {
-    if (nullptr == plotDataProvider_)
-    {
-        const TableModel* tableModel =
-            (qobject_cast<FilteringProxyModel*>(model()))->getParentModel();
-
-        plotDataProvider_ =
-            new PlotDataProvider(tableModel->getDefaultGroupingColumn());
-    }
-
-    return plotDataProvider_;
+    return &plotDataProvider_;
 }

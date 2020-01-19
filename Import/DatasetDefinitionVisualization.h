@@ -1,9 +1,12 @@
 #ifndef DATASETDEFINITIONVISUALIZATION_H
 #define DATASETDEFINITIONVISUALIZATION_H
 
+#include <memory>
+
 #include <QWidget>
 
-class DatasetDefinition;
+#include "DatasetDefinition.h"
+
 class QTreeWidgetItem;
 
 namespace Ui
@@ -28,11 +31,11 @@ public:
     DatasetDefinitionVisualization& operator=(DatasetDefinitionVisualization&& other) = delete;
     DatasetDefinitionVisualization(DatasetDefinitionVisualization&& other) = delete;
 
-    void setDatasetDefiniton(DatasetDefinition* datasetDefinition);
+    void setDatasetDefiniton(std::unique_ptr<DatasetDefinition> datasetDefinition);
 
     void clear();
 
-    DatasetDefinition* getDatasetDefinition();
+    std::unique_ptr<DatasetDefinition> retrieveDatasetDefinition();
 
 public Q_SLOTS:
     /**
@@ -51,7 +54,7 @@ private:
 
     const QString typeNameDate_;
 
-    DatasetDefinition* datasetDefinition_ {nullptr};
+    std::unique_ptr<DatasetDefinition> datasetDefinition_ {nullptr};
 
 private Q_SLOTS:
     void searchTextChanged(const QString& newText);

@@ -143,25 +143,23 @@ void VolbxMain::createOptionsMenu()
 
     //Add orange style.
     QString styleName(QStringLiteral("Dark Orange"));
-    auto action = new QAction(styleName, ui->menuOptions);
+    auto action = new QAction(styleName, actionsGroup);
     action->setCheckable(true);
     if (activeStyl == styleName)
     {
         action->setChecked(true);
     }
     connect(action, SIGNAL(triggered()), this, SLOT(customStylePicked()));
-    actionsGroup->addAction(action);
 
     //Add blue style.
     styleName = QStringLiteral("Rounded Blue");
-    action = new QAction(styleName, ui->menuOptions);
+    action = new QAction(styleName, actionsGroup);
     action->setCheckable(true);
     if (activeStyl == styleName)
     {
         action->setChecked(true);
     }
     connect(action, SIGNAL(triggered()), this, SLOT(customStylePicked()));
-    actionsGroup->addAction(action);
 
     //Add styles found in app dir.
     QStringList nameFilter(QStringLiteral("*.css"));
@@ -170,28 +168,26 @@ void VolbxMain::createOptionsMenu()
 
     for (const QFileInfo& styleFile : styleFiles)
     {
-        action = new QAction(styleFile.baseName(), ui->menuOptions);
+        action = new QAction(styleFile.baseName(), actionsGroup);
         action->setCheckable(true);
         if (activeStyl == styleFile.baseName())
         {
             action->setChecked(true);
         }
         connect(action, SIGNAL(triggered()), this, SLOT(customStylePicked()));
-        actionsGroup->addAction(action);
     }
 
     //Add qt available styles.
     QStringList qtStylesList = QStyleFactory::keys();
     for (const QString& style : qtStylesList)
     {
-        action = new QAction(style, ui->menuOptions);
+        action = new QAction(style, actionsGroup);
         action->setCheckable(true);
         if (activeStyl == style)
         {
             action->setChecked(true);
         }
         connect(action, SIGNAL(triggered()), this, SLOT(qtStylePicked()));
-        actionsGroup->addAction(action);
     }
 
     ui->menuOptions->addActions(actionsGroup->actions());
@@ -376,20 +372,20 @@ void VolbxMain::on_actionSaveDatasetAs_triggered()
 
         ExportData::saveDataset(save.getChosenDatasetName(), view);
 
-        LOG(LOG_IMPORT_EXPORT, "File saved in total time " +
+        LOG(LogTypes::IMPORT_EXPORT, "File saved in total time " +
             QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
             " seconds.");
     }
 }
 
-bool VolbxMain::loadDataset(Dataset* dataset)
+bool VolbxMain::loadDataset(Dataset& dataset)
 {
     //TODO 26/08/2012 Currently try catches part of no memory problems.
     //Problem is in creating 2d array.
     //Try to create vector of pointers to 1d arrays.
     try
     {
-        dataset->init();
+        dataset.init();
     }
     catch (std::bad_alloc&)
     {
@@ -401,7 +397,7 @@ bool VolbxMain::loadDataset(Dataset* dataset)
         return false;
     }
 
-    return dataset != nullptr && dataset->isValid();
+    return dataset.isValid();
 }
 
 void VolbxMain::on_actionImportData_triggered()
@@ -410,9 +406,9 @@ void VolbxMain::on_actionImportData_triggered()
 
     if (QDialog::Accepted == import.exec())
     {
-        DatasetDefinition* datasetDefinition = import.getSelectedDataset();
+        DatasetDefinition* datasetDefinition = import.getSelectedDataset().release();
 
-        if (datasetDefinition == nullptr || !datasetDefinition->isValid())
+        if (!datasetDefinition || !datasetDefinition->isValid())
         {
             QMessageBox::critical(this,
                                   tr("Import error"),
@@ -423,17 +419,17 @@ void VolbxMain::on_actionImportData_triggered()
         //Sample data is not needed anymore.
         datasetDefinition->clearSampleData();
 
-        Dataset* dataset = nullptr;
+        std::unique_ptr<Dataset> dataset {nullptr};
 
         switch (import.getImportDataType())
         {
             case ImportData::IMPORT_TYPE_INNER:
             {
-                auto innerDataset =
+                auto definitionInner =
                     dynamic_cast<DatasetDefinitionInner*>(datasetDefinition);
-                if (nullptr != innerDataset)
+                if (nullptr != definitionInner)
                 {
-                    dataset = new DatasetInner(innerDataset);
+                    dataset = std::make_unique<DatasetInner>(definitionInner);
                 }
 
                 break;
@@ -445,7 +441,7 @@ void VolbxMain::on_actionImportData_triggered()
                     dynamic_cast<DatasetDefinitionSpreadsheet*>(datasetDefinition);
                 if (nullptr != definitionSpreadsheet)
                 {
-                    dataset = new DatasetSpreadsheet(definitionSpreadsheet);
+                    dataset = std::make_unique<DatasetSpreadsheet>(definitionSpreadsheet);
                 }
 
                 break;
@@ -458,7 +454,7 @@ void VolbxMain::on_actionImportData_triggered()
             }
         }
 
-        if (nullptr == dataset)
+        if (!dataset)
         {
             QMessageBox::critical(this,
                                   tr("Import error"),
@@ -466,32 +462,33 @@ void VolbxMain::on_actionImportData_triggered()
             return;
         }
 
-        if (!loadDataset(dataset))
+        if (!loadDataset(*dataset))
         {
-            delete dataset;
             return;
         }
 
-        addMainTabForDataset(dataset);
+        addMainTabForDataset(std::move(dataset));
     }
 }
 
 
-void VolbxMain::addMainTabForDataset(Dataset* dataset)
+void VolbxMain::addMainTabForDataset(std::unique_ptr<Dataset> dataset)
 {
-    auto mainTab = new MainTab(dataset, tabWidget_);
+    QString nameForTabBar {dataset->getNameForTabBar()};
+    QString datasetName {dataset->getName()};
+    auto mainTab = new MainTab(std::move(dataset), tabWidget_);
     const FilteringProxyModel* proxyModel = mainTab->getCurrentProxyModel();
     if (nullptr != proxyModel)
     {
         filters_->addModel(proxyModel);
     }
 
-    int newTabIndex = tabWidget_->addTab(mainTab, dataset->getNameForTabBar());
+    int newTabIndex = tabWidget_->addTab(mainTab, nameForTabBar);
     tabWidget_->setCurrentIndex(newTabIndex);
 
     manageActions(true);
 
-    ui->statusBar->showMessage(dataset->getName() + " " + tr("loaded"));
+    ui->statusBar->showMessage(datasetName + " " + tr("loaded"));
 }
 
 void VolbxMain::setupStatusBar()

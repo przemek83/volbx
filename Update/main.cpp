@@ -28,29 +28,29 @@ bool isUniqueInstance()
     QSharedMemory* sharedMemory =
         new QSharedMemory(QStringLiteral(VER_PRODUCTNAME_STR));
 
-    LOG(LOG_APP,
+    LOG(LogTypes::APP,
         QLatin1String("Setting shared memory key named ") +
         QApplication::applicationName() + QLatin1Char('.'));
 
     if (sharedMemory->attach())
     {
-        LOG(LOG_APP,
+        LOG(LogTypes::APP,
             QLatin1String("Attached to shared memory. Different instance already running, exiting."));
 
         return false;
     }
 
-    LOG(LOG_APP, QLatin1String("Attaching to shared memory successful. Continue."));
+    LOG(LogTypes::APP, QLatin1String("Attaching to shared memory successful. Continue."));
 
     if (!sharedMemory->create(1))
     {
-        LOG(LOG_APP,
+        LOG(LogTypes::APP,
             QLatin1String("Creating shared memory failed. Different instance already running, exiting."));
 
         return false;
     }
 
-    LOG(LOG_APP, QLatin1String("Unique instance, continue."));
+    LOG(LogTypes::APP, QLatin1String("Unique instance, continue."));
 
     return true;
 }

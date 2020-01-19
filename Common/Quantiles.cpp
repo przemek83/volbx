@@ -142,7 +142,7 @@ QString Quantiles::getValuesAsToolTip() const
 
 QString Quantiles::valueAsHtmlRow(PlotInfo name, float value)
 {
-    static QString plotInfoNames_[PLIT_INFO_END];
+    static QString plotInfoNames_[PLOT_INFO_END];
     static bool initialized = false;
 
     if (!initialized)
@@ -162,7 +162,7 @@ QString Quantiles::valueAsHtmlRow(PlotInfo name, float value)
     }
 
     QString html(QStringLiteral("<tr><td>"));
-    html.append(QString(plotInfoNames_[name]));
+    html.append(plotInfoNames_[name]);
     html.append(QLatin1String("</td><td ALIGN=RIGHT>"));
     int precision = (PLOT_INFO_COUNT == name ? 0 : 2);
     html.append(Constants::floatToStringUsingLocale(value, precision));

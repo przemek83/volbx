@@ -119,7 +119,7 @@ bool ExportData::exportAsXLSX(const QAbstractItemView* view, const QString& file
         QuaZipFile inZipFile(&inZip);
         if (!inZipFile.open(QIODevice::ReadOnly | QIODevice::Text))
         {
-            LOG(LOG_IMPORT_EXPORT,
+            LOG(LogTypes::IMPORT_EXPORT,
                 "Can not open file " + inZipFile.getFileName() + ".");
             return false;
         }
@@ -127,7 +127,7 @@ bool ExportData::exportAsXLSX(const QAbstractItemView* view, const QString& file
         QuaZipFile outZipFile(&outZip);
         if (!outZipFile.open(QIODevice::WriteOnly, QuaZipNewInfo(file)))
         {
-            LOG(LOG_IMPORT_EXPORT, "Can not open file " + inZipFile.getFileName() + ".");
+            LOG(LogTypes::IMPORT_EXPORT, "Can not open file " + inZipFile.getFileName() + ".");
             return false;
         }
 
@@ -367,7 +367,7 @@ bool ExportData::saveDataset(const QString& name,
     QTime performanceTimer;
     performanceTimer.start();
 
-    LOG(LOG_IMPORT_EXPORT, "Saving dataset " + name);
+    LOG(LogTypes::IMPORT_EXPORT, "Saving dataset " + name);
 
     //Open archive.
     QuaZip zip(DatasetInner::getDatasetsDir() + name + Constants::datasetExtension);
@@ -413,7 +413,7 @@ bool ExportData::saveDataset(const QString& name,
         return false;
     }
 
-    LOG(LOG_IMPORT_EXPORT, "Saved dataset having " +
+    LOG(LogTypes::IMPORT_EXPORT, "Saved dataset having " +
         QString::number(rowCount) +
         " rows in time " +
         QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
@@ -433,7 +433,7 @@ ExportData::saveDatasetDataFile(QuaZipFile& zipFile,
                                QuaZipNewInfo(Constants::datasetDataFilename));
     if (!result)
     {
-        LOG(LOG_IMPORT_EXPORT, "Error while saving data file.");
+        LOG(LogTypes::IMPORT_EXPORT, "Error while saving data file.");
         return {false, 0};
     }
 
@@ -529,7 +529,7 @@ bool ExportData::saveDatasetStringsFile(QuaZipFile& zipFile,
                                QuaZipNewInfo(Constants::datasetStringsFilename));
     if (!result || zipFile.write(stringsContent) == -1)
     {
-        LOG(LOG_IMPORT_EXPORT, "Error while saving strings file.");
+        LOG(LogTypes::IMPORT_EXPORT, "Error while saving strings file.");
         return false;
     }
     zipFile.close();
@@ -552,7 +552,7 @@ bool ExportData::saveDatasetDefinitionFile(QuaZipFile& zipFile,
                                QuaZipNewInfo(Constants::datasetDefinitionFilename));
     if (!result || zipFile.write(definitionContent) == -1)
     {
-        LOG(LOG_IMPORT_EXPORT, "Error while saving definition file.");
+        LOG(LogTypes::IMPORT_EXPORT, "Error while saving definition file.");
         return false;
     }
     zipFile.close();

@@ -1,6 +1,8 @@
 #ifndef MAINTAB_H
 #define MAINTAB_H
 
+#include <memory>
+
 #include <QMainWindow>
 
 class Dataset;
@@ -16,7 +18,7 @@ class MainTab : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit MainTab(Dataset* dataset, QWidget* parent = nullptr);
+    explicit MainTab(std::unique_ptr<Dataset> dataset, QWidget* parent = nullptr);
 
     ~MainTab() override = default;
 

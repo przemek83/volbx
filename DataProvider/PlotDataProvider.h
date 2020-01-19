@@ -24,7 +24,7 @@ class PlotDataProvider : public QObject
 {
     Q_OBJECT
 public:
-    explicit PlotDataProvider(int defaultGroupingColumn, QObject* parent = nullptr);
+    explicit PlotDataProvider(QObject* parent);
 
     ~PlotDataProvider() override = default;
 
@@ -34,12 +34,14 @@ public:
     PlotDataProvider& operator=(PlotDataProvider&& other) = delete;
     PlotDataProvider(PlotDataProvider&& other) = delete;
 
+    void setGroupingColumn(int groupingColumn);
+
     /**
      * @brief reCompute all data for plots.
      * @param newCalcData new data used for computations.
      * @param columnFormat format of grouping column.
      */
-    void reCompute(QVector<TransactionData>* newCalcData,
+    void reCompute(QVector<TransactionData> newCalcData,
                    DataFormat columnFormat);
 
     /**
@@ -48,7 +50,7 @@ public:
      * @param groupingColumn number of column used for grouping.
      * @param columnFormat format of grouping column.
      */
-    void recomputeGroupData(QVector<TransactionData>* calcData,
+    void recomputeGroupData(QVector<TransactionData> calcData,
                             int groupingColumn,
                             DataFormat columnFormat);
 
@@ -59,7 +61,7 @@ public:
     int getGroupByColumn();
 
 private:
-    void setNewCalcData(QVector<TransactionData>* calcData);
+    void setNewCalcData(QVector<TransactionData> calcData);
 
     /**
      * @brief groups strings and for each group calculate quantiles and names.
@@ -67,7 +69,7 @@ private:
      * @param names vector where names will be added.
      * @param quantilesForIntervals vectore where quantiles will be added.
      */
-    void fillDataForStringGrouping(QVector<TransactionData>* calcData,
+    void fillDataForStringGrouping(const QVector<TransactionData>& calcData,
                                    QVector<QString>& names,
                                    QVector<Quantiles>& quantilesForIntervals);
 
@@ -78,7 +80,7 @@ private:
 
     Quantiles quantiles_;
 
-    QVector<TransactionData>* calcData_ {nullptr};
+    QVector<TransactionData> calcData_;
 
     ///Column used for grouping.
     int groupingColumn_;

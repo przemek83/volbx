@@ -7,16 +7,10 @@
 
 const int TableModel::noColumn_ = -1;
 
-TableModel::TableModel(Dataset* dataset, QObject* parent) :
-    QAbstractTableModel(parent),
-    dataset_(dataset)
+TableModel::TableModel(std::unique_ptr<Dataset> dataset, QObject* parent) :
+    QAbstractTableModel(parent), dataset_(std::move(dataset))
 {
 
-}
-
-TableModel::~TableModel()
-{
-    delete dataset_;
 }
 
 int TableModel::rowCount([[maybe_unused]] const QModelIndex& parent) const
@@ -121,4 +115,3 @@ int TableModel::getDefaultGroupingColumn() const
 
     return defaultGroupingColumn;
 }
-

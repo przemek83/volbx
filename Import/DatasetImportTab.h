@@ -1,6 +1,8 @@
 #ifndef DATASETIMPORTTAB_H
 #define DATASETIMPORTTAB_H
 
+#include <memory>
+
 #include "ImportTab.h"
 
 /**
@@ -20,7 +22,7 @@ public:
     DatasetImportTab& operator=(DatasetImportTab&& other) = delete;
     DatasetImportTab(DatasetImportTab&& other) = delete;
 
-    DatasetDefinition* getDatasetDefinition() override;
+    std::unique_ptr<DatasetDefinition> getDatasetDefinition() override;
 
     bool datasetsAreAvailable();
 

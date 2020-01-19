@@ -1,5 +1,7 @@
 #include "SpreadsheetsTest.h"
 
+#include <memory>
+
 #include <QApplication>
 #include <QClipboard>
 #include <QString>
@@ -128,7 +130,7 @@ void SpreadsheetsTest::testSpreadsheetFile01(DatasetDefinitionSpreadsheet* defin
     compareList << "brown" << "red" << "yellow" << "black" << "blue" << "pink" <<
                 "white" << "dark blue" << "orange";
 
-    DatasetSpreadsheet* dataset = new DatasetSpreadsheet(definition);
+    std::unique_ptr<Dataset> dataset = std::make_unique<DatasetSpreadsheet>(definition);
     dataset->init();
 
     //Special column after rebuild done in dataset init.
@@ -142,7 +144,7 @@ void SpreadsheetsTest::testSpreadsheetFile01(DatasetDefinitionSpreadsheet* defin
                             compareList,
                             false);
 
-    compareExportDataWithDump(dataset);
+    compareExportDataWithDump(std::move(dataset));
 }
 
 void SpreadsheetsTest::testSpreadsheetFile01SomeColumns(DatasetDefinitionSpreadsheet*
@@ -168,7 +170,7 @@ void SpreadsheetsTest::testSpreadsheetFile01SomeColumns(DatasetDefinitionSpreads
     compareList << "brown" << "red" << "yellow" << "black" << "blue" << "pink" <<
                 "white" << "dark blue" << "orange";
 
-    DatasetSpreadsheet* dataset = new DatasetSpreadsheet(definition);
+    std::unique_ptr<Dataset> dataset = std::make_unique<DatasetSpreadsheet>(definition);
     dataset->init();
     definition->setSpecialColumn(SPECIAL_COLUMN_TRANSACTION_DATE, 0);
     definition->setSpecialColumn(SPECIAL_COLUMN_PRICE_PER_UNIT, 2);
@@ -180,7 +182,7 @@ void SpreadsheetsTest::testSpreadsheetFile01SomeColumns(DatasetDefinitionSpreads
                             compareList,
                             false);
 
-    compareExportDataWithDump(dataset);//"partial"
+    compareExportDataWithDump(std::move(dataset));//"partial"
 }
 
 //void SpreadsheetsTest::testSpreadsheetFile02(DatasetDefinitionSpreadsheet* definition,
@@ -226,7 +228,7 @@ void SpreadsheetsTest::testSpreadsheetFile03(DatasetDefinitionSpreadsheet* defin
     QStringList compareList;
     compareList << "a" << "b" << "c";
 
-    DatasetSpreadsheet* dataset = new DatasetSpreadsheet(definition);
+    std::unique_ptr<Dataset> dataset = std::make_unique<DatasetSpreadsheet>(definition);
     dataset->init();
     definition->setSpecialColumn(SPECIAL_COLUMN_TRANSACTION_DATE, 3);
     definition->setSpecialColumn(SPECIAL_COLUMN_PRICE_PER_UNIT, 2);
@@ -238,7 +240,7 @@ void SpreadsheetsTest::testSpreadsheetFile03(DatasetDefinitionSpreadsheet* defin
                             compareList,
                             true);
 
-    compareExportDataWithDump(dataset);
+    compareExportDataWithDump(std::move(dataset));
 }
 
 void SpreadsheetsTest::testSpreadsheetFile04(DatasetDefinitionSpreadsheet* definition,
@@ -276,7 +278,7 @@ void SpreadsheetsTest::testSpreadsheetFile04(DatasetDefinitionSpreadsheet* defin
 
     QStringList compareList("");
 
-    DatasetSpreadsheet* dataset = new DatasetSpreadsheet(definition);
+    std::unique_ptr<Dataset> dataset = std::make_unique<DatasetSpreadsheet>(definition);
     dataset->init();
     definition->setSpecialColumn(SPECIAL_COLUMN_TRANSACTION_DATE, 1);
     definition->setSpecialColumn(SPECIAL_COLUMN_PRICE_PER_UNIT, 2);
@@ -288,7 +290,7 @@ void SpreadsheetsTest::testSpreadsheetFile04(DatasetDefinitionSpreadsheet* defin
                             compareList,
                             false);
 
-    compareExportDataWithDump(dataset);
+    compareExportDataWithDump(std::move(dataset));
 }
 
 //void SpreadsheetsTest::testSpreadsheetFile05(DatasetDefinitionSpreadsheet* definition,
@@ -357,7 +359,7 @@ void SpreadsheetsTest::testSampleData(DatasetDefinition& definition,
     }
 }
 
-void SpreadsheetsTest::testDatasetConstruction(DatasetSpreadsheet& dataset,
+void SpreadsheetsTest::testDatasetConstruction(const Dataset& dataset,
                                                QVector<int>& columnsToTest,
                                                QVector<double>& compareNumericValues,
                                                QVector<QDate>& compareDateValues,
@@ -427,11 +429,11 @@ void SpreadsheetsTest::compareDataWithDumps(const QString& category, bool damage
 
             QVector<bool> activeColumns(definition->columnCount(), true);
             definition->setActiveColumns(activeColumns);
-            DatasetSpreadsheet* dataset = new DatasetSpreadsheet(definition);
+            std::unique_ptr<Dataset> dataset = std::make_unique<DatasetSpreadsheet>(definition);
             dataset->init();
             QVERIFY(true == dataset->isValid());
 
-            compareExportDataWithDump(dataset);
+            compareExportDataWithDump(std::move(dataset));
         }
     }
 }
@@ -492,9 +494,10 @@ void SpreadsheetsTest::generateAllDumpData()
     }
 }
 
-void SpreadsheetsTest::compareExportDataWithDump(DatasetSpreadsheet* dataset)
+void SpreadsheetsTest::compareExportDataWithDump(std::unique_ptr<Dataset> dataset)
 {
-    TableModel model(dataset);
+    QString datasetName {dataset->getName()};
+    TableModel model(std::move(dataset));
     FilteringProxyModel proxyModel;
     proxyModel.setSourceModel(&model);
 
@@ -504,7 +507,7 @@ void SpreadsheetsTest::compareExportDataWithDump(DatasetSpreadsheet* dataset)
     ExportData::quickExportAsTSV(&view);
 
     QCOMPARE(QApplication::clipboard()->text().split('\n'),
-             Common::loadFile(dataset->getName() + Common::getDataTsvDumpSuffix()).split('\n'));
+             Common::loadFile(datasetName + Common::getDataTsvDumpSuffix()).split('\n'));
 }
 
 void SpreadsheetsTest::generateDataDumpsForFile(QString name)
@@ -530,10 +533,10 @@ void SpreadsheetsTest::generateDataDumpsForFile(QString name)
 
     QVector<bool> activeColumns(definition->columnCount(), true);
     definition->setActiveColumns(activeColumns);
-    DatasetSpreadsheet* dataset = new DatasetSpreadsheet(definition);
+    std::unique_ptr<Dataset> dataset = std::make_unique<DatasetSpreadsheet>(definition);
     dataset->init();
 
-    TableModel model(dataset);
+    TableModel model(std::move(dataset));
     FilteringProxyModel proxyModel;
     proxyModel.setSourceModel(&model);
 

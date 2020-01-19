@@ -46,7 +46,7 @@ public:
     QString getValuesAsToolTip() const;
 
 private:
-    enum PlotInfo
+    enum PlotInfo : int
     {
         PLOT_INFO_COUNT = 0,
         PLOT_INFO_MIN,
@@ -58,7 +58,7 @@ private:
         PLOT_INFO_MAX,
         PLOT_INFO_AVG,
         PLOT_INFO_STD_DEV,
-        PLIT_INFO_END
+        PLOT_INFO_END
     };
 
     static const char* plotInfoNames_[];

@@ -49,13 +49,13 @@ bool Configuration::load()
 
     if (!file.open(QIODevice::ReadOnly))
     {
-        LOG(LOG_CONFIG,
+        LOG(LogTypes::CONFIG,
             "Config file " + filename + " can not be opened. Default config used.");
 
         return false;
     }
 
-    LOG(LOG_CONFIG, "Found config file " + filename + ".");
+    LOG(LogTypes::CONFIG, "Found config file " + filename + ".");
 
     QTextStream stream(&file);
     QString initial(stream.readAll());
@@ -64,7 +64,7 @@ bool Configuration::load()
     //If could not parse config.
     if (!configXML.setContent(initial))
     {
-        LOG(LOG_CONFIG, "Config file " + filename +
+        LOG(LogTypes::CONFIG, "Config file " + filename +
             " is damaged and will be deleted. Default config used.");
 
         file.close();
@@ -74,7 +74,7 @@ bool Configuration::load()
 
     file.close();
 
-    LOG(LOG_CONFIG, "Loaded config file:\n" + configXML.toString());
+    LOG(LogTypes::CONFIG, "Loaded config file:\n" + configXML.toString());
 
     QDomNodeList list = configXML.elementsByTagName(XML_NAME_UPDATE);
     QDomElement updateElement = list.at(0).toElement();
@@ -99,7 +99,7 @@ bool Configuration::load()
             importPathElement.attribute(XML_NAME_VALUE);
     }
 
-    LOG(LOG_CONFIG, configDump());
+    LOG(LogTypes::CONFIG, configDump());
 
     configValid_ = true;
 
@@ -127,7 +127,7 @@ bool Configuration::save()
 
     QString xml = doc.toString();
 
-    LOG(LOG_CONFIG, "Config to save:\n" + xml);
+    LOG(LogTypes::CONFIG, "Config to save:\n" + xml);
 
     QString filename(QApplication::applicationDirPath() + "/" +
                      QString(Constants::configurationFile));
@@ -136,19 +136,19 @@ bool Configuration::save()
 
     if (!file.open(QIODevice::WriteOnly))
     {
-        LOG(LOG_CONFIG, "Config file " + QString(Constants::configurationFile) +
+        LOG(LogTypes::CONFIG, "Config file " + QString(Constants::configurationFile) +
             " can not be opened for writing. Config not saved.");
         return false;
     }
 
     if (-1 != file.write(xml.toStdString().c_str()))
     {
-        LOG(LOG_CONFIG, "Config saved.");
+        LOG(LogTypes::CONFIG, "Config saved.");
         file.close();
         return true;
     }
 
-    LOG(LOG_CONFIG, "Error during config file save.");
+    LOG(LogTypes::CONFIG, "Error during config file save.");
     file.close();
     return false;
 }
