@@ -66,7 +66,7 @@ QString stringFromDays(int daysToAdd)
 
 QString floatToStringUsingLocale(float value, int precison)
 {
-    static bool initialized = false;
+    static bool initialized {false};
     static QLocale locale = QLocale::system();
     if (!initialized)
     {
@@ -102,9 +102,10 @@ QStringList generateExcelColumnNames(int columnsNumber)
 
     QString currentPrefix(QLatin1String(""));
     QStringList columnNames;
+    columnNames.reserve(columnsNumber);
     for (int i = 0; i < columnsNumber; ++i)
     {
-        columnNames << currentPrefix + templateNames[i % templateNames.count()];
+        columnNames.append(currentPrefix + templateNames[i % templateNames.count()]);
 
         if (i != 0 && 0 == (i + 1) % templateNames.count())
         {

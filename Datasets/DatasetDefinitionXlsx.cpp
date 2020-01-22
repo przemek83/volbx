@@ -248,7 +248,7 @@ bool DatasetDefinitionXlsx::getColumnList(QuaZip& zip,
                                           const QString& sheetName)
 {
     //Loading column names is using Excell names names. Set 600 temporary.
-    columnsCount_ = 600;
+    columnsCount_ = Constants::MAX_EXCEL_COLUMNS;
     excelColNames_ = Constants::generateExcelColumnNames(columnsCount_);
 
     if (zip.setCurrentFile(sheetName))

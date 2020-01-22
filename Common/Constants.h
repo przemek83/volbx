@@ -63,6 +63,8 @@ bool doublesAreEqual(double left, double right);
 bool floatsAreEqual(float left, float right);
 
 static constexpr double DEFAULT_LABEL_ROTATION {-50.0};
+
+static constexpr int MAX_EXCEL_COLUMNS {600};
 };
 
 #endif // CONSTANTS_H

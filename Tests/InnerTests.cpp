@@ -57,7 +57,7 @@ void InnerTests::generateDumpData()
             QTableView view;
             view.setModel(&proxyModel);
 
-            ExportData::quickExportAsTSV(&view);
+            ExportData::quickAsTSV(&view);
 
             QString tsvData = QApplication::clipboard()->text();
 
@@ -113,7 +113,7 @@ void InnerTests::checkImport(QString& fileName,
 
     QCOMPARE(compareData.split('\n'), definition->dumpDatasetDefinition().split('\n'));
 
-    ExportData::quickExportAsTSV(&view);
+    ExportData::quickAsTSV(&view);
 
     QString actualData = QApplication::clipboard()->text();
 

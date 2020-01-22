@@ -94,13 +94,13 @@ void Export::saveOnDisk()
 
     if (ui->xlsx->isChecked())
     {
-        ExportData::exportAsXLSX(view, fileName + "_" + tr("data") + ".xlsx");
+        ExportData::asXLSX(view, fileName + "_" + tr("data") + ".xlsx");
     }
     else
     {
-        ExportData::exportAsCsv(view,
-                                fileName + "_" + tr("data") + ".csv",
-                                false); //false = not inner format
+        ExportData::asCsv(view,
+                          fileName + "_" + tr("data") + ".csv",
+                          false); //false = not inner format
     }
 
     QApplication::restoreOverrideCursor();
