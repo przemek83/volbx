@@ -35,7 +35,7 @@ bool DatasetDefinitionInner::load()
     bool result = zip_.open(QuaZip::mdUnzip);
     if (!result)
     {
-        return result;
+        return false;
     }
 
     QByteArray definitionContent;
@@ -45,7 +45,7 @@ bool DatasetDefinitionInner::load()
     if (!result)
     {
         zip_.close();
-        return result;
+        return false;
     }
 
     result = fromXml(definitionContent);
@@ -53,17 +53,17 @@ bool DatasetDefinitionInner::load()
     if (!result)
     {
         zip_.close();
-        return result;
+        return false;
     }
 
     result = loadStrings(zip_);
     if (!result)
     {
         zip_.close();
-        return result;
+        return false;
     }
 
-    int rowsCountForSamples = (rowCount() > sampleSize_ ? sampleSize_ : rowCount());
+    int rowsCountForSamples = (rowCount() > SAMPLE_SIZE ? SAMPLE_SIZE : rowCount());
     sampleData_.resize(rowsCountForSamples);
 
     for (int i = 0 ; i < rowsCountForSamples ; ++i)
@@ -76,7 +76,7 @@ bool DatasetDefinitionInner::load()
     if (!result)
     {
         zip_.close();
-        return result;
+        return false;
     }
 
     //Set proper strings for sample data.
@@ -93,9 +93,9 @@ void DatasetDefinitionInner::updateSampleDataStrings()
     {
         if (DATA_FORMAT_STRING == columnsFormat_.at(i))
         {
-            for (int j = 0; j < sampleData_.size(); ++j)
+            for (auto& sampleDataRow : sampleData_)
             {
-                sampleData_[j][i] = stringsTable_[sampleData_[j][i].toInt()];
+                sampleDataRow[i] = stringsTable_[sampleDataRow[i].toULongLong()];
             }
         }
     }
@@ -145,24 +145,20 @@ bool DatasetDefinitionInner::fromXml(QByteArray& definitionContent)
 
     //Load columns elements.
     QDomNodeList columns =
-        root.firstChildElement(datasetDefinitionXmlNames_[DATASET_COLUMNS]).childNodes();
+        root.firstChildElement(DATASET_COLUMNS).childNodes();
 
     LOG(LogTypes::IMPORT_EXPORT, "Read column count: " + QString::number(columns.count()));
 
     columnsCount_ = columns.size();
-
     for (int i = 0; i < columnsCount_; ++i)
     {
         QDomElement column = columns.at(i).toElement();
         headerColumnNames_.push_back(
-            column.attribute(datasetDefinitionXmlNames_[DATASET_COLUMN_NAME]));
-        static const QString columnFormatTag =
-            datasetDefinitionXmlNames_[DATASET_COLUMN_FORMAT];
+            column.attribute(DATASET_COLUMN_NAME));
         columnsFormat_.push_back(
-            static_cast<DataFormat>(column.attribute(columnFormatTag).toInt()));
+            static_cast<DataFormat>(column.attribute(DATASET_COLUMN_FORMAT).toInt()));
 
-        QString special =
-            column.attribute(datasetDefinitionXmlNames_[DATASET_COLUMN_SPECIAL_TAG]);
+        QString special = column.attribute(DATASET_COLUMN_SPECIAL_TAG);
         if (0 != special.compare(QLatin1String("")))
         {
             specialColumns_[static_cast<SpecialColumn>(special.toInt())] = i;
@@ -170,7 +166,7 @@ bool DatasetDefinitionInner::fromXml(QByteArray& definitionContent)
     }
 
     //Read row count.
-    static const QString rowCountTag(datasetDefinitionXmlNames_[DATASET_ROW_COUNT]);
+    const QString rowCountTag(DATASET_ROW_COUNT);
     rowsCount_ = root.firstChildElement(rowCountTag).attribute(rowCountTag).toInt();
 
     return true;
@@ -207,7 +203,7 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
     int lineCounter = 0;
     while (!stream.atEnd() && lineCounter < dataContainer->size())
     {
-        if (fillSamplesOnly && lineCounter >= sampleSize_)
+        if (fillSamplesOnly && lineCounter >= SAMPLE_SIZE)
         {
             break;
         }
@@ -217,7 +213,7 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
         int columnToFill = 0;
         for (int i = 0; i < columnCount(); ++i)
         {
-            QString element = line.at(i);
+            const QString& element = line.at(i);
 
             //If column is not active do nothing.
             if (!fillSamplesOnly && !activeColumns_[i])
@@ -327,12 +323,12 @@ bool DatasetDefinitionInner::loadStrings(QuaZip& zip)
 
     QList<QByteArray> strings = stringsContent.split('\n');
     //First element is empty.
-    stringsTable_ = std::make_unique<QVariant[]>(strings.size() + 1);
+    stringsTable_ = std::make_unique<QVariant[]>(static_cast<size_t>(strings.size() + 1));
     stringsTable_[0] = QVariant(QString());
     size_t counter = 1;
     for (const auto& currentString : strings)
     {
-        stringsTable_[counter] = QVariant(QString(currentString));
+        stringsTable_[counter] = QVariant(QString::fromLatin1(currentString));
         counter++;
     }
 

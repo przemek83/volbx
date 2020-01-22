@@ -51,7 +51,7 @@ protected:
     void timerEvent(QTimerEvent* event) override;
 
 private:
-    int currentPercent_;
+    int currentPercent_ {0};
 
     int maxValue_;
 
@@ -75,7 +75,9 @@ private:
 
     QVector<QString> initNames(char newLine);
 
-    int lineWeidth_;
+    static constexpr int LINE_WIDTH {10};
+
+    static constexpr int TIMER_DEFAULT_INTERVAL {50};
 };
 
 #endif // PROGRESSBAR_H

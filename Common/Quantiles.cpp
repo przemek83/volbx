@@ -58,8 +58,8 @@ void Quantiles::computeQuantiles(QVector<float>& valuePerUnit)
         EX2 += pricePerMeter * pricePerMeter;
     }
 
-    EX /= number_;
-    EX2 /= number_;
+    EX /= static_cast<float>(number_);
+    EX2 /= static_cast<float>(number_);
 
     if (number_ > 1)
     {
@@ -88,23 +88,28 @@ void Quantiles::computeQuantiles(QVector<float>& valuePerUnit)
         }
         else
         {
-            float tmp = (number_ - 1) * 0.1F;
+            const float q10Level {0.1F};
+            float tmp = static_cast<float>(number_ - 1) * q10Level;
             q10_ = valuePerUnit.at(static_cast<int>(floorf(tmp))) + (tmp - floorf(tmp)) *
                    (valuePerUnit.at(static_cast<int>(ceilf(tmp))) - valuePerUnit.at(static_cast<int>(floorf(tmp))));
 
-            tmp = (number_ - 1) * 0.25F;
+            const float q25Level {0.25F};
+            tmp = static_cast<float>(number_ - 1) * q25Level;
             q25_ = valuePerUnit.at(static_cast<int>(floorf(tmp))) + (tmp - floorf(tmp)) *
                    (valuePerUnit.at(static_cast<int>(ceilf(tmp))) - valuePerUnit.at(static_cast<int>(floorf(tmp))));
 
-            tmp = (number_ - 1) * 0.5F;
+            const float q50Level {0.5F};
+            tmp = static_cast<float>(number_ - 1) * q50Level;
             q50_ = valuePerUnit.at(static_cast<int>(floorf(tmp))) + (tmp - floorf(tmp)) *
                    (valuePerUnit.at(static_cast<int>(ceilf(tmp))) - valuePerUnit.at(static_cast<int>(floorf(tmp))));
 
-            tmp = (number_ - 1) * 0.75F;
+            const float q75Level {0.75F};
+            tmp = static_cast<float>(number_ - 1) * q75Level;
             q75_ = valuePerUnit.at(static_cast<int>(floorf(tmp))) + (tmp - floorf(tmp)) *
                    (valuePerUnit.at(static_cast<int>(ceilf(tmp))) - valuePerUnit.at(static_cast<int>(floorf(tmp))));
 
-            tmp = (number_ - 1) * 0.9F;
+            const float q90Level {0.9F};
+            tmp = static_cast<float>(number_ - 1) * q90Level;
             q90_ = valuePerUnit.at(static_cast<int>(floorf(tmp))) + (tmp - floorf(tmp)) *
                    (valuePerUnit.at(static_cast<int>(ceilf(tmp))) - valuePerUnit.at(static_cast<int>(floorf(tmp))));
         }
@@ -142,27 +147,27 @@ QString Quantiles::getValuesAsToolTip() const
 
 QString Quantiles::valueAsHtmlRow(PlotInfo name, float value)
 {
-    static QString plotInfoNames_[PLOT_INFO_END];
+    static std::array<QString, PLOT_INFO_END> plotInfoNames;
     static bool initialized = false;
 
     if (!initialized)
     {
-        plotInfoNames_[PLOT_INFO_COUNT] =
+        plotInfoNames[PLOT_INFO_COUNT] =
             QObject::tr("Data count") + QLatin1Char(':');
-        plotInfoNames_[PLOT_INFO_MIN] = QStringLiteral("Minimum");
-        plotInfoNames_[PLOT_INFO_Q10] = QStringLiteral("Q10");
-        plotInfoNames_[PLOT_INFO_Q25] = QStringLiteral("Q25");
-        plotInfoNames_[PLOT_INFO_Q50] = QStringLiteral("Q50");
-        plotInfoNames_[PLOT_INFO_Q75] = QStringLiteral("Q75");
-        plotInfoNames_[PLOT_INFO_Q90] = QStringLiteral("Q90");
-        plotInfoNames_[PLOT_INFO_MAX] = QStringLiteral("Maximum");
-        plotInfoNames_[PLOT_INFO_AVG] = QObject::tr("Average");
-        plotInfoNames_[PLOT_INFO_STD_DEV] = QObject::tr("Std. deviation");
+        plotInfoNames[PLOT_INFO_MIN] = QStringLiteral("Minimum");
+        plotInfoNames[PLOT_INFO_Q10] = QStringLiteral("Q10");
+        plotInfoNames[PLOT_INFO_Q25] = QStringLiteral("Q25");
+        plotInfoNames[PLOT_INFO_Q50] = QStringLiteral("Q50");
+        plotInfoNames[PLOT_INFO_Q75] = QStringLiteral("Q75");
+        plotInfoNames[PLOT_INFO_Q90] = QStringLiteral("Q90");
+        plotInfoNames[PLOT_INFO_MAX] = QStringLiteral("Maximum");
+        plotInfoNames[PLOT_INFO_AVG] = QObject::tr("Average");
+        plotInfoNames[PLOT_INFO_STD_DEV] = QObject::tr("Std. deviation");
         initialized = true;
     }
 
     QString html(QStringLiteral("<tr><td>"));
-    html.append(plotInfoNames_[name]);
+    html.append(plotInfoNames.at(static_cast<size_t>(name)));
     html.append(QLatin1String("</td><td ALIGN=RIGHT>"));
     int precision = (PLOT_INFO_COUNT == name ? 0 : 2);
     html.append(Constants::floatToStringUsingLocale(value, precision));

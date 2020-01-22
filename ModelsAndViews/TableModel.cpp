@@ -5,7 +5,7 @@
 #include "Common/Constants.h"
 #include "Datasets/Dataset.h"
 
-const int TableModel::noColumn_ = -1;
+const int TableModel::noColumn_ = Constants::NOT_SET_COLUMN;
 
 TableModel::TableModel(std::unique_ptr<Dataset> dataset, QObject* parent) :
     QAbstractTableModel(parent), dataset_(std::move(dataset))

@@ -44,10 +44,10 @@ bool DatasetDefinitionOds::getSheetList(QuaZip& zip)
 
         QDomElement root = xmlDocument.documentElement();
 
-        static const QString configMapNamed(QStringLiteral("config:config-item-map-named"));
-        static const QString configName(QStringLiteral("config:name"));
-        static const QString configMapEntry(QStringLiteral("config:config-item-map-entry"));
-        static const QString tables(QStringLiteral("Tables"));
+        const QString configMapNamed(QStringLiteral("config:config-item-map-named"));
+        const QString configName(QStringLiteral("config:name"));
+        const QString configMapEntry(QStringLiteral("config:config-item-map-entry"));
+        const QString tables(QStringLiteral("Tables"));
 
         int elementsCount = root.elementsByTagName(configMapNamed).size();
         for (int i = 0 ; i < elementsCount; i++)
@@ -95,8 +95,6 @@ bool DatasetDefinitionOds::getColumnList(QuaZip& zip,
         QXmlStreamReader xmlStreamReader;
         xmlStreamReader.setDevice(&zipFile);
 
-        QXmlStreamReader::TokenType lastToken = QXmlStreamReader::StartElement;
-
         //Move to first row in selected sheet.
         while (!xmlStreamReader.atEnd() &&
                xmlStreamReader.name() != "table:table" &&
@@ -114,8 +112,10 @@ bool DatasetDefinitionOds::getColumnList(QuaZip& zip,
         xmlStreamReader.readNext();
 
         //Actual column number.
-        int j = -1;
-        lastToken = xmlStreamReader.tokenType();
+        int j = Constants::NOT_SET_COLUMN;
+        QXmlStreamReader::TokenType lastToken = xmlStreamReader.tokenType();
+
+        const QString numberColumnsRepeated(QStringLiteral("table:number-columns-repeated"));
 
         //Parse first row.
         while (!xmlStreamReader.atEnd() &&
@@ -125,7 +125,6 @@ bool DatasetDefinitionOds::getColumnList(QuaZip& zip,
             if (xmlStreamReader.name().toString() == QLatin1String("table-cell") &&
                 xmlStreamReader.tokenType() == QXmlStreamReader::StartElement)
             {
-                static const QString numberColumnsRepeated(QStringLiteral("table:number-columns-repeated"));
                 QString emptyColNumber =
                     xmlStreamReader.attributes().value(numberColumnsRepeated).toString();
                 if (!emptyColNumber.isEmpty())
@@ -242,7 +241,7 @@ bool DatasetDefinitionOds::getColumnTypes(QuaZip& zip,
     }
 
     //Actual column number.
-    int column = -1;
+    int column = Constants::NOT_SET_COLUMN;
 
     //Actual row number.
     int rowCounter = 0;
@@ -252,17 +251,17 @@ bool DatasetDefinitionOds::getColumnTypes(QuaZip& zip,
 
     int repeatCount = 1;
 
-    static const QString tableTag(QStringLiteral("table"));
-    static const QString tableRowTag(QStringLiteral("table-row"));
-    static const QString tableCellTag(QStringLiteral("table-cell"));
-    static const QString officeValueTypeTag(QStringLiteral("office:value-type"));
-    static const QString columnsRepeatedTag(QStringLiteral("table:number-columns-repeated"));
-    static const QString stringTag(QStringLiteral("string"));
-    static const QString dateTag(QStringLiteral("date"));
-    static const QString floatTag(QStringLiteral("float"));
-    static const QString percentageTag(QStringLiteral("percentage"));
-    static const QString currencyTag(QStringLiteral("currency"));
-    static const QString timeTag(QStringLiteral("time"));
+    const QString tableTag(QStringLiteral("table"));
+    const QString tableRowTag(QStringLiteral("table-row"));
+    const QString tableCellTag(QStringLiteral("table-cell"));
+    const QString officeValueTypeTag(QStringLiteral("office:value-type"));
+    const QString columnsRepeatedTag(QStringLiteral("table:number-columns-repeated"));
+    const QString stringTag(QStringLiteral("string"));
+    const QString dateTag(QStringLiteral("date"));
+    const QString floatTag(QStringLiteral("float"));
+    const QString percentageTag(QStringLiteral("percentage"));
+    const QString currencyTag(QStringLiteral("currency"));
+    const QString timeTag(QStringLiteral("time"));
 
     bool rowEmpty = true;
 
@@ -273,7 +272,7 @@ bool DatasetDefinitionOds::getColumnTypes(QuaZip& zip,
         if (0 == xmlStreamReader.name().compare(tableRowTag) &&
             xmlStreamReader.isStartElement())
         {
-            column = -1;
+            column = Constants::NOT_SET_COLUMN;
 
             if (!rowEmpty)
             {
@@ -335,7 +334,7 @@ bool DatasetDefinitionOds::getColumnTypes(QuaZip& zip,
                     }
                     else
                     {
-                        if (columnsFormat_[column + i] != DATA_FORMAT_STRING)
+                        if (columnsFormat_.at(column + i) != DATA_FORMAT_STRING)
                         {
                             columnsFormat_[column + i] = DATA_FORMAT_STRING;
                         }
@@ -352,7 +351,7 @@ bool DatasetDefinitionOds::getColumnTypes(QuaZip& zip,
                         }
                         else
                         {
-                            if (columnsFormat_[column + i] != DATA_FORMAT_DATE)
+                            if (columnsFormat_.at(column + i) != DATA_FORMAT_DATE)
                             {
                                 columnsFormat_[column + i] = DATA_FORMAT_STRING;
                             }
@@ -382,7 +381,6 @@ bool DatasetDefinitionOds::getColumnTypes(QuaZip& zip,
                 }
             }
             column += repeatCount - 1;
-            repeatCount = 1;
         }
         xmlStreamReader.readNextStartElement();
     }
@@ -454,7 +452,7 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
     QVector<QVariant> currentDataRow(templateDataRow);
 
     //Actual column number.
-    int column = -1;
+    int column = Constants::NOT_SET_COLUMN;
 
     //Actual data type in cell (s, str, null).
     QString currentColType = QStringLiteral("string");
@@ -467,17 +465,17 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
     int cellsFilledInRow = 0;
 
     //Optimization.
-    static const QString tableTag(QStringLiteral("table"));
-    static const QString tableRowTag(QStringLiteral("table-row"));
-    static const QString tableCellTag(QStringLiteral("table-cell"));
-    static const QString officeValueTypeTag(QStringLiteral("office:value-type"));
-    static const QString columnsRepeatedTag(QStringLiteral("table:number-columns-repeated"));
-    static const QString pTag(QStringLiteral("p"));
-    static const QString officeDateValueTag(QStringLiteral("office:date-value"));
-    static const QString officeValueTag(QStringLiteral("office:value"));
+    const QString tableTag(QStringLiteral("table"));
+    const QString tableRowTag(QStringLiteral("table-row"));
+    const QString tableCellTag(QStringLiteral("table-cell"));
+    const QString officeValueTypeTag(QStringLiteral("office:value-type"));
+    const QString columnsRepeatedTag(QStringLiteral("table:number-columns-repeated"));
+    const QString pTag(QStringLiteral("p"));
+    const QString officeDateValueTag(QStringLiteral("office:date-value"));
+    const QString officeValueTag(QStringLiteral("office:value"));
+    const QString dateFormat(QStringLiteral("yyyy-MM-dd"));
 
-    QVariant value;
-    static const QString emptyString(QLatin1String(""));
+    const QString emptyString(QLatin1String(""));
 
     while (!xmlStreamReader.atEnd() &&
            0 != xmlStreamReader.name().compare(tableTag) &&
@@ -488,7 +486,7 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
         if (0 == xmlStreamReader.name().compare(tableRowTag) &&
             xmlStreamReader.isStartElement())
         {
-            column = -1;
+            column = Constants::NOT_SET_COLUMN;
 
             if (0 != cellsFilledInRow)
             {
@@ -502,7 +500,7 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
                     bar->updateProgress(rowCounter);
                 }
 
-                if (fillSamplesOnly && rowCounter >= sampleSize_)
+                if (fillSamplesOnly && rowCounter >= SAMPLE_SIZE)
                 {
                     break;
                 }
@@ -547,6 +545,7 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
 
             if (!currentColType.isEmpty())
             {
+                QVariant value;
                 DataFormat format = columnsFormat_.at(column);
 
                 switch (format)
@@ -575,7 +574,6 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
 
                     case DATA_FORMAT_DATE:
                     {
-                        static QString dateFormat(QStringLiteral("yyyy-MM-dd"));
                         value =
                             QVariant(QDate::fromString(xmlStreamReader.attributes().value(officeDateValueTag).toString().left(10), dateFormat));
 
@@ -609,7 +607,6 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
             }
 
             column += repeatCount - 1;
-            repeatCount = 1;
         }
         xmlStreamReader.readNextStartElement();
     }
@@ -630,7 +627,7 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
 
 const QString& DatasetDefinitionOds::getSheetName()
 {
-    return sheetNames_.first();
+    return sheetNames_.constFirst();
 }
 
 bool DatasetDefinitionOds::loadSpecificData(QuaZip& /*zip*/)

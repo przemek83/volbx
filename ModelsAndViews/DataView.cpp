@@ -162,7 +162,7 @@ QVector<TransactionData> DataView::fillDataFromSelection(int groupByColumn) cons
             //with data when it will be done.
 
             //Temp, remove when all types of column managed in grouping.
-            if (-1 != groupByColumn)
+            if (groupByColumn != Constants::NOT_SET_COLUMN)
             {
                 temp.groupedBy_ = proxyModel->index(i, groupByColumn).data();
             }
@@ -189,7 +189,7 @@ void DataView::reloadSelectionDataAndRecompute()
 
     //Temp, until all column types managed.
     DataFormat columnFormat = DATA_FORMAT_UNKNOWN;
-    if (-1 != groupByColumn)
+    if (groupByColumn != Constants::NOT_SET_COLUMN)
     {
         const TableModel* parentModel =
             (qobject_cast<FilteringProxyModel*>(model()))->getParentModel();

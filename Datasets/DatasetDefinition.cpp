@@ -10,27 +10,16 @@
 
 #include "Dataset.h"
 
-const int DatasetDefinition::sampleSize_ = 10;
-
-const char* DatasetDefinition::datasetDefinitionXmlNames_[] =
-{
-    "DATASET",
-    "COLUMNS",
-    "COLUMN",
-    "NAME",
-    "FORMAT",
-    "SPECIAL_TAG",
-    "ROW_COUNT"
-};
-
 DatasetDefinition::DatasetDefinition(QString name):
-    rowsCount_(0),
-    columnsCount_(0),
     name_(std::move(name)),
-    emptyColName_(QObject::tr("no name")),
-    valid_(false)
+    emptyColName_(QObject::tr("no name"))
 {
 
+}
+
+bool DatasetDefinition::isValid() const
+{
+    return false;
 }
 
 int DatasetDefinition::rowCount() const
@@ -55,7 +44,7 @@ std::tuple<bool, int> DatasetDefinition::getSpecialColumnIfExists(SpecialColumn 
         return {true, specialColumns_[columnTag]};
     }
 
-    return {false, -1};
+    return {false, Constants::NOT_SET_COLUMN};
 }
 
 QString DatasetDefinition::getColumnName(int column) const
@@ -78,8 +67,8 @@ QString DatasetDefinition::dumpDatasetDefinition() const
         dump += " format=" + QString::number(static_cast<int>(columnsFormat_.at(i)));
         if (!activeColumns_.isEmpty())
         {
-            static const QString notActive(QStringLiteral(" not active"));
-            static const QString active(QStringLiteral(" active"));
+            const QString notActive(QStringLiteral(" not active"));
+            const QString active(QStringLiteral(" active"));
             dump += " active=" + (activeColumns_[i] ? active : notActive);
         }
 
@@ -98,7 +87,7 @@ QString DatasetDefinition::getName() const
     return name_;
 }
 
-const QString DatasetDefinition::getError() const
+QString DatasetDefinition::getError() const
 {
     return error_;
 }
@@ -223,29 +212,29 @@ QVariant DatasetDefinition::getDefaultVariantForFormat(const DataFormat format) 
 
 void DatasetDefinition::toXml(QByteArray& data, int rowCountNumber) const
 {
-    QDomDocument xmlDocument(datasetDefinitionXmlNames_[DATASET_NAME]);
+    QDomDocument xmlDocument(DATASET_NAME);
     QDomElement root =
-        xmlDocument.createElement(datasetDefinitionXmlNames_[DATASET_NAME]);
+        xmlDocument.createElement(DATASET_NAME);
     xmlDocument.appendChild(root);
 
     //Columns.
     QDomElement columns =
-        xmlDocument.createElement(datasetDefinitionXmlNames_[DATASET_COLUMNS]);
+        xmlDocument.createElement(DATASET_COLUMNS);
     root.appendChild(columns);
 
     for (int i = 0; i < columnsCount_; ++i)
     {
         QDomElement node =
-            xmlDocument.createElement(datasetDefinitionXmlNames_[DATASET_COLUMN]);
-        node.setAttribute(datasetDefinitionXmlNames_[DATASET_COLUMN_NAME],
+            xmlDocument.createElement(DATASET_COLUMN);
+        node.setAttribute(DATASET_COLUMN_NAME,
                           headerColumnNames_.at(i));
-        node.setAttribute(datasetDefinitionXmlNames_[DATASET_COLUMN_FORMAT],
+        node.setAttribute(DATASET_COLUMN_FORMAT,
                           columnsFormat_.at(i));
 
         QMapIterator<SpecialColumn, int> it(specialColumns_);
         if (it.findNext(i))
         {
-            node.setAttribute(datasetDefinitionXmlNames_[DATASET_COLUMN_SPECIAL_TAG],
+            node.setAttribute(DATASET_COLUMN_SPECIAL_TAG,
                               QString::number(static_cast<int>(it.key())));
         }
         columns.appendChild(node);
@@ -253,8 +242,8 @@ void DatasetDefinition::toXml(QByteArray& data, int rowCountNumber) const
 
     //Add row count.
     QDomElement rowCount =
-        xmlDocument.createElement(datasetDefinitionXmlNames_[DATASET_ROW_COUNT]);
-    rowCount.setAttribute(datasetDefinitionXmlNames_[DATASET_ROW_COUNT],
+        xmlDocument.createElement(DATASET_ROW_COUNT);
+    rowCount.setAttribute(DATASET_ROW_COUNT,
                           QString::number(rowCountNumber));
     root.appendChild(rowCount);
 

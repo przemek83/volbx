@@ -63,7 +63,7 @@ void DatasetDefinitionVisualization::setDatasetDefiniton(
     auto [pricePerUnitPointed, specialColumnPrice] =
         datasetDefinition_->getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT);
 
-    ui->columnsList->sortByColumn(-1);
+    ui->columnsList->sortByColumn(Constants::NOT_SET_COLUMN);
     ui->columnsList->setSortingEnabled(false);
 
     //Column list.
@@ -113,7 +113,7 @@ void DatasetDefinitionVisualization::setDatasetDefiniton(
     ui->columnsList->header()->resizeSections(QHeaderView::ResizeToContents);
 
     ui->columnsList->setSortingEnabled(true);
-    ui->columnsList->sortByColumn(-1);
+    ui->columnsList->sortByColumn(Constants::NOT_SET_COLUMN);
 
     //Set proper special columns.
     if (dateOfTransactionPointed)
@@ -291,14 +291,14 @@ void DatasetDefinitionVisualization::on_UnselectAll_clicked()
 
 void DatasetDefinitionVisualization::specialColumnChanged(int /*newIndex*/)
 {
-    int dateColumn = -1;
+    int dateColumn = Constants::NOT_SET_COLUMN;
     if (ui->dateCombo->currentIndex() != -1)
     {
         dateColumn =
             ui->dateCombo->itemData(ui->dateCombo->currentIndex()).toInt();
     }
 
-    int priceColumn = -1;
+    int priceColumn = Constants::NOT_SET_COLUMN;
     if (ui->pricePerUnitCombo->currentIndex() != -1)
     {
         int index = ui->pricePerUnitCombo->currentIndex();

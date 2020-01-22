@@ -32,7 +32,7 @@ public:
     std::unique_ptr<QVariant[]> getSharedStringTable() override;
 
 protected:
-    void updateSampleDataStrings() override;
+    void updateSampleDataStrings();
 
     virtual const QString& getSheetName() = 0;
 

@@ -28,7 +28,7 @@ public:
     DatasetDefinition& operator=(DatasetDefinition&& other) = delete;
     DatasetDefinition(DatasetDefinition&& other) = delete;
 
-    virtual bool isValid() const = 0;
+    virtual bool isValid() const;
 
     int rowCount() const;
 
@@ -49,7 +49,7 @@ public:
 
     QString getName() const;
 
-    const QString getError() const;
+    QString getError() const;
 
     ///Clear sample data when it is not necessary.
     void clearSampleData();
@@ -70,11 +70,9 @@ public:
     void toXml(QByteArray& data, int rowCountNumber) const;
 
 protected:
-    virtual void updateSampleDataStrings() = 0;
+    int rowsCount_ {0};
 
-    int rowsCount_;
-
-    int columnsCount_;
+    int columnsCount_ {0};
 
     QVector<DataFormat> columnsFormat_;
 
@@ -99,28 +97,22 @@ protected:
     void rebuildDefinitonUsingActiveColumnsOnly();
 
     ///Number of lines in sample data.
-    static const int sampleSize_;
-
-    bool valid_;
+    static constexpr int SAMPLE_SIZE {10};
 
     bool isSpecialColumnTagged(SpecialColumn column) const;
 
     QVariant getDefaultVariantForFormat(const DataFormat format) const;
 
-    ///Enum used with field names used in definiton.
-    enum DatasetXmlName
-    {
-        DATASET_NAME,
-        DATASET_COLUMNS,
-        DATASET_COLUMN,
-        DATASET_COLUMN_NAME,
-        DATASET_COLUMN_FORMAT,
-        DATASET_COLUMN_SPECIAL_TAG,
-        DATASET_ROW_COUNT
-    };
+    /// Names used in definition file.
+    const QString DATASET_NAME{QStringLiteral("DATASET")};
+    const QString DATASET_COLUMNS{QStringLiteral("COLUMNS")};
+    const QString DATASET_COLUMN{QStringLiteral("COLUMN")};
+    const QString DATASET_COLUMN_NAME{QStringLiteral("NAME")};
+    const QString DATASET_COLUMN_FORMAT{QStringLiteral("FORMAT")};
+    const QString DATASET_COLUMN_SPECIAL_TAG{QStringLiteral("SPECIAL_TAG")};
+    const QString DATASET_ROW_COUNT{QStringLiteral("ROW_COUNT")};
 
-    ///Names used in definition file.
-    const static char* datasetDefinitionXmlNames_[];
+    bool valid_ {false};
 };
 
 #endif // DATASETDEFINITION_H

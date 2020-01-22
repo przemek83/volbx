@@ -43,7 +43,7 @@ bool DatasetDefinitionSpreadsheet::init()
     }
 
     //Sample data.
-    sampleData_.resize(sampleSize_ < rowsCount_ ? sampleSize_ : rowsCount_);
+    sampleData_.resize(SAMPLE_SIZE < rowsCount_ ? SAMPLE_SIZE : rowsCount_);
     if (!getDataFromZip(zip_, getSheetName(), &sampleData_, true))
     {
         error_ =
@@ -68,9 +68,9 @@ void DatasetDefinitionSpreadsheet::updateSampleDataStrings()
     {
         if (DATA_FORMAT_STRING == columnsFormat_.at(i))
         {
-            for (int j = 0; j < sampleData_.size(); ++j)
+            for (auto& sampleDataRow : sampleData_)
             {
-                sampleData_[j][i] = stringsMap_.key(sampleData_[j][i].toInt());
+                sampleDataRow[i] = stringsMap_.key(sampleDataRow[i].toInt());
             }
         }
     }
@@ -88,12 +88,12 @@ bool DatasetDefinitionSpreadsheet::isValid() const
 
 std::unique_ptr<QVariant[]> DatasetDefinitionSpreadsheet::getSharedStringTable()
 {
-    auto stringsTable = std::make_unique<QVariant[]>(nextIndex_);
+    auto stringsTable = std::make_unique<QVariant[]>(static_cast<size_t>(nextIndex_));
     stringsTable[0] = QVariant(QString());
     QHash<QString, int>::const_iterator i = stringsMap_.constBegin();
     while (i != stringsMap_.constEnd())
     {
-        stringsTable[i.value()] = QVariant(i.key());
+        stringsTable[static_cast<size_t>(i.value())] = QVariant(i.key());
         ++i;
     }
 

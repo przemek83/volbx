@@ -8,10 +8,11 @@
 #include <QObject>
 #include <qwt_series_data.h>
 
-#include "Common/Quantiles.h"
+#include "Common/Constants.h"
 #include "Common/Formats.h"
-#include "DataProvider/TransactionData.h"
 #include "Common/PlotData.h"
+#include "Common/Quantiles.h"
+#include "DataProvider/TransactionData.h"
 
 class QwtIntervalSeriesData;
 class QwtPointSeriesData;
@@ -83,7 +84,7 @@ private:
     QVector<TransactionData> calcData_;
 
     ///Column used for grouping.
-    int groupingColumn_;
+    int groupingColumn_ {Constants::NOT_SET_COLUMN};
 
 Q_SIGNALS:
     void setNewDataForGrouping(float minY,

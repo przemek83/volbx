@@ -14,12 +14,10 @@ ProgressBar::ProgressBar(ProgressBar::ProgressTitle title,
                          int max,
                          QWidget* parent)
     : QWidget(parent),
-      currentPercent_(0),
-      maxValue_(max),
-      lineWeidth_(10)
+      maxValue_(max)
 {
     static const char newLine('\n');
-    static QVector<QString> progressTitles = initNames(newLine);
+    static const QVector<QString> progressTitles = initNames(newLine);
 
     title_ = progressTitles[title];
     setWindowTitle(QString(title_).replace(newLine, ' '));
@@ -33,35 +31,39 @@ ProgressBar::ProgressBar(ProgressBar::ProgressTitle title,
     //Counter without %.
     if (0 == maxValue_)
     {
-        startTimer(50);
+        startTimer(TIMER_DEFAULT_INTERVAL);
     }
 
-    QSize size(120, 140);
+    const int defaultWidth {120};
+    const int defaultHeight {140};
+    const QSize size(defaultWidth, defaultHeight);
     resize(size);
 
-    QColor color(127, 0, 127);
-    brush_ = QBrush(color);
+    const QColor blueColor(Qt::blue);
+    brush_ = QBrush(blueColor);
 
-    pen_.setColor(color);
-    pen_.setWidth(lineWeidth_);
+    pen_.setColor(blueColor);
+    pen_.setWidth(LINE_WIDTH);
     pen_.setStyle(Qt::SolidLine);
 
+    const double counterFontFactor {2.5};
     int fontPointSizen = QApplication::font().pointSize();
-    counterFont_.setPointSize(lround(fontPointSizen * 2.5));
+    counterFont_.setPointSize(lround(fontPointSizen * counterFontFactor));
     counterFont_.setStyleStrategy(QFont::PreferAntialias);
-    titleFont_.setPointSize(lround(fontPointSizen * 1.5));
+    const double titleFontFactor {1.5};
+    titleFont_.setPointSize(lround(fontPointSizen * titleFontFactor));
     titleFont_.setBold(true);
 
-    QSize arcSize(width() - 4 * lineWeidth_, width() - 4 * lineWeidth_);
+    QSize arcSize(width() - 4 * LINE_WIDTH, width() - 4 * LINE_WIDTH);
     arcRectangle_ = QRect(width() / 2 - arcSize.width() / 2,
-                          (width() - 2 * lineWeidth_) / 2 - arcSize.height() / 2,
+                          (width() - 2 * LINE_WIDTH) / 2 - arcSize.height() / 2,
                           arcSize.width(),
                           arcSize.height());
 
     titleRectangle_ = QRect(0,
-                            height() - lineWeidth_ * 4,
+                            height() - LINE_WIDTH * 4,
                             width(),
-                            lineWeidth_ * 4);
+                            LINE_WIDTH * 4);
 
     QWidget* activeWidget = QApplication::activeWindow();
     if (nullptr != activeWidget)
@@ -102,6 +104,8 @@ void ProgressBar::paintEvent([[maybe_unused]] QPaintEvent* event)
 
     constexpr int fullDegree {16};
     constexpr double hundredthOfFullCircle {3.6};
+    constexpr int quarterCircleAngle {90};
+    constexpr int halfCircleAngle {2 * quarterCircleAngle};
 
     //Counter without %.
     if (maxValue_ == 0)
@@ -110,12 +114,12 @@ void ProgressBar::paintEvent([[maybe_unused]] QPaintEvent* event)
         int startAngle = lround(currentPercent_ * hundredthOfFullCircle * fullDegree);
         const int spanAngle = -step * fullDegree;
         painter.drawArc(arcRectangle_, startAngle, spanAngle);
-        startAngle = lround((180 + currentPercent_ * hundredthOfFullCircle) * fullDegree);
+        startAngle = lround((halfCircleAngle + currentPercent_ * hundredthOfFullCircle) * fullDegree);
         painter.drawArc(arcRectangle_, startAngle, spanAngle);
     }
     else
     {
-        constexpr int startAngle {90 * fullDegree};
+        constexpr int startAngle {quarterCircleAngle * fullDegree};
         const int spanAngle = lround(-currentPercent_ * hundredthOfFullCircle * fullDegree);
         painter.drawArc(arcRectangle_, startAngle, spanAngle);
         painter.drawText(arcRectangle_,
@@ -138,7 +142,8 @@ void ProgressBar::paintEvent([[maybe_unused]] QPaintEvent* event)
 
 void ProgressBar::timerEvent(QTimerEvent* /*event*/)
 {
+    constexpr int maxPercent {100};
     currentPercent_++;
-    currentPercent_ %= 100;
+    currentPercent_ %= maxPercent;
     update();
 }

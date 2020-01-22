@@ -29,10 +29,9 @@ public:
 
     bool getData(QVector<QVector<QVariant> >* dataContainer);
 
-protected:
-    void updateSampleDataStrings() override;
-
 private:
+    void updateSampleDataStrings();
+
     bool fillData(QuaZip& zip,
                   QVector<QVector<QVariant> >* dataContainer,
                   bool fillSamplesOnly);

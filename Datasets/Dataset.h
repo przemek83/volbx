@@ -39,7 +39,7 @@ public:
     {
         if (DATA_FORMAT_STRING == datasetDefinition_->getColumnFormat(column))
         {
-            return &sharedStrings_[data_[row][column].toInt()];
+            return &sharedStrings_[data_[row][column].toULongLong()];
         }
         else
         {

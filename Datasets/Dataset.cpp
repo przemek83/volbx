@@ -129,7 +129,7 @@ void Dataset::getStringList(int column, QStringList& listToFill) const
         int listSize = listToFill.count();
         for (int i = 0; i < listSize; ++i)
         {
-            listToFill[i] = sharedStrings_[listToFill[i].toInt()].toString();
+            listToFill[i] = sharedStrings_[listToFill[i].toULongLong()].toString();
         }
     }
 }

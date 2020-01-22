@@ -280,7 +280,7 @@ bool DatasetDefinitionXlsx::getColumnList(QuaZip& zip,
         xmlStreamReader.readNext(); xmlStreamReader.readNext();
 
         //Actual column number, from 0.
-        int column = -1;
+        int column = Constants::NOT_SET_COLUMN;
         lastToken = xmlStreamReader.tokenType();
 
         //Parse first row.
@@ -414,7 +414,7 @@ bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
     }
 
     //Current column.
-    int column = -1;
+    int column = Constants::NOT_SET_COLUMN;
 
     //Current row.
     int rowCounter = 0;
@@ -441,7 +441,7 @@ bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
         if (0 == xmlStreamReader.name().compare(rowTag) &&
             xmlStreamReader.isStartElement())
         {
-            column = -1;
+            column = Constants::NOT_SET_COLUMN;
 
             if (0 == rowCounter % 100)
             {
@@ -476,7 +476,7 @@ bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
             }
 
             //If we encounter column outside expected grid we move to row end.
-            if (-1 == expectedIndexCurrentColumn)
+            if (expectedIndexCurrentColumn == Constants::NOT_SET_COLUMN)
             {
                 xmlStreamReader.skipCurrentElement();
                 continue;
@@ -618,7 +618,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(QuaZip& zip,
     openZipAndMoveToSecondRow(zip, sheetName, zipFile, xmlStreamReader);
 
     //Actual column number.
-    int column = -1;
+    int column = Constants::NOT_SET_COLUMN;
 
     //Actual data type in cell (s, str, null).
     QString currentColType = QStringLiteral("s");
@@ -676,7 +676,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(QuaZip& zip,
         if (0 == xmlStreamReader.name().compare(rowTag) &&
             xmlStreamReader.isStartElement())
         {
-            column = -1;
+            column = Constants::NOT_SET_COLUMN;
 
             if (0 != rowCounter)
             {
@@ -721,7 +721,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(QuaZip& zip,
             }
 
             //If we encounter column outside expected grid we move to row end.
-            if (-1 == expectedIndexCurrentColumn)
+            if (expectedIndexCurrentColumn == Constants::NOT_SET_COLUMN)
             {
                 xmlStreamReader.skipCurrentElement();
                 continue;
@@ -791,7 +791,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(QuaZip& zip,
     }
 
     if (0 != rowCounter &&
-        (!fillSamplesOnly || (fillSamplesOnly && sampleSize_ > rowsCount_)))
+        (!fillSamplesOnly || (fillSamplesOnly && SAMPLE_SIZE > rowsCount_)))
     {
         Q_ASSERT(rowCounter <= rowsCount_);
         if (rowCounter <= rowsCount_)

@@ -9,7 +9,6 @@
 #include <QVariant>
 #include <QtCore>
 
-#include "Common/Constants.h"
 #include "Common/ProgressBar.h"
 #include "Shared/Logger.h"
 
@@ -29,11 +28,11 @@ void PlotDataProvider::reCompute(QVector<TransactionData> newCalcData,
 {
     calcData_ = std::move(newCalcData);
 
-    QVector<float> valuePerUnit;
     quantiles_.clear();
 
     int dataSize = calcData_.size();
-
+    QVector<float> valuePerUnit;
+    valuePerUnit.reserve(dataSize);
     if (0 != dataSize)
     {
         for (int i = 0; i < dataSize; ++i)
@@ -62,7 +61,7 @@ void PlotDataProvider::recomputeGroupData(QVector<TransactionData> calcData,
     groupingColumn_ = groupingColumn;
 
     //Remove when other column types will be managed.
-    if (-1 == groupingColumn_)
+    if (groupingColumn_ == Constants::NOT_SET_COLUMN)
     {
         return;
     }
@@ -120,8 +119,8 @@ void PlotDataProvider::computeBasicData()
     }
 
     //Create points for quantiles - x, y, min, max.
-    auto pointsQuantilesX = new double[static_cast<unsigned long long>(dataSize)];
-    auto pointsQuantilesY = new double[static_cast<unsigned long long>(dataSize)];
+    auto pointsQuantilesX = new double[static_cast<uint64_t>(dataSize)];
+    auto pointsQuantilesY = new double[static_cast<uint64_t>(dataSize)];
 
     double sumX = 0.;
     double sumY = 0.;
@@ -137,7 +136,7 @@ void PlotDataProvider::computeBasicData()
     for (int i = 0; i < dataSize; ++i)
     {
         double x = Constants::getStartOfTheWorld().daysTo(calcData_.at(i).date_);
-        double y = static_cast<double>(calcData_.at(i).pricePerMeter_);
+        auto y = static_cast<double>(calcData_.at(i).pricePerMeter_);
         pointsQuantilesX[i] = x;
         pointsQuantilesY[i] = y;
 
