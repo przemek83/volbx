@@ -102,7 +102,7 @@ void HistogramPlot::recompute(int intervalsCount)
 
     float step = (max - min) / static_cast<float>(intervalsCount);
 
-    QVector<int> intervals(count);
+    QVector<int> intervals(std::max(intervalsCount, count));
     for (int i = 0; i < count; ++i)
     {
         int index = static_cast<int>((static_cast<float>(data[i]) - min) / step);
