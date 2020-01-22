@@ -278,7 +278,8 @@ bool DatasetDefinitionOds::getColumnTypes(QuaZip& zip,
             {
                 rowCounter++;
 
-                if (0 == rowCounter % 100)
+                const int batchSize {100};
+                if (0 == rowCounter % batchSize)
                 {
                     QApplication::processEvents();
                 }
@@ -371,7 +372,7 @@ bool DatasetDefinitionOds::getColumnTypes(QuaZip& zip,
                             }
                             else
                             {
-                                if (columnsFormat_[column + i] != DATA_FORMAT_FLOAT)
+                                if (columnsFormat_.at(column + i) != DATA_FORMAT_FLOAT)
                                 {
                                     columnsFormat_[column + i] = DATA_FORMAT_STRING;
                                 }
@@ -431,7 +432,7 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
     templateDataRow.resize((fillSamplesOnly ? columnsCount_ : getActiveColumnCount()));
     for (int i = 0; i < columnsCount_; ++i)
     {
-        if (fillSamplesOnly || activeColumns_[i])
+        if (fillSamplesOnly || activeColumns_.at(i))
         {
             templateDataRow[columnToFill] =
                 getDefaultVariantForFormat(columnsFormat_[i]);
@@ -574,8 +575,9 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
 
                     case DATA_FORMAT_DATE:
                     {
+                        static const int odsStringDateLength {10};
                         value =
-                            QVariant(QDate::fromString(xmlStreamReader.attributes().value(officeDateValueTag).toString().left(10), dateFormat));
+                            QVariant(QDate::fromString(xmlStreamReader.attributes().value(officeDateValueTag).toString().left(odsStringDateLength), dateFormat));
 
                         break;
                     }

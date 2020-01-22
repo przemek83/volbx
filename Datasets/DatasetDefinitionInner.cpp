@@ -323,12 +323,12 @@ bool DatasetDefinitionInner::loadStrings(QuaZip& zip)
 
     QList<QByteArray> strings = stringsContent.split('\n');
     //First element is empty.
-    stringsTable_ = std::make_unique<QVariant[]>(static_cast<size_t>(strings.size() + 1));
+    stringsTable_ = std::make_unique<QVariant[]>(static_cast<size_t>(strings.size()) + 1);
     stringsTable_[0] = QVariant(QString());
     size_t counter = 1;
     for (const auto& currentString : strings)
     {
-        stringsTable_[counter] = QVariant(QString::fromLatin1(currentString));
+        stringsTable_[counter] = QVariant(QString::fromUtf8(currentString));
         counter++;
     }
 

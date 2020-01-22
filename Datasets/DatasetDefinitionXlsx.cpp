@@ -105,9 +105,9 @@ bool DatasetDefinitionXlsx::getSheetList(QuaZip& zip)
             if (!sheet.isNull())
             {
                 QMap<QString, QString>::const_iterator iterator =
-                    sheetIdToUserFriendlyNameMap.find(sheet.attribute(QStringLiteral("Id")));
+                    sheetIdToUserFriendlyNameMap.constFind(sheet.attribute(QStringLiteral("Id")));
 
-                if (sheetIdToUserFriendlyNameMap.end() != iterator)
+                if (sheetIdToUserFriendlyNameMap.constEnd() != iterator)
                 {
                     sheetToFileMapInZip_[*iterator] =
                         "xl/" + sheet.attribute(QStringLiteral("Target"));
@@ -268,7 +268,6 @@ bool DatasetDefinitionXlsx::getColumnList(QuaZip& zip,
 
         //Variable with actual type of data in cell (s, str, null).
         QString currentColType = QStringLiteral("s");
-        QXmlStreamReader::TokenType lastToken = QXmlStreamReader::StartElement;
 
         //Go to first row.
         while (!xmlStreamReader.atEnd() &&
@@ -281,7 +280,9 @@ bool DatasetDefinitionXlsx::getColumnList(QuaZip& zip,
 
         //Actual column number, from 0.
         int column = Constants::NOT_SET_COLUMN;
-        lastToken = xmlStreamReader.tokenType();
+        QXmlStreamReader::TokenType lastToken = xmlStreamReader.tokenType();
+
+        const QRegExp regExp(QLatin1String("[0-9]"));
 
         //Parse first row.
         while (!xmlStreamReader.atEnd() && xmlStreamReader.name() != "row")
@@ -292,7 +293,6 @@ bool DatasetDefinitionXlsx::getColumnList(QuaZip& zip,
             {
                 column++;
                 QString rowNumber(xmlStreamReader.attributes().value(QLatin1String("r")).toString());
-                static const QRegExp regExp("[0-9]");
 
                 //If cells are missing add default name.
                 while (excelColNames_.indexOf(rowNumber.remove(regExp)) > column)
@@ -424,14 +424,14 @@ bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
     QXmlStreamAttributes xmlStreamAtrributes;
 
     //Optimization.
-    static const QString rowTag(QStringLiteral("row"));
-    static const QString cellTag(QStringLiteral("c"));
-    static const QString sheetDataTag(QStringLiteral("sheetData"));
-    static const QString sTag(QStringLiteral("s"));
-    static const QString strTag(QStringLiteral("str"));
-    static const QString rTag(QStringLiteral("r"));
-    static const QString tTag(QStringLiteral("t"));
-    static const QString vTag(QStringLiteral("v"));
+    const QString rowTag(QStringLiteral("row"));
+    const QString cellTag(QStringLiteral("c"));
+    const QString sheetDataTag(QStringLiteral("sheetData"));
+    const QString sTag(QStringLiteral("s"));
+    const QString strTag(QStringLiteral("str"));
+    const QString rTag(QStringLiteral("r"));
+    const QString tTag(QStringLiteral("t"));
+    const QString vTag(QStringLiteral("v"));
 
     while (!xmlStreamReader.atEnd() &&
            0 != xmlStreamReader.name().compare(sheetDataTag))
@@ -443,7 +443,8 @@ bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
         {
             column = Constants::NOT_SET_COLUMN;
 
-            if (0 == rowCounter % 100)
+            const int batchSize {100};
+            if (0 == rowCounter % batchSize)
             {
                 QApplication::processEvents();
             }
@@ -512,10 +513,10 @@ bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
                 }
                 else
                 {
-                    QString value = xmlStreamAtrributes.value(sTag).toString();
+                    QString otherValue = xmlStreamAtrributes.value(sTag).toString();
 
-                    if (!value.isEmpty() &&
-                        dateStyles_.contains(allStyles_.at(value.toInt())))
+                    if (!otherValue.isEmpty() &&
+                        dateStyles_.contains(allStyles_.at(otherValue.toInt())))
                     {
                         columnsFormat_[column] = DATA_FORMAT_DATE;
                     }
@@ -557,19 +558,19 @@ bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
                     }
                     else
                     {
-                        QString value = xmlStreamAtrributes.value(sTag).toString();
+                        QString othervalue = xmlStreamAtrributes.value(sTag).toString();
 
-                        if (!value.isEmpty() &&
-                            dateStyles_.contains(allStyles_.at(value.toInt())))
+                        if (!othervalue.isEmpty() &&
+                            dateStyles_.contains(allStyles_.at(othervalue.toInt())))
                         {
-                            if (columnsFormat_[column] != DATA_FORMAT_DATE)
+                            if (columnsFormat_.at(column) != DATA_FORMAT_DATE)
                             {
                                 columnsFormat_[column] = DATA_FORMAT_STRING;
                             }
                         }
                         else
                         {
-                            if (columnsFormat_[column] != DATA_FORMAT_FLOAT)
+                            if (columnsFormat_.at(column) != DATA_FORMAT_FLOAT)
                             {
                                 columnsFormat_[column] = DATA_FORMAT_STRING;
                             }
@@ -636,7 +637,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(QuaZip& zip,
     templateDataRow.resize(fillSamplesOnly ? columnsCount_ : getActiveColumnCount());
     for (int i = 0; i < columnsCount_; ++i)
     {
-        if (fillSamplesOnly || activeColumns_[i])
+        if (fillSamplesOnly || activeColumns_.at(i))
         {
             templateDataRow[columnToFill] =
                 getDefaultVariantForFormat(columnsFormat_[i]);
@@ -659,13 +660,13 @@ bool DatasetDefinitionXlsx::getDataFromZip(QuaZip& zip,
     int charsToChopFromEndInCellName = 1;
 
     //Optimization.
-    static const QString rowTag(QStringLiteral("row"));
-    static const QString cellTag(QStringLiteral("c"));
-    static const QString sheetDataTag(QStringLiteral("sheetData"));
-    static const QString sTag(QStringLiteral("s"));
-    static const QString vTag(QStringLiteral("v"));
-    static const QString rTag(QStringLiteral("r"));
-    static const QString tTag(QStringLiteral("t"));
+    const QString rowTag(QStringLiteral("row"));
+    const QString cellTag(QStringLiteral("c"));
+    const QString sheetDataTag(QStringLiteral("sheetData"));
+    const QString sTag(QStringLiteral("s"));
+    const QString vTag(QStringLiteral("v"));
+    const QString rTag(QStringLiteral("r"));
+    const QString tTag(QStringLiteral("t"));
 
     while (!xmlStreamReader.atEnd() &&
            0 != xmlStreamReader.name().compare(sheetDataTag) &&
@@ -735,7 +736,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(QuaZip& zip,
         if (!xmlStreamReader.atEnd() &&
             0 == xmlStreamReader.name().compare(vTag) &&
             xmlStreamReader.tokenType() == QXmlStreamReader::StartElement &&
-            (fillSamplesOnly || (!fillSamplesOnly && activeColumns_[column])))
+            (fillSamplesOnly || (!fillSamplesOnly && activeColumns_.at(column))))
         {
             DataFormat format = columnsFormat_.at(column);
 
@@ -759,13 +760,11 @@ bool DatasetDefinitionXlsx::getDataFromZip(QuaZip& zip,
 
                 case DATA_FORMAT_DATE:
                 {
-                    QDate startOfTheExcelWorld(1899, 12, 30);
-
                     //If YYYY-MM-DD HH:MI:SS cut and left YYYY-MM-DD.
                     int daysToAdd =
                         static_cast<int>(xmlStreamReader.readElementText().toDouble());
                     currentDataRow[activeColumnsMapping[column]] =
-                        QVariant(startOfTheExcelWorld.addDays(daysToAdd));
+                        QVariant(Constants::getStartOfExcelWorld().addDays(daysToAdd));
                     break;
                 }
 
@@ -818,7 +817,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(QuaZip& zip,
 
 const QString& DatasetDefinitionXlsx::getSheetName()
 {
-    return sheetToFileMapInZip_.begin().value();
+    return sheetToFileMapInZip_.constBegin().value();
 }
 
 bool DatasetDefinitionXlsx::loadSpecificData(QuaZip& zip)

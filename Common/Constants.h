@@ -14,7 +14,9 @@ QString getExeFileSuffix();
 QString getTemporaryFileSuffix();
 
 ///Date 1/1/1970 used as reference for dates conversion.
-QDate getStartOfTheWorld();
+const QDate& getStartOfTheWorld();
+
+const QDate& getStartOfExcelWorld();
 
 QString getDefaultDateFormat();
 

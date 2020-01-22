@@ -23,10 +23,16 @@ QString getTemporaryFileSuffix()
     return QStringLiteral(".tmp");
 }
 
-QDate getStartOfTheWorld()
+const QDate& getStartOfTheWorld()
 {
     static const QDate startOfTheWorld{QDate(1970, 1, 1)};
     return startOfTheWorld;
+}
+
+const QDate& getStartOfExcelWorld()
+{
+    static const QDate startOfTheExcelWorld(1899, 12, 30);
+    return startOfTheExcelWorld;
 }
 
 QString getDefaultDateFormat()

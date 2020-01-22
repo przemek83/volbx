@@ -145,7 +145,7 @@ void DatasetDefinition::rebuildDefinitonUsingActiveColumnsOnly()
 
     for (int i = 0; i < activeColumns_.count(); ++i)
     {
-        if (activeColumns_[i])
+        if (activeColumns_.at(i))
         {
             tempColumnsFormat.push_back(columnsFormat_[i]);
             tempHeaderColumnNames << headerColumnNames_[i];

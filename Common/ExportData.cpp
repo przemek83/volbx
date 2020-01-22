@@ -36,8 +36,7 @@ const QString& getCellTypeTag(QVariant& cell)
         case QVariant::DateTime:
         {
             static const QString dateTag(QStringLiteral("s=\"3\""));
-            static const QDate startOfTheExcelWorld(1899, 12, 30);
-            cell = QVariant(-1 * cell.toDate().daysTo(startOfTheExcelWorld));
+            cell = QVariant(-1 * cell.toDate().daysTo(Constants::getStartOfExcelWorld()));
             return dateTag;
         }
 
