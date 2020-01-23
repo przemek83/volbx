@@ -165,7 +165,7 @@ FilterNumbers* FiltersDock::createNewNumbersFilter(const TableModel* parentModel
 
 void FiltersDock::removeModel(const FilteringProxyModel* model)
 {
-    if (model != nullptr)
+    if (model == nullptr)
     {
         return;
     }
