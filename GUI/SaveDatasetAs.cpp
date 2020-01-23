@@ -16,6 +16,10 @@ SaveDatasetAs::SaveDatasetAs(QStringList alreadyUsedNames, QWidget* parent) :
 {
     ui->setupUi(this);
 
+    connect(ui->nameLineEdit, &QLineEdit::textChanged, this, &SaveDatasetAs::nameLineEditTextChanged);
+    connect(ui->save, &QPushButton::clicked, this, &SaveDatasetAs::saveClicked);
+    connect(ui->cancel, &QPushButton::clicked, this, &SaveDatasetAs::cancelClicked);
+
     ui->nameLineEdit->setValidator(new QRegExpValidator(QRegExp(Constants::getDatasetNameRegExp()),
                                                         this));
     ui->save->setEnabled(false);
@@ -33,7 +37,7 @@ QString SaveDatasetAs::getChosenDatasetName()
     return ui->nameLineEdit->text();
 }
 
-void SaveDatasetAs::on_nameLineEdit_textChanged(const QString& actualText)
+void SaveDatasetAs::nameLineEditTextChanged(const QString& actualText)
 {
     if (actualText.isEmpty())
     {
@@ -63,7 +67,7 @@ void SaveDatasetAs::on_nameLineEdit_textChanged(const QString& actualText)
     }
 }
 
-void SaveDatasetAs::on_save_clicked()
+void SaveDatasetAs::saveClicked()
 {
     if (QColor(Qt::red) == ui->nameLineEdit->palette().color(ui->nameLineEdit->backgroundRole()))
     {
@@ -87,7 +91,7 @@ void SaveDatasetAs::on_save_clicked()
     accept();
 }
 
-void SaveDatasetAs::on_cancel_clicked()
+void SaveDatasetAs::cancelClicked()
 {
     reject();
 }

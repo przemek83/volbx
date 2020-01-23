@@ -57,44 +57,27 @@ VolbxMain::VolbxMain(QWidget* parent) :
 
     tabWidget_ = new MainTabWidget(this);
 
-    connect(filters_,
-            SIGNAL(newNamesFiltering(int, QSet<QString>)),
-            tabWidget_,
-            SLOT(setTextFilterInProxy(int, QSet<QString>)));
+    connect(filters_, &FiltersDock::newNamesFiltering,
+            tabWidget_, &MainTabWidget::setTextFilterInProxy);
+    connect(filters_, &FiltersDock::newDateFiltering,
+            tabWidget_, &MainTabWidget::setDateFilterInProxy);
+    connect(filters_, &FiltersDock::newNumbersFiltering,
+            tabWidget_, &MainTabWidget::setNumericFilterInProxy);
 
-    connect(filters_,
-            SIGNAL(newDateFiltering(int, QDate, QDate, bool)),
-            tabWidget_,
-            SLOT(setDateFilterInProxy(int, QDate, QDate, bool)));
-
-    connect(filters_,
-            SIGNAL(newNumbersFiltering(int, double, double)),
-            tabWidget_,
-            SLOT(setNumericFilterInProxy(int, double, double)));
-
-    connect(ui->actionBasic_plot,
-            SIGNAL(triggered()),
-            tabWidget_,
-            SLOT(addBasicPlot()));
-
-    connect(ui->actionHistogram,
-            SIGNAL(triggered()),
-            tabWidget_,
-            SLOT(addHistogramPlot()));
-
-    connect(ui->actionGroup_plot,
-            SIGNAL(triggered()),
-            tabWidget_,
-            SLOT(addGroupingPlot()));
+    connect(ui->actionBasic_plot, &QAction::triggered,
+            tabWidget_, &MainTabWidget::addBasicPlot);
+    connect(ui->actionHistogram, &QAction::triggered,
+            tabWidget_, &MainTabWidget::addHistogramPlot);
+    connect(ui->actionGroup_plot, &QAction::triggered,
+            tabWidget_, &MainTabWidget::addGroupingPlot);
 
     ui->verticalLayout->addWidget(tabWidget_);
 
     addDockWidget(Qt::LeftDockWidgetArea, filters_);
     filters_->titleBarWidget()->resize(200, filters_->titleBarWidget()->height());
 
-    connect(tabWidget_, SIGNAL(currentChanged(int)), this, SLOT(tabWasChanged(int)));
-
-    connect(tabWidget_, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
+    connect(tabWidget_, &MainTabWidget::currentChanged, this, &VolbxMain::tabWasChanged);
+    connect(tabWidget_, &MainTabWidget::tabCloseRequested, this, &VolbxMain::closeTab);
 
 #ifndef DEBUGGING
     ui->actionLogs->setVisible(false);

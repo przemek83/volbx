@@ -44,7 +44,7 @@ private:
     ///Maximum set on filter creation.
     double maxOnInit_;
 
-    static const int factor_;
+    static constexpr double FACTOR {100.};
 
     ///Numbers are doubles.
     bool doubleMode_ {false};

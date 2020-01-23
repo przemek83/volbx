@@ -56,26 +56,10 @@ private:
 
     ScrollArea* scrollArea_;
 
-    bool getIntervals(QVector<float>* intervals);
-
-    bool retrieveIntervals(QVector<float>* intervals);
-
-    QRegExpValidator numValidator_;
-
-    QRegExpValidator dateValidator_;
-
-    static const char* numRegExp_;
-
-    static const char* dateRegExp_;
-
-    static const char* numPlaceHolder_;
-
-    static const char* datePlaceHolder_;
-
     DataFormat getSelectedColumnFormat();
 
 private Q_SLOTS:
-    void on_comboBox_currentIndexChanged(int index);
+    void comboBoxCurrentIndexChanged(int index);
 
 Q_SIGNALS:
     void newGroupingColumn(int column);

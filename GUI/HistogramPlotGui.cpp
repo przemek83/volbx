@@ -12,10 +12,8 @@ HistogramPlotGui::HistogramPlotGui(QWidget* parent) :
 
     ui->verticalLayout->addWidget(&histogramPlot_);
 
-    connect(ui->spinBox,
-            SIGNAL(valueChanged(int)),
-            &histogramPlot_,
-            SLOT(recompute(int)));
+    connect(ui->spinBox, qOverload<int>(&QSpinBox::valueChanged),
+            &histogramPlot_, &HistogramPlot::recompute);
 }
 
 HistogramPlotGui::~HistogramPlotGui()

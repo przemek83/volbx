@@ -16,23 +16,14 @@
 #include "DockTitleBar.h"
 #include "ui_GroupPlotGui.h"
 
-const char* GroupPlotGui::numRegExp_ =
-    R"(^([\d]+(,[\d]+)?){1}(;([\d]+(,[\d]+)?))*$)";
-
-const char* GroupPlotGui::dateRegExp_ =
-    "^(([1-9]|[12][0-9]|3[01])[- /.]([1-9]|1[012])[- /.](19|20)[0-9][0-9]?){1}(;((0?[1-9]|[12][0-9]|3[01])[- /.](0?[1-9]|1[012])[- /.](19|20)[0-9][0-9]))*$";
-
-const char* GroupPlotGui::datePlaceHolder_ =
-    QT_TRANSLATE_NOOP("GroupPlotGui", "dd/mm/yyyy;dd/mm/yyyy;dd/mm/yyyy...");
-
-const char* GroupPlotGui::numPlaceHolder_ =
-    QT_TRANSLATE_NOOP("GroupPlotGui", "number1;number2;number3...");
-
 GroupPlotGui::GroupPlotGui(const TableModel* model, QWidget* parent) :
     PlotDockWidget(tr("Grouping"), parent),
     ui(new Ui::GroupPlotGui)
 {
     ui->setupUi(this);
+
+    connect(ui->comboBox, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &GroupPlotGui::comboBoxCurrentIndexChanged);
 
     dynamic_cast<DockTitleBar*>(titleBarWidget())->setTitle(windowTitle());
 
@@ -47,17 +38,11 @@ GroupPlotGui::GroupPlotGui(const TableModel* model, QWidget* parent) :
 
     ui->comboBox->clear();
 
-    numValidator_.setRegExp(QRegExp(QString::fromLatin1(numRegExp_)));
-    dateValidator_.setRegExp(QRegExp(QString(dateRegExp_)));
-
-    ui->intervals->setPlaceholderText(tr(numPlaceHolder_));
-
-    ui->intervals->setValidator(&numValidator_);
-
     for (int i = 0; i < model->columnCount(); ++i)
     {
         columnsNumberToFormatMap_[i] = model->getColumnFormat(i);
 
+        // Accept only string type columns.
         if (DATA_FORMAT_STRING != model->getColumnFormat(i))
         {
             continue;
@@ -66,8 +51,6 @@ GroupPlotGui::GroupPlotGui(const TableModel* model, QWidget* parent) :
         QString columnName = model->headerData(i, Qt::Horizontal).toString();
         ui->comboBox->addItem(columnName, QVariant(i));
     }
-
-    ui->intervalsWidget->setVisible(false);
 }
 
 GroupPlotGui::~GroupPlotGui()
@@ -81,8 +64,8 @@ void GroupPlotGui::setNewData(float minY,
                               const QVector<Quantiles>& quantilesForIntervals,
                               const Quantiles& quantiles)
 {
-    groupPlot_.setAxisScale(QwtPlot::yLeft, minY, maxY);
-    groupPlot_.setAxisScale(QwtPlot::yRight, minY, maxY);
+    groupPlot_.setAxisScale(QwtPlot::yLeft, static_cast<double>(minY), static_cast<double>(maxY));
+    groupPlot_.setAxisScale(QwtPlot::yRight, static_cast<double>(minY), static_cast<double>(maxY));
     groupPlot_.setAxisScale(QwtPlot::xBottom, 0, intervalsNames.size() + 1, 1);
 
     groupPlot_.setNewData(quantilesForIntervals,
@@ -113,52 +96,10 @@ void GroupPlotGui::setNewData(float minY,
 DataFormat GroupPlotGui::getSelectedColumnFormat()
 {
     int columnNumber = ui->comboBox->itemData(ui->comboBox->currentIndex()).toInt();
-    return columnsNumberToFormatMap_[columnNumber];
+    return columnsNumberToFormatMap_.value(columnNumber);
 }
 
-void GroupPlotGui::on_comboBox_currentIndexChanged(int index)
+void GroupPlotGui::comboBoxCurrentIndexChanged(int index)
 {
-    ui->intervals->clear();
-
-    switch (getSelectedColumnFormat())
-    {
-        case DATA_FORMAT_STRING:
-        {
-            ui->fromLabel->setText(QLatin1String(""));
-            ui->toLabel->setText(QLatin1String(""));
-            ui->intervals->setPlaceholderText(QLatin1String(""));
-            ui->intervals->setEnabled(false);
-            ui->changeIntervals->setEnabled(false);
-            ui->intervalsLabel->setEnabled(false);
-            ui->intervalsWidget->setVisible(false);
-            break;
-        }
-
-        case DATA_FORMAT_FLOAT:
-        {
-            ui->intervals->setValidator(&numValidator_);
-            ui->intervals->setPlaceholderText(tr(numPlaceHolder_));
-            ui->intervals->setEnabled(true);
-            ui->changeIntervals->setEnabled(true);
-            ui->intervalsLabel->setEnabled(true);
-            ui->intervalsWidget->setVisible(true);
-            break;
-        }
-
-        case DATA_FORMAT_DATE:
-        {
-            ui->intervals->setValidator(&dateValidator_);
-            ui->intervals->setPlaceholderText(tr(datePlaceHolder_));
-            ui->intervals->setEnabled(true);
-            ui->changeIntervals->setEnabled(true);
-            ui->intervalsLabel->setEnabled(true);
-            ui->intervalsWidget->setVisible(true);
-            break;
-        }
-
-        default:
-            break;
-    }
-
     Q_EMIT newGroupingColumn(ui->comboBox->itemData(index).toInt());
 }

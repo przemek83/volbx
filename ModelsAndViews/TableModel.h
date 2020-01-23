@@ -92,7 +92,6 @@ public:
     /**
      * @brief get special column if exist (data, units, price).
      * @param columnTag searched column tag.
-     * @param column column number to fill if found.
      * @return true if found (column number in int passed as ref.).
      */
     std::tuple<bool, int> getSpecialColumnIfExists(SpecialColumn columnTag) const;

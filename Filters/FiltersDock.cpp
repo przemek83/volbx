@@ -42,10 +42,7 @@ void FiltersDock::addModel(const FilteringProxyModel* model)
     auto lineEdit = new QLineEdit(mainWidget);
     lineEdit->setPlaceholderText(tr("Search..."));
     lineEdit->setClearButtonEnabled(true);
-    connect(lineEdit,
-            SIGNAL(textChanged(QString)),
-            this,
-            SLOT(searchTextChanged(QString)));
+    connect(lineEdit, &QLineEdit::textChanged, this, &FiltersDock::searchTextChanged);
     mainLayout->addWidget(lineEdit);
 
     auto filterListWidget = new QWidget();
@@ -120,11 +117,7 @@ FilterNames* FiltersDock::createNewNamesFilter(const TableModel* parentModel,
     list.sort();
     const int listSize {list.size()};
     auto filter = new FilterNames(columnName, index, std::move(list), filterListWidget);
-
-    connect(filter,
-            SIGNAL(newStringFilter(int, QSet<QString>)),
-            this,
-            SIGNAL(newNamesFiltering(int, QSet<QString>)));
+    connect(filter, &FilterNames::newStringFilter, this, &FiltersDock::newNamesFiltering);
 
     if (listSize <= 1)
     {
@@ -149,12 +142,7 @@ FilterDates* FiltersDock::createNewDatesFilter(const TableModel* parentModel,
                                   max,
                                   emptyDates,
                                   filterListWidget);
-
-    connect(filter,
-            SIGNAL(newDateFilter(int, QDate, QDate, bool)),
-            this,
-            SIGNAL(newDateFiltering(int, QDate, QDate, bool)));
-
+    connect(filter, &FilterDates::newDateFilter, this, &FiltersDock::newDateFiltering);
     return filter;
 }
 
@@ -171,19 +159,16 @@ FilterNumbers* FiltersDock::createNewNumbersFilter(const TableModel* parentModel
                                     min,
                                     max,
                                     filterListWidget);
-
-    connect(filter,
-            SIGNAL(newNumericFilter(int, double, double)),
-            this,
-            SIGNAL(newNumbersFiltering(int, double, double)));
-
+    connect(filter, &FilterNumbers::newNumericFilter, this, &FiltersDock::newNumbersFiltering);
     return filter;
 }
 
 void FiltersDock::removeModel(const FilteringProxyModel* model)
 {
-    if (!model)
+    if (model != nullptr)
+    {
         return;
+    }
 
     QWidget* widgetWithFiltersToDelete = modelsMap_.key(model);
     modelsMap_.remove(widgetWithFiltersToDelete);
@@ -203,7 +188,7 @@ void FiltersDock::searchTextChanged(const QString& arg1)
 {
     QWidget* currentWidget = ui->stackedWidget->currentWidget();
 
-    if (nullptr == currentWidget)
+    if (currentWidget == nullptr)
     {
         Q_ASSERT(false);
         return;
@@ -213,7 +198,7 @@ void FiltersDock::searchTextChanged(const QString& arg1)
 
     for (Filter* current : widgets)
     {
-        if (nullptr != current)
+        if (current != nullptr)
         {
             current->setVisible(current->title().contains(arg1, Qt::CaseInsensitive));
         }

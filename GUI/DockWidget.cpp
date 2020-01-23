@@ -14,14 +14,8 @@ DockWidget::DockWidget(const QString& titleText,
 {
     titleBarWidget_.setTitle(titleText);
 
-    connect(titleBarWidget_.getCloseButton(),
-            SIGNAL(clicked()),
-            this,
-            SLOT(close()));
-    connect(titleBarWidget_.getFloatingButton(),
-            SIGNAL(clicked()),
-            this,
-            SLOT(manageFloating()));
+    connect(titleBarWidget_.getCloseButton(), &QPushButton::clicked, this, &DockWidget::close);
+    connect(titleBarWidget_.getFloatingButton(), &QPushButton::clicked, this, &DockWidget::manageFloating);
 
     setTitleBarWidget(&titleBarWidget_);
 }

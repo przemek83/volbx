@@ -151,14 +151,14 @@ void DatasetDefinition::rebuildDefinitonUsingActiveColumnsOnly()
             tempHeaderColumnNames << headerColumnNames_[i];
 
             if (specialColumnDateMarked &&
-                specialColumns_[SPECIAL_COLUMN_TRANSACTION_DATE] == i)
+                specialColumns_.value(SPECIAL_COLUMN_TRANSACTION_DATE) == i)
             {
                 specialColumnsTemp[SPECIAL_COLUMN_TRANSACTION_DATE] =
                     activeColumnNumber;
             }
 
             if (specialColumnPriceMarked &&
-                specialColumns_[SPECIAL_COLUMN_PRICE_PER_UNIT] == i)
+                specialColumns_.value(SPECIAL_COLUMN_PRICE_PER_UNIT) == i)
             {
                 specialColumnsTemp[SPECIAL_COLUMN_PRICE_PER_UNIT] =
                     activeColumnNumber;

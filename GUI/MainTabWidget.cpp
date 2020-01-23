@@ -207,10 +207,8 @@ void MainTabWidget::addBasicPlot()
         changeDataViewMode(view);
     }
 
-    connect(view->getPlotDataProvider(),
-            SIGNAL(basicPlotDataChanged(PlotData, Quantiles, QVector<QPointF>)),
-            basicDataPlot,
-            SLOT(setNewData(PlotData, Quantiles, QVector<QPointF>)));
+    connect(view->getPlotDataProvider(), &PlotDataProvider::basicPlotDataChanged,
+            basicDataPlot, &BasicDataPlot::setNewData);
 
     view->reloadSelectionDataAndRecompute();
 
@@ -260,10 +258,8 @@ void MainTabWidget::addHistogramPlot()
         changeDataViewMode(view);
     }
 
-    connect(view->getPlotDataProvider(),
-            SIGNAL(basicDataChanged(PlotData, Quantiles)),
-            histogramPlotGui,
-            SLOT(dataChanged(PlotData, Quantiles)));
+    connect(view->getPlotDataProvider(), &PlotDataProvider::basicDataChanged,
+            histogramPlotGui, &HistogramPlotGui::dataChanged);
 
     view->reloadSelectionDataAndRecompute();
 
@@ -314,23 +310,11 @@ void MainTabWidget::addGroupingPlot()
         changeDataViewMode(view);
     }
 
-    connect(view->getPlotDataProvider(),
-            SIGNAL(setNewDataForGrouping(float,
-                                         float,
-                                         QVector<QString>,
-                                         QVector<Quantiles>,
-                                         Quantiles)),
-            groupPlotGui,
-            SLOT(setNewData(float,
-                            float,
-                            QVector<QString>,
-                            QVector<Quantiles>,
-                            Quantiles)));
+    connect(view->getPlotDataProvider(), &PlotDataProvider::setNewDataForGrouping,
+            groupPlotGui, &GroupPlotGui::setNewData);
 
-    connect(groupPlotGui,
-            SIGNAL(newGroupingColumn(int)),
-            view,
-            SLOT(groupingColumnChanged(int)));
+    connect(groupPlotGui, &GroupPlotGui::newGroupingColumn,
+            view, &DataView::groupingColumnChanged);
 
     view->reloadSelectionDataAndRecompute();
 

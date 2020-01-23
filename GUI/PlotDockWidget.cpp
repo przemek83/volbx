@@ -19,14 +19,10 @@ PlotDockWidget::PlotDockWidget(const QString& title,
     titleBarWidget_.getExportButton()->setVisible(true);
     titleBarWidget_.getResetButton()->setVisible(true);
 
-    connect(titleBarWidget_.getExportButton(),
-            SIGNAL(clicked()),
-            this,
-            SLOT(quickExportData()));
-    connect(titleBarWidget_.getResetButton(),
-            SIGNAL(clicked()),
-            this,
-            SLOT(resetPlot()));
+    connect(titleBarWidget_.getExportButton(), &QPushButton::clicked,
+            this, &PlotDockWidget::quickExportData);
+    connect(titleBarWidget_.getResetButton(), &QPushButton::clicked,
+            this, &PlotDockWidget::resetPlot);
 }
 
 void PlotDockWidget::quickExportData()

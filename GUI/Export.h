@@ -28,9 +28,9 @@ public:
     Export(Export&& other) = delete;
 
 private Q_SLOTS:
-    void on_save_clicked();
+    void saveClicked();
 
-    void on_locationSearch_clicked();
+    void locationSearchClicked();
 
 private:
     Ui::Export* ui;
@@ -39,7 +39,7 @@ private:
 
     void saveOnDisk();
 
-    static const char* exportFilesDateFormat_;
+    const QString exportFilesDateFormat_ {QStringLiteral("yyyyMMdd")};
 };
 
 #endif // EXPORT_H

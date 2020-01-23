@@ -33,14 +33,7 @@ public:
 
     DataView* getCurrentDataView();
 
-private:
-    void changeDataViewMode(DataView* view);
-
-    ViewDockWidget* getCurrentDataViewDock();
-
-    MainTab* getCurrentMainTab();
-
-private Q_SLOTS:
+public Q_SLOTS:
     void setTextFilterInProxy(int column, const QSet<QString>& bannedStrings);
 
     void setDateFilterInProxy(int column,
@@ -55,6 +48,13 @@ private Q_SLOTS:
     void addHistogramPlot();
 
     void addGroupingPlot();
+
+private:
+    void changeDataViewMode(DataView* view);
+
+    ViewDockWidget* getCurrentDataViewDock();
+
+    MainTab* getCurrentMainTab();
 };
 
 #endif // MAINTABWIDGET_H

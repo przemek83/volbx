@@ -38,6 +38,9 @@ public:
                     const Quantiles& quantiles,
                     int intervalsCount);
 
+public Q_SLOT:
+    void recompute(int intervalsCount);
+
 private:
     void initHistogramPlot();
 
@@ -61,8 +64,6 @@ private:
 
 private Q_SLOTS:
     void legendItemChecked(const QVariant& itemInfo, bool on, int index);
-
-    void recompute(int intervalsCount);
 };
 
 #endif // HISTOGRAMPLOT_H

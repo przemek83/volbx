@@ -18,8 +18,6 @@
 #include "PlotDockWidget.h"
 #include "ui_Export.h"
 
-const char* Export::exportFilesDateFormat_ = "yyyyMMdd";
-
 Export::Export(QMainWindow* tab, QWidget* parent) :
     QDialog(parent),
     ui(new Ui::Export),
@@ -27,11 +25,12 @@ Export::Export(QMainWindow* tab, QWidget* parent) :
 {
     ui->setupUi(this);
 
+    connect(ui->save, &QPushButton::clicked, this, &Export::saveClicked);
+    connect(ui->locationSearch, &QPushButton::clicked, this, &Export::locationSearchClicked);
+
     ui->locationLineEdit->setText(Configuration::getInstance().getImportFilePath());
-
-    ui->prefix->setValidator(new QRegExpValidator(QRegExp("[\\w]*"), ui->prefix));
-
-    ui->prefix->setText(tab_->windowTitle().replace(QRegExp("[^\\w]"), QLatin1String("")));
+    ui->prefix->setValidator(new QRegExpValidator(QRegExp(QLatin1String("[\\w]*")), ui->prefix));
+    ui->prefix->setText(tab_->windowTitle().replace(QRegExp(QLatin1String("[^\\w]")), QLatin1String("")));
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
@@ -41,7 +40,7 @@ Export::~Export()
     delete ui;
 }
 
-void Export::on_save_clicked()
+void Export::saveClicked()
 {
     QDir dir(ui->locationLineEdit->text());
 
@@ -60,7 +59,7 @@ void Export::on_save_clicked()
     accept();
 }
 
-void Export::on_locationSearch_clicked()
+void Export::locationSearchClicked()
 {
     QFileDialog dialog;
     dialog.setDirectory(ui->locationLineEdit->text());

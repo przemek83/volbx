@@ -26,13 +26,13 @@ public:
     HistogramPlotGui& operator=(HistogramPlotGui&& other) = delete;
     HistogramPlotGui(HistogramPlotGui&& other) = delete;
 
+public Q_SLOTS:
+    void dataChanged(const PlotData& plotData, const Quantiles& quantiles);
+
 private:
     Ui::HistogramPlotGui* ui;
 
     HistogramPlot histogramPlot_;
-
-private Q_SLOTS:
-    void dataChanged(const PlotData& plotData, const Quantiles& quantiles);
 };
 
 #endif // HISTOGRAMPLOTGUI_H

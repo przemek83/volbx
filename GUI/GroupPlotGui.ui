@@ -60,87 +60,9 @@
       </item>
      </layout>
     </item>
-    <item>
-     <widget class="QWidget" name="intervalsWidget" native="true">
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <property name="spacing">
-        <number>2</number>
-       </property>
-       <property name="sizeConstraint">
-        <enum>QLayout::SetMinimumSize</enum>
-       </property>
-       <property name="leftMargin">
-        <number>2</number>
-       </property>
-       <property name="topMargin">
-        <number>2</number>
-       </property>
-       <property name="rightMargin">
-        <number>2</number>
-       </property>
-       <property name="bottomMargin">
-        <number>2</number>
-       </property>
-       <item>
-        <widget class="QLabel" name="intervalsLabel">
-         <property name="text">
-          <string>Intervals:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="fromLabel">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="intervals"/>
-       </item>
-       <item>
-        <widget class="QLabel" name="toLabel">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="changeIntervals">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>ok</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
    </layout>
   </widget>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>intervals</sender>
-   <signal>returnPressed()</signal>
-   <receiver>changeIntervals</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>188</x>
-     <y>228</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>359</x>
-     <y>229</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

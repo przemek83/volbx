@@ -41,11 +41,11 @@ private Q_SLOTS:
      * @brief action on string/name change.
      * @param actualText actual string.
      */
-    void on_nameLineEdit_textChanged(const QString& actualText);
+    void nameLineEditTextChanged(const QString& actualText);
 
-    void on_save_clicked();
+    void saveClicked();
 
-    void on_cancel_clicked();
+    void cancelClicked();
 
 private:
     Ui::SaveDatasetAs* ui;
