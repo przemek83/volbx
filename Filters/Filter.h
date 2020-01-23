@@ -20,11 +20,8 @@ public:
     Filter& operator=(Filter&& other) = delete;
     Filter(Filter&& other) = delete;
 
-public Q_SLOTS:
-    virtual void setChecked(bool checked);
-
 protected:
-    int64_t column_;
+    const int column_;
 };
 
 #endif // FILTER_H

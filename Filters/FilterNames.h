@@ -21,7 +21,7 @@ class FilterNames : public Filter
 public:
     FilterNames(const QString& name,
                 int column,
-                const QStringList& initialList,
+                QStringList initialList,
                 QWidget* parent = nullptr);
 
     ~FilterNames() override;
@@ -35,10 +35,10 @@ public:
     QSize sizeHint() const override;
 
 public Q_SLOTS:
-    void setChecked(bool checked) override;
+    void setChecked(bool checked);
 
 private:
-    QStringList initialList_;
+    const QStringList initialList_;
 
     QSet<QString> lastEmitted_;
 
@@ -60,7 +60,7 @@ private Q_SLOTS:
      */
     void itemChecked(QListWidgetItem* item);
 
-    void on_selectAll_toggled(bool checked);
+    void selectAllToggled(bool checked);
 
 Q_SIGNALS:
     void newStringFilter(int kolumn, QSet<QString> bannedList);

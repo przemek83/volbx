@@ -16,16 +16,17 @@ const int FilterNames::maximumHeigh_ = 180;
 
 FilterNames::FilterNames(const QString& name,
                          int column,
-                         const QStringList& initialList,
+                         QStringList initialList,
                          QWidget* parent) :
     Filter(name, column, parent),
-    initialList_(initialList),
+    initialList_(std::move(initialList)),
     ui(new Ui::FilterNames),
     addMarginForScrollBar_(false)
 {
     ui->setupUi(this);
 
-    initialList_.sort();
+    connect(this, &Filter::toggled, this, &FilterNames::setChecked);
+    connect(ui->selectAll, &QCheckBox::toggled, this, &FilterNames::selectAllToggled);
 
     int longestNameWidth = 0;
     for (const QString& itemName : initialList_)
@@ -41,10 +42,8 @@ FilterNames::FilterNames(const QString& name,
         addMarginForScrollBar_ = true;
     }
 
-    connect(ui->listWidget,
-            SIGNAL(itemClicked(QListWidgetItem*)),
-            this,
-            SLOT(itemChecked(QListWidgetItem*)));
+    connect(ui->listWidget, &QListWidget::itemClicked,
+            this, &FilterNames::itemChecked);
 
     if (initialList_.size() <= 1)
     {
@@ -59,12 +58,13 @@ FilterNames::~FilterNames()
 
 void FilterNames::itemChecked(QListWidgetItem* item)
 {
-    if (!item)
+    if (item == nullptr)
     {
         return;
     }
 
     QSet<QString> currentList;
+    currentList.reserve(ui->listWidget->count());
     for (int i = 0; i < ui->listWidget->count(); ++i)
     {
         QListWidgetItem* currentItem = ui->listWidget->item(i);
@@ -139,7 +139,7 @@ void FilterNames::setChecked(bool checked)
     checkBox->setVisible(checked && initialList_.size() > 1);
 }
 
-void FilterNames::on_selectAll_toggled(bool checked)
+void FilterNames::selectAllToggled(bool checked)
 {
     Q_ASSERT(ui->listWidget->count() > 0);
 

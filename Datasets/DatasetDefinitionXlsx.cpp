@@ -132,8 +132,9 @@ bool DatasetDefinitionXlsx::loadStyles(QuaZip& zip)
     dateStyles_.clear();
     allStyles_.clear();
 
+    const QList predefinedExcelStylesForDates { 14,  15,  16,  17, 22};
     //List of predefind excel styles for dates.
-    dateStyles_ << 14 << 15 << 16 << 17 << 22;
+    dateStyles_.append(predefinedExcelStylesForDates);
 
     //Load styles.
     if (zip.setCurrentFile(QStringLiteral("xl/styles.xml")))
@@ -451,7 +452,7 @@ bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
 
             rowCounter++;
 
-            double power = pow(10, charsToChopFromEndInCellName);
+            double power = pow(DECIMAL_BASE, charsToChopFromEndInCellName);
             if (power <= rowCounter + 1)
             {
                 charsToChopFromEndInCellName++;
@@ -684,7 +685,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(QuaZip& zip,
                 (*dataContainer)[rowCounter - 1] = currentDataRow;
                 currentDataRow = QVector<QVariant>(templateDataRow);
 
-                double power = pow(10, charsToChopFromEndInCellName);
+                double power = pow(DECIMAL_BASE, charsToChopFromEndInCellName);
                 if (qRound(power) <= rowCounter + 2)
                 {
                     charsToChopFromEndInCellName++;
@@ -779,7 +780,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(QuaZip& zip,
                     break;
                 }
 
-                default:
+                case DATA_FORMAT_UNKNOWN:
                 {
                     Q_ASSERT(false);
                     break;

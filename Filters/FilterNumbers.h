@@ -72,6 +72,8 @@ private Q_SLOTS:
      */
     void toEditingFinished();
 
+    void setChecked(bool checked);
+
 Q_SIGNALS:
     void newNumericFilter(int column, double from, double to);
 };

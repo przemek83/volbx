@@ -20,6 +20,10 @@ FilterDates::FilterDates(const QString& name,
 {
     ui->setupUi(this);
 
+    connect(this, &Filter::toggled, this, &FilterDates::setChecked);
+    connect(ui->emptyDates, &QCheckBox::toggled,
+            this, &FilterDates::emptyDatesToggled);
+
     if (minOnInit_ == maxOnInit_)
     {
         setDisabled(true);
@@ -30,20 +34,16 @@ FilterDates::FilterDates(const QString& name,
     calendarLeft_.setVerticalHeaderFormat(QCalendarWidget::NoVerticalHeader);
     ui->lowerDateEdit->setDate(minOnInit_);
     ui->lowerDateEdit->setCalendarWidget(&calendarLeft_);
-    connect(ui->lowerDateEdit,
-            SIGNAL(dateChanged(QDate)),
-            this,
-            SLOT(lowerDateChanged(QDate)));
+    connect(ui->lowerDateEdit, &QDateEdit::dateChanged,
+            this, &FilterDates::lowerDateChanged);
 
     //Higher.
     calendarRight_.setFirstDayOfWeek(Qt::Monday);
     calendarRight_.setVerticalHeaderFormat(QCalendarWidget::NoVerticalHeader);
     ui->higherDateEdit->setDate(maxOnInit_);
     ui->higherDateEdit->setCalendarWidget(&calendarRight_);
-    connect(ui->higherDateEdit,
-            SIGNAL(dateChanged(QDate)),
-            this,
-            SLOT(higherDateChanged(QDate)));
+    connect(ui->higherDateEdit, &QDateEdit::dateChanged,
+            this, &FilterDates::higherDateChanged);
 
     if (!emptyDates_)
     {
@@ -105,7 +105,7 @@ void FilterDates::setChecked(bool checked)
     ui->emptyDates->setVisible(checked && emptyDates_);
 }
 
-void FilterDates::on_emptyDates_toggled(bool checked)
+void FilterDates::emptyDatesToggled(bool checked)
 {
     QApplication::processEvents();
     Q_EMIT newDateFilter(column_,

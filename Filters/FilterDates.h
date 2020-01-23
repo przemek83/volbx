@@ -35,7 +35,7 @@ public:
     FilterDates(FilterDates&& other) = delete;
 
 public Q_SLOTS:
-    void setChecked(bool checked) override;
+    void setChecked(bool checked);
 
 private:
     ///Initial filter minimum date.
@@ -71,7 +71,7 @@ private Q_SLOTS:
      * Trigerred when empty dates checkbox state change.
      * @param checked flag.
      */
-    void on_emptyDates_toggled(bool checked);
+    void emptyDatesToggled(bool checked);
 
 Q_SIGNALS:
     void newDateFilter(int kolumn, QDate from, QDate to, bool filterEmptyDates);

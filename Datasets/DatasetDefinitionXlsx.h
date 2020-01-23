@@ -59,6 +59,8 @@ private:
 
     ///Column list for excel (A, B, C, ...).
     QStringList excelColNames_;
+
+    static constexpr int DECIMAL_BASE {10};
 };
 
 #endif // DATASETDEFINITIONXLSX_H

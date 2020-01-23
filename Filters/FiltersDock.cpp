@@ -117,14 +117,16 @@ FilterNames* FiltersDock::createNewNamesFilter(const TableModel* parentModel,
     QString columnName = parentModel->headerData(index, Qt::Horizontal).toString();
     QStringList list;
     parentModel->getStringList(index, list);
-    auto filter = new FilterNames(columnName, index, list, filterListWidget);
+    list.sort();
+    const int listSize {list.size()};
+    auto filter = new FilterNames(columnName, index, std::move(list), filterListWidget);
 
     connect(filter,
             SIGNAL(newStringFilter(int, QSet<QString>)),
             this,
             SIGNAL(newNamesFiltering(int, QSet<QString>)));
 
-    if (1 >= list.size())
+    if (listSize <= 1)
     {
         filter->setChecked(false);
     }
