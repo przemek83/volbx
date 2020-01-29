@@ -95,9 +95,9 @@ private Q_SLOTS:
 
     void updateProgress(qint64 bytesRead, qint64 totalBytes);
 
-    void on_buttonQuit_clicked();
+    void buttonQuitClicked();
 
-    void on_showDetails_toggled(bool checked);
+    void showDetailsToggled(bool checked);
 };
 
 #endif // UPDATE_H

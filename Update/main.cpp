@@ -8,7 +8,7 @@
 
 #include "Update.h"
 
-void showDifferentInstanceRunnningError()
+static void showDifferentInstanceRunnningError()
 {
     QMessageBox::critical(nullptr,
                           QObject::tr("Error"),
@@ -22,7 +22,7 @@ void showDifferentInstanceRunnningError()
  * @brief check if different updater is working.
  * @return true if unique, false if already working.
  */
-bool isUniqueInstance()
+static bool isUniqueInstance()
 {
     //Only one instance can run. Intentionally leak.
     QSharedMemory* sharedMemory =

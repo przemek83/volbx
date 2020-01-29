@@ -26,7 +26,7 @@ SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent) :
 {
     ui->setupUi(this);
 
-    connect(ui->openFileButton, SIGNAL(clicked()), this, SLOT(openFileButtonClicked()));
+    connect(ui->openFileButton, &QPushButton::clicked, this, &SpreadsheetsImportTab::openFileButtonClicked);
 
     auto visualization = new DatasetDefinitionVisualization(this);
 
@@ -34,9 +34,6 @@ SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent) :
     splitter2->addWidget(visualization);
     auto columnsPreview = new ColumnsPreview(this);
     splitter2->addWidget(columnsPreview);
-    QList<int> sizes;
-    sizes << 300 << 150;
-    splitter2->setSizes(sizes);
 
     ui->verticalLayout->addWidget(splitter2);
 
@@ -46,15 +43,11 @@ SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent) :
     visualization->setEnabled(false);
     columnsPreview->setEnabled(false);
 
-    connect(visualization,
-            SIGNAL(currentColumnNeedSync(int)),
-            columnsPreview,
-            SLOT(selectCurrentColumn(int)));
+    connect(visualization, &DatasetDefinitionVisualization::currentColumnNeedSync,
+            columnsPreview, &ColumnsPreview::selectCurrentColumn);
 
-    connect(columnsPreview,
-            SIGNAL(currentColumnNeedSync(int)),
-            visualization,
-            SLOT(selectCurrentColumn(int)));
+    connect(columnsPreview, &ColumnsPreview::currentColumnNeedSync,
+            visualization, &DatasetDefinitionVisualization::selectCurrentColumn);
 
     ui->sheetCombo->hide();
 }

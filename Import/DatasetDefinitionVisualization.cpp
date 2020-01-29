@@ -21,25 +21,23 @@ DatasetDefinitionVisualization::DatasetDefinitionVisualization(QWidget* parent) 
 
     ui->columnsList->header()->setSectionsMovable(false);
 
-    connect(ui->searchLineEdit,
-            SIGNAL(textChanged(QString)),
-            this,
-            SLOT(searchTextChanged(QString)));
+    connect(ui->searchLineEdit, &QLineEdit::textChanged,
+            this, &DatasetDefinitionVisualization::searchTextChanged);
 
-    connect(ui->columnsList,
-            SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this,
-            SLOT(currentColumnOnTreeChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
+    connect(ui->columnsList, &QTreeWidget::currentItemChanged,
+            this, &DatasetDefinitionVisualization::currentColumnOnTreeChanged);
 
-    connect(ui->dateCombo,
-            SIGNAL(currentIndexChanged(int)),
-            this,
-            SLOT(specialColumnChanged(int)));
+    connect(ui->dateCombo,  qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &DatasetDefinitionVisualization::specialColumnChanged);
 
-    connect(ui->pricePerUnitCombo,
-            SIGNAL(currentIndexChanged(int)),
-            this,
-            SLOT(specialColumnChanged(int)));
+    connect(ui->pricePerUnitCombo, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &DatasetDefinitionVisualization::specialColumnChanged);
+
+    connect(ui->SelectAll, &QPushButton::clicked,
+            this, &DatasetDefinitionVisualization::selectAllClicked);
+
+    connect(ui->UnselectAll, &QPushButton::clicked,
+            this, &DatasetDefinitionVisualization::unselectAllClicked);
 }
 
 DatasetDefinitionVisualization::~DatasetDefinitionVisualization()
@@ -179,7 +177,9 @@ void DatasetDefinitionVisualization::searchTextChanged(const QString& newText)
 std::unique_ptr<DatasetDefinition> DatasetDefinitionVisualization::retrieveDatasetDefinition()
 {
     if (datasetDefinition_ == nullptr)
+    {
         return nullptr;
+    }
 
     QVector<bool> activeColumns = QVector<bool>();
 
@@ -261,7 +261,7 @@ void DatasetDefinitionVisualization::selectCurrentColumn(int column)
     }
 }
 
-void DatasetDefinitionVisualization::on_SelectAll_clicked()
+void DatasetDefinitionVisualization::selectAllClicked()
 {
     int topLevelItemsCount =  ui->columnsList->topLevelItemCount();
 
@@ -275,7 +275,7 @@ void DatasetDefinitionVisualization::on_SelectAll_clicked()
     }
 }
 
-void DatasetDefinitionVisualization::on_UnselectAll_clicked()
+void DatasetDefinitionVisualization::unselectAllClicked()
 {
     int topLevelItemsCount =  ui->columnsList->topLevelItemCount();
 

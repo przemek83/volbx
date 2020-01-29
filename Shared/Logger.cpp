@@ -6,19 +6,15 @@
 #include <QTime>
 #include <QVBoxLayout>
 
-const char* Logger::LogTypeNames_[] =
-{
-    "DATA_BASE",
-    "CONFIG",
-    "DATA_MODEL",
-    "CALCULATIONS",
-    "NETWORK",
-    "LOGIN",
-    "APPLICATION",
-    "IMPORT_EXPORT"
-};
-
-Logger::Logger([[maybe_unused]] QObject* parent)
+Logger::Logger([[maybe_unused]] QObject* parent) :
+    logNames_{{LogTypes::DB, "DATA_BASE"},
+    {LogTypes::CONFIG, "CONFIG"},
+    {LogTypes::MODEL, "DATA_MODEL"},
+    {LogTypes::CALC, "CALCULATIONS"},
+    {LogTypes::NETWORK, "NETWORK"},
+    {LogTypes::LOGIN, "LOGIN"},
+    {LogTypes::APP, "APPLICATION"},
+    {LogTypes::IMPORT_EXPORT, "IMPORT_EXPORT"}}
 {
     display_.setWindowTitle(QStringLiteral("Logs"));
 
@@ -44,7 +40,9 @@ Logger::Logger([[maybe_unused]] QObject* parent)
 
     reloadCheckBoxes();
 
-    display_.resize(600, 400);
+    const int defaultLoggerWindowWidth {600};
+    const int defaultLoggerWindowHeight {400};
+    display_.resize(defaultLoggerWindowWidth, defaultLoggerWindowHeight);
     display_.show();
 }
 
@@ -73,16 +71,16 @@ void Logger::log(LogTypes type,
         return;
     }
 
-    static QString timeStyleBegin(QStringLiteral("<b><font size=\"3\" color=\"blue\">"));
-    static QString fileStyleBegin(QStringLiteral("<b><font size=\"3\" color=\"black\">"));
-    static QString functionStyleBegin(QStringLiteral("<b><font size=\"3\" color=\"red\">"));
-    static QString lineStyleBegin(QStringLiteral("<b><font size=\"3\" color=\"green\">"));
-    static QString styleEnd(QStringLiteral("</b></font>"));
+    const QString timeStyleBegin(QStringLiteral("<b><font size=\"3\" color=\"blue\">"));
+    const QString fileStyleBegin(QStringLiteral("<b><font size=\"3\" color=\"black\">"));
+    const QString functionStyleBegin(QStringLiteral("<b><font size=\"3\" color=\"red\">"));
+    const QString lineStyleBegin(QStringLiteral("<b><font size=\"3\" color=\"green\">"));
+    const QString styleEnd(QStringLiteral("</b></font>"));
 
     QString time;
     time.append(QTime::currentTime().toString(QStringLiteral("hh:mm:ss")));
     textEdit_->insertHtml(timeStyleBegin + time + styleEnd +
-                          QStringLiteral(" (") + QLatin1String(LogTypeNames_[static_cast<int>(type)]) + QStringLiteral(")") +
+                          QStringLiteral(" (") + logNames_[type] + QStringLiteral(")") +
                           QStringLiteral(" - ") +
                           functionStyleBegin + QLatin1String(function) + styleEnd +
                           QStringLiteral(", ") +
@@ -122,9 +120,9 @@ void Logger::reloadCheckBoxes()
     {
         i.next();
 
-        CheckBox* check = new CheckBox(i.key(), QLatin1String(LogTypeNames_[static_cast<int>(i.key())]), &display_);
+        CheckBox* check = new CheckBox(i.key(), logNames_[i.key()], &display_);
         check->setChecked(i.value());
-        connect(check, SIGNAL(toggled(bool)), this, SLOT(changeActiveLogs(bool)));
+        connect(check, &CheckBox::toggled, this, &Logger::changeActiveLogs);
         verticalLayout->insertWidget(static_cast<int>(i.key()), check);
     }
 }
@@ -132,11 +130,10 @@ void Logger::changeActiveLogs(bool state)
 {
     auto checkBox = qobject_cast<CheckBox*>(sender());
     activeLogs_[checkBox->logType()] = state;
-    QString msg(LogTypeNames_[static_cast<int>(checkBox->logType())]);
+    QString msg(logNames_[checkBox->logType()]);
     msg.append(QStringLiteral(" is ") + (state ? QStringLiteral("active") : QStringLiteral("disabled")));
     LOG(LogTypes::APP, msg);
 }
-
 
 void Logger::switchVisibility()
 {

@@ -26,16 +26,11 @@ Update::Update(QWidget* parent) :
     ui->valueAvailable->setText(tr("checking..."));
     ui->valueActual->setText(QApplication::applicationVersion());
 
-    //Attach proper slots to signals.
-    connect(&initialInfoNetworkManager_,
-            SIGNAL(finished(QNetworkReply*)),
-            this,
-            SLOT(initialInfoNetworkReplyFinished(QNetworkReply*)));
+    connect(&initialInfoNetworkManager_, &QNetworkAccessManager::finished,
+            this, &Update::initialInfoNetworkReplyFinished);
 
-    connect(&downloadManager_,
-            SIGNAL(finished(QNetworkReply*)),
-            this,
-            SLOT(downloadFinished(QNetworkReply*)));
+    connect(&downloadManager_, &QNetworkAccessManager::finished,
+            this, &Update::downloadFinished);
 
     //Get available version and files to update list.
     initialInfoNetworkManager_.get(Networking::getCurrentVersionRequest());
@@ -45,6 +40,9 @@ Update::Update(QWidget* parent) :
     LOG(LogTypes::NETWORK, QLatin1String("Initial network request send."));
 
     ui->details->hide();
+
+    connect(ui->buttonQuit, &QPushButton::clicked, this, &Update::buttonQuitClicked);
+    connect(ui->showDetails, &QCheckBox::toggled, this, &Update::showDetailsToggled);
 }
 
 Update::~Update()
@@ -99,7 +97,7 @@ void Update::initialInfoNetworkReplyFinished(QNetworkReply* reply)
         insertNewLineIntoDetails();
         insertNewSectionIntoDetails(tr("Downloading files") + QLatin1Char(':'));
 
-        downloadFile(filesToDownload_.front());
+        downloadFile(filesToDownload_.constFirst());
     }
     else
     {
@@ -124,9 +122,9 @@ void Update::fillFilesToUpdateLists(QStringList& serverInfoList)
     filesToDownloadSize_.clear();
     for (int i = 0; i < filesCount; ++i)
     {
-        QString fileInfoLine = serverInfoList.at(2 + i);
-        QString fileName = fileInfoLine.section(QLatin1Char(';'), 0, 0);
-        QString fileSize = fileInfoLine.section(QLatin1Char(';'), 1);
+        const QString& fileInfoLine = serverInfoList.at(2 + i);
+        const QString fileName = fileInfoLine.section(QLatin1Char(';'), 0, 0);
+        const QString fileSize = fileInfoLine.section(QLatin1Char(';'), 1);
         filesToDownload_.push_back(fileName);
         filesToDownloadSize_.push_back(fileSize);
 
@@ -156,8 +154,7 @@ void Update::downloadFile(const QString& fileName)
 
     ui->progressBar->reset();
 
-    connect(reply, SIGNAL(downloadProgress(qint64, qint64)),
-            this, SLOT(updateProgress(qint64, qint64)));
+    connect(reply, &QNetworkReply::downloadProgress, this, &Update::updateProgress);
 }
 
 void Update::downloadFinished(QNetworkReply* reply)
@@ -209,7 +206,7 @@ void Update::downloadFinished(QNetworkReply* reply)
         return;
     }
 
-    downloadFile(filesToDownload_.front());
+    downloadFile(filesToDownload_.constFirst());
 }
 
 void Update::saveVerfiedFile(QByteArray& fileData, QString& fileName)
@@ -284,8 +281,8 @@ void Update::finalizeUpdate()
 
 void Update::updateProgress(qint64 bytesRead, qint64 totalBytes)
 {
-    ui->progressBar->setMaximum(totalBytes);
-    ui->progressBar->setValue(bytesRead);
+    ui->progressBar->setMaximum(static_cast<int>(totalBytes));
+    ui->progressBar->setValue(static_cast<int>(bytesRead));
 }
 
 void Update::closeEvent(QCloseEvent* event)
@@ -296,7 +293,7 @@ void Update::closeEvent(QCloseEvent* event)
     QApplication::closeAllWindows();
 }
 
-void Update::on_buttonQuit_clicked()
+void Update::buttonQuitClicked()
 {
     close();
 }
@@ -351,7 +348,7 @@ void Update::insertErrorInfoIntoDetails(const QString& msg)
 }
 
 
-void Update::on_showDetails_toggled(bool checked)
+void Update::showDetailsToggled(bool checked)
 {
     static int detailsSize = 0;
     if (checked)

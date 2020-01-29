@@ -136,7 +136,7 @@ bool Configuration::save()
 
     if (!file.open(QIODevice::WriteOnly))
     {
-        LOG(LogTypes::CONFIG, "Config file " + Constants::configurationFile +
+        LOG(LogTypes::CONFIG, "Config file " + Constants::getConfigurationFileName() +
             " can not be opened for writing. Config not saved.");
         return false;
     }

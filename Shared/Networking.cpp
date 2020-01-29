@@ -33,7 +33,8 @@ bool Networking::errorsOccuredCheck(QNetworkReply* reply)
     unsigned int httpStatusCode =
         reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toUInt();
 
-    return !(httpStatusCode == 200 && reply->isReadable());
+    const int okCode {200};
+    return !(httpStatusCode == okCode && reply->isReadable());
 }
 
 std::tuple<QString, QStringList> Networking::checkReplyAndReturnAvailableVersion(QNetworkReply* reply)

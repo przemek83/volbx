@@ -46,7 +46,9 @@ DataView::DataView(QWidget* parent) :
     auto showSortIndicator = [ = ]()
     {
         if (!horizontalHeader()->isSortIndicatorShown())
+        {
             horizontalHeader()->setSortIndicatorShown(true);
+        }
     };
     connect(horizontalHeader(), &QHeaderView::sectionClicked, showSortIndicator);
 }
@@ -136,9 +138,10 @@ QVector<TransactionData> DataView::fillDataFromSelection(int groupByColumn) cons
 
     const int proxyRowCount = proxyModel->rowCount();
 
+    const int batchSize {1000};
     for (int i = 0; i < proxyRowCount; ++i)
     {
-        if (0 == i % 1000)
+        if (i % batchSize == 0)
         {
             QApplication::processEvents();
         }

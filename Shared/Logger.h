@@ -56,7 +56,7 @@ private:
 
     QTextEdit* textEdit_ {nullptr};
 
-    const static char* LogTypeNames_[];
+    const QMap<LogTypes, QString> logNames_;
 
 private Q_SLOTS:
     void changeActiveLogs(bool state);

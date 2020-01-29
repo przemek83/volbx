@@ -15,7 +15,7 @@
 
 #include "VolbxProperties.h"
 
-void overwriteUpdaterfIfNeeded()
+static void overwriteUpdaterfIfNeeded()
 {
     QString updaterFile(QCoreApplication::applicationDirPath() + "/" +
                         Constants::getUpdaterName() +

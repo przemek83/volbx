@@ -21,17 +21,11 @@ DatasetImportTab::DatasetImportTab(QWidget* parent) :
     auto splitter = new QSplitter(Qt::Horizontal, this);
     splitter->addWidget(datasetsListBrowser);
     splitter->addWidget(visualization);
-    QList<int> sizes;
-    sizes << 100 << 300;
-    splitter->setSizes(sizes);
 
     auto splitter2 = new QSplitter(Qt::Vertical, this);
     splitter2->addWidget(splitter);
     auto columnsPreview = new ColumnsPreview(this);
     splitter2->addWidget(columnsPreview);
-    sizes.clear();
-    sizes << 300 << 150;
-    splitter2->setSizes(sizes);
 
     auto layout = new QVBoxLayout(this);
     layout->setContentsMargins(2, 2, 2, 2);
@@ -44,21 +38,14 @@ DatasetImportTab::DatasetImportTab(QWidget* parent) :
     visualization->setEnabled(false);
     columnsPreview->setEnabled(false);
 
-    //Connect signals.
-    connect(datasetsListBrowser,
-            SIGNAL(currentDatasetChanged(QString)),
-            this,
-            SLOT(selectedDatasetChanged(QString)));
+    connect(datasetsListBrowser, &DatasetsListBrowser::currentDatasetChanged,
+            this, &DatasetImportTab::selectedDatasetChanged);
 
-    connect(visualization,
-            SIGNAL(currentColumnNeedSync(int)),
-            columnsPreview,
-            SLOT(selectCurrentColumn(int)));
+    connect(visualization, &DatasetDefinitionVisualization::currentColumnNeedSync,
+            columnsPreview, &ColumnsPreview::selectCurrentColumn);
 
-    connect(columnsPreview,
-            SIGNAL(currentColumnNeedSync(int)),
-            visualization,
-            SLOT(selectCurrentColumn(int)));
+    connect(columnsPreview, &ColumnsPreview::currentColumnNeedSync,
+            visualization, &DatasetDefinitionVisualization::selectCurrentColumn);
 }
 
 

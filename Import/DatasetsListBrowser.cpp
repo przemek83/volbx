@@ -14,19 +14,18 @@ DatasetsListBrowser::DatasetsListBrowser(QWidget* parent) :
 {
     ui->setupUi(this);
 
-    connect(ui->searchLineEdit,
-            SIGNAL(textChanged(QString)),
-            this,
-            SLOT(searchTextChanged(QString)));
+    connect(ui->searchLineEdit, &QLineEdit::textChanged,
+            this, &DatasetsListBrowser::searchTextChanged);
 
     ui->datasetsList->insertItems(0, DatasetInner::getListOfAvailableDatasets());
 
     ui->datasetsList->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(ui->datasetsList, SIGNAL(customContextMenuRequested(QPoint)),
-            this, SLOT(showContextMenu(QPoint)));
 
-    connect(ui->datasetsList, SIGNAL(itemSelectionChanged()),
-            this, SLOT(datasetsListItemSelectionChanged()));
+    connect(ui->datasetsList, &QListWidget::customContextMenuRequested,
+            this, &DatasetsListBrowser::showContextMenu);
+
+    connect(ui->datasetsList, &QListWidget::itemSelectionChanged,
+            this, &DatasetsListBrowser::datasetsListItemSelectionChanged);
 }
 
 DatasetsListBrowser::~DatasetsListBrowser()

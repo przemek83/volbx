@@ -62,9 +62,9 @@ private Q_SLOTS:
     void currentColumnOnTreeChanged(QTreeWidgetItem* current,
                                     QTreeWidgetItem* previous);
 
-    void on_SelectAll_clicked();
+    void selectAllClicked();
 
-    void on_UnselectAll_clicked();
+    void unselectAllClicked();
 
     void specialColumnChanged(int newIndex);
 
