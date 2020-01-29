@@ -31,7 +31,7 @@ void PlotDataProvider::reCompute(QVector<TransactionData> newCalcData,
     quantiles_.clear();
 
     int dataSize = calcData_.size();
-    QVector<float> valuePerUnit;
+    QVector<float> valuePerUnit {};
     valuePerUnit.reserve(dataSize);
     if (0 != dataSize)
     {
@@ -46,8 +46,13 @@ void PlotDataProvider::reCompute(QVector<TransactionData> newCalcData,
     //Left part of group plot.
     recomputeGroupData(calcData_, groupingColumn_, columnFormat);
 
+    auto [plotData, linearRegression] = computeBasicData();
+
     //Basic data plot.
-    computeBasicData();
+    Q_EMIT basicPlotDataChanged(plotData, quantiles_, linearRegression);
+
+    //Currently histogram only.
+    Q_EMIT basicDataChanged(plotData, quantiles_);
 }
 
 void PlotDataProvider::recomputeGroupData(QVector<TransactionData> calcData,
@@ -105,17 +110,13 @@ void PlotDataProvider::fillDataForStringGrouping(const QVector<TransactionData>&
     }
 }
 
-void PlotDataProvider::computeBasicData()
+std::tuple<PlotData, QVector<QPointF>> PlotDataProvider::computeBasicData()
 {
     int dataSize = calcData_.size();
     if (dataSize <= 0)
     {
         PlotData plotData(nullptr, nullptr, 0);
-
-        Q_EMIT basicPlotDataChanged(plotData, quantiles_,
-                                    QVector<QPointF>());
-
-        return;
+        return {plotData, {}};
     }
 
     //Create points for quantiles - x, y, min, max.
@@ -177,15 +178,9 @@ void PlotDataProvider::computeBasicData()
     linearRegression.append(linearRegressionFrom);
     linearRegression.append(linearRegressionTo);
 
-    //Create plot data and propagate it.
     PlotData plotData(pointsQuantilesX, pointsQuantilesY, dataSize);
 
-    //Basic data plot.
-    Q_EMIT basicPlotDataChanged(plotData, quantiles_, linearRegression);
-
-    //Currently histogram only.
-    Q_EMIT basicDataChanged(plotData,
-                            quantiles_);
+    return {plotData, linearRegression};
 }
 
 int PlotDataProvider::getGroupByColumn()

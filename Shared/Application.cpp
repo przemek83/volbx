@@ -14,7 +14,7 @@ void Application::setAdditionalApplicatioInfo(const char* productName)
     QApplication::setApplicationName(QLatin1String(productName));
     QApplication::setApplicationVersion(QStringLiteral(VER_PRODUCTVERSION_STR));
     QApplication::setOrganizationName(QStringLiteral(VER_COMPANYNAME_STR));
-    QApplication::setOrganizationDomain(QStringLiteral(VER_COMPANYDOMAIN_STR));
+    QApplication::setOrganizationDomain(QLatin1String(VER_COMPANYDOMAIN_STR));
 }
 
 void Application::initStyle(const QString& nameFromConfig)

@@ -73,29 +73,29 @@ private:
     void setStandardIcons();
 
 private Q_SLOTS:
-    void on_actionExit_triggered();
+    void actionExitTriggered();
 
-    void on_actionFilters_triggered();
+    void actionFiltersTriggered();
 
-    void on_actionLogs_triggered();
+    void actionLogsTriggered();
 
     void tabWasChanged(int index);
 
-    void on_actionAbout_triggered();
+    void actionAboutTriggered();
 
     void closeTab(int tab);
 
-    void on_actionExport_triggered();
+    void actionExportTriggered();
 
-    void on_actionSaveDatasetAs_triggered();
+    void actionSaveDatasetAsTriggered();
 
-    void on_actionImportData_triggered();
+    void actionImportDataTriggered();
 
     void updateCheckReplyFinished(QNetworkReply* reply);
 
-    void on_actionCheckForNewVersion_triggered();
+    void actionCheckForNewVersionTriggered();
 
-    void on_actionUpdateAuto_toggled(bool alwaysCheck);
+    void actionUpdateAutoToggled(bool alwaysCheck);
 
     /**
      * @brief picked qt built in style.

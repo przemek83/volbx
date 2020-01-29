@@ -74,7 +74,9 @@ VolbxMain::VolbxMain(QWidget* parent) :
     ui->verticalLayout->addWidget(tabWidget_);
 
     addDockWidget(Qt::LeftDockWidgetArea, filters_);
-    filters_->titleBarWidget()->resize(200, filters_->titleBarWidget()->height());
+    const int defaultFilterWidth {200};
+    filters_->titleBarWidget()->resize(defaultFilterWidth,
+                                       filters_->titleBarWidget()->height());
 
     connect(tabWidget_, &MainTabWidget::currentChanged, this, &VolbxMain::tabWasChanged);
     connect(tabWidget_, &MainTabWidget::tabCloseRequested, this, &VolbxMain::closeTab);
@@ -87,10 +89,27 @@ VolbxMain::VolbxMain(QWidget* parent) :
     ui->actionSendErrorOrIdea->setVisible(false);
     ui->actionTutorials->setVisible(false);
 
-    connect(&networkManager_,
-            SIGNAL(finished(QNetworkReply*)),
-            this,
-            SLOT(updateCheckReplyFinished(QNetworkReply*)));
+    connect(&networkManager_, &QNetworkAccessManager::finished,
+            this, &VolbxMain::updateCheckReplyFinished);
+
+    connect(ui->actionExit, &QAction::triggered,
+            this, &VolbxMain::actionExitTriggered);
+    connect(ui->actionFilters, &QAction::triggered,
+            this, &VolbxMain::actionFiltersTriggered);
+    connect(ui->actionLogs, &QAction::triggered,
+            this, &VolbxMain::actionLogsTriggered);
+    connect(ui->actionAbout, &QAction::triggered,
+            this, &VolbxMain::actionAboutTriggered);
+    connect(ui->actionExport, &QAction::triggered,
+            this, &VolbxMain::actionExportTriggered);
+    connect(ui->actionSaveDatasetAs, &QAction::triggered,
+            this, &VolbxMain::actionSaveDatasetAsTriggered);
+    connect(ui->actionImportData, &QAction::triggered,
+            this, &VolbxMain::actionImportDataTriggered);
+    connect(ui->actionCheckForNewVersion, &QAction::triggered,
+            this, &VolbxMain::actionCheckForNewVersionTriggered);
+    connect(ui->actionUpdateAuto, &QAction::triggered,
+            this, &VolbxMain::actionUpdateAutoToggled);
 
     createOptionsMenu();
 }
@@ -132,7 +151,7 @@ void VolbxMain::createOptionsMenu()
     {
         action->setChecked(true);
     }
-    connect(action, SIGNAL(triggered()), this, SLOT(customStylePicked()));
+    connect(action, &QAction::triggered, this, &VolbxMain::customStylePicked);
 
     //Add blue style.
     styleName = QStringLiteral("Rounded Blue");
@@ -142,7 +161,7 @@ void VolbxMain::createOptionsMenu()
     {
         action->setChecked(true);
     }
-    connect(action, SIGNAL(triggered()), this, SLOT(customStylePicked()));
+    connect(action, &QAction::triggered, this, &VolbxMain::customStylePicked);
 
     //Add styles found in app dir.
     QStringList nameFilter(QStringLiteral("*.css"));
@@ -157,7 +176,7 @@ void VolbxMain::createOptionsMenu()
         {
             action->setChecked(true);
         }
-        connect(action, SIGNAL(triggered()), this, SLOT(customStylePicked()));
+        connect(action, &QAction::triggered, this, &VolbxMain::customStylePicked);
     }
 
     //Add qt available styles.
@@ -170,7 +189,7 @@ void VolbxMain::createOptionsMenu()
         {
             action->setChecked(true);
         }
-        connect(action, SIGNAL(triggered()), this, SLOT(qtStylePicked()));
+        connect(action, &QAction::triggered, this, &VolbxMain::qtStylePicked);
     }
 
     ui->menuOptions->addActions(actionsGroup->actions());
@@ -204,18 +223,18 @@ void VolbxMain::checkForUpdates()
 
     if (checkForUpdates)
     {
-        on_actionCheckForNewVersion_triggered();
+        actionCheckForNewVersionTriggered();
     }
 
     ui->actionUpdateAuto->setChecked(Configuration::getInstance().needToCheckForUpdates());
 }
 
-void VolbxMain::on_actionExit_triggered()
+void VolbxMain::actionExitTriggered()
 {
     close();
 }
 
-void VolbxMain::on_actionFilters_triggered()
+void VolbxMain::actionFiltersTriggered()
 {
     if (filters_->isVisible())
     {
@@ -227,7 +246,7 @@ void VolbxMain::on_actionFilters_triggered()
     }
 }
 
-void VolbxMain::on_actionLogs_triggered()
+void VolbxMain::actionLogsTriggered()
 {
 #ifdef DEBUGGING
     Logger::getInstance()->switchVisibility();
@@ -262,7 +281,7 @@ void VolbxMain::closeEvent(QCloseEvent* event)
     QApplication::closeAllWindows();
 }
 
-void VolbxMain::on_actionAbout_triggered()
+void VolbxMain::actionAboutTriggered()
 {
     About about(this);
 
@@ -280,7 +299,7 @@ void VolbxMain::closeTab(int tab)
     manageActions(0 != tabWidget_->count());
 }
 
-void VolbxMain::on_actionExport_triggered()
+void VolbxMain::actionExportTriggered()
 {
     Export exportDialog(dynamic_cast<QMainWindow*>(tabWidget_->currentWidget()),
                         this);
@@ -312,7 +331,7 @@ void VolbxMain::manageActions(bool tabExists)
     //Set tooltips for plot icons.
     if (!activateCharts)
     {
-        const static QString cannotCreateCharts =
+        const QString cannotCreateCharts =
             tr("Time and examined variable columns are not specified.");
         ui->actionBasic_plot->setToolTip(cannotCreateCharts);
         ui->actionHistogram->setToolTip(cannotCreateCharts);
@@ -326,7 +345,7 @@ void VolbxMain::manageActions(bool tabExists)
     }
 }
 
-void VolbxMain::on_actionSaveDatasetAs_triggered()
+void VolbxMain::actionSaveDatasetAsTriggered()
 {
     if (!DatasetInner::datasetDirExistAndUserHavePermisions())
     {
@@ -383,7 +402,7 @@ bool VolbxMain::loadDataset(Dataset& dataset)
     return dataset.isValid();
 }
 
-void VolbxMain::on_actionImportData_triggered()
+void VolbxMain::actionImportDataTriggered()
 {
     ImportData import(this);
 
@@ -391,7 +410,7 @@ void VolbxMain::on_actionImportData_triggered()
     {
         DatasetDefinition* datasetDefinition = import.getSelectedDataset().release();
 
-        if (!datasetDefinition || !datasetDefinition->isValid())
+        if (datasetDefinition == nullptr || !datasetDefinition->isValid())
         {
             QMessageBox::critical(this,
                                   tr("Import error"),
@@ -427,12 +446,6 @@ void VolbxMain::on_actionImportData_triggered()
                     dataset = std::make_unique<DatasetSpreadsheet>(definitionSpreadsheet);
                 }
 
-                break;
-            }
-
-            default:
-            {
-                Q_ASSERT(false);
                 break;
             }
         }
@@ -533,12 +546,12 @@ void VolbxMain::updateCheckReplyFinished(QNetworkReply* reply)
     }
 }
 
-void VolbxMain::on_actionCheckForNewVersion_triggered()
+void VolbxMain::actionCheckForNewVersionTriggered()
 {
     networkManager_.get(Networking::getCurrentVersionRequest());
 }
 
-void VolbxMain::on_actionUpdateAuto_toggled(bool alwaysCheck)
+void VolbxMain::actionUpdateAutoToggled(bool alwaysCheck)
 {
     Configuration::getInstance().setUpdatesCheckingOption(alwaysCheck);
 }

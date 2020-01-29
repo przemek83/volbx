@@ -42,8 +42,7 @@ public:
     enum ImportDataType
     {
         IMPORT_TYPE_INNER = 0,
-        IMPORT_TYPE_SPREADSHEET,
-        IMPORT_TYPE_YAHOO
+        IMPORT_TYPE_SPREADSHEET
     };
 
     ImportDataType getImportDataType() const;

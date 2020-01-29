@@ -18,18 +18,14 @@ ViewDockWidget::ViewDockWidget(const QString& title,
     titleBarWidget_.getSelectAllButton()->setVisible(true);
     titleBarWidget_.getUnselectAllButton()->setVisible(true);
 
-    connect(titleBarWidget_.getExportButton(),
-            SIGNAL(clicked()),
-            this,
-            SLOT(quickExportData()));
-    connect(titleBarWidget_.getSelectAllButton(),
-            SIGNAL(clicked()),
-            this,
-            SLOT(selectAll()));
-    connect(titleBarWidget_.getUnselectAllButton(),
-            SIGNAL(clicked()),
-            this,
-            SLOT(unselectAll()));
+    connect(titleBarWidget_.getExportButton(), &QPushButton::clicked,
+            this, &ViewDockWidget::quickExportData);
+
+    connect(titleBarWidget_.getSelectAllButton(), &QPushButton::clicked,
+            this, &ViewDockWidget::selectAll);
+
+    connect(titleBarWidget_.getUnselectAllButton(), &QPushButton::clicked,
+            this, &ViewDockWidget::unselectAll);
 }
 
 void ViewDockWidget::quickExportData()

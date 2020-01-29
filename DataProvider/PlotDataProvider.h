@@ -77,7 +77,7 @@ private:
     /**
      * @brief compute data used for simple plots (histogram and basic plots).
      */
-    void computeBasicData();
+    std::tuple<PlotData, QVector<QPointF>> computeBasicData();
 
     Quantiles quantiles_;
 
