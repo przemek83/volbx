@@ -4,11 +4,11 @@
 #define VER_FILEVERSION             1,0,0,0
 #define VER_FILEVERSION_STR         "1.0.0.0\0"
 
-#define VER_PRODUCTVERSION          0,1,1,0
-#define VER_PRODUCTVERSION_STR      "1.10\0"
+#define VER_PRODUCTVERSION          0,2,0,0
+#define VER_PRODUCTVERSION_STR      "2.00\0"
 
-#define VER_COMPANYNAME_STR         "QuackTech"
-#define VER_LEGALCOPYRIGHT_STR      "Copyright 2014"
+#define VER_COMPANYNAME_STR         "No Name"
+#define VER_LEGALCOPYRIGHT_STR      "Copyright 2014-2020"
 #define VER_LEGALTRADEMARKS1_STR    ""
 #define VER_LEGALTRADEMARKS2_STR    VER_LEGALTRADEMARKS1_STR
 
