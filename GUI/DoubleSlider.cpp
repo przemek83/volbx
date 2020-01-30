@@ -1,5 +1,7 @@
 #include "DoubleSlider.h"
 
+#include <cmath>
+
 #include <QDebug>
 #include <QMouseEvent>
 #include <QPainter>
@@ -23,7 +25,9 @@ DoubleSlider::DoubleSlider(int min, int max, QWidget* parent) :
 
     //Refresh.
     refreshTimer_.setSingleShot(false);
-    QObject::connect(&refreshTimer_, SIGNAL(timeout()), this, SLOT(update()));
+
+    // Cannot use new connect syntax as timeout has param QPrivateSignal.
+    connect(&refreshTimer_, SIGNAL(timeout()), this, SLOT(update()));
     refreshTimer_.start(REFRESH_TIMER_INTERVAL);
 }
 
@@ -56,13 +60,13 @@ void DoubleSlider::setCurrentMin(double currentMinToSet)
 {
     double newCurrentMin = currentMinToSet;
 
-    if (newCurrentMin >= minValue_ && currentMin_ != newCurrentMin)
+    if (newCurrentMin >= minValue_ && !Constants::doublesAreEqual(currentMin_, newCurrentMin))
     {
         currentMin_ = newCurrentMin;
         if (lastEmittedMin_ != static_cast<int>(currentMinToSet))
         {
-            lastEmittedMin_ = currentMinToSet;
-            Q_EMIT minChanged(currentMinToSet);
+            lastEmittedMin_ = static_cast<int>(currentMinToSet);
+            Q_EMIT minChanged(static_cast<int>(currentMinToSet));
         }
     }
 
@@ -78,13 +82,13 @@ void DoubleSlider::setCurrentMax(double currentMaxToSet)
 {
     double newCurrentMax = currentMaxToSet;
 
-    if (newCurrentMax  <= maxValue_ && currentMax_ != newCurrentMax)
+    if (newCurrentMax  <= maxValue_ && !Constants::doublesAreEqual(currentMax_, newCurrentMax))
     {
         currentMax_ = newCurrentMax;
         if (lastEmittedMax_ != static_cast<int>(currentMaxToSet))
         {
-            lastEmittedMax_ = currentMaxToSet;
-            Q_EMIT maxChanged(currentMaxToSet);
+            lastEmittedMax_ = static_cast<int>(currentMaxToSet);
+            Q_EMIT maxChanged(static_cast<int>(currentMaxToSet));
         }
     }
 
@@ -128,10 +132,10 @@ void DoubleSlider::setValueMax(int maximumToSet)
 
 void DoubleSlider::mousePressEvent(QMouseEvent* event)
 {
-    if (event->buttons() & Qt::LeftButton)
+    if ((event->buttons() & Qt::LeftButton) != 0U)
     {
         mousePositionX_ =
-            static_cast<float>(event->x()) / static_cast<float>(this->width()) * (100.0 + cursorSize_);
+            static_cast<double>(event->x()) / static_cast<double>(this->width()) * (100.0 + cursorSize_);
     }
 
     moving_ = 0;
@@ -145,10 +149,10 @@ void DoubleSlider::mouseReleaseEvent(QMouseEvent* event)
 
 void DoubleSlider::mouseMoveEvent(QMouseEvent* event)
 {
-    float mouseX =
-        static_cast<float>(event->x()) / static_cast<float>(this->width()) * (100.0 + cursorSize_);
-    float minX = ((currentMin_ - minValue_) / (maxValue_ - minValue_) * MAX_PERCENT);
-    float maxX = ((currentMax_ - minValue_) / (maxValue_ - minValue_) * MAX_PERCENT);
+    double mouseX =
+        static_cast<double>(event->x()) / static_cast<double>(this->width()) * (100.0 + cursorSize_);
+    double minX = ((currentMin_ - minValue_) / (maxValue_ - minValue_) * MAX_PERCENT);
+    double maxX = ((currentMax_ - minValue_) / (maxValue_ - minValue_) * MAX_PERCENT);
 
     isOnMinHandle_ = ((((mouseX > minX) && (mouseX < minX + cursorSize_)) ||
                        ((mousePositionX_ > minX) && (mousePositionX_ < minX + cursorSize_)))
@@ -160,7 +164,7 @@ void DoubleSlider::mouseMoveEvent(QMouseEvent* event)
                       && (moving_ != 1)
                       && !isOnMinHandle_);
 
-    if (event->buttons() & Qt::LeftButton)
+    if ((event->buttons() & Qt::LeftButton) != 0U)
     {
         if ((moving_ != 2) && isOnMinHandle_)
         {
@@ -211,82 +215,91 @@ void DoubleSlider::mouseMoveEvent(QMouseEvent* event)
     mousePositionX_ = mouseX;
 }
 
+int DoubleSlider::getLeftHandlePosition() const
+{
+    const double range {maxValue_ - minValue_};
+    const int minX =
+        static_cast<int>((currentMin_ - minValue_) / range * MAX_PERCENT);
+    return (minX == MAX_PERCENT ? minX - 1 : minX);
+}
+
+int DoubleSlider::getRightHandlePosition() const
+{
+    const double range {maxValue_ - minValue_};
+    const int maxX =
+        static_cast<int>((currentMax_ - minValue_) / range * MAX_PERCENT);
+    return (maxX == MAX_PERCENT ? maxX - 1 : maxX);
+}
+
+void DoubleSlider::drawSliderBar(QPainter& painter) const
+{
+    QStyleOptionSlider barStyle;
+    initStyleOption(&barStyle);
+    QStyleOptionSlider opt = barStyle;
+    opt.subControls = QStyle::SC_SliderGroove;
+
+    style()->drawComplexControl(QStyle::CC_Slider, &opt, &painter, this);
+}
+
+void DoubleSlider::drawSliderBarBetweenHandles(QPainter& painter) const
+{
+    QStyleOptionSlider defaultStyle;
+    initStyleOption(&defaultStyle);
+    const QRect innerRect(defaultStyle.rect);
+
+    const double stepWidth =
+        static_cast<double>(innerRect.width()) / MAX_PERCENT;
+    const int leftHandlePosition = getLeftHandlePosition();
+    const int rightHandlePosition = getRightHandlePosition();
+    const int barLeftEnd =
+        static_cast<int>(leftHandlePosition * stepWidth + stepWidth / 2);
+    const int barWidth =
+        static_cast<int>((rightHandlePosition - leftHandlePosition) * stepWidth + stepWidth / 2);
+    const int coursorHalf = cursorSize_ / 2;
+    const QRect rSlot = QRect(innerRect.x() + barLeftEnd,
+                              innerRect.y() + (innerRect.height() - coursorHalf) / 2,
+                              innerRect.x() + barWidth,
+                              coursorHalf);
+
+    const QBrush brush = palette().brush(QPalette::Dark);
+    qDrawShadePanel(&painter, rSlot, palette(), true, 1, &brush);
+}
+
+QStyleOptionSlider DoubleSlider::getHandleStyle(bool moving, int position) const
+{
+    QStyleOptionSlider handleStyle;
+    initStyleOption(&handleStyle);
+    handleStyle.sliderPosition = position;
+    if (moving)
+    {
+        handleStyle.state = QStyle::State_Raised;
+    }
+    handleStyle.subControls = QStyle::SC_SliderHandle;
+    return handleStyle;
+}
+
+void DoubleSlider::drawHandles(QPainter& painter) const
+{
+    const QStyleOptionSlider leftStyle =
+        getHandleStyle(moving_ == 1, getLeftHandlePosition());
+    style()->drawComplexControl(QStyle::CC_Slider, &leftStyle, &painter, this);
+
+    const QStyleOptionSlider rightStyle =
+        getHandleStyle(moving_ == 2, getRightHandlePosition());
+    style()->drawComplexControl(QStyle::CC_Slider, &rightStyle, &painter, this);
+}
+
 void DoubleSlider::paintEvent(QPaintEvent* event)
 {
-    if (minValue_ == maxValue_)
+    if (Constants::doublesAreEqual(minValue_, maxValue_))
     {
         return;
     }
 
-    double minX = ((currentMin_ - minValue_) / (maxValue_ - minValue_) * MAX_PERCENT);
-    double maxX = ((currentMax_ - minValue_) / (maxValue_ - minValue_) * MAX_PERCENT);
-
-    QPainter p(this);
-
-    //Default style.
-    QStyleOptionSlider defaultStyle;
-    initStyleOption(&defaultStyle);
-
-    QStyleOptionSlider opt = defaultStyle;
-
-    //Slider bar.
-    opt.subControls = QStyle::SC_SliderGroove;
-    style()->drawComplexControl(QStyle::CC_Slider, &opt, &p, this);
-
-    //Slider bar between handles.
     QPainter painter(this);
     painter.setClipRegion(event->region());
-    QRect innerRect(defaultStyle.rect);
-    int coursorHalf = cursorSize_ / 2;
 
-    double fromX =
-        innerRect.width() / (maxValue_ - minValue_) * (currentMin_ - minValue_);
-    double width =
-        innerRect.width() / (maxValue_ - minValue_) * (currentMax_ - minValue_) - fromX;
-
-    QRect rSlot = QRect(innerRect.x() + fromX,
-                        innerRect.y() + (innerRect.height() - coursorHalf) / 2,
-                        innerRect.x() + width,
-                        coursorHalf);
-
-    QBrush brush = palette().brush(QPalette::Dark);
-    qDrawShadePanel(&painter, rSlot, palette(), true, 1, &brush);
-
-    //Left handle.
-    QStyleOptionSlider opt2 = defaultStyle;
-    if (minX == MAX_PERCENT)
-    {
-        opt2.sliderPosition = minX - 1;
-    }
-    else
-    {
-        opt2.sliderPosition = minX;
-    }
-
-    if (moving_ == 1)
-    {
-        opt2.state = QStyle::State_Raised;
-    }
-
-    opt2.subControls = QStyle::SC_SliderHandle;
-    style()->drawComplexControl(QStyle::CC_Slider, &opt2, &p, this);
-
-    //Righ handle.
-    QStyleOptionSlider opt3 = defaultStyle;
-    if (maxX == MAX_PERCENT)
-    {
-        opt3.sliderPosition = maxX - 1;
-    }
-    else
-    {
-        opt3.sliderPosition = maxX;
-    }
-
-    if (moving_ == 2)
-    {
-        opt3.state = QStyle::State_Raised;
-    }
-
-    opt3.subControls = QStyle::SC_SliderHandle;
-    style()->drawComplexControl(QStyle::CC_Slider, &opt3, &p, this);
+    drawSliderBar(painter);
+    drawSliderBarBetweenHandles(painter);
+    drawHandles(painter);
 }

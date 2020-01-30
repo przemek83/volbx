@@ -50,6 +50,18 @@ protected:
     void mouseMoveEvent(QMouseEvent* event) override;
 
 private:
+    int getLeftHandlePosition() const;
+
+    int getRightHandlePosition() const;
+
+    void drawSliderBar(QPainter& painter) const;
+
+    void drawSliderBarBetweenHandles(QPainter& painter) const;
+
+    QStyleOptionSlider getHandleStyle(bool moving, int position) const;
+
+    void drawHandles(QPainter& painter) const;
+
     double currentMin_ {0.};
 
     double currentMax_ {0.};
