@@ -21,19 +21,7 @@ DoubleSlider::DoubleSlider(int min, int max, QWidget* parent) :
     lastEmittedMin_ = getCurrentMin();
     lastEmittedMax_ = getCurrentMax();
 
-    this->setMouseTracking(true);
-
-    //Refresh.
-    refreshTimer_.setSingleShot(false);
-
-    // Cannot use new connect syntax as timeout has param QPrivateSignal.
-    connect(&refreshTimer_, SIGNAL(timeout()), this, SLOT(update()));
-    refreshTimer_.start(REFRESH_TIMER_INTERVAL);
-}
-
-QSize DoubleSlider::sizeHint() const
-{
-    return QSize(SIZE_HINT_WIDTH, SIZE_HINT_HEIGH);
+    setMouseTracking(true);
 }
 
 int DoubleSlider::getCurrentMin()
@@ -44,16 +32,6 @@ int DoubleSlider::getCurrentMin()
 int DoubleSlider::getCurrentMax()
 {
     return qRound(currentMax_ + minValue_);
-}
-
-int DoubleSlider::getMinimum()
-{
-    return static_cast<int>(maxValue_);
-}
-
-int DoubleSlider::getMaximum()
-{
-    return static_cast<int>(maxValue_);
 }
 
 void DoubleSlider::setCurrentMin(double currentMinToSet)
@@ -75,7 +53,7 @@ void DoubleSlider::setCurrentMin(double currentMinToSet)
         setCurrentMax(currentMinToSet);
     }
 
-    this->update();
+    update();
 }
 
 void DoubleSlider::setCurrentMax(double currentMaxToSet)
@@ -97,37 +75,7 @@ void DoubleSlider::setCurrentMax(double currentMaxToSet)
         setCurrentMin(currentMaxToSet);
     }
 
-    this->update();
-}
-
-void DoubleSlider::setValueMin(int minimumToSet)
-{
-    if (minimumToSet < maxValue_)
-    {
-        minValue_ = minimumToSet;
-    }
-
-    if (currentMin_ < minValue_)
-    {
-        currentMin_ = minValue_;
-    }
-
-    this->update();
-}
-
-void DoubleSlider::setValueMax(int maximumToSet)
-{
-    if (maximumToSet > minValue_)
-    {
-        maxValue_ = maximumToSet;
-    }
-
-    if (currentMax_ > maxValue_)
-    {
-        currentMax_ = maxValue_;
-    }
-
-    this->update();
+    update();
 }
 
 void DoubleSlider::mousePressEvent(QMouseEvent* event)
@@ -135,7 +83,7 @@ void DoubleSlider::mousePressEvent(QMouseEvent* event)
     if ((event->buttons() & Qt::LeftButton) != 0U)
     {
         mousePositionX_ =
-            static_cast<double>(event->x()) / static_cast<double>(this->width()) * (100.0 + cursorSize_);
+            static_cast<double>(event->x()) / static_cast<double>(width()) * (100.0 + cursorSize_);
     }
 
     moving_ = 0;
@@ -144,13 +92,13 @@ void DoubleSlider::mousePressEvent(QMouseEvent* event)
 void DoubleSlider::mouseReleaseEvent(QMouseEvent* event)
 {
     moving_ = 0;
-    this->mouseMoveEvent(event);
+    mouseMoveEvent(event);
 }
 
 void DoubleSlider::mouseMoveEvent(QMouseEvent* event)
 {
     double mouseX =
-        static_cast<double>(event->x()) / static_cast<double>(this->width()) * (100.0 + cursorSize_);
+        static_cast<double>(event->x()) / static_cast<double>(width()) * (100.0 + cursorSize_);
     double minX = ((currentMin_ - minValue_) / (maxValue_ - minValue_) * MAX_PERCENT);
     double maxX = ((currentMax_ - minValue_) / (maxValue_ - minValue_) * MAX_PERCENT);
 

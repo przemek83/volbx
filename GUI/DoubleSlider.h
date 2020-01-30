@@ -2,7 +2,6 @@
 #define DOUBLESLIDER_H
 
 #include <QSlider>
-#include <QTimer>
 
 /**
  * @brief Slider with 2 handles.
@@ -21,20 +20,6 @@ public:
     DoubleSlider& operator=(DoubleSlider&& other) = delete;
     DoubleSlider(DoubleSlider&& other) = delete;
 
-    int getCurrentMin();
-
-    int getCurrentMax();
-
-    int getMinimum();
-
-    int getMaximum();
-
-    void setValueMin(int minimumToSet);
-
-    void setValueMax(int maximumToSet);
-
-    QSize sizeHint() const override;
-
 public Q_SLOTS:
     void setCurrentMin(double currentMinToSet);
 
@@ -50,6 +35,10 @@ protected:
     void mouseMoveEvent(QMouseEvent* event) override;
 
 private:
+    int getCurrentMin();
+
+    int getCurrentMax();
+
     int getLeftHandlePosition() const;
 
     int getRightHandlePosition() const;
@@ -74,9 +63,6 @@ private:
 
     double mousePositionX_{0};
 
-    ///Timer for refreshing.
-    QTimer refreshTimer_;
-
     int lastEmittedMin_ {0};
 
     int lastEmittedMax_ {0};
@@ -91,12 +77,6 @@ private:
     bool isOnMaxHandle_{false};
 
     static constexpr int MAX_PERCENT{100};
-
-    static constexpr int REFRESH_TIMER_INTERVAL{25};
-
-    static constexpr int SIZE_HINT_WIDTH{120};
-
-    static constexpr int SIZE_HINT_HEIGH{40};
 
 Q_SIGNALS:
     void minChanged(int);
