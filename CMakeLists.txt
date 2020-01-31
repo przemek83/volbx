@@ -43,6 +43,13 @@ file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/qwt/install/include)
 file(GLOB QWT_HEADERS "${CMAKE_BINARY_DIR}/qwt/qwt/src/qwt/src/*.h" )
 file(COPY ${QWT_HEADERS} DESTINATION ${CMAKE_BINARY_DIR}/qwt/install/include)
 
+# wble
+configure_file(CMakeLists.txt.wble wble/CMakeLists.txt)
+execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/wble)
+execute_process(COMMAND ${CMAKE_COMMAND} --build .
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/wble)
+
 # copy dlls for easy launch
 file(GLOB_RECURSE DLLS "${CMAKE_BINARY_DIR}/*.dll" )
 file(COPY ${DLLS} DESTINATION ${CMAKE_BINARY_DIR})
@@ -54,10 +61,12 @@ set(workaround ON CACHE BOOL "" FORCE)
 include_directories(${CMAKE_BINARY_DIR}/qwt/install/include)
 include_directories(${CMAKE_BINARY_DIR}/zlib/install/include)
 include_directories(${CMAKE_BINARY_DIR}/quazip/install/include)
+include_directories(${CMAKE_BINARY_DIR}/wble/install/include)
 
 LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/qwt/install/lib)
 LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/zlib/install/bin)
 LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/quazip/install/lib)
+LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/wble/install/lib)
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(Charts)
@@ -100,9 +109,11 @@ add_custom_target(generated_qrc DEPENDS ${RESOURCES})
 add_executable(${PROJECT_NAME} ${GUI_TYPE} ${SOURCES} ${RESOURCES} Volbx/VolbxProperties.rc)
 add_dependencies(${PROJECT_NAME} generated_qrc)
 
-target_link_libraries(${PROJECT_NAME} shared common datasets modelsAndViews dataProvider quazip5 Qt5::Core Qt5::Network Qt5::Widgets Qt5::Gui Qt5::Xml)
+target_link_libraries(${PROJECT_NAME} shared common datasets modelsAndViews dataProvider wble Qt5::Core Qt5::Network Qt5::Widgets Qt5::Gui Qt5::Xml)
 target_link_libraries(${PROJECT_NAME} optimized qwt)
 target_link_libraries(${PROJECT_NAME} debug qwtd)
+target_link_libraries(${PROJECT_NAME} optimized quazip5)
+target_link_libraries(${PROJECT_NAME} debug quazip5d)
 
 add_subdirectory(Update)
 

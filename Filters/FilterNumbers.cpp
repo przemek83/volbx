@@ -2,11 +2,11 @@
 
 #include <cmath>
 
+#include <DoubleSlider.h>
 #include <QDebug>
 #include <QIntValidator>
 
 #include "Common/Constants.h"
-#include "GUI/DoubleSlider.h"
 
 #include "ui_FilterNumbers.h"
 

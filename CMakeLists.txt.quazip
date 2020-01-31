@@ -8,5 +8,5 @@ ExternalProject_Add(quazip
     PREFIX quazip
     GIT_REPOSITORY https://github.com/stachenov/quazip.git
     GIT_TAG master
-    CMAKE_ARGS -DZLIB_INCLUDE_DIR:PATH=${CMAKE_BINARY_DIR}/zlib/install/include -DZLIB_LIBRARY:FILEPATH=${CMAKE_BINARY_DIR}/zlib/install/bin/libzlib.dll -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/quazip/install
+    CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DZLIB_INCLUDE_DIR:PATH=${CMAKE_BINARY_DIR}/zlib/install/include -DZLIB_LIBRARY:FILEPATH=${CMAKE_BINARY_DIR}/zlib/install/bin/libzlib.dll -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/quazip/install
 )
