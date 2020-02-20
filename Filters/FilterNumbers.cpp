@@ -90,8 +90,8 @@ FilterNumbers::FilterNumbers(const QString& name,
                                                     ui->toValue));
     }
 
-    connect(slider, &DoubleSlider::minChanged, this, &FilterNumbers::sliderMinChanged);
-    connect(slider, &DoubleSlider::maxChanged, this, &FilterNumbers::sliderMaxChanged);
+    connect(slider, &DoubleSlider::currentMinChanged, this, &FilterNumbers::sliderMinChanged);
+    connect(slider, &DoubleSlider::currentMaxChanged, this, &FilterNumbers::sliderMaxChanged);
 
     connect(ui->fromValue, &QLineEdit::editingFinished, this, &FilterNumbers::fromEditingFinished);
     connect(ui->toValue, &QLineEdit::editingFinished, this, &FilterNumbers::toEditingFinished);
