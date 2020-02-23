@@ -54,9 +54,9 @@ std::tuple<QDate, QDate, bool> TableModel::getDateRange(int column) const
     return dataset_->getDateRange(column);
 }
 
-void TableModel::getStringList(int column, QStringList& listToFill) const
+QStringList TableModel::getStringList(int column) const
 {
-    dataset_->getStringList(column, listToFill);
+    return dataset_->getStringList(column);
 }
 
 DataFormat TableModel::getColumnFormat(int column) const

@@ -117,11 +117,11 @@ std::tuple<QDate, QDate, bool> Dataset::getDateRange(int column) const
     return {minDate, maxDate, emptyDates};
 }
 
-void Dataset::getStringList(int column, QStringList& listToFill) const
+QStringList Dataset::getStringList(int column) const
 {
     Q_ASSERT(DATA_FORMAT_STRING == getColumnFormat(column));
 
-    listToFill.clear();
+    QStringList listToFill;
 
     //Optimization used -> use string indexes first, compare, remove duplicates.
     //At end convert to proper strings.
@@ -140,6 +140,8 @@ void Dataset::getStringList(int column, QStringList& listToFill) const
             listToFill[i] = sharedStrings_[listToFill[i].toULongLong()].toString();
         }
     }
+
+    return listToFill;
 }
 
 std::tuple<bool, int> Dataset::getSpecialColumnIfExists(SpecialColumn columnTag) const

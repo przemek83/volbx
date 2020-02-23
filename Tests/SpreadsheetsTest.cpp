@@ -381,8 +381,7 @@ void SpreadsheetsTest::testDatasetConstruction(const Dataset& dataset,
     QCOMPARE(maxDate, compareDateValues[1]);
     QCOMPARE(empty, emptyDates);
 
-    QStringList list;
-    dataset.getStringList(columnsToTest[3], list);
+    QStringList list = dataset.getStringList(columnsToTest[3]);
     QCOMPARE(list, compareList);
 
     auto [ok, column] = dataset.getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE);

@@ -53,7 +53,7 @@ public:
 
     std::tuple<QDate, QDate, bool> getDateRange(int column) const;
 
-    void getStringList(int column, QStringList& listToFill) const;
+    QStringList getStringList(int column) const;
 
     std::tuple<bool, int> getSpecialColumnIfExists(SpecialColumn columnTag) const;
 

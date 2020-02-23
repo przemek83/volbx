@@ -112,8 +112,7 @@ FilterNames* FiltersDock::createNewNamesFilter(const TableModel* parentModel,
                                                QWidget* filterListWidget)
 {
     QString columnName = parentModel->headerData(index, Qt::Horizontal).toString();
-    QStringList list;
-    parentModel->getStringList(index, list);
+    QStringList list = parentModel->getStringList(index);
     list.sort();
     auto filter = new FilterNames(columnName, std::move(list), filterListWidget);
     auto emitChangeForColumn =

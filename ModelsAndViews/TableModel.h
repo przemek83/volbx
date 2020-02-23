@@ -62,7 +62,7 @@ public:
 
     /**
      * @brief fill max and min for given numeric column.
-     * @param column column.
+     * @param column Column number.
      * @returns Minimum for column,
      *          maksimum cor column.
      */
@@ -78,11 +78,11 @@ public:
     std::tuple<QDate, QDate, bool> getDateRange(int column) const;
 
     /**
-     * @brief set possible string values for coulmn.
-     * @param column column.
-     * @param listToFill list of strings.
+     * @brief set possible string values for column.
+     * @param column Column number.
+     * @return List of strings.
      */
-    void getStringList(int column, QStringList& listToFill) const;
+    QStringList getStringList(int column) const;
 
     /**
      * @brief get type of given column.
