@@ -18,7 +18,6 @@ class FilterDates;
 class FilterDates : public Filter
 {
     Q_OBJECT
-
 public:
     FilterDates(const QString& name,
                 int column,
@@ -34,15 +33,12 @@ public:
     FilterDates& operator=(FilterDates&& other) = delete;
     FilterDates(FilterDates&& other) = delete;
 
-public Q_SLOTS:
-    void setChecked(bool checked);
-
 private:
     ///Initial filter minimum date.
-    QDate minOnInit_;
+    const QDate minOnInit_;
 
     ///Initial filter maximum date.
-    QDate maxOnInit_;
+    const QDate maxOnInit_;
 
     Ui::FilterDates* ui;
 
@@ -51,9 +47,10 @@ private:
     QCalendarWidget calendarRight_;
 
     ///Flag indicating there were wmpty dates in column.
-    bool emptyDates_;
+    const bool emptyDates_;
 
 private Q_SLOTS:
+    void setChecked(bool checked);
 
     /**
      * Trigerred on change of date in left date edit.

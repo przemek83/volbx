@@ -10,10 +10,6 @@
 
 #include "ui_FilterNames.h"
 
-const int FilterNames::minNameWidthForScrollMargin_ = 25;
-
-const int FilterNames::maximumHeigh_ = 180;
-
 FilterNames::FilterNames(const QString& name,
                          int column,
                          QStringList initialList,
@@ -48,6 +44,7 @@ FilterNames::FilterNames(const QString& name,
     if (initialList_.size() <= 1)
     {
         ui->selectAll->hide();
+        setChecked(false);
     }
 }
 

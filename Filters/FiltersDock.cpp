@@ -115,14 +115,8 @@ FilterNames* FiltersDock::createNewNamesFilter(const TableModel* parentModel,
     QStringList list;
     parentModel->getStringList(index, list);
     list.sort();
-    const int listSize {list.size()};
     auto filter = new FilterNames(columnName, index, std::move(list), filterListWidget);
     connect(filter, &FilterNames::newStringFilter, this, &FiltersDock::newNamesFiltering);
-
-    if (listSize <= 1)
-    {
-        filter->setChecked(false);
-    }
 
     return filter;
 }
@@ -178,7 +172,7 @@ void FiltersDock::removeModel(const FilteringProxyModel* model)
 
 void FiltersDock::activateFiltersForModel(const FilteringProxyModel* model)
 {
-    if (nullptr != model)
+    if (model != nullptr)
     {
         ui->stackedWidget->setCurrentWidget(modelsMap_.key(model));
     }

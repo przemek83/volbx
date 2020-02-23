@@ -34,9 +34,6 @@ public:
 
     QSize sizeHint() const override;
 
-public Q_SLOTS:
-    void setChecked(bool checked);
-
 private:
     const QStringList initialList_;
 
@@ -45,15 +42,17 @@ private:
     Ui::FilterNames* ui;
 
     ///Min number of chars to include scrioll margin.
-    static const int minNameWidthForScrollMargin_;
+    static constexpr int minNameWidthForScrollMargin_ {25};
 
     ///Maximum widget heigh.
-    static const int maximumHeigh_;
+    static constexpr int maximumHeigh_ {180};
 
     ///Flag indocating if additionall place for scroll should be added.
     bool addMarginForScrollBar_;
 
 private Q_SLOTS:
+    void setChecked(bool checked);
+
     /**
      * Triggered when user click on item.
      * @param item item clicked.
@@ -63,7 +62,7 @@ private Q_SLOTS:
     void selectAllToggled(bool checked);
 
 Q_SIGNALS:
-    void newStringFilter(int kolumn, QSet<QString> bannedList);
+    void newStringFilter(int column, QSet<QString> bannedList);
 };
 
 #endif // FILTERNAMES_H
