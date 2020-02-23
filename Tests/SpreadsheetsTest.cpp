@@ -377,10 +377,7 @@ void SpreadsheetsTest::testDatasetConstruction(const Dataset& dataset,
     QCOMPARE(min, compareNumericValues[2]);
     QCOMPARE(max, compareNumericValues[3]);
 
-
-    QDate minDate, maxDate;
-    bool empty = false;
-    dataset.getDateRange(columnsToTest[2], minDate, maxDate, empty);
+    auto [minDate, maxDate, empty ] = dataset.getDateRange(columnsToTest[2]);
     QCOMPARE(minDate, compareDateValues[0]);
     QCOMPARE(maxDate, compareDateValues[1]);
     QCOMPARE(empty, emptyDates);

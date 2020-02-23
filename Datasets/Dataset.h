@@ -51,7 +51,7 @@ public:
 
     void getNumericRange(int column, double& min, double& max) const;
 
-    void getDateRange(int column, QDate& min, QDate& max, bool& emptyDates) const;
+    std::tuple<QDate, QDate, bool> getDateRange(int column) const;
 
     void getStringList(int column, QStringList& listToFill) const;
 

@@ -69,12 +69,13 @@ void Dataset::getNumericRange(int column, double& min, double& max) const
     }
 }
 
-void Dataset::getDateRange(int column,
-                           QDate& min,
-                           QDate& max,
-                           bool& emptyDates) const
+std::tuple<QDate, QDate, bool> Dataset::getDateRange(int column) const
 {
     Q_ASSERT(DATA_FORMAT_DATE == getColumnFormat(column));
+
+    QDate minDate;
+    QDate maxDate;
+    bool emptyDates {false};
 
     bool first = true;
     for (int i = 0; i < rowCount(); ++i)
@@ -91,22 +92,24 @@ void Dataset::getDateRange(int column,
 
         if (first)
         {
-            min = date;
-            max = date;
+            minDate = date;
+            maxDate = date;
             first = false;
             continue;
         }
 
-        if (date < min)
+        if (date < minDate)
         {
-            min = date;
+            minDate = date;
         }
 
-        if (date > max)
+        if (date > maxDate)
         {
-            max = date;
+            maxDate = date;
         }
     }
+
+    return {minDate, maxDate, emptyDates};
 }
 
 void Dataset::getStringList(int column, QStringList& listToFill) const

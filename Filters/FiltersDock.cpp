@@ -128,14 +128,12 @@ FilterDates* FiltersDock::createNewDatesFilter(const TableModel* parentModel,
                                                QWidget* filterListWidget)
 {
     QString columnName = parentModel->headerData(index, Qt::Horizontal).toString();
-    QDate min;
-    QDate max;
-    bool emptyDates = false;
-    parentModel->getDateRange(index, min, max, emptyDates);
+    const auto [minDate, maxDate, haveEmptyDates] =
+        parentModel->getDateRange(index);
     auto filter = new FilterDates(columnName,
-                                  min,
-                                  max,
-                                  emptyDates,
+                                  std::move(minDate),
+                                  std::move(maxDate),
+                                  haveEmptyDates,
                                   filterListWidget);
     auto emitChangeForColumn =
     [ = ](QDate from, QDate to, bool filterEmptyDates) {emit newDateFiltering(index, from, to, filterEmptyDates);};

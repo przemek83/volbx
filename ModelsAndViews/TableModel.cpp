@@ -49,12 +49,9 @@ void TableModel::getNumericRange(int column, double& min, double& max) const
     dataset_->getNumericRange(column, min, max);
 }
 
-void TableModel::getDateRange(int column,
-                              QDate& min,
-                              QDate& max,
-                              bool& emptyDates) const
+std::tuple<QDate, QDate, bool> TableModel::getDateRange(int column) const
 {
-    dataset_->getDateRange(column, min, max, emptyDates);
+    return dataset_->getDateRange(column);
 }
 
 void TableModel::getStringList(int column, QStringList& listToFill) const

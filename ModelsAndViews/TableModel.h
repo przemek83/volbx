@@ -69,12 +69,13 @@ public:
     void getNumericRange(int column, double& min, double& max) const;
 
     /**
-     * @brief fill max and min for given date column.
-     * @param column column.
-     * @param min minimum date for column.
-     * @param max maksimum date for column.
+     * @brief Fill max and min for given date column.
+     * @param column Column number.
+     * @returns minimum date for column,
+     *          maksimum date for column,
+     *          existance of empty dates in column.
      */
-    void getDateRange(int column, QDate& min, QDate& max, bool& emptyDates) const;
+    std::tuple<QDate, QDate, bool> getDateRange(int column) const;
 
     /**
      * @brief set possible string values for coulmn.
