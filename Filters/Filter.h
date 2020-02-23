@@ -10,7 +10,7 @@ class Filter : public QGroupBox
 {
     Q_OBJECT
 public:
-    Filter(const QString& title, int column, QWidget* parent = nullptr);
+    explicit Filter(const QString& title, QWidget* parent = nullptr);
 
     ~Filter() override = default;
 
@@ -19,9 +19,6 @@ public:
 
     Filter& operator=(Filter&& other) = delete;
     Filter(Filter&& other) = delete;
-
-protected:
-    const int column_;
 };
 
 #endif // FILTER_H

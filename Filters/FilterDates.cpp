@@ -7,12 +7,11 @@
 #include "ui_FilterDates.h"
 
 FilterDates::FilterDates(const QString& name,
-                         int column,
                          QDate min,
                          QDate max,
                          bool emptyDates,
                          QWidget* parent) :
-    Filter(name, column, parent),
+    Filter(name, parent),
     minOnInit_(min),
     maxOnInit_(max),
     ui(new Ui::FilterDates),
@@ -71,7 +70,7 @@ void FilterDates::lowerDateChanged(QDate newDate)
     QApplication::processEvents();
 
     //Emit to model via filters dock.
-    Q_EMIT newDateFilter(column_, ui->lowerDateEdit->date(),
+    Q_EMIT newDateFilter(ui->lowerDateEdit->date(),
                          ui->higherDateEdit->date(),
                          ui->emptyDates->isChecked());
 }
@@ -87,8 +86,9 @@ void FilterDates::higherDateChanged(QDate newDate)
     QApplication::processEvents();
 
     //Emit to model via filters dock.
-    Q_EMIT newDateFilter(column_, ui->lowerDateEdit->date(),
-                         ui->higherDateEdit->date(), ui->emptyDates->isChecked());
+    Q_EMIT newDateFilter(ui->lowerDateEdit->date(),
+                         ui->higherDateEdit->date(),
+                         ui->emptyDates->isChecked());
 }
 
 void FilterDates::setChecked(bool checked)
@@ -108,8 +108,7 @@ void FilterDates::setChecked(bool checked)
 void FilterDates::emptyDatesToggled(bool checked)
 {
     QApplication::processEvents();
-    Q_EMIT newDateFilter(column_,
-                         ui->lowerDateEdit->date(),
+    Q_EMIT newDateFilter(ui->lowerDateEdit->date(),
                          ui->higherDateEdit->date(),
                          checked);
 }

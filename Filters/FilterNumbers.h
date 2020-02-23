@@ -22,7 +22,6 @@ class FilterNumbers : public Filter
     Q_OBJECT
 public:
     FilterNumbers(const QString& name,
-                  int column,
                   double min,
                   double max,
                   QWidget* parent = nullptr);
@@ -75,7 +74,7 @@ private Q_SLOTS:
     void setChecked(bool checked);
 
 Q_SIGNALS:
-    void newNumericFilter(int column, double from, double to);
+    void newNumericFilter(double from, double to);
 };
 
 #endif // FILTERNUMBERS_H

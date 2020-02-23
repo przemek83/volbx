@@ -11,10 +11,9 @@
 #include "ui_FilterNames.h"
 
 FilterNames::FilterNames(const QString& name,
-                         int column,
                          QStringList initialList,
                          QWidget* parent) :
-    Filter(name, column, parent),
+    Filter(name, parent),
     initialList_(std::move(initialList)),
     ui(new Ui::FilterNames),
     addMarginForScrollBar_(false)
@@ -94,7 +93,7 @@ void FilterNames::itemChecked(QListWidgetItem* item)
 
     QApplication::processEvents();
 
-    Q_EMIT newStringFilter(column_, lastEmitted_);
+    Q_EMIT newStringFilter(lastEmitted_);
 }
 
 QSize FilterNames::sizeHint() const

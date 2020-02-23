@@ -11,11 +11,10 @@
 #include "ui_FilterNumbers.h"
 
 FilterNumbers::FilterNumbers(const QString& name,
-                             int column,
                              double min,
                              double max,
                              QWidget* parent) :
-    Filter(name, column, parent),
+    Filter(name, parent),
     ui(new Ui::FilterNumbers),
     minOnInit_(min),
     maxOnInit_(max)
@@ -123,7 +122,7 @@ void FilterNumbers::sliderMinChanged(int newValue)
     QApplication::processEvents();
 
     //Emit to model via filters dock.
-    Q_EMIT newNumericFilter(column_, ui->fromValue->text().toDouble(),
+    Q_EMIT newNumericFilter(ui->fromValue->text().toDouble(),
                             ui->toValue->text().toDouble());
 }
 
@@ -141,8 +140,7 @@ void FilterNumbers::sliderMaxChanged(int newValue)
     QApplication::processEvents();
 
     //Emit to model via filters dock.
-    Q_EMIT newNumericFilter(column_,
-                            ui->fromValue->text().toDouble(),
+    Q_EMIT newNumericFilter(ui->fromValue->text().toDouble(),
                             ui->toValue->text().toDouble());
 }
 

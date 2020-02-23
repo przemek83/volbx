@@ -20,7 +20,6 @@ class FilterDates : public Filter
     Q_OBJECT
 public:
     FilterDates(const QString& name,
-                int column,
                 QDate min, QDate max,
                 bool emptyDates,
                 QWidget* parent = nullptr);
@@ -71,7 +70,7 @@ private Q_SLOTS:
     void emptyDatesToggled(bool checked);
 
 Q_SIGNALS:
-    void newDateFilter(int kolumn, QDate from, QDate to, bool filterEmptyDates);
+    void newDateFilter(QDate from, QDate to, bool filterEmptyDates);
 };
 
 #endif // FILTERDATES_H

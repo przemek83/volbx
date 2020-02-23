@@ -28,7 +28,7 @@ FiltersDock::~FiltersDock()
 
 void FiltersDock::addModel(const FilteringProxyModel* model)
 {
-    if (nullptr == model)
+    if (model == nullptr)
     {
         return;
     }
@@ -115,8 +115,10 @@ FilterNames* FiltersDock::createNewNamesFilter(const TableModel* parentModel,
     QStringList list;
     parentModel->getStringList(index, list);
     list.sort();
-    auto filter = new FilterNames(columnName, index, std::move(list), filterListWidget);
-    connect(filter, &FilterNames::newStringFilter, this, &FiltersDock::newNamesFiltering);
+    auto filter = new FilterNames(columnName, std::move(list), filterListWidget);
+    auto emitChangeForColumn =
+    [ = ](QSet<QString> bannedList) {emit newNamesFiltering(index, bannedList); };
+    connect(filter, &FilterNames::newStringFilter, this, emitChangeForColumn);
 
     return filter;
 }
@@ -131,12 +133,13 @@ FilterDates* FiltersDock::createNewDatesFilter(const TableModel* parentModel,
     bool emptyDates = false;
     parentModel->getDateRange(index, min, max, emptyDates);
     auto filter = new FilterDates(columnName,
-                                  index,
                                   min,
                                   max,
                                   emptyDates,
                                   filterListWidget);
-    connect(filter, &FilterDates::newDateFilter, this, &FiltersDock::newDateFiltering);
+    auto emitChangeForColumn =
+    [ = ](QDate from, QDate to, bool filterEmptyDates) {emit newDateFiltering(index, from, to, filterEmptyDates);};
+    connect(filter, &FilterDates::newDateFilter, this, emitChangeForColumn);
     return filter;
 }
 
@@ -149,11 +152,12 @@ FilterNumbers* FiltersDock::createNewNumbersFilter(const TableModel* parentModel
     double max = -1;
     parentModel->getNumericRange(index, min, max);
     auto filter = new FilterNumbers(columnName,
-                                    index,
                                     min,
                                     max,
                                     filterListWidget);
-    connect(filter, &FilterNumbers::newNumericFilter, this, &FiltersDock::newNumbersFiltering);
+    auto emitChangeForColumn =
+    [ = ](double from, double to) {emit newNumbersFiltering(index, from, to);};
+    connect(filter, &FilterNumbers::newNumericFilter, this, emitChangeForColumn);
     return filter;
 }
 

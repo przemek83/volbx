@@ -20,7 +20,6 @@ class FilterNames : public Filter
     Q_OBJECT
 public:
     FilterNames(const QString& name,
-                int column,
                 QStringList initialList,
                 QWidget* parent = nullptr);
 
@@ -62,7 +61,7 @@ private Q_SLOTS:
     void selectAllToggled(bool checked);
 
 Q_SIGNALS:
-    void newStringFilter(int column, QSet<QString> bannedList);
+    void newStringFilter(QSet<QString> bannedList);
 };
 
 #endif // FILTERNAMES_H
