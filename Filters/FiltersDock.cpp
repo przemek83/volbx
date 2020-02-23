@@ -146,9 +146,7 @@ FilterNumbers* FiltersDock::createNewNumbersFilter(const TableModel* parentModel
                                                    QWidget* filterListWidget)
 {
     QString columnName = parentModel->headerData(index, Qt::Horizontal).toString();
-    double min = -1;
-    double max = -1;
-    parentModel->getNumericRange(index, min, max);
+    const auto [min, max] = parentModel->getNumericRange(index);
     auto filter = new FilterNumbers(columnName,
                                     min,
                                     max,

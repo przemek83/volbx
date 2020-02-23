@@ -41,11 +41,14 @@ DataFormat Dataset::getColumnFormat(int column) const
     return datasetDefinition_->getColumnFormat(column);
 }
 
-void Dataset::getNumericRange(int column, double& min, double& max) const
+std::tuple<double, double> Dataset::getNumericRange(int column) const
 {
     Q_ASSERT(DATA_FORMAT_FLOAT == getColumnFormat(column));
 
-    bool first = true;
+    double min {0.};
+    double max {0.};
+
+    bool first {true};
     for (int i = 0; i < rowCount(); ++i)
     {
         double value = data_[i][column].toDouble();
@@ -67,6 +70,8 @@ void Dataset::getNumericRange(int column, double& min, double& max) const
             max = value;
         }
     }
+
+    return {min, max};
 }
 
 std::tuple<QDate, QDate, bool> Dataset::getDateRange(int column) const
@@ -77,7 +82,7 @@ std::tuple<QDate, QDate, bool> Dataset::getDateRange(int column) const
     QDate maxDate;
     bool emptyDates {false};
 
-    bool first = true;
+    bool first {true};
     for (int i = 0; i < rowCount(); ++i)
     {
         const QVariant& dateVariant = data_[i][column];

@@ -49,7 +49,7 @@ public:
 
     DataFormat getColumnFormat(int column) const;
 
-    void getNumericRange(int column, double& min, double& max) const;
+    std::tuple<double, double> getNumericRange(int column) const;
 
     std::tuple<QDate, QDate, bool> getDateRange(int column) const;
 

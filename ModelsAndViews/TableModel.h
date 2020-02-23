@@ -63,10 +63,10 @@ public:
     /**
      * @brief fill max and min for given numeric column.
      * @param column column.
-     * @param min minimum for column.
-     * @param max maksimum cor column.
+     * @returns Minimum for column,
+     *          maksimum cor column.
      */
-    void getNumericRange(int column, double& min, double& max) const;
+    std::tuple<double, double> getNumericRange(int column) const;
 
     /**
      * @brief Fill max and min for given date column.

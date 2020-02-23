@@ -368,12 +368,11 @@ void SpreadsheetsTest::testDatasetConstruction(const Dataset& dataset,
 {
     QVERIFY(true == dataset.isValid());
 
-    double min = .0, max = .0;
-    dataset.getNumericRange(columnsToTest[0], min, max);
+    auto [min, max] = dataset.getNumericRange(columnsToTest[0]);
     QCOMPARE(min, compareNumericValues[0]);
     QCOMPARE(max, compareNumericValues[1]);
 
-    dataset.getNumericRange(columnsToTest[1], min, max);
+    std::tie(min, max) = dataset.getNumericRange(columnsToTest[1]);
     QCOMPARE(min, compareNumericValues[2]);
     QCOMPARE(max, compareNumericValues[3]);
 

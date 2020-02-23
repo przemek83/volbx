@@ -44,9 +44,9 @@ QVariant TableModel::headerData(int section,
     return QVariant();
 }
 
-void TableModel::getNumericRange(int column, double& min, double& max) const
+std::tuple<double, double> TableModel::getNumericRange(int column) const
 {
-    dataset_->getNumericRange(column, min, max);
+    return dataset_->getNumericRange(column);
 }
 
 std::tuple<QDate, QDate, bool> TableModel::getDateRange(int column) const
