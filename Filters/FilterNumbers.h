@@ -7,8 +7,6 @@
 
 #include "Filter.h"
 
-class DoubleSlider;
-
 namespace Ui
 {
 class FilterNumbers;
