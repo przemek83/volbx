@@ -33,8 +33,6 @@ public:
      */
     static void setQtStyle(const QString& name);
 
-    static QString getGroupBoxStyle();
-
     static void initStyle(const QString& nameFromConfig);
 
 private:

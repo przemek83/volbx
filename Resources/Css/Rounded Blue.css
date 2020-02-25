@@ -9,9 +9,16 @@ padding-right: 2px;
 padding-bottom: 2px;
 }
 
-QGroupBox::title {
-subcontrol-origin: margin ;
-subcontrol-position: top center;
+QGroupBox::indicator:unchecked { 
+image: url(:/Stylesheet/Images/uncheckedGroupBox.png);
+}
+
+QGroupBox::indicator:checked {
+	image:url(:/Stylesheet/Images/checkedGroupBox.png);
+}
+QGroupBox::title { 
+subcontrol-origin: margin;  
+subcontrol-position: top left;
 margin-left: 5px; 
 }
 

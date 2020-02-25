@@ -85,15 +85,3 @@ void Application::clearAppFocus()
         focusWidget->clearFocus();
     }
 }
-
-QString Application::getGroupBoxStyle()
-{
-    QString styleSheet(QStringLiteral("QGroupBox::indicator:unchecked { image: "));
-    styleSheet.append(QLatin1String("url(:/Stylesheet/Images/uncheckedGroupBox.png);}"));
-    styleSheet.append(QLatin1String("QGroupBox::indicator:checked {image: "));
-    styleSheet.append(QLatin1String("url(:/Stylesheet/Images/checkedGroupBox.png);}"));
-    styleSheet.append(QLatin1String("QGroupBox::title { subcontrol-origin: margin;  "));
-    styleSheet.append(QLatin1String("subcontrol-position: top left;}"));
-    return styleSheet;
-}
-
