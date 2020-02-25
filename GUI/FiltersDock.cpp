@@ -103,6 +103,7 @@ void FiltersDock::createFiltersWidgets(const TableModel* model,
                 Q_ASSERT(false);
             }
         }
+        filter->setCheckable(true);
         layout->addWidget(filter);
     }
 }
