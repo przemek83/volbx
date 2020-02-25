@@ -67,7 +67,6 @@ LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/wble/install/lib)
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(Charts)
-include_directories(Filters)
 include_directories(GUI)
 include_directories(Import)
 include_directories(Shared)
@@ -84,10 +83,8 @@ add_subdirectory(DataProvider)
 
 file(GLOB SOURCES "Volbx/*.cpp"
     "Charts/*.cpp"
-    "Filters/*.cpp"
     "GUI/*.cpp"
     "Import/*.cpp"
-    "Filters/*.ui"
     "GUI/*.ui"
     "Import/*.ui"
    )

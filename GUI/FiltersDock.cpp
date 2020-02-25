@@ -1,6 +1,10 @@
 #include "FiltersDock.h"
 
 #include <QDebug>
+#include <Filter.h>
+#include <FilterDates.h>
+#include <FilterNames.h>
+#include <FilterNumbers.h>
 #include <QLineEdit>
 #include <QScrollArea>
 
@@ -8,10 +12,6 @@
 #include "ModelsAndViews/FilteringProxyModel.h"
 #include "ModelsAndViews/TableModel.h"
 
-#include "Filter.h"
-#include "FilterDates.h"
-#include "FilterNames.h"
-#include "FilterNumbers.h"
 #include "ui_FiltersDock.h"
 
 FiltersDock::FiltersDock(QWidget* parent) :

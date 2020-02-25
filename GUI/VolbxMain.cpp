@@ -22,7 +22,7 @@
 #include "Datasets/DatasetDefinitionXlsx.h"
 #include "Datasets/DatasetInner.h"
 #include "Datasets/DatasetSpreadsheet.h"
-#include "Filters/FiltersDock.h"
+#include "FiltersDock.h"
 #include "Import/ImportData.h"
 #include "ModelsAndViews/DataView.h"
 #include "ModelsAndViews/FilteringProxyModel.h"
