@@ -77,25 +77,22 @@ void FiltersDock::createFiltersWidgets(const TableModel* model,
 {
     for (int i = 0; i < model->columnCount(); ++i)
     {
-        Filter* filter = nullptr;
+        Filter* filter {nullptr};
         switch (model->getColumnFormat(i))
         {
             case DATA_FORMAT_STRING:
             {
                 filter = createNewNamesFilter(model, i, filterListWidget);
-
                 break;
             }
             case DATA_FORMAT_DATE:
             {
                 filter = createNewDatesFilter(model, i, filterListWidget);
-
                 break;
             }
             case DATA_FORMAT_FLOAT:
             {
                 filter = createNewNumbersFilter(model, i, filterListWidget);
-
                 break;
             }
             case DATA_FORMAT_UNKNOWN:
@@ -103,7 +100,6 @@ void FiltersDock::createFiltersWidgets(const TableModel* model,
                 Q_ASSERT(false);
             }
         }
-        filter->setCheckable(true);
         layout->addWidget(filter);
     }
 }
@@ -112,13 +108,20 @@ FilterNames* FiltersDock::createNewNamesFilter(const TableModel* parentModel,
                                                int index,
                                                QWidget* filterListWidget)
 {
-    QString columnName = parentModel->headerData(index, Qt::Horizontal).toString();
-    QStringList list = parentModel->getStringList(index);
+    QString columnName {parentModel->headerData(index, Qt::Horizontal).toString()};
+    QStringList list {parentModel->getStringList(index)};
+    const int itemCount {list.size()};
     list.sort();
     auto filter = new FilterNames(columnName, std::move(list), filterListWidget);
-    auto emitChangeForColumn =
-    [ = ](QSet<QString> bannedList) {emit newNamesFiltering(index, bannedList); };
+    auto emitChangeForColumn = [ = ](QSet<QString> bannedList)
+    {
+        emit newNamesFiltering(index, bannedList);
+    };
     connect(filter, &FilterNames::newStringFilter, this, emitChangeForColumn);
+
+    filter->setCheckable(true);
+    if (itemCount <= 1)
+        filter->setChecked(false);
 
     return filter;
 }
@@ -127,17 +130,19 @@ FilterDates* FiltersDock::createNewDatesFilter(const TableModel* parentModel,
                                                int index,
                                                QWidget* filterListWidget)
 {
-    QString columnName = parentModel->headerData(index, Qt::Horizontal).toString();
-    const auto [minDate, maxDate, haveEmptyDates] =
-        parentModel->getDateRange(index);
+    QString columnName {parentModel->headerData(index, Qt::Horizontal).toString()};
+    const auto [minDate, maxDate, haveEmptyDates] {parentModel->getDateRange(index)};
     auto filter = new FilterDates(columnName,
                                   std::move(minDate),
                                   std::move(maxDate),
                                   haveEmptyDates,
                                   filterListWidget);
-    auto emitChangeForColumn =
-    [ = ](QDate from, QDate to, bool filterEmptyDates) {emit newDateFiltering(index, from, to, filterEmptyDates);};
+    auto emitChangeForColumn = [ = ](QDate from, QDate to, bool filterEmptyDates)
+    {
+        emit newDateFiltering(index, from, to, filterEmptyDates);
+    };
     connect(filter, &FilterDates::newDateFilter, this, emitChangeForColumn);
+    filter->setCheckable(true);
     return filter;
 }
 
@@ -145,15 +150,18 @@ FilterNumbers* FiltersDock::createNewNumbersFilter(const TableModel* parentModel
                                                    int index,
                                                    QWidget* filterListWidget)
 {
-    QString columnName = parentModel->headerData(index, Qt::Horizontal).toString();
-    const auto [min, max] = parentModel->getNumericRange(index);
+    QString columnName {parentModel->headerData(index, Qt::Horizontal).toString()};
+    const auto [min, max] {parentModel->getNumericRange(index)};
     auto filter = new FilterNumbers(columnName,
                                     min,
                                     max,
                                     filterListWidget);
-    auto emitChangeForColumn =
-    [ = ](double from, double to) {emit newNumbersFiltering(index, from, to);};
+    auto emitChangeForColumn = [ = ](double from, double to)
+    {
+        emit newNumbersFiltering(index, from, to);
+    };
     connect(filter, &FilterNumbers::newNumericFilter, this, emitChangeForColumn);
+    filter->setCheckable(true);
     return filter;
 }
 
