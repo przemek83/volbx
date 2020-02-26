@@ -75,7 +75,7 @@ private:
 Q_SIGNALS:
     void newNumbersFiltering(int column, double from, double to);
 
-    void newNamesFiltering(int column, QSet<QString> exclusionList);
+    void newNamesFiltering(int column, QStringList exclusionList);
 
     void newDateFiltering(int column, QDate from, QDate to, bool filterEmptyDates);
 };

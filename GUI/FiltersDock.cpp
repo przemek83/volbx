@@ -113,7 +113,7 @@ FilterNames* FiltersDock::createNewNamesFilter(const TableModel* parentModel,
     const int itemCount {list.size()};
     list.sort();
     auto filter = new FilterNames(columnName, std::move(list), filterListWidget);
-    auto emitChangeForColumn = [ = ](QSet<QString> bannedList)
+    auto emitChangeForColumn = [ = ](QStringList bannedList)
     {
         emit newNamesFiltering(index, bannedList);
     };

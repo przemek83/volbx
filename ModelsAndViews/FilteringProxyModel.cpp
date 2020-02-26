@@ -17,7 +17,7 @@ const TableModel* FilteringProxyModel::getParentModel() const
     return qobject_cast<const TableModel*>(sourceModel());
 }
 
-void FilteringProxyModel::setStringFilter(int column, const QSet<QString>& bannedStrings)
+void FilteringProxyModel::setStringFilter(int column, const QStringList& bannedStrings)
 {
     stringsRestrictions_[column] = bannedStrings;
     invalidate();
@@ -43,7 +43,7 @@ bool FilteringProxyModel::filterAcceptsRow(int sourceRow,
                                            const QModelIndex& sourceParent) const
 {
     //Filter strings.
-    std::map<int, QSet<QString> >::const_iterator iterStrings;
+    std::map<int, QStringList >::const_iterator iterStrings;
     for (iterStrings = stringsRestrictions_.begin();
          iterStrings != stringsRestrictions_.end();
          ++iterStrings)

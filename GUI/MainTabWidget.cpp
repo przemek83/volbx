@@ -77,7 +77,7 @@ ViewDockWidget* MainTabWidget::getCurrentDataViewDock()
     return qobject_cast<ViewDockWidget*>(dataView->parent());
 }
 
-void MainTabWidget::setTextFilterInProxy(int column, const QSet<QString>& bannedStrings)
+void MainTabWidget::setTextFilterInProxy(int column, const QStringList& bannedStrings)
 {
     DataView* view = getCurrentDataView();
     FilteringProxyModel* model = getCurrentProxyModel();

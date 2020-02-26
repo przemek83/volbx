@@ -34,7 +34,7 @@ public:
     DataView* getCurrentDataView();
 
 public Q_SLOTS:
-    void setTextFilterInProxy(int column, const QSet<QString>& bannedStrings);
+    void setTextFilterInProxy(int column, const QStringList& bannedStrings);
 
     void setDateFilterInProxy(int column,
                               QDate from,

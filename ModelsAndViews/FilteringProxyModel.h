@@ -37,7 +37,7 @@ public:
      * @param column column number to set filter.
      * @param bannedStrings list of strings to filter.
      */
-    void setStringFilter(int column, const QSet<QString>& bannedStrings);
+    void setStringFilter(int column, const QStringList& bannedStrings);
 
     /**
      * @brief set filter for date column.
@@ -66,7 +66,7 @@ protected:
 
 private:
     ///Filter set for strings.
-    std::map<int, QSet<QString> > stringsRestrictions_;
+    std::map<int, QStringList > stringsRestrictions_;
 
     ///Filter set for dates.
     std::map<int, std::tuple<QDate, QDate, bool> > datesRestrictions_;
