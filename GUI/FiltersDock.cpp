@@ -4,7 +4,7 @@
 #include <Filter.h>
 #include <FilterDates.h>
 #include <FilterNames.h>
-#include <FilterNumbers.h>
+#include <FilterDoubles.h>
 #include <QLineEdit>
 #include <QScrollArea>
 
@@ -152,7 +152,7 @@ FilterNumbers* FiltersDock::createNewNumbersFilter(const TableModel* parentModel
 {
     QString columnName {parentModel->headerData(index, Qt::Horizontal).toString()};
     const auto [min, max] {parentModel->getNumericRange(index)};
-    auto filter = new FilterNumbers(columnName,
+    auto filter = new FilterDoubles(columnName,
                                     min,
                                     max,
                                     filterListWidget);
@@ -160,7 +160,7 @@ FilterNumbers* FiltersDock::createNewNumbersFilter(const TableModel* parentModel
     {
         emit newNumbersFiltering(index, from, to);
     };
-    connect(filter, &FilterNumbers::newNumericFilter, this, emitChangeForColumn);
+    connect(filter, &FilterDoubles::newNumericFilter, this, emitChangeForColumn);
     filter->setCheckable(true);
     return filter;
 }
