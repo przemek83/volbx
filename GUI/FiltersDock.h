@@ -7,7 +7,7 @@
 #include "GUI/DockWidget.h"
 
 class FilteringProxyModel;
-class FilterNames;
+class FilterStrings;
 class FilterDates;
 class FilterNumbers;
 class TableModel;
@@ -54,9 +54,9 @@ private:
     QMap<QWidget*, const FilteringProxyModel*> modelsMap_;
 
     ///Create names filter for given model column and return it.
-    FilterNames* createNewNamesFilter(const TableModel* parentModel,
-                                      int index,
-                                      QWidget* filterListWidget);
+    FilterStrings* createNewStringsFilter(const TableModel* parentModel,
+                                          int index,
+                                          QWidget* filterListWidget);
 
     ///Create dates filter for given model column and return it.
     FilterDates* createNewDatesFilter(const TableModel* parentModel,

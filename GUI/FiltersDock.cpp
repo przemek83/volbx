@@ -3,7 +3,7 @@
 #include <QDebug>
 #include <Filter.h>
 #include <FilterDates.h>
-#include <FilterNames.h>
+#include <FilterStrings.h>
 #include <FilterDoubles.h>
 #include <QLineEdit>
 #include <QScrollArea>
@@ -82,7 +82,7 @@ void FiltersDock::createFiltersWidgets(const TableModel* model,
         {
             case DATA_FORMAT_STRING:
             {
-                filter = createNewNamesFilter(model, i, filterListWidget);
+                filter = createNewStringsFilter(model, i, filterListWidget);
                 break;
             }
             case DATA_FORMAT_DATE:
@@ -104,20 +104,20 @@ void FiltersDock::createFiltersWidgets(const TableModel* model,
     }
 }
 
-FilterNames* FiltersDock::createNewNamesFilter(const TableModel* parentModel,
-                                               int index,
-                                               QWidget* filterListWidget)
+FilterStrings* FiltersDock::createNewStringsFilter(const TableModel* parentModel,
+                                                   int index,
+                                                   QWidget* filterListWidget)
 {
     QString columnName {parentModel->headerData(index, Qt::Horizontal).toString()};
     QStringList list {parentModel->getStringList(index)};
     const int itemCount {list.size()};
     list.sort();
-    auto filter = new FilterNames(columnName, std::move(list), filterListWidget);
+    auto filter = new FilterStrings(columnName, std::move(list), filterListWidget);
     auto emitChangeForColumn = [ = ](QStringList bannedList)
     {
         emit newNamesFiltering(index, bannedList);
     };
-    connect(filter, &FilterNames::newStringFilter, this, emitChangeForColumn);
+    connect(filter, &FilterStrings::newStringFilter, this, emitChangeForColumn);
 
     filter->setCheckable(true);
     if (itemCount <= 1)
