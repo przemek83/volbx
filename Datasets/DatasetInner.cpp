@@ -8,7 +8,6 @@
 #include <QTextStream>
 
 #include "Common/Constants.h"
-#include "Common/ProgressBar.h"
 #include "Shared/Logger.h"
 
 #include "DatasetDefinitionInner.h"

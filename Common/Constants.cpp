@@ -4,6 +4,7 @@
 
 #include <QLocale>
 #include <QSettings>
+#include <QVector>
 
 namespace Constants
 {
@@ -63,6 +64,24 @@ QString getDatasetStringsFilename()
 QString getDatasetExtension()
 {
     return QStringLiteral(".vbx");
+}
+
+static QVector<QString> initProgressBarNames()
+{
+    QVector<QString> progressTitles(static_cast<int>(BarTitle::END));
+    progressTitles[static_cast<int>(BarTitle::LOADING)] =
+        QObject::tr("Loading");
+    progressTitles[static_cast<int>(BarTitle::SAVING)] =
+        QObject::tr("Saving");
+    progressTitles[static_cast<int>(BarTitle::ANALYSING)] =
+        QObject::tr("Analysing");
+    return progressTitles;
+}
+
+QString getProgressBarTitle(BarTitle barTitle)
+{
+    static const QVector<QString> progressTitles {initProgressBarNames()};
+    return progressTitles[static_cast<int>(barTitle)];
 }
 
 QString stringFromDays(int daysToAdd)

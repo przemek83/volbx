@@ -10,6 +10,7 @@
 #include <QMimeData>
 #include <QtXml/QDomDocument>
 #include <quazip5/quazip.h>
+#include <ProgressBarCounter.h>
 
 #include "Datasets/Dataset.h"
 #include "Datasets/DatasetDefinition.h"
@@ -20,7 +21,6 @@
 #include "Shared/Logger.h"
 
 #include "Constants.h"
-#include "ProgressBar.h"
 
 namespace
 {
@@ -85,8 +85,10 @@ QByteArray gatherSheetContent(const QAbstractItemView* view)
 
     int skippedRows = 0;
 
-    ProgressBar bar(ProgressBar::PROGRESS_TITLE_SAVING,
-                    proxyModel->rowCount(), nullptr);
+    const QString barTitle =
+        Constants::getProgressBarTitle(Constants::BarTitle::SAVING);
+    ProgressBarCounter bar(barTitle, proxyModel->rowCount(), nullptr);
+    bar.showDetached();
 
     //For each row.
     for (int i = 0; i < proxyRowCount; ++i)
@@ -217,9 +219,10 @@ void dataToByteArray(const QAbstractItemView* view,
         destinationArray->append("\n");
     }
 
-    ProgressBar bar(ProgressBar::PROGRESS_TITLE_SAVING,
-                    proxyModel->rowCount(),
-                    nullptr);
+    const QString barTitle =
+        Constants::getProgressBarTitle(Constants::BarTitle::SAVING);
+    ProgressBarCounter bar(barTitle, proxyModel->rowCount(), nullptr);
+    bar.showDetached();
 
     bool multiSelection =
         (QAbstractItemView::MultiSelection == view->selectionMode());
@@ -260,7 +263,7 @@ void dataToByteArray(const QAbstractItemView* view,
 std::tuple<bool, int, QByteArray> saveDatasetDataFile(QuaZipFile& zipFile,
                                                       const QAbstractItemView* view,
                                                       FilteringProxyModel* proxyModel,
-                                                      ProgressBar* bar)
+                                                      ProgressBarCounter& bar)
 {
     bool result = zipFile.open(QIODevice::WriteOnly,
                                QuaZipNewInfo(Constants::getDatasetDataFilename()));
@@ -347,7 +350,7 @@ std::tuple<bool, int, QByteArray> saveDatasetDataFile(QuaZipFile& zipFile,
         zipFile.write(QByteArray(1, newLine));
         rowCount++;
 
-        bar->updateProgress(i + 1);
+        bar.updateProgress(i + 1);
     }
 
     zipFile.close();
@@ -482,14 +485,16 @@ bool saveDataset(const QString& name,
     QuaZipFile zipFile(&zip);
     auto proxyModel = qobject_cast<FilteringProxyModel*>(view->model());
     Q_ASSERT(nullptr != proxyModel);
-    ProgressBar bar(ProgressBar::PROGRESS_TITLE_SAVING,
-                    proxyModel->rowCount(),
-                    nullptr);
+
+    QString barTitle =
+        Constants::getProgressBarTitle(Constants::BarTitle::SAVING);
+    ProgressBarCounter bar(barTitle, proxyModel->rowCount(), nullptr);
+    bar.showDetached();
 
     auto [success, rowCount, stringsContent] = saveDatasetDataFile(zipFile,
                                                                    view,
                                                                    proxyModel,
-                                                                   &bar);
+                                                                   bar);
 
     if (!success)
     {

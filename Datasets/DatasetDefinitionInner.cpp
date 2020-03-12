@@ -2,6 +2,7 @@
 
 #include <memory>
 
+#include <ProgressBarCounter.h>
 #include <QApplication>
 #include <QDebug>
 #include <QDomDocument>
@@ -10,7 +11,6 @@
 #include <quazip5/quazipfile.h>
 
 #include "Common/Constants.h"
-#include "Common/ProgressBar.h"
 #include "Shared/Logger.h"
 
 #include "DatasetInner.h"
@@ -195,7 +195,14 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
     QTextStream stream(&zipFile);
     stream.setCodec("UTF-8");
 
-    std::unique_ptr<ProgressBar> bar {fillSamplesOnly ? nullptr : std::make_unique<ProgressBar>(ProgressBar::PROGRESS_TITLE_LOADING, rowCount(), nullptr)};
+    QString barTitle =
+        Constants::getProgressBarTitle(Constants::BarTitle::LOADING);
+    std::unique_ptr<ProgressBarCounter> bar =
+        (fillSamplesOnly ?
+         nullptr :
+         std::make_unique<ProgressBarCounter>(barTitle, rowCount(), nullptr));
+    if (bar != nullptr)
+        bar->showDetached();
 
     QTime performanceTimer;
     performanceTimer.start();

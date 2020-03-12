@@ -15,7 +15,6 @@
 #include "Common/Configuration.h"
 #include "Common/Constants.h"
 #include "Common/ExportData.h"
-#include "Common/ProgressBar.h"
 #include "Datasets/Dataset.h"
 #include "Datasets/DatasetDefinitionInner.h"
 #include "Datasets/DatasetDefinitionOds.h"

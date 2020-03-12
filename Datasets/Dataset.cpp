@@ -12,7 +12,6 @@
 #include <QVariant>
 
 #include "Common/Constants.h"
-#include "Common/ProgressBar.h"
 #include "Shared/Logger.h"
 
 Dataset::Dataset(DatasetDefinition* definition) :

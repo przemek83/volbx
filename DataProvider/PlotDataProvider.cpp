@@ -9,7 +9,6 @@
 #include <QVariant>
 #include <QtCore>
 
-#include "Common/ProgressBar.h"
 #include "Shared/Logger.h"
 
 PlotDataProvider::PlotDataProvider(QObject* parent) :

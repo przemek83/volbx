@@ -30,6 +30,16 @@ QString getDatasetStringsFilename();
 
 QString getDatasetExtension();
 
+enum class BarTitle : unsigned char
+{
+    LOADING = 0,
+    SAVING,
+    ANALYSING,
+    END
+};
+
+QString getProgressBarTitle(BarTitle barTitle);
+
 /**
  * Calculate date 1/1/1970 + given days and return string.
  * @param daysToAdd amount of days to add.

@@ -3,13 +3,14 @@
 #include <cmath>
 #include <memory>
 
+#include <ProgressBarCounter.h>
+#include <ProgressBarInfinite.h>
 #include <QApplication>
 #include <QDebug>
 #include <QDomDocument>
 #include <QVariant>
 
 #include "Common/Constants.h"
-#include "Common/ProgressBar.h"
 #include "Shared/Logger.h"
 
 DatasetDefinitionXlsx::DatasetDefinitionXlsx(const QString& name,
@@ -393,7 +394,12 @@ bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
 {
     excelColNames_ = Constants::generateExcelColumnNames(columnsCount_);
 
-    ProgressBar bar(ProgressBar::PROGRESS_TITLE_DETECTING_COLUMN_TYPES, 0, nullptr);
+    const QString barTitle =
+        Constants::getProgressBarTitle(Constants::BarTitle::ANALYSING);
+    ProgressBarInfinite bar(barTitle, nullptr);
+    bar.showDetached();
+    bar.start();
+
     QTime performanceTimer;
     performanceTimer.start();
 
@@ -607,7 +613,14 @@ bool DatasetDefinitionXlsx::getDataFromZip(QuaZip& zip,
                                            QVector<QVector<QVariant> >* dataContainer,
                                            bool fillSamplesOnly)
 {
-    std::unique_ptr<ProgressBar> bar {fillSamplesOnly ? nullptr : std::make_unique<ProgressBar>(ProgressBar::PROGRESS_TITLE_LOADING, rowsCount_, nullptr)};
+    const QString barTitle =
+        Constants::getProgressBarTitle(Constants::BarTitle::LOADING);
+    std::unique_ptr<ProgressBarCounter> bar =
+        (fillSamplesOnly ?
+         nullptr :
+         std::make_unique<ProgressBarCounter>(barTitle, rowsCount_, nullptr));
+    if (bar != nullptr)
+        bar->showDetached();
 
     QApplication::processEvents();
 
@@ -737,7 +750,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(QuaZip& zip,
         if (!xmlStreamReader.atEnd() &&
             0 == xmlStreamReader.name().compare(vTag) &&
             xmlStreamReader.tokenType() == QXmlStreamReader::StartElement &&
-            (fillSamplesOnly || (!fillSamplesOnly && activeColumns_.at(column))))
+            (fillSamplesOnly || activeColumns_.at(column)))
         {
             DataFormat format = columnsFormat_.at(column);
 
@@ -791,7 +804,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(QuaZip& zip,
     }
 
     if (0 != rowCounter &&
-        (!fillSamplesOnly || (fillSamplesOnly && SAMPLE_SIZE > rowsCount_)))
+        (!fillSamplesOnly || SAMPLE_SIZE > rowsCount_))
     {
         Q_ASSERT(rowCounter <= rowsCount_);
         if (rowCounter <= rowsCount_)

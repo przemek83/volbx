@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include <ProgressBarCounter.h>
+#include <ProgressBarInfinite.h>
 #include <QApplication>
 #include <QDebug>
 #include <QDomDocument>
@@ -10,7 +12,6 @@
 #include <quazip5/quazipfile.h>
 
 #include "Common/Constants.h"
-#include "Common/ProgressBar.h"
 #include "Shared/Logger.h"
 
 DatasetDefinitionOds::DatasetDefinitionOds(const QString& name,
@@ -219,7 +220,12 @@ bool DatasetDefinitionOds::openZipAndMoveToSecondRow(QuaZip& zip,
 bool DatasetDefinitionOds::getColumnTypes(QuaZip& zip,
                                           const QString& sheetName)
 {
-    ProgressBar bar(ProgressBar::PROGRESS_TITLE_DETECTING_COLUMN_TYPES, 0, nullptr);
+    const QString barTitle =
+        Constants::getProgressBarTitle(Constants::BarTitle::ANALYSING);
+    ProgressBarInfinite bar(barTitle, nullptr);
+    bar.showDetached();
+    bar.start();
+
     QTime performanceTimer;
     performanceTimer.start();
 
@@ -409,7 +415,14 @@ bool DatasetDefinitionOds::getDataFromZip(QuaZip& zip,
                                           QVector<QVector<QVariant> >* dataContainer,
                                           bool fillSamplesOnly)
 {
-    std::unique_ptr<ProgressBar> bar {fillSamplesOnly ? nullptr : std::make_unique<ProgressBar>(ProgressBar::PROGRESS_TITLE_LOADING, rowsCount_, nullptr)};
+    const QString barTitle =
+        Constants::getProgressBarTitle(Constants::BarTitle::LOADING);
+    std::unique_ptr<ProgressBarCounter> bar =
+        (fillSamplesOnly ?
+         nullptr :
+         std::make_unique<ProgressBarCounter>(barTitle, rowsCount_, nullptr));
+    if (bar != nullptr)
+        bar->showDetached();
 
     QTime performanceTimer;
     performanceTimer.start();
