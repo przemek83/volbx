@@ -5,8 +5,6 @@ set(${PROJECT_NAME}_SOURCES
     Common.h
     ConfigurationTest.cpp
     ConfigurationTest.h
-    ConstantsTest.cpp
-    ConstantsTest.h
     InnerTests.cpp
     InnerTests.h
     SpreadsheetsTest.cpp

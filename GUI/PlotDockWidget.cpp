@@ -1,11 +1,11 @@
 #include "PlotDockWidget.h"
 
+#include <PlotBase.h>
 #include <QDebug>
 #include <QPainter>
 #include <QPushButton>
 #include <QScrollArea>
 
-#include "Charts/PlotBase.h"
 #include "Common/Constants.h"
 #include "Common/ExportImage.h"
 

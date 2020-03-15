@@ -1,10 +1,10 @@
 #include "MainTabWidget.h"
 
+#include <BasicDataPlot.h>
 #include <QApplication>
 #include <QDebug>
+#include <QuantilesPlot.h>
 
-#include "Charts/BasicDataPlot.h"
-#include "Charts/QuantilesPlot.h"
 #include "DataProvider/PlotDataProvider.h"
 #include "ModelsAndViews/DataView.h"
 #include "ModelsAndViews/FilteringProxyModel.h"

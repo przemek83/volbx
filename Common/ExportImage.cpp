@@ -1,12 +1,11 @@
 #include "ExportImage.h"
 
+#include <PlotBase.h>
 #include <QApplication>
 #include <QClipboard>
 #include <QImage>
 #include <QPainter>
 #include <qwt_plot_renderer.h>
-
-#include "Charts/PlotBase.h"
 
 void ExportImage::exportAsImage(PlotBase* plot, const QString& fileName)
 {

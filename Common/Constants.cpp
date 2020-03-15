@@ -24,21 +24,10 @@ QString getTemporaryFileSuffix()
     return QStringLiteral(".tmp");
 }
 
-const QDate& getStartOfTheWorld()
-{
-    static const QDate startOfTheWorld{QDate(1970, 1, 1)};
-    return startOfTheWorld;
-}
-
 const QDate& getStartOfExcelWorld()
 {
     static const QDate startOfTheExcelWorld(1899, 12, 30);
     return startOfTheExcelWorld;
-}
-
-QString getDefaultDateFormat()
-{
-    return QStringLiteral("d/M/yyyy");
 }
 
 QString getConfigurationFileName()
@@ -82,24 +71,6 @@ QString getProgressBarTitle(BarTitle barTitle)
 {
     static const QVector<QString> progressTitles {initProgressBarNames()};
     return progressTitles[static_cast<int>(barTitle)];
-}
-
-QString stringFromDays(int daysToAdd)
-{
-    return getStartOfTheWorld().addDays(daysToAdd).toString(getDefaultDateFormat());
-}
-
-QString floatToStringUsingLocale(float value, int precison)
-{
-    static bool initialized {false};
-    static QLocale locale = QLocale::system();
-    if (!initialized)
-    {
-        locale.setNumberOptions(locale.numberOptions() & ~QLocale::OmitGroupSeparator);
-        initialized = true;
-    }
-
-    return locale.toString(value, 'f', precison);
 }
 
 QString getDatasetNameRegExp()

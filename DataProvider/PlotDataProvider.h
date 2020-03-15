@@ -1,17 +1,17 @@
 #ifndef PLOTDATAPROVIDER_H
 #define PLOTDATAPROVIDER_H
 
-#include <QVector>
-#include <QMap>
+#include <PlotData.h>
 #include <QDate>
-#include <QVariant>
+#include <QMap>
 #include <QObject>
+#include <Quantiles.h>
 #include <qwt_series_data.h>
+#include <QVariant>
+#include <QVector>
 
 #include "Common/Constants.h"
 #include "Common/Formats.h"
-#include "Common/PlotData.h"
-#include "Common/Quantiles.h"
 #include "DataProvider/TransactionData.h"
 
 class QwtIntervalSeriesData;

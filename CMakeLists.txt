@@ -47,6 +47,13 @@ execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
 execute_process(COMMAND ${CMAKE_COMMAND} --build .
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/wble)
 
+# qwtble
+configure_file(CMakeLists.txt.qwtble qwtble/CMakeLists.txt)
+execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/qwtble)
+execute_process(COMMAND ${CMAKE_COMMAND} --build .
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/qwtble)
+
 # copy dlls for easy launch
 file(GLOB_RECURSE DLLS "${CMAKE_BINARY_DIR}/*.dll" )
 file(COPY ${DLLS} DESTINATION ${CMAKE_BINARY_DIR})
@@ -59,14 +66,15 @@ include_directories(${CMAKE_BINARY_DIR}/qwt/install/include)
 include_directories(${CMAKE_BINARY_DIR}/zlib/install/include)
 include_directories(${CMAKE_BINARY_DIR}/quazip/install/include)
 include_directories(${CMAKE_BINARY_DIR}/wble/install/include)
+include_directories(${CMAKE_BINARY_DIR}/qwtble/install/include)
 
 LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/qwt/install/lib)
 LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/zlib/install/bin)
 LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/quazip/install/lib)
 LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/wble/install/lib)
+LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/qwtble/install/lib)
 
 include_directories(${CMAKE_SOURCE_DIR})
-include_directories(Charts)
 include_directories(GUI)
 include_directories(Import)
 include_directories(Shared)
@@ -86,36 +94,6 @@ set(${PROJECT_NAME}_SOURCES
     Volbx/Volbx.ico
     Volbx/VolbxProperties.h
     Volbx/VolbxProperties.rc
-    Charts/BasicDataPlot.cpp
-    Charts/BasicDataPlot.h
-    Charts/BoxPicker.cpp
-    Charts/BoxPicker.h
-    Charts/CustomMarker.cpp
-    Charts/CustomMarker.h
-    Charts/GroupPicker.cpp
-    Charts/GroupPicker.h
-    Charts/GroupPlot.cpp
-    Charts/GroupPlot.h
-    Charts/HistogramPlot.cpp
-    Charts/HistogramPlot.h
-    Charts/HistPicker.cpp
-    Charts/HistPicker.h
-    Charts/LinearPicker.cpp
-    Charts/LinearPicker.h
-    Charts/NotchedMarker.cpp
-    Charts/NotchedMarker.h
-    Charts/Picker.cpp
-    Charts/Picker.h
-    Charts/PlotBase.cpp
-    Charts/PlotBase.h
-    Charts/PlotMagnifier.cpp
-    Charts/PlotMagnifier.h
-    Charts/QuantilesPlot.cpp
-    Charts/QuantilesPlot.h
-    Charts/StringsScaleDraw.cpp
-    Charts/StringsScaleDraw.h
-    Charts/Zoomer.cpp
-    Charts/Zoomer.h
     GUI/About.cpp
     GUI/About.h
     GUI/About.ui
@@ -209,7 +187,7 @@ add_custom_target(generated_qrc DEPENDS ${RESOURCES})
 add_executable(${PROJECT_NAME} ${GUI_TYPE} ${${PROJECT_NAME}_SOURCES} ${RESOURCES} Volbx/VolbxProperties.rc)
 add_dependencies(${PROJECT_NAME} generated_qrc)
 
-target_link_libraries(${PROJECT_NAME} shared common datasets modelsAndViews dataProvider wble Qt5::Core Qt5::Network Qt5::Widgets Qt5::Gui Qt5::Xml)
+target_link_libraries(${PROJECT_NAME} shared common datasets modelsAndViews dataProvider wble qwtble Qt5::Core Qt5::Network Qt5::Widgets Qt5::Gui Qt5::Xml)
 target_link_libraries(${PROJECT_NAME} optimized qwt)
 target_link_libraries(${PROJECT_NAME} debug qwtd)
 target_link_libraries(${PROJECT_NAME} optimized quazip5)

@@ -2,11 +2,11 @@
 
 #include <QDate>
 #include <QDebug>
-
-#include "Common/Constants.h"
+#include <QwtBleUtilities.h>
 
 DateDelegate::DateDelegate(QObject* parent)
-    : QStyledItemDelegate(parent), defaultDateFormat_(Constants::getDefaultDateFormat())
+    : QStyledItemDelegate(parent),
+      defaultDateFormat_(QwtBleUtilities::getDefaultDateFormat())
 {
 }
 

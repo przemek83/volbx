@@ -10,10 +10,6 @@ set(${PROJECT_NAME}_SOURCES
     ExportImage.cpp
     ExportImage.h
     Formats.h
-    PlotData.cpp
-    PlotData.h
-    Quantiles.cpp
-    Quantiles.h
     SpecialColumns.h
     )
 

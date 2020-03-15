@@ -8,6 +8,7 @@
 #include <QLocale>
 #include <QVariant>
 #include <QtCore>
+#include <QwtBleUtilities.h>
 
 #include "Shared/Logger.h"
 
@@ -135,7 +136,7 @@ std::tuple<PlotData, QVector<QPointF>> PlotDataProvider::computeBasicData()
 
     for (int i = 0; i < dataSize; ++i)
     {
-        double x = Constants::getStartOfTheWorld().daysTo(calcData_.at(i).date_);
+        double x = QwtBleUtilities::getStartOfTheWorld().daysTo(calcData_.at(i).date_);
         auto y = static_cast<double>(calcData_.at(i).pricePerMeter_);
         pointsQuantilesX[i] = x;
         pointsQuantilesY[i] = y;

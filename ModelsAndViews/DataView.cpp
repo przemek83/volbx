@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include <BasicDataPlot.h>
 #include <QAction>
 #include <QApplication>
 #include <QContextMenuEvent>
@@ -12,12 +13,11 @@
 #include <QMenu>
 #include <QModelIndexList>
 #include <QSpinBox>
+#include <QuantilesPlot.h>
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
 #include <qwt_text.h>
 
-#include "Charts/BasicDataPlot.h"
-#include "Charts/QuantilesPlot.h"
 #include "Common/Constants.h"
 #include "Common/SpecialColumns.h"
 #include "GUI/GroupPlotGui.h"

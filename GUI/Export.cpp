@@ -1,5 +1,6 @@
 #include "Export.h"
 
+#include <PlotBase.h>
 #include <QDate>
 #include <QDebug>
 #include <QDir>
@@ -7,7 +8,6 @@
 #include <QMainWindow>
 #include <QMessageBox>
 
-#include "Charts/PlotBase.h"
 #include "Common/Configuration.h"
 #include "Common/Constants.h"
 #include "Common/ExportData.h"

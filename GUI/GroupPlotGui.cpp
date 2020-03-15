@@ -1,5 +1,6 @@
 #include "GroupPlotGui.h"
 
+#include <GroupPlot.h>
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QResizeEvent>
@@ -8,7 +9,6 @@
 #include <QSplitter>
 #include <QtAlgorithms>
 
-#include "Charts/GroupPlot.h"
 #include "Common/Constants.h"
 #include "Common/SpecialColumns.h"
 #include "ModelsAndViews/TableModel.h"

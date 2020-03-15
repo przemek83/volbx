@@ -3,13 +3,13 @@
 
 #include "PlotDockWidget.h"
 
+#include <GroupPlot.h>
 #include <QMap>
 #include <QRegExpValidator>
+#include <Quantiles.h>
+#include <QuantilesPlot.h>
 
-#include "Common/Quantiles.h"
 #include "Common/Formats.h"
-#include "Charts/GroupPlot.h"
-#include "Charts/QuantilesPlot.h"
 
 #include "ScrollArea.h"
 

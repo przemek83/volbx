@@ -1,8 +1,9 @@
 #ifndef HISTOGRAMPLOTGUI_H
 #define HISTOGRAMPLOTGUI_H
 
+#include <HistogramPlot.h>
+
 #include "PlotDockWidget.h"
-#include "Charts/HistogramPlot.h"
 
 namespace Ui
 {

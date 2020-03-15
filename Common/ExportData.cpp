@@ -11,6 +11,7 @@
 #include <QtXml/QDomDocument>
 #include <quazip5/quazip.h>
 #include <ProgressBarCounter.h>
+#include <QwtBleUtilities.h>
 
 #include "Datasets/Dataset.h"
 #include "Datasets/DatasetDefinition.h"
@@ -146,7 +147,7 @@ void variantToString(const QVariant& variant,
             }
             else
             {
-                QString value(Constants::floatToStringUsingLocale(variant.toFloat(), 2));
+                QString value(QwtBleUtilities::floatToStringUsingLocale(variant.toFloat(), 2));
                 destinationArray->append(value);
             }
             break;
@@ -155,7 +156,7 @@ void variantToString(const QVariant& variant,
         case QVariant::Date:
         case QVariant::DateTime:
         {
-            static const QString defDateFormat(Constants::getDefaultDateFormat());
+            static const QString defDateFormat(QwtBleUtilities::getDefaultDateFormat());
             destinationArray->append(variant.toDate().toString(defDateFormat));
             break;
         }
