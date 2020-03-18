@@ -29,16 +29,32 @@ execute_process(COMMAND ${CMAKE_COMMAND} --build .
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/quazip)
 
 # QWT
-configure_file(CMakeLists.txt.qwt qwt/CMakeLists.txt)
-execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/qwt)
-execute_process(COMMAND ${CMAKE_COMMAND} --build .
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/qwt)
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/qwt/install)
-file(COPY ${CMAKE_BINARY_DIR}/qwt/qwt/src/qwt-build/lib DESTINATION ${CMAKE_BINARY_DIR}/qwt/install)
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/qwt/install/include)
-file(GLOB QWT_HEADERS "${CMAKE_BINARY_DIR}/qwt/qwt/src/qwt/src/*.h" )
-file(COPY ${QWT_HEADERS} DESTINATION ${CMAKE_BINARY_DIR}/qwt/install/include)
+if(DEFINED ENV{QWT_ROOT})
+    message(STATUS "QWT_ROOT environment variable defined, using QWT_ROOT paths.")
+    set(QWT_INCLUDE_PATH $ENV{QWT_ROOT}/include)
+    set(QWT_BINARY_PATH $ENV{QWT_ROOT}/lib)
+
+    # copy QWT dlls for easy launch
+    file(GLOB_RECURSE QWT_DLLS "$ENV{QWT_ROOT}/lib/*.dll" )
+    file(COPY ${QWT_DLLS} DESTINATION ${CMAKE_BINARY_DIR})
+    file(COPY ${QWT_DLLS} DESTINATION ${CMAKE_BINARY_DIR}/Tests)
+else()
+    configure_file(CMakeLists.txt.qwt qwt/CMakeLists.txt)
+    execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/qwt)
+    execute_process(COMMAND ${CMAKE_COMMAND} --build .
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/qwt)
+    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/qwt/install)
+    file(COPY ${CMAKE_BINARY_DIR}/qwt/qwt/src/qwt-build/lib DESTINATION ${CMAKE_BINARY_DIR}/qwt/install)
+    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/qwt/install/include)
+    file(GLOB QWT_HEADERS "${CMAKE_BINARY_DIR}/qwt/qwt/src/qwt/src/*.h" )
+    file(COPY ${QWT_HEADERS} DESTINATION ${CMAKE_BINARY_DIR}/qwt/install/include)
+    set(QWT_INCLUDE_PATH ${CMAKE_BINARY_DIR}/qwt/install/include)
+    set(QWT_BINARY_PATH ${CMAKE_BINARY_DIR}/qwt/install/lib)
+endif()
+
+message(STATUS "Using QWT_INCLUDE_PATH ${QWT_INCLUDE_PATH}")
+message(STATUS "Using QWT_BINARY_PATH ${QWT_BINARY_PATH}")
 
 # wble
 configure_file(CMakeLists.txt.wble wble/CMakeLists.txt)
@@ -62,13 +78,13 @@ file(COPY ${DLLS} DESTINATION ${CMAKE_BINARY_DIR}/Tests)
 # workaround for not working passing "CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<dir>" in ExternalProject_Add
 set(workaround ON CACHE BOOL "" FORCE)
 
-include_directories(${CMAKE_BINARY_DIR}/qwt/install/include)
+include_directories(${QWT_INCLUDE_PATH})
 include_directories(${CMAKE_BINARY_DIR}/zlib/install/include)
 include_directories(${CMAKE_BINARY_DIR}/quazip/install/include)
 include_directories(${CMAKE_BINARY_DIR}/wble/install/include)
 include_directories(${CMAKE_BINARY_DIR}/qwtble/install/include)
 
-LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/qwt/install/lib)
+LINK_DIRECTORIES(${QWT_BINARY_PATH})
 LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/zlib/install/bin)
 LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/quazip/install/lib)
 LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/wble/install/lib)
@@ -174,12 +190,12 @@ set(${PROJECT_NAME}_SOURCES
    )
 
 # remove background console window.
-IF(WIN32)
-SET(GUI_TYPE WIN32)
-ENDIF(WIN32)
-IF (APPLE)
-SET(GUI_TYPE MACOSX_BUNDLE)
-ENDIF (APPLE)
+if(WIN32)
+set(GUI_TYPE WIN32)
+endif(WIN32)
+if (APPLE)
+set(GUI_TYPE MACOSX_BUNDLE)
+endif (APPLE)
 
 qt5_add_resources(RESOURCES Resources/Resources.qrc)
 add_custom_target(generated_qrc DEPENDS ${RESOURCES})
