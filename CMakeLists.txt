@@ -12,21 +12,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # find Qt packages
 find_package(Qt5 COMPONENTS Widgets Core Gui Network Xml Test REQUIRED)
-add_definitions( ${QT_DEFINITIONS} )
-
-# Zlib
-configure_file(CMakeLists.txt.zlib zlib/CMakeLists.txt)
-execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/zlib)
-execute_process(COMMAND ${CMAKE_COMMAND} --build .
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/zlib)
-
-# QuaZip
-configure_file(CMakeLists.txt.quazip quazip/CMakeLists.txt)
-execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/quazip)
-execute_process(COMMAND ${CMAKE_COMMAND} --build .
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/quazip)
+add_definitions(${QT_DEFINITIONS})
 
 # QWT
 if(DEFINED ENV{QWT_ROOT})
@@ -56,19 +42,14 @@ endif()
 message(STATUS "Using QWT_INCLUDE_PATH ${QWT_INCLUDE_PATH}")
 message(STATUS "Using QWT_BINARY_PATH ${QWT_BINARY_PATH}")
 
-# wble
-configure_file(CMakeLists.txt.wble wble/CMakeLists.txt)
-execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/wble)
-execute_process(COMMAND ${CMAKE_COMMAND} --build .
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/wble)
-
-# qwtble
-configure_file(CMakeLists.txt.qwtble qwtble/CMakeLists.txt)
-execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/qwtble)
-execute_process(COMMAND ${CMAKE_COMMAND} --build .
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/qwtble)
+set(THIRD_PARTY_LIBS zlib quazip wble qwtble)
+foreach(file_i ${THIRD_PARTY_LIBS})
+    configure_file(CMakeLists.txt.${file_i} ${file_i}/CMakeLists.txt)
+    execute_process(COMMAND ${CMAKE_COMMAND} -G ${CMAKE_GENERATOR} .
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/${file_i})
+    execute_process(COMMAND ${CMAKE_COMMAND} --build .
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/${file_i} )
+endforeach(file_i)
 
 # copy dlls for easy launch
 file(GLOB_RECURSE DLLS "${CMAKE_BINARY_DIR}/*.dll" )
