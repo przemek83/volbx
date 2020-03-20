@@ -1,23 +1,20 @@
 #ifndef GROUPPLOTGUI_H
 #define GROUPPLOTGUI_H
 
-#include "PlotDockWidget.h"
-
 #include <GroupPlot.h>
 #include <QMap>
 #include <QRegExpValidator>
 #include <Quantiles.h>
 #include <QuantilesPlot.h>
 
-#include "Common/Formats.h"
-
-#include "ScrollArea.h"
+#include "PlotDockWidget.h"
 
 namespace Ui
 {
 class GroupPlotGui;
 } // namespace Ui
 
+class ScrollArea;
 class TableModel;
 
 /**
@@ -28,7 +25,8 @@ class GroupPlotGui : public PlotDockWidget
 {
     Q_OBJECT
 public:
-    explicit GroupPlotGui(const TableModel* model, QWidget* parent = nullptr);
+    explicit GroupPlotGui(QVector<std::pair<QString, int>> stringColumns,
+                          QWidget* parent = nullptr);
 
     ~GroupPlotGui() override;
 
@@ -52,11 +50,7 @@ private:
 
     QuantilesPlot quantilesPlot_;
 
-    QHash<int, DataFormat> columnsNumberToFormatMap_;
-
     ScrollArea* scrollArea_;
-
-    DataFormat getSelectedColumnFormat();
 
 private Q_SLOTS:
     void comboBoxCurrentIndexChanged(int index);

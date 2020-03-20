@@ -55,6 +55,8 @@ private:
     ViewDockWidget* getCurrentDataViewDock();
 
     MainTab* getCurrentMainTab();
+
+    QVector<std::pair<QString, int>> getStringColumnsWithIndexes(TableModel* model) const;
 };
 
 #endif // MAINTABWIDGET_H

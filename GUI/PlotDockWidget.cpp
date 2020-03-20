@@ -4,7 +4,6 @@
 #include <QDebug>
 #include <QPainter>
 #include <QPushButton>
-#include <QScrollArea>
 
 #include "Common/Constants.h"
 #include "Common/ExportImage.h"

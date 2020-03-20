@@ -3,7 +3,6 @@
 #include <BasicDataPlot.h>
 #include <QApplication>
 #include <QDebug>
-#include <QuantilesPlot.h>
 
 #include "DataProvider/PlotDataProvider.h"
 #include "ModelsAndViews/DataView.h"
@@ -64,6 +63,22 @@ MainTab* MainTabWidget::getCurrentMainTab()
     auto currentTab = dynamic_cast<MainTab*>(currentWidget());
     Q_ASSERT(nullptr != currentTab);
     return currentTab;
+}
+
+QVector<std::pair<QString, int>> MainTabWidget::getStringColumnsWithIndexes(TableModel* model) const
+{
+    QVector<std::pair<QString, int>> stringColumns;
+    for (int i = 0; i < model->columnCount(); ++i)
+    {
+        // Accept only string type columns.
+        if (DATA_FORMAT_STRING != model->getColumnFormat(i))
+            continue;
+
+        const QString columnName =
+            model->headerData(i, Qt::Horizontal).toString();
+        stringColumns.append({columnName, i});
+    }
+    return stringColumns;
 }
 
 ViewDockWidget* MainTabWidget::getCurrentDataViewDock()
@@ -297,7 +312,8 @@ void MainTabWidget::addGroupingPlot()
     QApplication::processEvents();
 
     auto tabifyOn = mainTab->findChild<PlotDockWidget*>();
-    groupPlotGui = new GroupPlotGui(model, mainTab);
+
+    groupPlotGui = new GroupPlotGui(getStringColumnsWithIndexes(model), mainTab);
     mainTab->addDockWidget(Qt::RightDockWidgetArea, groupPlotGui);
     if (nullptr != tabifyOn)
     {

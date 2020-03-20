@@ -14,7 +14,6 @@ class PlotDataProvider;
 class TrendPlot;
 class QMainWindow;
 class QDockWidget;
-class PlotDockWidget;
 class TableModel;
 
 /**

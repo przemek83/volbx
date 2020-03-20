@@ -1,22 +1,18 @@
 #include "GroupPlotGui.h"
 
-#include <GroupPlot.h>
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QResizeEvent>
-#include <QScrollArea>
 #include <QScrollBar>
 #include <QSplitter>
 #include <QtAlgorithms>
 
-#include "Common/Constants.h"
-#include "Common/SpecialColumns.h"
-#include "ModelsAndViews/TableModel.h"
-
 #include "DockTitleBar.h"
+#include "ScrollArea.h"
 #include "ui_GroupPlotGui.h"
 
-GroupPlotGui::GroupPlotGui(const TableModel* model, QWidget* parent) :
+GroupPlotGui::GroupPlotGui(QVector<std::pair<QString, int>> stringColumns,
+                           QWidget* parent) :
     PlotDockWidget(tr("Grouping"), parent),
     ui(new Ui::GroupPlotGui)
 {
@@ -38,19 +34,8 @@ GroupPlotGui::GroupPlotGui(const TableModel* model, QWidget* parent) :
 
     ui->comboBox->clear();
 
-    for (int i = 0; i < model->columnCount(); ++i)
-    {
-        columnsNumberToFormatMap_[i] = model->getColumnFormat(i);
-
-        // Accept only string type columns.
-        if (DATA_FORMAT_STRING != model->getColumnFormat(i))
-        {
-            continue;
-        }
-
-        QString columnName = model->headerData(i, Qt::Horizontal).toString();
-        ui->comboBox->addItem(columnName, QVariant(i));
-    }
+    for (const auto& [columnName, index] : stringColumns)
+        ui->comboBox->addItem(columnName, QVariant(index));
 }
 
 GroupPlotGui::~GroupPlotGui()
@@ -91,12 +76,6 @@ void GroupPlotGui::setNewData(float minY,
 
     quantilesPlot_.axisScaleDraw(QwtPlot::xBottom)->setMinimumExtent(minExtentForQuantiles + scrollBarSize);
     quantilesPlot_.forceResize();
-}
-
-DataFormat GroupPlotGui::getSelectedColumnFormat()
-{
-    int columnNumber = ui->comboBox->itemData(ui->comboBox->currentIndex()).toInt();
-    return columnsNumberToFormatMap_.value(columnNumber);
 }
 
 void GroupPlotGui::comboBoxCurrentIndexChanged(int index)

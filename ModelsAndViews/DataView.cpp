@@ -13,7 +13,6 @@
 #include <QMenu>
 #include <QModelIndexList>
 #include <QSpinBox>
-#include <QuantilesPlot.h>
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
 #include <qwt_text.h>
