@@ -183,57 +183,39 @@ void MainTabWidget::addBasicPlot()
 {
     DataView* view = getCurrentDataView();
     MainTab* mainTab = getCurrentMainTab();
-    if (nullptr == view /*|| nullptr == model*/ || nullptr == mainTab)
-    {
+    if (view == nullptr || mainTab == nullptr)
         return;
-    }
 
-    //If basic data plot already created than just show it and return.
-    auto basicDataPlot = mainTab->findChild<BasicDataPlot*>();
-    if (nullptr != basicDataPlot)
+    // If plot already created than just show it and return.
+    if (auto plotUI = mainTab->findChild<BasicDataPlot*>(); plotUI != nullptr)
     {
-        auto basicPlotDock =
-            qobject_cast<PlotDockWidget*>(basicDataPlot->parent());
-        Q_ASSERT(nullptr != basicPlotDock);
-        if (nullptr != basicPlotDock)
-        {
-            basicPlotDock->setVisible(true);
-            basicPlotDock->raise();
-            return;
-        }
+        auto dock {qobject_cast<PlotDockWidget*>(plotUI->parent())};
+        dock->setVisible(true);
+        dock->raise();
+        return;
     }
 
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
 
     auto tabifyOn = mainTab->findChild<PlotDockWidget*>();
-    auto plotDock = new PlotDockWidget(QStringLiteral("Quantiles"), mainTab);
-    basicDataPlot = new BasicDataPlot(plotDock);
-    plotDock->setWidget(basicDataPlot);
-    mainTab->addDockWidget(Qt::RightDockWidgetArea, plotDock);
-    if (nullptr != tabifyOn)
-    {
-        plotDock->setVisible(false);
-        mainTab->tabifyDockWidget(tabifyOn, plotDock);
-    }
-    else
-    {
-        //For first plot.
-        activateDataSelection(view);
-    }
-
+    auto basicPlot = new BasicDataPlot();
     connect(view->getPlotDataProvider(), &PlotDataProvider::basicPlotDataChanged,
-            basicDataPlot, &BasicDataPlot::setNewData);
+            basicPlot, &BasicDataPlot::setNewData);
+
+    auto dock = new PlotDockWidget(tr("Quantiles"), mainTab);
+    dock->setWidget(basicPlot);
+    mainTab->addDockWidget(Qt::RightDockWidgetArea, dock);
+
+    if (tabifyOn != nullptr)
+        mainTab->tabifyDockWidget(tabifyOn, dock);
+    else
+        activateDataSelection(view);
+
+    dock->setVisible(true);
+    dock->raise();
 
     view->reloadSelectionDataAndRecompute();
-
-    //Problem with blinking display. Workaround used.
-    if (nullptr != tabifyOn)
-    {
-        plotDock->setVisible(true);
-        plotDock->raise();
-    }
-
     QApplication::restoreOverrideCursor();
 }
 
@@ -248,7 +230,7 @@ void MainTabWidget::addHistogramPlot()
     // If plot already created than just show it and return.
     if (auto plotUI = mainTab->findChild<HistogramPlotUI*>(); plotUI != nullptr)
     {
-        auto dock {static_cast<PlotDockWidget*>(plotUI->parent())};
+        auto dock {qobject_cast<PlotDockWidget*>(plotUI->parent())};
         dock->setVisible(true);
         dock->raise();
         return;
@@ -289,7 +271,7 @@ void MainTabWidget::addGroupingPlot()
     // If plot already created than just show it and return.
     if (auto plotUI = mainTab->findChild<GroupPlotUI*>(); plotUI != nullptr)
     {
-        auto dock {static_cast<PlotDockWidget*>(plotUI->parent())};
+        auto dock {qobject_cast<PlotDockWidget*>(plotUI->parent())};
         dock->setVisible(true);
         dock->raise();
         return;
