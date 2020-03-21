@@ -1,6 +1,8 @@
 #ifndef MAINTABWIDGET_H
 #define MAINTABWIDGET_H
 
+#include <functional>
+
 #include <QTabWidget>
 #include <QDate>
 
@@ -50,6 +52,9 @@ public Q_SLOTS:
     void addGroupingPlot();
 
 private:
+    template <class T>
+    void addPlot(QString title, const std::function<T*()>& createPlot);
+
     void activateDataSelection(DataView* view);
 
     ViewDockWidget* getCurrentDataViewDock();
