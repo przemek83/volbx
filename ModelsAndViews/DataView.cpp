@@ -2,7 +2,6 @@
 
 #include <iostream>
 
-#include <BasicDataPlot.h>
 #include <QAction>
 #include <QApplication>
 #include <QContextMenuEvent>

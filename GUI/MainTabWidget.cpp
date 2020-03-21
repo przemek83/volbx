@@ -1,5 +1,7 @@
 #include "MainTabWidget.h"
 
+#include <GroupPlotUI.h>
+#include <HistogramPlotUI.h>
 #include <BasicDataPlot.h>
 #include <QApplication>
 #include <QDebug>
@@ -10,8 +12,6 @@
 #include "ModelsAndViews/TableModel.h"
 #include "Shared/Logger.h"
 
-#include "GroupPlotUI.h"
-#include "HistogramPlotUI.h"
 #include "MainTab.h"
 #include "PlotDockWidget.h"
 #include "TabBar.h"

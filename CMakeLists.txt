@@ -108,12 +108,6 @@ set(${PROJECT_NAME}_SOURCES
     GUI/FiltersDock.cpp
     GUI/FiltersDock.h
     GUI/FiltersDock.ui
-    GUI/GroupPlotUI.cpp
-    GUI/GroupPlotUI.h
-    GUI/GroupPlotUI.ui
-    GUI/HistogramPlotUI.cpp
-    GUI/HistogramPlotUI.h
-    GUI/HistogramPlotUI.ui
     GUI/MainTab.cpp
     GUI/MainTab.h
     GUI/MainTabWidget.cpp
@@ -123,8 +117,6 @@ set(${PROJECT_NAME}_SOURCES
     GUI/SaveDatasetAs.cpp
     GUI/SaveDatasetAs.h
     GUI/SaveDatasetAs.ui
-    GUI/ScrollArea.cpp
-    GUI/ScrollArea.h
     GUI/TabBar.cpp
     GUI/TabBar.h
     GUI/ViewDockWidget.cpp
