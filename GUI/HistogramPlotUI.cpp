@@ -1,10 +1,10 @@
-#include "HistogramPlotGui.h"
+#include "HistogramPlotUI.h"
 
-#include "ui_HistogramPlotGui.h"
+#include "ui_HistogramPlotUI.h"
 
-HistogramPlotGui::HistogramPlotGui(QWidget* parent) :
-    PlotDockWidget(tr("Histogram"), parent),
-    ui(new Ui::HistogramPlotGui)
+HistogramPlotUI::HistogramPlotUI(QWidget* parent) :
+    QWidget(parent),
+    ui(new Ui::HistogramPlotUI)
 {
     ui->setupUi(this);
 
@@ -16,12 +16,13 @@ HistogramPlotGui::HistogramPlotGui(QWidget* parent) :
             &histogramPlot_, &HistogramPlot::recompute);
 }
 
-HistogramPlotGui::~HistogramPlotGui()
+HistogramPlotUI::~HistogramPlotUI()
 {
     delete ui;
 }
 
-void HistogramPlotGui::dataChanged(const PlotData& plotData, const Quantiles& quantiles)
+void HistogramPlotUI::dataChanged(const PlotData& plotData, const Quantiles& quantiles)
 {
     histogramPlot_.setNewData(plotData, quantiles, ui->spinBox->value());
 }
+

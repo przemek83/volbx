@@ -50,7 +50,7 @@ public Q_SLOTS:
     void addGroupingPlot();
 
 private:
-    void changeDataViewMode(DataView* view);
+    void activateDataSelection(DataView* view);
 
     ViewDockWidget* getCurrentDataViewDock();
 

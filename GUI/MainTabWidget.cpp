@@ -11,7 +11,7 @@
 #include "Shared/Logger.h"
 
 #include "GroupPlotGui.h"
-#include "HistogramPlotGui.h"
+#include "HistogramPlotUI.h"
 #include "MainTab.h"
 #include "PlotDockWidget.h"
 #include "TabBar.h"
@@ -219,7 +219,7 @@ void MainTabWidget::addBasicPlot()
     else
     {
         //For first plot.
-        changeDataViewMode(view);
+        activateDataSelection(view);
     }
 
     connect(view->getPlotDataProvider(), &PlotDataProvider::basicPlotDataChanged,
@@ -242,17 +242,15 @@ void MainTabWidget::addHistogramPlot()
     DataView* view = getCurrentDataView();
     MainTab* mainTab = getCurrentMainTab();
     TableModel* model = getCurrentDataModel();
-    if (nullptr == view || nullptr == model || nullptr == mainTab)
-    {
+    if (view == nullptr || model == nullptr || mainTab == nullptr)
         return;
-    }
 
-    //If basic data plot already created than just show it and return.
-    auto histogramPlotGui = mainTab->findChild<HistogramPlotGui*>();
-    if (nullptr != histogramPlotGui)
+    // If plot already created than just show it and return.
+    if (auto plotUI = mainTab->findChild<HistogramPlotUI*>(); plotUI != nullptr)
     {
-        histogramPlotGui->setVisible(true);
-        histogramPlotGui->raise();
+        auto dock {static_cast<PlotDockWidget*>(plotUI->parent())};
+        dock->setVisible(true);
+        dock->raise();
         return;
     }
 
@@ -260,33 +258,24 @@ void MainTabWidget::addHistogramPlot()
     QApplication::processEvents();
 
     auto tabifyOn = mainTab->findChild<PlotDockWidget*>();
-    histogramPlotGui = new HistogramPlotGui(mainTab);
-    mainTab->addDockWidget(Qt::RightDockWidgetArea, histogramPlotGui);
-    if (nullptr != tabifyOn)
+    auto histogramPlotUI = new HistogramPlotUI();
+    connect(view->getPlotDataProvider(), &PlotDataProvider::basicDataChanged,
+            histogramPlotUI, &HistogramPlotUI::dataChanged);
+
+    auto histogramDock = new PlotDockWidget(tr("Histogram"), mainTab);
+    histogramDock->setWidget(histogramPlotUI);
+    mainTab->addDockWidget(Qt::RightDockWidgetArea, histogramDock);
+
+    if (tabifyOn != nullptr)
     {
-        histogramPlotGui->setVisible(false);
-        mainTab->tabifyDockWidget(tabifyOn, histogramPlotGui);
+        histogramDock->setVisible(false);
+        mainTab->tabifyDockWidget(tabifyOn, histogramDock);
     }
     else
-    {
-        //For first plot.
-        changeDataViewMode(view);
-    }
-
-    connect(view->getPlotDataProvider(), &PlotDataProvider::basicDataChanged,
-            histogramPlotGui, &HistogramPlotGui::dataChanged);
+        activateDataSelection(view);
 
     view->reloadSelectionDataAndRecompute();
-
-    //Problem with blinking display. Workaround used.
-    if (nullptr != tabifyOn)
-    {
-        histogramPlotGui->setVisible(true);
-        histogramPlotGui->raise();
-    }
-
     QApplication::restoreOverrideCursor();
-
 }
 
 void MainTabWidget::addGroupingPlot()
@@ -323,7 +312,7 @@ void MainTabWidget::addGroupingPlot()
     else
     {
         //For first plot.
-        changeDataViewMode(view);
+        activateDataSelection(view);
     }
 
     connect(view->getPlotDataProvider(), &PlotDataProvider::setNewDataForGrouping,
@@ -344,14 +333,13 @@ void MainTabWidget::addGroupingPlot()
     QApplication::restoreOverrideCursor();
 }
 
-void MainTabWidget::changeDataViewMode(DataView* view)
+void MainTabWidget::activateDataSelection(DataView* view)
 {
     //Activate select all and unselect all buttons on data view dock.
     ViewDockWidget* viewDock = getCurrentDataViewDock();
-    if (nullptr == viewDock)
-    {
+    if (viewDock == nullptr)
         return;
-    }
+
     viewDock->activateSelectButtons();
 
     view->clearSelection();

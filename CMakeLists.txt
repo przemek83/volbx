@@ -111,9 +111,9 @@ set(${PROJECT_NAME}_SOURCES
     GUI/GroupPlotGui.cpp
     GUI/GroupPlotGui.h
     GUI/GroupPlotGui.ui
-    GUI/HistogramPlotGui.cpp
-    GUI/HistogramPlotGui.h
-    GUI/HistogramPlotGui.ui
+    GUI/HistogramPlotUI.cpp
+    GUI/HistogramPlotUI.h
+    GUI/HistogramPlotUI.ui
     GUI/MainTab.cpp
     GUI/MainTab.h
     GUI/MainTabWidget.cpp
