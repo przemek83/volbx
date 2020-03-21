@@ -67,21 +67,16 @@ void PlotDataProvider::recomputeGroupData(QVector<TransactionData> calcData,
 
     //Remove when other column types will be managed.
     if (groupingColumn_ == Constants::NOT_SET_COLUMN)
-    {
         return;
-    }
 
     QVector<QString> names;
     QVector<Quantiles> quantilesForIntervals;
 
     //For now only string type columns managed.
     if (DATA_FORMAT_STRING == columnFormat)
-    {
         fillDataForStringGrouping(calcData_, names, quantilesForIntervals);
-    }
 
-    Q_EMIT setNewDataForGrouping(quantiles_.min_, quantiles_.max_, names,
-                                 quantilesForIntervals, quantiles_);
+    Q_EMIT setNewDataForGrouping(names, quantilesForIntervals, quantiles_);
 }
 
 void PlotDataProvider::fillDataForStringGrouping(const QVector<TransactionData>& calcData,
@@ -89,17 +84,14 @@ void PlotDataProvider::fillDataForStringGrouping(const QVector<TransactionData>&
                                                  QVector<Quantiles>& quantilesForIntervals)
 {
     QMap<QString, QVector<float> > map;
-
-    int dataSize = calcData.size();
+    const int dataSize = calcData.size();
 
     //Group by name/string.
     for (int i = 0; i < dataSize; ++i)
-    {
         map[calcData.at(i).groupedBy_.toString()].append(calcData.at(i).pricePerMeter_);
-    }
 
     //For each group calculate quantiles and create names.
-    QMap<QString, QVector<float> >::iterator iterator = map.begin();
+    auto iterator = map.begin();
     while (iterator != map.end())
     {
         names.append(iterator.key());

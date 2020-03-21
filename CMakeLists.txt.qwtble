@@ -7,6 +7,6 @@ project(qwtble NONE)
 ExternalProject_Add(qwtble
     PREFIX qwtble
     GIT_REPOSITORY https://github.com/przemek83/qwtble.git
-    GIT_TAG 4c63d49093b8df8fc6ee7425624b658de007a7f4
+    GIT_TAG master
     CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/qwtble/install
 )

@@ -87,9 +87,7 @@ private:
     int groupingColumn_ {Constants::NOT_SET_COLUMN};
 
 Q_SIGNALS:
-    void setNewDataForGrouping(float minY,
-                               float maxY,
-                               QVector<QString> intervalsNames,
+    void setNewDataForGrouping(QVector<QString> intervalsNames,
                                QVector<Quantiles> quantilesForIntervals,
                                Quantiles quantiles);
 
