@@ -1,5 +1,6 @@
-#include "GroupPlotGui.h"
+#include "GroupPlotUI.h"
 
+#include <QComboBox>
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QResizeEvent>
@@ -9,19 +10,16 @@
 
 #include "DockTitleBar.h"
 #include "ScrollArea.h"
-#include "ui_GroupPlotGui.h"
+#include "ui_GroupPlotUI.h"
 
-GroupPlotGui::GroupPlotGui(QVector<std::pair<QString, int>> stringColumns,
-                           QWidget* parent) :
-    PlotDockWidget(tr("Grouping"), parent),
-    ui(new Ui::GroupPlotGui)
+GroupPlotUI::GroupPlotUI(QVector<std::pair<QString, int> > stringColumns, QWidget* parent) :
+    QWidget(parent),
+    ui(new Ui::GroupPlotUI)
 {
     ui->setupUi(this);
 
     connect(ui->comboBox, qOverload<int>(&QComboBox::currentIndexChanged),
-            this, &GroupPlotGui::comboBoxCurrentIndexChanged);
-
-    dynamic_cast<DockTitleBar*>(titleBarWidget())->setTitle(windowTitle());
+            this, &GroupPlotUI::comboBoxCurrentIndexChanged);
 
     //Add splitter with group and quantiles plots.
     auto splitter = new QSplitter(Qt::Horizontal, this);
@@ -38,16 +36,16 @@ GroupPlotGui::GroupPlotGui(QVector<std::pair<QString, int>> stringColumns,
         ui->comboBox->addItem(columnName, QVariant(index));
 }
 
-GroupPlotGui::~GroupPlotGui()
+GroupPlotUI::~GroupPlotUI()
 {
     delete ui;
 }
 
-void GroupPlotGui::setNewData(float minY,
-                              float maxY,
-                              QVector<QString> intervalsNames,
-                              const QVector<Quantiles>& quantilesForIntervals,
-                              const Quantiles& quantiles)
+void GroupPlotUI::setNewData(float minY,
+                             float maxY,
+                             QVector<QString> intervalsNames,
+                             const QVector<Quantiles>& quantilesForIntervals,
+                             const Quantiles& quantiles)
 {
     groupPlot_.setAxisScale(QwtPlot::yLeft, static_cast<double>(minY), static_cast<double>(maxY));
     groupPlot_.setAxisScale(QwtPlot::yRight, static_cast<double>(minY), static_cast<double>(maxY));
@@ -78,7 +76,7 @@ void GroupPlotGui::setNewData(float minY,
     quantilesPlot_.forceResize();
 }
 
-void GroupPlotGui::comboBoxCurrentIndexChanged(int index)
+void GroupPlotUI::comboBoxCurrentIndexChanged(int index)
 {
     Q_EMIT newGroupingColumn(ui->comboBox->itemData(index).toInt());
 }

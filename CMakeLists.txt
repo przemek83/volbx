@@ -108,9 +108,9 @@ set(${PROJECT_NAME}_SOURCES
     GUI/FiltersDock.cpp
     GUI/FiltersDock.h
     GUI/FiltersDock.ui
-    GUI/GroupPlotGui.cpp
-    GUI/GroupPlotGui.h
-    GUI/GroupPlotGui.ui
+    GUI/GroupPlotUI.cpp
+    GUI/GroupPlotUI.h
+    GUI/GroupPlotUI.ui
     GUI/HistogramPlotUI.cpp
     GUI/HistogramPlotUI.h
     GUI/HistogramPlotUI.ui

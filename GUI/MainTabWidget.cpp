@@ -10,7 +10,7 @@
 #include "ModelsAndViews/TableModel.h"
 #include "Shared/Logger.h"
 
-#include "GroupPlotGui.h"
+#include "GroupPlotUI.h"
 #include "HistogramPlotUI.h"
 #include "MainTab.h"
 #include "PlotDockWidget.h"
@@ -262,17 +262,17 @@ void MainTabWidget::addHistogramPlot()
     connect(view->getPlotDataProvider(), &PlotDataProvider::basicDataChanged,
             histogramPlotUI, &HistogramPlotUI::dataChanged);
 
-    auto histogramDock = new PlotDockWidget(tr("Histogram"), mainTab);
-    histogramDock->setWidget(histogramPlotUI);
-    mainTab->addDockWidget(Qt::RightDockWidgetArea, histogramDock);
+    auto dock = new PlotDockWidget(tr("Histogram"), mainTab);
+    dock->setWidget(histogramPlotUI);
+    mainTab->addDockWidget(Qt::RightDockWidgetArea, dock);
 
     if (tabifyOn != nullptr)
-    {
-        histogramDock->setVisible(false);
-        mainTab->tabifyDockWidget(tabifyOn, histogramDock);
-    }
+        mainTab->tabifyDockWidget(tabifyOn, dock);
     else
         activateDataSelection(view);
+
+    dock->setVisible(true);
+    dock->raise();
 
     view->reloadSelectionDataAndRecompute();
     QApplication::restoreOverrideCursor();
@@ -283,17 +283,15 @@ void MainTabWidget::addGroupingPlot()
     DataView* view = getCurrentDataView();
     MainTab* mainTab = getCurrentMainTab();
     TableModel* model = getCurrentDataModel();
-    if (nullptr == view || nullptr == model || nullptr == mainTab)
-    {
+    if (view == nullptr || model == nullptr || mainTab == nullptr)
         return;
-    }
 
-    //If basic data plot already created than just show it and return.
-    auto groupPlotGui = mainTab->findChild<GroupPlotGui*>();
-    if (nullptr != groupPlotGui)
+    // If plot already created than just show it and return.
+    if (auto plotUI = mainTab->findChild<GroupPlotUI*>(); plotUI != nullptr)
     {
-        groupPlotGui->setVisible(true);
-        groupPlotGui->raise();
+        auto dock {static_cast<PlotDockWidget*>(plotUI->parent())};
+        dock->setVisible(true);
+        dock->raise();
         return;
     }
 
@@ -301,35 +299,25 @@ void MainTabWidget::addGroupingPlot()
     QApplication::processEvents();
 
     auto tabifyOn = mainTab->findChild<PlotDockWidget*>();
-
-    groupPlotGui = new GroupPlotGui(getStringColumnsWithIndexes(model), mainTab);
-    mainTab->addDockWidget(Qt::RightDockWidgetArea, groupPlotGui);
-    if (nullptr != tabifyOn)
-    {
-        groupPlotGui->setVisible(false);
-        mainTab->tabifyDockWidget(tabifyOn, groupPlotGui);
-    }
-    else
-    {
-        //For first plot.
-        activateDataSelection(view);
-    }
-
+    auto groupPlotUI = new GroupPlotUI(getStringColumnsWithIndexes(model));
     connect(view->getPlotDataProvider(), &PlotDataProvider::setNewDataForGrouping,
-            groupPlotGui, &GroupPlotGui::setNewData);
-
-    connect(groupPlotGui, &GroupPlotGui::newGroupingColumn,
+            groupPlotUI, &GroupPlotUI::setNewData);
+    connect(groupPlotUI, &GroupPlotUI::newGroupingColumn,
             view, &DataView::groupingColumnChanged);
 
+    auto dock = new PlotDockWidget(tr("Grouping"), mainTab);
+    dock->setWidget(groupPlotUI);
+    mainTab->addDockWidget(Qt::RightDockWidgetArea, dock);
+
+    if (tabifyOn != nullptr)
+        mainTab->tabifyDockWidget(tabifyOn, dock);
+    else
+        activateDataSelection(view);
+
+    dock->setVisible(true);
+    dock->raise();
+
     view->reloadSelectionDataAndRecompute();
-
-    //Problem with blinking display. Workaround used.
-    if (nullptr != tabifyOn)
-    {
-        groupPlotGui->setVisible(true);
-        groupPlotGui->raise();
-    }
-
     QApplication::restoreOverrideCursor();
 }
 

@@ -19,7 +19,6 @@
 
 #include "Common/Constants.h"
 #include "Common/SpecialColumns.h"
-#include "GUI/GroupPlotGui.h"
 #include "GUI/PlotDockWidget.h"
 #include "Shared/Logger.h"
 
