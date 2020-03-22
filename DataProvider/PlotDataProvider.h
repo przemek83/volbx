@@ -77,7 +77,7 @@ private:
     /**
      * @brief compute data used for simple plots (histogram and basic plots).
      */
-    std::tuple<PlotData, QVector<QPointF>> computeBasicData();
+    std::tuple<QVector<QPointF>, QVector<QPointF>> computeBasicData();
 
     Quantiles quantiles_;
 
@@ -91,11 +91,11 @@ Q_SIGNALS:
                                QVector<Quantiles> quantilesForIntervals,
                                Quantiles quantiles);
 
-    void basicPlotDataChanged(PlotData plotData,
+    void basicPlotDataChanged(QVector<QPointF> data,
                               Quantiles quantiles,
                               QVector<QPointF> linearRegression);
 
-    void basicDataChanged(PlotData plotData,
+    void basicDataChanged(QVector<double> data,
                           Quantiles quantiles);
 };
 

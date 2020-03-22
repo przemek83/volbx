@@ -33,26 +33,27 @@ void PlotDataProvider::reCompute(QVector<TransactionData> newCalcData,
     int dataSize = calcData_.size();
     QVector<float> valuePerUnit {};
     valuePerUnit.reserve(dataSize);
-    if (0 != dataSize)
+    if (dataSize != 0)
     {
         for (int i = 0; i < dataSize; ++i)
-        {
             valuePerUnit.push_back(calcData_.at(i).pricePerMeter_);
-        }
-
         quantiles_.computeQuantiles(valuePerUnit);
     }
 
-    //Left part of group plot.
+    // Left part of group plot.
     recomputeGroupData(calcData_, groupingColumn_, columnFormat);
 
     auto [plotData, linearRegression] = computeBasicData();
 
+    QVector<double> yAxisData;
+    for (const auto& point : plotData)
+        yAxisData.append(point.y());
+
     //Basic data plot.
-    Q_EMIT basicPlotDataChanged(plotData, quantiles_, linearRegression);
+    Q_EMIT basicPlotDataChanged(std::move(plotData), quantiles_, linearRegression);
 
     //Currently histogram only.
-    Q_EMIT basicDataChanged(plotData, quantiles_);
+    Q_EMIT basicDataChanged(std::move(yAxisData), quantiles_);
 }
 
 void PlotDataProvider::recomputeGroupData(QVector<TransactionData> calcData,
@@ -102,18 +103,11 @@ void PlotDataProvider::fillDataForStringGrouping(const QVector<TransactionData>&
     }
 }
 
-std::tuple<PlotData, QVector<QPointF>> PlotDataProvider::computeBasicData()
+std::tuple<QVector<QPointF>, QVector<QPointF>> PlotDataProvider::computeBasicData()
 {
     int dataSize = calcData_.size();
     if (dataSize <= 0)
-    {
-        PlotData plotData(nullptr, nullptr, 0);
-        return {plotData, {}};
-    }
-
-    //Create points for quantiles - x, y, min, max.
-    auto pointsQuantilesX = new double[static_cast<uint64_t>(dataSize)];
-    auto pointsQuantilesY = new double[static_cast<uint64_t>(dataSize)];
+        return {{}, {}};
 
     double sumX = 0.;
     double sumY = 0.;
@@ -126,12 +120,12 @@ std::tuple<PlotData, QVector<QPointF>> PlotDataProvider::computeBasicData()
     double maxX = 0.;
     bool set = false;
 
+    QVector<QPointF> data;
     for (int i = 0; i < dataSize; ++i)
     {
         double x = QwtBleUtilities::getStartOfTheWorld().daysTo(calcData_.at(i).date_);
         auto y = static_cast<double>(calcData_.at(i).pricePerMeter_);
-        pointsQuantilesX[i] = x;
-        pointsQuantilesY[i] = y;
+        data.append({x, y});
 
         sumX += x;
         sumY += y;
@@ -147,13 +141,9 @@ std::tuple<PlotData, QVector<QPointF>> PlotDataProvider::computeBasicData()
         else
         {
             if (minX > x)
-            {
                 minX = x;
-            }
             if (maxX < x)
-            {
                 maxX = x;
-            }
         }
     }
 
@@ -170,9 +160,7 @@ std::tuple<PlotData, QVector<QPointF>> PlotDataProvider::computeBasicData()
     linearRegression.append(linearRegressionFrom);
     linearRegression.append(linearRegressionTo);
 
-    PlotData plotData(pointsQuantilesX, pointsQuantilesY, dataSize);
-
-    return {plotData, linearRegression};
+    return {data, linearRegression};
 }
 
 int PlotDataProvider::getGroupByColumn()
