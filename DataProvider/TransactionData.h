@@ -24,7 +24,7 @@ public:
 
     QVariant groupedBy_;
 
-    float pricePerMeter_ {0.f};
+    double pricePerMeter_ {0.};
 
     void clear();
 

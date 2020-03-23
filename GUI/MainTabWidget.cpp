@@ -1,8 +1,8 @@
 #include "MainTabWidget.h"
 
+#include <BasicDataPlot.h>
 #include <GroupPlotUI.h>
 #include <HistogramPlotUI.h>
-#include <BasicDataPlot.h>
 #include <QApplication>
 #include <QDebug>
 
@@ -180,7 +180,7 @@ void MainTabWidget::setNumericFilterInProxy(int column, double from, double to)
 }
 
 template <class T>
-void MainTabWidget::addPlot(QString title, const std::function<T*()>& createPlot)
+void MainTabWidget::addPlot(const QString& title, const std::function<T*()>& createPlot)
 {
     DataView* view = getCurrentDataView();
     MainTab* mainTab = getCurrentMainTab();

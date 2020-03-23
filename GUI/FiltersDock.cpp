@@ -1,10 +1,9 @@
 #include "FiltersDock.h"
 
-#include <QDebug>
 #include <Filter.h>
 #include <FilterDates.h>
-#include <FilterStrings.h>
 #include <FilterDoubles.h>
+#include <FilterStrings.h>
 #include <QLineEdit>
 #include <QScrollArea>
 
@@ -115,7 +114,7 @@ FilterStrings* FiltersDock::createNewStringsFilter(const TableModel* parentModel
     auto filter = new FilterStrings(columnName, std::move(list), filterListWidget);
     auto emitChangeForColumn = [ = ](QStringList bannedList)
     {
-        emit newNamesFiltering(index, bannedList);
+        Q_EMIT newNamesFiltering(index, std::move(bannedList));
     };
     connect(filter, &FilterStrings::newStringFilter, this, emitChangeForColumn);
 
@@ -133,13 +132,13 @@ FilterDates* FiltersDock::createNewDatesFilter(const TableModel* parentModel,
     QString columnName {parentModel->headerData(index, Qt::Horizontal).toString()};
     const auto [minDate, maxDate, haveEmptyDates] {parentModel->getDateRange(index)};
     auto filter = new FilterDates(columnName,
-                                  std::move(minDate),
-                                  std::move(maxDate),
+                                  minDate,
+                                  maxDate,
                                   haveEmptyDates,
                                   filterListWidget);
     auto emitChangeForColumn = [ = ](QDate from, QDate to, bool filterEmptyDates)
     {
-        emit newDateFiltering(index, from, to, filterEmptyDates);
+        Q_EMIT newDateFiltering(index, from, to, filterEmptyDates);
     };
     connect(filter, &FilterDates::newDateFilter, this, emitChangeForColumn);
     filter->setCheckable(true);
@@ -158,7 +157,7 @@ FilterNumbers* FiltersDock::createNewNumbersFilter(const TableModel* parentModel
                                     filterListWidget);
     auto emitChangeForColumn = [ = ](double from, double to)
     {
-        emit newNumbersFiltering(index, from, to);
+        Q_EMIT newNumbersFiltering(index, from, to);
     };
     connect(filter, &FilterDoubles::newNumericFilter, this, emitChangeForColumn);
     filter->setCheckable(true);

@@ -112,17 +112,4 @@ QStringList generateExcelColumnNames(int columnsNumber)
     return columnNames;
 }
 
-bool doublesAreEqual(double left, double right)
-{
-    static const double qtDoublePrecision {1e-12};
-    return std::abs(left - right) <=
-           qtDoublePrecision * std::max({ 1.0, std::abs(left), std::abs(right) });
-}
-
-bool floatsAreEqual(float left, float right)
-{
-    static const float qtFloatPrecision {1e-6F};
-    return std::abs(left - right) <=
-           qtFloatPrecision * std::max({ 1.0F, std::abs(left), std::abs(right) });
-}
 }  // namespace Constants

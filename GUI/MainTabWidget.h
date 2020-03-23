@@ -53,7 +53,7 @@ public Q_SLOTS:
 
 private:
     template <class T>
-    void addPlot(QString title, const std::function<T*()>& createPlot);
+    void addPlot(const QString& title, const std::function<T*()>& createPlot);
 
     void activateDataSelection(DataView* view);
 

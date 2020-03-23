@@ -1,5 +1,6 @@
 #include "ExportData.h"
 
+#include <ProgressBarCounter.h>
 #include <QAbstractItemView>
 #include <QApplication>
 #include <QClipboard>
@@ -10,7 +11,6 @@
 #include <QMimeData>
 #include <QtXml/QDomDocument>
 #include <quazip5/quazip.h>
-#include <ProgressBarCounter.h>
 #include <QwtBleUtilities.h>
 
 #include "Datasets/Dataset.h"
@@ -147,7 +147,7 @@ void variantToString(const QVariant& variant,
             }
             else
             {
-                QString value(QwtBleUtilities::floatToStringUsingLocale(variant.toFloat(), 2));
+                QString value(QwtBleUtilities::doubleToStringUsingLocale(variant.toDouble(), 2));
                 destinationArray->append(value);
             }
             break;

@@ -121,13 +121,12 @@ QStringList Dataset::getStringList(int column) const
     Q_ASSERT(DATA_FORMAT_STRING == getColumnFormat(column));
 
     QStringList listToFill;
+    listToFill.reserve(rowCount());
 
     //Optimization used -> use string indexes first, compare, remove duplicates.
     //At end convert to proper strings.
     for (int i = 0; i < rowCount(); ++i)
-    {
         listToFill.append(data_[i][column].toString());
-    }
 
     listToFill.removeDuplicates();
 

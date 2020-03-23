@@ -319,8 +319,8 @@ void SpreadsheetsTest::testBasicInfo(DatasetDefinition& definition,
 }
 
 void SpreadsheetsTest::testColumnInfo(DatasetDefinition& definition,
-                                      QVector<QPair<int, DataFormat> >& columnFormats,
-                                      QVector<QPair<int, QString> >& columnNames)
+                                      const QVector<QPair<int, DataFormat> >& columnFormats,
+                                      const QVector<QPair<int, QString> >& columnNames)
 {
     QPair<int, DataFormat> pairFormat;
     foreach (pairFormat, columnFormats)
@@ -344,7 +344,7 @@ void SpreadsheetsTest::testColumnInfo(DatasetDefinition& definition,
 void SpreadsheetsTest::testSampleData(DatasetDefinition& definition,
                                       int rows,
                                       int columns,
-                                      QVector<std::tuple<QVariant, int, int> >& fields)
+                                      const QVector<std::tuple<QVariant, int, int> >& fields)
 {
     const QVector<QVector<QVariant> >* sampleData = definition.getSampleData();
 

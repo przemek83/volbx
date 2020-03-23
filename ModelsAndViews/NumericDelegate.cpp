@@ -12,5 +12,5 @@ NumericDelegate::NumericDelegate(QObject* parent)
 QString NumericDelegate::displayText(const QVariant& value,
                                      const QLocale& /*locale*/) const
 {
-    return QwtBleUtilities::floatToStringUsingLocale(value.toFloat(), 2);
+    return QwtBleUtilities::doubleToStringUsingLocale(value.toDouble(), 2);
 }

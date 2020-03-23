@@ -1,7 +1,6 @@
 #ifndef PLOTDATAPROVIDER_H
 #define PLOTDATAPROVIDER_H
 
-#include <PlotData.h>
 #include <QDate>
 #include <QMap>
 #include <QObject>

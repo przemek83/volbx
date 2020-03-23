@@ -37,8 +37,8 @@ private:
      * @param columnNames names of columns to compare.
      */
     void testColumnInfo(DatasetDefinition& definition,
-                        QVector<QPair<int, DataFormat> >& columnFormats,
-                        QVector<QPair<int, QString> >& columnNames);
+                        const QVector<QPair<int, DataFormat> >& columnFormats,
+                        const QVector<QPair<int, QString> >& columnNames);
 
     /**
      * @brief check number of rows, columns and some values in data.
@@ -50,7 +50,7 @@ private:
     void testSampleData(DatasetDefinition& definition,
                         int rows,
                         int columns,
-                        QVector<std::tuple<QVariant, int, int> >& fields);
+                        const QVector<std::tuple<QVariant, int, int> >& fields);
 
     void generateDataDumpsForFile(QString name);
 

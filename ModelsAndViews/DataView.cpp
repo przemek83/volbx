@@ -43,9 +43,7 @@ DataView::DataView(QWidget* parent) :
     auto showSortIndicator = [ = ]()
     {
         if (!horizontalHeader()->isSortIndicatorShown())
-        {
             horizontalHeader()->setSortIndicatorShown(true);
-        }
     };
     connect(horizontalHeader(), &QHeaderView::sectionClicked, showSortIndicator);
 }
@@ -108,45 +106,30 @@ QVector<TransactionData> DataView::fillDataFromSelection(int groupByColumn) cons
 
     int pricePerMeterColumn;
     if (auto [ok, columnId] = parentModel->getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT); ok)
-    {
         pricePerMeterColumn = columnId;
-    }
     else
-    {
         return {};
-    }
 
     int transactionDateColumn;
     if (auto [ok, columnId] = parentModel->getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE); ok)
-    {
         transactionDateColumn = columnId;
-    }
     else
-    {
         return {};
-    }
 
     QTime performanceTimer;
     performanceTimer.start();
 
     QItemSelectionModel* selectionModelOfView = selectionModel();
-
     QVector<TransactionData> calcDataContainer;
-
     const int proxyRowCount = proxyModel->rowCount();
-
     const int batchSize {1000};
     for (int i = 0; i < proxyRowCount; ++i)
     {
         if (i % batchSize == 0)
-        {
             QApplication::processEvents();
-        }
 
         if (!selectionModelOfView->isSelected(proxyModel->index(i, 0)))
-        {
             continue;
-        }
 
         TransactionData temp;
         const QVariant& data = proxyModel->index(i, transactionDateColumn).data();
@@ -155,7 +138,7 @@ QVector<TransactionData> DataView::fillDataFromSelection(int groupByColumn) cons
         if (!data.isNull())
         {
             temp.pricePerMeter_ =
-                proxyModel->index(i, pricePerMeterColumn).data().toFloat();
+                proxyModel->index(i, pricePerMeterColumn).data().toDouble();
             temp.date_ = data.toDate();
 
             //String values can be stored as indexes of table
@@ -163,9 +146,7 @@ QVector<TransactionData> DataView::fillDataFromSelection(int groupByColumn) cons
 
             //Temp, remove when all types of column managed in grouping.
             if (groupByColumn != Constants::NOT_SET_COLUMN)
-            {
                 temp.groupedBy_ = proxyModel->index(i, groupByColumn).data();
-            }
 
             calcDataContainer.append(temp);
         }
@@ -184,8 +165,7 @@ void DataView::reloadSelectionDataAndRecompute()
 
     //TODO optimize by impact + depact or additionall columns in model.
     const int groupByColumn = plotDataProvider_.getGroupByColumn();
-    QVector<TransactionData> newCalcData =
-        fillDataFromSelection(groupByColumn);
+    QVector<TransactionData> newCalcData = fillDataFromSelection(groupByColumn);
 
     //Temp, until all column types managed.
     DataFormat columnFormat = DATA_FORMAT_UNKNOWN;
@@ -214,9 +194,7 @@ void DataView::mouseReleaseEvent(QMouseEvent* event)
     QTableView::mouseReleaseEvent(event);
 
     if (Qt::LeftButton == event->button())
-    {
         reloadSelectionDataAndRecompute();
-    }
 }
 
 void DataView::keyPressEvent(QKeyEvent* event)
@@ -224,9 +202,7 @@ void DataView::keyPressEvent(QKeyEvent* event)
     QTableView::keyPressEvent(event);
 
     if (Qt::Key_A == event->key() && Qt::CTRL == event->modifiers())
-    {
         reloadSelectionDataAndRecompute();
-    }
 }
 
 const PlotDataProvider* DataView::getPlotDataProvider()
