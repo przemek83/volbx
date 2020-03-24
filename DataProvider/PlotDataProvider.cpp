@@ -51,7 +51,8 @@ void PlotDataProvider::reCompute(QVector<TransactionData> newCalcData,
         yAxisData.append(point.y());
 
     //Basic data plot.
-    Q_EMIT basicPlotDataChanged(std::move(plotData), quantiles_, linearRegression);
+    Q_EMIT basicPlotDataChanged(std::move(plotData), quantiles_,
+                                std::move(linearRegression));
 
     //Currently histogram only.
     Q_EMIT basicDataChanged(std::move(yAxisData), quantiles_);
@@ -78,7 +79,9 @@ void PlotDataProvider::recomputeGroupData(QVector<TransactionData> calcData,
     if (DATA_FORMAT_STRING == columnFormat)
         fillDataForStringGrouping(calcData_, names, quantilesForIntervals);
 
-    Q_EMIT setNewDataForGrouping(names, quantilesForIntervals, quantiles_);
+    Q_EMIT setNewDataForGrouping(std::move(names),
+                                 std::move(quantilesForIntervals),
+                                 quantiles_);
 }
 
 void PlotDataProvider::fillDataForStringGrouping(const QVector<TransactionData>& calcData,

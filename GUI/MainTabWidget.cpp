@@ -247,7 +247,7 @@ void MainTabWidget::addHistogramPlot()
 
 void MainTabWidget::addGroupingPlot()
 {
-    const auto createHistogramPlot = [ = ]() -> GroupPlotUI *
+    const auto createGroupingPlot = [ = ]() -> GroupPlotUI *
     {
         DataView* view = getCurrentDataView();
         TableModel* model = getCurrentDataModel();
@@ -259,7 +259,7 @@ void MainTabWidget::addGroupingPlot()
         return groupPlot;
     };
 
-    addPlot<GroupPlotUI>(tr("Grouping"), createHistogramPlot);
+    addPlot<GroupPlotUI>(tr("Grouping"), createGroupingPlot);
 }
 
 void MainTabWidget::activateDataSelection(DataView* view)
