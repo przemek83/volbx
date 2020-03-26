@@ -254,7 +254,7 @@ void MainTabWidget::addGroupingPlot()
         auto groupPlot = new GroupPlotUI(getStringColumnsWithIndexes(model));
         connect(view->getPlotDataProvider(), &PlotDataProvider::setNewDataForGrouping,
                 groupPlot, &GroupPlotUI::setNewData);
-        connect(groupPlot, &GroupPlotUI::newGroupingColumn,
+        connect(groupPlot, &GroupPlotUI::traitIndexChanged,
                 view, &DataView::groupingColumnChanged);
         return groupPlot;
     };
