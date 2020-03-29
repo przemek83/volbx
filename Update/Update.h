@@ -80,7 +80,7 @@ private:
     void insertErrorInfoIntoDetails(const QString& msg);
 
     /**
-     * @brief save verfied file. Verified mean of same size as expected.
+     * @brief save verified file. Verified means same size as expected.
      * @param fileData file content.
      * @param fileName file name.
      */

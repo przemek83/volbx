@@ -31,13 +31,13 @@ void PlotDataProvider::reCompute(QVector<TransactionData> newCalcData,
     quantiles_.clear();
 
     int dataSize = calcData_.size();
-    QVector<double> valuePerUnit {};
-    valuePerUnit.reserve(dataSize);
     if (dataSize != 0)
     {
+        QVector<double> valuePerUnit {};
+        valuePerUnit.reserve(dataSize);
         for (int i = 0; i < dataSize; ++i)
             valuePerUnit.push_back(calcData_.at(i).pricePerMeter_);
-        quantiles_.computeQuantiles(valuePerUnit);
+        quantiles_.init(std::move(valuePerUnit));
     }
 
     // Left part of group plot.
@@ -101,7 +101,7 @@ void PlotDataProvider::fillDataForStringGrouping(const QVector<TransactionData>&
     {
         names.append(iterator.key());
         Quantiles quantiles;
-        quantiles.computeQuantiles(iterator.value());
+        quantiles.init(iterator.value());
         quantilesForIntervals.append(quantiles);
         ++iterator;
     }

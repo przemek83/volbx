@@ -238,7 +238,7 @@ void MainTabWidget::addHistogramPlot()
         DataView* view = getCurrentDataView();
         auto histogramPlot = new HistogramPlotUI();
         connect(view->getPlotDataProvider(), &PlotDataProvider::basicDataChanged,
-                histogramPlot, &HistogramPlotUI::dataChanged);
+                histogramPlot, &HistogramPlotUI::setNewData);
         return histogramPlot;
     };
 
