@@ -366,12 +366,15 @@ void VolbxMain::actionSaveDatasetAsTriggered()
         performanceTimer.start();
 
         DataView* view = tabWidget_->getCurrentDataView();
-        if (nullptr == view)
-        {
+        if (view == nullptr)
             return;
-        }
 
-        ExportData::saveDataset(save.getChosenDatasetName(), view);
+        QString name {save.getChosenDatasetName()}
+        LOG(LogTypes::IMPORT_EXPORT, "Saving dataset " + name);
+        QString filePath {DatasetInner::getDatasetsDir() +
+                          name +
+                          Constants::getDatasetExtension()};
+        ExportData::saveDataset(filePath, view);
 
         LOG(LogTypes::IMPORT_EXPORT, "File saved in total time " +
             QString::number(performanceTimer.elapsed() * 1.0 / 1000) +

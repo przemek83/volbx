@@ -14,7 +14,7 @@
 class DatasetDefinition;
 
 /**
- * @brief Representation of dataset.
+ * @brief Representation of dataset's.
  * Dataset definition is "formula" for creation of dataset and is inner
  * part of dataset.
  */

@@ -115,17 +115,7 @@ const QVector<bool>* DatasetDefinition::getActiveColumns() const
 
 int DatasetDefinition::getActiveColumnCount() const
 {
-    int activeColumnCount = 0;
-
-    for (bool activeColumn : activeColumns_)
-    {
-        if (activeColumn)
-        {
-            activeColumnCount++;
-        }
-    }
-
-    return activeColumnCount;
+    return activeColumns_.count(true);
 }
 
 void DatasetDefinition::rebuildDefinitonUsingActiveColumnsOnly()

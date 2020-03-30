@@ -4,19 +4,9 @@
 #include <QAbstractItemView>
 #include <QApplication>
 #include <QClipboard>
-#include <QDate>
-#include <QDebug>
-#include <QFile>
-#include <QItemSelectionModel>
-#include <QMimeData>
-#include <QtXml/QDomDocument>
-#include <quazip5/quazip.h>
+#include <quazip5/quazipfile.h>
 #include <QwtBleUtilities.h>
 
-#include "Datasets/Dataset.h"
-#include "Datasets/DatasetDefinition.h"
-#include "Datasets/DatasetDefinitionInner.h"
-#include "Datasets/DatasetInner.h"
 #include "ModelsAndViews/FilteringProxyModel.h"
 #include "ModelsAndViews/TableModel.h"
 #include "Shared/Logger.h"
@@ -62,7 +52,7 @@ QByteArray gatherSheetContent(const QAbstractItemView* view)
     rowsContent.append("<sheetData>");
 
     QStringList columnNames = Constants::generateExcelColumnNames(Constants::MAX_EXCEL_COLUMNS);
-    auto proxyModel = qobject_cast<FilteringProxyModel*>(view->model());
+    auto proxyModel = qobject_cast<QAbstractItemModel*>(view->model());
 
     Q_ASSERT(nullptr != proxyModel);
 
@@ -201,7 +191,7 @@ void dataToByteArray(const QAbstractItemView* view,
      * http://tools.ietf.org/html/rfc4180
      */
 
-    auto proxyModel = qobject_cast<FilteringProxyModel*>(view->model());
+    auto proxyModel = qobject_cast<QAbstractItemModel*>(view->model());
     Q_ASSERT(nullptr != proxyModel);
 
     int proxyColumnCount = proxyModel->columnCount();
@@ -263,7 +253,7 @@ void dataToByteArray(const QAbstractItemView* view,
 
 std::tuple<bool, int, QByteArray> saveDatasetDataFile(QuaZipFile& zipFile,
                                                       const QAbstractItemView* view,
-                                                      FilteringProxyModel* proxyModel,
+                                                      QAbstractItemModel* proxyModel,
                                                       ProgressBarCounter& bar)
 {
     bool result = zipFile.open(QIODevice::WriteOnly,
@@ -463,66 +453,41 @@ bool asXLSX(const QAbstractItemView* view, const QString& fileName)
     return true;
 }
 
-bool saveDataset(const QString& name,
+bool saveDataset(const QString& filePath,
                  const QAbstractItemView* view)
 {
-    Q_ASSERT(nullptr != view);
-
-    QTime performanceTimer;
-    performanceTimer.start();
-
-    LOG(LogTypes::IMPORT_EXPORT, "Saving dataset " + name);
+    Q_ASSERT(view != nullptr);
 
     //Open archive.
-    QuaZip zip(DatasetInner::getDatasetsDir() + name + Constants::getDatasetExtension());
+    QuaZip zip(filePath);
     bool openSuccess = zip.open(QuaZip::mdCreate);
     if (!openSuccess)
-    {
         return false;
-    }
 
     //Data file, write directly in loop.
     //Only one zip file in archive can be accessed at a time.
     QuaZipFile zipFile(&zip);
-    auto proxyModel = qobject_cast<FilteringProxyModel*>(view->model());
-    Q_ASSERT(nullptr != proxyModel);
+    auto model = qobject_cast<QAbstractItemModel*>(view->model());
+    Q_ASSERT(model != nullptr);
 
     QString barTitle =
         Constants::getProgressBarTitle(Constants::BarTitle::SAVING);
-    ProgressBarCounter bar(barTitle, proxyModel->rowCount(), nullptr);
+    ProgressBarCounter bar(barTitle, model->rowCount(), nullptr);
     bar.showDetached();
 
     auto [success, rowCount, stringsContent] = saveDatasetDataFile(zipFile,
                                                                    view,
-                                                                   proxyModel,
+                                                                   model,
                                                                    bar);
 
     if (!success)
-    {
         return false;
-    }
 
-    //Save strings.
     success = saveDatasetStringsFile(zipFile, stringsContent);
     if (!success)
-    {
         return false;
-    }
 
-    //Save definition.
-    success = saveDatasetDefinitionFile(zipFile, view, rowCount);
-    if (!success)
-    {
-        return false;
-    }
-
-    LOG(LogTypes::IMPORT_EXPORT, "Saved dataset having " +
-        QString::number(rowCount) +
-        " rows in time " +
-        QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
-        " seconds.");
-
-    return success;
+    return saveDatasetDefinitionFile(zipFile, view, rowCount);
 }
 
 void quickAsTSV(const QAbstractItemView* view)

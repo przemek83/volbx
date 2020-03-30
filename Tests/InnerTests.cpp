@@ -96,12 +96,15 @@ void InnerTests::testDatasets()
 
         checkImport(datasetName, definition, view);
 
-        ExportData::saveDataset(tempFilename_, &view);
+        QString filePath {DatasetInner::getDatasetsDir() +
+                          tempFilename_ +
+                          Constants::getDatasetExtension()};
+        ExportData::saveDataset(filePath, &view);
         checkExport(datasetName);
     }
 }
 
-void InnerTests::checkImport(QString& fileName,
+void InnerTests::checkImport(const QString& fileName,
                              DatasetDefinitionInner* definition,
                              QTableView& view)
 {

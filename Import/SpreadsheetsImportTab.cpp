@@ -82,7 +82,7 @@ void SpreadsheetsImportTab::openFileButtonClicked()
 
     ui->fileNameLineEdit->setText(fileName);
 
-    std::unique_ptr<DatasetDefinitionSpreadsheet> datasetDefinition = nullptr;
+    std::unique_ptr<DatasetDefinitionSpreadsheet> datasetDefinition {nullptr};
 
     //Remove all not allowed characters from file name.
     QString regexpString = Constants::getDatasetNameRegExp()

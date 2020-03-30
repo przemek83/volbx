@@ -4,7 +4,7 @@
 #include <QString>
 
 /**
- * @brief Sigleton for configuration.
+ * @brief Singleton for configuration.
  */
 class Configuration
 {
