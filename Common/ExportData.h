@@ -7,8 +7,6 @@ class QAbstractItemView;
 
 namespace ExportData
 {
-bool asXLSX(const QAbstractItemView* view, const QString& fileName);
-
 void quickAsTSV(const QAbstractItemView* view);
 
 bool asCsv(const QAbstractItemView* view,

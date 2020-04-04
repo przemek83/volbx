@@ -3,6 +3,7 @@
 #include <cmath>
 #include <memory>
 
+#include <EibleUtilities.h>
 #include <ProgressBarCounter.h>
 #include <ProgressBarInfinite.h>
 #include <QApplication>
@@ -249,9 +250,9 @@ bool DatasetDefinitionXlsx::loadSharedStrings(QuaZip& zip)
 bool DatasetDefinitionXlsx::getColumnList(QuaZip& zip,
                                           const QString& sheetName)
 {
-    //Loading column names is using Excell names names. Set 600 temporary.
-    columnsCount_ = Constants::MAX_EXCEL_COLUMNS;
-    excelColNames_ = Constants::generateExcelColumnNames(columnsCount_);
+    //Loading column names is using Excel names names. Set 600 temporary.
+    columnsCount_ = EibleUtilities::getMaxExcelColumns();
+    excelColNames_ = EibleUtilities::generateExcelColumnNames(columnsCount_);
 
     if (zip.setCurrentFile(sheetName))
     {
@@ -392,7 +393,7 @@ bool DatasetDefinitionXlsx::openZipAndMoveToSecondRow(QuaZip& zip,
 bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
                                            const QString& sheetName)
 {
-    excelColNames_ = Constants::generateExcelColumnNames(columnsCount_);
+    excelColNames_ = EibleUtilities::generateExcelColumnNames(columnsCount_);
 
     const QString barTitle =
         Constants::getProgressBarTitle(Constants::BarTitle::ANALYSING);
@@ -778,7 +779,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(QuaZip& zip,
                     int daysToAdd =
                         static_cast<int>(xmlStreamReader.readElementText().toDouble());
                     currentDataRow[activeColumnsMapping[column]] =
-                        QVariant(Constants::getStartOfExcelWorld().addDays(daysToAdd));
+                        QVariant(EibleUtilities::getStartOfExcelWorld().addDays(daysToAdd));
                     break;
                 }
 

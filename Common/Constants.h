@@ -13,8 +13,6 @@ QString getExeFileSuffix();
 
 QString getTemporaryFileSuffix();
 
-const QDate& getStartOfExcelWorld();
-
 QString getConfigurationFileName();
 
 QString getDatasetDefinitionFilename();
@@ -39,11 +37,6 @@ QString getProgressBarTitle(BarTitle barTitle);
 static constexpr int minDataPerThread{100};
 
 QString getDatasetNameRegExp();
-
-///String regexp for field used to input dataset name.
-QStringList generateExcelColumnNames(int columnsNumber);
-
-static constexpr int MAX_EXCEL_COLUMNS {600};
 
 const int NOT_SET_COLUMN {-1};
 };

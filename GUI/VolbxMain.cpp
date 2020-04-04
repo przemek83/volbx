@@ -369,7 +369,7 @@ void VolbxMain::actionSaveDatasetAsTriggered()
         if (view == nullptr)
             return;
 
-        QString name {save.getChosenDatasetName()}
+        QString name {save.getChosenDatasetName()};
         LOG(LogTypes::IMPORT_EXPORT, "Saving dataset " + name);
         QString filePath {DatasetInner::getDatasetsDir() +
                           name +

@@ -1,6 +1,9 @@
 #include "Export.h"
 
+#include <EibleUtilities.h>
+#include <ExportXlsx.h>
 #include <PlotBase.h>
+#include <ProgressBarCounter.h>
 #include <QDate>
 #include <QDebug>
 #include <QDir>
@@ -13,6 +16,7 @@
 #include "Common/ExportData.h"
 #include "Common/ExportImage.h"
 #include "ModelsAndViews/DataView.h"
+#include "Shared/Logger.h"
 
 #include "DockWidget.h"
 #include "PlotDockWidget.h"
@@ -74,9 +78,9 @@ void Export::saveOnDisk()
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
 
-    QString dateString(QDate::currentDate().toString(exportFilesDateFormat_));
-    QString fileName(ui->locationLineEdit->text() + "/" + ui->prefix->text() +
-                     "_" + dateString);
+    const QString dateString(QDate::currentDate().toString(exportFilesDateFormat_));
+    const QString fileName(ui->locationLineEdit->text() + "/" +
+                           ui->prefix->text() + "_" + dateString);
     QList<PlotDockWidget*> docks = tab_->findChildren<PlotDockWidget*>();
     for (PlotDockWidget* dock : docks)
     {
@@ -89,11 +93,26 @@ void Export::saveOnDisk()
 
     }
     auto view = tab_->findChild<DataView*>();
-    Q_ASSERT(nullptr != view);
+    Q_ASSERT(view != nullptr);
 
     if (ui->xlsx->isChecked())
     {
-        ExportData::asXLSX(view, fileName + "_" + tr("data") + ".xlsx");
+        const QString barTitle =
+            Constants::getProgressBarTitle(Constants::BarTitle::SAVING);
+        ProgressBarCounter bar(barTitle, view->model()->rowCount(), nullptr);
+        bar.showDetached();
+        const QString filePath {fileName + "_" + tr("data") + ".xlsx"};
+        ExportXlsx exportXlsx(filePath);
+        connect(&exportXlsx, &ExportXlsx::updateProgress,
+                &bar, &ProgressBarCounter::updateProgress);
+        QTime performanceTimer;
+        performanceTimer.start();
+        if (exportXlsx.exportView(view))
+            LOG(LogTypes::IMPORT_EXPORT, "Data exported in " +
+                QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
+                " seconds.");
+        else
+            LOG(LogTypes::IMPORT_EXPORT, "Can not open XLSX template file.");
     }
     else
     {
