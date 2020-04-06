@@ -101,13 +101,15 @@ void Export::saveOnDisk()
             Constants::getProgressBarTitle(Constants::BarTitle::SAVING);
         ProgressBarCounter bar(barTitle, view->model()->rowCount(), nullptr);
         bar.showDetached();
-        const QString filePath {fileName + "_" + tr("data") + ".xlsx"};
-        ExportXlsx exportXlsx(filePath);
-        connect(&exportXlsx, &ExportXlsx::updateProgress,
-                &bar, &ProgressBarCounter::updateProgress);
+
         QTime performanceTimer;
         performanceTimer.start();
-        if (exportXlsx.exportView(view))
+
+        QFile file(fileName + "_" + tr("data") + ".xlsx");
+        ExportXlsx exportXlsx;
+        connect(&exportXlsx, &ExportXlsx::updateProgress,
+                &bar, &ProgressBarCounter::updateProgress);
+        if (exportXlsx.exportView(*view, file))
             LOG(LogTypes::IMPORT_EXPORT, "Data exported in " +
                 QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
                 " seconds.");

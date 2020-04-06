@@ -21,6 +21,5 @@
     <qresource prefix="/">
         <file>Css/Dark Orange.css</file>
         <file>Css/Rounded Blue.css</file>
-        <file>template.xlsx</file>
     </qresource>
 </RCC>
