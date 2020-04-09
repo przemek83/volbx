@@ -1,5 +1,4 @@
 #include <cstddef>
-#include <windows.h>
 
 #include <QApplication>
 #include <QDebug>
