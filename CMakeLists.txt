@@ -17,13 +17,12 @@ add_definitions(${QT_DEFINITIONS})
 # QWT
 if(DEFINED ENV{QWT_ROOT})
     message(STATUS "QWT_ROOT environment variable defined, using QWT_ROOT paths.")
-    set(QWT_INCLUDE_PATH $ENV{QWT_ROOT}/include)
-    set(QWT_BINARY_PATH $ENV{QWT_ROOT}/lib)
-
     # copy QWT dlls for easy launch
-    file(GLOB_RECURSE QWT_DLLS "$ENV{QWT_ROOT}/lib/*.dll" )
-    file(COPY ${QWT_DLLS} DESTINATION ${CMAKE_BINARY_DIR})
-    file(COPY ${QWT_DLLS} DESTINATION ${CMAKE_BINARY_DIR}/Tests)
+    if (WIN32)
+        file(GLOB_RECURSE QWT_DLLS "$ENV{QWT_ROOT}/lib/*.dll" )
+        file(COPY ${QWT_DLLS} DESTINATION ${CMAKE_BINARY_DIR})
+        file(COPY ${QWT_DLLS} DESTINATION ${CMAKE_BINARY_DIR}/Tests)
+    endif()
 else()
     configure_file(CMakeLists.txt.qwt qwt/CMakeLists.txt)
     execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
@@ -35,12 +34,8 @@ else()
     file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/qwt/install/include)
     file(GLOB QWT_HEADERS "${CMAKE_BINARY_DIR}/qwt/qwt/src/qwt/src/*.h" )
     file(COPY ${QWT_HEADERS} DESTINATION ${CMAKE_BINARY_DIR}/qwt/install/include)
-    set(QWT_INCLUDE_PATH ${CMAKE_BINARY_DIR}/qwt/install/include)
-    set(QWT_BINARY_PATH ${CMAKE_BINARY_DIR}/qwt/install/lib)
+    set(ENV{QWT_ROOT} ${CMAKE_BINARY_DIR}/qwt/install/)
 endif()
-
-message(STATUS "Using QWT_INCLUDE_PATH ${QWT_INCLUDE_PATH}")
-message(STATUS "Using QWT_BINARY_PATH ${QWT_BINARY_PATH}")
 
 set(THIRD_PARTY_LIBS zlib quazip wble qwtble eible)
 foreach(file_i ${THIRD_PARTY_LIBS})
@@ -52,19 +47,21 @@ foreach(file_i ${THIRD_PARTY_LIBS})
 endforeach(file_i)
 
 # copy dlls for easy launch
-file(GLOB_RECURSE DLLS "${CMAKE_BINARY_DIR}/*.dll" )
-file(COPY ${DLLS} DESTINATION ${CMAKE_BINARY_DIR})
-file(COPY ${DLLS} DESTINATION ${CMAKE_BINARY_DIR}/Tests)
+if(WIN32)
+    file(GLOB_RECURSE DLLS "${CMAKE_BINARY_DIR}/*.dll" )
+    file(COPY ${DLLS} DESTINATION ${CMAKE_BINARY_DIR})
+    file(COPY ${DLLS} DESTINATION ${CMAKE_BINARY_DIR}/Tests)
+endif()
 
 # workaround for not working passing "CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<dir>" in ExternalProject_Add
 set(workaround ON CACHE BOOL "" FORCE)
 
-include_directories(${QWT_INCLUDE_PATH})
+include_directories($ENV{QWT_ROOT}/include)
 foreach(file_i ${THIRD_PARTY_LIBS})
     include_directories(${CMAKE_BINARY_DIR}/${file_i}/install/include)
 endforeach(file_i)
 
-link_directories(${QWT_BINARY_PATH})
+link_directories($ENV{QWT_ROOT}/lib)
 link_directories(${CMAKE_BINARY_DIR}/zlib/install/bin)
 link_directories(${CMAKE_BINARY_DIR}/quazip/install/lib)
 link_directories(${CMAKE_BINARY_DIR}/wble/install/lib)
@@ -164,11 +161,11 @@ set(${PROJECT_NAME}_SOURCES
 
 # remove background console window.
 if(WIN32)
-set(GUI_TYPE WIN32)
+    set(GUI_TYPE WIN32)
 endif(WIN32)
-if (APPLE)
-set(GUI_TYPE MACOSX_BUNDLE)
-endif (APPLE)
+if(APPLE)
+    set(GUI_TYPE MACOSX_BUNDLE)
+endif(APPLE)
 
 qt5_add_resources(RESOURCES Resources/Resources.qrc)
 add_custom_target(generated_qrc DEPENDS ${RESOURCES})
@@ -177,10 +174,12 @@ add_executable(${PROJECT_NAME} ${GUI_TYPE} ${${PROJECT_NAME}_SOURCES} ${RESOURCE
 add_dependencies(${PROJECT_NAME} generated_qrc)
 
 target_link_libraries(${PROJECT_NAME} shared common datasets modelsAndViews dataProvider wble qwtble eible Qt5::Core Qt5::Network Qt5::Widgets Qt5::Gui Qt5::Xml)
-target_link_libraries(${PROJECT_NAME} optimized qwt)
-target_link_libraries(${PROJECT_NAME} debug qwtd)
-target_link_libraries(${PROJECT_NAME} optimized quazip5)
-target_link_libraries(${PROJECT_NAME} debug quazip5d)
+if(WIN32)
+    target_link_libraries(${PROJECT_NAME} optimized qwt debug qwtd)
+else()
+    target_link_libraries(${PROJECT_NAME} qwt)
+endif()
+target_link_libraries(${PROJECT_NAME} optimized quazip5 debug quazip5d)
 
 add_subdirectory(Update)
 

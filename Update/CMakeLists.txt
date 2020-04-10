@@ -14,12 +14,12 @@ set(${PROJECT_NAME}_SOURCES
 include_directories(${CMAKE_SOURCE_DIR})
 
 # Remove background console window.
-IF(WIN32)
-SET(GUI_TYPE WIN32)
-ENDIF(WIN32)
-IF (APPLE)
-SET(GUI_TYPE MACOSX_BUNDLE)
-ENDIF (APPLE)
+if(WIN32)
+    set(GUI_TYPE WIN32)
+endif(WIN32)
+if(APPLE)
+    set(GUI_TYPE MACOSX_BUNDLE)
+endif(APPLE)
 
 add_executable(${PROJECT_NAME} ${GUI_TYPE} ${${PROJECT_NAME}_SOURCES})
 
