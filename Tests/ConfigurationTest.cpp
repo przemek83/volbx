@@ -35,7 +35,8 @@ void ConfigurationTest::testReadingFilledConfigurationFile()
     QVERIFY(true == QFile::exists(configurationFileName_));
     QVERIFY(true == Configuration::getInstance().configWasValid());
     QCOMPARE(Configuration::getInstance().getStyle(), QString("Fusion"));
-    QVERIFY(false == Configuration::getInstance().needToShowUpdatePickerDialog());
+    QVERIFY(false ==
+            Configuration::getInstance().needToShowUpdatePickerDialog());
     QVERIFY(false == Configuration::getInstance().needToCheckForUpdates());
 }
 
@@ -46,7 +47,8 @@ void ConfigurationTest::testReadingEmptyConfigurationFile()
     QVERIFY(false == Configuration::getInstance().load());
     QVERIFY(false == Configuration::getInstance().configWasValid());
     QCOMPARE(Configuration::getInstance().getStyle(), QString("Fusion"));
-    QVERIFY(false == Configuration::getInstance().needToShowUpdatePickerDialog());
+    QVERIFY(false ==
+            Configuration::getInstance().needToShowUpdatePickerDialog());
     QVERIFY(false == Configuration::getInstance().needToCheckForUpdates());
 }
 

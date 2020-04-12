@@ -5,7 +5,8 @@
 #include <QVariant>
 
 /**
- * @brief Object of those class are used for computation. 3 related values needed.
+ * @brief Object of those class are used for computation. 3 related values
+ * needed.
  */
 class TransactionData
 {
@@ -24,11 +25,11 @@ public:
 
     QVariant groupedBy_;
 
-    double pricePerMeter_ {0.};
+    double pricePerMeter_{0.};
 
     void clear();
 
     void print() const;
 };
 
-#endif // TRANSACTIONDATA_H
+#endif  // TRANSACTIONDATA_H

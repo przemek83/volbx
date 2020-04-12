@@ -18,7 +18,7 @@ public:
     Application& operator=(Application&& other) = delete;
     Application(Application&& other) = delete;
 
-    ///Set version, application name, company name.
+    /// Set version, application name, company name.
     static void setAdditionalApplicatioInfo(const char* productName);
 
     /**
@@ -47,4 +47,4 @@ private:
     static const char* cssSuffix_;
 };
 
-#endif // APPLICATION_H
+#endif  // APPLICATION_H

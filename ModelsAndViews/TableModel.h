@@ -21,7 +21,8 @@ class TableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit TableModel(std::unique_ptr<Dataset> dataset, QObject* parent = nullptr);
+    explicit TableModel(std::unique_ptr<Dataset> dataset,
+                        QObject* parent = nullptr);
 
     ~TableModel() override = default;
 
@@ -48,7 +49,8 @@ public:
      * @param index index used to retrieve data.
      * @return data.
      */
-    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    QVariant data(const QModelIndex& index,
+                  int role = Qt::DisplayRole) const override;
 
     /**
      * @brief Overridem method returning data used for column header.
@@ -95,7 +97,8 @@ public:
      * @param columnTag searched column tag.
      * @return true if found (column number in int passed as ref.).
      */
-    std::tuple<bool, int> getSpecialColumnIfExists(SpecialColumn columnTag) const;
+    std::tuple<bool, int> getSpecialColumnIfExists(
+        SpecialColumn columnTag) const;
 
     /**
      * @brief get dataset used in model.
@@ -115,4 +118,4 @@ private:
     static const int noColumn_;
 };
 
-#endif // TABLEMODEL_H
+#endif  // TABLEMODEL_H

@@ -4,8 +4,8 @@
 #include <memory>
 
 #include <QTableView>
-#include <QVector>
 #include <QVariant>
+#include <QVector>
 
 #include "DataProvider/PlotDataProvider.h"
 #include "DataProvider/TransactionData.h"
@@ -48,7 +48,7 @@ protected:
     void keyPressEvent(QKeyEvent* event) override;
 
 private:
-    ///Object for recomputing plot data.
+    /// Object for recomputing plot data.
     PlotDataProvider plotDataProvider_;
 
     /**
@@ -59,4 +59,4 @@ private:
     QVector<TransactionData> fillDataFromSelection(int groupByColumn) const;
 };
 
-#endif // DATAVIEW_H
+#endif  // DATAVIEW_H

@@ -1,23 +1,22 @@
 #include "ExportImage.h"
 
 #include <PlotBase.h>
+#include <qwt_plot_renderer.h>
 #include <QApplication>
 #include <QClipboard>
 #include <QImage>
 #include <QPainter>
-#include <qwt_plot_renderer.h>
 
 void ExportImage::exportAsImage(PlotBase* plot, const QString& fileName)
 {
-
     QwtPlotRenderer rend;
     rend.setDiscardFlags(QwtPlotRenderer::DiscardNone);
-    rend.setDiscardFlags(QwtPlotRenderer::DiscardBackground
-                         | QwtPlotRenderer::DiscardCanvasBackground);
+    rend.setDiscardFlags(QwtPlotRenderer::DiscardBackground |
+                         QwtPlotRenderer::DiscardCanvasBackground);
 
     QSize size(plot->widthMM(), plot->heightMM());
 
-    rend.renderDocument(plot, fileName, QStringLiteral("png"),  size);
+    rend.renderDocument(plot, fileName, QStringLiteral("png"), size);
 }
 
 void ExportImage::quickExportAsImage(const QList<PlotBase*>& list)
@@ -81,9 +80,7 @@ void ExportImage::exportTwinImage(const QList<PlotBase*>& list,
     QRect rect(0, 0, left->size().width(), left->size().height());
     rend.render(left, &painter, rect);
 
-    rect.setRect(left->size().width(),
-                 0,
-                 right->size().width(),
+    rect.setRect(left->size().width(), 0, right->size().width(),
                  right->size().height());
     rend.render(right, &painter, rect);
 
@@ -111,4 +108,3 @@ void ExportImage::exportFourPlotsImage(const QList<PlotBase*>& list,
 
     QApplication::clipboard()->setImage(img);
 }
-

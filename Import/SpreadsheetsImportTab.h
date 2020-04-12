@@ -6,7 +6,7 @@
 namespace Ui
 {
 class SpreadsheetsImportTab;
-} // namespace Ui
+}  // namespace Ui
 
 class SpreadsheetsImportTab : public ImportTab
 {
@@ -16,7 +16,8 @@ public:
 
     ~SpreadsheetsImportTab() override;
 
-    SpreadsheetsImportTab& operator=(const SpreadsheetsImportTab& other) = delete;
+    SpreadsheetsImportTab& operator=(const SpreadsheetsImportTab& other) =
+        delete;
     SpreadsheetsImportTab(const SpreadsheetsImportTab& other) = delete;
 
     SpreadsheetsImportTab& operator=(SpreadsheetsImportTab&& other) = delete;
@@ -31,4 +32,4 @@ private:
     Ui::SpreadsheetsImportTab* ui;
 };
 
-#endif // SPREADSHEETSIMPORTTAB_H
+#endif  // SPREADSHEETSIMPORTTAB_H

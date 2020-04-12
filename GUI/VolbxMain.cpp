@@ -40,11 +40,11 @@
 #include "ViewDockWidget.h"
 #include "ui_VolbxMain.h"
 
-VolbxMain::VolbxMain(QWidget* parent) :
-    QMainWindow(parent),
-    filters_(nullptr),
-    ui(new Ui::VolbxMain),
-    tabWidget_(nullptr)
+VolbxMain::VolbxMain(QWidget* parent)
+    : QMainWindow(parent),
+      filters_(nullptr),
+      ui(new Ui::VolbxMain),
+      tabWidget_(nullptr)
 {
     ui->setupUi(this);
 
@@ -56,29 +56,31 @@ VolbxMain::VolbxMain(QWidget* parent) :
 
     tabWidget_ = new MainTabWidget(this);
 
-    connect(filters_, &FiltersDock::newNamesFiltering,
-            tabWidget_, &MainTabWidget::setTextFilterInProxy);
-    connect(filters_, &FiltersDock::newDateFiltering,
-            tabWidget_, &MainTabWidget::setDateFilterInProxy);
-    connect(filters_, &FiltersDock::newNumbersFiltering,
-            tabWidget_, &MainTabWidget::setNumericFilterInProxy);
+    connect(filters_, &FiltersDock::newNamesFiltering, tabWidget_,
+            &MainTabWidget::setTextFilterInProxy);
+    connect(filters_, &FiltersDock::newDateFiltering, tabWidget_,
+            &MainTabWidget::setDateFilterInProxy);
+    connect(filters_, &FiltersDock::newNumbersFiltering, tabWidget_,
+            &MainTabWidget::setNumericFilterInProxy);
 
-    connect(ui->actionBasic_plot, &QAction::triggered,
-            tabWidget_, &MainTabWidget::addBasicPlot);
-    connect(ui->actionHistogram, &QAction::triggered,
-            tabWidget_, &MainTabWidget::addHistogramPlot);
-    connect(ui->actionGroup_plot, &QAction::triggered,
-            tabWidget_, &MainTabWidget::addGroupingPlot);
+    connect(ui->actionBasic_plot, &QAction::triggered, tabWidget_,
+            &MainTabWidget::addBasicPlot);
+    connect(ui->actionHistogram, &QAction::triggered, tabWidget_,
+            &MainTabWidget::addHistogramPlot);
+    connect(ui->actionGroup_plot, &QAction::triggered, tabWidget_,
+            &MainTabWidget::addGroupingPlot);
 
     ui->verticalLayout->addWidget(tabWidget_);
 
     addDockWidget(Qt::LeftDockWidgetArea, filters_);
-    const int defaultFilterWidth {200};
+    const int defaultFilterWidth{200};
     filters_->titleBarWidget()->resize(defaultFilterWidth,
                                        filters_->titleBarWidget()->height());
 
-    connect(tabWidget_, &MainTabWidget::currentChanged, this, &VolbxMain::tabWasChanged);
-    connect(tabWidget_, &MainTabWidget::tabCloseRequested, this, &VolbxMain::closeTab);
+    connect(tabWidget_, &MainTabWidget::currentChanged, this,
+            &VolbxMain::tabWasChanged);
+    connect(tabWidget_, &MainTabWidget::tabCloseRequested, this,
+            &VolbxMain::closeTab);
 
 #ifndef DEBUGGING
     ui->actionLogs->setVisible(false);
@@ -88,27 +90,27 @@ VolbxMain::VolbxMain(QWidget* parent) :
     ui->actionSendErrorOrIdea->setVisible(false);
     ui->actionTutorials->setVisible(false);
 
-    connect(&networkManager_, &QNetworkAccessManager::finished,
-            this, &VolbxMain::updateCheckReplyFinished);
+    connect(&networkManager_, &QNetworkAccessManager::finished, this,
+            &VolbxMain::updateCheckReplyFinished);
 
-    connect(ui->actionExit, &QAction::triggered,
-            this, &VolbxMain::actionExitTriggered);
-    connect(ui->actionFilters, &QAction::triggered,
-            this, &VolbxMain::actionFiltersTriggered);
-    connect(ui->actionLogs, &QAction::triggered,
-            this, &VolbxMain::actionLogsTriggered);
-    connect(ui->actionAbout, &QAction::triggered,
-            this, &VolbxMain::actionAboutTriggered);
-    connect(ui->actionExport, &QAction::triggered,
-            this, &VolbxMain::actionExportTriggered);
-    connect(ui->actionSaveDatasetAs, &QAction::triggered,
-            this, &VolbxMain::actionSaveDatasetAsTriggered);
-    connect(ui->actionImportData, &QAction::triggered,
-            this, &VolbxMain::actionImportDataTriggered);
-    connect(ui->actionCheckForNewVersion, &QAction::triggered,
-            this, &VolbxMain::actionCheckForNewVersionTriggered);
-    connect(ui->actionUpdateAuto, &QAction::triggered,
-            this, &VolbxMain::actionUpdateAutoToggled);
+    connect(ui->actionExit, &QAction::triggered, this,
+            &VolbxMain::actionExitTriggered);
+    connect(ui->actionFilters, &QAction::triggered, this,
+            &VolbxMain::actionFiltersTriggered);
+    connect(ui->actionLogs, &QAction::triggered, this,
+            &VolbxMain::actionLogsTriggered);
+    connect(ui->actionAbout, &QAction::triggered, this,
+            &VolbxMain::actionAboutTriggered);
+    connect(ui->actionExport, &QAction::triggered, this,
+            &VolbxMain::actionExportTriggered);
+    connect(ui->actionSaveDatasetAs, &QAction::triggered, this,
+            &VolbxMain::actionSaveDatasetAsTriggered);
+    connect(ui->actionImportData, &QAction::triggered, this,
+            &VolbxMain::actionImportDataTriggered);
+    connect(ui->actionCheckForNewVersion, &QAction::triggered, this,
+            &VolbxMain::actionCheckForNewVersionTriggered);
+    connect(ui->actionUpdateAuto, &QAction::triggered, this,
+            &VolbxMain::actionUpdateAutoToggled);
 
     createOptionsMenu();
 }
@@ -122,12 +124,17 @@ VolbxMain::~VolbxMain()
 void VolbxMain::setStandardIcons()
 {
     QStyle* style = QApplication::style();
-    ui->actionImportData->setIcon(style->standardIcon(QStyle::SP_DialogOpenButton));
-    ui->actionSaveDatasetAs->setIcon(style->standardIcon(QStyle::SP_DialogSaveButton));
+    ui->actionImportData->setIcon(
+        style->standardIcon(QStyle::SP_DialogOpenButton));
+    ui->actionSaveDatasetAs->setIcon(
+        style->standardIcon(QStyle::SP_DialogSaveButton));
     ui->actionExit->setIcon(style->standardIcon(QStyle::SP_DialogCloseButton));
-    ui->actionLogs->setIcon(style->standardIcon(QStyle::SP_FileDialogContentsView));
-    ui->actionCheckForNewVersion->setIcon(style->standardIcon(QStyle::SP_BrowserReload));
-    ui->actionAbout->setIcon(style->standardIcon(QStyle::QStyle::SP_FileDialogInfoView));
+    ui->actionLogs->setIcon(
+        style->standardIcon(QStyle::SP_FileDialogContentsView));
+    ui->actionCheckForNewVersion->setIcon(
+        style->standardIcon(QStyle::SP_BrowserReload));
+    ui->actionAbout->setIcon(
+        style->standardIcon(QStyle::QStyle::SP_FileDialogInfoView));
 }
 
 void VolbxMain::createOptionsMenu()
@@ -142,7 +149,7 @@ void VolbxMain::createOptionsMenu()
 
     auto actionsGroup = new QActionGroup(this);
 
-    //Add orange style.
+    // Add orange style.
     QString styleName(QStringLiteral("Dark Orange"));
     auto action = new QAction(styleName, actionsGroup);
     action->setCheckable(true);
@@ -152,7 +159,7 @@ void VolbxMain::createOptionsMenu()
     }
     connect(action, &QAction::triggered, this, &VolbxMain::customStylePicked);
 
-    //Add blue style.
+    // Add blue style.
     styleName = QStringLiteral("Rounded Blue");
     action = new QAction(styleName, actionsGroup);
     action->setCheckable(true);
@@ -162,7 +169,7 @@ void VolbxMain::createOptionsMenu()
     }
     connect(action, &QAction::triggered, this, &VolbxMain::customStylePicked);
 
-    //Add styles found in app dir.
+    // Add styles found in app dir.
     QStringList nameFilter(QStringLiteral("*.css"));
     QDir directory(QCoreApplication::applicationDirPath());
     QFileInfoList styleFiles = directory.entryInfoList(nameFilter);
@@ -175,10 +182,11 @@ void VolbxMain::createOptionsMenu()
         {
             action->setChecked(true);
         }
-        connect(action, &QAction::triggered, this, &VolbxMain::customStylePicked);
+        connect(action, &QAction::triggered, this,
+                &VolbxMain::customStylePicked);
     }
 
-    //Add qt available styles.
+    // Add qt available styles.
     QStringList qtStylesList = QStyleFactory::keys();
     for (const QString& style : qtStylesList)
     {
@@ -209,10 +217,11 @@ void VolbxMain::checkForUpdates()
             checkForUpdates = true;
         }
 
-        //Remember if choice was checked.
+        // Remember if choice was checked.
         if (dialog.saveFlagSet())
         {
-            Configuration::getInstance().setUpdatesCheckingOption(checkForUpdates);
+            Configuration::getInstance().setUpdatesCheckingOption(
+                checkForUpdates);
         }
     }
     else
@@ -225,13 +234,11 @@ void VolbxMain::checkForUpdates()
         actionCheckForNewVersionTriggered();
     }
 
-    ui->actionUpdateAuto->setChecked(Configuration::getInstance().needToCheckForUpdates());
+    ui->actionUpdateAuto->setChecked(
+        Configuration::getInstance().needToCheckForUpdates());
 }
 
-void VolbxMain::actionExitTriggered()
-{
-    close();
-}
+void VolbxMain::actionExitTriggered() { close(); }
 
 void VolbxMain::actionFiltersTriggered()
 {
@@ -276,7 +283,7 @@ void VolbxMain::closeEvent(QCloseEvent* event)
 
     QMainWindow::closeEvent(event);
 
-    //If logger window is shown closing mainWindow do not close app.
+    // If logger window is shown closing mainWindow do not close app.
     QApplication::closeAllWindows();
 }
 
@@ -311,23 +318,24 @@ void VolbxMain::manageActions(bool tabExists)
     ui->actionExport->setEnabled(tabExists);
     ui->actionSaveDatasetAs->setEnabled(tabExists);
 
-    //Check if plot icons should be enabled.
+    // Check if plot icons should be enabled.
     bool activateCharts = tabExists;
     if (tabExists)
     {
         const TableModel* dataModel = tabWidget_->getCurrentDataModel();
         if (nullptr != dataModel)
         {
-            activateCharts = (activateCharts && dataModel->isSpecialColumnsSet());
+            activateCharts =
+                (activateCharts && dataModel->isSpecialColumnsSet());
         }
     }
 
-    //Enable/disable plot icons.
+    // Enable/disable plot icons.
     ui->actionBasic_plot->setEnabled(activateCharts);
     ui->actionHistogram->setEnabled(activateCharts);
     ui->actionGroup_plot->setEnabled(activateCharts);
 
-    //Set tooltips for plot icons.
+    // Set tooltips for plot icons.
     if (!activateCharts)
     {
         const QString cannotCreateCharts =
@@ -351,9 +359,7 @@ void VolbxMain::actionSaveDatasetAsTriggered()
         QString msg(tr("Can not access folder "));
         msg.append(DatasetInner::getDatasetsDir());
         msg.append(tr(" needed for saving dataset."));
-        QMessageBox::critical(this,
-                              QString(tr("Access denied")),
-                              msg);
+        QMessageBox::critical(this, QString(tr("Access denied")), msg);
 
         return;
     }
@@ -369,24 +375,24 @@ void VolbxMain::actionSaveDatasetAsTriggered()
         if (view == nullptr)
             return;
 
-        QString name {save.getChosenDatasetName()};
+        QString name{save.getChosenDatasetName()};
         LOG(LogTypes::IMPORT_EXPORT, "Saving dataset " + name);
-        QString filePath {DatasetInner::getDatasetsDir() +
-                          name +
-                          Constants::getDatasetExtension()};
+        QString filePath{DatasetInner::getDatasetsDir() + name +
+                         Constants::getDatasetExtension()};
         ExportData::saveDataset(filePath, view);
 
-        LOG(LogTypes::IMPORT_EXPORT, "File saved in total time " +
-            QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
-            " seconds.");
+        LOG(LogTypes::IMPORT_EXPORT,
+            "File saved in total time " +
+                QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
+                " seconds.");
     }
 }
 
 bool VolbxMain::loadDataset(Dataset& dataset)
 {
-    //TODO 26/08/2012 Currently try catches part of no memory problems.
-    //Problem is in creating 2d array.
-    //Try to create vector of pointers to 1d arrays.
+    // TODO 26/08/2012 Currently try catches part of no memory problems.
+    // Problem is in creating 2d array.
+    // Try to create vector of pointers to 1d arrays.
     try
     {
         dataset.init();
@@ -395,7 +401,8 @@ bool VolbxMain::loadDataset(Dataset& dataset)
     {
         QString message(tr("Not enough memory to open data. "));
         message.append(tr("Close not needed data,"));
-        message.append(tr(" pick smaller set or use another instance of application."));
+        message.append(
+            tr(" pick smaller set or use another instance of application."));
         QMessageBox::critical(this, tr("Memory problem"), message);
 
         return false;
@@ -410,20 +417,21 @@ void VolbxMain::actionImportDataTriggered()
 
     if (QDialog::Accepted == import.exec())
     {
-        DatasetDefinition* datasetDefinition = import.getSelectedDataset().release();
+        DatasetDefinition* datasetDefinition =
+            import.getSelectedDataset().release();
 
         if (datasetDefinition == nullptr || !datasetDefinition->isValid())
         {
-            QMessageBox::critical(this,
-                                  tr("Import error"),
-                                  tr("Import error encountered, can not continue operation."));
+            QMessageBox::critical(
+                this, tr("Import error"),
+                tr("Import error encountered, can not continue operation."));
             return;
         }
 
-        //Sample data is not needed anymore.
+        // Sample data is not needed anymore.
         datasetDefinition->clearSampleData();
 
-        std::unique_ptr<Dataset> dataset {nullptr};
+        std::unique_ptr<Dataset> dataset{nullptr};
 
         switch (import.getImportDataType())
         {
@@ -442,10 +450,12 @@ void VolbxMain::actionImportDataTriggered()
             case ImportData::IMPORT_TYPE_SPREADSHEET:
             {
                 auto definitionSpreadsheet =
-                    dynamic_cast<DatasetDefinitionSpreadsheet*>(datasetDefinition);
+                    dynamic_cast<DatasetDefinitionSpreadsheet*>(
+                        datasetDefinition);
                 if (nullptr != definitionSpreadsheet)
                 {
-                    dataset = std::make_unique<DatasetSpreadsheet>(definitionSpreadsheet);
+                    dataset = std::make_unique<DatasetSpreadsheet>(
+                        definitionSpreadsheet);
                 }
 
                 break;
@@ -454,8 +464,7 @@ void VolbxMain::actionImportDataTriggered()
 
         if (!dataset)
         {
-            QMessageBox::critical(this,
-                                  tr("Import error"),
+            QMessageBox::critical(this, tr("Import error"),
                                   datasetDefinition->getError());
             return;
         }
@@ -469,11 +478,10 @@ void VolbxMain::actionImportDataTriggered()
     }
 }
 
-
 void VolbxMain::addMainTabForDataset(std::unique_ptr<Dataset> dataset)
 {
-    QString nameForTabBar {dataset->getNameForTabBar()};
-    QString datasetName {dataset->getName()};
+    QString nameForTabBar{dataset->getNameForTabBar()};
+    QString datasetName{dataset->getName()};
     auto mainTab = new MainTab(std::move(dataset), tabWidget_);
     const FilteringProxyModel* proxyModel = mainTab->getCurrentProxyModel();
     if (nullptr != proxyModel)
@@ -498,7 +506,7 @@ void VolbxMain::updateCheckReplyFinished(QNetworkReply* reply)
 {
     reply->deleteLater();
 
-    //Check errors.
+    // Check errors.
     if (Networking::errorsOccuredCheck(reply))
     {
         ui->statusBar->showMessage(tr("Connection error encountered."));
@@ -516,16 +524,14 @@ void VolbxMain::updateCheckReplyFinished(QNetworkReply* reply)
 
     if (newestVersion != QApplication::applicationVersion())
     {
-        QMessageBox::StandardButton answer =
-            QMessageBox::question(nullptr,
-                                  tr("New version"),
-                                  tr("New version is available. Download and install it now?"));
+        QMessageBox::StandardButton answer = QMessageBox::question(
+            nullptr, tr("New version"),
+            tr("New version is available. Download and install it now?"));
 
-        //When user want to update.
+        // When user want to update.
         if (QMessageBox::Yes == answer)
         {
-            if (QFile::exists(QCoreApplication::applicationDirPath() +
-                              '/' +
+            if (QFile::exists(QCoreApplication::applicationDirPath() + '/' +
                               Constants::getUpdaterName() +
                               Constants::getExeFileSuffix()))
             {
@@ -534,11 +540,12 @@ void VolbxMain::updateCheckReplyFinished(QNetworkReply* reply)
             }
             else
             {
-                QMessageBox::critical(nullptr,
-                                      tr("Wrong installation"),
-                                      tr("Installation is corrupted. Could not find file ") +
-                                      Constants::getUpdaterName() + Constants::getExeFileSuffix() + ".\n" +
-                                      tr("Can not use update functionality."));
+                QMessageBox::critical(
+                    nullptr, tr("Wrong installation"),
+                    tr("Installation is corrupted. Could not find file ") +
+                        Constants::getUpdaterName() +
+                        Constants::getExeFileSuffix() + ".\n" +
+                        tr("Can not use update functionality."));
             }
         }
     }

@@ -12,4 +12,4 @@ enum DataFormat
     DATA_FORMAT_DATE
 };
 
-#endif // FORMATS_H
+#endif  // FORMATS_H

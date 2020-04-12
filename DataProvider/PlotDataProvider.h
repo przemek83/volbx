@@ -1,11 +1,11 @@
 #ifndef PLOTDATAPROVIDER_H
 #define PLOTDATAPROVIDER_H
 
+#include <Quantiles.h>
+#include <qwt_series_data.h>
 #include <QDate>
 #include <QMap>
 #include <QObject>
-#include <Quantiles.h>
-#include <qwt_series_data.h>
 #include <QVariant>
 #include <QVector>
 
@@ -51,8 +51,7 @@ public:
      * @param columnFormat format of grouping column.
      */
     void recomputeGroupData(QVector<TransactionData> calcData,
-                            int groupingColumn,
-                            DataFormat columnFormat);
+                            int groupingColumn, DataFormat columnFormat);
 
     /**
      * @brief get number of column used for grouping.
@@ -82,20 +81,18 @@ private:
 
     QVector<TransactionData> calcData_;
 
-    ///Column used for grouping.
-    int groupingColumn_ {Constants::NOT_SET_COLUMN};
+    /// Column used for grouping.
+    int groupingColumn_{Constants::NOT_SET_COLUMN};
 
 Q_SIGNALS:
     void setNewDataForGrouping(QVector<QString> intervalsNames,
                                QVector<Quantiles> quantilesForIntervals,
                                Quantiles quantiles);
 
-    void basicPlotDataChanged(QVector<QPointF> data,
-                              Quantiles quantiles,
+    void basicPlotDataChanged(QVector<QPointF> data, Quantiles quantiles,
                               QVector<QPointF> linearRegression);
 
-    void basicDataChanged(QVector<double> data,
-                          Quantiles quantiles);
+    void basicDataChanged(QVector<double> data, Quantiles quantiles);
 };
 
-#endif // PLOTDATAPROVIDER_H
+#endif  // PLOTDATAPROVIDER_H

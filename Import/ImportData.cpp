@@ -18,33 +18,29 @@
 #include "SpreadsheetsImportTab.h"
 #include "ui_ImportData.h"
 
-ImportData::ImportData(QWidget* parent) :
-    QDialog(parent),
-    ui(new Ui::ImportData)
+ImportData::ImportData(QWidget* parent)
+    : QDialog(parent), ui(new Ui::ImportData)
 {
     ui->setupUi(this);
 
-    auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Open | QDialogButtonBox::Cancel,
-                                          Qt::Horizontal,
-                                          this);
+    auto buttonBox =
+        new QDialogButtonBox(QDialogButtonBox::Open | QDialogButtonBox::Cancel,
+                             Qt::Horizontal, this);
 
-    auto enableOpenButton = [ = ](bool activate)
-    {
+    auto enableOpenButton = [=](bool activate) {
         buttonBox->button(QDialogButtonBox::Open)->setEnabled(activate);
     };
 
     // Create tabs.
     auto datasetsTab = new DatasetImportTab(ui->tabWidget);
     connect(datasetsTab, &ImportTab::definitionIsReady, enableOpenButton);
-    ui->tabWidget->insertTab(static_cast<int>(IMPORT_TYPE_INNER),
-                             datasetsTab,
+    ui->tabWidget->insertTab(static_cast<int>(IMPORT_TYPE_INNER), datasetsTab,
                              tr("Datasets"));
 
     auto spreadsheetsTab = new SpreadsheetsImportTab(ui->tabWidget);
     connect(spreadsheetsTab, &ImportTab::definitionIsReady, enableOpenButton);
     ui->tabWidget->insertTab(static_cast<int>(IMPORT_TYPE_SPREADSHEET),
-                             spreadsheetsTab,
-                             tr("Spreadsheets"));
+                             spreadsheetsTab, tr("Spreadsheets"));
 
     // If no datasets, than switch to spreadsheets tab.
     if (datasetsTab->datasetsAreAvailable())
@@ -66,10 +62,7 @@ ImportData::ImportData(QWidget* parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
-ImportData::~ImportData()
-{
-    delete ui;
-}
+ImportData::~ImportData() { delete ui; }
 
 std::unique_ptr<DatasetDefinition> ImportData::getSelectedDataset()
 {

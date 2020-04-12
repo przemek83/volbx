@@ -17,7 +17,8 @@ public:
 
     ~DatasetDefinitionInner() override = default;
 
-    DatasetDefinitionInner& operator=(const DatasetDefinitionInner& other) = delete;
+    DatasetDefinitionInner& operator=(const DatasetDefinitionInner& other) =
+        delete;
     DatasetDefinitionInner(const DatasetDefinitionInner& other) = delete;
 
     DatasetDefinitionInner& operator=(DatasetDefinitionInner&& other) = delete;
@@ -32,29 +33,28 @@ public:
 private:
     void updateSampleDataStrings();
 
-    bool fillData(QuaZip& zip,
-                  QVector<QVector<QVariant> >* dataContainer,
+    bool fillData(QuaZip& zip, QVector<QVector<QVariant> >* dataContainer,
                   bool fillSamplesOnly);
 
-    ///Load definition, strings and semple data.
+    /// Load definition, strings and semple data.
     bool load();
 
-    //Parse given xml and fill inner definition containers.
+    // Parse given xml and fill inner definition containers.
     bool fromXml(QByteArray& definitionContent);
 
-    ///Load definition file from zip.
+    /// Load definition file from zip.
     bool loadXmlFile(QByteArray& definitionContent, QuaZip& zip);
 
-    ///Load strings from zip file.
+    /// Load strings from zip file.
     bool loadStrings(QuaZip& zip);
 
-    ///Array with strings.
-    std::unique_ptr<QVariant[]> stringsTable_ {nullptr};
+    /// Array with strings.
+    std::unique_ptr<QVariant[]> stringsTable_{nullptr};
 
-    ///Zip file.
+    /// Zip file.
     QuaZip zip_;
 
-    ///Add current element into given container.
+    /// Add current element into given container.
     void addElementToContainer(const DataFormat columnFormat,
                                const QString& element,
                                QVector<QVector<QVariant> >* dataContainer,
@@ -62,4 +62,4 @@ private:
                                const int columnToFill) const;
 };
 
-#endif // DATASETDEFINITIONINNER_H
+#endif  // DATASETDEFINITIONINNER_H

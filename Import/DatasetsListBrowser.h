@@ -8,7 +8,7 @@ class QListWidgetItem;
 namespace Ui
 {
 class DatasetsListBrowser;
-} // namespace Ui
+}  // namespace Ui
 
 /**
  * @brief Widget for browsing actual datasets list.
@@ -47,4 +47,4 @@ Q_SIGNALS:
     void currentDatasetChanged(QString current);
 };
 
-#endif // DATASETSLISTBROWSER_H
+#endif  // DATASETSLISTBROWSER_H

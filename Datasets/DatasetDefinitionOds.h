@@ -2,8 +2,8 @@
 #define DATASETDEFINITIONODS_H
 
 #include <quazip5/quazip.h>
-#include <QXmlStreamReader>
 #include <quazip5/quazipfile.h>
+#include <QXmlStreamReader>
 
 #include "DatasetDefinitionSpreadsheet.h"
 
@@ -39,12 +39,11 @@ private:
 
     bool getColumnTypes(QuaZip& zip, const QString& sheetName) override;
 
-    bool openZipAndMoveToSecondRow(QuaZip& zip,
-                                   const QString& sheetName,
+    bool openZipAndMoveToSecondRow(QuaZip& zip, const QString& sheetName,
                                    QuaZipFile& zipFile,
                                    QXmlStreamReader& xmlStreamReader);
 
     QStringList sheetNames_;
 };
 
-#endif // DATASETDEFINITIONODS_H
+#endif  // DATASETDEFINITIONODS_H

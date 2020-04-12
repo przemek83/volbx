@@ -23,7 +23,8 @@ static void overwriteUpdaterfIfNeeded()
     if (QFile::exists(updaterFile + Constants::getTemporaryFileSuffix()))
     {
         LOG(LogTypes::APP, "Overwriting " + updaterFile + " by file " +
-            updaterFile + Constants::getTemporaryFileSuffix());
+                               updaterFile +
+                               Constants::getTemporaryFileSuffix());
 
         QFile::remove(updaterFile);
         QFile::rename(updaterFile + Constants::getTemporaryFileSuffix(),
@@ -43,7 +44,7 @@ int main(int argc, char* argv[])
 
     overwriteUpdaterfIfNeeded();
 
-    //Create new or load existing config.
+    // Create new or load existing config.
     Configuration::getInstance();
 
     VolbxMain w;

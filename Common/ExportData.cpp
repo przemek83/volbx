@@ -1,11 +1,11 @@
 #include "ExportData.h"
 
 #include <ProgressBarCounter.h>
+#include <QwtBleUtilities.h>
+#include <quazip5/quazipfile.h>
 #include <QAbstractItemView>
 #include <QApplication>
 #include <QClipboard>
-#include <quazip5/quazipfile.h>
-#include <QwtBleUtilities.h>
 
 #include "ModelsAndViews/FilteringProxyModel.h"
 #include "ModelsAndViews/TableModel.h"
@@ -15,14 +15,12 @@
 
 namespace
 {
-constexpr char csvSeparator_ {';'};
+constexpr char csvSeparator_{';'};
 
-constexpr char tsvSeparator_ {'\t'};
+constexpr char tsvSeparator_{'\t'};
 
-void variantToString(const QVariant& variant,
-                     QByteArray* destinationArray,
-                     char separator,
-                     bool innerFormat)
+void variantToString(const QVariant& variant, QByteArray* destinationArray,
+                     char separator, bool innerFormat)
 {
     switch (variant.type())
     {
@@ -35,7 +33,8 @@ void variantToString(const QVariant& variant,
             }
             else
             {
-                QString value(QwtBleUtilities::doubleToStringUsingLocale(variant.toDouble(), 2));
+                QString value(QwtBleUtilities::doubleToStringUsingLocale(
+                    variant.toDouble(), 2));
                 destinationArray->append(value);
             }
             break;
@@ -44,7 +43,8 @@ void variantToString(const QVariant& variant,
         case QVariant::Date:
         case QVariant::DateTime:
         {
-            static const QString defDateFormat(QwtBleUtilities::getDefaultDateFormat());
+            static const QString defDateFormat(
+                QwtBleUtilities::getDefaultDateFormat());
             destinationArray->append(variant.toDate().toString(defDateFormat));
             break;
         }
@@ -54,10 +54,10 @@ void variantToString(const QVariant& variant,
             QString tmpString(variant.toString());
             if (separator == tsvSeparator_)
             {
-                //Simplification -> change tabs and new lines into spaces.
-                tmpString =
-                    tmpString.replace(QRegExp("[" + QString(tsvSeparator_) + "\n" + "]"),
-                                      QStringLiteral(" "));
+                // Simplification -> change tabs and new lines into spaces.
+                tmpString = tmpString.replace(
+                    QRegExp("[" + QString(tsvSeparator_) + "\n" + "]"),
+                    QStringLiteral(" "));
                 destinationArray->append(tmpString);
             }
             else
@@ -78,8 +78,7 @@ void variantToString(const QVariant& variant,
 }
 
 void dataToByteArray(const QAbstractItemView* view,
-                     QByteArray* destinationArray,
-                     char separator,
+                     QByteArray* destinationArray, char separator,
                      bool innerFormat)
 {
     /*
@@ -94,12 +93,13 @@ void dataToByteArray(const QAbstractItemView* view,
 
     int proxyColumnCount = proxyModel->columnCount();
 
-    //Save column names.
+    // Save column names.
     if (!innerFormat)
     {
         for (int j = 0; j < proxyColumnCount; ++j)
         {
-            destinationArray->append(proxyModel->headerData(j, Qt::Horizontal).toString());
+            destinationArray->append(
+                proxyModel->headerData(j, Qt::Horizontal).toString());
             if (j != proxyColumnCount - 1)
             {
                 destinationArray->append(separator);
@@ -132,9 +132,7 @@ void dataToByteArray(const QAbstractItemView* view,
 
             if (!actualField.isNull())
             {
-                variantToString(actualField,
-                                destinationArray,
-                                separator,
+                variantToString(actualField, destinationArray, separator,
                                 innerFormat);
             }
 
@@ -142,27 +140,27 @@ void dataToByteArray(const QAbstractItemView* view,
             {
                 destinationArray->append(separator);
             }
-
         }
         destinationArray->append("\n");
         bar.updateProgress(i + 1);
     }
 }
 
-std::tuple<bool, int, QByteArray> saveDatasetDataFile(QuaZipFile& zipFile,
-                                                      const QAbstractItemView* view,
-                                                      QAbstractItemModel* proxyModel,
-                                                      ProgressBarCounter& bar)
+std::tuple<bool, int, QByteArray> saveDatasetDataFile(
+    QuaZipFile& zipFile, const QAbstractItemView* view,
+    QAbstractItemModel* proxyModel, ProgressBarCounter& bar)
 {
-    bool result = zipFile.open(QIODevice::WriteOnly,
-                               QuaZipNewInfo(Constants::getDatasetDataFilename()));
+    bool result =
+        zipFile.open(QIODevice::WriteOnly,
+                     QuaZipNewInfo(Constants::getDatasetDataFilename()));
     if (!result)
     {
         LOG(LogTypes::IMPORT_EXPORT, "Error while saving data file.");
         return {false, 0, {}};
     }
 
-    bool multiSelection = (QAbstractItemView::MultiSelection == view->selectionMode());
+    bool multiSelection =
+        (QAbstractItemView::MultiSelection == view->selectionMode());
     QItemSelectionModel* selectionModel = view->selectionModel();
 
     int proxyRowCount = proxyModel->rowCount();
@@ -174,7 +172,8 @@ std::tuple<bool, int, QByteArray> saveDatasetDataFile(QuaZipFile& zipFile,
     QByteArray stringsContent;
     for (int i = 0; i < proxyRowCount; ++i)
     {
-        if (multiSelection && !selectionModel->isSelected(proxyModel->index(i, 0)))
+        if (multiSelection &&
+            !selectionModel->isSelected(proxyModel->index(i, 0)))
         {
             continue;
         }
@@ -197,7 +196,8 @@ std::tuple<bool, int, QByteArray> saveDatasetDataFile(QuaZipFile& zipFile,
                     case QVariant::Date:
                     case QVariant::DateTime:
                     {
-                        zipFile.write(QByteArray::number(actualField.toDate().toJulianDay()));
+                        zipFile.write(QByteArray::number(
+                            actualField.toDate().toJulianDay()));
                         break;
                     }
 
@@ -209,7 +209,7 @@ std::tuple<bool, int, QByteArray> saveDatasetDataFile(QuaZipFile& zipFile,
                         {
                             index = nextIndex;
                             tmpString.replace(newLine, QLatin1String("\t"));
-                            //No new line for first string.
+                            // No new line for first string.
                             if (1 != nextIndex)
                             {
                                 stringsContent.append(newLine);
@@ -250,8 +250,9 @@ std::tuple<bool, int, QByteArray> saveDatasetDataFile(QuaZipFile& zipFile,
 bool saveDatasetStringsFile(QuaZipFile& zipFile,
                             const QByteArray& stringsContent)
 {
-    bool result = zipFile.open(QIODevice::WriteOnly,
-                               QuaZipNewInfo(Constants::getDatasetStringsFilename()));
+    bool result =
+        zipFile.open(QIODevice::WriteOnly,
+                     QuaZipNewInfo(Constants::getDatasetStringsFilename()));
     if (!result || zipFile.write(stringsContent) == -1)
     {
         LOG(LogTypes::IMPORT_EXPORT, "Error while saving strings file.");
@@ -263,8 +264,7 @@ bool saveDatasetStringsFile(QuaZipFile& zipFile,
 }
 
 bool saveDatasetDefinitionFile(QuaZipFile& zipFile,
-                               const QAbstractItemView* view,
-                               int rowCount)
+                               const QAbstractItemView* view, int rowCount)
 {
     const TableModel* parentModel =
         (qobject_cast<FilteringProxyModel*>(view->model()))->getParentModel();
@@ -272,8 +272,9 @@ bool saveDatasetDefinitionFile(QuaZipFile& zipFile,
     QByteArray definitionContent;
     parentModel->getDatasetDefinition()->toXml(definitionContent, rowCount);
 
-    bool result = zipFile.open(QIODevice::WriteOnly,
-                               QuaZipNewInfo(Constants::getDatasetDefinitionFilename()));
+    bool result =
+        zipFile.open(QIODevice::WriteOnly,
+                     QuaZipNewInfo(Constants::getDatasetDefinitionFilename()));
     if (!result || zipFile.write(definitionContent) == -1)
     {
         LOG(LogTypes::IMPORT_EXPORT, "Error while saving definition file.");
@@ -283,23 +284,22 @@ bool saveDatasetDefinitionFile(QuaZipFile& zipFile,
 
     return true;
 }
-}; // namespace
+};  // namespace
 
 namespace ExportData
 {
-bool saveDataset(const QString& filePath,
-                 const QAbstractItemView* view)
+bool saveDataset(const QString& filePath, const QAbstractItemView* view)
 {
     Q_ASSERT(view != nullptr);
 
-    //Open archive.
+    // Open archive.
     QuaZip zip(filePath);
     bool openSuccess = zip.open(QuaZip::mdCreate);
     if (!openSuccess)
         return false;
 
-    //Data file, write directly in loop.
-    //Only one zip file in archive can be accessed at a time.
+    // Data file, write directly in loop.
+    // Only one zip file in archive can be accessed at a time.
     QuaZipFile zipFile(&zip);
     auto model = qobject_cast<QAbstractItemModel*>(view->model());
     Q_ASSERT(model != nullptr);
@@ -309,10 +309,8 @@ bool saveDataset(const QString& filePath,
     ProgressBarCounter bar(barTitle, model->rowCount(), nullptr);
     bar.showDetached();
 
-    auto [success, rowCount, stringsContent] = saveDatasetDataFile(zipFile,
-                                                                   view,
-                                                                   model,
-                                                                   bar);
+    auto [success, rowCount, stringsContent] =
+        saveDatasetDataFile(zipFile, view, model, bar);
 
     if (!success)
         return false;
@@ -332,9 +330,7 @@ void quickAsTSV(const QAbstractItemView* view)
     QApplication::clipboard()->setText(QString::fromUtf8(content));
 }
 
-
-bool asCsv(const QAbstractItemView* view,
-           const QString& fileName,
+bool asCsv(const QAbstractItemView* view, const QString& fileName,
            bool innerFormat)
 {
     QByteArray content;
@@ -370,5 +366,4 @@ bool asCsv(const QAbstractItemView* view,
     return ret;
 }
 
-} // namespace ExportData
-
+}  // namespace ExportData

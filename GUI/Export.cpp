@@ -22,39 +22,37 @@
 #include "PlotDockWidget.h"
 #include "ui_Export.h"
 
-Export::Export(QMainWindow* tab, QWidget* parent) :
-    QDialog(parent),
-    ui(new Ui::Export),
-    tab_(tab)
+Export::Export(QMainWindow* tab, QWidget* parent)
+    : QDialog(parent), ui(new Ui::Export), tab_(tab)
 {
     ui->setupUi(this);
 
     connect(ui->save, &QPushButton::clicked, this, &Export::saveClicked);
-    connect(ui->locationSearch, &QPushButton::clicked, this, &Export::locationSearchClicked);
+    connect(ui->locationSearch, &QPushButton::clicked, this,
+            &Export::locationSearchClicked);
 
-    ui->locationLineEdit->setText(Configuration::getInstance().getImportFilePath());
-    ui->prefix->setValidator(new QRegExpValidator(QRegExp(QLatin1String("[\\w]*")), ui->prefix));
-    ui->prefix->setText(tab_->windowTitle().replace(QRegExp(QLatin1String("[^\\w]")), QLatin1String("")));
+    ui->locationLineEdit->setText(
+        Configuration::getInstance().getImportFilePath());
+    ui->prefix->setValidator(
+        new QRegExpValidator(QRegExp(QLatin1String("[\\w]*")), ui->prefix));
+    ui->prefix->setText(tab_->windowTitle().replace(
+        QRegExp(QLatin1String("[^\\w]")), QLatin1String("")));
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
-Export::~Export()
-{
-    delete ui;
-}
+Export::~Export() { delete ui; }
 
 void Export::saveClicked()
 {
     QDir dir(ui->locationLineEdit->text());
 
-    if (ui->locationLineEdit->text().isEmpty() ||
-        !dir.exists() ||
+    if (ui->locationLineEdit->text().isEmpty() || !dir.exists() ||
         !QFile::permissions(dir.path()).testFlag(QFile::WriteUser))
     {
-        QMessageBox::warning(this,
-                             QObject::tr("Error"),
-                             QObject::tr("Can not create file in given location."));
+        QMessageBox::warning(
+            this, QObject::tr("Error"),
+            QObject::tr("Can not create file in given location."));
         return;
     }
 
@@ -78,7 +76,8 @@ void Export::saveOnDisk()
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
 
-    const QString dateString(QDate::currentDate().toString(exportFilesDateFormat_));
+    const QString dateString(
+        QDate::currentDate().toString(exportFilesDateFormat_));
     const QString fileName(ui->locationLineEdit->text() + "/" +
                            ui->prefix->text() + "_" + dateString);
     QList<PlotDockWidget*> docks = tab_->findChildren<PlotDockWidget*>();
@@ -90,7 +89,6 @@ void Export::saveOnDisk()
             QString name(fileName + "_" + plot->windowTitle() + ".png");
             ExportImage::exportAsImage(plot, name);
         }
-
     }
     auto view = tab_->findChild<DataView*>();
     Q_ASSERT(view != nullptr);
@@ -107,20 +105,20 @@ void Export::saveOnDisk()
 
         QFile file(fileName + "_" + tr("data") + ".xlsx");
         ExportXlsx exportXlsx;
-        connect(&exportXlsx, &ExportXlsx::updateProgress,
-                &bar, &ProgressBarCounter::updateProgress);
+        connect(&exportXlsx, &ExportXlsx::updateProgress, &bar,
+                &ProgressBarCounter::updateProgress);
         if (exportXlsx.exportView(*view, file))
-            LOG(LogTypes::IMPORT_EXPORT, "Data exported in " +
-                QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
-                " seconds.");
+            LOG(LogTypes::IMPORT_EXPORT,
+                "Data exported in " +
+                    QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
+                    " seconds.");
         else
             LOG(LogTypes::IMPORT_EXPORT, "Can not open XLSX template file.");
     }
     else
     {
-        ExportData::asCsv(view,
-                          fileName + "_" + tr("data") + ".csv",
-                          false); //false = not inner format
+        ExportData::asCsv(view, fileName + "_" + tr("data") + ".csv",
+                          false);  // false = not inner format
     }
 
     QApplication::restoreOverrideCursor();

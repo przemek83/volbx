@@ -8,7 +8,7 @@ class QMainWindow;
 namespace Ui
 {
 class Export;
-} // namespace Ui
+}  // namespace Ui
 
 /**
  * @brief Export window. Exports data of active tab and all plots (if opened)
@@ -39,7 +39,7 @@ private:
 
     void saveOnDisk();
 
-    const QString exportFilesDateFormat_ {QStringLiteral("yyyyMMdd")};
+    const QString exportFilesDateFormat_{QStringLiteral("yyyyMMdd")};
 };
 
-#endif // EXPORT_H
+#endif  // EXPORT_H

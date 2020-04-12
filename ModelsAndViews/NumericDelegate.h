@@ -20,7 +20,8 @@ public:
     NumericDelegate& operator=(NumericDelegate&& other) = delete;
     NumericDelegate(NumericDelegate&& other) = delete;
 
-    QString displayText(const QVariant& value, const QLocale& locale) const override;
+    QString displayText(const QVariant& value,
+                        const QLocale& locale) const override;
 };
 
-#endif // NUMERICDELEGATE_H
+#endif  // NUMERICDELEGATE_H

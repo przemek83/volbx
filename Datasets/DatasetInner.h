@@ -21,23 +21,24 @@ public:
     DatasetInner& operator=(DatasetInner&& other) = delete;
     DatasetInner(DatasetInner&& other) = delete;
 
-    ///Return names without extension of available datasets in datasets dir.
+    /// Return names without extension of available datasets in datasets dir.
     static QStringList getListOfAvailableDatasets();
 
-    ///Returns datasets directory/folder.
+    /// Returns datasets directory/folder.
     static QString getDatasetsDir();
 
     void init() override;
 
-    ///Checks if it is possible to use default datasets directory to store data.
+    /// Checks if it is possible to use default datasets directory to store
+    /// data.
     static bool datasetDirExistAndUserHavePermisions();
 
-    ///Removes given dataset from disk.
+    /// Removes given dataset from disk.
     static bool removeDataset(const QString& name);
 
 private:
-    ///Name of folder with datasets.
+    /// Name of folder with datasets.
     static const char* datasetsDir_;
 };
 
-#endif // DATASETINNER_H
+#endif  // DATASETINNER_H

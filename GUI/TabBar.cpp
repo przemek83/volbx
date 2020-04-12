@@ -9,15 +9,15 @@
 
 #include "Common/Constants.h"
 
-TabBar::TabBar(QWidget* parent) :
-    QTabBar(parent)
+TabBar::TabBar(QWidget* parent) : QTabBar(parent)
 {
     lineEdit_.setParent(this);
-    lineEdit_.setValidator(new QRegExpValidator(QRegExp(Constants::getDatasetNameRegExp()), this));
+    lineEdit_.setValidator(
+        new QRegExpValidator(QRegExp(Constants::getDatasetNameRegExp()), this));
     lineEdit_.hide();
 
-    connect(&lineEdit_, &QLineEdit::editingFinished,
-            this, &TabBar::editingOfnameFinished);
+    connect(&lineEdit_, &QLineEdit::editingFinished, this,
+            &TabBar::editingOfnameFinished);
 
     lineEdit_.installEventFilter(this);
 }
@@ -42,14 +42,16 @@ void TabBar::editingOfnameFinished()
 {
     if (lineEdit_.isVisible())
     {
-        //Currently in eksport window is used name set as window title.
+        // Currently in eksport window is used name set as window title.
         int index = currentIndex();
         lineEdit_.hide();
         QString currentTabText = tabText(index);
 
         auto tabWidget = dynamic_cast<QTabWidget*>(parentWidget());
-        auto mainWindow = dynamic_cast<QMainWindow*>(tabWidget->currentWidget());
-        QString suffix = currentTabText.remove(0, mainWindow->windowTitle().length());
+        auto mainWindow =
+            dynamic_cast<QMainWindow*>(tabWidget->currentWidget());
+        QString suffix =
+            currentTabText.remove(0, mainWindow->windowTitle().length());
         setTabText(index, lineEdit_.text() + suffix);
         mainWindow->setWindowTitle(lineEdit_.text());
     }
@@ -67,6 +69,6 @@ bool TabBar::eventFilter(QObject* obj, QEvent* event)
         }
     }
 
-    //Standard event processing
+    // Standard event processing
     return QObject::eventFilter(obj, event);
 }

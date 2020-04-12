@@ -5,18 +5,16 @@
 
 #include "Datasets/DatasetDefinition.h"
 
-ColumnsPreview::ColumnsPreview(QWidget* parent) :
-    QTableWidget(parent)
+ColumnsPreview::ColumnsPreview(QWidget* parent) : QTableWidget(parent)
 {
     setSelectionBehavior(QAbstractItemView::SelectColumns);
 
-    connect(this,
-            &QTableWidget::itemSelectionChanged,
-            this,
+    connect(this, &QTableWidget::itemSelectionChanged, this,
             &ColumnsPreview::onItemSelectionChanged);
 }
 
-void ColumnsPreview::setDatasetDefinitionSampleInfo(const DatasetDefinition& datasetDefinition)
+void ColumnsPreview::setDatasetDefinitionSampleInfo(
+    const DatasetDefinition& datasetDefinition)
 {
     clear();
     setColumnCount(0);
@@ -34,7 +32,8 @@ void ColumnsPreview::setDatasetDefinitionSampleInfo(const DatasetDefinition& dat
 
     setHorizontalHeaderLabels(labels);
 
-    const QVector<QVector<QVariant> >* sampleData = datasetDefinition.getSampleData();
+    const QVector<QVector<QVariant> >* sampleData =
+        datasetDefinition.getSampleData();
 
     int rows = sampleData->size();
     setRowCount(rows);
@@ -45,7 +44,8 @@ void ColumnsPreview::setDatasetDefinitionSampleInfo(const DatasetDefinition& dat
     {
         for (int j = 0; j < columns; ++j)
         {
-            QTableWidgetItem* item = new QTableWidgetItem(sampleData->at(i).at(j).toString());
+            QTableWidgetItem* item =
+                new QTableWidgetItem(sampleData->at(i).at(j).toString());
             item->setFlags(item->flags() & ~Qt::ItemIsEditable);
             setItem(i, j, item);
         }

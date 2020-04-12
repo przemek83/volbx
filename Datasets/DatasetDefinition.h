@@ -3,11 +3,11 @@
 
 #include <memory>
 
-#include <QString>
-#include <QVector>
-#include <QStringList>
 #include <QMap>
+#include <QString>
+#include <QStringList>
 #include <QVariant>
+#include <QVector>
 
 #include "Common/Formats.h"
 #include "Common/SpecialColumns.h"
@@ -43,7 +43,8 @@ public:
         return columnsFormat_[column];
     }
 
-    std::tuple<bool, int> getSpecialColumnIfExists(SpecialColumn columnTag) const;
+    std::tuple<bool, int> getSpecialColumnIfExists(
+        SpecialColumn columnTag) const;
 
     QString getColumnName(int column) const;
 
@@ -51,7 +52,7 @@ public:
 
     QString getError() const;
 
-    ///Clear sample data when it is not necessary.
+    /// Clear sample data when it is not necessary.
     void clearSampleData();
 
     const QVector<QVector<QVariant> >* getSampleData() const;
@@ -66,38 +67,38 @@ public:
 
     virtual std::unique_ptr<QVariant[]> getSharedStringTable() = 0;
 
-    ///Definition to bytes array.
+    /// Definition to bytes array.
     void toXml(QByteArray& data, int rowCountNumber) const;
 
 protected:
-    int rowsCount_ {0};
+    int rowsCount_{0};
 
-    int columnsCount_ {0};
+    int columnsCount_{0};
 
     QVector<DataFormat> columnsFormat_;
 
     QStringList headerColumnNames_;
 
-    ///Stores information about columns which are tagged as "special".
+    /// Stores information about columns which are tagged as "special".
     QMap<SpecialColumn, int> specialColumns_;
 
-    ///Dataset name.
+    /// Dataset name.
     const QString name_;
 
     QString error_;
 
     QVector<QVector<QVariant> > sampleData_;
 
-    ///Active columns information.
+    /// Active columns information.
     QVector<bool> activeColumns_;
 
-    ///If empty cell is encountered insert defined string.
+    /// If empty cell is encountered insert defined string.
     const QString emptyColName_;
 
     void rebuildDefinitonUsingActiveColumnsOnly();
 
-    ///Number of lines in sample data.
-    static constexpr int SAMPLE_SIZE {10};
+    /// Number of lines in sample data.
+    static constexpr int SAMPLE_SIZE{10};
 
     bool isSpecialColumnTagged(SpecialColumn column) const;
 
@@ -112,7 +113,7 @@ protected:
     const QString DATASET_COLUMN_SPECIAL_TAG{QStringLiteral("SPECIAL_TAG")};
     const QString DATASET_ROW_COUNT{QStringLiteral("ROW_COUNT")};
 
-    bool valid_ {false};
+    bool valid_{false};
 };
 
-#endif // DATASETDEFINITION_H
+#endif  // DATASETDEFINITION_H

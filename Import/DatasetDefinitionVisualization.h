@@ -12,7 +12,7 @@ class QTreeWidgetItem;
 namespace Ui
 {
 class DatasetDefinitionVisualization;
-} // namespace Ui
+}  // namespace Ui
 
 /**
  * @brief Widget for visualization of dataset definition.
@@ -25,13 +25,18 @@ public:
 
     ~DatasetDefinitionVisualization() override;
 
-    DatasetDefinitionVisualization& operator=(const DatasetDefinitionVisualization& other) = delete;
-    DatasetDefinitionVisualization(const DatasetDefinitionVisualization& other) = delete;
+    DatasetDefinitionVisualization& operator=(
+        const DatasetDefinitionVisualization& other) = delete;
+    DatasetDefinitionVisualization(
+        const DatasetDefinitionVisualization& other) = delete;
 
-    DatasetDefinitionVisualization& operator=(DatasetDefinitionVisualization&& other) = delete;
-    DatasetDefinitionVisualization(DatasetDefinitionVisualization&& other) = delete;
+    DatasetDefinitionVisualization& operator=(
+        DatasetDefinitionVisualization&& other) = delete;
+    DatasetDefinitionVisualization(DatasetDefinitionVisualization&& other) =
+        delete;
 
-    void setDatasetDefiniton(std::unique_ptr<DatasetDefinition> datasetDefinition);
+    void setDatasetDefiniton(
+        std::unique_ptr<DatasetDefinition> datasetDefinition);
 
     void clear();
 
@@ -54,7 +59,7 @@ private:
 
     const QString typeNameDate_;
 
-    std::unique_ptr<DatasetDefinition> datasetDefinition_ {nullptr};
+    std::unique_ptr<DatasetDefinition> datasetDefinition_{nullptr};
 
 private Q_SLOTS:
     void searchTextChanged(const QString& newText);
@@ -77,4 +82,4 @@ Q_SIGNALS:
     void currentColumnNeedSync(int currentColumn);
 };
 
-#endif // DATASETDEFINITIONVISUALIZATION_H
+#endif  // DATASETDEFINITIONVISUALIZATION_H

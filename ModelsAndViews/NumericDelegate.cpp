@@ -1,12 +1,10 @@
 #include "NumericDelegate.h"
 
-#include <QDebug>
 #include <QwtBleUtilities.h>
+#include <QDebug>
 
-NumericDelegate::NumericDelegate(QObject* parent)
-    : QStyledItemDelegate(parent)
+NumericDelegate::NumericDelegate(QObject* parent) : QStyledItemDelegate(parent)
 {
-
 }
 
 QString NumericDelegate::displayText(const QVariant& value,

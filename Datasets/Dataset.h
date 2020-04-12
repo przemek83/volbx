@@ -3,9 +3,9 @@
 
 #include <memory>
 
+#include <QStringList>
 #include <QVariant>
 #include <QVector>
-#include <QStringList>
 
 #include "Common/Formats.h"
 #include "Common/SpecialColumns.h"
@@ -55,7 +55,8 @@ public:
 
     QStringList getStringList(int column) const;
 
-    std::tuple<bool, int> getSpecialColumnIfExists(SpecialColumn columnTag) const;
+    std::tuple<bool, int> getSpecialColumnIfExists(
+        SpecialColumn columnTag) const;
 
     QString getHeaderName(int column) const;
 
@@ -70,17 +71,18 @@ public:
     QString getNameForTabBar();
 
 protected:
-    ///Definition done to create dataset. Memory owned by dataset object.
-    DatasetDefinition* datasetDefinition_ {nullptr};
+    /// Definition done to create dataset. Memory owned by dataset object.
+    DatasetDefinition* datasetDefinition_{nullptr};
 
-    ///Data of dataset. String columns got indexes of strings in sharedStrings_.
+    /// Data of dataset. String columns got indexes of strings in
+    /// sharedStrings_.
     QVector<QVector<QVariant> > data_;
 
-    ///Array with shared strings, Done for memory optimization.
-    std::unique_ptr<QVariant[]> sharedStrings_ {nullptr};
+    /// Array with shared strings, Done for memory optimization.
+    std::unique_ptr<QVariant[]> sharedStrings_{nullptr};
 
-    ///Dataset is valid.
-    bool valid_ {false};
+    /// Dataset is valid.
+    bool valid_{false};
 };
 
-#endif // DATASET_H
+#endif  // DATASET_H

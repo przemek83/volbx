@@ -10,18 +10,17 @@
 
 #include "DockTitleBar.h"
 
-PlotDockWidget::PlotDockWidget(const QString& title,
-                               QWidget* parent,
+PlotDockWidget::PlotDockWidget(const QString& title, QWidget* parent,
                                Qt::WindowFlags flags)
     : DockWidget(title, parent, flags)
 {
     titleBarWidget_.getExportButton()->setVisible(true);
     titleBarWidget_.getResetButton()->setVisible(true);
 
-    connect(titleBarWidget_.getExportButton(), &QPushButton::clicked,
-            this, &PlotDockWidget::quickExportData);
-    connect(titleBarWidget_.getResetButton(), &QPushButton::clicked,
-            this, &PlotDockWidget::resetPlot);
+    connect(titleBarWidget_.getExportButton(), &QPushButton::clicked, this,
+            &PlotDockWidget::quickExportData);
+    connect(titleBarWidget_.getResetButton(), &QPushButton::clicked, this,
+            &PlotDockWidget::resetPlot);
 }
 
 void PlotDockWidget::quickExportData()

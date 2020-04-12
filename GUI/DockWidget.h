@@ -33,4 +33,4 @@ private Q_SLOTS:
     void manageFloating();
 };
 
-#endif // DOCKWIDGET_H
+#endif  // DOCKWIDGET_H

@@ -3,8 +3,8 @@
 
 #include <functional>
 
-#include <QTabWidget>
 #include <QDate>
+#include <QTabWidget>
 
 class TableModel;
 class DataView;
@@ -38,9 +38,7 @@ public:
 public Q_SLOTS:
     void setTextFilterInProxy(int column, const QStringList& bannedStrings);
 
-    void setDateFilterInProxy(int column,
-                              QDate from,
-                              QDate to,
+    void setDateFilterInProxy(int column, QDate from, QDate to,
                               bool filterEmptyDates);
 
     void setNumericFilterInProxy(int column, double from, double to);
@@ -61,7 +59,8 @@ private:
 
     MainTab* getCurrentMainTab();
 
-    QVector<std::pair<QString, int>> getStringColumnsWithIndexes(TableModel* model) const;
+    QVector<std::pair<QString, int>> getStringColumnsWithIndexes(
+        TableModel* model) const;
 };
 
-#endif // MAINTABWIDGET_H
+#endif  // MAINTABWIDGET_H

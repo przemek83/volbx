@@ -25,4 +25,4 @@ private:
     Q_DISABLE_COPY(Common)
 };
 
-#endif // COMMON_H
+#endif  // COMMON_H

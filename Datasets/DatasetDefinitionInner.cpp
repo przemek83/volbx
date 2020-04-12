@@ -3,12 +3,12 @@
 #include <memory>
 
 #include <ProgressBarCounter.h>
+#include <quazip5/quazipfile.h>
 #include <QApplication>
 #include <QDebug>
 #include <QDomDocument>
 #include <QFile>
 #include <QTextStream>
-#include <quazip5/quazipfile.h>
 
 #include "Common/Constants.h"
 #include "Shared/Logger.h"
@@ -18,20 +18,16 @@
 DatasetDefinitionInner::DatasetDefinitionInner(const QString& name)
     : DatasetDefinition(name)
 {
-    zip_.setZipName(DatasetInner::getDatasetsDir() +
-                    name_ +
+    zip_.setZipName(DatasetInner::getDatasetsDir() + name_ +
                     Constants::getDatasetExtension());
     valid_ = load();
 }
 
-bool DatasetDefinitionInner::isValid() const
-{
-    return valid_;
-}
+bool DatasetDefinitionInner::isValid() const { return valid_; }
 
 bool DatasetDefinitionInner::load()
 {
-    //Open archive.
+    // Open archive.
     bool result = zip_.open(QuaZip::mdUnzip);
     if (!result)
     {
@@ -63,10 +59,11 @@ bool DatasetDefinitionInner::load()
         return false;
     }
 
-    int rowsCountForSamples = (rowCount() > SAMPLE_SIZE ? SAMPLE_SIZE : rowCount());
+    int rowsCountForSamples =
+        (rowCount() > SAMPLE_SIZE ? SAMPLE_SIZE : rowCount());
     sampleData_.resize(rowsCountForSamples);
 
-    for (int i = 0 ; i < rowsCountForSamples ; ++i)
+    for (int i = 0; i < rowsCountForSamples; ++i)
     {
         sampleData_[i].resize(columnsCount_);
     }
@@ -79,7 +76,7 @@ bool DatasetDefinitionInner::load()
         return false;
     }
 
-    //Set proper strings for sample data.
+    // Set proper strings for sample data.
     updateSampleDataStrings();
 
     zip_.close();
@@ -95,13 +92,15 @@ void DatasetDefinitionInner::updateSampleDataStrings()
         {
             for (auto& sampleDataRow : sampleData_)
             {
-                sampleDataRow[i] = stringsTable_[sampleDataRow[i].toULongLong()];
+                sampleDataRow[i] =
+                    stringsTable_[sampleDataRow[i].toULongLong()];
             }
         }
     }
 }
 
-bool DatasetDefinitionInner::loadXmlFile(QByteArray& definitionContent, QuaZip& zip)
+bool DatasetDefinitionInner::loadXmlFile(QByteArray& definitionContent,
+                                         QuaZip& zip)
 {
     QuaZipFile zipFile(&zip);
     zip.setCurrentFile(Constants::getDatasetDefinitionFilename());
@@ -111,7 +110,7 @@ bool DatasetDefinitionInner::loadXmlFile(QByteArray& definitionContent, QuaZip& 
     {
         LOG(LogTypes::IMPORT_EXPORT,
             "Can not open xml file " +
-            Constants::getDatasetDefinitionFilename() + ".");
+                Constants::getDatasetDefinitionFilename() + ".");
         return result;
     }
 
@@ -132,7 +131,7 @@ bool DatasetDefinitionInner::fromXml(QByteArray& definitionContent)
 
     QDomDocument xmlDocument(name_);
 
-    //If parsing failure than exit.
+    // If parsing failure than exit.
     if (!xmlDocument.setContent(definitionContent))
     {
         LOG(LogTypes::IMPORT_EXPORT, "Xml file is corrupted.");
@@ -143,20 +142,19 @@ bool DatasetDefinitionInner::fromXml(QByteArray& definitionContent)
 
     QDomElement root = xmlDocument.documentElement();
 
-    //Load columns elements.
-    QDomNodeList columns =
-        root.firstChildElement(DATASET_COLUMNS).childNodes();
+    // Load columns elements.
+    QDomNodeList columns = root.firstChildElement(DATASET_COLUMNS).childNodes();
 
-    LOG(LogTypes::IMPORT_EXPORT, "Read column count: " + QString::number(columns.count()));
+    LOG(LogTypes::IMPORT_EXPORT,
+        "Read column count: " + QString::number(columns.count()));
 
     columnsCount_ = columns.size();
     for (int i = 0; i < columnsCount_; ++i)
     {
         QDomElement column = columns.at(i).toElement();
-        headerColumnNames_.push_back(
-            column.attribute(DATASET_COLUMN_NAME));
-        columnsFormat_.push_back(
-            static_cast<DataFormat>(column.attribute(DATASET_COLUMN_FORMAT).toInt()));
+        headerColumnNames_.push_back(column.attribute(DATASET_COLUMN_NAME));
+        columnsFormat_.push_back(static_cast<DataFormat>(
+            column.attribute(DATASET_COLUMN_FORMAT).toInt()));
 
         QString special = column.attribute(DATASET_COLUMN_SPECIAL_TAG);
         if (0 != special.compare(QLatin1String("")))
@@ -165,16 +163,17 @@ bool DatasetDefinitionInner::fromXml(QByteArray& definitionContent)
         }
     }
 
-    //Read row count.
+    // Read row count.
     const QString rowCountTag(DATASET_ROW_COUNT);
-    rowsCount_ = root.firstChildElement(rowCountTag).attribute(rowCountTag).toInt();
+    rowsCount_ =
+        root.firstChildElement(rowCountTag).attribute(rowCountTag).toInt();
 
     return true;
 }
 
-bool DatasetDefinitionInner::fillData(QuaZip& zip,
-                                      QVector<QVector<QVariant> >* dataContainer,
-                                      bool fillSamplesOnly)
+bool DatasetDefinitionInner::fillData(
+    QuaZip& zip, QVector<QVector<QVariant> >* dataContainer,
+    bool fillSamplesOnly)
 {
     QuaZipFile zipFile(&zip);
     zip.setCurrentFile(Constants::getDatasetDataFilename());
@@ -184,13 +183,12 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
     {
         LOG(LogTypes::IMPORT_EXPORT,
             "Can not open csv file " +
-            QString(Constants::getDatasetDataFilename()) + ".");
+                QString(Constants::getDatasetDataFilename()) + ".");
         return result;
     }
 
     LOG(LogTypes::IMPORT_EXPORT,
-        "Csv file " + Constants::getDatasetDataFilename() +
-        " opened.");
+        "Csv file " + Constants::getDatasetDataFilename() + " opened.");
 
     QTextStream stream(&zipFile);
     stream.setCodec("UTF-8");
@@ -198,9 +196,9 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
     QString barTitle =
         Constants::getProgressBarTitle(Constants::BarTitle::LOADING);
     std::unique_ptr<ProgressBarCounter> bar =
-        (fillSamplesOnly ?
-         nullptr :
-         std::make_unique<ProgressBarCounter>(barTitle, rowCount(), nullptr));
+        (fillSamplesOnly ? nullptr
+                         : std::make_unique<ProgressBarCounter>(
+                               barTitle, rowCount(), nullptr));
     if (bar != nullptr)
         bar->showDetached();
 
@@ -222,17 +220,14 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
         {
             const QString& element = line.at(i);
 
-            //If column is not active do nothing.
+            // If column is not active do nothing.
             if (!fillSamplesOnly && !activeColumns_[i])
             {
                 continue;
             }
 
-            addElementToContainer(getColumnFormat(i),
-                                  element,
-                                  dataContainer,
-                                  lineCounter,
-                                  columnToFill);
+            addElementToContainer(getColumnFormat(i), element, dataContainer,
+                                  lineCounter, columnToFill);
 
             columnToFill++;
         }
@@ -245,10 +240,10 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
         }
     }
 
-    LOG(LogTypes::IMPORT_EXPORT, "Loaded " + QString::number(dataContainer->size()) +
-        " rows in time " +
-        QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
-        " seconds.");
+    LOG(LogTypes::IMPORT_EXPORT,
+        "Loaded " + QString::number(dataContainer->size()) + " rows in time " +
+            QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
+            " seconds.");
 
     zipFile.close();
 
@@ -260,12 +255,10 @@ bool DatasetDefinitionInner::fillData(QuaZip& zip,
     return true;
 }
 
-void
-DatasetDefinitionInner::addElementToContainer(const DataFormat columnFormat,
-                                              const QString& element,
-                                              QVector<QVector<QVariant> >* dataContainer,
-                                              const int lineCounter,
-                                              const int columnToFill) const
+void DatasetDefinitionInner::addElementToContainer(
+    const DataFormat columnFormat, const QString& element,
+    QVector<QVector<QVariant> >* dataContainer, const int lineCounter,
+    const int columnToFill) const
 {
     if (element.isEmpty())
     {
@@ -318,7 +311,7 @@ bool DatasetDefinitionInner::loadStrings(QuaZip& zip)
     {
         LOG(LogTypes::IMPORT_EXPORT,
             "Can not open strings file " +
-            Constants::getDatasetStringsFilename() + ".");
+                Constants::getDatasetStringsFilename() + ".");
         return result;
     }
 
@@ -329,8 +322,9 @@ bool DatasetDefinitionInner::loadStrings(QuaZip& zip)
     zipFile.close();
 
     QList<QByteArray> strings = stringsContent.split('\n');
-    //First element is empty.
-    stringsTable_ = std::make_unique<QVariant[]>(static_cast<size_t>(strings.size()) + 1);
+    // First element is empty.
+    stringsTable_ =
+        std::make_unique<QVariant[]>(static_cast<size_t>(strings.size()) + 1);
     stringsTable_[0] = QVariant(QString());
     size_t counter = 1;
     for (const auto& currentString : strings)
@@ -349,7 +343,7 @@ std::unique_ptr<QVariant[]> DatasetDefinitionInner::getSharedStringTable()
 
 bool DatasetDefinitionInner::getData(QVector<QVector<QVariant> >* dataContainer)
 {
-    //Open archive.
+    // Open archive.
     if (!zip_.open(QuaZip::mdUnzip))
     {
         LOG(LogTypes::IMPORT_EXPORT, "Can not open file " + zip_.getZipName());

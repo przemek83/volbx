@@ -13,7 +13,8 @@ class DatasetDefinitionSpreadsheet;
 class DatasetSpreadsheet : public Dataset
 {
 public:
-    explicit DatasetSpreadsheet(DatasetDefinitionSpreadsheet* datasetDefinition);
+    explicit DatasetSpreadsheet(
+        DatasetDefinitionSpreadsheet* datasetDefinition);
 
     ~DatasetSpreadsheet() override = default;
 
@@ -26,4 +27,4 @@ public:
     void init() override;
 };
 
-#endif // DATASETSPREADSHEET_H
+#endif  // DATASETSPREADSHEET_H

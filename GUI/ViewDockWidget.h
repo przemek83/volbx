@@ -35,4 +35,4 @@ private Q_SLOTS:
     void unselectAll();
 };
 
-#endif // VIEWDOCKWIDGET_H
+#endif  // VIEWDOCKWIDGET_H

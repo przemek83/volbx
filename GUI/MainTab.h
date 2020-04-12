@@ -18,7 +18,8 @@ class MainTab : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit MainTab(std::unique_ptr<Dataset> dataset, QWidget* parent = nullptr);
+    explicit MainTab(std::unique_ptr<Dataset> dataset,
+                     QWidget* parent = nullptr);
 
     ~MainTab() override = default;
 
@@ -35,4 +36,4 @@ public:
     DataView* getCurrentDataView();
 };
 
-#endif // MAINTAB_H
+#endif  // MAINTAB_H

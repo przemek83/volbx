@@ -8,30 +8,27 @@
 
 #include "ui_DatasetsListBrowser.h"
 
-DatasetsListBrowser::DatasetsListBrowser(QWidget* parent) :
-    QWidget(parent),
-    ui(new Ui::DatasetsListBrowser)
+DatasetsListBrowser::DatasetsListBrowser(QWidget* parent)
+    : QWidget(parent), ui(new Ui::DatasetsListBrowser)
 {
     ui->setupUi(this);
 
-    connect(ui->searchLineEdit, &QLineEdit::textChanged,
-            this, &DatasetsListBrowser::searchTextChanged);
+    connect(ui->searchLineEdit, &QLineEdit::textChanged, this,
+            &DatasetsListBrowser::searchTextChanged);
 
-    ui->datasetsList->insertItems(0, DatasetInner::getListOfAvailableDatasets());
+    ui->datasetsList->insertItems(0,
+                                  DatasetInner::getListOfAvailableDatasets());
 
     ui->datasetsList->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    connect(ui->datasetsList, &QListWidget::customContextMenuRequested,
-            this, &DatasetsListBrowser::showContextMenu);
+    connect(ui->datasetsList, &QListWidget::customContextMenuRequested, this,
+            &DatasetsListBrowser::showContextMenu);
 
-    connect(ui->datasetsList, &QListWidget::itemSelectionChanged,
-            this, &DatasetsListBrowser::datasetsListItemSelectionChanged);
+    connect(ui->datasetsList, &QListWidget::itemSelectionChanged, this,
+            &DatasetsListBrowser::datasetsListItemSelectionChanged);
 }
 
-DatasetsListBrowser::~DatasetsListBrowser()
-{
-    delete ui;
-}
+DatasetsListBrowser::~DatasetsListBrowser() { delete ui; }
 
 QString DatasetsListBrowser::getSelectedDataset() const
 {
@@ -64,7 +61,7 @@ bool DatasetsListBrowser::isDatasetsListEmpty()
 
 void DatasetsListBrowser::showContextMenu(QPoint pos)
 {
-    //Create delete context menu.
+    // Create delete context menu.
     QPoint globalPos = ui->datasetsList->viewport()->mapToGlobal(pos);
 
     if (ui->datasetsList->selectedItems().isEmpty() ||
@@ -81,27 +78,25 @@ void DatasetsListBrowser::showContextMenu(QPoint pos)
 
     QAction* selectedItem = myMenu.exec(globalPos);
 
-    //Delete dataset.
+    // Delete dataset.
     if (nullptr != selectedItem)
     {
         QString datasetName = ui->datasetsList->selectedItems().first()->text();
-        QMessageBox::StandardButton answer =
-            QMessageBox::question(this,
-                                  tr("Delete?"),
-                                  tr("Delete dataset ") + datasetName + "?",
-                                  QMessageBox::Yes | QMessageBox::No);
+        QMessageBox::StandardButton answer = QMessageBox::question(
+            this, tr("Delete?"), tr("Delete dataset ") + datasetName + "?",
+            QMessageBox::Yes | QMessageBox::No);
 
         if (QMessageBox::Yes == answer)
         {
             if (!DatasetInner::removeDataset(datasetName))
             {
-                QMessageBox::warning(this,
-                                     tr("Error"),
+                QMessageBox::warning(this, tr("Error"),
                                      tr("Can not delete ") + datasetName + ".");
             }
 
             ui->datasetsList->clear();
-            ui->datasetsList->insertItems(0, DatasetInner::getListOfAvailableDatasets());
+            ui->datasetsList->insertItems(
+                0, DatasetInner::getListOfAvailableDatasets());
         }
     }
 }

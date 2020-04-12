@@ -9,7 +9,6 @@
 FilteringProxyModel::FilteringProxyModel(QObject* parent)
     : QSortFilterProxyModel(parent)
 {
-
 }
 
 const TableModel* FilteringProxyModel::getParentModel() const
@@ -17,19 +16,17 @@ const TableModel* FilteringProxyModel::getParentModel() const
     return qobject_cast<const TableModel*>(sourceModel());
 }
 
-void FilteringProxyModel::setStringFilter(int column, const QStringList& bannedStrings)
+void FilteringProxyModel::setStringFilter(int column,
+                                          const QStringList& bannedStrings)
 {
     stringsRestrictions_[column] = bannedStrings;
     invalidate();
 }
 
-void FilteringProxyModel::setDateFilter(int column,
-                                        QDate from,
-                                        QDate to,
+void FilteringProxyModel::setDateFilter(int column, QDate from, QDate to,
                                         bool filterEmptyDates)
 {
-    datesRestrictions_[column] =
-        std::make_tuple(from, to, filterEmptyDates);
+    datesRestrictions_[column] = std::make_tuple(from, to, filterEmptyDates);
     invalidate();
 }
 
@@ -39,14 +36,13 @@ void FilteringProxyModel::setNumericFilter(int column, double from, double to)
     invalidate();
 }
 
-bool FilteringProxyModel::filterAcceptsRow(int sourceRow,
-                                           const QModelIndex& sourceParent) const
+bool FilteringProxyModel::filterAcceptsRow(
+    int sourceRow, const QModelIndex& sourceParent) const
 {
-    //Filter strings.
-    std::map<int, QStringList >::const_iterator iterStrings;
+    // Filter strings.
+    std::map<int, QStringList>::const_iterator iterStrings;
     for (iterStrings = stringsRestrictions_.begin();
-         iterStrings != stringsRestrictions_.end();
-         ++iterStrings)
+         iterStrings != stringsRestrictions_.end(); ++iterStrings)
     {
         QModelIndex index =
             sourceModel()->index(sourceRow, iterStrings->first, sourceParent);
@@ -56,16 +52,14 @@ bool FilteringProxyModel::filterAcceptsRow(int sourceRow,
         }
     }
 
-    //Filter dates.
+    // Filter dates.
     std::map<int, std::tuple<QDate, QDate, bool> >::const_iterator iterDates;
     for (iterDates = datesRestrictions_.begin();
-         iterDates != datesRestrictions_.end();
-         ++iterDates)
+         iterDates != datesRestrictions_.end(); ++iterDates)
     {
         QModelIndex index =
             sourceModel()->index(sourceRow, iterDates->first, sourceParent);
-        std::tuple<QDate, QDate, bool> datesRestrictions =
-            iterDates->second;
+        std::tuple<QDate, QDate, bool> datesRestrictions = iterDates->second;
         const QVariant& dateVariant = index.data();
 
         if (dateVariant.isNull())
@@ -81,11 +75,10 @@ bool FilteringProxyModel::filterAcceptsRow(int sourceRow,
         }
     }
 
-    //Filter numbers.
+    // Filter numbers.
     std::map<int, std::pair<double, double> >::const_iterator iterNumbers;
     for (iterNumbers = numericRestrictions_.begin();
-         iterNumbers != numericRestrictions_.end();
-         ++iterNumbers)
+         iterNumbers != numericRestrictions_.end(); ++iterNumbers)
     {
         QModelIndex index =
             sourceModel()->index(sourceRow, iterNumbers->first, sourceParent);

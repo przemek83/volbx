@@ -3,9 +3,9 @@
 
 #include <map>
 
+#include <QDate>
 #include <QSortFilterProxyModel>
 #include <QStringList>
-#include <QDate>
 
 class TableModel;
 
@@ -62,17 +62,18 @@ protected:
      * @param sourceParent index to check.
      * @return filter row (true), show row (false).
      */
-    bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const override;
+    bool filterAcceptsRow(int sourceRow,
+                          const QModelIndex& sourceParent) const override;
 
 private:
-    ///Filter set for strings.
-    std::map<int, QStringList > stringsRestrictions_;
+    /// Filter set for strings.
+    std::map<int, QStringList> stringsRestrictions_;
 
-    ///Filter set for dates.
+    /// Filter set for dates.
     std::map<int, std::tuple<QDate, QDate, bool> > datesRestrictions_;
 
-    ///Filter set for numeric.
+    /// Filter set for numeric.
     std::map<int, std::pair<double, double> > numericRestrictions_;
 };
 
-#endif // FILTERINGPROXYMODEL_H
+#endif  // FILTERINGPROXYMODEL_H

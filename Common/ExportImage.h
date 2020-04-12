@@ -26,11 +26,14 @@ public:
     static void quickExportAsImage(const QList<PlotBase*>& list);
 
 private:
-    static void exportSingleImage(const QwtPlotRenderer& rend, const QList<PlotBase*>& list);
+    static void exportSingleImage(const QwtPlotRenderer& rend,
+                                  const QList<PlotBase*>& list);
 
-    static void exportTwinImage(const QList<PlotBase*>& list, const QwtPlotRenderer& rend);
+    static void exportTwinImage(const QList<PlotBase*>& list,
+                                const QwtPlotRenderer& rend);
 
-    static void exportFourPlotsImage(const QList<PlotBase*>& list, const QwtPlotRenderer& rend);
+    static void exportFourPlotsImage(const QList<PlotBase*>& list,
+                                     const QwtPlotRenderer& rend);
 };
 
-#endif // EXPORTIMAGE_H
+#endif  // EXPORTIMAGE_H

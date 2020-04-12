@@ -7,8 +7,8 @@
 
 #include "ViewDockWidget.h"
 
-MainTab::MainTab(std::unique_ptr<Dataset> dataset, QWidget* parent) :
-    QMainWindow(parent)
+MainTab::MainTab(std::unique_ptr<Dataset> dataset, QWidget* parent)
+    : QMainWindow(parent)
 {
     setWindowTitle(dataset->getName());
 

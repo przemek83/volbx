@@ -8,7 +8,7 @@ class PlotBase;
 /**
  * @brief Dock widget for plots.
  */
-class PlotDockWidget :  public DockWidget
+class PlotDockWidget : public DockWidget
 {
     Q_OBJECT
 public:
@@ -31,4 +31,4 @@ private Q_SLOTS:
     void resetPlot();
 };
 
-#endif // PLOTDOCKWIDGET_H
+#endif  // PLOTDOCKWIDGET_H

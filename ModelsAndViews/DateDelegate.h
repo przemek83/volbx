@@ -20,10 +20,11 @@ public:
     DateDelegate& operator=(DateDelegate&& other) = delete;
     DateDelegate(DateDelegate&& other) = delete;
 
-    QString displayText(const QVariant& value, const QLocale& locale) const override;
+    QString displayText(const QVariant& value,
+                        const QLocale& locale) const override;
 
 private:
     QString defaultDateFormat_;
 };
 
-#endif // DATEDELEGATE_H
+#endif  // DATEDELEGATE_H

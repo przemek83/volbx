@@ -13,14 +13,18 @@
 class DatasetDefinitionSpreadsheet : public DatasetDefinition
 {
 public:
-    DatasetDefinitionSpreadsheet(const QString& name, const QString& zipFileName);
+    DatasetDefinitionSpreadsheet(const QString& name,
+                                 const QString& zipFileName);
 
     ~DatasetDefinitionSpreadsheet() override = default;
 
-    DatasetDefinitionSpreadsheet& operator=(const DatasetDefinitionSpreadsheet& other) = delete;
-    DatasetDefinitionSpreadsheet(const DatasetDefinitionSpreadsheet& other) = delete;
+    DatasetDefinitionSpreadsheet& operator=(
+        const DatasetDefinitionSpreadsheet& other) = delete;
+    DatasetDefinitionSpreadsheet(const DatasetDefinitionSpreadsheet& other) =
+        delete;
 
-    DatasetDefinitionSpreadsheet& operator=(DatasetDefinitionSpreadsheet&& other) = delete;
+    DatasetDefinitionSpreadsheet& operator=(
+        DatasetDefinitionSpreadsheet&& other) = delete;
     DatasetDefinitionSpreadsheet(DatasetDefinitionSpreadsheet&& other) = delete;
 
     bool isValid() const override;
@@ -36,8 +40,7 @@ protected:
 
     virtual const QString& getSheetName() = 0;
 
-    virtual bool getDataFromZip(QuaZip& zip,
-                                const QString& sheetName,
+    virtual bool getDataFromZip(QuaZip& zip, const QString& sheetName,
                                 QVector<QVector<QVariant> >* dataContainer,
                                 bool fillSamplesOnly) = 0;
 
@@ -45,21 +48,19 @@ protected:
 
     virtual bool getSheetList(QuaZip& zip) = 0;
 
-    virtual bool getColumnList(QuaZip& zip,
-                               const QString& sheetName) = 0;
+    virtual bool getColumnList(QuaZip& zip, const QString& sheetName) = 0;
 
     virtual bool loadSpecificData(QuaZip& zip) = 0;
 
-    virtual bool getColumnTypes(QuaZip& zip,
-                                const QString& sheetName) = 0;
+    virtual bool getColumnTypes(QuaZip& zip, const QString& sheetName) = 0;
 
-    ///Temporary string <-> index map used to build shared string table.
+    /// Temporary string <-> index map used to build shared string table.
     QHash<QString, int> stringsMap_;
 
-    ///Next index to be used in strings hash map.
+    /// Next index to be used in strings hash map.
     int nextIndex_;
 
-    ///Zip file.
+    /// Zip file.
     QuaZip zip_;
 
     /**
@@ -79,4 +80,4 @@ protected:
     }
 };
 
-#endif // DATASETDEFINITIONSPREADSHEET_H
+#endif  // DATASETDEFINITIONSPREADSHEET_H

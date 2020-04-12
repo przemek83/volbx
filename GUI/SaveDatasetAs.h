@@ -6,7 +6,7 @@
 namespace Ui
 {
 class SaveDatasetAs;
-} // namespace Ui
+}  // namespace Ui
 
 /**
  * @brief Window in which user can enter name of dataset to save.
@@ -20,7 +20,8 @@ public:
      * @param alreadyUsedNames names of existing datasets.
      * @param parent pointer to parent.
      */
-    explicit SaveDatasetAs(QStringList alreadyUsedNames, QWidget* parent = nullptr);
+    explicit SaveDatasetAs(QStringList alreadyUsedNames,
+                           QWidget* parent = nullptr);
 
     ~SaveDatasetAs() override;
 
@@ -50,8 +51,8 @@ private Q_SLOTS:
 private:
     Ui::SaveDatasetAs* ui;
 
-    ///Existing datasets names.
+    /// Existing datasets names.
     QStringList alreadyUsedNames_;
 };
 
-#endif // SAVEDATASETAS_H
+#endif  // SAVEDATASETAS_H

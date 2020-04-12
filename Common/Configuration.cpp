@@ -10,10 +10,7 @@
 #include "Constants.h"
 #include "Shared/Logger.h"
 
-Configuration::Configuration()
-{
-    load();
-}
+Configuration::Configuration() { load(); }
 
 Configuration& Configuration::getInstance()
 {
@@ -35,22 +32,21 @@ bool Configuration::load()
 {
     configValid_ = false;
 
-    //Default style.
+    // Default style.
     if (style_.isEmpty())
     {
         style_ = QStringLiteral("Fusion");
     }
 
-    QString filename(QApplication::applicationDirPath() +
-                     "/" +
+    QString filename(QApplication::applicationDirPath() + "/" +
                      Constants::getConfigurationFileName());
 
     QFile file(filename);
 
     if (!file.open(QIODevice::ReadOnly))
     {
-        LOG(LogTypes::CONFIG,
-            "Config file " + filename + " can not be opened. Default config used.");
+        LOG(LogTypes::CONFIG, "Config file " + filename +
+                                  " can not be opened. Default config used.");
 
         return false;
     }
@@ -61,11 +57,12 @@ bool Configuration::load()
     QString initial(stream.readAll());
     QDomDocument configXML(filename);
 
-    //If could not parse config.
+    // If could not parse config.
     if (!configXML.setContent(initial))
     {
-        LOG(LogTypes::CONFIG, "Config file " + filename +
-            " is damaged and will be deleted. Default config used.");
+        LOG(LogTypes::CONFIG,
+            "Config file " + filename +
+                " is damaged and will be deleted. Default config used.");
 
         file.close();
 
@@ -81,7 +78,7 @@ bool Configuration::load()
     if (!updateElement.isNull())
     {
         updateOption_ = static_cast<UpdateOption>(
-                            updateElement.attribute(XML_NAME_VALUE).toInt());
+            updateElement.attribute(XML_NAME_VALUE).toInt());
     }
 
     list = configXML.elementsByTagName(XML_NAME_STYLE);
@@ -95,8 +92,7 @@ bool Configuration::load()
     QDomElement importPathElement = list.at(0).toElement();
     if (!importPathElement.isNull())
     {
-        importFilePath_ =
-            importPathElement.attribute(XML_NAME_VALUE);
+        importFilePath_ = importPathElement.attribute(XML_NAME_VALUE);
     }
 
     LOG(LogTypes::CONFIG, configDump());
@@ -136,8 +132,9 @@ bool Configuration::save()
 
     if (!file.open(QIODevice::WriteOnly))
     {
-        LOG(LogTypes::CONFIG, "Config file " + Constants::getConfigurationFileName() +
-            " can not be opened for writing. Config not saved.");
+        LOG(LogTypes::CONFIG,
+            "Config file " + Constants::getConfigurationFileName() +
+                " can not be opened for writing. Config not saved.");
         return false;
     }
 
@@ -157,10 +154,13 @@ QString Configuration::configDump() const
 {
     QString dump;
 
-    dump.append("Configuration(" + Constants::getConfigurationFileName() + "):\n");
+    dump.append("Configuration(" + Constants::getConfigurationFileName() +
+                "):\n");
 
     dump.append(QLatin1String("Updates choice picked = "));
-    dump.append((updateOption_ == UPDATES_CHOICE_NOT_PICKED ? QLatin1String("No") : QLatin1String("Yes")));
+    dump.append((updateOption_ == UPDATES_CHOICE_NOT_PICKED
+                     ? QLatin1String("No")
+                     : QLatin1String("Yes")));
 
     dump.append(QLatin1String("\n"));
 
@@ -169,7 +169,9 @@ QString Configuration::configDump() const
     if (updateOption_ != UPDATES_CHOICE_NOT_PICKED)
     {
         dump.append(QLatin1String("AutoUpdate active = "));
-        dump.append((updateOption_ == UPDATES_ALWAYS_CHECK ? QLatin1String("Yes") : QLatin1String("No")));
+        dump.append((updateOption_ == UPDATES_ALWAYS_CHECK
+                         ? QLatin1String("Yes")
+                         : QLatin1String("No")));
         dump.append(QLatin1String("\n"));
     }
 
@@ -190,20 +192,11 @@ void Configuration::setUpdatesCheckingOption(bool alwaysCheck)
     }
 }
 
-QString Configuration::getStyle() const
-{
-    return style_;
-}
+QString Configuration::getStyle() const { return style_; }
 
-void Configuration::setStyle(const QString& style)
-{
-    style_ = style;
-}
+void Configuration::setStyle(const QString& style) { style_ = style; }
 
-bool Configuration::configWasValid() const
-{
-    return configValid_;
-}
+bool Configuration::configWasValid() const { return configValid_; }
 
 QString Configuration::getImportFilePath() const
 {

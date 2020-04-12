@@ -30,4 +30,4 @@ private Q_SLOTS:
     void selectedDatasetChanged(const QString& current);
 };
 
-#endif // DATASETIMPORTTAB_H
+#endif  // DATASETIMPORTTAB_H

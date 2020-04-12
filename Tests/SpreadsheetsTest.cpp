@@ -21,7 +21,7 @@
 
 void SpreadsheetsTest::initTestCase()
 {
-    //generateAllDumpData();
+    // generateAllDumpData();
 }
 
 QString SpreadsheetsTest::getSpreadsheetsDir()
@@ -33,7 +33,8 @@ QString SpreadsheetsTest::getSpreadsheetsDir()
 void SpreadsheetsTest::detailedSpreadsheetFileTest01()
 {
     QString file(getSpreadsheetsDir() + "detailedTests/test01.xlsx");
-    DatasetDefinitionXlsx* definitionXlsx = new DatasetDefinitionXlsx(file, file);
+    DatasetDefinitionXlsx* definitionXlsx =
+        new DatasetDefinitionXlsx(file, file);
     testSpreadsheetFile01(definitionXlsx, file);
     file = getSpreadsheetsDir() + "detailedTests/test01Partial.xlsx";
     definitionXlsx = new DatasetDefinitionXlsx(file, file);
@@ -47,21 +48,22 @@ void SpreadsheetsTest::detailedSpreadsheetFileTest01()
     testSpreadsheetFile01SomeColumns(definitionOds);
 }
 
-//void SpreadsheetsTest::detailedSpreadsheetFileTest02()
+// void SpreadsheetsTest::detailedSpreadsheetFileTest02()
 //{
 //    QString file(getSpreadsheetsDir() + "detailedTests/test02.xlsx");
-//    DatasetDefinitionXlsx* definitionXlsx = new DatasetDefinitionXlsx(file, file);
-//    testSpreadsheetFile02(definitionXlsx, file);
+//    DatasetDefinitionXlsx* definitionXlsx = new DatasetDefinitionXlsx(file,
+//    file); testSpreadsheetFile02(definitionXlsx, file);
 
 //    file = getSpreadsheetsDir() + "detailedTests/test02.ods";
-//    DatasetDefinitionOds* definitionOds = new DatasetDefinitionOds(file, file);
-//    testSpreadsheetFile02(definitionOds, file);
+//    DatasetDefinitionOds* definitionOds = new DatasetDefinitionOds(file,
+//    file); testSpreadsheetFile02(definitionOds, file);
 //}
 
 void SpreadsheetsTest::detailedSpreadsheetFileTest03()
 {
     QString file(getSpreadsheetsDir() + "detailedTests/test03.xlsx");
-    DatasetDefinitionXlsx* definitionXlsx = new DatasetDefinitionXlsx(file, file);
+    DatasetDefinitionXlsx* definitionXlsx =
+        new DatasetDefinitionXlsx(file, file);
     testSpreadsheetFile03(definitionXlsx, file);
 
     file = getSpreadsheetsDir() + "detailedTests/test03.ods";
@@ -72,7 +74,8 @@ void SpreadsheetsTest::detailedSpreadsheetFileTest03()
 void SpreadsheetsTest::detailedSpreadsheetFileTest04()
 {
     QString file(getSpreadsheetsDir() + "detailedTests/test04.xlsx");
-    DatasetDefinitionXlsx* definitionXlsx = new DatasetDefinitionXlsx(file, file);
+    DatasetDefinitionXlsx* definitionXlsx =
+        new DatasetDefinitionXlsx(file, file);
     testSpreadsheetFile04(definitionXlsx, file);
 
     file = getSpreadsheetsDir() + "detailedTests/test04.ods";
@@ -80,19 +83,19 @@ void SpreadsheetsTest::detailedSpreadsheetFileTest04()
     testSpreadsheetFile04(definitionOds, file);
 }
 
-//void SpreadsheetsTest::detailedSpreadsheetFileTest05()
+// void SpreadsheetsTest::detailedSpreadsheetFileTest05()
 //{
 //    QString file(getSpreadsheetsDir() + "detailedTests/test05.xlsx");
-//    DatasetDefinitionXlsx* definitionXlsx = new DatasetDefinitionXlsx(file, file);
-//    testSpreadsheetFile05(definitionXlsx, file);
+//    DatasetDefinitionXlsx* definitionXlsx = new DatasetDefinitionXlsx(file,
+//    file); testSpreadsheetFile05(definitionXlsx, file);
 
 //    file = getSpreadsheetsDir() + "detailedTests/test05.ods";
-//    DatasetDefinitionOds* definitionOds = new DatasetDefinitionOds(file, file);
-//    testSpreadsheetFile05(definitionOds, file);
+//    DatasetDefinitionOds* definitionOds = new DatasetDefinitionOds(file,
+//    file); testSpreadsheetFile05(definitionOds, file);
 //}
 
-void SpreadsheetsTest::testSpreadsheetFile01(DatasetDefinitionSpreadsheet* definition,
-                                             QString file)
+void SpreadsheetsTest::testSpreadsheetFile01(
+    DatasetDefinitionSpreadsheet* definition, QString file)
 {
     QVERIFY(true == definition->init());
     testBasicInfo(*definition, 4000, 7, 0, file);
@@ -108,7 +111,8 @@ void SpreadsheetsTest::testSpreadsheetFile01(DatasetDefinitionSpreadsheet* defin
     testColumnInfo(*definition, columnFormats, columnNames);
 
     QVector<std::tuple<QVariant, int, int> > fields;
-    fields.append(std::make_tuple(QVariant(QDate::fromJulianDay(2455207)), 3, 2));
+    fields.append(
+        std::make_tuple(QVariant(QDate::fromJulianDay(2455207)), 3, 2));
     fields.append(std::make_tuple(QVariant("black"), 3, 6));
     fields.append(std::make_tuple(QVariant(12.0), 5, 1));
     fields.append(std::make_tuple(QVariant(4462.2), 3, 5));
@@ -127,28 +131,32 @@ void SpreadsheetsTest::testSpreadsheetFile01(DatasetDefinitionSpreadsheet* defin
     compareDateValues << QDate(2010, 1, 1) << QDate(2011, 8, 31);
 
     QStringList compareList;
-    compareList << "brown" << "red" << "yellow" << "black" << "blue" << "pink" <<
-                "white" << "dark blue" << "orange";
+    compareList << "brown"
+                << "red"
+                << "yellow"
+                << "black"
+                << "blue"
+                << "pink"
+                << "white"
+                << "dark blue"
+                << "orange";
 
-    std::unique_ptr<Dataset> dataset = std::make_unique<DatasetSpreadsheet>(definition);
+    std::unique_ptr<Dataset> dataset =
+        std::make_unique<DatasetSpreadsheet>(definition);
     dataset->init();
 
-    //Special column after rebuild done in dataset init.
+    // Special column after rebuild done in dataset init.
     definition->setSpecialColumn(SPECIAL_COLUMN_TRANSACTION_DATE, 2);
     definition->setSpecialColumn(SPECIAL_COLUMN_PRICE_PER_UNIT, 5);
 
-    testDatasetConstruction(*dataset,
-                            columnsToTest,
-                            compareNumericValues,
-                            compareDateValues,
-                            compareList,
-                            false);
+    testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
+                            compareDateValues, compareList, false);
 
     compareExportDataWithDump(std::move(dataset));
 }
 
-void SpreadsheetsTest::testSpreadsheetFile01SomeColumns(DatasetDefinitionSpreadsheet*
-                                                        definition)
+void SpreadsheetsTest::testSpreadsheetFile01SomeColumns(
+    DatasetDefinitionSpreadsheet* definition)
 {
     QVERIFY(true == definition->init());
     QVector<bool> activeColumns(definition->columnCount(), true);
@@ -167,32 +175,37 @@ void SpreadsheetsTest::testSpreadsheetFile01SomeColumns(DatasetDefinitionSpreads
     compareDateValues << QDate(2010, 1, 1) << QDate(2011, 8, 31);
 
     QStringList compareList;
-    compareList << "brown" << "red" << "yellow" << "black" << "blue" << "pink" <<
-                "white" << "dark blue" << "orange";
+    compareList << "brown"
+                << "red"
+                << "yellow"
+                << "black"
+                << "blue"
+                << "pink"
+                << "white"
+                << "dark blue"
+                << "orange";
 
-    std::unique_ptr<Dataset> dataset = std::make_unique<DatasetSpreadsheet>(definition);
+    std::unique_ptr<Dataset> dataset =
+        std::make_unique<DatasetSpreadsheet>(definition);
     dataset->init();
     definition->setSpecialColumn(SPECIAL_COLUMN_TRANSACTION_DATE, 0);
     definition->setSpecialColumn(SPECIAL_COLUMN_PRICE_PER_UNIT, 2);
 
-    testDatasetConstruction(*dataset,
-                            columnsToTest,
-                            compareNumericValues,
-                            compareDateValues,
-                            compareList,
-                            false);
+    testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
+                            compareDateValues, compareList, false);
 
-    compareExportDataWithDump(std::move(dataset));//"partial"
+    compareExportDataWithDump(std::move(dataset));  //"partial"
 }
 
-//void SpreadsheetsTest::testSpreadsheetFile02(DatasetDefinitionSpreadsheet* definition,
+// void SpreadsheetsTest::testSpreadsheetFile02(DatasetDefinitionSpreadsheet*
+// definition,
 //                                         QString file)
 //{
 //    QVERIFY(true == definition->init());
 //}
 
-void SpreadsheetsTest::testSpreadsheetFile03(DatasetDefinitionSpreadsheet* definition,
-                                             QString file)
+void SpreadsheetsTest::testSpreadsheetFile03(
+    DatasetDefinitionSpreadsheet* definition, QString file)
 {
     QVERIFY(true == definition->init());
     testBasicInfo(*definition, 4, 5, 0, file);
@@ -226,25 +239,24 @@ void SpreadsheetsTest::testSpreadsheetFile03(DatasetDefinitionSpreadsheet* defin
     compareDateValues << QDate(2012, 2, 2) << QDate(2012, 2, 5);
 
     QStringList compareList;
-    compareList << "a" << "b" << "c";
+    compareList << "a"
+                << "b"
+                << "c";
 
-    std::unique_ptr<Dataset> dataset = std::make_unique<DatasetSpreadsheet>(definition);
+    std::unique_ptr<Dataset> dataset =
+        std::make_unique<DatasetSpreadsheet>(definition);
     dataset->init();
     definition->setSpecialColumn(SPECIAL_COLUMN_TRANSACTION_DATE, 3);
     definition->setSpecialColumn(SPECIAL_COLUMN_PRICE_PER_UNIT, 2);
 
-    testDatasetConstruction(*dataset,
-                            columnsToTest,
-                            compareNumericValues,
-                            compareDateValues,
-                            compareList,
-                            true);
+    testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
+                            compareDateValues, compareList, true);
 
     compareExportDataWithDump(std::move(dataset));
 }
 
-void SpreadsheetsTest::testSpreadsheetFile04(DatasetDefinitionSpreadsheet* definition,
-                                             QString file)
+void SpreadsheetsTest::testSpreadsheetFile04(
+    DatasetDefinitionSpreadsheet* definition, QString file)
 {
     QVERIFY(true == definition->init());
     testBasicInfo(*definition, 15, 4, 0, file);
@@ -278,31 +290,27 @@ void SpreadsheetsTest::testSpreadsheetFile04(DatasetDefinitionSpreadsheet* defin
 
     QStringList compareList("");
 
-    std::unique_ptr<Dataset> dataset = std::make_unique<DatasetSpreadsheet>(definition);
+    std::unique_ptr<Dataset> dataset =
+        std::make_unique<DatasetSpreadsheet>(definition);
     dataset->init();
     definition->setSpecialColumn(SPECIAL_COLUMN_TRANSACTION_DATE, 1);
     definition->setSpecialColumn(SPECIAL_COLUMN_PRICE_PER_UNIT, 2);
 
-    testDatasetConstruction(*dataset,
-                            columnsToTest,
-                            compareNumericValues,
-                            compareDateValues,
-                            compareList,
-                            false);
+    testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
+                            compareDateValues, compareList, false);
 
     compareExportDataWithDump(std::move(dataset));
 }
 
-//void SpreadsheetsTest::testSpreadsheetFile05(DatasetDefinitionSpreadsheet* definition,
+// void SpreadsheetsTest::testSpreadsheetFile05(DatasetDefinitionSpreadsheet*
+// definition,
 //                                             QString file)
 //{
 //    QVERIFY(true == definition->init());
 //}
 
-void SpreadsheetsTest::testBasicInfo(DatasetDefinition& definition,
-                                     int rows,
-                                     int columns,
-                                     int activeColumns,
+void SpreadsheetsTest::testBasicInfo(DatasetDefinition& definition, int rows,
+                                     int columns, int activeColumns,
                                      QString name)
 {
     QVERIFY(true == definition.isValid());
@@ -310,28 +318,31 @@ void SpreadsheetsTest::testBasicInfo(DatasetDefinition& definition,
     QCOMPARE(columns, definition.columnCount());
     QCOMPARE(activeColumns, definition.getActiveColumnCount());
 
-    QString dump =
-        Common::loadFile(QString(definition.getName() +
-                                 Common::getDefinitionDumpSuffix()));
+    QString dump = Common::loadFile(
+        QString(definition.getName() + Common::getDefinitionDumpSuffix()));
     QCOMPARE(dump, definition.dumpDatasetDefinition());
 
     QCOMPARE(name, definition.getName());
 }
 
-void SpreadsheetsTest::testColumnInfo(DatasetDefinition& definition,
-                                      const QVector<QPair<int, DataFormat> >& columnFormats,
-                                      const QVector<QPair<int, QString> >& columnNames)
+void SpreadsheetsTest::testColumnInfo(
+    DatasetDefinition& definition,
+    const QVector<QPair<int, DataFormat> >& columnFormats,
+    const QVector<QPair<int, QString> >& columnNames)
 {
     QPair<int, DataFormat> pairFormat;
     foreach (pairFormat, columnFormats)
     {
-        QCOMPARE(pairFormat.second, definition.getColumnFormat(pairFormat.first));
+        QCOMPARE(pairFormat.second,
+                 definition.getColumnFormat(pairFormat.first));
     }
 
-    //No special columns yet.
-    auto [ok, column] = definition.getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE);
+    // No special columns yet.
+    auto [ok, column] =
+        definition.getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE);
     QVERIFY(!ok);
-    std::tie(ok, column) = definition.getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT);
+    std::tie(ok, column) =
+        definition.getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT);
     QVERIFY(!ok);
 
     QPair<int, QString> pairNames;
@@ -341,10 +352,9 @@ void SpreadsheetsTest::testColumnInfo(DatasetDefinition& definition,
     }
 }
 
-void SpreadsheetsTest::testSampleData(DatasetDefinition& definition,
-                                      int rows,
-                                      int columns,
-                                      const QVector<std::tuple<QVariant, int, int> >& fields)
+void SpreadsheetsTest::testSampleData(
+    DatasetDefinition& definition, int rows, int columns,
+    const QVector<std::tuple<QVariant, int, int> >& fields)
 {
     const QVector<QVector<QVariant> >* sampleData = definition.getSampleData();
 
@@ -354,17 +364,16 @@ void SpreadsheetsTest::testSampleData(DatasetDefinition& definition,
     std::tuple<QVariant, int, int> fieldsTuple;
     foreach (fieldsTuple, fields)
     {
-        QCOMPARE(std::get<0>(fieldsTuple),
-                 sampleData->at(std::get<1>(fieldsTuple))[std::get<2>(fieldsTuple)]);
+        QCOMPARE(
+            std::get<0>(fieldsTuple),
+            sampleData->at(std::get<1>(fieldsTuple))[std::get<2>(fieldsTuple)]);
     }
 }
 
-void SpreadsheetsTest::testDatasetConstruction(const Dataset& dataset,
-                                               QVector<int>& columnsToTest,
-                                               QVector<double>& compareNumericValues,
-                                               QVector<QDate>& compareDateValues,
-                                               QStringList& compareList,
-                                               bool emptyDates)
+void SpreadsheetsTest::testDatasetConstruction(
+    const Dataset& dataset, QVector<int>& columnsToTest,
+    QVector<double>& compareNumericValues, QVector<QDate>& compareDateValues,
+    QStringList& compareList, bool emptyDates)
 {
     QVERIFY(true == dataset.isValid());
 
@@ -376,7 +385,7 @@ void SpreadsheetsTest::testDatasetConstruction(const Dataset& dataset,
     QCOMPARE(min, compareNumericValues[2]);
     QCOMPARE(max, compareNumericValues[3]);
 
-    auto [minDate, maxDate, empty ] = dataset.getDateRange(columnsToTest[2]);
+    auto [minDate, maxDate, empty] = dataset.getDateRange(columnsToTest[2]);
     QCOMPARE(minDate, compareDateValues[0]);
     QCOMPARE(maxDate, compareDateValues[1]);
     QCOMPARE(empty, emptyDates);
@@ -384,17 +393,21 @@ void SpreadsheetsTest::testDatasetConstruction(const Dataset& dataset,
     QStringList list = dataset.getStringList(columnsToTest[3]);
     QCOMPARE(list, compareList);
 
-    auto [ok, column] = dataset.getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE);
+    auto [ok, column] =
+        dataset.getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE);
     QCOMPARE(column, columnsToTest[4]);
-    std::tie(ok, column) = dataset.getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT);
+    std::tie(ok, column) =
+        dataset.getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT);
     QCOMPARE(column, columnsToTest[5]);
 }
 
-void SpreadsheetsTest::compareDataWithDumps(const QString& category, bool damaged)
+void SpreadsheetsTest::compareDataWithDumps(const QString& category,
+                                            bool damaged)
 {
     QDir dir(getSpreadsheetsDir() + category);
     QStringList nameFilter;
-    nameFilter << "*.xlsx" << "*.ods";
+    nameFilter << "*.xlsx"
+               << "*.ods";
     QFileInfoList list = dir.entryInfoList(nameFilter, QDir::Files);
 
     foreach (QFileInfo f, list)
@@ -412,19 +425,20 @@ void SpreadsheetsTest::compareDataWithDumps(const QString& category, bool damage
 
         if (true == damaged)
         {
-            //Damaged files test.
+            // Damaged files test.
             QVERIFY(false == definition->init());
         }
         else
         {
             QVERIFY(true == definition->init());
-            QString dump =
-                Common::loadFile(QString(fileName + Common::getDefinitionDumpSuffix()));
+            QString dump = Common::loadFile(
+                QString(fileName + Common::getDefinitionDumpSuffix()));
             QCOMPARE(dump, definition->dumpDatasetDefinition());
 
             QVector<bool> activeColumns(definition->columnCount(), true);
             definition->setActiveColumns(activeColumns);
-            std::unique_ptr<Dataset> dataset = std::make_unique<DatasetSpreadsheet>(definition);
+            std::unique_ptr<Dataset> dataset =
+                std::make_unique<DatasetSpreadsheet>(definition);
             dataset->init();
             QVERIFY(true == dataset->isValid());
 
@@ -443,10 +457,11 @@ void SpreadsheetsTest::compareAllDefinitionDumps()
         if (fileInfo.isFile() &&
             (fileInfo.suffix() == "xlsx" || fileInfo.suffix() == "ods"))
         {
-            QCOMPARE(Common::loadFile(fileInfo.path() + "/" + fileInfo.baseName() +
-                                      ".xlsx" + Common::getDefinitionDumpSuffix()),
-                     Common::loadFile(fileInfo.path() + "/" + fileInfo.baseName() +
-                                      ".ods" + Common::getDefinitionDumpSuffix()));
+            QCOMPARE(
+                Common::loadFile(fileInfo.path() + "/" + fileInfo.baseName() +
+                                 ".xlsx" + Common::getDefinitionDumpSuffix()),
+                Common::loadFile(fileInfo.path() + "/" + fileInfo.baseName() +
+                                 ".ods" + Common::getDefinitionDumpSuffix()));
         }
     }
 }
@@ -461,18 +476,16 @@ void SpreadsheetsTest::compareAllTsvDumps()
         if (fileInfo.isFile() &&
             (fileInfo.suffix() == "xlsx" || fileInfo.suffix() == "ods"))
         {
-            QCOMPARE(Common::loadFile(fileInfo.path() + "/" + fileInfo.baseName() +
-                                      ".xlsx" + Common::getDataTsvDumpSuffix()),
-                     Common::loadFile(fileInfo.path() + "/" + fileInfo.baseName() +
-                                      ".ods" + Common::getDataTsvDumpSuffix()));
+            QCOMPARE(
+                Common::loadFile(fileInfo.path() + "/" + fileInfo.baseName() +
+                                 ".xlsx" + Common::getDataTsvDumpSuffix()),
+                Common::loadFile(fileInfo.path() + "/" + fileInfo.baseName() +
+                                 ".ods" + Common::getDataTsvDumpSuffix()));
         }
     }
 }
 
-void SpreadsheetsTest::cleanupTestCase()
-{
-
-}
+void SpreadsheetsTest::cleanupTestCase() {}
 
 void SpreadsheetsTest::generateAllDumpData()
 {
@@ -489,9 +502,10 @@ void SpreadsheetsTest::generateAllDumpData()
     }
 }
 
-void SpreadsheetsTest::compareExportDataWithDump(std::unique_ptr<Dataset> dataset)
+void SpreadsheetsTest::compareExportDataWithDump(
+    std::unique_ptr<Dataset> dataset)
 {
-    QString datasetName {dataset->getName()};
+    QString datasetName{dataset->getName()};
     TableModel model(std::move(dataset));
     FilteringProxyModel proxyModel;
     proxyModel.setSourceModel(&model);
@@ -502,7 +516,8 @@ void SpreadsheetsTest::compareExportDataWithDump(std::unique_ptr<Dataset> datase
     ExportData::quickAsTSV(&view);
 
     QCOMPARE(QApplication::clipboard()->text().split('\n'),
-             Common::loadFile(datasetName + Common::getDataTsvDumpSuffix()).split('\n'));
+             Common::loadFile(datasetName + Common::getDataTsvDumpSuffix())
+                 .split('\n'));
 }
 
 void SpreadsheetsTest::generateDataDumpsForFile(QString name)
@@ -519,7 +534,8 @@ void SpreadsheetsTest::generateDataDumpsForFile(QString name)
 
     definition->init();
     QString dumpedDefinition = definition->dumpDatasetDefinition();
-    Common::saveFile(name + Common::getDefinitionDumpSuffix(), dumpedDefinition);
+    Common::saveFile(name + Common::getDefinitionDumpSuffix(),
+                     dumpedDefinition);
 
     if (name.contains("damagedFiles"))
     {
@@ -528,7 +544,8 @@ void SpreadsheetsTest::generateDataDumpsForFile(QString name)
 
     QVector<bool> activeColumns(definition->columnCount(), true);
     definition->setActiveColumns(activeColumns);
-    std::unique_ptr<Dataset> dataset = std::make_unique<DatasetSpreadsheet>(definition);
+    std::unique_ptr<Dataset> dataset =
+        std::make_unique<DatasetSpreadsheet>(definition);
     dataset->init();
 
     TableModel model(std::move(dataset));
@@ -570,7 +587,4 @@ void SpreadsheetsTest::veryBigFiles()
     compareDataWithDumps("veryBigFiles(min 1MB)", false);
 }
 
-void SpreadsheetsTest::damaged()
-{
-    compareDataWithDumps("damagedFiles", true);
-}
+void SpreadsheetsTest::damaged() { compareDataWithDumps("damagedFiles", true); }

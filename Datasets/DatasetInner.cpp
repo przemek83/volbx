@@ -17,23 +17,24 @@ const char* DatasetInner::datasetsDir_ = "Data";
 DatasetInner::DatasetInner(DatasetDefinitionInner* datasetDefinition)
     : Dataset(datasetDefinition)
 {
-
 }
 
 void DatasetInner::init()
 {
-    //If definition is not valid than skip loading data.
+    // If definition is not valid than skip loading data.
     if (datasetDefinition_->isValid())
     {
         data_.resize(datasetDefinition_->rowCount());
 
-        const int activeColumnsCount = datasetDefinition_->getActiveColumnCount();
-        for (int i = 0 ; i < datasetDefinition_->rowCount() ; ++i)
+        const int activeColumnsCount =
+            datasetDefinition_->getActiveColumnCount();
+        for (int i = 0; i < datasetDefinition_->rowCount(); ++i)
         {
             data_[i].resize(activeColumnsCount);
         }
 
-        auto definition = dynamic_cast<DatasetDefinitionInner*>(datasetDefinition_);
+        auto definition =
+            dynamic_cast<DatasetDefinitionInner*>(datasetDefinition_);
 
         if (nullptr != definition && definition->getData(&data_))
         {
@@ -52,20 +53,21 @@ QStringList DatasetInner::getListOfAvailableDatasets()
         return QStringList();
     }
 
-    datasetsDir.setFilter(QDir::Files |
-                          QDir::Readable |
-                          QDir::NoSymLinks |
+    datasetsDir.setFilter(QDir::Files | QDir::Readable | QDir::NoSymLinks |
                           QDir::NoDotAndDotDot);
-    datasetsDir.setNameFilters(QStringList("*" + Constants::getDatasetExtension()));
+    datasetsDir.setNameFilters(
+        QStringList("*" + Constants::getDatasetExtension()));
     datasetsDir.setSorting(QDir::Name);
 
     QStringList entries = datasetsDir.entryList();
-    return entries.replaceInStrings(Constants::getDatasetExtension(), QLatin1String(""));
+    return entries.replaceInStrings(Constants::getDatasetExtension(),
+                                    QLatin1String(""));
 }
 
 QString DatasetInner::getDatasetsDir()
 {
-    return QString(QApplication::applicationDirPath() + "/" + datasetsDir_ + "/");
+    return QString(QApplication::applicationDirPath() + "/" + datasetsDir_ +
+                   "/");
 }
 
 bool DatasetInner::datasetDirExistAndUserHavePermisions()

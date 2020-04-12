@@ -6,7 +6,7 @@
 namespace Ui
 {
 class About;
-} // namespace Ui
+}  // namespace Ui
 
 /**
  * @brief The About dialog class.
@@ -29,4 +29,4 @@ private:
     Ui::About* ui;
 };
 
-#endif // ABOUT_H
+#endif  // ABOUT_H

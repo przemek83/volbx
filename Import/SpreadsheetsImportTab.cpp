@@ -20,13 +20,13 @@
 #include "DatasetsListBrowser.h"
 #include "ui_SpreadsheetsImportTab.h"
 
-SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent) :
-    ImportTab(parent),
-    ui(new Ui::SpreadsheetsImportTab)
+SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent)
+    : ImportTab(parent), ui(new Ui::SpreadsheetsImportTab)
 {
     ui->setupUi(this);
 
-    connect(ui->openFileButton, &QPushButton::clicked, this, &SpreadsheetsImportTab::openFileButtonClicked);
+    connect(ui->openFileButton, &QPushButton::clicked, this,
+            &SpreadsheetsImportTab::openFileButtonClicked);
 
     auto visualization = new DatasetDefinitionVisualization(this);
 
@@ -43,27 +43,24 @@ SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent) :
     visualization->setEnabled(false);
     columnsPreview->setEnabled(false);
 
-    connect(visualization, &DatasetDefinitionVisualization::currentColumnNeedSync,
+    connect(visualization,
+            &DatasetDefinitionVisualization::currentColumnNeedSync,
             columnsPreview, &ColumnsPreview::selectCurrentColumn);
 
     connect(columnsPreview, &ColumnsPreview::currentColumnNeedSync,
-            visualization, &DatasetDefinitionVisualization::selectCurrentColumn);
+            visualization,
+            &DatasetDefinitionVisualization::selectCurrentColumn);
 
     ui->sheetCombo->hide();
 }
 
-SpreadsheetsImportTab::~SpreadsheetsImportTab()
-{
-    delete ui;
-}
+SpreadsheetsImportTab::~SpreadsheetsImportTab() { delete ui; }
 
 void SpreadsheetsImportTab::openFileButtonClicked()
 {
-    QString fileName =
-        QFileDialog::getOpenFileName(this,
-                                     tr("Open file"),
-                                     Configuration::getInstance().getImportFilePath(),
-                                     tr("Spreadsheets (*.xlsx *.ods )"));
+    QString fileName = QFileDialog::getOpenFileName(
+        this, tr("Open file"), Configuration::getInstance().getImportFilePath(),
+        tr("Spreadsheets (*.xlsx *.ods )"));
 
     if (fileName.isEmpty())
     {
@@ -82,12 +79,13 @@ void SpreadsheetsImportTab::openFileButtonClicked()
 
     ui->fileNameLineEdit->setText(fileName);
 
-    std::unique_ptr<DatasetDefinitionSpreadsheet> datasetDefinition {nullptr};
+    std::unique_ptr<DatasetDefinitionSpreadsheet> datasetDefinition{nullptr};
 
-    //Remove all not allowed characters from file name.
-    QString regexpString = Constants::getDatasetNameRegExp()
-                           .replace(QLatin1String("["), QLatin1String("[^"));
-    QString datasetName = fileInfo.completeBaseName().remove(QRegExp(regexpString));
+    // Remove all not allowed characters from file name.
+    QString regexpString = Constants::getDatasetNameRegExp().replace(
+        QLatin1String("["), QLatin1String("[^"));
+    QString datasetName =
+        fileInfo.completeBaseName().remove(QRegExp(regexpString));
 
     if (datasetName.isEmpty())
     {
@@ -96,18 +94,19 @@ void SpreadsheetsImportTab::openFileButtonClicked()
 
     if (0 == fileInfo.suffix().toLower().compare(QLatin1String("ods")))
     {
-        datasetDefinition = std::make_unique<DatasetDefinitionOds>(datasetName, fileName);
+        datasetDefinition =
+            std::make_unique<DatasetDefinitionOds>(datasetName, fileName);
     }
     else
     {
         if (0 == fileInfo.suffix().toLower().compare(QLatin1String("xlsx")))
         {
-            datasetDefinition = std::make_unique<DatasetDefinitionXlsx>(datasetName, fileName);
+            datasetDefinition =
+                std::make_unique<DatasetDefinitionXlsx>(datasetName, fileName);
         }
         else
         {
-            QMessageBox::information(this,
-                                     tr("Wrong file"),
+            QMessageBox::information(this, tr("Wrong file"),
                                      tr("File type is not supported."));
             Q_EMIT definitionIsReady(false);
             return;

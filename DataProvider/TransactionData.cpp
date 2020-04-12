@@ -13,6 +13,6 @@ void TransactionData::clear()
 
 void TransactionData::print() const
 {
-    qDebug() << "Price per unit " << pricePerMeter_ << " date " <<
-             date_ << " grouped " << groupedBy_;
+    qDebug() << "Price per unit " << pricePerMeter_ << " date " << date_
+             << " grouped " << groupedBy_;
 }

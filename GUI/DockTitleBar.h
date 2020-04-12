@@ -8,7 +8,7 @@ class QPushButton;
 namespace Ui
 {
 class DockTitleBar;
-} // namespace Ui
+}  // namespace Ui
 
 /**
  * @brief Title bar for dockwidgets with some buttons.
@@ -48,4 +48,4 @@ private:
     Ui::DockTitleBar* ui;
 };
 
-#endif // DOCKTITLEBAR_H
+#endif  // DOCKTITLEBAR_H

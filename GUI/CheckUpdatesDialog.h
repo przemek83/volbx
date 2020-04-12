@@ -6,7 +6,7 @@
 namespace Ui
 {
 class CheckUpdatesDialog;
-} // namespace Ui
+}  // namespace Ui
 
 /**
  * @brief Dialog class with question about auto updating.
@@ -31,4 +31,4 @@ private:
     Ui::CheckUpdatesDialog* ui;
 };
 
-#endif // CHECKUPDATESDIALOG_H
+#endif  // CHECKUPDATESDIALOG_H

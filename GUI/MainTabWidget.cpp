@@ -17,8 +17,7 @@
 #include "TabBar.h"
 #include "ViewDockWidget.h"
 
-MainTabWidget::MainTabWidget(QWidget* parent) :
-    QTabWidget(parent)
+MainTabWidget::MainTabWidget(QWidget* parent) : QTabWidget(parent)
 {
     setTabBar(new TabBar(this));
     setTabsClosable(true);
@@ -65,7 +64,8 @@ MainTab* MainTabWidget::getCurrentMainTab()
     return currentTab;
 }
 
-QVector<std::pair<QString, int>> MainTabWidget::getStringColumnsWithIndexes(TableModel* model) const
+QVector<std::pair<QString, int>> MainTabWidget::getStringColumnsWithIndexes(
+    TableModel* model) const
 {
     QVector<std::pair<QString, int>> stringColumns;
     for (int i = 0; i < model->columnCount(); ++i)
@@ -92,7 +92,8 @@ ViewDockWidget* MainTabWidget::getCurrentDataViewDock()
     return qobject_cast<ViewDockWidget*>(dataView->parent());
 }
 
-void MainTabWidget::setTextFilterInProxy(int column, const QStringList& bannedStrings)
+void MainTabWidget::setTextFilterInProxy(int column,
+                                         const QStringList& bannedStrings)
 {
     DataView* view = getCurrentDataView();
     FilteringProxyModel* model = getCurrentProxyModel();
@@ -116,14 +117,13 @@ void MainTabWidget::setTextFilterInProxy(int column, const QStringList& bannedSt
 
     QApplication::restoreOverrideCursor();
 
-    LOG(LogTypes::CALC, "Filtration change took " +
-        QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
-        " seconds.");
+    LOG(LogTypes::CALC,
+        "Filtration change took " +
+            QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
+            " seconds.");
 }
 
-void MainTabWidget::setDateFilterInProxy(int column,
-                                         QDate from,
-                                         QDate to,
+void MainTabWidget::setDateFilterInProxy(int column, QDate from, QDate to,
                                          bool filterEmptyDates)
 {
     DataView* view = getCurrentDataView();
@@ -146,9 +146,10 @@ void MainTabWidget::setDateFilterInProxy(int column,
 
     QApplication::restoreOverrideCursor();
 
-    LOG(LogTypes::CALC, "Filtration change took " +
-        QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
-        " seconds.");
+    LOG(LogTypes::CALC,
+        "Filtration change took " +
+            QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
+            " seconds.");
 }
 
 void MainTabWidget::setNumericFilterInProxy(int column, double from, double to)
@@ -174,13 +175,15 @@ void MainTabWidget::setNumericFilterInProxy(int column, double from, double to)
 
     QApplication::restoreOverrideCursor();
 
-    LOG(LogTypes::CALC, "Filtration change took " +
-        QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
-        " seconds.");
+    LOG(LogTypes::CALC,
+        "Filtration change took " +
+            QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
+            " seconds.");
 }
 
 template <class T>
-void MainTabWidget::addPlot(const QString& title, const std::function<T*()>& createPlot)
+void MainTabWidget::addPlot(const QString& title,
+                            const std::function<T*()>& createPlot)
 {
     DataView* view = getCurrentDataView();
     MainTab* mainTab = getCurrentMainTab();
@@ -191,7 +194,7 @@ void MainTabWidget::addPlot(const QString& title, const std::function<T*()>& cre
     // If plot already created than just show it and return.
     if (auto plotUI = mainTab->findChild<T*>(); plotUI != nullptr)
     {
-        auto dock {qobject_cast<PlotDockWidget*>(plotUI->parent())};
+        auto dock{qobject_cast<PlotDockWidget*>(plotUI->parent())};
         dock->setVisible(true);
         dock->raise();
         return;
@@ -219,12 +222,12 @@ void MainTabWidget::addPlot(const QString& title, const std::function<T*()>& cre
 
 void MainTabWidget::addBasicPlot()
 {
-    const auto createBasicPlot = [ = ]() -> BasicDataPlot *
-    {
+    const auto createBasicPlot = [=]() -> BasicDataPlot* {
         DataView* view = getCurrentDataView();
         auto basicPlot = new BasicDataPlot();
-        connect(view->getPlotDataProvider(), &PlotDataProvider::basicPlotDataChanged,
-                basicPlot, &BasicDataPlot::setNewData);
+        connect(view->getPlotDataProvider(),
+                &PlotDataProvider::basicPlotDataChanged, basicPlot,
+                &BasicDataPlot::setNewData);
         return basicPlot;
     };
 
@@ -233,12 +236,12 @@ void MainTabWidget::addBasicPlot()
 
 void MainTabWidget::addHistogramPlot()
 {
-    const auto createHistogramPlot = [ = ]() -> HistogramPlotUI *
-    {
+    const auto createHistogramPlot = [=]() -> HistogramPlotUI* {
         DataView* view = getCurrentDataView();
         auto histogramPlot = new HistogramPlotUI();
-        connect(view->getPlotDataProvider(), &PlotDataProvider::basicDataChanged,
-                histogramPlot, &HistogramPlotUI::setNewData);
+        connect(view->getPlotDataProvider(),
+                &PlotDataProvider::basicDataChanged, histogramPlot,
+                &HistogramPlotUI::setNewData);
         return histogramPlot;
     };
 
@@ -247,15 +250,15 @@ void MainTabWidget::addHistogramPlot()
 
 void MainTabWidget::addGroupingPlot()
 {
-    const auto createGroupingPlot = [ = ]() -> GroupPlotUI *
-    {
+    const auto createGroupingPlot = [=]() -> GroupPlotUI* {
         DataView* view = getCurrentDataView();
         TableModel* model = getCurrentDataModel();
         auto groupPlot = new GroupPlotUI(getStringColumnsWithIndexes(model));
-        connect(view->getPlotDataProvider(), &PlotDataProvider::setNewDataForGrouping,
-                groupPlot, &GroupPlotUI::setNewData);
-        connect(groupPlot, &GroupPlotUI::traitIndexChanged,
-                view, &DataView::groupingColumnChanged);
+        connect(view->getPlotDataProvider(),
+                &PlotDataProvider::setNewDataForGrouping, groupPlot,
+                &GroupPlotUI::setNewData);
+        connect(groupPlot, &GroupPlotUI::traitIndexChanged, view,
+                &DataView::groupingColumnChanged);
         return groupPlot;
     };
 
@@ -264,7 +267,7 @@ void MainTabWidget::addGroupingPlot()
 
 void MainTabWidget::activateDataSelection(DataView* view)
 {
-    //Activate select all and unselect all buttons on data view dock.
+    // Activate select all and unselect all buttons on data view dock.
     ViewDockWidget* viewDock = getCurrentDataViewDock();
     if (viewDock == nullptr)
         return;

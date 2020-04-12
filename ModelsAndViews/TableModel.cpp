@@ -7,10 +7,9 @@
 
 const int TableModel::noColumn_ = Constants::NOT_SET_COLUMN;
 
-TableModel::TableModel(std::unique_ptr<Dataset> dataset, QObject* parent) :
-    QAbstractTableModel(parent), dataset_(std::move(dataset))
+TableModel::TableModel(std::unique_ptr<Dataset> dataset, QObject* parent)
+    : QAbstractTableModel(parent), dataset_(std::move(dataset))
 {
-
 }
 
 int TableModel::rowCount([[maybe_unused]] const QModelIndex& parent) const
@@ -33,8 +32,7 @@ QVariant TableModel::data(const QModelIndex& index, int role) const
     return QVariant();
 }
 
-QVariant TableModel::headerData(int section,
-                                Qt::Orientation orientation,
+QVariant TableModel::headerData(int section, Qt::Orientation orientation,
                                 int role) const
 {
     if (Qt::DisplayRole == role && Qt::Horizontal == orientation)
@@ -64,7 +62,8 @@ DataFormat TableModel::getColumnFormat(int column) const
     return dataset_->getColumnFormat(column);
 }
 
-std::tuple<bool, int> TableModel::getSpecialColumnIfExists(SpecialColumn columnTag) const
+std::tuple<bool, int> TableModel::getSpecialColumnIfExists(
+    SpecialColumn columnTag) const
 {
     return dataset_->getSpecialColumnIfExists(columnTag);
 }
@@ -86,14 +85,16 @@ bool TableModel::isSpecialColumnsSet() const
 
 bool TableModel::isEmptyCellsDetected() const
 {
-    //TODO or delete.
+    // TODO or delete.
     return true;
 }
 
 int TableModel::getDefaultGroupingColumn() const
 {
     int pricePerMeterColumn = noColumn_;
-    if (auto [ok, columnId] = getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT); ok)
+    if (auto [ok, columnId] =
+            getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT);
+        ok)
     {
         pricePerMeterColumn = columnId;
     }
@@ -101,7 +102,8 @@ int TableModel::getDefaultGroupingColumn() const
     int defaultGroupingColumn = noColumn_;
     for (int i = 0; i < columnCount(); ++i)
     {
-        if (i == pricePerMeterColumn || DATA_FORMAT_STRING != getColumnFormat(i))
+        if (i == pricePerMeterColumn ||
+            DATA_FORMAT_STRING != getColumnFormat(i))
         {
             continue;
         }

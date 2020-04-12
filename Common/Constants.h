@@ -6,7 +6,6 @@
 
 namespace Constants
 {
-
 QString getUpdaterName();
 
 QString getExeFileSuffix();
@@ -33,12 +32,12 @@ enum class BarTitle : unsigned char
 
 QString getProgressBarTitle(BarTitle barTitle);
 
-///Minimum amount of data when threading should be used.
+/// Minimum amount of data when threading should be used.
 static constexpr int minDataPerThread{100};
 
 QString getDatasetNameRegExp();
 
-const int NOT_SET_COLUMN {-1};
-};
+const int NOT_SET_COLUMN{-1};
+};  // namespace Constants
 
-#endif // CONSTANTS_H
+#endif  // CONSTANTS_H

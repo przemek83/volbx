@@ -7,7 +7,7 @@ QString Common::loadFile(QString name)
 {
     QFile file(name);
 
-    if( !file.open(QIODevice::ReadOnly) )
+    if (!file.open(QIODevice::ReadOnly))
     {
         return "";
     }
@@ -47,4 +47,3 @@ QString Common::getDataTsvDumpSuffix()
     static QString dataTsvDumpSuffix = "_tsvDump.txt";
     return dataTsvDumpSuffix;
 }
-

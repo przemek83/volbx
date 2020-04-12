@@ -9,11 +9,10 @@ namespace ExportData
 {
 void quickAsTSV(const QAbstractItemView* view);
 
-bool asCsv(const QAbstractItemView* view,
-           const QString& fileName,
+bool asCsv(const QAbstractItemView* view, const QString& fileName,
            bool innerFormat);
 
 bool saveDataset(const QString& filePath, const QAbstractItemView* view);
-}
+}  // namespace ExportData
 
-#endif // EXPORTDATA_H
+#endif  // EXPORTDATA_H

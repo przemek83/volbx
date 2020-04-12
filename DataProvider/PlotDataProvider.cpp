@@ -3,20 +3,16 @@
 #include <algorithm>
 #include <cmath>
 
+#include <QwtBleUtilities.h>
 #include <QApplication>
 #include <QDebug>
 #include <QLocale>
 #include <QVariant>
 #include <QtCore>
-#include <QwtBleUtilities.h>
 
 #include "Shared/Logger.h"
 
-PlotDataProvider::PlotDataProvider(QObject* parent) :
-    QObject(parent)
-{
-
-}
+PlotDataProvider::PlotDataProvider(QObject* parent) : QObject(parent) {}
 
 void PlotDataProvider::setGroupingColumn(int groupingColumn)
 {
@@ -33,7 +29,7 @@ void PlotDataProvider::reCompute(QVector<TransactionData> newCalcData,
     int dataSize = calcData_.size();
     if (dataSize != 0)
     {
-        QVector<double> valuePerUnit {};
+        QVector<double> valuePerUnit{};
         valuePerUnit.reserve(dataSize);
         for (int i = 0; i < dataSize; ++i)
             valuePerUnit.push_back(calcData_.at(i).pricePerMeter_);
@@ -50,11 +46,11 @@ void PlotDataProvider::reCompute(QVector<TransactionData> newCalcData,
     for (const auto& point : qAsConst(plotData))
         yAxisData.append(point.y());
 
-    //Basic data plot.
+    // Basic data plot.
     Q_EMIT basicPlotDataChanged(std::move(plotData), quantiles_,
                                 std::move(linearRegression));
 
-    //Currently histogram only.
+    // Currently histogram only.
     Q_EMIT basicDataChanged(std::move(yAxisData), quantiles_);
 }
 
@@ -64,38 +60,38 @@ void PlotDataProvider::recomputeGroupData(QVector<TransactionData> calcData,
 {
     calcData_ = std::move(calcData);
 
-    //Set grouping column. Different only than actual one when changed on
-    //group plot.
+    // Set grouping column. Different only than actual one when changed on
+    // group plot.
     groupingColumn_ = groupingColumn;
 
-    //Remove when other column types will be managed.
+    // Remove when other column types will be managed.
     if (groupingColumn_ == Constants::NOT_SET_COLUMN)
         return;
 
     QVector<QString> names;
     QVector<Quantiles> quantilesForIntervals;
 
-    //For now only string type columns managed.
+    // For now only string type columns managed.
     if (DATA_FORMAT_STRING == columnFormat)
         fillDataForStringGrouping(calcData_, names, quantilesForIntervals);
 
     Q_EMIT setNewDataForGrouping(std::move(names),
-                                 std::move(quantilesForIntervals),
-                                 quantiles_);
+                                 std::move(quantilesForIntervals), quantiles_);
 }
 
-void PlotDataProvider::fillDataForStringGrouping(const QVector<TransactionData>& calcData,
-                                                 QVector<QString>& names,
-                                                 QVector<Quantiles>& quantilesForIntervals)
+void PlotDataProvider::fillDataForStringGrouping(
+    const QVector<TransactionData>& calcData, QVector<QString>& names,
+    QVector<Quantiles>& quantilesForIntervals)
 {
-    QMap<QString, QVector<double> > map;
+    QMap<QString, QVector<double>> map;
     const int dataSize = calcData.size();
 
-    //Group by name/string.
+    // Group by name/string.
     for (int i = 0; i < dataSize; ++i)
-        map[calcData.at(i).groupedBy_.toString()].append(calcData.at(i).pricePerMeter_);
+        map[calcData.at(i).groupedBy_.toString()].append(
+            calcData.at(i).pricePerMeter_);
 
-    //For each group calculate quantiles and create names.
+    // For each group calculate quantiles and create names.
     auto iterator = map.begin();
     while (iterator != map.end())
     {
@@ -107,7 +103,8 @@ void PlotDataProvider::fillDataForStringGrouping(const QVector<TransactionData>&
     }
 }
 
-std::tuple<QVector<QPointF>, QVector<QPointF>> PlotDataProvider::computeBasicData()
+std::tuple<QVector<QPointF>, QVector<QPointF>>
+PlotDataProvider::computeBasicData()
 {
     int dataSize = calcData_.size();
     if (dataSize <= 0)
@@ -128,7 +125,8 @@ std::tuple<QVector<QPointF>, QVector<QPointF>> PlotDataProvider::computeBasicDat
     data.reserve(dataSize);
     for (int i = 0; i < dataSize; ++i)
     {
-        double x = QwtBleUtilities::getStartOfTheWorld().daysTo(calcData_.at(i).date_);
+        double x =
+            QwtBleUtilities::getStartOfTheWorld().daysTo(calcData_.at(i).date_);
         auto y = calcData_.at(i).pricePerMeter_;
         data.append({x, y});
 
@@ -155,7 +153,7 @@ std::tuple<QVector<QPointF>, QVector<QPointF>> PlotDataProvider::computeBasicDat
     quantiles_.minX_ = minX;
     quantiles_.maxX_ = maxX;
 
-    //Calc linear regression and create points.
+    // Calc linear regression and create points.
     a = (dataSize * sumXY - sumX * sumY) / (dataSize * sumXX - sumX * sumX);
     b = sumY / dataSize - a * sumX / dataSize;
 
@@ -168,7 +166,4 @@ std::tuple<QVector<QPointF>, QVector<QPointF>> PlotDataProvider::computeBasicDat
     return {data, linearRegression};
 }
 
-int PlotDataProvider::getGroupByColumn()
-{
-    return groupingColumn_;
-}
+int PlotDataProvider::getGroupByColumn() { return groupingColumn_; }

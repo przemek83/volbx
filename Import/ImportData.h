@@ -16,7 +16,7 @@ class QDialogButtonBox;
 namespace Ui
 {
 class ImportData;
-} // namespace Ui
+}  // namespace Ui
 
 /**
  * @brief Main dialog for loading data into application.
@@ -38,7 +38,7 @@ public:
 
     std::unique_ptr<DatasetDefinition> getSelectedDataset();
 
-    ///Type enum used during creation of Dataset objects.
+    /// Type enum used during creation of Dataset objects.
     enum ImportDataType
     {
         IMPORT_TYPE_INNER = 0,
@@ -53,4 +53,4 @@ private:
     Ui::ImportData* ui;
 };
 
-#endif // IMPORTDATA_H
+#endif  // IMPORTDATA_H

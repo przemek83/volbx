@@ -10,12 +10,10 @@
 
 static void showDifferentInstanceRunnningError()
 {
-    QMessageBox::critical(nullptr,
-                          QObject::tr("Error"),
+    QMessageBox::critical(nullptr, QObject::tr("Error"),
                           QObject::tr("Different instance of ") +
-                          QApplication::applicationName() +
-                          QObject::tr(" already running, exiting."));
-
+                              QApplication::applicationName() +
+                              QObject::tr(" already running, exiting."));
 }
 
 /**
@@ -24,28 +22,29 @@ static void showDifferentInstanceRunnningError()
  */
 static bool isUniqueInstance()
 {
-    //Only one instance can run. Intentionally leak.
+    // Only one instance can run. Intentionally leak.
     QSharedMemory* sharedMemory =
         new QSharedMemory(QStringLiteral(VER_PRODUCTNAME_STR));
 
-    LOG(LogTypes::APP,
-        QLatin1String("Setting shared memory key named ") +
-        QApplication::applicationName() + QLatin1Char('.'));
+    LOG(LogTypes::APP, QLatin1String("Setting shared memory key named ") +
+                           QApplication::applicationName() + QLatin1Char('.'));
 
     if (sharedMemory->attach())
     {
-        LOG(LogTypes::APP,
-            QLatin1String("Attached to shared memory. Different instance already running, exiting."));
+        LOG(LogTypes::APP, QLatin1String("Attached to shared memory. Different "
+                                         "instance already running, exiting."));
 
         return false;
     }
 
-    LOG(LogTypes::APP, QLatin1String("Attaching to shared memory successful. Continue."));
+    LOG(LogTypes::APP,
+        QLatin1String("Attaching to shared memory successful. Continue."));
 
     if (!sharedMemory->create(1))
     {
         LOG(LogTypes::APP,
-            QLatin1String("Creating shared memory failed. Different instance already running, exiting."));
+            QLatin1String("Creating shared memory failed. Different instance "
+                          "already running, exiting."));
 
         return false;
     }

@@ -37,7 +37,7 @@ public:
 
     void setStyle(const QString& style);
 
-    ///For unit tests.
+    /// For unit tests.
     bool configWasValid() const;
 
     /**
@@ -54,8 +54,8 @@ private:
     Configuration();
     ~Configuration() = default;
 
-    ///Flag indicating that config existed and was valid.
-    bool configValid_ {false};
+    /// Flag indicating that config existed and was valid.
+    bool configValid_{false};
 
     enum UpdateOption
     {
@@ -68,7 +68,7 @@ private:
 
     QString importFilePath_;
 
-    UpdateOption updateOption_ {UPDATES_CHOICE_NOT_PICKED};
+    UpdateOption updateOption_{UPDATES_CHOICE_NOT_PICKED};
 
     const QString XML_NAME_CONFIG{QStringLiteral("CONFIG")};
     const QString XML_NAME_UPDATE{QStringLiteral("UPDATE")};
@@ -83,4 +83,4 @@ private:
     QString configDump() const;
 };
 
-#endif // CONFIGURATION_H
+#endif  // CONFIGURATION_H

@@ -1,8 +1,8 @@
 #ifndef TABBAR_H
 #define TABBAR_H
 
-#include <QTabBar>
 #include <QLineEdit>
+#include <QTabBar>
 
 /**
  * @brief Custom tab bar for tab widget.
@@ -27,11 +27,11 @@ protected:
     bool eventFilter(QObject* obj, QEvent* event) override;
 
 private:
-    ///Line edit for changing tab name.
+    /// Line edit for changing tab name.
     QLineEdit lineEdit_;
 
 private Q_SLOTS:
     void editingOfnameFinished();
 };
 
-#endif // TABBAR_H
+#endif  // TABBAR_H

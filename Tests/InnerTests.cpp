@@ -1,13 +1,13 @@
 #include "InnerTests.h"
 
+#include <quazip5/quazip.h>
+#include <quazip5/quazipfile.h>
 #include <QApplication>
 #include <QClipboard>
 #include <QDebug>
 #include <QDirIterator>
 #include <QDomDocument>
 #include <QtTest/QtTest>
-#include <quazip5/quazip.h>
-#include <quazip5/quazipfile.h>
 
 #include "Common/Constants.h"
 #include "Common/ExportData.h"
@@ -21,7 +21,7 @@
 void InnerTests::initTestCase()
 {
     tempFilename_ = "temp";
-    //generateDumpData();
+    // generateDumpData();
 }
 
 void InnerTests::generateDumpData()
@@ -32,22 +32,22 @@ void InnerTests::generateDumpData()
     {
         dirIt.next();
         QFileInfo fileInfo(dirIt.filePath());
-        if (fileInfo.isFile() &&
-            (fileInfo.suffix() == "vbx"))
+        if (fileInfo.isFile() && (fileInfo.suffix() == "vbx"))
         {
             DatasetDefinitionInner* definition =
                 new DatasetDefinitionInner(fileInfo.baseName());
 
             QString definitionDump = definition->dumpDatasetDefinition();
             Common::saveFile(DatasetInner::getDatasetsDir() +
-                             fileInfo.baseName() +
-                             Common::getDefinitionDumpSuffix(),
+                                 fileInfo.baseName() +
+                                 Common::getDefinitionDumpSuffix(),
                              definitionDump);
 
             QVector<bool> activeColumns(definition->columnCount(), true);
             definition->setActiveColumns(activeColumns);
 
-            std::unique_ptr<Dataset> dataset = std::make_unique<DatasetInner>(definition);
+            std::unique_ptr<Dataset> dataset =
+                std::make_unique<DatasetInner>(definition);
             dataset->init();
 
             TableModel model(std::move(dataset));
@@ -62,8 +62,8 @@ void InnerTests::generateDumpData()
             QString tsvData = QApplication::clipboard()->text();
 
             Common::saveFile(DatasetInner::getDatasetsDir() +
-                             fileInfo.baseName() +
-                             Common::getDataTsvDumpSuffix(),
+                                 fileInfo.baseName() +
+                                 Common::getDataTsvDumpSuffix(),
                              tsvData);
         }
     }
@@ -82,7 +82,8 @@ void InnerTests::testDatasets()
         QVector<bool> activeColumns(definition->columnCount(), true);
         definition->setActiveColumns(activeColumns);
 
-        std::unique_ptr<Dataset> dataset = std::make_unique<DatasetInner>(definition);
+        std::unique_ptr<Dataset> dataset =
+            std::make_unique<DatasetInner>(definition);
         dataset->init();
 
         QVERIFY(true == dataset->isValid());
@@ -96,9 +97,8 @@ void InnerTests::testDatasets()
 
         checkImport(datasetName, definition, view);
 
-        QString filePath {DatasetInner::getDatasetsDir() +
-                          tempFilename_ +
-                          Constants::getDatasetExtension()};
+        QString filePath{DatasetInner::getDatasetsDir() + tempFilename_ +
+                         Constants::getDatasetExtension()};
         ExportData::saveDataset(filePath, &view);
         checkExport(datasetName);
     }
@@ -108,39 +108,37 @@ void InnerTests::checkImport(const QString& fileName,
                              DatasetDefinitionInner* definition,
                              QTableView& view)
 {
-    QString datasetFilePath(DatasetInner::getDatasetsDir() +
-                            fileName);
+    QString datasetFilePath(DatasetInner::getDatasetsDir() + fileName);
 
     QString compareData =
         Common::loadFile(datasetFilePath + Common::getDefinitionDumpSuffix());
 
-    QCOMPARE(compareData.split('\n'), definition->dumpDatasetDefinition().split('\n'));
+    QCOMPARE(compareData.split('\n'),
+             definition->dumpDatasetDefinition().split('\n'));
 
     ExportData::quickAsTSV(&view);
 
     QString actualData = QApplication::clipboard()->text();
 
-    compareData = Common::loadFile(datasetFilePath +
-                                   Common::getDataTsvDumpSuffix());
+    compareData =
+        Common::loadFile(datasetFilePath + Common::getDataTsvDumpSuffix());
 
     QCOMPARE(actualData.split('\n'), compareData.split('\n'));
 }
 
 void InnerTests::checkExport(QString fileName)
 {
-    //Open original archive.
-    QuaZip zipOriginal(DatasetInner::getDatasetsDir() +
-                       fileName +
+    // Open original archive.
+    QuaZip zipOriginal(DatasetInner::getDatasetsDir() + fileName +
                        Constants::getDatasetExtension());
     QVERIFY(true == zipOriginal.open(QuaZip::mdUnzip));
 
-    //Open generated archive.
-    QuaZip zipGenerated(DatasetInner::getDatasetsDir() +
-                        tempFilename_ +
+    // Open generated archive.
+    QuaZip zipGenerated(DatasetInner::getDatasetsDir() + tempFilename_ +
                         Constants::getDatasetExtension());
     QVERIFY(true == zipGenerated.open(QuaZip::mdUnzip));
 
-    //Open data files in archives and compare it.
+    // Open data files in archives and compare it.
     QuaZipFile zipFileOriginal(&zipOriginal);
     zipOriginal.setCurrentFile(Constants::getDatasetDataFilename());
     QVERIFY(true == zipFileOriginal.open(QIODevice::ReadOnly));
@@ -154,7 +152,7 @@ void InnerTests::checkExport(QString fileName)
     zipFileGenerated.close();
     QCOMPARE(originalData, generatedData);
 
-    //Open strings files in archives and compare it.
+    // Open strings files in archives and compare it.
     zipOriginal.setCurrentFile(Constants::getDatasetStringsFilename());
     QVERIFY(true == zipFileOriginal.open(QIODevice::ReadOnly));
     originalData = zipFileOriginal.readAll();
@@ -166,7 +164,7 @@ void InnerTests::checkExport(QString fileName)
     zipFileGenerated.close();
     QCOMPARE(originalData, generatedData);
 
-    //Open definitions files.
+    // Open definitions files.
     zipOriginal.setCurrentFile(Constants::getDatasetDefinitionFilename());
     QVERIFY(true == zipFileOriginal.open(QIODevice::ReadOnly));
     originalData = zipFileOriginal.readAll();
@@ -211,55 +209,56 @@ void InnerTests::compareDefinitionFiles(QByteArray& original,
                  generatedElement.attribute("SPECIAL_TAG"));
     }
 
-    int originalRowCount =
-        rootOriginal.firstChildElement("ROW_COUNT").attribute("ROW_COUNT").toInt();
-    int generatredRowCount =
-        rootGenerated.firstChildElement("ROW_COUNT").attribute("ROW_COUNT").toInt();
+    int originalRowCount = rootOriginal.firstChildElement("ROW_COUNT")
+                               .attribute("ROW_COUNT")
+                               .toInt();
+    int generatredRowCount = rootGenerated.firstChildElement("ROW_COUNT")
+                                 .attribute("ROW_COUNT")
+                                 .toInt();
 
     QCOMPARE(originalRowCount, generatredRowCount);
 }
 
 void InnerTests::testPartialData()
 {
-//    DatasetDefinitionInner* definition =
-//        new DatasetDefinitionInner("test");
+    //    DatasetDefinitionInner* definition =
+    //        new DatasetDefinitionInner("test");
 
-//    QVERIFY(true == definition->isValid());
+    //    QVERIFY(true == definition->isValid());
 
-//    QVector<bool> activeColumns(definition->columnCount(), false);
-//    activeColumns[0] = true;
-//    activeColumns[1] = true;
-//    activeColumns[4] = true;
-//    activeColumns[5] = true;
-//    activeColumns[8] = true;
-//    activeColumns[13] = true;
-//    definition->setActiveColumns(activeColumns);
+    //    QVector<bool> activeColumns(definition->columnCount(), false);
+    //    activeColumns[0] = true;
+    //    activeColumns[1] = true;
+    //    activeColumns[4] = true;
+    //    activeColumns[5] = true;
+    //    activeColumns[8] = true;
+    //    activeColumns[13] = true;
+    //    definition->setActiveColumns(activeColumns);
 
-//    DatasetInner* dataset = new DatasetInner(definition);
-//    dataset->init();
+    //    DatasetInner* dataset = new DatasetInner(definition);
+    //    dataset->init();
 
-//    QVERIFY(true == dataset->isValid());
+    //    QVERIFY(true == dataset->isValid());
 
-//    TableModel model(dataset);
-//    FilteringProxyModel proxyModel;
-//    proxyModel.setSourceModel(&model);
+    //    TableModel model(dataset);
+    //    FilteringProxyModel proxyModel;
+    //    proxyModel.setSourceModel(&model);
 
-//    QTableView view;
-//    view.setModel(&proxyModel);
-//    view.setSelectionMode(QAbstractItemView::MultiSelection);
-//    view.setSelectionBehavior(QAbstractItemView::SelectRows);
-//    view.selectAll();
-//    QItemSelectionModel* selectionModel = view.selectionModel();
-//    selectionModel->setCurrentIndex(model.index(1, 0),
-//                                    QItemSelectionModel::Deselect);
-//    ExportData::saveDataset(tempFilename_, &view);
+    //    QTableView view;
+    //    view.setModel(&proxyModel);
+    //    view.setSelectionMode(QAbstractItemView::MultiSelection);
+    //    view.setSelectionBehavior(QAbstractItemView::SelectRows);
+    //    view.selectAll();
+    //    QItemSelectionModel* selectionModel = view.selectionModel();
+    //    selectionModel->setCurrentIndex(model.index(1, 0),
+    //                                    QItemSelectionModel::Deselect);
+    //    ExportData::saveDataset(tempFilename_, &view);
 
-//    checkExport("partialTest");
+    //    checkExport("partialTest");
 }
 
 void InnerTests::cleanupTestCase()
 {
-    QFile::remove(DatasetInner::getDatasetsDir() +
-                  tempFilename_ +
+    QFile::remove(DatasetInner::getDatasetsDir() + tempFilename_ +
                   Constants::getDatasetExtension());
 }

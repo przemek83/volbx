@@ -9,41 +9,39 @@
 
 #include "ui_DatasetDefinitionVisualization.h"
 
-DatasetDefinitionVisualization::DatasetDefinitionVisualization(QWidget* parent) :
-    QWidget(parent),
-    ui(new Ui::DatasetDefinitionVisualization),
-    typeNameString_(tr("Name")),
-    typeNameFloat_(tr("Number")),
-    typeNameDate_(tr("Date")),
-    datasetDefinition_(nullptr)
+DatasetDefinitionVisualization::DatasetDefinitionVisualization(QWidget* parent)
+    : QWidget(parent),
+      ui(new Ui::DatasetDefinitionVisualization),
+      typeNameString_(tr("Name")),
+      typeNameFloat_(tr("Number")),
+      typeNameDate_(tr("Date")),
+      datasetDefinition_(nullptr)
 {
     ui->setupUi(this);
 
     ui->columnsList->header()->setSectionsMovable(false);
 
-    connect(ui->searchLineEdit, &QLineEdit::textChanged,
-            this, &DatasetDefinitionVisualization::searchTextChanged);
+    connect(ui->searchLineEdit, &QLineEdit::textChanged, this,
+            &DatasetDefinitionVisualization::searchTextChanged);
 
-    connect(ui->columnsList, &QTreeWidget::currentItemChanged,
-            this, &DatasetDefinitionVisualization::currentColumnOnTreeChanged);
+    connect(ui->columnsList, &QTreeWidget::currentItemChanged, this,
+            &DatasetDefinitionVisualization::currentColumnOnTreeChanged);
 
-    connect(ui->dateCombo,  qOverload<int>(&QComboBox::currentIndexChanged),
+    connect(ui->dateCombo, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &DatasetDefinitionVisualization::specialColumnChanged);
 
-    connect(ui->pricePerUnitCombo, qOverload<int>(&QComboBox::currentIndexChanged),
-            this, &DatasetDefinitionVisualization::specialColumnChanged);
+    connect(ui->pricePerUnitCombo,
+            qOverload<int>(&QComboBox::currentIndexChanged), this,
+            &DatasetDefinitionVisualization::specialColumnChanged);
 
-    connect(ui->SelectAll, &QPushButton::clicked,
-            this, &DatasetDefinitionVisualization::selectAllClicked);
+    connect(ui->SelectAll, &QPushButton::clicked, this,
+            &DatasetDefinitionVisualization::selectAllClicked);
 
-    connect(ui->UnselectAll, &QPushButton::clicked,
-            this, &DatasetDefinitionVisualization::unselectAllClicked);
+    connect(ui->UnselectAll, &QPushButton::clicked, this,
+            &DatasetDefinitionVisualization::unselectAllClicked);
 }
 
-DatasetDefinitionVisualization::~DatasetDefinitionVisualization()
-{
-    delete ui;
-}
+DatasetDefinitionVisualization::~DatasetDefinitionVisualization() { delete ui; }
 
 void DatasetDefinitionVisualization::setDatasetDefiniton(
     std::unique_ptr<DatasetDefinition> datasetDefinition)
@@ -56,15 +54,17 @@ void DatasetDefinitionVisualization::setDatasetDefiniton(
     datasetDefinition_ = std::move(datasetDefinition);
 
     auto [dateOfTransactionPointed, specialColumnTransaction] =
-        datasetDefinition_->getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE);
+        datasetDefinition_->getSpecialColumnIfExists(
+            SPECIAL_COLUMN_TRANSACTION_DATE);
 
     auto [pricePerUnitPointed, specialColumnPrice] =
-        datasetDefinition_->getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT);
+        datasetDefinition_->getSpecialColumnIfExists(
+            SPECIAL_COLUMN_PRICE_PER_UNIT);
 
     ui->columnsList->sortByColumn(Constants::NOT_SET_COLUMN);
     ui->columnsList->setSortingEnabled(false);
 
-    //Column list.
+    // Column list.
     for (int i = 0; i < datasetDefinition_->columnCount(); ++i)
     {
         QStringList list;
@@ -81,8 +81,8 @@ void DatasetDefinitionVisualization::setDatasetDefiniton(
             case DATA_FORMAT_FLOAT:
             {
                 typeName = QString(typeNameFloat_);
-                ui->pricePerUnitCombo->addItem(datasetDefinition_->getColumnName(i),
-                                               QVariant(i));
+                ui->pricePerUnitCombo->addItem(
+                    datasetDefinition_->getColumnName(i), QVariant(i));
                 break;
             }
 
@@ -113,7 +113,7 @@ void DatasetDefinitionVisualization::setDatasetDefiniton(
     ui->columnsList->setSortingEnabled(true);
     ui->columnsList->sortByColumn(Constants::NOT_SET_COLUMN);
 
-    //Set proper special columns.
+    // Set proper special columns.
     if (dateOfTransactionPointed)
     {
         for (int i = 0; i < ui->dateCombo->count(); ++i)
@@ -130,7 +130,8 @@ void DatasetDefinitionVisualization::setDatasetDefiniton(
     {
         for (int i = 0; i < ui->pricePerUnitCombo->count(); ++i)
         {
-            if (specialColumnPrice == ui->pricePerUnitCombo->itemData(i).toInt())
+            if (specialColumnPrice ==
+                ui->pricePerUnitCombo->itemData(i).toInt())
             {
                 ui->pricePerUnitCombo->setCurrentIndex(i);
                 break;
@@ -145,7 +146,7 @@ void DatasetDefinitionVisualization::setDatasetDefiniton(
     ui->dateCombo->blockSignals(false);
     ui->pricePerUnitCombo->blockSignals(false);
 
-    //Set on tree picked special columns in combos.
+    // Set on tree picked special columns in combos.
     specialColumnChanged(0);
 }
 
@@ -168,13 +169,14 @@ void DatasetDefinitionVisualization::searchTextChanged(const QString& newText)
     QTreeWidgetItemIterator it(ui->columnsList);
     while (*it != nullptr)
     {
-        (*it)->setHidden(!(*it)->text(0).contains(newText,
-                                                  Qt::CaseInsensitive));
+        (*it)->setHidden(
+            !(*it)->text(0).contains(newText, Qt::CaseInsensitive));
         ++it;
     }
 }
 
-std::unique_ptr<DatasetDefinition> DatasetDefinitionVisualization::retrieveDatasetDefinition()
+std::unique_ptr<DatasetDefinition>
+DatasetDefinitionVisualization::retrieveDatasetDefinition()
 {
     if (datasetDefinition_ == nullptr)
     {
@@ -183,7 +185,7 @@ std::unique_ptr<DatasetDefinition> DatasetDefinitionVisualization::retrieveDatas
 
     QVector<bool> activeColumns = QVector<bool>();
 
-    int topLevelItemsCount =  ui->columnsList->topLevelItemCount();
+    int topLevelItemsCount = ui->columnsList->topLevelItemCount();
     activeColumns.resize(topLevelItemsCount);
 
     for (int i = 0; i < topLevelItemsCount; ++i)
@@ -212,7 +214,6 @@ std::unique_ptr<DatasetDefinition> DatasetDefinitionVisualization::retrieveDatas
             ui->dateCombo->itemData(ui->dateCombo->currentIndex()).toInt();
         datasetDefinition_->setSpecialColumn(SPECIAL_COLUMN_TRANSACTION_DATE,
                                              column);
-
     }
 
     if (ui->pricePerUnitCombo->currentIndex() != -1)
@@ -221,12 +222,10 @@ std::unique_ptr<DatasetDefinition> DatasetDefinitionVisualization::retrieveDatas
         int column = ui->pricePerUnitCombo->itemData(index).toInt();
         datasetDefinition_->setSpecialColumn(SPECIAL_COLUMN_PRICE_PER_UNIT,
                                              column);
-
     }
 
     return std::move(datasetDefinition_);
 }
-
 
 void DatasetDefinitionVisualization::currentColumnOnTreeChanged(
     QTreeWidgetItem* current, QTreeWidgetItem* /*previous*/)
@@ -241,14 +240,15 @@ void DatasetDefinitionVisualization::currentColumnOnTreeChanged(
 
 void DatasetDefinitionVisualization::selectCurrentColumn(int column)
 {
-    QList<QTreeWidgetItem*> selectedItemsList = ui->columnsList->selectedItems();
+    QList<QTreeWidgetItem*> selectedItemsList =
+        ui->columnsList->selectedItems();
     if (0 != selectedItemsList.count() &&
         column == selectedItemsList.first()->data(0, Qt::UserRole).toInt())
     {
         return;
     }
 
-    int topLevelItemsCount =  ui->columnsList->topLevelItemCount();
+    int topLevelItemsCount = ui->columnsList->topLevelItemCount();
 
     for (int i = 0; i < topLevelItemsCount; ++i)
     {
@@ -263,7 +263,7 @@ void DatasetDefinitionVisualization::selectCurrentColumn(int column)
 
 void DatasetDefinitionVisualization::selectAllClicked()
 {
-    int topLevelItemsCount =  ui->columnsList->topLevelItemCount();
+    int topLevelItemsCount = ui->columnsList->topLevelItemCount();
 
     for (int i = 0; i < topLevelItemsCount; ++i)
     {
@@ -277,7 +277,7 @@ void DatasetDefinitionVisualization::selectAllClicked()
 
 void DatasetDefinitionVisualization::unselectAllClicked()
 {
-    int topLevelItemsCount =  ui->columnsList->topLevelItemCount();
+    int topLevelItemsCount = ui->columnsList->topLevelItemCount();
 
     for (int i = 0; i < topLevelItemsCount; ++i)
     {

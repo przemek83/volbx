@@ -23,7 +23,8 @@ public:
     ColumnsPreview& operator=(ColumnsPreview&& other) = delete;
     ColumnsPreview(ColumnsPreview&& other) = delete;
 
-    void setDatasetDefinitionSampleInfo(const DatasetDefinition& datasetDefinition);
+    void setDatasetDefinitionSampleInfo(
+        const DatasetDefinition& datasetDefinition);
 
     void clearDataAndDisable();
 
@@ -50,4 +51,4 @@ Q_SIGNALS:
     void currentColumnNeedSync(int currentColumn);
 };
 
-#endif // COLUMNSPREVIEW_H
+#endif  // COLUMNSPREVIEW_H

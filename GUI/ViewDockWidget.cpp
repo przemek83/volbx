@@ -9,8 +9,7 @@
 
 #include "DockTitleBar.h"
 
-ViewDockWidget::ViewDockWidget(const QString& title,
-                               QWidget* parent,
+ViewDockWidget::ViewDockWidget(const QString& title, QWidget* parent,
                                Qt::WindowFlags flags)
     : DockWidget(title, parent, flags)
 {
@@ -18,14 +17,14 @@ ViewDockWidget::ViewDockWidget(const QString& title,
     titleBarWidget_.getSelectAllButton()->setVisible(true);
     titleBarWidget_.getUnselectAllButton()->setVisible(true);
 
-    connect(titleBarWidget_.getExportButton(), &QPushButton::clicked,
-            this, &ViewDockWidget::quickExportData);
+    connect(titleBarWidget_.getExportButton(), &QPushButton::clicked, this,
+            &ViewDockWidget::quickExportData);
 
-    connect(titleBarWidget_.getSelectAllButton(), &QPushButton::clicked,
-            this, &ViewDockWidget::selectAll);
+    connect(titleBarWidget_.getSelectAllButton(), &QPushButton::clicked, this,
+            &ViewDockWidget::selectAll);
 
-    connect(titleBarWidget_.getUnselectAllButton(), &QPushButton::clicked,
-            this, &ViewDockWidget::unselectAll);
+    connect(titleBarWidget_.getUnselectAllButton(), &QPushButton::clicked, this,
+            &ViewDockWidget::unselectAll);
 }
 
 void ViewDockWidget::quickExportData()

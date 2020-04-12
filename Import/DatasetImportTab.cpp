@@ -11,10 +11,9 @@
 #include "DatasetDefinitionVisualization.h"
 #include "DatasetsListBrowser.h"
 
-DatasetImportTab::DatasetImportTab(QWidget* parent) :
-    ImportTab(parent)
+DatasetImportTab::DatasetImportTab(QWidget* parent) : ImportTab(parent)
 {
-    //Create vertical and horizontal splitters and insert widgets into it.
+    // Create vertical and horizontal splitters and insert widgets into it.
     auto datasetsListBrowser = new DatasetsListBrowser(this);
     auto visualization = new DatasetDefinitionVisualization(this);
 
@@ -41,13 +40,14 @@ DatasetImportTab::DatasetImportTab(QWidget* parent) :
     connect(datasetsListBrowser, &DatasetsListBrowser::currentDatasetChanged,
             this, &DatasetImportTab::selectedDatasetChanged);
 
-    connect(visualization, &DatasetDefinitionVisualization::currentColumnNeedSync,
+    connect(visualization,
+            &DatasetDefinitionVisualization::currentColumnNeedSync,
             columnsPreview, &ColumnsPreview::selectCurrentColumn);
 
     connect(columnsPreview, &ColumnsPreview::currentColumnNeedSync,
-            visualization, &DatasetDefinitionVisualization::selectCurrentColumn);
+            visualization,
+            &DatasetDefinitionVisualization::selectCurrentColumn);
 }
-
 
 std::unique_ptr<DatasetDefinition> DatasetImportTab::getDatasetDefinition()
 {
@@ -61,8 +61,7 @@ void DatasetImportTab::selectedDatasetChanged(const QString& current)
     auto columnsPreview = findChild<ColumnsPreview*>();
     auto datasetsListBrowser = findChild<DatasetsListBrowser*>();
 
-    if (nullptr == datasetsListBrowser ||
-        nullptr == visualization ||
+    if (nullptr == datasetsListBrowser || nullptr == visualization ||
         nullptr == columnsPreview)
     {
         return;
@@ -81,7 +80,7 @@ void DatasetImportTab::selectedDatasetChanged(const QString& current)
         std::unique_ptr<DatasetDefinition> datasetDefinition =
             std::make_unique<DatasetDefinitionInner>(current);
 
-        //If definition is valid, than fill details.
+        // If definition is valid, than fill details.
         if (datasetDefinition && datasetDefinition->isValid())
         {
             columnsPreview->setDatasetDefinitionSampleInfo(*datasetDefinition);
@@ -99,10 +98,9 @@ void DatasetImportTab::selectedDatasetChanged(const QString& current)
             visualization->setEnabled(false);
             Q_EMIT definitionIsReady(false);
 
-            QMessageBox::information(this,
-                                     tr("Damaged dataset"),
-                                     tr("Dataset ") + current +
-                                     tr(" is damaged."));
+            QMessageBox::information(
+                this, tr("Damaged dataset"),
+                tr("Dataset ") + current + tr(" is damaged."));
         }
     }
 }

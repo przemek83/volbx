@@ -1,15 +1,15 @@
 #ifndef UPDATE_H
 #define UPDATE_H
 
-#include <QWidget>
 #include <QNetworkAccessManager>
+#include <QWidget>
 
 class QNetworkReply;
 
 namespace Ui
 {
 class Update;
-} // namespace Ui
+}  // namespace Ui
 
 /**
  * @brief Updater window. Acts as main window for all operations and display.
@@ -34,27 +34,27 @@ protected:
 private:
     Ui::Update* ui;
 
-    ///Network manager used for getting initial info.
+    /// Network manager used for getting initial info.
     QNetworkAccessManager initialInfoNetworkManager_;
 
-    ///Network manager used for downloading.
+    /// Network manager used for downloading.
     QNetworkAccessManager downloadManager_;
 
     void downloadFile(const QString& fileName);
 
-    ///List of files to download.
+    /// List of files to download.
     QVector<QString> filesToDownload_;
 
-    ///List of sizes of files to download.
+    /// List of sizes of files to download.
     QVector<QString> filesToDownloadSize_;
 
-    ///List of temporary files.
+    /// List of temporary files.
     QStringList tempFiles_;
 
-    ///Temporary files prefix.
+    /// Temporary files prefix.
     static const char* tmpPrefix_;
 
-    int currentTriesCount_ {0};
+    int currentTriesCount_{0};
 
     void showErrorMsg(const QString& error);
 
@@ -100,4 +100,4 @@ private Q_SLOTS:
     void showDetailsToggled(bool checked);
 };
 
-#endif // UPDATE_H
+#endif  // UPDATE_H

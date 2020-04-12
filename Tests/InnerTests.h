@@ -1,8 +1,8 @@
 #ifndef INNERTESTS_H
 #define INNERTESTS_H
 
-#include <QObject>
 #include <QFileInfo>
+#include <QObject>
 #include <QTableView>
 
 class DatasetDefinitionInner;
@@ -11,7 +11,7 @@ class DatasetInner;
 /**
  * @brief Unit test of inner format functionalities.
  */
-class InnerTests: public QObject
+class InnerTests : public QObject
 {
     Q_OBJECT
 private:
@@ -24,8 +24,7 @@ private:
      * @param view view from which data will be extracted.
      */
     void checkImport(const QString& fileName,
-                     DatasetDefinitionInner* definition,
-                     QTableView& view);
+                     DatasetDefinitionInner* definition, QTableView& view);
 
     /**
      * @brief check export for given dataset name.
@@ -40,8 +39,7 @@ private:
      * @param original original definition file.
      * @param generated generated definition file.
      */
-    void compareDefinitionFiles(QByteArray& original,
-                                QByteArray& generated);
+    void compareDefinitionFiles(QByteArray& original, QByteArray& generated);
 
 private slots:
     void initTestCase();
@@ -62,4 +60,4 @@ private slots:
     void cleanupTestCase();
 };
 
-#endif // INNERTESTS_H
+#endif  // INNERTESTS_H

@@ -1,18 +1,20 @@
 #ifndef LOGWINDOW_H
 #define LOGWINDOW_H
 
-#include <QMap>
-#include <QObject>
 #include <QCheckBox>
 #include <QLatin1String>
+#include <QMap>
+#include <QObject>
 
+#include "CheckBox.h"
 #include "Debugging.h"
 #include "LogType.h"
-#include "CheckBox.h"
 
-//If debug is not activated use empty logger. For debugging on use logging window.
+// If debug is not activated use empty logger. For debugging on use logging
+// window.
 #ifdef DEBUGGING
-#define LOG(type, msg) Logger::getInstance()->log(type, __FILE__, __FUNCTION__, __LINE__, msg)
+#define LOG(type, msg) \
+    Logger::getInstance()->log(type, __FILE__, __FUNCTION__, __LINE__, msg)
 #else
 #define LOG(...)
 #endif
@@ -35,10 +37,7 @@ public:
 
     static Logger* getInstance();
 
-    void log(LogTypes type,
-             const char* file,
-             const char* function,
-             int line,
+    void log(LogTypes type, const char* file, const char* function, int line,
              const QString& msg);
 
     void switchVisibility();
@@ -51,10 +50,10 @@ private:
 
     void reloadCheckBoxes();
 
-    ///Widget to display logs (text edit on it).
+    /// Widget to display logs (text edit on it).
     QWidget display_;
 
-    QTextEdit* textEdit_ {nullptr};
+    QTextEdit* textEdit_{nullptr};
 
     const QMap<LogTypes, QString> logNames_;
 
@@ -62,4 +61,4 @@ private Q_SLOTS:
     void changeActiveLogs(bool state);
 };
 
-#endif // LOGWINDOW_H
+#endif  // LOGWINDOW_H

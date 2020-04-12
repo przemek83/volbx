@@ -3,15 +3,15 @@
 
 #include <memory>
 
-#include <QMainWindow>
 #include <QDate>
-#include <QSet>
+#include <QMainWindow>
 #include <QNetworkAccessManager>
+#include <QSet>
 
 namespace Ui
 {
 class VolbxMain;
-} // namespace Ui
+}  // namespace Ui
 
 class FiltersDock;
 class DataView;
@@ -51,8 +51,8 @@ private:
      */
     void addMainTabForDataset(std::unique_ptr<Dataset> dataset);
 
-    ///Side dock with filters.
-    FiltersDock* filters_ {nullptr};
+    /// Side dock with filters.
+    FiltersDock* filters_{nullptr};
 
     void manageActions(bool tabExists);
 
@@ -62,10 +62,10 @@ private:
 
     void setupStatusBar();
 
-    ///Main tab widget/center widget.
-    MainTabWidget* tabWidget_ {nullptr};
+    /// Main tab widget/center widget.
+    MainTabWidget* tabWidget_{nullptr};
 
-    ///Network manager used to retrieve current version available.
+    /// Network manager used to retrieve current version available.
     QNetworkAccessManager networkManager_;
 
     void createOptionsMenu();
@@ -108,4 +108,4 @@ private Q_SLOTS:
     void customStylePicked();
 };
 
-#endif // VOLBXMAIN_H
+#endif  // VOLBXMAIN_H

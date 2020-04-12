@@ -1,8 +1,8 @@
 #ifndef FILTERSDOCK_H
 #define FILTERSDOCK_H
 
-#include <QMap>
 #include <QDate>
+#include <QMap>
 
 #include "GUI/DockWidget.h"
 
@@ -16,10 +16,11 @@ class QVBoxLayout;
 namespace Ui
 {
 class FiltersDock;
-} // namespace Ui
+}  // namespace Ui
 
 /**
- * @brief Filters dock used as parent for filters widget created for each dataset.
+ * @brief Filters dock used as parent for filters widget created for each
+ * dataset.
  */
 class FiltersDock : public DockWidget
 {
@@ -35,13 +36,13 @@ public:
     FiltersDock& operator=(FiltersDock&& other) = delete;
     FiltersDock(FiltersDock&& other) = delete;
 
-    ///Adds new widget with filters for given model.
+    /// Adds new widget with filters for given model.
     void addModel(const FilteringProxyModel* model);
 
-    ///Removes widget related to given model.
+    /// Removes widget related to given model.
     void removeModel(const FilteringProxyModel* model);
 
-    ///Shows widget with filters related with given model.
+    /// Shows widget with filters related with given model.
     void activateFiltersForModel(const FilteringProxyModel* model);
 
 private Q_SLOTS:
@@ -50,34 +51,31 @@ private Q_SLOTS:
 private:
     Ui::FiltersDock* ui;
 
-    ///Used to find widget related with model.
+    /// Used to find widget related with model.
     QMap<QWidget*, const FilteringProxyModel*> modelsMap_;
 
-    ///Create names filter for given model column and return it.
+    /// Create names filter for given model column and return it.
     FilterStrings* createNewStringsFilter(const TableModel* parentModel,
-                                          int index,
-                                          QWidget* filterListWidget);
+                                          int index, QWidget* filterListWidget);
 
-    ///Create dates filter for given model column and return it.
-    FilterDates* createNewDatesFilter(const TableModel* parentModel,
-                                      int index,
+    /// Create dates filter for given model column and return it.
+    FilterDates* createNewDatesFilter(const TableModel* parentModel, int index,
                                       QWidget* filterListWidget);
 
-    ///Create numbers filter for given model column and return it.
+    /// Create numbers filter for given model column and return it.
     FilterNumbers* createNewNumbersFilter(const TableModel* parentModel,
-                                          int index,
-                                          QWidget* filterListWidget);
+                                          int index, QWidget* filterListWidget);
 
     void createFiltersWidgets(const TableModel* model,
-                              QWidget* filterListWidget,
-                              QVBoxLayout* layout);
+                              QWidget* filterListWidget, QVBoxLayout* layout);
 
 Q_SIGNALS:
     void newNumbersFiltering(int column, double from, double to);
 
     void newNamesFiltering(int column, QStringList exclusionList);
 
-    void newDateFiltering(int column, QDate from, QDate to, bool filterEmptyDates);
+    void newDateFiltering(int column, QDate from, QDate to,
+                          bool filterEmptyDates);
 };
 
-#endif // FILTERSDOCK_H
+#endif  // FILTERSDOCK_H

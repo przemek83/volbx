@@ -13,53 +13,50 @@
 
 const char* Update::tmpPrefix_ = ".tmp";
 
-Update::Update(QWidget* parent) :
-    QWidget(parent),
-    ui(new Ui::Update)
+Update::Update(QWidget* parent) : QWidget(parent), ui(new Ui::Update)
 {
     ui->setupUi(this);
 
-    setWindowFlags(Qt::CustomizeWindowHint |
-                   Qt::WindowTitleHint |
+    setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint |
                    Qt::WindowCloseButtonHint);
 
     ui->valueAvailable->setText(tr("checking..."));
     ui->valueActual->setText(QApplication::applicationVersion());
 
-    connect(&initialInfoNetworkManager_, &QNetworkAccessManager::finished,
-            this, &Update::initialInfoNetworkReplyFinished);
+    connect(&initialInfoNetworkManager_, &QNetworkAccessManager::finished, this,
+            &Update::initialInfoNetworkReplyFinished);
 
-    connect(&downloadManager_, &QNetworkAccessManager::finished,
-            this, &Update::downloadFinished);
+    connect(&downloadManager_, &QNetworkAccessManager::finished, this,
+            &Update::downloadFinished);
 
-    //Get available version and files to update list.
+    // Get available version and files to update list.
     initialInfoNetworkManager_.get(Networking::getCurrentVersionRequest());
 
-    insertInfoIntoDetails(tr("Connecting to update server") + QStringLiteral("... "));
+    insertInfoIntoDetails(tr("Connecting to update server") +
+                          QStringLiteral("... "));
 
     LOG(LogTypes::NETWORK, QLatin1String("Initial network request send."));
 
     ui->details->hide();
 
-    connect(ui->buttonQuit, &QPushButton::clicked, this, &Update::buttonQuitClicked);
-    connect(ui->showDetails, &QCheckBox::toggled, this, &Update::showDetailsToggled);
+    connect(ui->buttonQuit, &QPushButton::clicked, this,
+            &Update::buttonQuitClicked);
+    connect(ui->showDetails, &QCheckBox::toggled, this,
+            &Update::showDetailsToggled);
 }
 
-Update::~Update()
-{
-    delete ui;
-}
+Update::~Update() { delete ui; }
 
 void Update::initialInfoNetworkReplyFinished(QNetworkReply* reply)
 {
     reply->deleteLater();
 
-    //Check errors.
+    // Check errors.
     if (Networking::errorsOccuredCheck(reply))
     {
         insertNewLineIntoDetails();
-        insertErrorInfoIntoDetails(tr("Error") +
-                                   QLatin1Char(':') + reply->errorString());
+        insertErrorInfoIntoDetails(tr("Error") + QLatin1Char(':') +
+                                   reply->errorString());
         showErrorMsg(tr("Connection error encountered."));
         return;
     }
@@ -101,8 +98,7 @@ void Update::initialInfoNetworkReplyFinished(QNetworkReply* reply)
     }
     else
     {
-        QMessageBox::information(this,
-                                 tr("No update needed"),
+        QMessageBox::information(this, tr("No update needed"),
                                  tr("Application is up to date."));
         close();
     }
@@ -110,13 +106,13 @@ void Update::initialInfoNetworkReplyFinished(QNetworkReply* reply)
 
 void Update::fillFilesToUpdateLists(QStringList& serverInfoList)
 {
-    //First line/element is correctness checker, second version.
+    // First line/element is correctness checker, second version.
     int filesCount = serverInfoList.size() - 2;
 
-    insertNewSectionIntoDetails(tr("Found") + QLatin1Char(' ') +
-                                QString::number(filesCount) + QLatin1Char(' ') +
-                                (filesCount != 1 ? tr("files") : tr("file")) +
-                                QLatin1Char(' ') + tr("to update") + QLatin1Char(':'));
+    insertNewSectionIntoDetails(
+        tr("Found") + QLatin1Char(' ') + QString::number(filesCount) +
+        QLatin1Char(' ') + (filesCount != 1 ? tr("files") : tr("file")) +
+        QLatin1Char(' ') + tr("to update") + QLatin1Char(':'));
 
     filesToDownload_.clear();
     filesToDownloadSize_.clear();
@@ -128,10 +124,10 @@ void Update::fillFilesToUpdateLists(QStringList& serverInfoList)
         filesToDownload_.push_back(fileName);
         filesToDownloadSize_.push_back(fileSize);
 
-        insertInfoIntoDetails(QString::number(i + 1) + QStringLiteral(". ") + fileName +
-                              QStringLiteral(" (") + tr("size") + QStringLiteral(": ") +
-                              fileSize + QLatin1Char(' ') + tr("bytes") +
-                              QLatin1Char(')'));
+        insertInfoIntoDetails(
+            QString::number(i + 1) + QStringLiteral(". ") + fileName +
+            QStringLiteral(" (") + tr("size") + QStringLiteral(": ") +
+            fileSize + QLatin1Char(' ') + tr("bytes") + QLatin1Char(')'));
         insertNewLineIntoDetails();
     }
 }
@@ -140,21 +136,24 @@ void Update::downloadFile(const QString& fileName)
 {
     insertInfoIntoDetails(fileName + QStringLiteral("... "));
 
-    //Update number of downloaded file only when previous was downloaded correctly.
+    // Update number of downloaded file only when previous was downloaded
+    // correctly.
     if (0 == currentTriesCount_)
     {
-        ui->currentFile->setText(QString::number(ui->currentFile->text().toInt() + 1));
+        ui->currentFile->setText(
+            QString::number(ui->currentFile->text().toInt() + 1));
     }
 
     QNetworkReply* reply =
         downloadManager_.get(Networking::getDownloadFileRequest(fileName));
 
-    LOG(LogTypes::NETWORK,
-        QLatin1String("Sent request for downloading file ") + QString(fileName));
+    LOG(LogTypes::NETWORK, QLatin1String("Sent request for downloading file ") +
+                               QString(fileName));
 
     ui->progressBar->reset();
 
-    connect(reply, &QNetworkReply::downloadProgress, this, &Update::updateProgress);
+    connect(reply, &QNetworkReply::downloadProgress, this,
+            &Update::updateProgress);
 }
 
 void Update::downloadFinished(QNetworkReply* reply)
@@ -164,8 +163,8 @@ void Update::downloadFinished(QNetworkReply* reply)
     if (Networking::errorsOccuredCheck(reply))
     {
         insertNewLineIntoDetails();
-        insertErrorInfoIntoDetails(tr("Error") +
-                                   QLatin1Char(':') + reply->errorString());
+        insertErrorInfoIntoDetails(tr("Error") + QLatin1Char(':') +
+                                   reply->errorString());
         showErrorMsg(tr("Connection error encountered."));
         return;
     }
@@ -178,19 +177,20 @@ void Update::downloadFinished(QNetworkReply* reply)
 
     QByteArray fileDownloadedContent = reply->readAll();
 
-    LOG(LogTypes::NETWORK,
-        QLatin1String("Expected file size ") + QString::number(fileSize.toInt()) +
-        QLatin1String(", size of downloaded file ") +
-        QString::number(fileDownloadedContent.size()) + QLatin1Char('.'));
+    LOG(LogTypes::NETWORK, QLatin1String("Expected file size ") +
+                               QString::number(fileSize.toInt()) +
+                               QLatin1String(", size of downloaded file ") +
+                               QString::number(fileDownloadedContent.size()) +
+                               QLatin1Char('.'));
 
-    //Verification of file size.
+    // Verification of file size.
     if (fileDownloadedContent.size() == fileSize.toInt())
     {
         saveVerfiedFile(fileDownloadedContent, fileName);
     }
     else
     {
-        //Do not continue if max tries reached.
+        // Do not continue if max tries reached.
         if (!handleVerificationError(fileName, fileSize))
         {
             return;
@@ -231,16 +231,14 @@ bool Update::handleVerificationError(QString& fileName, QString& fileSize)
 {
     insertErrorInfoIntoDetails(tr("Error during verification!"));
 
-    //Add corrupted file to front of vector if max tries not reached yet.
+    // Add corrupted file to front of vector if max tries not reached yet.
     if (currentTriesCount_ >= Networking::getMaxTries())
     {
         insertErrorInfoIntoDetails(tr("Can not download file."));
-        QString msg(tr("Updating interrupted - downloading error. Please retry later."));
-        QMessageBox::critical(this,
-                              tr("Updating interrupted"),
-                              msg);
+        QString msg(tr(
+            "Updating interrupted - downloading error. Please retry later."));
+        QMessageBox::critical(this, tr("Updating interrupted"), msg);
         return false;
-
     }
 
     filesToDownload_.push_front(fileName);
@@ -253,7 +251,8 @@ bool Update::handleVerificationError(QString& fileName, QString& fileSize)
 void Update::finalizeUpdate()
 {
     insertNewLineIntoDetails();
-    insertNewSectionIntoDetails(tr("Renaming temporary filenames") + QLatin1Char(':'));
+    insertNewSectionIntoDetails(tr("Renaming temporary filenames") +
+                                QLatin1Char(':'));
     for (const QString& tempFileName : tempFiles_)
     {
         QString targetFileName(tempFileName);
@@ -274,8 +273,7 @@ void Update::finalizeUpdate()
 
     ui->valueActual->setText(ui->valueAvailable->text());
 
-    QMessageBox::information(nullptr,
-                             tr("Update complete"),
+    QMessageBox::information(nullptr, tr("Update complete"),
                              tr("Application update is completed."));
 }
 
@@ -289,14 +287,11 @@ void Update::closeEvent(QCloseEvent* event)
 {
     QWidget::closeEvent(event);
 
-    //If logger window is shown closing mainWindow do not close app.
+    // If logger window is shown closing mainWindow do not close app.
     QApplication::closeAllWindows();
 }
 
-void Update::buttonQuitClicked()
-{
-    close();
-}
+void Update::buttonQuitClicked() { close(); }
 
 void Update::showErrorMsg(const QString& error)
 {
@@ -305,22 +300,20 @@ void Update::showErrorMsg(const QString& error)
         ui->showDetails->setChecked(true);
     }
 
-    //Do not close app. Allow user to check details.
+    // Do not close app. Allow user to check details.
     QMessageBox::critical(this, tr("Error"), error);
 }
 
 void Update::insertNewSectionIntoDetails(const QString& msg)
 {
-    ui->details->insertHtml(QStringLiteral("<b><FONT COLOR=blue>") +
-                            msg +
+    ui->details->insertHtml(QStringLiteral("<b><FONT COLOR=blue>") + msg +
                             QStringLiteral("</FONT></b><br>"));
     ui->details->ensureCursorVisible();
 }
 
 void Update::insertInfoIntoDetails(const QString& msg)
 {
-    ui->details->insertHtml(QStringLiteral("<FONT COLOR=black>") +
-                            msg +
+    ui->details->insertHtml(QStringLiteral("<FONT COLOR=black>") + msg +
                             QStringLiteral("</FONT>"));
     ui->details->ensureCursorVisible();
 }
@@ -333,20 +326,17 @@ void Update::insertNewLineIntoDetails()
 
 void Update::insertSuccessInfoIntoDetails(const QString& msg)
 {
-    ui->details->insertHtml(QStringLiteral("<b><FONT COLOR=green>") +
-                            msg +
+    ui->details->insertHtml(QStringLiteral("<b><FONT COLOR=green>") + msg +
                             QStringLiteral("</FONT></b>"));
     ui->details->ensureCursorVisible();
 }
 
 void Update::insertErrorInfoIntoDetails(const QString& msg)
 {
-    ui->details->insertHtml(QStringLiteral("<b><FONT COLOR=red>") +
-                            msg +
+    ui->details->insertHtml(QStringLiteral("<b><FONT COLOR=red>") + msg +
                             QStringLiteral("</FONT></b>"));
     ui->details->ensureCursorVisible();
 }
-
 
 void Update::showDetailsToggled(bool checked)
 {
