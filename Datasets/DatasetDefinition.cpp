@@ -180,6 +180,7 @@ QVariant DatasetDefinition::getDefaultVariantForFormat(
         }
 
         case DATA_FORMAT_UNKNOWN:
+        default:
         {
             Q_ASSERT(false);
             return QVariant(QVariant::String);
