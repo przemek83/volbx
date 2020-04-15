@@ -1,6 +1,7 @@
 #include "Export.h"
 
 #include <EibleUtilities.h>
+#include <ExportDsv.h>
 #include <ExportXlsx.h>
 #include <PlotBase.h>
 #include <ProgressBarCounter.h>
@@ -117,8 +118,14 @@ void Export::saveOnDisk()
     }
     else
     {
-        ExportUtilities::asCsv(view, fileName + "_" + tr("data") + ".csv",
-                               false);  // false = not inner format
+        QFile file(fileName + "_" + tr("data") + ".csv");
+        file.open(QIODevice::WriteOnly);
+        ExportDsv exportDsv(',');
+        QLocale locale;
+        locale.setNumberOptions(locale.numberOptions() |
+                                QLocale::OmitGroupSeparator);
+        exportDsv.setNumbersLocale(locale);
+        exportDsv.exportView(*view, file);
     }
 
     QApplication::restoreOverrideCursor();

@@ -7,9 +7,6 @@ class QAbstractItemView;
 
 namespace ExportUtilities
 {
-bool asCsv(const QAbstractItemView* view, const QString& fileName,
-           bool innerFormat);
-
 bool saveDataset(const QString& filePath, const QAbstractItemView* view);
 }  // namespace ExportUtilities
 
