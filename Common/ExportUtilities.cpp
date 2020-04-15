@@ -286,7 +286,7 @@ bool saveDatasetDefinitionFile(QuaZipFile& zipFile,
 }
 };  // namespace
 
-namespace ExportData
+namespace ExportUtilities
 {
 bool saveDataset(const QString& filePath, const QAbstractItemView* view)
 {
@@ -366,4 +366,4 @@ bool asCsv(const QAbstractItemView* view, const QString& fileName,
     return ret;
 }
 
-}  // namespace ExportData
+}  // namespace ExportUtilities

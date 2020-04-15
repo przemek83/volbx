@@ -10,7 +10,7 @@
 #include <QtTest/QtTest>
 
 #include "Common/Constants.h"
-#include "Common/ExportData.h"
+#include "Common/ExportUtilities.h"
 #include "Datasets/DatasetDefinitionInner.h"
 #include "Datasets/DatasetInner.h"
 #include "ModelsAndViews/FilteringProxyModel.h"
@@ -57,7 +57,7 @@ void InnerTests::generateDumpData()
             QTableView view;
             view.setModel(&proxyModel);
 
-            ExportData::quickAsTSV(&view);
+            ExportUtilities::quickAsTSV(&view);
 
             QString tsvData = QApplication::clipboard()->text();
 
@@ -99,7 +99,7 @@ void InnerTests::testDatasets()
 
         QString filePath{DatasetInner::getDatasetsDir() + tempFilename_ +
                          Constants::getDatasetExtension()};
-        ExportData::saveDataset(filePath, &view);
+        ExportUtilities::saveDataset(filePath, &view);
         checkExport(datasetName);
     }
 }
@@ -116,7 +116,7 @@ void InnerTests::checkImport(const QString& fileName,
     QCOMPARE(compareData.split('\n'),
              definition->dumpDatasetDefinition().split('\n'));
 
-    ExportData::quickAsTSV(&view);
+    ExportUtilities::quickAsTSV(&view);
 
     QString actualData = QApplication::clipboard()->text();
 

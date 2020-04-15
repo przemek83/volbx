@@ -1,11 +1,11 @@
-#ifndef EXPORTDATA_H
-#define EXPORTDATA_H
+#ifndef EXPORTUTILITIES_H
+#define EXPORTUTILITIES_H
 
 #include <QString>
 
 class QAbstractItemView;
 
-namespace ExportData
+namespace ExportUtilities
 {
 void quickAsTSV(const QAbstractItemView* view);
 
@@ -13,6 +13,6 @@ bool asCsv(const QAbstractItemView* view, const QString& fileName,
            bool innerFormat);
 
 bool saveDataset(const QString& filePath, const QAbstractItemView* view);
-}  // namespace ExportData
+}  // namespace ExportUtilities
 
-#endif  // EXPORTDATA_H
+#endif  // EXPORTUTILITIES_H

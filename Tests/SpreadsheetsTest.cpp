@@ -10,7 +10,7 @@
 
 #include "Common/Configuration.h"
 #include "Common/Constants.h"
-#include "Common/ExportData.h"
+#include "Common/ExportUtilities.h"
 #include "Datasets/Dataset.h"
 #include "Datasets/DatasetDefinitionOds.h"
 #include "Datasets/DatasetDefinitionXlsx.h"
@@ -513,7 +513,7 @@ void SpreadsheetsTest::compareExportDataWithDump(
     QTableView view;
     view.setModel(&proxyModel);
 
-    ExportData::quickAsTSV(&view);
+    ExportUtilities::quickAsTSV(&view);
 
     QCOMPARE(QApplication::clipboard()->text().split('\n'),
              Common::loadFile(datasetName + Common::getDataTsvDumpSuffix())
@@ -555,7 +555,7 @@ void SpreadsheetsTest::generateDataDumpsForFile(QString name)
     QTableView view;
     view.setModel(&proxyModel);
 
-    ExportData::quickAsTSV(&view);
+    ExportUtilities::quickAsTSV(&view);
 
     QString tsvData = QApplication::clipboard()->text();
 

@@ -13,8 +13,8 @@
 
 #include "Common/Configuration.h"
 #include "Common/Constants.h"
-#include "Common/ExportData.h"
 #include "Common/ExportImage.h"
+#include "Common/ExportUtilities.h"
 #include "ModelsAndViews/DataView.h"
 #include "Shared/Logger.h"
 
@@ -117,8 +117,8 @@ void Export::saveOnDisk()
     }
     else
     {
-        ExportData::asCsv(view, fileName + "_" + tr("data") + ".csv",
-                          false);  // false = not inner format
+        ExportUtilities::asCsv(view, fileName + "_" + tr("data") + ".csv",
+                               false);  // false = not inner format
     }
 
     QApplication::restoreOverrideCursor();

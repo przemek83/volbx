@@ -5,8 +5,8 @@ set(${PROJECT_NAME}_SOURCES
     Configuration.h
     Constants.cpp
     Constants.h
-    ExportData.cpp
-    ExportData.h
+    ExportUtilities.cpp
+    ExportUtilities.h
     ExportImage.cpp
     ExportImage.h
     Formats.h

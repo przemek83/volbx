@@ -4,7 +4,7 @@
 #include <QPushButton>
 
 #include "Common/Constants.h"
-#include "Common/ExportData.h"
+#include "Common/ExportUtilities.h"
 #include "ModelsAndViews/DataView.h"
 
 #include "DockTitleBar.h"
@@ -30,9 +30,9 @@ ViewDockWidget::ViewDockWidget(const QString& title, QWidget* parent,
 void ViewDockWidget::quickExportData()
 {
     auto view = findChild<DataView*>();
-    Q_ASSERT(nullptr != view);
+    Q_ASSERT(view != nullptr);
 
-    ExportData::quickAsTSV(view);
+    ExportUtilities::quickAsTSV(view);
 }
 
 void ViewDockWidget::selectAll()

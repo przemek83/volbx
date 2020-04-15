@@ -14,7 +14,7 @@
 
 #include "Common/Configuration.h"
 #include "Common/Constants.h"
-#include "Common/ExportData.h"
+#include "Common/ExportUtilities.h"
 #include "Datasets/Dataset.h"
 #include "Datasets/DatasetDefinitionInner.h"
 #include "Datasets/DatasetDefinitionOds.h"
@@ -379,7 +379,7 @@ void VolbxMain::actionSaveDatasetAsTriggered()
         LOG(LogTypes::IMPORT_EXPORT, "Saving dataset " + name);
         QString filePath{DatasetInner::getDatasetsDir() + name +
                          Constants::getDatasetExtension()};
-        ExportData::saveDataset(filePath, view);
+        ExportUtilities::saveDataset(filePath, view);
 
         LOG(LogTypes::IMPORT_EXPORT,
             "File saved in total time " +
