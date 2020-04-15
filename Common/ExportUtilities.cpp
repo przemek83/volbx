@@ -322,14 +322,6 @@ bool saveDataset(const QString& filePath, const QAbstractItemView* view)
     return saveDatasetDefinitionFile(zipFile, view, rowCount);
 }
 
-void quickAsTSV(const QAbstractItemView* view)
-{
-    QByteArray content;
-    dataToByteArray(view, &content, tsvSeparator_, false);
-
-    QApplication::clipboard()->setText(QString::fromUtf8(content));
-}
-
 bool asCsv(const QAbstractItemView* view, const QString& fileName,
            bool innerFormat)
 {

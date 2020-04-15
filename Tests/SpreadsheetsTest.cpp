@@ -513,11 +513,10 @@ void SpreadsheetsTest::compareExportDataWithDump(
     QTableView view;
     view.setModel(&proxyModel);
 
-    ExportUtilities::quickAsTSV(&view);
-
-    QCOMPARE(QApplication::clipboard()->text().split('\n'),
-             Common::loadFile(datasetName + Common::getDataTsvDumpSuffix())
-                 .split('\n'));
+    QString actualData{Common::getExportedTsv(view)};
+    QString expectedData{
+        Common::loadFile(datasetName + Common::getDataTsvDumpSuffix())};
+    QCOMPARE(actualData.split('\n'), expectedData.split('\n'));
 }
 
 void SpreadsheetsTest::generateDataDumpsForFile(QString name)
@@ -555,10 +554,7 @@ void SpreadsheetsTest::generateDataDumpsForFile(QString name)
     QTableView view;
     view.setModel(&proxyModel);
 
-    ExportUtilities::quickAsTSV(&view);
-
-    QString tsvData = QApplication::clipboard()->text();
-
+    QString tsvData{Common::getExportedTsv(view)};
     Common::saveFile(name + Common::getDataTsvDumpSuffix(), tsvData);
 }
 

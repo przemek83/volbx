@@ -7,8 +7,6 @@ class QAbstractItemView;
 
 namespace ExportUtilities
 {
-void quickAsTSV(const QAbstractItemView* view);
-
 bool asCsv(const QAbstractItemView* view, const QString& fileName,
            bool innerFormat);
 
