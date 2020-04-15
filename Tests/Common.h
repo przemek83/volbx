@@ -3,26 +3,24 @@
 
 #include <QString>
 
+class QAbstractItemView;
+
 /**
- * @brief common methods for unit tests.
+ * @brief common functions for unit tests.
  */
-class Common
+namespace Common
 {
-public:
-    static QString loadFile(QString name);
+QString loadFile(QString name);
 
-    static void saveFile(QString fileName, QString& data);
+void saveFile(QString fileName, const QString& data);
 
-    static QString getDefinitionDumpSuffix();
+QString getDefinitionDumpSuffix();
 
-    static QString getDefinitionRefSuffix();
+QString getDefinitionRefSuffix();
 
-    static QString getDataTsvDumpSuffix();
+QString getDataTsvDumpSuffix();
 
-private:
-    Common();
-    virtual ~Common();
-    Q_DISABLE_COPY(Common)
-};
+QString getExportedTsv(const QAbstractItemView& view);
+};  // namespace Common
 
 #endif  // COMMON_H

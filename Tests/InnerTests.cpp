@@ -1,5 +1,6 @@
 #include "InnerTests.h"
 
+#include <ExportDsv.h>
 #include <quazip5/quazip.h>
 #include <quazip5/quazipfile.h>
 #include <QApplication>
@@ -57,10 +58,7 @@ void InnerTests::generateDumpData()
             QTableView view;
             view.setModel(&proxyModel);
 
-            ExportUtilities::quickAsTSV(&view);
-
-            QString tsvData = QApplication::clipboard()->text();
-
+            QString tsvData{Common::getExportedTsv(view)};
             Common::saveFile(DatasetInner::getDatasetsDir() +
                                  fileInfo.baseName() +
                                  Common::getDataTsvDumpSuffix(),
@@ -104,9 +102,8 @@ void InnerTests::testDatasets()
     }
 }
 
-void InnerTests::checkImport(const QString& fileName,
-                             DatasetDefinitionInner* definition,
-                             QTableView& view)
+void InnerTests::checkDatasetDefinition(
+    const QString& fileName, DatasetDefinitionInner* definition) const
 {
     QString datasetFilePath(DatasetInner::getDatasetsDir() + fileName);
 
@@ -115,15 +112,26 @@ void InnerTests::checkImport(const QString& fileName,
 
     QCOMPARE(compareData.split('\n'),
              definition->dumpDatasetDefinition().split('\n'));
+}
 
-    ExportUtilities::quickAsTSV(&view);
+void InnerTests::checkDatasetData(const QString& fileName,
+                                  const QTableView& view) const
+{
+    QString actualData{Common::getExportedTsv(view)};
 
-    QString actualData = QApplication::clipboard()->text();
-
-    compareData =
+    QString datasetFilePath(DatasetInner::getDatasetsDir() + fileName);
+    QString compareData =
         Common::loadFile(datasetFilePath + Common::getDataTsvDumpSuffix());
 
     QCOMPARE(actualData.split('\n'), compareData.split('\n'));
+}
+
+void InnerTests::checkImport(const QString& fileName,
+                             DatasetDefinitionInner* definition,
+                             const QTableView& view)
+{
+    checkDatasetDefinition(fileName, definition);
+    checkDatasetData(fileName, view);
 }
 
 void InnerTests::checkExport(QString fileName)

@@ -17,6 +17,12 @@ class InnerTests : public QObject
 private:
     void generateDumpData();
 
+    void checkDatasetDefinition(const QString& fileName,
+                                DatasetDefinitionInner* definition) const;
+
+    void checkDatasetData(const QString& fileName,
+                          const QTableView& view) const;
+
     /**
      * @brief check import of given inner dataset.
      * @param fileName dataset name used as file name.
@@ -24,7 +30,8 @@ private:
      * @param view view from which data will be extracted.
      */
     void checkImport(const QString& fileName,
-                     DatasetDefinitionInner* definition, QTableView& view);
+                     DatasetDefinitionInner* definition,
+                     const QTableView& view);
 
     /**
      * @brief check export for given dataset name.
