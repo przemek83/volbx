@@ -1,10 +1,13 @@
 #include "ViewDockWidget.h"
 
+#include <ExportDsv.h>
+#include <QApplication>
+#include <QBuffer>
+#include <QClipboard>
 #include <QDebug>
 #include <QPushButton>
 
 #include "Common/Constants.h"
-#include "Common/ExportUtilities.h"
 #include "ModelsAndViews/DataView.h"
 
 #include "DockTitleBar.h"
@@ -32,7 +35,14 @@ void ViewDockWidget::quickExportData()
     auto view = findChild<DataView*>();
     Q_ASSERT(view != nullptr);
 
-    ExportUtilities::quickAsTSV(view);
+    QByteArray exportedByteArray;
+    QBuffer exportedBuffer(&exportedByteArray);
+    exportedBuffer.open(QIODevice::WriteOnly);
+
+    ExportDsv exportDsv('\t');
+    exportDsv.exportView(*view, exportedBuffer);
+
+    QApplication::clipboard()->setText(QString::fromUtf8(exportedByteArray));
 }
 
 void ViewDockWidget::selectAll()
@@ -40,9 +50,7 @@ void ViewDockWidget::selectAll()
     auto view = findChild<DataView*>();
 
     if (view == nullptr)
-    {
         return;
-    }
 
     view->selectAll();
     view->reloadSelectionDataAndRecompute();
@@ -53,9 +61,7 @@ void ViewDockWidget::unselectAll()
     auto view = findChild<DataView*>();
 
     if (view == nullptr)
-    {
         return;
-    }
 
     view->clearSelection();
     view->reloadSelectionDataAndRecompute();
