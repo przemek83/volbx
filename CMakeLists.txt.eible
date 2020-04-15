@@ -7,6 +7,6 @@ project(eible NONE)
 ExternalProject_Add(eible
     PREFIX eible
     GIT_REPOSITORY https://github.com/przemek83/eible.git
-    GIT_TAG master
+    GIT_TAG ce3a4742a3c4d6bcf6a78104cfe9e8a9e9cc1a79
     CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/eible/install
 )
