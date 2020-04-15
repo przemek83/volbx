@@ -94,39 +94,44 @@ void Export::saveOnDisk()
     auto view = tab_->findChild<DataView*>();
     Q_ASSERT(view != nullptr);
 
+    const QString barTitle =
+        Constants::getProgressBarTitle(Constants::BarTitle::SAVING);
+    ProgressBarCounter bar(barTitle, view->model()->rowCount(), nullptr);
+    bar.showDetached();
+
+    QTime performanceTimer;
+    performanceTimer.start();
+
+    bool exportSucceed{false};
     if (ui->xlsx->isChecked())
     {
-        const QString barTitle =
-            Constants::getProgressBarTitle(Constants::BarTitle::SAVING);
-        ProgressBarCounter bar(barTitle, view->model()->rowCount(), nullptr);
-        bar.showDetached();
-
-        QTime performanceTimer;
-        performanceTimer.start();
-
         QFile file(fileName + "_" + tr("data") + ".xlsx");
         ExportXlsx exportXlsx;
-        connect(&exportXlsx, &ExportXlsx::updateProgress, &bar,
+        connect(&exportXlsx, &ExportData::updateProgress, &bar,
                 &ProgressBarCounter::updateProgress);
-        if (exportXlsx.exportView(*view, file))
-            LOG(LogTypes::IMPORT_EXPORT,
-                "Data exported in " +
-                    QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
-                    " seconds.");
-        else
-            LOG(LogTypes::IMPORT_EXPORT, "Can not open XLSX template file.");
+        exportSucceed = exportXlsx.exportView(*view, file);
     }
     else
     {
         QFile file(fileName + "_" + tr("data") + ".csv");
         file.open(QIODevice::WriteOnly);
         ExportDsv exportDsv(',');
+        connect(&exportDsv, &ExportData::updateProgress, &bar,
+                &ProgressBarCounter::updateProgress);
         QLocale locale;
         locale.setNumberOptions(locale.numberOptions() |
                                 QLocale::OmitGroupSeparator);
         exportDsv.setNumbersLocale(locale);
-        exportDsv.exportView(*view, file);
+        exportSucceed = exportDsv.exportView(*view, file);
     }
+
+    if (exportSucceed)
+        LOG(LogTypes::IMPORT_EXPORT,
+            "Data exported in " +
+                QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
+                " seconds.");
+    else
+        LOG(LogTypes::IMPORT_EXPORT, "Data exporting failed.");
 
     QApplication::restoreOverrideCursor();
 }
