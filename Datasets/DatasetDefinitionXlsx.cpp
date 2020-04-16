@@ -4,6 +4,7 @@
 #include <memory>
 
 #include <EibleUtilities.h>
+#include <ImportXlsx.h>
 #include <ProgressBarCounter.h>
 #include <ProgressBarInfinite.h>
 #include <QApplication>
@@ -22,114 +23,13 @@ DatasetDefinitionXlsx::DatasetDefinitionXlsx(const QString& name,
 
 bool DatasetDefinitionXlsx::getSheetList(QuaZip& zip)
 {
-    QMap<QString, QString> sheetIdToUserFriendlyNameMap;
-
-    if (zip.setCurrentFile(QStringLiteral("xl/workbook.xml")))
-    {
-        // Open file in archive.
-        QuaZipFile zipFile(&zip);
-        if (!zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
-        {
-            LOG(LogTypes::IMPORT_EXPORT,
-                "Can not open file " + zipFile.getFileName() + ".");
-            return false;
-        }
-
-        // Create, set content and read DOM.
-        QDomDocument xmlDocument(name_);
-        if (!xmlDocument.setContent(zipFile.readAll()))
-        {
-            LOG(LogTypes::IMPORT_EXPORT, "File is corrupted.");
-            return false;
-        }
-        zipFile.close();
-
-        QDomElement root = xmlDocument.documentElement();
-        QDomNodeList sheetNodes =
-            root.firstChildElement(QStringLiteral("sheets")).childNodes();
-
-        if (sheetNodes.size() <= 0)
-        {
-            LOG(LogTypes::IMPORT_EXPORT,
-                "File is corrupted, no sheets in xml.");
-            return false;
-        }
-
-        for (int i = 0; i < sheetNodes.size(); ++i)
-        {
-            QDomElement sheet = sheetNodes.at(i).toElement();
-
-            if (!sheet.isNull())
-            {
-                sheetIdToUserFriendlyNameMap[sheet.attribute(QStringLiteral(
-                    "r:id"))] = sheet.attribute(QStringLiteral("name"));
-            }
-        }
-    }
-    else
-    {
-        LOG(LogTypes::IMPORT_EXPORT, "Can not open xl/workbook.xml file.");
-        return false;
-    }
-
-    if (zip.setCurrentFile(QStringLiteral("xl/_rels/workbook.xml.rels")))
-    {
-        // Open file in archive.
-        QuaZipFile zipFile(&zip);
-        if (!zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
-        {
-            LOG(LogTypes::IMPORT_EXPORT,
-                "Can not open file " + zipFile.getFileName() + ".");
-            return false;
-        }
-
-        // Create, set content and read DOM.
-        QDomDocument xmlDocument(name_);
-        if (!xmlDocument.setContent(zipFile.readAll()))
-        {
-            LOG(LogTypes::IMPORT_EXPORT, "File is corrupted.");
-            return false;
-        }
-        zipFile.close();
-
-        QDomElement root = xmlDocument.documentElement();
-        QDomNodeList sheetNodes = root.childNodes();
-
-        if (sheetNodes.size() <= 0)
-        {
-            LOG(LogTypes::IMPORT_EXPORT,
-                "File is corrupted, no sheets in xml.");
-            return false;
-        }
-
-        for (int i = 0; i < sheetNodes.size(); ++i)
-        {
-            QDomElement sheet = sheetNodes.at(i).toElement();
-
-            if (!sheet.isNull())
-            {
-                QMap<QString, QString>::const_iterator iterator =
-                    sheetIdToUserFriendlyNameMap.constFind(
-                        sheet.attribute(QStringLiteral("Id")));
-
-                if (sheetIdToUserFriendlyNameMap.constEnd() != iterator)
-                {
-                    sheetToFileMapInZip_[*iterator] =
-                        "xl/" + sheet.attribute(QStringLiteral("Target"));
-                }
-            }
-        }
-    }
-    else
-    {
-        LOG(LogTypes::IMPORT_EXPORT,
-            "No file named xl/_rels/workbook.xml.rels in archive.");
-        return false;
-    }
-
-    // qDebug() << sheetToFileMapInZip_;
-
-    return true;
+    QFile file(zip.getZipName());
+    ImportXlsx importXlsx(file);
+    bool success{false};
+    std::tie(success, sheetToFileMapInZip_) = importXlsx.getSheetList();
+    if (!success)
+        LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
+    return success;
 }
 
 bool DatasetDefinitionXlsx::loadStyles(QuaZip& zip)
