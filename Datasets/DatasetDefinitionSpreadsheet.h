@@ -44,8 +44,6 @@ protected:
                                 QVector<QVector<QVariant> >* dataContainer,
                                 bool fillSamplesOnly) = 0;
 
-    bool checkCorrectness(QuaZip& zip) const;
-
     virtual bool getSheetList(QuaZip& zip) = 0;
 
     virtual bool getColumnList(QuaZip& zip, const QString& sheetName) = 0;

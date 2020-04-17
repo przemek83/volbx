@@ -21,8 +21,8 @@ bool DatasetDefinitionSpreadsheet::init()
         return false;
     }
 
-    if (!checkCorrectness(zip_) || !getSheetList(zip_) ||
-        !loadSpecificData(zip_) || !getColumnList(zip_, getSheetName()))
+    if (!getSheetList(zip_) || !loadSpecificData(zip_) ||
+        !getColumnList(zip_, getSheetName()))
     {
         error_ = QObject::tr("File ") + zip_.getZipName() +
                  QObject::tr(" is damaged.");
@@ -72,11 +72,6 @@ void DatasetDefinitionSpreadsheet::updateSampleDataStrings()
             }
         }
     }
-}
-
-bool DatasetDefinitionSpreadsheet::checkCorrectness(QuaZip& /*zip*/) const
-{
-    return true;
 }
 
 bool DatasetDefinitionSpreadsheet::isValid() const { return valid_; }

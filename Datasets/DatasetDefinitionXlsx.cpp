@@ -34,90 +34,18 @@ bool DatasetDefinitionXlsx::getSheetList(QuaZip& zip)
 
 bool DatasetDefinitionXlsx::loadStyles(QuaZip& zip)
 {
-    dateStyles_.clear();
-    allStyles_.clear();
-
-    const QList predefinedExcelStylesForDates{14, 15, 16, 17, 22};
-    // List of predefind excel styles for dates.
-    dateStyles_.append(predefinedExcelStylesForDates);
-
-    // Load styles.
-    if (zip.setCurrentFile(QStringLiteral("xl/styles.xml")))
-    {
-        // Open file in archive.
-        QuaZipFile zipFile(&zip);
-        if (!zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
-        {
-            LOG(LogTypes::IMPORT_EXPORT, "Can not open file.");
-            return false;
-        }
-
-        // Create, set content and read DOM.
-        QDomDocument xmlDocument(name_);
-        if (!xmlDocument.setContent(zipFile.readAll()))
-        {
-            LOG(LogTypes::IMPORT_EXPORT, "Xml file is corrupted.");
-            return false;
-        }
-        zipFile.close();
-
-        QDomElement root = xmlDocument.documentElement();
-        QDomNodeList sheetNodes =
-            root.firstChildElement(QStringLiteral("numFmts")).childNodes();
-
-        for (int i = 0; i < sheetNodes.size(); ++i)
-        {
-            QDomElement sheet = sheetNodes.at(i).toElement();
-
-            if (sheet.hasAttribute(QStringLiteral("numFmtId")) &&
-                sheet.hasAttribute(QStringLiteral("formatCode")))  //&&
-            // sheet.attribute("formatCode").contains("@"))
-            {
-                QString formatCode =
-                    sheet.attribute(QStringLiteral("formatCode"));
-                bool gotD = formatCode.contains(QStringLiteral("d"),
-                                                Qt::CaseInsensitive);
-                bool gotM = formatCode.contains(QStringLiteral("m"),
-                                                Qt::CaseInsensitive);
-                bool gotY = formatCode.contains(QStringLiteral("y"),
-                                                Qt::CaseInsensitive);
-
-                if ((gotD && gotY) || (gotD && gotM) || (gotM && gotY))
-                {
-                    dateStyles_.push_back(
-                        sheet.attribute(QStringLiteral("numFmtId")).toInt());
-                }
-            }
-        }
-
-        sheetNodes =
-            root.firstChildElement(QStringLiteral("cellXfs")).childNodes();
-
-        for (int i = 0; i < sheetNodes.size(); ++i)
-        {
-            QDomElement sheet = sheetNodes.at(i).toElement();
-
-            if (!sheet.isNull() &&
-                sheet.hasAttribute(QStringLiteral("numFmtId")))
-            {
-                allStyles_.push_back(
-                    sheet.attribute(QStringLiteral("numFmtId")).toInt());
-            }
-        }
-    }
-    else
-    {
-        LOG(LogTypes::IMPORT_EXPORT,
-            "No file named xl/workbook.xml in archive.");
-        return false;
-    }
-
-    return true;
+    QFile file(zip.getZipName());
+    ImportXlsx importXlsx(file);
+    bool success{false};
+    std::tie(success, dateStyles_, allStyles_) = importXlsx.getStyles();
+    if (!success)
+        LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
+    return success;
 }
 
 bool DatasetDefinitionXlsx::loadSharedStrings(QuaZip& zip)
 {
-    // Loading shared strings, it is seperate file in archive with uniqe table
+    // Loading shared strings, it is separate file in archive with unique table
     // of all strings, in spreadsheet there are calls to this table.
     if (zip.setCurrentFile(QStringLiteral("xl/sharedStrings.xml")))
     {
