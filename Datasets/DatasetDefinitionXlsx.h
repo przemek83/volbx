@@ -7,6 +7,8 @@
 
 #include "DatasetDefinitionSpreadsheet.h"
 
+class ImportXlsx;
+
 /**
  * @brief Dataset definition for .xlsx files.
  */
@@ -36,9 +38,9 @@ private:
 
     bool getColumnList(QuaZip& zip, const QString& sheetName) override;
 
-    bool loadStyles(QuaZip& zip);
+    bool loadStyles(ImportXlsx& importXlsx);
 
-    bool loadSharedStrings(QuaZip& zip);
+    bool loadSharedStrings(ImportXlsx& importXlsx);
 
     bool getColumnTypes(QuaZip& zip, const QString& sheetName) override;
 

@@ -32,10 +32,8 @@ bool DatasetDefinitionXlsx::getSheetList(QuaZip& zip)
     return success;
 }
 
-bool DatasetDefinitionXlsx::loadStyles(QuaZip& zip)
+bool DatasetDefinitionXlsx::loadStyles(ImportXlsx& importXlsx)
 {
-    QFile file(zip.getZipName());
-    ImportXlsx importXlsx(file);
     bool success{false};
     std::tie(success, dateStyles_, allStyles_) = importXlsx.getStyles();
     if (!success)
@@ -43,47 +41,20 @@ bool DatasetDefinitionXlsx::loadStyles(QuaZip& zip)
     return success;
 }
 
-bool DatasetDefinitionXlsx::loadSharedStrings(QuaZip& zip)
+bool DatasetDefinitionXlsx::loadSharedStrings(ImportXlsx& importXlsx)
 {
-    // Loading shared strings, it is separate file in archive with unique table
-    // of all strings, in spreadsheet there are calls to this table.
-    if (zip.setCurrentFile(QStringLiteral("xl/sharedStrings.xml")))
+    auto [success, sharedStringsSet] = importXlsx.getSharedStrings();
+    if (!success)
     {
-        // Set variable.
-        QuaZipFile zipFile(&zip);
-
-        // Opening file.
-        if (!zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
-        {
-            LOG(LogTypes::IMPORT_EXPORT,
-                "Can not open file " + zipFile.getFileName() + ".");
-            return false;
-        }
-
-        QXmlStreamReader xmlStreamReader;
-        xmlStreamReader.setDevice(&zipFile);
-
-        while (!xmlStreamReader.atEnd())
-        {
-            xmlStreamReader.readNext();
-
-            // If 't' tag found add value to shared strings.
-            if (xmlStreamReader.name() == "t")
-            {
-                stringsMap_[xmlStreamReader.readElementText()] = nextIndex_;
-                nextIndex_++;
-            }
-        }
-        zipFile.close();
+        LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
+        return false;
     }
-    else
+    for (const auto& sharedString : sharedStringsSet)
     {
-        LOG(LogTypes::IMPORT_EXPORT,
-            "No file xl/sharedStrings.xml in archive.");
-        return true;
+        stringsMap_[sharedString] = nextIndex_;
+        nextIndex_++;
     }
-
-    return true;
+    return success;
 }
 
 bool DatasetDefinitionXlsx::getColumnList(QuaZip& zip, const QString& sheetName)
@@ -697,7 +668,9 @@ const QString& DatasetDefinitionXlsx::getSheetName()
 
 bool DatasetDefinitionXlsx::loadSpecificData(QuaZip& zip)
 {
-    if (!loadStyles(zip) || !loadSharedStrings(zip))
+    QFile file(zip.getZipName());
+    ImportXlsx importXlsx(file);
+    if (!loadStyles(importXlsx) || !loadSharedStrings(importXlsx))
     {
         error_ = QObject::tr("File ") + zip.getZipName() +
                  QObject::tr(" is damaged.");
