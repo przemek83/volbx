@@ -110,8 +110,8 @@ void InnerTests::checkDatasetDefinition(
     QString compareData =
         Common::loadFile(datasetFilePath + Common::getDefinitionDumpSuffix());
 
-    QCOMPARE(compareData.split('\n'),
-             definition->dumpDatasetDefinition().split('\n'));
+    QCOMPARE(definition->dumpDatasetDefinition().split('\n'),
+             compareData.split('\n'));
 }
 
 void InnerTests::checkDatasetData(const QString& fileName,
@@ -158,7 +158,7 @@ void InnerTests::checkExport(QString fileName)
     QVERIFY(true == zipFileGenerated.open(QIODevice::ReadOnly));
     QByteArray generatedData = zipFileGenerated.readAll();
     zipFileGenerated.close();
-    QCOMPARE(originalData, generatedData);
+    QCOMPARE(generatedData, originalData);
 
     // Open strings files in archives and compare it.
     zipOriginal.setCurrentFile(Constants::getDatasetStringsFilename());
@@ -170,7 +170,7 @@ void InnerTests::checkExport(QString fileName)
     QVERIFY(true == zipFileGenerated.open(QIODevice::ReadOnly));
     generatedData = zipFileGenerated.readAll();
     zipFileGenerated.close();
-    QCOMPARE(originalData, generatedData);
+    QCOMPARE(generatedData, originalData);
 
     // Open definitions files.
     zipOriginal.setCurrentFile(Constants::getDatasetDefinitionFilename());
@@ -182,7 +182,7 @@ void InnerTests::checkExport(QString fileName)
     QVERIFY(true == zipFileGenerated.open(QIODevice::ReadOnly));
     generatedData = zipFileGenerated.readAll();
     zipFileGenerated.close();
-    compareDefinitionFiles(originalData, generatedData);
+    compareDefinitionFiles(generatedData, originalData);
 }
 
 void InnerTests::compareDefinitionFiles(QByteArray& original,

@@ -313,16 +313,16 @@ void SpreadsheetsTest::testBasicInfo(DatasetDefinition& definition, int rows,
                                      int columns, int activeColumns,
                                      QString name)
 {
-    QVERIFY(true == definition.isValid());
-    QCOMPARE(rows, definition.rowCount());
-    QCOMPARE(columns, definition.columnCount());
-    QCOMPARE(activeColumns, definition.getActiveColumnCount());
+    QVERIFY(definition.isValid());
+    QCOMPARE(definition.rowCount(), rows);
+    QCOMPARE(definition.columnCount(), columns);
+    QCOMPARE(definition.getActiveColumnCount(), activeColumns);
 
     QString dump = Common::loadFile(
         QString(definition.getName() + Common::getDefinitionDumpSuffix()));
-    QCOMPARE(dump, definition.dumpDatasetDefinition());
+    QCOMPARE(definition.dumpDatasetDefinition(), dump);
 
-    QCOMPARE(name, definition.getName());
+    QCOMPARE(definition.getName(), name);
 }
 
 void SpreadsheetsTest::testColumnInfo(
@@ -333,8 +333,8 @@ void SpreadsheetsTest::testColumnInfo(
     QPair<int, DataFormat> pairFormat;
     foreach (pairFormat, columnFormats)
     {
-        QCOMPARE(pairFormat.second,
-                 definition.getColumnFormat(pairFormat.first));
+        QCOMPARE(definition.getColumnFormat(pairFormat.first),
+                 pairFormat.second);
     }
 
     // No special columns yet.
@@ -348,7 +348,7 @@ void SpreadsheetsTest::testColumnInfo(
     QPair<int, QString> pairNames;
     foreach (pairNames, columnNames)
     {
-        QCOMPARE(pairNames.second, definition.getColumnName(pairNames.first));
+        QCOMPARE(definition.getColumnName(pairNames.first), pairNames.second);
     }
 }
 
@@ -358,15 +358,15 @@ void SpreadsheetsTest::testSampleData(
 {
     const QVector<QVector<QVariant> >* sampleData = definition.getSampleData();
 
-    QCOMPARE(rows, sampleData->size());
-    QCOMPARE(columns, sampleData->front().size());
+    QCOMPARE(sampleData->size(), rows);
+    QCOMPARE(sampleData->front().size(), columns);
 
     std::tuple<QVariant, int, int> fieldsTuple;
     foreach (fieldsTuple, fields)
     {
         QCOMPARE(
-            std::get<0>(fieldsTuple),
-            sampleData->at(std::get<1>(fieldsTuple))[std::get<2>(fieldsTuple)]);
+            sampleData->at(std::get<1>(fieldsTuple))[std::get<2>(fieldsTuple)],
+            std::get<0>(fieldsTuple));
     }
 }
 
@@ -375,7 +375,7 @@ void SpreadsheetsTest::testDatasetConstruction(
     QVector<double>& compareNumericValues, QVector<QDate>& compareDateValues,
     QStringList& compareList, bool emptyDates)
 {
-    QVERIFY(true == dataset.isValid());
+    QVERIFY(dataset.isValid());
 
     auto [min, max] = dataset.getNumericRange(columnsToTest[0]);
     QCOMPARE(min, compareNumericValues[0]);
@@ -433,7 +433,7 @@ void SpreadsheetsTest::compareDataWithDumps(const QString& category,
             QVERIFY(true == definition->init());
             QString dump = Common::loadFile(
                 QString(fileName + Common::getDefinitionDumpSuffix()));
-            QCOMPARE(dump, definition->dumpDatasetDefinition());
+            QCOMPARE(definition->dumpDatasetDefinition(), dump);
 
             QVector<bool> activeColumns(definition->columnCount(), true);
             definition->setActiveColumns(activeColumns);

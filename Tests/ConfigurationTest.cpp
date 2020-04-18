@@ -11,7 +11,7 @@ void ConfigurationTest::initTestCase()
                              Constants::getConfigurationFileName();
 
     QFile file(configurationFileName_);
-    QVERIFY(true == file.open(QIODevice::ReadOnly));
+    QVERIFY(file.open(QIODevice::ReadOnly));
     QTextStream stream(&file);
 
     configurationFile_ = stream.readAll();
@@ -24,32 +24,30 @@ void ConfigurationTest::initTestCase()
 void ConfigurationTest::testSavingConfigurationFile()
 {
     Configuration::getInstance();
-    QVERIFY(true == QFile::exists(configurationFileName_));
-    QVERIFY(true == Configuration::getInstance().configWasValid());
-    QVERIFY(true == Configuration::getInstance().save());
-    QVERIFY(true == QFile::exists(configurationFileName_));
+    QVERIFY(QFile::exists(configurationFileName_));
+    QVERIFY(Configuration::getInstance().configWasValid());
+    QVERIFY(Configuration::getInstance().save());
+    QVERIFY(QFile::exists(configurationFileName_));
 }
 
 void ConfigurationTest::testReadingFilledConfigurationFile()
 {
-    QVERIFY(true == QFile::exists(configurationFileName_));
-    QVERIFY(true == Configuration::getInstance().configWasValid());
+    QVERIFY(QFile::exists(configurationFileName_));
+    QVERIFY(Configuration::getInstance().configWasValid());
     QCOMPARE(Configuration::getInstance().getStyle(), QString("Fusion"));
-    QVERIFY(false ==
-            Configuration::getInstance().needToShowUpdatePickerDialog());
-    QVERIFY(false == Configuration::getInstance().needToCheckForUpdates());
+    QVERIFY(!Configuration::getInstance().needToShowUpdatePickerDialog());
+    QVERIFY(!Configuration::getInstance().needToCheckForUpdates());
 }
 
 void ConfigurationTest::testReadingEmptyConfigurationFile()
 {
-    QVERIFY(true == QFile::remove(configurationFileName_));
-    QVERIFY(false == QFile::exists(configurationFileName_));
-    QVERIFY(false == Configuration::getInstance().load());
-    QVERIFY(false == Configuration::getInstance().configWasValid());
+    QVERIFY(QFile::remove(configurationFileName_));
+    QVERIFY(!QFile::exists(configurationFileName_));
+    QVERIFY(!Configuration::getInstance().load());
+    QVERIFY(!Configuration::getInstance().configWasValid());
     QCOMPARE(Configuration::getInstance().getStyle(), QString("Fusion"));
-    QVERIFY(false ==
-            Configuration::getInstance().needToShowUpdatePickerDialog());
-    QVERIFY(false == Configuration::getInstance().needToCheckForUpdates());
+    QVERIFY(!Configuration::getInstance().needToShowUpdatePickerDialog());
+    QVERIFY(!Configuration::getInstance().needToCheckForUpdates());
 }
 
 void ConfigurationTest::cleanupTestCase()
@@ -57,7 +55,7 @@ void ConfigurationTest::cleanupTestCase()
     QFile::remove(configurationFileName_);
     QFile file(configurationFileName_);
 
-    QVERIFY(true == file.open(QIODevice::WriteOnly));
+    QVERIFY(file.open(QIODevice::WriteOnly));
 
     QVERIFY(-1 != file.write(configurationFile_.toStdString().c_str()));
 }
