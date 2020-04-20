@@ -288,7 +288,7 @@ void SpreadsheetsTest::testSpreadsheetFile04(
     QVector<QDate> compareDateValues;
     compareDateValues << QDate(1970, 1, 1) << QDate(1970, 1, 15);
 
-    QStringList compareList("");
+    QStringList compareList;
 
     std::unique_ptr<Dataset> dataset =
         std::make_unique<DatasetSpreadsheet>(definition);

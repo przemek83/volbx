@@ -39,6 +39,8 @@ public:
     {
         if (DATA_FORMAT_STRING == datasetDefinition_->getColumnFormat(column))
         {
+            if (data_[row][column].isNull())
+                return &nullStringVariant_;
             return &sharedStrings_[data_[row][column].toULongLong()];
         }
         else
@@ -83,6 +85,9 @@ protected:
 
     /// Dataset is valid.
     bool valid_{false};
+
+private:
+    QVariant nullStringVariant_;
 };
 
 #endif  // DATASET_H

@@ -6,7 +6,7 @@
 
 DatasetDefinitionSpreadsheet::DatasetDefinitionSpreadsheet(
     const QString& name, const QString& zipFileName)
-    : DatasetDefinition(name), nextIndex_(1)
+    : DatasetDefinition(name), nextSharedStringIndex_(0)
 {
     zip_.setZipName(zipFileName);
 }
@@ -78,9 +78,8 @@ bool DatasetDefinitionSpreadsheet::isValid() const { return valid_; }
 
 std::unique_ptr<QVariant[]> DatasetDefinitionSpreadsheet::getSharedStringTable()
 {
-    auto stringsTable =
-        std::make_unique<QVariant[]>(static_cast<size_t>(nextIndex_));
-    stringsTable[0] = QVariant(QString());
+    auto stringsTable = std::make_unique<QVariant[]>(
+        static_cast<size_t>(nextSharedStringIndex_));
     QHash<QString, int>::const_iterator i = stringsMap_.constBegin();
     while (i != stringsMap_.constEnd())
     {

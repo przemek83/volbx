@@ -14,7 +14,8 @@
 #include "Common/Constants.h"
 #include "Shared/Logger.h"
 
-Dataset::Dataset(DatasetDefinition* definition) : datasetDefinition_(definition)
+Dataset::Dataset(DatasetDefinition* definition)
+    : datasetDefinition_(definition), nullStringVariant_(QVariant::String)
 {
 }
 
@@ -115,18 +116,18 @@ QStringList Dataset::getStringList(int column) const
     // Optimization used -> use string indexes first, compare, remove
     // duplicates. At end convert to proper strings.
     for (int i = 0; i < rowCount(); ++i)
-        listToFill.append(data_[i][column].toString());
+        if (!data_[i][column].isNull())
+            listToFill.append(data_[i][column].toString());
 
     listToFill.removeDuplicates();
 
-    if (nullptr != sharedStrings_)
+    if (sharedStrings_ == nullptr)
+        return listToFill;
+
+    for (int i = 0; i < listToFill.count(); ++i)
     {
-        int listSize = listToFill.count();
-        for (int i = 0; i < listSize; ++i)
-        {
-            listToFill[i] =
-                sharedStrings_[listToFill[i].toULongLong()].toString();
-        }
+        const uint32_t index = listToFill[i].toUInt();
+        listToFill[i] = sharedStrings_[index].toString();
     }
 
     return listToFill;

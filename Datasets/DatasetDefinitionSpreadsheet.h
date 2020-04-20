@@ -56,7 +56,7 @@ protected:
     QHash<QString, int> stringsMap_;
 
     /// Next index to be used in strings hash map.
-    int nextIndex_;
+    int nextSharedStringIndex_;
 
     /// Zip file.
     QuaZip zip_;
@@ -68,12 +68,12 @@ protected:
      */
     inline int getStringIndex(const QString& string)
     {
-        int& index = stringsMap_[string];
-        if (0 == index)
-        {
-            index = nextIndex_;
-        }
-        nextIndex_++;
+        const auto it = stringsMap_.find(string);
+        if (it != stringsMap_.end())
+            return *it;
+        stringsMap_[string] = nextSharedStringIndex_;
+        const int index = nextSharedStringIndex_;
+        nextSharedStringIndex_++;
         return index;
     }
 };

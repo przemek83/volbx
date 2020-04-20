@@ -43,129 +43,31 @@ bool DatasetDefinitionXlsx::loadStyles(ImportXlsx& importXlsx)
 
 bool DatasetDefinitionXlsx::loadSharedStrings(ImportXlsx& importXlsx)
 {
-    auto [success, sharedStringsSet] = importXlsx.getSharedStrings();
+    auto [success, sharedStringsList] = importXlsx.getSharedStrings();
     if (!success)
     {
         LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
         return false;
     }
-    for (const auto& sharedString : sharedStringsSet)
+    for (const auto& sharedString : sharedStringsList)
     {
-        stringsMap_[sharedString] = nextIndex_;
-        nextIndex_++;
+        stringsMap_[sharedString] = nextSharedStringIndex_;
+        nextSharedStringIndex_++;
     }
     return success;
 }
 
 bool DatasetDefinitionXlsx::getColumnList(QuaZip& zip, const QString& sheetName)
 {
-    // Loading column names is using Excel names names. Set 600 temporary.
-    columnsCount_ = EibleUtilities::getMaxExcelColumns();
-    excelColNames_ = EibleUtilities::generateExcelColumnNames(columnsCount_);
-
-    if (zip.setCurrentFile(sheetName))
-    {
-        QuaZipFile zipFile(&zip);
-
-        // Opening file.
-        if (!zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
-        {
-            LOG(LogTypes::IMPORT_EXPORT,
-                "Can not open file " + zipFile.getFileName() + ".");
-            return false;
-        }
-
-        QXmlStreamReader xmlStreamReader;
-        xmlStreamReader.setDevice(&zipFile);
-
-        // Variable with actual type of data in cell (s, str, null).
-        QString currentColType = QStringLiteral("s");
-
-        // Go to first row.
-        while (!xmlStreamReader.atEnd() &&
-               xmlStreamReader.name() != "sheetData")
-        {
-            xmlStreamReader.readNext();
-        }
-
-        xmlStreamReader.readNext();
-        xmlStreamReader.readNext();
-
-        // Actual column number, from 0.
-        int column = Constants::NOT_SET_COLUMN;
-        QXmlStreamReader::TokenType lastToken = xmlStreamReader.tokenType();
-
-        const QRegExp regExp(QLatin1String("[0-9]"));
-
-        // Parse first row.
-        while (!xmlStreamReader.atEnd() && xmlStreamReader.name() != "row")
-        {
-            // If we encounter start of cell content we add it to list.
-            if (xmlStreamReader.name().toString() == QLatin1String("c") &&
-                xmlStreamReader.tokenType() == QXmlStreamReader::StartElement)
-            {
-                column++;
-                QString rowNumber(xmlStreamReader.attributes()
-                                      .value(QLatin1String("r"))
-                                      .toString());
-
-                // If cells are missing add default name.
-                while (excelColNames_.indexOf(rowNumber.remove(regExp)) >
-                       column)
-                {
-                    headerColumnNames_ << emptyColName_;
-                    column++;
-                }
-                // Remember column type.
-                currentColType = xmlStreamReader.attributes()
-                                     .value(QLatin1String("t"))
-                                     .toString();
-            }
-
-            // If we encounter start of cell content than add it to list.
-            if (!xmlStreamReader.atEnd() &&
-                xmlStreamReader.name().toString() == QLatin1String("v") &&
-                xmlStreamReader.tokenType() == QXmlStreamReader::StartElement)
-            {
-                if (currentColType == QLatin1String("s"))
-                {
-                    int value = xmlStreamReader.readElementText().toInt() + 1;
-                    headerColumnNames_.push_back(stringsMap_.key(value));
-                }
-                else
-                {
-                    if (currentColType == QLatin1String("str"))
-                    {
-                        headerColumnNames_.push_back(
-                            xmlStreamReader.readElementText());
-                    }
-                    else
-                    {
-                        headerColumnNames_.push_back(
-                            xmlStreamReader.readElementText());
-                    }
-                }
-            }
-
-            // If we encounter empty cell than add it to list.
-            if (xmlStreamReader.name().toString() == QLatin1String("c") &&
-                xmlStreamReader.tokenType() == QXmlStreamReader::EndElement &&
-                lastToken == QXmlStreamReader::StartElement)
-            {
-                headerColumnNames_ << emptyColName_;
-            }
-            lastToken = xmlStreamReader.tokenType();
-            xmlStreamReader.readNext();
-        }
-    }
-    else
-    {
-        LOG(LogTypes::IMPORT_EXPORT,
-            "File named " + sheetName + " not found in archive.");
-        return false;
-    }
-
-    return true;
+    QFile file(zip.getZipName());
+    ImportXlsx importXlsx(file);
+    importXlsx.setNameForEmptyColumn(QObject::tr("no name"));
+    bool success{false};
+    std::tie(success, headerColumnNames_) =
+        importXlsx.getColumnList(sheetName, stringsMap_);
+    if (!success)
+        LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
+    return success;
 }
 
 bool DatasetDefinitionXlsx::openZipAndMoveToSecondRow(
@@ -594,7 +496,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(
                     if (0 == currentColType.compare(sTag))
                     {
                         currentDataRow[activeColumnsMapping[column]] = QVariant(
-                            xmlStreamReader.readElementText().toInt() + 1);
+                            xmlStreamReader.readElementText().toInt());
                     }
                     else
                     {
