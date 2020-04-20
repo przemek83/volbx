@@ -58,20 +58,20 @@ void DataView::setModel(QAbstractItemModel* model)
     {
         switch (parentModel->getColumnFormat(i))
         {
-            case DATA_FORMAT_FLOAT:
+            case ColumnType::NUMBER:
             {
                 setItemDelegateForColumn(i, new NumericDelegate(this));
                 break;
             }
 
-            case DATA_FORMAT_DATE:
+            case ColumnType::DATE:
             {
                 setItemDelegateForColumn(i, new DateDelegate(this));
                 break;
             }
 
-            case DATA_FORMAT_STRING:
-            case DATA_FORMAT_UNKNOWN:
+            case ColumnType::STRING:
+            case ColumnType::UNKNOWN:
             {
                 break;
             }
@@ -172,12 +172,12 @@ void DataView::reloadSelectionDataAndRecompute()
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
 
-    // TODO optimize by impact + depact or additionall columns in model.
+    // TODO optimize by impact + depact or additional columns in model.
     const int groupByColumn = plotDataProvider_.getGroupByColumn();
     QVector<TransactionData> newCalcData = fillDataFromSelection(groupByColumn);
 
     // Temp, until all column types managed.
-    DataFormat columnFormat = DATA_FORMAT_UNKNOWN;
+    ColumnType columnFormat = ColumnType::UNKNOWN;
     if (groupByColumn != Constants::NOT_SET_COLUMN)
     {
         const TableModel* parentModel =

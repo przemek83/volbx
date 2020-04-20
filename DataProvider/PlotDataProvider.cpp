@@ -20,7 +20,7 @@ void PlotDataProvider::setGroupingColumn(int groupingColumn)
 }
 
 void PlotDataProvider::reCompute(QVector<TransactionData> newCalcData,
-                                 DataFormat columnFormat)
+                                 ColumnType columnFormat)
 {
     calcData_ = std::move(newCalcData);
 
@@ -56,7 +56,7 @@ void PlotDataProvider::reCompute(QVector<TransactionData> newCalcData,
 
 void PlotDataProvider::recomputeGroupData(QVector<TransactionData> calcData,
                                           int groupingColumn,
-                                          DataFormat columnFormat)
+                                          ColumnType columnFormat)
 {
     calcData_ = std::move(calcData);
 
@@ -72,7 +72,7 @@ void PlotDataProvider::recomputeGroupData(QVector<TransactionData> calcData,
     QVector<Quantiles> quantilesForIntervals;
 
     // For now only string type columns managed.
-    if (DATA_FORMAT_STRING == columnFormat)
+    if (ColumnType::STRING == columnFormat)
         fillDataForStringGrouping(calcData_, names, quantilesForIntervals);
 
     Q_EMIT setNewDataForGrouping(std::move(names),

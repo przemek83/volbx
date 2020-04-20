@@ -133,11 +133,11 @@ bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
         return false;
     }
 
-    columnsFormat_.clear();
+    columnTypes_.clear();
 
     for (int i = 0; i < columnsCount_; ++i)
     {
-        columnsFormat_.push_back(DATA_FORMAT_UNKNOWN);
+        columnTypes_.push_back(ColumnType::UNKNOWN);
     }
 
     // Current column.
@@ -212,7 +212,7 @@ bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
             }
 
             // If data format in column is unknown than read it.
-            if (columnsFormat_.at(column) == DATA_FORMAT_UNKNOWN)
+            if (columnTypes_.at(column) == ColumnType::UNKNOWN)
             {
                 xmlStreamAtrributes = xmlStreamReader.attributes();
                 QString value = xmlStreamAtrributes.value(tTag).toString();
@@ -234,12 +234,12 @@ bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
                         }
                         else
                         {
-                            columnsFormat_[column] = DATA_FORMAT_STRING;
+                            columnTypes_[column] = ColumnType::STRING;
                         }
                     }
                     else
                     {
-                        columnsFormat_[column] = DATA_FORMAT_STRING;
+                        columnTypes_[column] = ColumnType::STRING;
                     }
                 }
                 else
@@ -250,17 +250,17 @@ bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
                     if (!otherValue.isEmpty() &&
                         dateStyles_.contains(allStyles_.at(otherValue.toInt())))
                     {
-                        columnsFormat_[column] = DATA_FORMAT_DATE;
+                        columnTypes_[column] = ColumnType::DATE;
                     }
                     else
                     {
-                        columnsFormat_[column] = DATA_FORMAT_FLOAT;
+                        columnTypes_[column] = ColumnType::NUMBER;
                     }
                 }
             }
             else
             {
-                if (DATA_FORMAT_STRING != columnsFormat_.at(column))
+                if (ColumnType::STRING != columnTypes_.at(column))
                 {
                     // If type of column is known than check if it is correct.
                     xmlStreamAtrributes = xmlStreamReader.attributes();
@@ -284,12 +284,12 @@ bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
                             }
                             else
                             {
-                                columnsFormat_[column] = DATA_FORMAT_STRING;
+                                columnTypes_[column] = ColumnType::STRING;
                             }
                         }
                         else
                         {
-                            columnsFormat_[column] = DATA_FORMAT_STRING;
+                            columnTypes_[column] = ColumnType::STRING;
                         }
                     }
                     else
@@ -301,16 +301,16 @@ bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
                             dateStyles_.contains(
                                 allStyles_.at(othervalue.toInt())))
                         {
-                            if (columnsFormat_.at(column) != DATA_FORMAT_DATE)
+                            if (columnTypes_.at(column) != ColumnType::DATE)
                             {
-                                columnsFormat_[column] = DATA_FORMAT_STRING;
+                                columnTypes_[column] = ColumnType::STRING;
                             }
                         }
                         else
                         {
-                            if (columnsFormat_.at(column) != DATA_FORMAT_FLOAT)
+                            if (columnTypes_.at(column) != ColumnType::NUMBER)
                             {
-                                columnsFormat_[column] = DATA_FORMAT_STRING;
+                                columnTypes_[column] = ColumnType::STRING;
                             }
                         }
                     }
@@ -323,9 +323,9 @@ bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
 
     for (int i = 0; i < columnsCount_; ++i)
     {
-        if (DATA_FORMAT_UNKNOWN == columnsFormat_.at(i))
+        if (ColumnType::UNKNOWN == columnTypes_.at(i))
         {
-            columnsFormat_[i] = DATA_FORMAT_STRING;
+            columnTypes_[i] = ColumnType::STRING;
         }
     }
 
@@ -386,7 +386,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(
         if (fillSamplesOnly || activeColumns_.at(i))
         {
             templateDataRow[columnToFill] =
-                getDefaultVariantForFormat(columnsFormat_[i]);
+                getDefaultVariantForFormat(columnTypes_[i]);
             activeColumnsMapping[i] = columnToFill;
             columnToFill++;
         }
@@ -486,17 +486,17 @@ bool DatasetDefinitionXlsx::getDataFromZip(
             xmlStreamReader.tokenType() == QXmlStreamReader::StartElement &&
             (fillSamplesOnly || activeColumns_.at(column)))
         {
-            DataFormat format = columnsFormat_.at(column);
+            ColumnType format = columnTypes_.at(column);
 
             switch (format)
             {
-                case DATA_FORMAT_STRING:
+                case ColumnType::STRING:
                 {
                     // Strings.
                     if (0 == currentColType.compare(sTag))
                     {
-                        currentDataRow[activeColumnsMapping[column]] = QVariant(
-                            xmlStreamReader.readElementText().toInt());
+                        currentDataRow[activeColumnsMapping[column]] =
+                            QVariant(xmlStreamReader.readElementText().toInt());
                     }
                     else
                     {
@@ -506,7 +506,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(
                     break;
                 }
 
-                case DATA_FORMAT_DATE:
+                case ColumnType::DATE:
                 {
                     // If YYYY-MM-DD HH:MI:SS cut and left YYYY-MM-DD.
                     int daysToAdd = static_cast<int>(
@@ -517,7 +517,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(
                     break;
                 }
 
-                case DATA_FORMAT_FLOAT:
+                case ColumnType::NUMBER:
                 {
                     if (0 != currentColType.compare(sTag))
                     {
@@ -528,7 +528,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(
                     break;
                 }
 
-                case DATA_FORMAT_UNKNOWN:
+                case ColumnType::UNKNOWN:
                 {
                     Q_ASSERT(false);
                     break;

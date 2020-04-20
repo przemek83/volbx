@@ -100,10 +100,10 @@ void SpreadsheetsTest::testSpreadsheetFile01(
     QVERIFY(true == definition->init());
     testBasicInfo(*definition, 4000, 7, 0, file);
 
-    QVector<QPair<int, DataFormat> > columnFormats;
-    columnFormats.append(qMakePair(0, DATA_FORMAT_STRING));
-    columnFormats.append(qMakePair(3, DATA_FORMAT_FLOAT));
-    columnFormats.append(qMakePair(5, DATA_FORMAT_FLOAT));
+    QVector<QPair<int, ColumnType> > columnFormats;
+    columnFormats.append(qMakePair(0, ColumnType::STRING));
+    columnFormats.append(qMakePair(3, ColumnType::NUMBER));
+    columnFormats.append(qMakePair(5, ColumnType::NUMBER));
     QVector<QPair<int, QString> > columnNames;
     columnNames.append(qMakePair(0, QString("Trait #1")));
     columnNames.append(qMakePair(3, QString("Units")));
@@ -210,10 +210,10 @@ void SpreadsheetsTest::testSpreadsheetFile03(
     QVERIFY(true == definition->init());
     testBasicInfo(*definition, 4, 5, 0, file);
 
-    QVector<QPair<int, DataFormat> > columnFormats;
-    columnFormats.append(qMakePair(0, DATA_FORMAT_FLOAT));
-    columnFormats.append(qMakePair(1, DATA_FORMAT_FLOAT));
-    columnFormats.append(qMakePair(2, DATA_FORMAT_FLOAT));
+    QVector<QPair<int, ColumnType> > columnFormats;
+    columnFormats.append(qMakePair(0, ColumnType::NUMBER));
+    columnFormats.append(qMakePair(1, ColumnType::NUMBER));
+    columnFormats.append(qMakePair(2, ColumnType::NUMBER));
     QVector<QPair<int, QString> > columnNames;
     columnNames.append(qMakePair(0, QString("cena nier")));
     columnNames.append(qMakePair(1, QString("pow")));
@@ -261,10 +261,10 @@ void SpreadsheetsTest::testSpreadsheetFile04(
     QVERIFY(true == definition->init());
     testBasicInfo(*definition, 15, 4, 0, file);
 
-    QVector<QPair<int, DataFormat> > columnFormats;
-    columnFormats.append(qMakePair(1, DATA_FORMAT_DATE));
-    columnFormats.append(qMakePair(2, DATA_FORMAT_FLOAT));
-    columnFormats.append(qMakePair(3, DATA_FORMAT_FLOAT));
+    QVector<QPair<int, ColumnType> > columnFormats;
+    columnFormats.append(qMakePair(1, ColumnType::DATE));
+    columnFormats.append(qMakePair(2, ColumnType::NUMBER));
+    columnFormats.append(qMakePair(3, ColumnType::NUMBER));
     QVector<QPair<int, QString> > columnNames;
     columnNames.append(qMakePair(1, QString("date")));
     columnNames.append(qMakePair(2, QString("mass (kg)")));
@@ -327,10 +327,10 @@ void SpreadsheetsTest::testBasicInfo(DatasetDefinition& definition, int rows,
 
 void SpreadsheetsTest::testColumnInfo(
     DatasetDefinition& definition,
-    const QVector<QPair<int, DataFormat> >& columnFormats,
+    const QVector<QPair<int, ColumnType> >& columnFormats,
     const QVector<QPair<int, QString> >& columnNames)
 {
-    QPair<int, DataFormat> pairFormat;
+    QPair<int, ColumnType> pairFormat;
     foreach (pairFormat, columnFormats)
     {
         QCOMPARE(definition.getColumnFormat(pairFormat.first),

@@ -72,13 +72,13 @@ void DatasetDefinitionVisualization::setDatasetDefiniton(
         QString typeName(QLatin1String(""));
         switch (datasetDefinition_->getColumnFormat(i))
         {
-            case DATA_FORMAT_STRING:
+            case ColumnType::STRING:
             {
                 typeName = QString(typeNameString_);
                 break;
             }
 
-            case DATA_FORMAT_FLOAT:
+            case ColumnType::NUMBER:
             {
                 typeName = QString(typeNameFloat_);
                 ui->pricePerUnitCombo->addItem(
@@ -86,7 +86,7 @@ void DatasetDefinitionVisualization::setDatasetDefiniton(
                 break;
             }
 
-            case DATA_FORMAT_DATE:
+            case ColumnType::DATE:
             {
                 typeName = QString(typeNameDate_);
                 ui->dateCombo->addItem(datasetDefinition_->getColumnName(i),
@@ -94,7 +94,7 @@ void DatasetDefinitionVisualization::setDatasetDefiniton(
                 break;
             }
 
-            case DATA_FORMAT_UNKNOWN:
+            case ColumnType::UNKNOWN:
             {
                 Q_ASSERT(false);
                 break;

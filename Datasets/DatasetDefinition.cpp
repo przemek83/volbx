@@ -55,8 +55,8 @@ QString DatasetDefinition::dumpDatasetDefinition() const
     {
         dump += "Column " + QString::number(i) +
                 " name=" + headerColumnNames_.at(i);
-        dump += " format=" +
-                QString::number(static_cast<int>(columnsFormat_.at(i)));
+        dump +=
+            " format=" + QString::number(static_cast<int>(columnTypes_.at(i)));
         if (!activeColumns_.isEmpty())
         {
             const QString notActive(QStringLiteral(" not active"));
@@ -106,7 +106,7 @@ int DatasetDefinition::getActiveColumnCount() const
 
 void DatasetDefinition::rebuildDefinitonUsingActiveColumnsOnly()
 {
-    QVector<DataFormat> tempColumnsFormat;
+    QVector<ColumnType> tempColumnsFormat;
 
     QStringList tempHeaderColumnNames = QStringList();
 
@@ -123,7 +123,7 @@ void DatasetDefinition::rebuildDefinitonUsingActiveColumnsOnly()
     {
         if (activeColumns_.at(i))
         {
-            tempColumnsFormat.push_back(columnsFormat_[i]);
+            tempColumnsFormat.push_back(columnTypes_[i]);
             tempHeaderColumnNames << headerColumnNames_[i];
 
             if (specialColumnDateMarked &&
@@ -144,7 +144,7 @@ void DatasetDefinition::rebuildDefinitonUsingActiveColumnsOnly()
         }
     }
 
-    columnsFormat_ = tempColumnsFormat;
+    columnTypes_ = tempColumnsFormat;
     headerColumnNames_ = tempHeaderColumnNames;
     specialColumns_ = specialColumnsTemp;
 
@@ -161,25 +161,25 @@ void DatasetDefinition::setSpecialColumn(SpecialColumn columnTag, int column)
 }
 
 QVariant DatasetDefinition::getDefaultVariantForFormat(
-    const DataFormat format) const
+    const ColumnType format) const
 {
     switch (format)
     {
-        case DATA_FORMAT_STRING:
+        case ColumnType::STRING:
         {
             return QVariant(QVariant::Int);
         }
 
-        case DATA_FORMAT_FLOAT:
+        case ColumnType::NUMBER:
         {
             return QVariant(QVariant::Double);
         }
-        case DATA_FORMAT_DATE:
+        case ColumnType::DATE:
         {
             return QVariant(QVariant::Date);
         }
 
-        case DATA_FORMAT_UNKNOWN:
+        case ColumnType::UNKNOWN:
         default:
         {
             Q_ASSERT(false);
@@ -202,7 +202,8 @@ void DatasetDefinition::toXml(QByteArray& data, int rowCountNumber) const
     {
         QDomElement node = xmlDocument.createElement(DATASET_COLUMN);
         node.setAttribute(DATASET_COLUMN_NAME, headerColumnNames_.at(i));
-        node.setAttribute(DATASET_COLUMN_FORMAT, columnsFormat_.at(i));
+        node.setAttribute(DATASET_COLUMN_FORMAT,
+                          static_cast<int>(columnTypes_.at(i)));
 
         QMapIterator<SpecialColumn, int> it(specialColumns_);
         if (it.findNext(i))

@@ -64,7 +64,7 @@ void DatasetDefinitionSpreadsheet::updateSampleDataStrings()
 {
     for (int i = 0; i < columnsCount_; ++i)
     {
-        if (DATA_FORMAT_STRING == columnsFormat_.at(i))
+        if (ColumnType::STRING == columnTypes_.at(i))
         {
             for (auto& sampleDataRow : sampleData_)
             {

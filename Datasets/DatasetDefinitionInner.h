@@ -55,7 +55,7 @@ private:
     QuaZip zip_;
 
     /// Add current element into given container.
-    void addElementToContainer(const DataFormat columnFormat,
+    void addElementToContainer(const ColumnType columnFormat,
                                const QString& element,
                                QVector<QVector<QVariant> >* dataContainer,
                                const int lineCounter,

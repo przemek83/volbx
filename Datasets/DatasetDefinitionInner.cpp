@@ -88,7 +88,7 @@ void DatasetDefinitionInner::updateSampleDataStrings()
 {
     for (int i = 0; i < columnsCount_; ++i)
     {
-        if (DATA_FORMAT_STRING == columnsFormat_.at(i))
+        if (ColumnType::STRING == columnTypes_.at(i))
         {
             for (auto& sampleDataRow : sampleData_)
             {
@@ -126,7 +126,7 @@ bool DatasetDefinitionInner::loadXmlFile(QByteArray& definitionContent,
 bool DatasetDefinitionInner::fromXml(QByteArray& definitionContent)
 {
     headerColumnNames_.clear();
-    columnsFormat_.clear();
+    columnTypes_.clear();
     specialColumns_.clear();
 
     QDomDocument xmlDocument(name_);
@@ -153,7 +153,7 @@ bool DatasetDefinitionInner::fromXml(QByteArray& definitionContent)
     {
         QDomElement column = columns.at(i).toElement();
         headerColumnNames_.push_back(column.attribute(DATASET_COLUMN_NAME));
-        columnsFormat_.push_back(static_cast<DataFormat>(
+        columnTypes_.push_back(static_cast<ColumnType>(
             column.attribute(DATASET_COLUMN_FORMAT).toInt()));
 
         QString special = column.attribute(DATASET_COLUMN_SPECIAL_TAG);
@@ -256,7 +256,7 @@ bool DatasetDefinitionInner::fillData(
 }
 
 void DatasetDefinitionInner::addElementToContainer(
-    const DataFormat columnFormat, const QString& element,
+    const ColumnType columnFormat, const QString& element,
     QVector<QVector<QVariant> >* dataContainer, const int lineCounter,
     const int columnToFill) const
 {
@@ -269,28 +269,28 @@ void DatasetDefinitionInner::addElementToContainer(
     {
         switch (columnFormat)
         {
-            case DATA_FORMAT_FLOAT:
+            case ColumnType::NUMBER:
             {
                 (*dataContainer)[lineCounter][columnToFill] =
                     QVariant(element.toDouble());
                 break;
             }
 
-            case DATA_FORMAT_STRING:
+            case ColumnType::STRING:
             {
                 (*dataContainer)[lineCounter][columnToFill] =
                     QVariant(element.toInt());
                 break;
             }
 
-            case DATA_FORMAT_DATE:
+            case ColumnType::DATE:
             {
                 (*dataContainer)[lineCounter][columnToFill] =
                     QVariant(QDate::fromJulianDay(element.toInt()));
                 break;
             }
 
-            case DATA_FORMAT_UNKNOWN:
+            case ColumnType::UNKNOWN:
             {
                 Q_ASSERT(false);
                 (*dataContainer)[lineCounter][columnToFill] =

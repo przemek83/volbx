@@ -1,6 +1,7 @@
 #ifndef PLOTDATAPROVIDER_H
 #define PLOTDATAPROVIDER_H
 
+#include <ColumnType.h>
 #include <Quantiles.h>
 #include <qwt_series_data.h>
 #include <QDate>
@@ -10,7 +11,6 @@
 #include <QVector>
 
 #include "Common/Constants.h"
-#include "Common/Formats.h"
 #include "DataProvider/TransactionData.h"
 
 class QwtIntervalSeriesData;
@@ -42,7 +42,7 @@ public:
      * @param columnFormat format of grouping column.
      */
     void reCompute(QVector<TransactionData> newCalcData,
-                   DataFormat columnFormat);
+                   ColumnType columnFormat);
 
     /**
      * @brief recompute data for grouping plot.
@@ -51,7 +51,7 @@ public:
      * @param columnFormat format of grouping column.
      */
     void recomputeGroupData(QVector<TransactionData> calcData,
-                            int groupingColumn, DataFormat columnFormat);
+                            int groupingColumn, ColumnType columnFormat);
 
     /**
      * @brief get number of column used for grouping.

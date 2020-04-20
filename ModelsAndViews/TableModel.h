@@ -4,9 +4,9 @@
 #include <memory>
 #include <vector>
 
+#include <ColumnType.h>
 #include <QAbstractTableModel>
 
-#include "Common/Formats.h"
 #include "Common/SpecialColumns.h"
 
 #include "Dataset.h"
@@ -90,7 +90,7 @@ public:
      * @brief get type of given column.
      * @return data format of given column.
      */
-    DataFormat getColumnFormat(int column) const;
+    ColumnType getColumnFormat(int column) const;
 
     /**
      * @brief get special column if exist (data, units, price).

@@ -25,14 +25,14 @@ int Dataset::rowCount() const { return datasetDefinition_->rowCount(); }
 
 int Dataset::columnCount() const { return datasetDefinition_->columnCount(); }
 
-DataFormat Dataset::getColumnFormat(int column) const
+ColumnType Dataset::getColumnFormat(int column) const
 {
     return datasetDefinition_->getColumnFormat(column);
 }
 
 std::tuple<double, double> Dataset::getNumericRange(int column) const
 {
-    Q_ASSERT(DATA_FORMAT_FLOAT == getColumnFormat(column));
+    Q_ASSERT(ColumnType::NUMBER == getColumnFormat(column));
 
     double min{0.};
     double max{0.};
@@ -65,7 +65,7 @@ std::tuple<double, double> Dataset::getNumericRange(int column) const
 
 std::tuple<QDate, QDate, bool> Dataset::getDateRange(int column) const
 {
-    Q_ASSERT(DATA_FORMAT_DATE == getColumnFormat(column));
+    Q_ASSERT(ColumnType::DATE == getColumnFormat(column));
 
     QDate minDate;
     QDate maxDate;
@@ -108,7 +108,7 @@ std::tuple<QDate, QDate, bool> Dataset::getDateRange(int column) const
 
 QStringList Dataset::getStringList(int column) const
 {
-    Q_ASSERT(DATA_FORMAT_STRING == getColumnFormat(column));
+    Q_ASSERT(ColumnType::STRING == getColumnFormat(column));
 
     QStringList listToFill;
     listToFill.reserve(rowCount());

@@ -249,11 +249,11 @@ bool DatasetDefinitionOds::getColumnTypes(QuaZip& zip, const QString& sheetName)
         return false;
     }
 
-    columnsFormat_.clear();
+    columnTypes_.clear();
 
     for (int i = 0; i < columnsCount_; ++i)
     {
-        columnsFormat_.push_back(DATA_FORMAT_UNKNOWN);
+        columnTypes_.push_back(ColumnType::UNKNOWN);
     }
 
     // Actual column number.
@@ -350,15 +350,15 @@ bool DatasetDefinitionOds::getColumnTypes(QuaZip& zip, const QString& sheetName)
                 if (0 == currentColType.compare(stringTag))
                 {
                     rowEmpty = false;
-                    if (columnsFormat_.at(column + i) == DATA_FORMAT_UNKNOWN)
+                    if (columnTypes_.at(column + i) == ColumnType::UNKNOWN)
                     {
-                        columnsFormat_[column + i] = DATA_FORMAT_STRING;
+                        columnTypes_[column + i] = ColumnType::STRING;
                     }
                     else
                     {
-                        if (columnsFormat_.at(column + i) != DATA_FORMAT_STRING)
+                        if (columnTypes_.at(column + i) != ColumnType::STRING)
                         {
-                            columnsFormat_[column + i] = DATA_FORMAT_STRING;
+                            columnTypes_[column + i] = ColumnType::STRING;
                         }
                     }
                 }
@@ -367,17 +367,15 @@ bool DatasetDefinitionOds::getColumnTypes(QuaZip& zip, const QString& sheetName)
                     if (0 == currentColType.compare(dateTag))
                     {
                         rowEmpty = false;
-                        if (columnsFormat_.at(column + i) ==
-                            DATA_FORMAT_UNKNOWN)
+                        if (columnTypes_.at(column + i) == ColumnType::UNKNOWN)
                         {
-                            columnsFormat_[column + i] = DATA_FORMAT_DATE;
+                            columnTypes_[column + i] = ColumnType::DATE;
                         }
                         else
                         {
-                            if (columnsFormat_.at(column + i) !=
-                                DATA_FORMAT_DATE)
+                            if (columnTypes_.at(column + i) != ColumnType::DATE)
                             {
-                                columnsFormat_[column + i] = DATA_FORMAT_STRING;
+                                columnTypes_[column + i] = ColumnType::STRING;
                             }
                         }
                     }
@@ -389,18 +387,18 @@ bool DatasetDefinitionOds::getColumnTypes(QuaZip& zip, const QString& sheetName)
                             0 == currentColType.compare(timeTag))
                         {
                             rowEmpty = false;
-                            if (columnsFormat_.at(column + i) ==
-                                DATA_FORMAT_UNKNOWN)
+                            if (columnTypes_.at(column + i) ==
+                                ColumnType::UNKNOWN)
                             {
-                                columnsFormat_[column + i] = DATA_FORMAT_FLOAT;
+                                columnTypes_[column + i] = ColumnType::NUMBER;
                             }
                             else
                             {
-                                if (columnsFormat_.at(column + i) !=
-                                    DATA_FORMAT_FLOAT)
+                                if (columnTypes_.at(column + i) !=
+                                    ColumnType::NUMBER)
                                 {
-                                    columnsFormat_[column + i] =
-                                        DATA_FORMAT_STRING;
+                                    columnTypes_[column + i] =
+                                        ColumnType::STRING;
                                 }
                             }
                         }
@@ -414,9 +412,9 @@ bool DatasetDefinitionOds::getColumnTypes(QuaZip& zip, const QString& sheetName)
 
     for (int i = 0; i < columnsCount_; ++i)
     {
-        if (DATA_FORMAT_UNKNOWN == columnsFormat_.at(i))
+        if (ColumnType::UNKNOWN == columnTypes_.at(i))
         {
-            columnsFormat_[i] = DATA_FORMAT_STRING;
+            columnTypes_[i] = ColumnType::STRING;
         }
     }
 
@@ -469,7 +467,7 @@ bool DatasetDefinitionOds::getDataFromZip(
         if (fillSamplesOnly || activeColumns_.at(i))
         {
             templateDataRow[columnToFill] =
-                getDefaultVariantForFormat(columnsFormat_[i]);
+                getDefaultVariantForFormat(columnTypes_[i]);
 
             activeColumnsMapping[i] = columnToFill;
             columnToFill++;
@@ -585,11 +583,11 @@ bool DatasetDefinitionOds::getDataFromZip(
             if (!currentColType.isEmpty())
             {
                 QVariant value;
-                DataFormat format = columnsFormat_.at(column);
+                ColumnType format = columnTypes_.at(column);
 
                 switch (format)
                 {
-                    case DATA_FORMAT_STRING:
+                    case ColumnType::STRING:
                     {
                         while (!xmlStreamReader.atEnd() &&
                                0 != xmlStreamReader.name().compare(pTag))
@@ -615,7 +613,7 @@ bool DatasetDefinitionOds::getDataFromZip(
                         break;
                     }
 
-                    case DATA_FORMAT_DATE:
+                    case ColumnType::DATE:
                     {
                         static const int odsStringDateLength{10};
                         value = QVariant(
@@ -628,7 +626,7 @@ bool DatasetDefinitionOds::getDataFromZip(
                         break;
                     }
 
-                    case DATA_FORMAT_FLOAT:
+                    case ColumnType::NUMBER:
                     {
                         value = QVariant(xmlStreamReader.attributes()
                                              .value(officeValueTag)
@@ -636,7 +634,7 @@ bool DatasetDefinitionOds::getDataFromZip(
                         break;
                     }
 
-                    case DATA_FORMAT_UNKNOWN:
+                    case ColumnType::UNKNOWN:
                     {
                         Q_ASSERT(false);
                         break;

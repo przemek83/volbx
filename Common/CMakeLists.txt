@@ -9,7 +9,6 @@ set(${PROJECT_NAME}_SOURCES
     ExportUtilities.h
     ExportImage.cpp
     ExportImage.h
-    Formats.h
     SpecialColumns.h
     )
 

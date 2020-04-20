@@ -77,22 +77,22 @@ void FiltersDock::createFiltersWidgets(const TableModel* model,
         Filter* filter{nullptr};
         switch (model->getColumnFormat(i))
         {
-            case DATA_FORMAT_STRING:
+            case ColumnType::STRING:
             {
                 filter = createNewStringsFilter(model, i, filterListWidget);
                 break;
             }
-            case DATA_FORMAT_DATE:
+            case ColumnType::DATE:
             {
                 filter = createNewDatesFilter(model, i, filterListWidget);
                 break;
             }
-            case DATA_FORMAT_FLOAT:
+            case ColumnType::NUMBER:
             {
                 filter = createNewNumbersFilter(model, i, filterListWidget);
                 break;
             }
-            case DATA_FORMAT_UNKNOWN:
+            case ColumnType::UNKNOWN:
             {
                 Q_ASSERT(false);
             }

@@ -71,7 +71,7 @@ QVector<std::pair<QString, int>> MainTabWidget::getStringColumnsWithIndexes(
     for (int i = 0; i < model->columnCount(); ++i)
     {
         // Accept only string type columns.
-        if (DATA_FORMAT_STRING != model->getColumnFormat(i))
+        if (ColumnType::STRING != model->getColumnFormat(i))
             continue;
 
         const QString columnName =

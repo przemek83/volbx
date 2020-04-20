@@ -3,13 +3,13 @@
 
 #include <memory>
 
+#include <ColumnType.h>
 #include <QMap>
 #include <QString>
 #include <QStringList>
 #include <QVariant>
 #include <QVector>
 
-#include "Common/Formats.h"
 #include "Common/SpecialColumns.h"
 
 /**
@@ -36,11 +36,11 @@ public:
 
     int getActiveColumnCount() const;
 
-    inline DataFormat getColumnFormat(int column) const
+    inline ColumnType getColumnFormat(int column) const
     {
         Q_ASSERT(column >= 0 && column < columnCount());
 
-        return columnsFormat_[column];
+        return columnTypes_[column];
     }
 
     std::tuple<bool, int> getSpecialColumnIfExists(
@@ -75,7 +75,7 @@ protected:
 
     int columnsCount_{0};
 
-    QVector<DataFormat> columnsFormat_;
+    QVector<ColumnType> columnTypes_;
 
     QStringList headerColumnNames_;
 
@@ -102,7 +102,7 @@ protected:
 
     bool isSpecialColumnTagged(SpecialColumn column) const;
 
-    QVariant getDefaultVariantForFormat(const DataFormat format) const;
+    QVariant getDefaultVariantForFormat(const ColumnType format) const;
 
     /// Names used in definition file.
     const QString DATASET_NAME{QStringLiteral("DATASET")};

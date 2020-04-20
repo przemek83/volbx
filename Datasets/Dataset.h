@@ -3,18 +3,18 @@
 
 #include <memory>
 
+#include <ColumnType.h>
 #include <QStringList>
 #include <QVariant>
 #include <QVector>
 
-#include "Common/Formats.h"
 #include "Common/SpecialColumns.h"
 #include "DatasetDefinition.h"
 
 class DatasetDefinition;
 
 /**
- * @brief Representation of dataset's.
+ * @brief Representation of dataset.
  * Dataset definition is "formula" for creation of dataset and is inner
  * part of dataset.
  */
@@ -37,7 +37,7 @@ public:
 
     virtual inline QVariant* getData(int row, int column)
     {
-        if (DATA_FORMAT_STRING == datasetDefinition_->getColumnFormat(column))
+        if (ColumnType::STRING == datasetDefinition_->getColumnFormat(column))
         {
             if (data_[row][column].isNull())
                 return &nullStringVariant_;
@@ -49,7 +49,7 @@ public:
         }
     }
 
-    DataFormat getColumnFormat(int column) const;
+    ColumnType getColumnFormat(int column) const;
 
     std::tuple<double, double> getNumericRange(int column) const;
 

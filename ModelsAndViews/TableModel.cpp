@@ -57,7 +57,7 @@ QStringList TableModel::getStringList(int column) const
     return dataset_->getStringList(column);
 }
 
-DataFormat TableModel::getColumnFormat(int column) const
+ColumnType TableModel::getColumnFormat(int column) const
 {
     return dataset_->getColumnFormat(column);
 }
@@ -103,7 +103,7 @@ int TableModel::getDefaultGroupingColumn() const
     for (int i = 0; i < columnCount(); ++i)
     {
         if (i == pricePerMeterColumn ||
-            DATA_FORMAT_STRING != getColumnFormat(i))
+            ColumnType::STRING != getColumnFormat(i))
         {
             continue;
         }

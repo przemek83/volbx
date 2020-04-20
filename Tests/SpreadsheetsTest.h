@@ -3,7 +3,6 @@
 
 #include <QObject>
 
-#include "Common/Formats.h"
 #include "Datasets/DatasetDefinitionSpreadsheet.h"
 #include "Datasets/DatasetSpreadsheet.h"
 
@@ -17,7 +16,7 @@ class SpreadsheetsTest : public QObject
     Q_OBJECT
 private:
     /**
-     * @brief test few bsasic info of dataset.
+     * @brief test few basic info of dataset.
      * @param definition definition to test.
      * @param rows number of rows to compare.
      * @param columns number of columns to compare.
@@ -34,7 +33,7 @@ private:
      * @param columnNames names of columns to compare.
      */
     void testColumnInfo(DatasetDefinition& definition,
-                        const QVector<QPair<int, DataFormat> >& columnFormats,
+                        const QVector<QPair<int, ColumnType> >& columnFormats,
                         const QVector<QPair<int, QString> >& columnNames);
 
     /**
