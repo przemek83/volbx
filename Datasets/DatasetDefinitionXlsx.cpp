@@ -25,17 +25,21 @@ bool DatasetDefinitionXlsx::getSheetList(QuaZip& zip)
 {
     QFile file(zip.getZipName());
     ImportXlsx importXlsx(file);
-    bool success{false};
-    std::tie(success, sheetToFileMapInZip_) = importXlsx.getSheetList();
+    auto [success, sheets] = importXlsx.getSheets();
     if (!success)
         LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
+    for (const auto& [sheetName, sheetPath] : sheets)
+        sheetToFileMapInZip_[sheetName] = sheetPath;
     return success;
 }
 
 bool DatasetDefinitionXlsx::loadStyles(ImportXlsx& importXlsx)
 {
     bool success{false};
-    std::tie(success, dateStyles_, allStyles_) = importXlsx.getStyles();
+    std::tie(success, dateStyles_) = importXlsx.getDateStyles();
+    if (!success)
+        LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
+    std::tie(success, allStyles_) = importXlsx.getAllStyles();
     if (!success)
         LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
     return success;
@@ -64,7 +68,7 @@ bool DatasetDefinitionXlsx::getColumnList(QuaZip& zip, const QString& sheetName)
     importXlsx.setNameForEmptyColumn(QObject::tr("no name"));
     bool success{false};
     std::tie(success, headerColumnNames_) =
-        importXlsx.getColumnList(sheetName, stringsMap_);
+        importXlsx.getColumnNames(sheetToFileMapInZip_.key(sheetName));
     if (!success)
         LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
     return success;
