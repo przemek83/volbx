@@ -42,7 +42,7 @@ private:
 
     bool loadSharedStrings(ImportXlsx& importXlsx);
 
-    bool getColumnTypes(QuaZip& zip, const QString& sheetName) override;
+    bool getColumnTypes(QuaZip& zip, const QString& sheetPath) override;
 
     bool openZipAndMoveToSecondRow(QuaZip& zip, const QString& sheetName,
                                    QuaZipFile& zipFile,

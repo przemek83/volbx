@@ -114,229 +114,33 @@ bool DatasetDefinitionXlsx::openZipAndMoveToSecondRow(
 }
 
 bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
-                                           const QString& sheetName)
+                                           const QString& sheetPath)
 {
-    excelColNames_ = EibleUtilities::generateExcelColumnNames(columnsCount_);
+    QFile file(zip.getZipName());
+    ImportXlsx importXlsx(file);
 
     const QString barTitle =
         Constants::getProgressBarTitle(Constants::BarTitle::ANALYSING);
     ProgressBarInfinite bar(barTitle, nullptr);
     bar.showDetached();
     bar.start();
-
     QTime performanceTimer;
     performanceTimer.start();
-
     QApplication::processEvents();
 
-    QuaZipFile zipFile;
-    QXmlStreamReader xmlStreamReader;
-
-    if (!openZipAndMoveToSecondRow(zip, sheetName, zipFile, xmlStreamReader))
+    bool success{false};
+    const QString& sheetName = sheetToFileMapInZip_.key(sheetPath);
+    std::tie(success, columnTypes_) = importXlsx.getColumnTypes(sheetName);
+    if (!success)
     {
+        LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
         return false;
     }
 
-    columnTypes_.clear();
-
-    for (int i = 0; i < columnsCount_; ++i)
-    {
-        columnTypes_.push_back(ColumnType::UNKNOWN);
-    }
-
-    // Current column.
-    int column = Constants::NOT_SET_COLUMN;
-
-    // Current row.
-    int rowCounter = 0;
-
-    int charsToChopFromEndInCellName = 1;
-
-    QXmlStreamAttributes xmlStreamAtrributes;
-
-    // Optimization.
-    const QString rowTag(QStringLiteral("row"));
-    const QString cellTag(QStringLiteral("c"));
-    const QString sheetDataTag(QStringLiteral("sheetData"));
-    const QString sTag(QStringLiteral("s"));
-    const QString strTag(QStringLiteral("str"));
-    const QString rTag(QStringLiteral("r"));
-    const QString tTag(QStringLiteral("t"));
-    const QString vTag(QStringLiteral("v"));
-
-    while (!xmlStreamReader.atEnd() &&
-           0 != xmlStreamReader.name().compare(sheetDataTag))
-    {
-        // If start of row encountered than reset column counter add
-        // increment row counter.
-        if (0 == xmlStreamReader.name().compare(rowTag) &&
-            xmlStreamReader.isStartElement())
-        {
-            column = Constants::NOT_SET_COLUMN;
-
-            const int batchSize{100};
-            if (0 == rowCounter % batchSize)
-            {
-                QApplication::processEvents();
-            }
-
-            rowCounter++;
-
-            double power = pow(DECIMAL_BASE, charsToChopFromEndInCellName);
-            if (power <= rowCounter + 1)
-            {
-                charsToChopFromEndInCellName++;
-            }
-        }
-
-        // When we encounter start of cell description.
-        if (0 == xmlStreamReader.name().compare(cellTag) &&
-            xmlStreamReader.isStartElement())
-        {
-            column++;
-
-            QString stringToChop =
-                xmlStreamReader.attributes().value(rTag).toString();
-            int numberOfCharsToRemove =
-                stringToChop.size() - charsToChopFromEndInCellName;
-            int expectedIndexCurrentColumn = excelColNames_.indexOf(
-                stringToChop.left(numberOfCharsToRemove));
-
-            // If cells are missing increment column number.
-            while (expectedIndexCurrentColumn > column)
-            {
-                column++;
-            }
-
-            // If we encounter column outside expected grid we move to row end.
-            if (expectedIndexCurrentColumn == Constants::NOT_SET_COLUMN)
-            {
-                xmlStreamReader.skipCurrentElement();
-                continue;
-            }
-
-            // If data format in column is unknown than read it.
-            if (columnTypes_.at(column) == ColumnType::UNKNOWN)
-            {
-                xmlStreamAtrributes = xmlStreamReader.attributes();
-                QString value = xmlStreamAtrributes.value(tTag).toString();
-                bool valueIsSTag = (0 == value.compare(sTag));
-                if (valueIsSTag || 0 == value.compare(strTag))
-                {
-                    if (valueIsSTag)
-                    {
-                        xmlStreamReader.readNextStartElement();
-
-                        if (0 == xmlStreamReader.name().compare(vTag) &&
-                            xmlStreamReader.tokenType() ==
-                                QXmlStreamReader::StartElement &&
-                            stringsMap_
-                                .key(xmlStreamReader.readElementText().toInt() +
-                                     1)
-                                .isEmpty())
-                        {
-                        }
-                        else
-                        {
-                            columnTypes_[column] = ColumnType::STRING;
-                        }
-                    }
-                    else
-                    {
-                        columnTypes_[column] = ColumnType::STRING;
-                    }
-                }
-                else
-                {
-                    QString otherValue =
-                        xmlStreamAtrributes.value(sTag).toString();
-
-                    if (!otherValue.isEmpty() &&
-                        dateStyles_.contains(allStyles_.at(otherValue.toInt())))
-                    {
-                        columnTypes_[column] = ColumnType::DATE;
-                    }
-                    else
-                    {
-                        columnTypes_[column] = ColumnType::NUMBER;
-                    }
-                }
-            }
-            else
-            {
-                if (ColumnType::STRING != columnTypes_.at(column))
-                {
-                    // If type of column is known than check if it is correct.
-                    xmlStreamAtrributes = xmlStreamReader.attributes();
-                    QString value = xmlStreamAtrributes.value(tTag).toString();
-                    bool valueIsSTag = (0 == value.compare(sTag));
-                    if (valueIsSTag || 0 == value.compare(strTag))
-                    {
-                        if (valueIsSTag)
-                        {
-                            xmlStreamReader.readNextStartElement();
-
-                            if (0 == xmlStreamReader.name().compare(vTag) &&
-                                xmlStreamReader.tokenType() ==
-                                    QXmlStreamReader::StartElement &&
-                                stringsMap_
-                                    .key(xmlStreamReader.readElementText()
-                                             .toInt() +
-                                         1)
-                                    .isEmpty())
-                            {
-                            }
-                            else
-                            {
-                                columnTypes_[column] = ColumnType::STRING;
-                            }
-                        }
-                        else
-                        {
-                            columnTypes_[column] = ColumnType::STRING;
-                        }
-                    }
-                    else
-                    {
-                        QString othervalue =
-                            xmlStreamAtrributes.value(sTag).toString();
-
-                        if (!othervalue.isEmpty() &&
-                            dateStyles_.contains(
-                                allStyles_.at(othervalue.toInt())))
-                        {
-                            if (columnTypes_.at(column) != ColumnType::DATE)
-                            {
-                                columnTypes_[column] = ColumnType::STRING;
-                            }
-                        }
-                        else
-                        {
-                            if (columnTypes_.at(column) != ColumnType::NUMBER)
-                            {
-                                columnTypes_[column] = ColumnType::STRING;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        xmlStreamReader.readNextStartElement();
-    }
-
-    for (int i = 0; i < columnsCount_; ++i)
-    {
-        if (ColumnType::UNKNOWN == columnTypes_.at(i))
-        {
-            columnTypes_[i] = ColumnType::STRING;
-        }
-    }
-
-    rowsCount_ = rowCounter;
+    rowsCount_ = static_cast<int>(importXlsx.getRowCount(sheetName).second);
 
     LOG(LogTypes::IMPORT_EXPORT,
-        "Analyzed file having " + QString::number(rowsCount_) +
+        "Analysed file having " + QString::number(rowsCount_) +
             " rows in time " +
             QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
             " seconds.");
@@ -361,6 +165,8 @@ bool DatasetDefinitionXlsx::getDataFromZip(
 
     QTime performanceTimer;
     performanceTimer.start();
+
+    excelColNames_ = EibleUtilities::generateExcelColumnNames(columnsCount_);
 
     QuaZipFile zipFile;
     QXmlStreamReader xmlStreamReader;
