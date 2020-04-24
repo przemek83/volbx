@@ -166,7 +166,8 @@ bool DatasetDefinitionXlsx::getDataFromZip(
     QTime performanceTimer;
     performanceTimer.start();
 
-    excelColNames_ = EibleUtilities::generateExcelColumnNames(columnsCount_);
+    QStringList excelColNames =
+        EibleUtilities::generateExcelColumnNames(columnsCount_);
 
     QuaZipFile zipFile;
     QXmlStreamReader xmlStreamReader;
@@ -269,7 +270,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(
             QString stringToChop =
                 xmlStreamReader.attributes().value(rTag).toString();
             int expectedIndexCurrentColumn =
-                excelColNames_.indexOf(stringToChop.left(
+                excelColNames.indexOf(stringToChop.left(
                     stringToChop.size() - charsToChopFromEndInCellName));
 
             // If cells missing than increment column number.
