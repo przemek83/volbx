@@ -106,5 +106,7 @@ bool DatasetDefinitionSpreadsheet::getData(
 
     zip_.close();
 
+    rebuildDefinitonUsingActiveColumnsOnly();
+
     return result;
 }

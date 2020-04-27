@@ -662,8 +662,6 @@ bool DatasetDefinitionOds::getDataFromZip(
     {
         Q_ASSERT(rowsCount_ == dataContainer->size());
 
-        rebuildDefinitonUsingActiveColumnsOnly();
-
         LOG(LogTypes::IMPORT_EXPORT,
             "Read file having " + QString::number(rowsCount_) +
                 " rows in time " +

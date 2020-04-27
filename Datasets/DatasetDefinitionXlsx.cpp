@@ -362,8 +362,6 @@ bool DatasetDefinitionXlsx::getDataFromZip(
     {
         Q_ASSERT(rowsCount_ == containerSize);
 
-        rebuildDefinitonUsingActiveColumnsOnly();
-
         LOG(LogTypes::IMPORT_EXPORT,
             "Loaded file having " + QString::number(rowsCount_) +
                 " rows in time " +
