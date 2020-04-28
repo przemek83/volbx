@@ -29,7 +29,7 @@ public:
 protected:
     const QString& getSheetName() override;
 
-    bool getDataFromZip(QuaZip& zip, const QString& sheetName,
+    bool getDataFromZip(QuaZip& zip, const QString& sheetPath,
                         QVector<QVector<QVariant>>* dataContainer,
                         bool fillSamplesOnly) override;
 
@@ -44,10 +44,6 @@ private:
 
     bool getColumnTypes(QuaZip& zip, const QString& sheetPath) override;
 
-    bool openZipAndMoveToSecondRow(QuaZip& zip, const QString& sheetName,
-                                   QuaZipFile& zipFile,
-                                   QXmlStreamReader& xmlStreamReader);
-
     bool loadSpecificData(QuaZip& zip) override;
 
     /// Map sheet <-> fileName used to access sheets in zip.
@@ -58,8 +54,6 @@ private:
 
     /// List of styles defined in excel.
     QList<int> allStyles_;
-
-    static constexpr int DECIMAL_BASE{10};
 };
 
 #endif  // DATASETDEFINITIONXLSX_H

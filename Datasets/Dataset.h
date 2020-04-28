@@ -41,12 +41,10 @@ public:
         {
             if (data_[row][column].isNull())
                 return &nullStringVariant_;
-            return &sharedStrings_[data_[row][column].toULongLong()];
+            if (data_[row][column].type() != QVariant::String)
+                return &sharedStrings_[data_[row][column].toULongLong()];
         }
-        else
-        {
-            return &data_[row][column];
-        }
+        return &data_[row][column];
     }
 
     ColumnType getColumnFormat(int column) const;

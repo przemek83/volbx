@@ -74,45 +74,6 @@ bool DatasetDefinitionXlsx::getColumnList(QuaZip& zip, const QString& sheetName)
     return success;
 }
 
-bool DatasetDefinitionXlsx::openZipAndMoveToSecondRow(
-    QuaZip& zip, const QString& sheetName, QuaZipFile& zipFile,
-    QXmlStreamReader& xmlStreamReader)
-{
-    // Open archive.
-    if (!zip.setCurrentFile(sheetName))
-    {
-        LOG(LogTypes::IMPORT_EXPORT,
-            "File named " + sheetName + " not found in archive.");
-        return false;
-    }
-    zipFile.setZip(&zip);
-    if (!zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        LOG(LogTypes::IMPORT_EXPORT,
-            "Can not open file " + zipFile.getFileName() + ".");
-        return false;
-    }
-
-    xmlStreamReader.setDevice(&zipFile);
-
-    bool secondRow = false;
-    while (!xmlStreamReader.atEnd())
-    {
-        if (xmlStreamReader.name() == "row" &&
-            xmlStreamReader.tokenType() == QXmlStreamReader::StartElement)
-        {
-            if (secondRow)
-            {
-                break;
-            }
-            secondRow = true;
-        }
-        xmlStreamReader.readNextStartElement();
-    }
-
-    return true;
-}
-
 bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
                                            const QString& sheetPath)
 {
@@ -149,9 +110,12 @@ bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
 }
 
 bool DatasetDefinitionXlsx::getDataFromZip(
-    QuaZip& zip, const QString& sheetName,
+    QuaZip& zip, const QString& sheetPath,
     QVector<QVector<QVariant> >* dataContainer, bool fillSamplesOnly)
 {
+    QFile file(zip.getZipName());
+    ImportXlsx importXlsx(file);
+
     const QString barTitle =
         Constants::getProgressBarTitle(Constants::BarTitle::LOADING);
     std::unique_ptr<ProgressBarCounter> bar =
@@ -166,201 +130,34 @@ bool DatasetDefinitionXlsx::getDataFromZip(
     QTime performanceTimer;
     performanceTimer.start();
 
-    QStringList excelColNames =
-        EibleUtilities::generateExcelColumnNames(columnsCount_);
-
-    QuaZipFile zipFile;
-    QXmlStreamReader xmlStreamReader;
-
-    openZipAndMoveToSecondRow(zip, sheetName, zipFile, xmlStreamReader);
-
-    // Actual column number.
-    int column = Constants::NOT_SET_COLUMN;
-
-    // Actual data type in cell (s, str, null).
-    QString currentColType = QStringLiteral("s");
-
-    // Actual row number.
-    int rowCounter = 0;
-
-    // Null elements row.
-    QVector<QVariant> templateDataRow;
-
-    QMap<int, int> activeColumnsMapping = QMap<int, int>();
-
-    int columnToFill = 0;
-
-    templateDataRow.resize(fillSamplesOnly ? columnsCount_
-                                           : getActiveColumnCount());
-    for (int i = 0; i < columnsCount_; ++i)
+    bool success{false};
+    const QString& sheetName = sheetToFileMapInZip_.key(sheetPath);
+    if (fillSamplesOnly)
     {
-        if (fillSamplesOnly || activeColumns_.at(i))
+        std::tie(success, *dataContainer) = importXlsx.getLimitedData(
+            sheetName, {}, SAMPLE_SIZE < rowsCount_ ? SAMPLE_SIZE : rowsCount_);
+    }
+    else
+    {
+        QVector<unsigned int> excludedColumns;
+        for (int i = 0; i < columnsCount_; ++i)
         {
-            templateDataRow[columnToFill] =
-                getDefaultVariantForFormat(columnTypes_[i]);
-            activeColumnsMapping[i] = columnToFill;
-            columnToFill++;
+            if (!activeColumns_.at(i))
+                excludedColumns.append(i);
         }
+        std::tie(success, *dataContainer) =
+            importXlsx.getData(sheetName, excludedColumns);
     }
 
-    // Protection from potential core related to empty rows.
-    int containerSize = dataContainer->size();
-    for (int i = 0; i < containerSize; ++i)
+    if (!success)
     {
-        (*dataContainer)[i] = templateDataRow;
-    }
-
-    // Current row data.
-    QVector<QVariant> currentDataRow(templateDataRow);
-
-    // Nmebr of chars to chop from end.
-    int charsToChopFromEndInCellName = 1;
-
-    // Optimization.
-    const QString rowTag(QStringLiteral("row"));
-    const QString cellTag(QStringLiteral("c"));
-    const QString sheetDataTag(QStringLiteral("sheetData"));
-    const QString sTag(QStringLiteral("s"));
-    const QString vTag(QStringLiteral("v"));
-    const QString rTag(QStringLiteral("r"));
-    const QString tTag(QStringLiteral("t"));
-
-    while (!xmlStreamReader.atEnd() &&
-           0 != xmlStreamReader.name().compare(sheetDataTag) &&
-           rowCounter <= rowsCount_)
-    {
-        // If start of row encountered than reset column counter add
-        // increment row counter.
-        if (0 == xmlStreamReader.name().compare(rowTag) &&
-            xmlStreamReader.isStartElement())
-        {
-            column = Constants::NOT_SET_COLUMN;
-
-            if (0 != rowCounter)
-            {
-                (*dataContainer)[rowCounter - 1] = currentDataRow;
-                currentDataRow = QVector<QVariant>(templateDataRow);
-
-                double power = pow(DECIMAL_BASE, charsToChopFromEndInCellName);
-                if (qRound(power) <= rowCounter + 2)
-                {
-                    charsToChopFromEndInCellName++;
-                }
-            }
-
-            rowCounter++;
-
-            if (!fillSamplesOnly)
-            {
-                bar->updateProgress(rowCounter);
-            }
-
-            if (fillSamplesOnly && rowCounter > containerSize)
-            {
-                break;
-            }
-        }
-
-        // When we encounter start of cell description.
-        if (0 == xmlStreamReader.name().compare(cellTag) &&
-            xmlStreamReader.isStartElement())
-        {
-            column++;
-
-            QString stringToChop =
-                xmlStreamReader.attributes().value(rTag).toString();
-            int expectedIndexCurrentColumn =
-                excelColNames.indexOf(stringToChop.left(
-                    stringToChop.size() - charsToChopFromEndInCellName));
-
-            // If cells missing than increment column number.
-            while (expectedIndexCurrentColumn > column)
-            {
-                column++;
-            }
-
-            // If we encounter column outside expected grid we move to row end.
-            if (expectedIndexCurrentColumn == Constants::NOT_SET_COLUMN)
-            {
-                xmlStreamReader.skipCurrentElement();
-                continue;
-            }
-
-            // Remember cell type.
-            currentColType =
-                xmlStreamReader.attributes().value(tTag).toString();
-        }
-
-        // Insert data into table.
-        if (!xmlStreamReader.atEnd() &&
-            0 == xmlStreamReader.name().compare(vTag) &&
-            xmlStreamReader.tokenType() == QXmlStreamReader::StartElement &&
-            (fillSamplesOnly || activeColumns_.at(column)))
-        {
-            ColumnType format = columnTypes_.at(column);
-
-            switch (format)
-            {
-                case ColumnType::STRING:
-                {
-                    // Strings.
-                    if (0 == currentColType.compare(sTag))
-                    {
-                        currentDataRow[activeColumnsMapping[column]] =
-                            QVariant(xmlStreamReader.readElementText().toInt());
-                    }
-                    else
-                    {
-                        currentDataRow[activeColumnsMapping[column]] = QVariant(
-                            getStringIndex(xmlStreamReader.readElementText()));
-                    }
-                    break;
-                }
-
-                case ColumnType::DATE:
-                {
-                    // If YYYY-MM-DD HH:MI:SS cut and left YYYY-MM-DD.
-                    int daysToAdd = static_cast<int>(
-                        xmlStreamReader.readElementText().toDouble());
-                    currentDataRow[activeColumnsMapping[column]] =
-                        QVariant(EibleUtilities::getStartOfExcelWorld().addDays(
-                            daysToAdd));
-                    break;
-                }
-
-                case ColumnType::NUMBER:
-                {
-                    if (0 != currentColType.compare(sTag))
-                    {
-                        currentDataRow[activeColumnsMapping[column]] = QVariant(
-                            xmlStreamReader.readElementText().toDouble());
-                    }
-
-                    break;
-                }
-
-                case ColumnType::UNKNOWN:
-                {
-                    Q_ASSERT(false);
-                    break;
-                }
-            }
-        }
-        xmlStreamReader.readNextStartElement();
-    }
-
-    if (0 != rowCounter && (!fillSamplesOnly || SAMPLE_SIZE > rowsCount_))
-    {
-        Q_ASSERT(rowCounter <= rowsCount_);
-        if (rowCounter <= rowsCount_)
-        {
-            (*dataContainer)[rowCounter - 1] = currentDataRow;
-        }
+        LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
+        return false;
     }
 
     if (!fillSamplesOnly)
     {
-        Q_ASSERT(rowsCount_ == containerSize);
+        Q_ASSERT(rowsCount_ == dataContainer->size());
 
         LOG(LogTypes::IMPORT_EXPORT,
             "Loaded file having " + QString::number(rowsCount_) +
