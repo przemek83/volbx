@@ -33,18 +33,6 @@ bool DatasetDefinitionXlsx::getSheetList(QuaZip& zip)
     return success;
 }
 
-bool DatasetDefinitionXlsx::loadStyles(ImportXlsx& importXlsx)
-{
-    bool success{false};
-    std::tie(success, dateStyles_) = importXlsx.getDateStyles();
-    if (!success)
-        LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
-    std::tie(success, allStyles_) = importXlsx.getAllStyles();
-    if (!success)
-        LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
-    return success;
-}
-
 bool DatasetDefinitionXlsx::loadSharedStrings(ImportXlsx& importXlsx)
 {
     auto [success, sharedStringsList] = importXlsx.getSharedStrings();
@@ -178,7 +166,7 @@ bool DatasetDefinitionXlsx::loadSpecificData(QuaZip& zip)
 {
     QFile file(zip.getZipName());
     ImportXlsx importXlsx(file);
-    if (!loadStyles(importXlsx) || !loadSharedStrings(importXlsx))
+    if (!loadSharedStrings(importXlsx))
     {
         error_ = QObject::tr("File ") + zip.getZipName() +
                  QObject::tr(" is damaged.");

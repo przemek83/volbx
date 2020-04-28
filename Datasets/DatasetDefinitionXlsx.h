@@ -38,8 +38,6 @@ private:
 
     bool getColumnList(QuaZip& zip, const QString& sheetName) override;
 
-    bool loadStyles(ImportXlsx& importXlsx);
-
     bool loadSharedStrings(ImportXlsx& importXlsx);
 
     bool getColumnTypes(QuaZip& zip, const QString& sheetPath) override;
@@ -48,12 +46,6 @@ private:
 
     /// Map sheet <-> fileName used to access sheets in zip.
     QMap<QString, QString> sheetToFileMapInZip_;
-
-    /// List of date styles defined in excel.
-    QList<int> dateStyles_;
-
-    /// List of styles defined in excel.
-    QList<int> allStyles_;
 };
 
 #endif  // DATASETDEFINITIONXLSX_H
