@@ -112,24 +112,24 @@ QStringList Dataset::getStringList(int column) const
 
     QStringList listToFill;
     listToFill.reserve(rowCount());
-
-    // Optimization used -> use string indexes first, compare, remove
-    // duplicates. At end convert to proper strings.
-    for (int i = 0; i < rowCount(); ++i)
-        if (!data_[i][column].isNull())
-            listToFill.append(data_[i][column].toString());
-
-    listToFill.removeDuplicates();
-
-    if (sharedStrings_ == nullptr)
-        return listToFill;
-
-    for (int i = 0; i < listToFill.count(); ++i)
+    for (int row = 0; row < rowCount(); ++row)
     {
-        const uint32_t index = listToFill[i].toUInt();
-        listToFill[i] = sharedStrings_[index].toString();
-    }
+        if (data_[row][column].isNull())
+            continue;
 
+        if (data_[row][column].type() == QVariant::String)
+        {
+            listToFill.append(data_[row][column].toString());
+            continue;
+        }
+
+        if (sharedStrings_ != nullptr)
+        {
+            const uint32_t index = data_[row][column].toUInt();
+            listToFill.append(sharedStrings_[index].toString());
+        }
+    }
+    listToFill.removeDuplicates();
     return listToFill;
 }
 
