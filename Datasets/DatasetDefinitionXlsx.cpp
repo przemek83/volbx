@@ -107,11 +107,16 @@ bool DatasetDefinitionXlsx::getDataFromZip(
     const QString barTitle =
         Constants::getProgressBarTitle(Constants::BarTitle::LOADING);
     std::unique_ptr<ProgressBarCounter> bar =
-        (fillSamplesOnly ? nullptr
-                         : std::make_unique<ProgressBarCounter>(
-                               barTitle, rowsCount_, nullptr));
+        (fillSamplesOnly
+             ? nullptr
+             : std::make_unique<ProgressBarCounter>(barTitle, 100, nullptr));
     if (bar != nullptr)
+    {
+        QObject::connect(&importXlsx,
+                         &ImportSpreadsheet::progressPercentChanged, &(*bar),
+                         &ProgressBarCounter::updateProgress);
         bar->showDetached();
+    }
 
     QApplication::processEvents();
 
