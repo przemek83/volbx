@@ -96,7 +96,7 @@ void Export::saveOnDisk()
 
     const QString barTitle =
         Constants::getProgressBarTitle(Constants::BarTitle::SAVING);
-    ProgressBarCounter bar(barTitle, view->model()->rowCount(), nullptr);
+    ProgressBarCounter bar(barTitle, 100, nullptr);
     bar.showDetached();
 
     QTime performanceTimer;
@@ -107,7 +107,7 @@ void Export::saveOnDisk()
     {
         QFile file(fileName + "_" + tr("data") + ".xlsx");
         ExportXlsx exportXlsx;
-        connect(&exportXlsx, &ExportData::updateProgress, &bar,
+        connect(&exportXlsx, &ExportData::progressPercentChanged, &bar,
                 &ProgressBarCounter::updateProgress);
         exportSucceed = exportXlsx.exportView(*view, file);
     }
@@ -116,7 +116,7 @@ void Export::saveOnDisk()
         QFile file(fileName + "_" + tr("data") + ".csv");
         file.open(QIODevice::WriteOnly);
         ExportDsv exportDsv(',');
-        connect(&exportDsv, &ExportData::updateProgress, &bar,
+        connect(&exportDsv, &ExportData::progressPercentChanged, &bar,
                 &ProgressBarCounter::updateProgress);
         QLocale locale;
         locale.setNumberOptions(locale.numberOptions() |
