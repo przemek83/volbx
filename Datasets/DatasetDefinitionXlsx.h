@@ -34,16 +34,16 @@ protected:
                         QVector<QVector<QVariant>>* dataContainer,
                         bool fillSamplesOnly) override;
 
-private:
     bool getSheetList(QuaZip& zip) override;
 
     bool getColumnList(QuaZip& zip, const QString& sheetName) override;
 
-    bool loadSharedStrings(ImportXlsx& importXlsx);
-
     bool getColumnTypes(QuaZip& zip, const QString& sheetPath) override;
 
     bool loadSpecificData(QuaZip& zip) override;
+
+private:
+    bool loadSharedStrings(ImportXlsx& importXlsx);
 
     QFile xlsxFile_;
     ImportXlsx importXlsx_;

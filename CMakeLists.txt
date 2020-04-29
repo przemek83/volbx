@@ -10,6 +10,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+find_package(Threads REQUIRED)
+
 # find Qt packages
 find_package(Qt5 COMPONENTS Widgets Core Gui Network Xml Test REQUIRED)
 add_definitions(${QT_DEFINITIONS})
@@ -173,7 +175,7 @@ add_custom_target(generated_qrc DEPENDS ${RESOURCES})
 add_executable(${PROJECT_NAME} ${GUI_TYPE} ${${PROJECT_NAME}_SOURCES} ${RESOURCES} Volbx/VolbxProperties.rc)
 add_dependencies(${PROJECT_NAME} generated_qrc)
 
-target_link_libraries(${PROJECT_NAME} shared common datasets modelsAndViews dataProvider wble qwtble eible Qt5::Core Qt5::Network Qt5::Widgets Qt5::Gui Qt5::Xml)
+target_link_libraries(${PROJECT_NAME} Threads::Threads shared common datasets modelsAndViews dataProvider wble qwtble eible Qt5::Core Qt5::Network Qt5::Widgets Qt5::Gui Qt5::Xml)
 if(WIN32)
     target_link_libraries(${PROJECT_NAME} optimized qwt debug qwtd)
 else()

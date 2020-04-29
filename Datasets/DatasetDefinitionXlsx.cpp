@@ -1,6 +1,7 @@
 #include "DatasetDefinitionXlsx.h"
 
 #include <cmath>
+#include <future>
 #include <memory>
 
 #include <EibleUtilities.h>
@@ -9,6 +10,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <QDomDocument>
+#include <QFuture>
 #include <QVariant>
 
 #include "Common/Constants.h"
@@ -51,12 +53,33 @@ bool DatasetDefinitionXlsx::loadSharedStrings(ImportXlsx& importXlsx)
 bool DatasetDefinitionXlsx::getColumnList([[maybe_unused]] QuaZip& zip,
                                           const QString& sheetName)
 {
+    const QString barTitle =
+        Constants::getProgressBarTitle(Constants::BarTitle::ANALYSING);
+    ProgressBarInfinite bar(barTitle, nullptr);
+    bar.showDetached();
+    bar.start();
+    QTime performanceTimer;
+    performanceTimer.start();
+    QApplication::processEvents();
+
     importXlsx_.setNameForEmptyColumn(QObject::tr("no name"));
     bool success{false};
-    std::tie(success, headerColumnNames_) =
-        importXlsx_.getColumnNames(sheetToFileMapInZip_.key(sheetName));
+    auto futureColumnNames =
+        std::async(&ImportXlsx::getColumnNames, &importXlsx_,
+                   sheetToFileMapInZip_.key(sheetName));
+    std::chrono::milliseconds span(1);
+    while (futureColumnNames.wait_for(span) == std::future_status::timeout)
+        QCoreApplication::processEvents();
+    std::tie(success, headerColumnNames_) = futureColumnNames.get();
     if (!success)
         LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
+    else
+        LOG(LogTypes::IMPORT_EXPORT,
+            "Analysed file having " + QString::number(rowsCount_) +
+                " rows in time " +
+                QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
+                " seconds.");
+
     return success;
 }
 
@@ -74,7 +97,13 @@ bool DatasetDefinitionXlsx::getColumnTypes([[maybe_unused]] QuaZip& zip,
 
     bool success{false};
     const QString& sheetName = sheetToFileMapInZip_.key(sheetPath);
-    std::tie(success, columnTypes_) = importXlsx_.getColumnTypes(sheetName);
+
+    auto futureColumnTypes =
+        std::async(&ImportXlsx::getColumnTypes, &importXlsx_, sheetName);
+    std::chrono::milliseconds span(1);
+    while (futureColumnTypes.wait_for(span) == std::future_status::timeout)
+        QCoreApplication::processEvents();
+    std::tie(success, columnTypes_) = futureColumnTypes.get();
     if (!success)
     {
         LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
