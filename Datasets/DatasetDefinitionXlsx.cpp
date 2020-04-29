@@ -4,7 +4,6 @@
 #include <memory>
 
 #include <EibleUtilities.h>
-#include <ImportXlsx.h>
 #include <ProgressBarCounter.h>
 #include <ProgressBarInfinite.h>
 #include <QApplication>
@@ -17,15 +16,15 @@
 
 DatasetDefinitionXlsx::DatasetDefinitionXlsx(const QString& name,
                                              QString& zipFileName)
-    : DatasetDefinitionSpreadsheet(name, zipFileName)
+    : DatasetDefinitionSpreadsheet(name, zipFileName),
+      xlsxFile_(zipFileName),
+      importXlsx_(xlsxFile_)
 {
 }
 
-bool DatasetDefinitionXlsx::getSheetList(QuaZip& zip)
+bool DatasetDefinitionXlsx::getSheetList([[maybe_unused]] QuaZip& zip)
 {
-    QFile file(zip.getZipName());
-    ImportXlsx importXlsx(file);
-    auto [success, sheets] = importXlsx.getSheets();
+    auto [success, sheets] = importXlsx_.getSheets();
     if (!success)
         LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
     for (const auto& [sheetName, sheetPath] : sheets)
@@ -49,25 +48,21 @@ bool DatasetDefinitionXlsx::loadSharedStrings(ImportXlsx& importXlsx)
     return success;
 }
 
-bool DatasetDefinitionXlsx::getColumnList(QuaZip& zip, const QString& sheetName)
+bool DatasetDefinitionXlsx::getColumnList([[maybe_unused]] QuaZip& zip,
+                                          const QString& sheetName)
 {
-    QFile file(zip.getZipName());
-    ImportXlsx importXlsx(file);
-    importXlsx.setNameForEmptyColumn(QObject::tr("no name"));
+    importXlsx_.setNameForEmptyColumn(QObject::tr("no name"));
     bool success{false};
     std::tie(success, headerColumnNames_) =
-        importXlsx.getColumnNames(sheetToFileMapInZip_.key(sheetName));
+        importXlsx_.getColumnNames(sheetToFileMapInZip_.key(sheetName));
     if (!success)
         LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
     return success;
 }
 
-bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
+bool DatasetDefinitionXlsx::getColumnTypes([[maybe_unused]] QuaZip& zip,
                                            const QString& sheetPath)
 {
-    QFile file(zip.getZipName());
-    ImportXlsx importXlsx(file);
-
     const QString barTitle =
         Constants::getProgressBarTitle(Constants::BarTitle::ANALYSING);
     ProgressBarInfinite bar(barTitle, nullptr);
@@ -79,14 +74,14 @@ bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
 
     bool success{false};
     const QString& sheetName = sheetToFileMapInZip_.key(sheetPath);
-    std::tie(success, columnTypes_) = importXlsx.getColumnTypes(sheetName);
+    std::tie(success, columnTypes_) = importXlsx_.getColumnTypes(sheetName);
     if (!success)
     {
         LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
         return false;
     }
 
-    rowsCount_ = static_cast<int>(importXlsx.getRowCount(sheetName).second);
+    rowsCount_ = static_cast<int>(importXlsx_.getRowCount(sheetName).second);
 
     LOG(LogTypes::IMPORT_EXPORT,
         "Analysed file having " + QString::number(rowsCount_) +
@@ -98,12 +93,9 @@ bool DatasetDefinitionXlsx::getColumnTypes(QuaZip& zip,
 }
 
 bool DatasetDefinitionXlsx::getDataFromZip(
-    QuaZip& zip, const QString& sheetPath,
+    [[maybe_unused]] QuaZip& zip, const QString& sheetPath,
     QVector<QVector<QVariant> >* dataContainer, bool fillSamplesOnly)
 {
-    QFile file(zip.getZipName());
-    ImportXlsx importXlsx(file);
-
     const QString barTitle =
         Constants::getProgressBarTitle(Constants::BarTitle::LOADING);
     std::unique_ptr<ProgressBarCounter> bar =
@@ -112,7 +104,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(
              : std::make_unique<ProgressBarCounter>(barTitle, 100, nullptr));
     if (bar != nullptr)
     {
-        QObject::connect(&importXlsx,
+        QObject::connect(&importXlsx_,
                          &ImportSpreadsheet::progressPercentChanged, &(*bar),
                          &ProgressBarCounter::updateProgress);
         bar->showDetached();
@@ -127,7 +119,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(
     const QString& sheetName = sheetToFileMapInZip_.key(sheetPath);
     if (fillSamplesOnly)
     {
-        std::tie(success, *dataContainer) = importXlsx.getLimitedData(
+        std::tie(success, *dataContainer) = importXlsx_.getLimitedData(
             sheetName, {}, SAMPLE_SIZE < rowsCount_ ? SAMPLE_SIZE : rowsCount_);
     }
     else
@@ -139,7 +131,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(
                 excludedColumns.append(i);
         }
         std::tie(success, *dataContainer) =
-            importXlsx.getData(sheetName, excludedColumns);
+            importXlsx_.getData(sheetName, excludedColumns);
     }
 
     if (!success)
@@ -169,9 +161,7 @@ const QString& DatasetDefinitionXlsx::getSheetName()
 
 bool DatasetDefinitionXlsx::loadSpecificData(QuaZip& zip)
 {
-    QFile file(zip.getZipName());
-    ImportXlsx importXlsx(file);
-    if (!loadSharedStrings(importXlsx))
+    if (!loadSharedStrings(importXlsx_))
     {
         error_ = QObject::tr("File ") + zip.getZipName() +
                  QObject::tr(" is damaged.");
