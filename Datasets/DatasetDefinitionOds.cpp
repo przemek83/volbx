@@ -16,70 +16,19 @@
 
 DatasetDefinitionOds::DatasetDefinitionOds(const QString& name,
                                            const QString& zipFileName)
-    : DatasetDefinitionSpreadsheet(name, zipFileName)
+    : DatasetDefinitionSpreadsheet(name, zipFileName),
+      odsFile_(zipFileName),
+      importOds_(odsFile_)
 {
 }
 
-bool DatasetDefinitionOds::getSheetList(QuaZip& zip)
+bool DatasetDefinitionOds::getSheetList([[maybe_unused]] QuaZip& zip)
 {
-    if (zip.setCurrentFile(QStringLiteral("settings.xml")))
-    {
-        // Open file in zip archive.
-        QuaZipFile zipFile(&zip);
-        if (!zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
-        {
-            LOG(LogTypes::IMPORT_EXPORT,
-                "Can not open file " + zipFile.getFileName() + ".");
-            return false;
-        }
-
-        // Create, set content and read DOM.
-        QDomDocument xmlDocument(name_);
-        if (!xmlDocument.setContent(zipFile.readAll()))
-        {
-            LOG(LogTypes::IMPORT_EXPORT, "Xml file is damaged.");
-            return false;
-        }
-        zipFile.close();
-
-        QDomElement root = xmlDocument.documentElement();
-
-        const QString configMapNamed(
-            QStringLiteral("config:config-item-map-named"));
-        const QString configName(QStringLiteral("config:name"));
-        const QString configMapEntry(
-            QStringLiteral("config:config-item-map-entry"));
-        const QString tables(QStringLiteral("Tables"));
-
-        int elementsCount = root.elementsByTagName(configMapNamed).size();
-        for (int i = 0; i < elementsCount; i++)
-        {
-            QDomElement currentElement =
-                root.elementsByTagName(configMapNamed).at(i).toElement();
-            if (currentElement.hasAttribute(configName) &&
-                currentElement.attribute(configName) == tables)
-            {
-                int innerElementsCount =
-                    currentElement.elementsByTagName(configMapEntry).size();
-                for (int j = 0; j < innerElementsCount; j++)
-                {
-                    QDomElement element =
-                        currentElement.elementsByTagName(configMapEntry)
-                            .at(j)
-                            .toElement();
-                    sheetNames_.push_back(element.attribute(configName));
-                }
-            }
-        }
-    }
-    else
-    {
-        LOG(LogTypes::IMPORT_EXPORT,
-            "Can not open file xl/workbook.xml in archive.");
-        return false;
-    }
-
-    return true;
+    auto [success, sheetNames] = importOds_.getSheetNames();
+    if (!success)
+        LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
+    sheetNames_ = std::move(sheetNames);
+    return success;
 }
 
 bool DatasetDefinitionOds::getColumnList(QuaZip& zip, const QString& sheetName)

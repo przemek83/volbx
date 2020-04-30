@@ -1,6 +1,7 @@
 #ifndef DATASETDEFINITIONODS_H
 #define DATASETDEFINITIONODS_H
 
+#include <ImportOds.h>
 #include <quazip5/quazip.h>
 #include <quazip5/quazipfile.h>
 #include <QXmlStreamReader>
@@ -42,6 +43,9 @@ private:
     bool openZipAndMoveToSecondRow(QuaZip& zip, const QString& sheetName,
                                    QuaZipFile& zipFile,
                                    QXmlStreamReader& xmlStreamReader);
+
+    QFile odsFile_;
+    ImportOds importOds_;
 
     QStringList sheetNames_;
 };
