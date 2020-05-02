@@ -258,23 +258,45 @@ void SpreadsheetsTest::testSpreadsheetFile03(
 void SpreadsheetsTest::testSpreadsheetFile04(
     DatasetDefinitionSpreadsheet* definition, QString file)
 {
+    // TODO remove different approach for ods when eible will be ready.
+    const bool odsFile{file.endsWith(".ods")};
     QVERIFY(true == definition->init());
-    testBasicInfo(*definition, 15, 4, 0, file);
+    testBasicInfo(*definition, (odsFile ? 29 : 30), 12, 0, file);
 
     QVector<QPair<int, ColumnType> > columnFormats;
+    columnFormats.append(qMakePair(0, ColumnType::STRING));
     columnFormats.append(qMakePair(1, ColumnType::DATE));
     columnFormats.append(qMakePair(2, ColumnType::NUMBER));
     columnFormats.append(qMakePair(3, ColumnType::NUMBER));
+    columnFormats.append(
+        qMakePair(4, (odsFile ? ColumnType::DATE : ColumnType::STRING)));
+    columnFormats.append(qMakePair(5, ColumnType::NUMBER));
+    columnFormats.append(qMakePair(6, ColumnType::STRING));
+    columnFormats.append(qMakePair(7, ColumnType::STRING));
+    columnFormats.append(qMakePair(8, ColumnType::NUMBER));
+    columnFormats.append(qMakePair(9, ColumnType::NUMBER));
+    columnFormats.append(qMakePair(10, ColumnType::NUMBER));
+    columnFormats.append(qMakePair(11, ColumnType::NUMBER));
+
     QVector<QPair<int, QString> > columnNames;
+    columnNames.append(qMakePair(0, QString("name")));
     columnNames.append(qMakePair(1, QString("date")));
     columnNames.append(qMakePair(2, QString("mass (kg)")));
     columnNames.append(qMakePair(3, QString("height")));
+    columnNames.append(qMakePair(4, QString("no name")));
+    columnNames.append(qMakePair(5, QString("no name")));
+    columnNames.append(qMakePair(6, QString("no name")));
+    columnNames.append(qMakePair(7, QString("no name")));
+    columnNames.append(qMakePair(8, QString("no name")));
+    columnNames.append(qMakePair(9, QString("no name")));
+    columnNames.append(qMakePair(10, QString("no name")));
+    columnNames.append(qMakePair(11, QString("no name")));
     testColumnInfo(*definition, columnFormats, columnNames);
 
     QVector<std::tuple<QVariant, int, int> > fields;
     fields.append(std::make_tuple(QVariant(1.55), 3, 3));
     fields.append(std::make_tuple(QVariant(58.57), 5, 2));
-    testSampleData(*definition, 10, 4, fields);
+    testSampleData(*definition, 10, 12, fields);
 
     QVector<bool> activeColumns(definition->columnCount(), true);
     definition->setActiveColumns(activeColumns);
@@ -283,10 +305,11 @@ void SpreadsheetsTest::testSpreadsheetFile04(
     columnsToTest << 2 << 3 << 1 << 0 << 1 << 2;
 
     QVector<double> compareNumericValues;
-    compareNumericValues << 52.21 << 74.46 << 1.47 << 1.83;
+    compareNumericValues << 0 << 74.46 << 0 << 1.83;
 
     QVector<QDate> compareDateValues;
-    compareDateValues << QDate(1970, 1, 1) << QDate(1970, 1, 15);
+    compareDateValues << QDate(1970, 1, 1)
+                      << (odsFile ? QDate(1970, 1, 29) : QDate(1970, 1, 30));
 
     QStringList compareList;
 
@@ -302,7 +325,8 @@ void SpreadsheetsTest::testSpreadsheetFile04(
     compareExportDataWithDump(std::move(dataset));
 }
 
-// void SpreadsheetsTest::testSpreadsheetFile05(DatasetDefinitionSpreadsheet*
+// void
+// SpreadsheetsTest::testSpreadsheetFile05(DatasetDefinitionSpreadsheet*
 // definition,
 //                                             QString file)
 //{
@@ -457,10 +481,9 @@ void SpreadsheetsTest::compareAllDefinitionDumps()
         if (fileInfo.isFile() &&
             (fileInfo.suffix() == "xlsx" || fileInfo.suffix() == "ods"))
         {
-            // TODO Skip for now few files due to undergoing changes related to
-            // migration to eible lib.
-            if (fileInfo.baseName() == "import2" ||
-                fileInfo.baseName() == "test")
+            // TODO Skip for now few files due to undergoing changes related
+            // to migration to eible lib.
+            if (fileInfo.baseName() == "test04")
                 continue;
 
             QCOMPARE(

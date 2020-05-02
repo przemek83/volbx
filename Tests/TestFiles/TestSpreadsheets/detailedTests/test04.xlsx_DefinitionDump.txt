@@ -2,3 +2,11 @@ Column 0 name=name format=0
 Column 1 name=date format=2
 Column 2 name=mass (kg) format=1
 Column 3 name=height format=1
+Column 4 name=no name format=0
+Column 5 name=no name format=1
+Column 6 name=no name format=0
+Column 7 name=no name format=0
+Column 8 name=no name format=1
+Column 9 name=no name format=1
+Column 10 name=no name format=1
+Column 11 name=no name format=1

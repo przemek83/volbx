@@ -20,6 +20,7 @@ DatasetDefinitionOds::DatasetDefinitionOds(const QString& name,
       odsFile_(zipFileName),
       importOds_(odsFile_)
 {
+    importOds_.setNameForEmptyColumn(QObject::tr("no name"));
 }
 
 bool DatasetDefinitionOds::getSheetList([[maybe_unused]] QuaZip& zip)
@@ -31,102 +32,14 @@ bool DatasetDefinitionOds::getSheetList([[maybe_unused]] QuaZip& zip)
     return success;
 }
 
-bool DatasetDefinitionOds::getColumnList(QuaZip& zip, const QString& sheetName)
+bool DatasetDefinitionOds::getColumnList([[maybe_unused]] QuaZip& zip,
+                                         const QString& sheetName)
 {
-    if (zip.setCurrentFile(QStringLiteral("content.xml")))
-    {
-        // Open file in zip archive.
-        QuaZipFile zipFile(&zip);
-        if (!zipFile.open(QIODevice::ReadOnly | QIODevice::Text))
-        {
-            LOG(LogTypes::IMPORT_EXPORT,
-                "Can not open file " + zipFile.getFileName() + ".");
-            return false;
-        }
-
-        QXmlStreamReader xmlStreamReader;
-        xmlStreamReader.setDevice(&zipFile);
-
-        // Move to first row in selected sheet.
-        while (!xmlStreamReader.atEnd() &&
-               xmlStreamReader.name() != "table:table" &&
-               xmlStreamReader.attributes().value(
-                   QLatin1String("table:name")) != sheetName)
-        {
-            xmlStreamReader.readNext();
-        }
-
-        while (!xmlStreamReader.atEnd() &&
-               xmlStreamReader.name() != "table-row")
-        {
-            xmlStreamReader.readNext();
-        }
-
-        xmlStreamReader.readNext();
-
-        // Actual column number.
-        int j = Constants::NOT_SET_COLUMN;
-        QXmlStreamReader::TokenType lastToken = xmlStreamReader.tokenType();
-
-        const QString numberColumnsRepeated(
-            QStringLiteral("table:number-columns-repeated"));
-
-        // Parse first row.
-        while (!xmlStreamReader.atEnd() &&
-               xmlStreamReader.name() != "table-row")
-        {
-            // When we encounter first cell of worksheet.
-            if (xmlStreamReader.name().toString() ==
-                    QLatin1String("table-cell") &&
-                xmlStreamReader.tokenType() == QXmlStreamReader::StartElement)
-            {
-                QString emptyColNumber = xmlStreamReader.attributes()
-                                             .value(numberColumnsRepeated)
-                                             .toString();
-                if (!emptyColNumber.isEmpty())
-                {
-                    break;
-                }
-
-                // Add column number.
-                j++;
-            }
-
-            // If we encounter start of cell content we add it to list.
-            if (!xmlStreamReader.atEnd() &&
-                xmlStreamReader.name().toString() == QStringLiteral("p") &&
-                xmlStreamReader.tokenType() == QXmlStreamReader::StartElement)
-            {
-                while (xmlStreamReader.tokenType() !=
-                       QXmlStreamReader::Characters)
-                {
-                    xmlStreamReader.readNext();
-                }
-
-                headerColumnNames_.push_back(xmlStreamReader.text().toString());
-            }
-
-            // If we encounter empty cell we add it to list.
-            if (xmlStreamReader.name().toString() ==
-                    QLatin1String("table-cell") &&
-                xmlStreamReader.tokenType() == QXmlStreamReader::EndElement &&
-                lastToken == QXmlStreamReader::StartElement)
-            {
-                headerColumnNames_ << emptyColName_;
-            }
-
-            lastToken = xmlStreamReader.tokenType();
-            xmlStreamReader.readNext();
-        }
-    }
-    else
-    {
-        LOG(LogTypes::IMPORT_EXPORT,
-            "Can not open file " + sheetName + " in archive.");
-        return false;
-    }
-
-    return true;
+    auto [success, columnNames] = importOds_.getColumnNames(sheetName);
+    if (!success)
+        LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
+    headerColumnNames_ = std::move(columnNames);
+    return success;
 }
 
 bool DatasetDefinitionOds::openZipAndMoveToSecondRow(
@@ -278,7 +191,7 @@ bool DatasetDefinitionOds::getColumnTypes(QuaZip& zip, const QString& sheetName)
                                  .value(officeValueTypeTag)
                                  .toString();
 
-            // Number of reapeats.
+            // Number of repeats.
             repeatCount = xmlStreamReader.attributes()
                               .value(columnsRepeatedTag)
                               .toString()

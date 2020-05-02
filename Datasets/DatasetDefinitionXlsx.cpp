@@ -22,6 +22,7 @@ DatasetDefinitionXlsx::DatasetDefinitionXlsx(const QString& name,
       xlsxFile_(zipFileName),
       importXlsx_(xlsxFile_)
 {
+    importXlsx_.setNameForEmptyColumn(QObject::tr("no name"));
 }
 
 bool DatasetDefinitionXlsx::getSheetList([[maybe_unused]] QuaZip& zip)
@@ -62,7 +63,6 @@ bool DatasetDefinitionXlsx::getColumnList([[maybe_unused]] QuaZip& zip,
     performanceTimer.start();
     QApplication::processEvents();
 
-    importXlsx_.setNameForEmptyColumn(QObject::tr("no name"));
     bool success{false};
     auto futureColumnNames =
         std::async(&ImportXlsx::getColumnNames, &importXlsx_,
