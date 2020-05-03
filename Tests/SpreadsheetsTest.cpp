@@ -261,15 +261,14 @@ void SpreadsheetsTest::testSpreadsheetFile04(
     // TODO remove different approach for ods when eible will be ready.
     const bool odsFile{file.endsWith(".ods")};
     QVERIFY(true == definition->init());
-    testBasicInfo(*definition, (odsFile ? 29 : 30), 12, 0, file);
+    testBasicInfo(*definition, 30, 12, 0, file);
 
     QVector<QPair<int, ColumnType> > columnFormats;
     columnFormats.append(qMakePair(0, ColumnType::STRING));
     columnFormats.append(qMakePair(1, ColumnType::DATE));
     columnFormats.append(qMakePair(2, ColumnType::NUMBER));
     columnFormats.append(qMakePair(3, ColumnType::NUMBER));
-    columnFormats.append(
-        qMakePair(4, (odsFile ? ColumnType::DATE : ColumnType::STRING)));
+    columnFormats.append(qMakePair(4, ColumnType::DATE));
     columnFormats.append(qMakePair(5, ColumnType::NUMBER));
     columnFormats.append(qMakePair(6, ColumnType::STRING));
     columnFormats.append(qMakePair(7, ColumnType::STRING));
@@ -320,7 +319,8 @@ void SpreadsheetsTest::testSpreadsheetFile04(
     definition->setSpecialColumn(SPECIAL_COLUMN_PRICE_PER_UNIT, 2);
 
     testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
-                            compareDateValues, compareList, false);
+                            compareDateValues, compareList,
+                            (odsFile ? true : false));
 
     compareExportDataWithDump(std::move(dataset));
 }
@@ -481,11 +481,6 @@ void SpreadsheetsTest::compareAllDefinitionDumps()
         if (fileInfo.isFile() &&
             (fileInfo.suffix() == "xlsx" || fileInfo.suffix() == "ods"))
         {
-            // TODO Skip for now few files due to undergoing changes related
-            // to migration to eible lib.
-            if (fileInfo.baseName() == "test04")
-                continue;
-
             QCOMPARE(
                 Common::loadFile(fileInfo.path() + "/" + fileInfo.baseName() +
                                  ".xlsx" + Common::getDefinitionDumpSuffix()),

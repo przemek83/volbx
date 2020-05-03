@@ -1,5 +1,6 @@
 #include "DatasetDefinitionOds.h"
 
+#include <future>
 #include <memory>
 
 #include <ProgressBarCounter.h>
@@ -90,200 +91,36 @@ bool DatasetDefinitionOds::openZipAndMoveToSecondRow(
     return true;
 }
 
-bool DatasetDefinitionOds::getColumnTypes(QuaZip& zip, const QString& sheetName)
+bool DatasetDefinitionOds::getColumnTypes([[maybe_unused]] QuaZip& zip,
+                                          const QString& sheetName)
 {
     const QString barTitle =
         Constants::getProgressBarTitle(Constants::BarTitle::ANALYSING);
     ProgressBarInfinite bar(barTitle, nullptr);
     bar.showDetached();
     bar.start();
-
     QTime performanceTimer;
     performanceTimer.start();
-
     QApplication::processEvents();
 
-    QuaZipFile zipFile;
-    QXmlStreamReader xmlStreamReader;
+    bool success{false};
 
-    if (!openZipAndMoveToSecondRow(zip, sheetName, zipFile, xmlStreamReader))
+    auto futureColumnTypes =
+        std::async(&ImportOds::getColumnTypes, &importOds_, sheetName);
+    std::chrono::milliseconds span(1);
+    while (futureColumnTypes.wait_for(span) == std::future_status::timeout)
+        QCoreApplication::processEvents();
+    std::tie(success, columnTypes_) = futureColumnTypes.get();
+    if (!success)
     {
+        LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
         return false;
     }
 
-    columnTypes_.clear();
-
-    for (int i = 0; i < columnsCount_; ++i)
-    {
-        columnTypes_.push_back(ColumnType::UNKNOWN);
-    }
-
-    // Actual column number.
-    int column = Constants::NOT_SET_COLUMN;
-
-    // Actual row number.
-    int rowCounter = 0;
-
-    // Actual data type in current cell (s, str, null).
-    QString currentColType(QStringLiteral("string"));
-
-    int repeatCount = 1;
-
-    const QString tableTag(QStringLiteral("table"));
-    const QString tableRowTag(QStringLiteral("table-row"));
-    const QString tableCellTag(QStringLiteral("table-cell"));
-    const QString officeValueTypeTag(QStringLiteral("office:value-type"));
-    const QString columnsRepeatedTag(
-        QStringLiteral("table:number-columns-repeated"));
-    const QString stringTag(QStringLiteral("string"));
-    const QString dateTag(QStringLiteral("date"));
-    const QString floatTag(QStringLiteral("float"));
-    const QString percentageTag(QStringLiteral("percentage"));
-    const QString currencyTag(QStringLiteral("currency"));
-    const QString timeTag(QStringLiteral("time"));
-
-    bool rowEmpty = true;
-
-    while (!xmlStreamReader.atEnd() &&
-           xmlStreamReader.name().compare(tableTag) != 0)
-    {
-        // If start of row encountered than reset column counter add increment
-        // row counter.
-        if (0 == xmlStreamReader.name().compare(tableRowTag) &&
-            xmlStreamReader.isStartElement())
-        {
-            column = Constants::NOT_SET_COLUMN;
-
-            if (!rowEmpty)
-            {
-                rowCounter++;
-
-                const int batchSize{100};
-                if (0 == rowCounter % batchSize)
-                {
-                    QApplication::processEvents();
-                }
-
-                rowEmpty = true;
-            }
-        }
-
-        // When we encounter start of cell description.
-        if (0 == xmlStreamReader.name().compare(tableCellTag) &&
-            xmlStreamReader.tokenType() == QXmlStreamReader::StartElement)
-        {
-            column++;
-
-            // If we encounter column outside expected grid we move to row end.
-            if (column >= columnsCount_)
-            {
-                while (!xmlStreamReader.atEnd() &&
-                       !(0 == xmlStreamReader.name().compare(tableRowTag) &&
-                         xmlStreamReader.isEndElement()))
-                {
-                    xmlStreamReader.readNext();
-                }
-                continue;
-            }
-
-            // Remember column type.
-            currentColType = xmlStreamReader.attributes()
-                                 .value(officeValueTypeTag)
-                                 .toString();
-
-            // Number of repeats.
-            repeatCount = xmlStreamReader.attributes()
-                              .value(columnsRepeatedTag)
-                              .toString()
-                              .toInt();
-
-            if (0 == repeatCount)
-            {
-                repeatCount = 1;
-            }
-
-            if (column + repeatCount - 1 >= columnsCount_)
-            {
-                repeatCount = columnsCount_ - column;
-            }
-
-            for (int i = 0; i < repeatCount; ++i)
-            {
-                if (0 == currentColType.compare(stringTag))
-                {
-                    rowEmpty = false;
-                    if (columnTypes_.at(column + i) == ColumnType::UNKNOWN)
-                    {
-                        columnTypes_[column + i] = ColumnType::STRING;
-                    }
-                    else
-                    {
-                        if (columnTypes_.at(column + i) != ColumnType::STRING)
-                        {
-                            columnTypes_[column + i] = ColumnType::STRING;
-                        }
-                    }
-                }
-                else
-                {
-                    if (0 == currentColType.compare(dateTag))
-                    {
-                        rowEmpty = false;
-                        if (columnTypes_.at(column + i) == ColumnType::UNKNOWN)
-                        {
-                            columnTypes_[column + i] = ColumnType::DATE;
-                        }
-                        else
-                        {
-                            if (columnTypes_.at(column + i) != ColumnType::DATE)
-                            {
-                                columnTypes_[column + i] = ColumnType::STRING;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (0 == currentColType.compare(floatTag) ||
-                            0 == currentColType.compare(percentageTag) ||
-                            0 == currentColType.compare(currencyTag) ||
-                            0 == currentColType.compare(timeTag))
-                        {
-                            rowEmpty = false;
-                            if (columnTypes_.at(column + i) ==
-                                ColumnType::UNKNOWN)
-                            {
-                                columnTypes_[column + i] = ColumnType::NUMBER;
-                            }
-                            else
-                            {
-                                if (columnTypes_.at(column + i) !=
-                                    ColumnType::NUMBER)
-                                {
-                                    columnTypes_[column + i] =
-                                        ColumnType::STRING;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            column += repeatCount - 1;
-        }
-        xmlStreamReader.readNextStartElement();
-    }
-
-    for (int i = 0; i < columnsCount_; ++i)
-    {
-        if (ColumnType::UNKNOWN == columnTypes_.at(i))
-        {
-            columnTypes_[i] = ColumnType::STRING;
-        }
-    }
-
-    rowsCount_ = rowCounter;
+    rowsCount_ = static_cast<int>(importOds_.getRowCount(sheetName).second);
 
     LOG(LogTypes::IMPORT_EXPORT,
-        "Analyzed file having " + QString::number(rowsCount_) +
+        "Analysed file having " + QString::number(rowsCount_) +
             " rows in time " +
             QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
             " seconds.");
