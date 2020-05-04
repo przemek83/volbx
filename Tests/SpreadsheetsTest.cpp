@@ -258,8 +258,6 @@ void SpreadsheetsTest::testSpreadsheetFile03(
 void SpreadsheetsTest::testSpreadsheetFile04(
     DatasetDefinitionSpreadsheet* definition, QString file)
 {
-    // TODO remove different approach for ods when eible will be ready.
-    const bool odsFile{file.endsWith(".ods")};
     QVERIFY(true == definition->init());
     testBasicInfo(*definition, 30, 12, 0, file);
 
@@ -307,8 +305,7 @@ void SpreadsheetsTest::testSpreadsheetFile04(
     compareNumericValues << 0 << 74.46 << 0 << 1.83;
 
     QVector<QDate> compareDateValues;
-    compareDateValues << QDate(1970, 1, 1)
-                      << (odsFile ? QDate(1970, 1, 29) : QDate(1970, 1, 30));
+    compareDateValues << QDate(1970, 1, 1) << QDate(1970, 1, 30);
 
     QStringList compareList;
 
@@ -319,8 +316,7 @@ void SpreadsheetsTest::testSpreadsheetFile04(
     definition->setSpecialColumn(SPECIAL_COLUMN_PRICE_PER_UNIT, 2);
 
     testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
-                            compareDateValues, compareList,
-                            (odsFile ? true : false));
+                            compareDateValues, compareList, false);
 
     compareExportDataWithDump(std::move(dataset));
 }
@@ -386,12 +382,8 @@ void SpreadsheetsTest::testSampleData(
     QCOMPARE(sampleData->front().size(), columns);
 
     std::tuple<QVariant, int, int> fieldsTuple;
-    foreach (fieldsTuple, fields)
-    {
-        QCOMPARE(
-            sampleData->at(std::get<1>(fieldsTuple))[std::get<2>(fieldsTuple)],
-            std::get<0>(fieldsTuple));
-    }
+    for (auto [value, row, column] : fields)
+        QCOMPARE(sampleData->at(row)[column], value);
 }
 
 void SpreadsheetsTest::testDatasetConstruction(

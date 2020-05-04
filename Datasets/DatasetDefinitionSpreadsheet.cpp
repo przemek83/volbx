@@ -62,6 +62,9 @@ bool DatasetDefinitionSpreadsheet::init()
 
 void DatasetDefinitionSpreadsheet::updateSampleDataStrings()
 {
+    if (stringsMap_.isEmpty())
+        return;
+
     for (int i = 0; i < columnsCount_; ++i)
     {
         if (ColumnType::STRING == columnTypes_.at(i))
