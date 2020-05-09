@@ -27,11 +27,10 @@ DatasetDefinitionXlsx::DatasetDefinitionXlsx(const QString& name,
 
 bool DatasetDefinitionXlsx::getSheetList([[maybe_unused]] QuaZip& zip)
 {
-    auto [success, sheets] = importXlsx_.getSheets();
+    bool success{false};
+    std::tie(success, sheets_) = importXlsx_.getSheetNames();
     if (!success)
         LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
-    for (const auto& [sheetName, sheetPath] : sheets)
-        sheetToFileMapInZip_[sheetName] = sheetPath;
     return success;
 }
 
@@ -65,8 +64,7 @@ bool DatasetDefinitionXlsx::getColumnList([[maybe_unused]] QuaZip& zip,
 
     bool success{false};
     auto futureColumnNames =
-        std::async(&ImportXlsx::getColumnNames, &importXlsx_,
-                   sheetToFileMapInZip_.key(sheetName));
+        std::async(&ImportXlsx::getColumnNames, &importXlsx_, sheetName);
     std::chrono::milliseconds span(1);
     while (futureColumnNames.wait_for(span) == std::future_status::timeout)
         QCoreApplication::processEvents();
@@ -84,7 +82,7 @@ bool DatasetDefinitionXlsx::getColumnList([[maybe_unused]] QuaZip& zip,
 }
 
 bool DatasetDefinitionXlsx::getColumnTypes([[maybe_unused]] QuaZip& zip,
-                                           const QString& sheetPath)
+                                           const QString& sheetName)
 {
     const QString barTitle =
         Constants::getProgressBarTitle(Constants::BarTitle::ANALYSING);
@@ -96,8 +94,6 @@ bool DatasetDefinitionXlsx::getColumnTypes([[maybe_unused]] QuaZip& zip,
     QApplication::processEvents();
 
     bool success{false};
-    const QString& sheetName = sheetToFileMapInZip_.key(sheetPath);
-
     auto futureColumnTypes =
         std::async(&ImportXlsx::getColumnTypes, &importXlsx_, sheetName);
     std::chrono::milliseconds span(1);
@@ -122,7 +118,7 @@ bool DatasetDefinitionXlsx::getColumnTypes([[maybe_unused]] QuaZip& zip,
 }
 
 bool DatasetDefinitionXlsx::getDataFromZip(
-    [[maybe_unused]] QuaZip& zip, const QString& sheetPath,
+    [[maybe_unused]] QuaZip& zip, const QString& sheetName,
     QVector<QVector<QVariant> >* dataContainer, bool fillSamplesOnly)
 {
     const QString barTitle =
@@ -145,7 +141,6 @@ bool DatasetDefinitionXlsx::getDataFromZip(
     performanceTimer.start();
 
     bool success{false};
-    const QString& sheetName = sheetToFileMapInZip_.key(sheetPath);
     if (fillSamplesOnly)
     {
         std::tie(success, *dataContainer) = importXlsx_.getLimitedData(
@@ -183,10 +178,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(
     return true;
 }
 
-const QString& DatasetDefinitionXlsx::getSheetName()
-{
-    return sheetToFileMapInZip_.constBegin().value();
-}
+const QString& DatasetDefinitionXlsx::getSheetName() { return sheets_.front(); }
 
 bool DatasetDefinitionXlsx::loadSpecificData(QuaZip& zip)
 {

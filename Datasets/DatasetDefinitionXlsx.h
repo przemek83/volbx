@@ -47,9 +47,7 @@ private:
 
     QFile xlsxFile_;
     ImportXlsx importXlsx_;
-
-    /// Map sheet <-> fileName used to access sheets in zip.
-    QMap<QString, QString> sheetToFileMapInZip_;
+    QStringList sheets_;
 };
 
 #endif  // DATASETDEFINITIONXLSX_H
