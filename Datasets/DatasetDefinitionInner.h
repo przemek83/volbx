@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include <quazip5/quazip.h>
+#include <Qt5Quazip/quazip.h>
 
 #include "DatasetDefinition.h"
 

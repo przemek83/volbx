@@ -181,7 +181,7 @@ if(WIN32)
 else()
     target_link_libraries(${PROJECT_NAME} qwt)
 endif()
-target_link_libraries(${PROJECT_NAME} optimized quazip5 debug quazip5d)
+target_link_libraries(${PROJECT_NAME} optimized Qt5Quazip debug Qt5Quazipd)
 
 add_subdirectory(Update)
 

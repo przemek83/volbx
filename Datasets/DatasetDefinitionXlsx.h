@@ -2,8 +2,8 @@
 #define DATASETDEFINITIONXLSX_H
 
 #include <ImportXlsx.h>
-#include <quazip5/quazip.h>
-#include <quazip5/quazipfile.h>
+#include <Qt5Quazip/quazip.h>
+#include <Qt5Quazip/quazipfile.h>
 #include <QXmlStreamReader>
 
 #include "DatasetDefinitionSpreadsheet.h"

@@ -1,8 +1,8 @@
 #include "ExportData.h"
 
 #include <ProgressBarCounter.h>
+#include <Qt5Quazip/quazipfile.h>
 #include <QwtBleUtilities.h>
-#include <quazip5/quazipfile.h>
 #include <QAbstractItemView>
 #include <QApplication>
 #include <QClipboard>

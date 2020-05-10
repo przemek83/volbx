@@ -1,7 +1,7 @@
 #ifndef DATASETSPREADSHEET_H
 #define DATASETSPREADSHEET_H
 
-#include <quazip5/quazip.h>
+#include <Qt5Quazip/quazip.h>
 
 #include "Dataset.h"
 

@@ -7,6 +7,6 @@ project(qwt NONE)
 ExternalProject_Add(qwt
     PREFIX qwt
     SVN_REPOSITORY https://svn.code.sf.net/p/qwt/code/branches/qwt-6.1/
-    CONFIGURE_COMMAND qmake ${CMAKE_BINARY_DIR}/qwt/qwt/src/qwt/qwt.pro
+    CONFIGURE_COMMAND ${QT_QMAKE_EXECUTABLE} ${CMAKE_BINARY_DIR}/qwt/qwt/src/qwt/qwt.pro
     INSTALL_COMMAND ""
 )

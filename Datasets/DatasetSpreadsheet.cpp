@@ -1,6 +1,6 @@
 #include "DatasetSpreadsheet.h"
 
-#include <quazip5/quazipfile.h>
+#include <Qt5Quazip/quazipfile.h>
 #include <QDebug>
 
 #include "Common/Constants.h"

@@ -15,8 +15,8 @@ set(${PROJECT_NAME}_SOURCES
 add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})
 
 target_link_libraries(${PROJECT_NAME} common datasets modelsAndViews Qt5::Xml Qt5::Test Qt5::Core)
-target_link_libraries(${PROJECT_NAME} optimized quazip5)
-target_link_libraries(${PROJECT_NAME} debug quazip5d)
+target_link_libraries(${PROJECT_NAME} optimized Qt5Quazip)
+target_link_libraries(${PROJECT_NAME} debug Qt5Quazipd)
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
