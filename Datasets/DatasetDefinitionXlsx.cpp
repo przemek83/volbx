@@ -4,7 +4,6 @@
 #include <future>
 #include <memory>
 
-#include <EibleUtilities.h>
 #include <ProgressBarCounter.h>
 #include <ProgressBarInfinite.h>
 #include <QApplication>

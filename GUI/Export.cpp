@@ -1,6 +1,5 @@
 #include "Export.h"
 
-#include <EibleUtilities.h>
 #include <ExportDsv.h>
 #include <ExportXlsx.h>
 #include <PlotBase.h>
