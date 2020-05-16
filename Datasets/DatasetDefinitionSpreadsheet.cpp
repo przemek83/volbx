@@ -6,7 +6,7 @@
 
 DatasetDefinitionSpreadsheet::DatasetDefinitionSpreadsheet(
     const QString& name, const QString& zipFileName)
-    : DatasetDefinition(name), nextSharedStringIndex_(0)
+    : DatasetDefinition(name)
 {
     zip_.setZipName(zipFileName);
 }

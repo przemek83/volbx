@@ -31,7 +31,6 @@ protected:
                         QVector<QVector<QVariant>>* dataContainer,
                         bool fillSamplesOnly) override;
 
-private:
     bool getSheetList(QuaZip& zip) override;
 
     bool getColumnList(QuaZip& zip, const QString& sheetName) override;
@@ -44,6 +43,7 @@ private:
                                    QuaZipFile& zipFile,
                                    QXmlStreamReader& xmlStreamReader);
 
+private:
     QFile odsFile_;
     ImportOds importOds_;
 
