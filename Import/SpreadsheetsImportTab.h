@@ -8,6 +8,8 @@ namespace Ui
 class SpreadsheetsImportTab;
 }  // namespace Ui
 
+class DatasetDefinitionSpreadsheet;
+
 class SpreadsheetsImportTab : public ImportTab
 {
     Q_OBJECT
@@ -29,6 +31,9 @@ private Q_SLOTS:
     void openFileButtonClicked();
 
 private:
+    void analyzeFile(
+        std::unique_ptr<DatasetDefinitionSpreadsheet>& datasetDefinition);
+
     Ui::SpreadsheetsImportTab* ui;
 };
 

@@ -4,7 +4,6 @@
 #include <memory>
 
 #include <ProgressBarCounter.h>
-#include <ProgressBarInfinite.h>
 #include <Qt5Quazip/quazipfile.h>
 #include <QApplication>
 #include <QDebug>
@@ -28,7 +27,7 @@ bool DatasetDefinitionOds::getSheetList([[maybe_unused]] QuaZip& zip)
 {
     auto [success, sheetNames] = importOds_.getSheetNames();
     if (!success)
-        LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
+        LOG(LogTypes::IMPORT_EXPORT, importOds_.getLastError());
     sheetNames_ = std::move(sheetNames);
     return success;
 }
@@ -38,7 +37,7 @@ bool DatasetDefinitionOds::getColumnList([[maybe_unused]] QuaZip& zip,
 {
     auto [success, columnNames] = importOds_.getColumnNames(sheetName);
     if (!success)
-        LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
+        LOG(LogTypes::IMPORT_EXPORT, importOds_.getLastError());
     headerColumnNames_ = std::move(columnNames);
     return success;
 }
@@ -92,37 +91,14 @@ bool DatasetDefinitionOds::openZipAndMoveToSecondRow(
 bool DatasetDefinitionOds::getColumnTypes([[maybe_unused]] QuaZip& zip,
                                           const QString& sheetName)
 {
-    const QString barTitle =
-        Constants::getProgressBarTitle(Constants::BarTitle::ANALYSING);
-    ProgressBarInfinite bar(barTitle, nullptr);
-    bar.showDetached();
-    bar.start();
-    QTime performanceTimer;
-    performanceTimer.start();
-    QApplication::processEvents();
-
     bool success{false};
-
-    auto futureColumnTypes =
-        std::async(&ImportOds::getColumnTypes, &importOds_, sheetName);
-    std::chrono::milliseconds span(1);
-    while (futureColumnTypes.wait_for(span) == std::future_status::timeout)
-        QCoreApplication::processEvents();
-    std::tie(success, columnTypes_) = futureColumnTypes.get();
+    std::tie(success, columnTypes_) = importOds_.getColumnTypes(sheetName);
     if (!success)
     {
-        LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
+        LOG(LogTypes::IMPORT_EXPORT, importOds_.getLastError());
         return false;
     }
-
     rowsCount_ = static_cast<int>(importOds_.getRowCount(sheetName).second);
-
-    LOG(LogTypes::IMPORT_EXPORT,
-        "Analysed file having " + QString::number(rowsCount_) +
-            " rows in time " +
-            QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
-            " seconds.");
-
     return true;
 }
 
@@ -169,7 +145,7 @@ bool DatasetDefinitionOds::getDataFromZip(
 
     if (!success)
     {
-        LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
+        LOG(LogTypes::IMPORT_EXPORT, importOds_.getLastError());
         return false;
     }
 

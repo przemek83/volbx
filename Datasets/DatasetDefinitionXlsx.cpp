@@ -5,7 +5,6 @@
 #include <memory>
 
 #include <ProgressBarCounter.h>
-#include <ProgressBarInfinite.h>
 #include <QApplication>
 #include <QDebug>
 #include <QDomDocument>
@@ -29,7 +28,7 @@ bool DatasetDefinitionXlsx::getSheetList([[maybe_unused]] QuaZip& zip)
     bool success{false};
     std::tie(success, sheets_) = importXlsx_.getSheetNames();
     if (!success)
-        LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
+        LOG(LogTypes::IMPORT_EXPORT, importXlsx_.getLastError());
     return success;
 }
 
@@ -38,7 +37,7 @@ bool DatasetDefinitionXlsx::loadSharedStrings(ImportXlsx& importXlsx)
     auto [success, sharedStringsList] = importXlsx.getSharedStrings();
     if (!success)
     {
-        LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
+        LOG(LogTypes::IMPORT_EXPORT, importXlsx_.getLastError());
         return false;
     }
     for (const auto& sharedString : sharedStringsList)
@@ -52,67 +51,25 @@ bool DatasetDefinitionXlsx::loadSharedStrings(ImportXlsx& importXlsx)
 bool DatasetDefinitionXlsx::getColumnList([[maybe_unused]] QuaZip& zip,
                                           const QString& sheetName)
 {
-    const QString barTitle =
-        Constants::getProgressBarTitle(Constants::BarTitle::ANALYSING);
-    ProgressBarInfinite bar(barTitle, nullptr);
-    bar.showDetached();
-    bar.start();
-    QTime performanceTimer;
-    performanceTimer.start();
-    QApplication::processEvents();
-
     bool success{false};
-    auto futureColumnNames =
-        std::async(&ImportXlsx::getColumnNames, &importXlsx_, sheetName);
-    std::chrono::milliseconds span(1);
-    while (futureColumnNames.wait_for(span) == std::future_status::timeout)
-        QCoreApplication::processEvents();
-    std::tie(success, headerColumnNames_) = futureColumnNames.get();
+    std::tie(success, headerColumnNames_) =
+        importXlsx_.getColumnNames(sheetName);
     if (!success)
-        LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
-    else
-        LOG(LogTypes::IMPORT_EXPORT,
-            "Analysed file having " + QString::number(rowsCount_) +
-                " rows in time " +
-                QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
-                " seconds.");
-
+        LOG(LogTypes::IMPORT_EXPORT, importXlsx_.getLastError());
     return success;
 }
 
 bool DatasetDefinitionXlsx::getColumnTypes([[maybe_unused]] QuaZip& zip,
                                            const QString& sheetName)
 {
-    const QString barTitle =
-        Constants::getProgressBarTitle(Constants::BarTitle::ANALYSING);
-    ProgressBarInfinite bar(barTitle, nullptr);
-    bar.showDetached();
-    bar.start();
-    QTime performanceTimer;
-    performanceTimer.start();
-    QApplication::processEvents();
-
     bool success{false};
-    auto futureColumnTypes =
-        std::async(&ImportXlsx::getColumnTypes, &importXlsx_, sheetName);
-    std::chrono::milliseconds span(1);
-    while (futureColumnTypes.wait_for(span) == std::future_status::timeout)
-        QCoreApplication::processEvents();
-    std::tie(success, columnTypes_) = futureColumnTypes.get();
+    std::tie(success, columnTypes_) = importXlsx_.getColumnTypes(sheetName);
     if (!success)
     {
-        LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
+        LOG(LogTypes::IMPORT_EXPORT, importXlsx_.getLastError());
         return false;
     }
-
     rowsCount_ = static_cast<int>(importXlsx_.getRowCount(sheetName).second);
-
-    LOG(LogTypes::IMPORT_EXPORT,
-        "Analysed file having " + QString::number(rowsCount_) +
-            " rows in time " +
-            QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
-            " seconds.");
-
     return true;
 }
 
@@ -159,7 +116,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(
 
     if (!success)
     {
-        LOG(LogTypes::IMPORT_EXPORT, importXlsx.getError().second);
+        LOG(LogTypes::IMPORT_EXPORT, importXlsx_.getLastError());
         return false;
     }
 

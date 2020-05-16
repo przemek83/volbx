@@ -38,7 +38,8 @@ void ColumnsPreview::setDatasetDefinitionSampleInfo(
     int rows = sampleData->size();
     setRowCount(rows);
 
-    Q_ASSERT(columns == sampleData->at(0).size());
+    Q_ASSERT(sampleData->isEmpty() ? true
+                                   : columns == sampleData->at(0).size());
 
     for (int i = 0; i < rows; ++i)
     {

@@ -1,7 +1,9 @@
 #include "SpreadsheetsImportTab.h"
 
 #include <cmath>
+#include <future>
 
+#include <ProgressBarInfinite.h>
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QHeaderView>
@@ -14,6 +16,7 @@
 #include "Datasets/DatasetDefinitionOds.h"
 #include "Datasets/DatasetDefinitionSpreadsheet.h"
 #include "Datasets/DatasetDefinitionXlsx.h"
+#include "Shared/Logger.h"
 
 #include "ColumnsPreview.h"
 #include "DatasetDefinitionVisualization.h"
@@ -55,6 +58,39 @@ SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent)
 }
 
 SpreadsheetsImportTab::~SpreadsheetsImportTab() { delete ui; }
+
+void SpreadsheetsImportTab::analyzeFile(
+    std::unique_ptr<DatasetDefinitionSpreadsheet>& datasetDefinition)
+{
+    const QString barTitle =
+        Constants::getProgressBarTitle(Constants::BarTitle::ANALYSING);
+    ProgressBarInfinite bar(barTitle, nullptr);
+    bar.showDetached();
+    bar.start();
+    QTime performanceTimer;
+    performanceTimer.start();
+    QApplication::processEvents();
+
+    bool success{false};
+    // TODO get rid of get() on smart pointer.
+    auto futureInit = std::async(&DatasetDefinitionSpreadsheet::init,
+                                 datasetDefinition.get());
+    std::chrono::milliseconds span(1);
+    while (futureInit.wait_for(span) == std::future_status::timeout)
+        QCoreApplication::processEvents();
+    success = futureInit.get();
+    if (!success)
+    {
+        LOG(LogTypes::IMPORT_EXPORT, datasetDefinition->getError());
+        return;
+    }
+
+    LOG(LogTypes::IMPORT_EXPORT,
+        "Analysed file having " +
+            QString::number(datasetDefinition->rowCount()) + " rows in time " +
+            QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
+            " seconds.");
+}
 
 void SpreadsheetsImportTab::openFileButtonClicked()
 {
@@ -113,7 +149,7 @@ void SpreadsheetsImportTab::openFileButtonClicked()
         }
     }
 
-    datasetDefinition->init();
+    analyzeFile(datasetDefinition);
 
     auto visualization = findChild<DatasetDefinitionVisualization*>();
     if (nullptr == visualization)
