@@ -19,7 +19,7 @@ constexpr char csvSeparator_{';'};
 
 std::tuple<bool, int, QByteArray> saveDatasetDataFile(
     QuaZipFile& zipFile, const QAbstractItemView* view,
-    QAbstractItemModel* proxyModel, ProgressBarCounter& bar)
+    QAbstractItemModel* proxyModel, ProgressBarCounter* bar)
 {
     bool result =
         zipFile.open(QIODevice::WriteOnly,
@@ -110,7 +110,8 @@ std::tuple<bool, int, QByteArray> saveDatasetDataFile(
         zipFile.write(QByteArray(1, newLine));
         rowCount++;
 
-        bar.updateProgress(i + 1);
+        if (bar != nullptr)
+            bar->updateProgress(i + 1);
     }
 
     zipFile.close();
@@ -159,7 +160,8 @@ bool saveDatasetDefinitionFile(QuaZipFile& zipFile,
 
 namespace ExportUtilities
 {
-bool saveDataset(const QString& filePath, const QAbstractItemView* view)
+bool saveDataset(const QString& filePath, const QAbstractItemView* view,
+                 ProgressBarCounter* bar)
 {
     Q_ASSERT(view != nullptr);
 
@@ -174,11 +176,6 @@ bool saveDataset(const QString& filePath, const QAbstractItemView* view)
     QuaZipFile zipFile(&zip);
     auto model = qobject_cast<QAbstractItemModel*>(view->model());
     Q_ASSERT(model != nullptr);
-
-    QString barTitle =
-        Constants::getProgressBarTitle(Constants::BarTitle::SAVING);
-    ProgressBarCounter bar(barTitle, model->rowCount(), nullptr);
-    bar.showDetached();
 
     auto [success, rowCount, stringsContent] =
         saveDatasetDataFile(zipFile, view, model, bar);

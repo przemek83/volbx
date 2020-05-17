@@ -97,7 +97,7 @@ void InnerTests::testDatasets()
 
         QString filePath{DatasetInner::getDatasetsDir() + tempFilename_ +
                          Constants::getDatasetExtension()};
-        ExportUtilities::saveDataset(filePath, &view);
+        ExportUtilities::saveDataset(filePath, &view, nullptr);
         checkExport(datasetName);
     }
 }

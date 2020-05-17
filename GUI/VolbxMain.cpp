@@ -356,18 +356,22 @@ void VolbxMain::actionSaveDatasetAsTriggered()
 
     if (QDialog::Accepted == save.exec())
     {
-        QTime performanceTimer;
-        performanceTimer.start();
-
         DataView* view = tabWidget_->getCurrentDataView();
         if (view == nullptr)
             return;
+
+        QString barTitle =
+            Constants::getProgressBarTitle(Constants::BarTitle::SAVING);
+        ProgressBarCounter bar(barTitle, view->model()->rowCount(), nullptr);
+        bar.showDetached();
+        QTime performanceTimer;
+        performanceTimer.start();
 
         QString name{save.getChosenDatasetName()};
         LOG(LogTypes::IMPORT_EXPORT, "Saving dataset " + name);
         QString filePath{DatasetInner::getDatasetsDir() + name +
                          Constants::getDatasetExtension()};
-        ExportUtilities::saveDataset(filePath, view);
+        ExportUtilities::saveDataset(filePath, view, &bar);
 
         LOG(LogTypes::IMPORT_EXPORT,
             "File saved in total time " +
