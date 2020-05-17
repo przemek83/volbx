@@ -29,10 +29,6 @@ public:
     DatasetDefinitionXlsx(DatasetDefinitionXlsx&& other) = delete;
 
 protected:
-    bool getDataFromZip(const QString& sheetPath,
-                        QVector<QVector<QVariant>>* dataContainer,
-                        bool fillSamplesOnly) override;
-
     bool loadSpecificData() override;
 
 private:

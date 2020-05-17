@@ -39,14 +39,6 @@ public:
     std::unique_ptr<QVariant[]> getSharedStringTable() override;
 
 protected:
-    void updateSampleDataStrings();
-
-    const QString& getSheetName();
-
-    virtual bool getDataFromZip(const QString& sheetName,
-                                QVector<QVector<QVariant> >* dataContainer,
-                                bool fillSamplesOnly) = 0;
-
     virtual bool loadSpecificData() = 0;
 
     /// Temporary string <-> index map used to build shared string table.
@@ -59,9 +51,16 @@ protected:
     std::unique_ptr<ImportSpreadsheet> importer_{nullptr};
 
 private:
+    void updateSampleDataStrings();
+
     bool getSheetList();
-    bool getColumnList(const QString& sheetName);
+    bool getHeadersList(const QString& sheetName);
     bool getColumnTypes(const QString& sheetName);
+    bool getDataFromZip(const QString& sheetName,
+                        QVector<QVector<QVariant> >* dataContainer,
+                        bool fillSamplesOnly);
+
+    const QString& getSheetName();
 
     QStringList sheetNames_;
 };

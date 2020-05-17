@@ -26,10 +26,6 @@ public:
     DatasetDefinitionOds(DatasetDefinitionOds&& other) = delete;
 
 protected:
-    bool getDataFromZip(const QString& sheetName,
-                        QVector<QVector<QVariant>>* dataContainer,
-                        bool fillSamplesOnly) override;
-
     bool loadSpecificData() override;
 };
 
