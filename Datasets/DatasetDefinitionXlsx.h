@@ -31,17 +31,17 @@ public:
 protected:
     const QString& getSheetName() override;
 
-    bool getDataFromZip(QuaZip& zip, const QString& sheetPath,
+    bool getDataFromZip(const QString& sheetPath,
                         QVector<QVector<QVariant>>* dataContainer,
                         bool fillSamplesOnly) override;
 
-    bool getSheetList(QuaZip& zip) override;
+    bool getSheetList() override;
 
-    bool getColumnList(QuaZip& zip, const QString& sheetName) override;
+    bool getColumnList(const QString& sheetName) override;
 
-    bool getColumnTypes(QuaZip& zip, const QString& sheetPath) override;
+    bool getColumnTypes(const QString& sheetPath) override;
 
-    bool loadSpecificData(QuaZip& zip) override;
+    bool loadSpecificData() override;
 
 private:
     bool loadSharedStrings(ImportXlsx& importXlsx);

@@ -4,57 +4,29 @@
 
 #include "Shared/Logger.h"
 
-DatasetDefinitionSpreadsheet::DatasetDefinitionSpreadsheet(
-    const QString& name, const QString& zipFileName)
+DatasetDefinitionSpreadsheet::DatasetDefinitionSpreadsheet(const QString& name)
     : DatasetDefinition(name)
 {
-    zip_.setZipName(zipFileName);
 }
 
 bool DatasetDefinitionSpreadsheet::init()
 {
-    // Open archive.
-    if (!zip_.open(QuaZip::mdUnzip))
-    {
-        error_ = QObject::tr("Can not open file ") + zip_.getZipName();
-        LOG(LogTypes::IMPORT_EXPORT, "Can not open file " + zip_.getZipName());
+    if (!getSheetList() || !loadSpecificData() ||
+        !getColumnList(getSheetName()))
         return false;
-    }
-
-    if (!getSheetList(zip_) || !loadSpecificData(zip_) ||
-        !getColumnList(zip_, getSheetName()))
-    {
-        error_ = QObject::tr("File ") + zip_.getZipName() +
-                 QObject::tr(" is damaged.");
-        zip_.close();
-        return false;
-    }
 
     columnsCount_ = headerColumnNames_.size();
 
-    if (!getColumnTypes(zip_, getSheetName()))
-    {
-        error_ = QObject::tr("File ") + zip_.getZipName() +
-                 QObject::tr(" is damaged.");
-        zip_.close();
+    if (!getColumnTypes(getSheetName()))
         return false;
-    }
 
     // Sample data.
     sampleData_.resize(SAMPLE_SIZE < rowsCount_ ? SAMPLE_SIZE : rowsCount_);
-    if (!getDataFromZip(zip_, getSheetName(), &sampleData_, true))
-    {
-        error_ = QObject::tr("File ") + zip_.getZipName() +
-                 QObject::tr(" is damaged.");
-        zip_.close();
+    if (!getDataFromZip(getSheetName(), &sampleData_, true))
         return false;
-    }
 
     // Set proper strings for sample data.
     updateSampleDataStrings();
-
-    zip_.close();
-
     valid_ = true;
 
     return true;
@@ -98,18 +70,7 @@ std::unique_ptr<QVariant[]> DatasetDefinitionSpreadsheet::getSharedStringTable()
 bool DatasetDefinitionSpreadsheet::getData(
     QVector<QVector<QVariant> >* dataContainer)
 {
-    // Open archive.
-    if (!zip_.open(QuaZip::mdUnzip))
-    {
-        LOG(LogTypes::IMPORT_EXPORT, "Can not open file " + zip_.getZipName());
-        return false;
-    }
-
-    bool result = getDataFromZip(zip_, getSheetName(), dataContainer, false);
-
-    zip_.close();
-
+    const bool result{getDataFromZip(getSheetName(), dataContainer, false)};
     rebuildDefinitonUsingActiveColumnsOnly();
-
     return result;
 }

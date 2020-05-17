@@ -15,7 +15,7 @@
 
 DatasetDefinitionXlsx::DatasetDefinitionXlsx(const QString& name,
                                              QString& zipFileName)
-    : DatasetDefinitionSpreadsheet(name, zipFileName),
+    : DatasetDefinitionSpreadsheet(name),
       xlsxFile_(zipFileName),
       importXlsx_(xlsxFile_)
 {
@@ -24,7 +24,7 @@ DatasetDefinitionXlsx::DatasetDefinitionXlsx(const QString& name,
                      this, &DatasetDefinition::loadingPercentChanged);
 }
 
-bool DatasetDefinitionXlsx::getSheetList([[maybe_unused]] QuaZip& zip)
+bool DatasetDefinitionXlsx::getSheetList()
 {
     bool success{false};
     std::tie(success, sheets_) = importXlsx_.getSheetNames();
@@ -49,8 +49,7 @@ bool DatasetDefinitionXlsx::loadSharedStrings(ImportXlsx& importXlsx)
     return success;
 }
 
-bool DatasetDefinitionXlsx::getColumnList([[maybe_unused]] QuaZip& zip,
-                                          const QString& sheetName)
+bool DatasetDefinitionXlsx::getColumnList(const QString& sheetName)
 {
     bool success{false};
     std::tie(success, headerColumnNames_) =
@@ -60,8 +59,7 @@ bool DatasetDefinitionXlsx::getColumnList([[maybe_unused]] QuaZip& zip,
     return success;
 }
 
-bool DatasetDefinitionXlsx::getColumnTypes([[maybe_unused]] QuaZip& zip,
-                                           const QString& sheetName)
+bool DatasetDefinitionXlsx::getColumnTypes(const QString& sheetName)
 {
     bool success{false};
     std::tie(success, columnTypes_) = importXlsx_.getColumnTypes(sheetName);
@@ -75,8 +73,8 @@ bool DatasetDefinitionXlsx::getColumnTypes([[maybe_unused]] QuaZip& zip,
 }
 
 bool DatasetDefinitionXlsx::getDataFromZip(
-    [[maybe_unused]] QuaZip& zip, const QString& sheetName,
-    QVector<QVector<QVariant> >* dataContainer, bool fillSamplesOnly)
+    const QString& sheetName, QVector<QVector<QVariant> >* dataContainer,
+    bool fillSamplesOnly)
 {
     bool success{false};
     if (fillSamplesOnly)
@@ -114,11 +112,11 @@ bool DatasetDefinitionXlsx::getDataFromZip(
 
 const QString& DatasetDefinitionXlsx::getSheetName() { return sheets_.front(); }
 
-bool DatasetDefinitionXlsx::loadSpecificData(QuaZip& zip)
+bool DatasetDefinitionXlsx::loadSpecificData()
 {
     if (!loadSharedStrings(importXlsx_))
     {
-        error_ = QObject::tr("File ") + zip.getZipName() +
+        error_ = QObject::tr("File ") + xlsxFile_.fileName() +
                  QObject::tr(" is damaged.");
         return false;
     }

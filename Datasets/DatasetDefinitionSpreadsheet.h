@@ -14,8 +14,7 @@ class DatasetDefinitionSpreadsheet : public DatasetDefinition
 {
     Q_OBJECT
 public:
-    DatasetDefinitionSpreadsheet(const QString& name,
-                                 const QString& zipFileName);
+    explicit DatasetDefinitionSpreadsheet(const QString& name);
 
     ~DatasetDefinitionSpreadsheet() override = default;
 
@@ -41,26 +40,23 @@ protected:
 
     virtual const QString& getSheetName() = 0;
 
-    virtual bool getDataFromZip(QuaZip& zip, const QString& sheetName,
+    virtual bool getDataFromZip(const QString& sheetName,
                                 QVector<QVector<QVariant> >* dataContainer,
                                 bool fillSamplesOnly) = 0;
 
-    virtual bool getSheetList(QuaZip& zip) = 0;
+    virtual bool getSheetList() = 0;
 
-    virtual bool getColumnList(QuaZip& zip, const QString& sheetName) = 0;
+    virtual bool getColumnList(const QString& sheetName) = 0;
 
-    virtual bool loadSpecificData(QuaZip& zip) = 0;
+    virtual bool loadSpecificData() = 0;
 
-    virtual bool getColumnTypes(QuaZip& zip, const QString& sheetName) = 0;
+    virtual bool getColumnTypes(const QString& sheetName) = 0;
 
     /// Temporary string <-> index map used to build shared string table.
     QHash<QString, int> stringsMap_;
 
     /// Next index to be used in strings hash map.
     int nextSharedStringIndex_{0};
-
-    /// Zip file.
-    QuaZip zip_;
 };
 
 #endif  // DATASETDEFINITIONSPREADSHEET_H
