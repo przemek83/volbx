@@ -41,19 +41,13 @@ public:
 protected:
     void updateSampleDataStrings();
 
-    virtual const QString& getSheetName() = 0;
+    const QString& getSheetName();
 
     virtual bool getDataFromZip(const QString& sheetName,
                                 QVector<QVector<QVariant> >* dataContainer,
                                 bool fillSamplesOnly) = 0;
 
-    virtual bool getSheetList() = 0;
-
-    virtual bool getColumnList(const QString& sheetName) = 0;
-
     virtual bool loadSpecificData() = 0;
-
-    virtual bool getColumnTypes(const QString& sheetName) = 0;
 
     /// Temporary string <-> index map used to build shared string table.
     QHash<QString, int> stringsMap_;
@@ -63,6 +57,13 @@ protected:
 
     QFile zipFile_;
     std::unique_ptr<ImportSpreadsheet> importer_{nullptr};
+
+private:
+    bool getSheetList();
+    bool getColumnList(const QString& sheetName);
+    bool getColumnTypes(const QString& sheetName);
+
+    QStringList sheetNames_;
 };
 
 #endif  // DATASETDEFINITIONSPREADSHEET_H

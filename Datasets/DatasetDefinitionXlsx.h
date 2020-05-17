@@ -29,24 +29,14 @@ public:
     DatasetDefinitionXlsx(DatasetDefinitionXlsx&& other) = delete;
 
 protected:
-    const QString& getSheetName() override;
-
     bool getDataFromZip(const QString& sheetPath,
                         QVector<QVector<QVariant>>* dataContainer,
                         bool fillSamplesOnly) override;
-
-    bool getSheetList() override;
-
-    bool getColumnList(const QString& sheetName) override;
-
-    bool getColumnTypes(const QString& sheetPath) override;
 
     bool loadSpecificData() override;
 
 private:
     bool loadSharedStrings();
-
-    QStringList sheets_;
 };
 
 #endif  // DATASETDEFINITIONXLSX_H

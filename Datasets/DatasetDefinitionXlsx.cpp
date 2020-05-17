@@ -20,15 +20,6 @@ DatasetDefinitionXlsx::DatasetDefinitionXlsx(const QString& name,
     importer_ = std::make_unique<ImportXlsx>(zipFile_);
 }
 
-bool DatasetDefinitionXlsx::getSheetList()
-{
-    bool success{false};
-    std::tie(success, sheets_) = importer_->getSheetNames();
-    if (!success)
-        LOG(LogTypes::IMPORT_EXPORT, importXlsx_.getLastError());
-    return success;
-}
-
 bool DatasetDefinitionXlsx::loadSharedStrings()
 {
     auto [success, sharedStringsList] =
@@ -44,29 +35,6 @@ bool DatasetDefinitionXlsx::loadSharedStrings()
         nextSharedStringIndex_++;
     }
     return success;
-}
-
-bool DatasetDefinitionXlsx::getColumnList(const QString& sheetName)
-{
-    bool success{false};
-    std::tie(success, headerColumnNames_) =
-        importer_->getColumnNames(sheetName);
-    if (!success)
-        LOG(LogTypes::IMPORT_EXPORT, importXlsx_.getLastError());
-    return success;
-}
-
-bool DatasetDefinitionXlsx::getColumnTypes(const QString& sheetName)
-{
-    bool success{false};
-    std::tie(success, columnTypes_) = importer_->getColumnTypes(sheetName);
-    if (!success)
-    {
-        LOG(LogTypes::IMPORT_EXPORT, importXlsx_.getLastError());
-        return false;
-    }
-    rowsCount_ = static_cast<int>(importer_->getRowCount(sheetName).second);
-    return true;
 }
 
 bool DatasetDefinitionXlsx::getDataFromZip(
@@ -106,8 +74,6 @@ bool DatasetDefinitionXlsx::getDataFromZip(
 
     return true;
 }
-
-const QString& DatasetDefinitionXlsx::getSheetName() { return sheets_.front(); }
 
 bool DatasetDefinitionXlsx::loadSpecificData()
 {

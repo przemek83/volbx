@@ -56,6 +56,43 @@ void DatasetDefinitionSpreadsheet::updateSampleDataStrings()
     }
 }
 
+const QString& DatasetDefinitionSpreadsheet::getSheetName()
+{
+    return sheetNames_.constFirst();
+}
+
+bool DatasetDefinitionSpreadsheet::getSheetList()
+{
+    bool success{false};
+    std::tie(success, sheetNames_) = importer_->getSheetNames();
+    if (!success)
+        LOG(LogTypes::IMPORT_EXPORT, importXlsx_.getLastError());
+    return success;
+}
+
+bool DatasetDefinitionSpreadsheet::getColumnList(const QString& sheetName)
+{
+    bool success{false};
+    std::tie(success, headerColumnNames_) =
+        importer_->getColumnNames(sheetName);
+    if (!success)
+        LOG(LogTypes::IMPORT_EXPORT, importXlsx_.getLastError());
+    return success;
+}
+
+bool DatasetDefinitionSpreadsheet::getColumnTypes(const QString& sheetName)
+{
+    bool success{false};
+    std::tie(success, columnTypes_) = importer_->getColumnTypes(sheetName);
+    if (!success)
+    {
+        LOG(LogTypes::IMPORT_EXPORT, importOds_.getLastError());
+        return false;
+    }
+    rowsCount_ = static_cast<int>(importer_->getRowCount(sheetName).second);
+    return true;
+}
+
 bool DatasetDefinitionSpreadsheet::isValid() const { return valid_; }
 
 std::unique_ptr<QVariant[]> DatasetDefinitionSpreadsheet::getSharedStringTable()

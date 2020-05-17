@@ -20,37 +20,6 @@ DatasetDefinitionOds::DatasetDefinitionOds(const QString& name,
     importer_ = std::make_unique<ImportOds>(zipFile_);
 }
 
-bool DatasetDefinitionOds::getSheetList()
-{
-    auto [success, sheetNames] = importer_->getSheetNames();
-    if (!success)
-        LOG(LogTypes::IMPORT_EXPORT, importOds_.getLastError());
-    sheetNames_ = std::move(sheetNames);
-    return success;
-}
-
-bool DatasetDefinitionOds::getColumnList(const QString& sheetName)
-{
-    auto [success, columnNames] = importer_->getColumnNames(sheetName);
-    if (!success)
-        LOG(LogTypes::IMPORT_EXPORT, importOds_.getLastError());
-    headerColumnNames_ = std::move(columnNames);
-    return success;
-}
-
-bool DatasetDefinitionOds::getColumnTypes(const QString& sheetName)
-{
-    bool success{false};
-    std::tie(success, columnTypes_) = importer_->getColumnTypes(sheetName);
-    if (!success)
-    {
-        LOG(LogTypes::IMPORT_EXPORT, importOds_.getLastError());
-        return false;
-    }
-    rowsCount_ = static_cast<int>(importer_->getRowCount(sheetName).second);
-    return true;
-}
-
 bool DatasetDefinitionOds::getDataFromZip(
     const QString& sheetName, QVector<QVector<QVariant> >* dataContainer,
     bool fillSamplesOnly)
@@ -87,11 +56,6 @@ bool DatasetDefinitionOds::getDataFromZip(
     }
 
     return true;
-}
-
-const QString& DatasetDefinitionOds::getSheetName()
-{
-    return sheetNames_.constFirst();
 }
 
 bool DatasetDefinitionOds::loadSpecificData()

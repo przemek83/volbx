@@ -26,22 +26,11 @@ public:
     DatasetDefinitionOds(DatasetDefinitionOds&& other) = delete;
 
 protected:
-    const QString& getSheetName() override;
-
     bool getDataFromZip(const QString& sheetName,
                         QVector<QVector<QVariant>>* dataContainer,
                         bool fillSamplesOnly) override;
 
-    bool getSheetList() override;
-
-    bool getColumnList(const QString& sheetName) override;
-
     bool loadSpecificData() override;
-
-    bool getColumnTypes(const QString& sheetName) override;
-
-private:
-    QStringList sheetNames_;
 };
 
 #endif  // DATASETDEFINITIONODS_H
