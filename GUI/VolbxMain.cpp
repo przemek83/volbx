@@ -1,5 +1,6 @@
 #include "VolbxMain.h"
 
+#include <ProgressBarCounter.h>
 #include <QDebug>
 #include <QDesktopServices>
 #include <QDir>
@@ -213,16 +214,12 @@ void VolbxMain::checkForUpdates()
         int reply = dialog.exec();
 
         if (QDialog::Accepted == reply)
-        {
             checkForUpdates = true;
-        }
 
         // Remember if choice was checked.
         if (dialog.saveFlagSet())
-        {
             Configuration::getInstance().setUpdatesCheckingOption(
                 checkForUpdates);
-        }
     }
     else
     {
@@ -230,9 +227,7 @@ void VolbxMain::checkForUpdates()
     }
 
     if (checkForUpdates)
-    {
         actionCheckForNewVersionTriggered();
-    }
 
     ui->actionUpdateAuto->setChecked(
         Configuration::getInstance().needToCheckForUpdates());
@@ -242,14 +237,7 @@ void VolbxMain::actionExitTriggered() { close(); }
 
 void VolbxMain::actionFiltersTriggered()
 {
-    if (filters_->isVisible())
-    {
-        filters_->hide();
-    }
-    else
-    {
-        filters_->show();
-    }
+    filters_->setVisible(!filters_->isVisible());
 }
 
 void VolbxMain::actionLogsTriggered()
@@ -388,14 +376,83 @@ void VolbxMain::actionSaveDatasetAsTriggered()
     }
 }
 
-bool VolbxMain::loadDataset(Dataset& dataset)
+void VolbxMain::actionImportDataTriggered()
 {
-    // TODO 26/08/2012 Currently try catches part of no memory problems.
-    // Problem is in creating 2d array.
+    ImportData import(this);
+
+    if (QDialog::Accepted != import.exec())
+        return;
+
+    DatasetDefinition* datasetDefinition =
+        import.getSelectedDataset().release();
+
+    if (datasetDefinition == nullptr || !datasetDefinition->isValid())
+    {
+        QMessageBox::critical(
+            this, tr("Import error"),
+            tr("Import error encountered, can not continue operation."));
+        return;
+    }
+
+    // Sample data is not needed any more.
+    datasetDefinition->clearSampleData();
+
+    std::unique_ptr<Dataset> dataset{nullptr};
+
+    switch (import.getImportDataType())
+    {
+        case ImportData::IMPORT_TYPE_INNER:
+        {
+            auto definitionInner =
+                dynamic_cast<DatasetDefinitionInner*>(datasetDefinition);
+            if (nullptr != definitionInner)
+            {
+                dataset = std::make_unique<DatasetInner>(definitionInner);
+            }
+
+            break;
+        }
+
+        case ImportData::IMPORT_TYPE_SPREADSHEET:
+        {
+            auto definitionSpreadsheet =
+                dynamic_cast<DatasetDefinitionSpreadsheet*>(datasetDefinition);
+            if (nullptr != definitionSpreadsheet)
+            {
+                dataset =
+                    std::make_unique<DatasetSpreadsheet>(definitionSpreadsheet);
+            }
+
+            break;
+        }
+    }
+
+    if (!dataset)
+    {
+        QMessageBox::critical(this, tr("Import error"),
+                              datasetDefinition->getError());
+        return;
+    }
+
+    const QString barTitle =
+        Constants::getProgressBarTitle(Constants::BarTitle::LOADING);
+    ProgressBarCounter bar(barTitle, 100, nullptr);
+    QObject::connect(datasetDefinition,
+                     &DatasetDefinition::loadingPercentChanged, &bar,
+                     &ProgressBarCounter::updateProgress);
+    bar.showDetached();
+
+    QApplication::processEvents();
+
+    QTime performanceTimer;
+    performanceTimer.start();
+
+    // TODO 26/08/2012 Currently try catches only part of memory problems.
+    // One problem still lies in creating 2d array.
     // Try to create vector of pointers to 1d arrays.
     try
     {
-        dataset.init();
+        dataset->init();
     }
     catch (std::bad_alloc&)
     {
@@ -405,77 +462,15 @@ bool VolbxMain::loadDataset(Dataset& dataset)
             tr(" pick smaller set or use another instance of application."));
         QMessageBox::critical(this, tr("Memory problem"), message);
 
-        return false;
+        return;
     }
 
-    return dataset.isValid();
-}
+    LOG(LogTypes::IMPORT_EXPORT,
+        "Loaded file having " + QString::number(rowsCount_) + " rows in time " +
+            QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
+            " seconds.");
 
-void VolbxMain::actionImportDataTriggered()
-{
-    ImportData import(this);
-
-    if (QDialog::Accepted == import.exec())
-    {
-        DatasetDefinition* datasetDefinition =
-            import.getSelectedDataset().release();
-
-        if (datasetDefinition == nullptr || !datasetDefinition->isValid())
-        {
-            QMessageBox::critical(
-                this, tr("Import error"),
-                tr("Import error encountered, can not continue operation."));
-            return;
-        }
-
-        // Sample data is not needed anymore.
-        datasetDefinition->clearSampleData();
-
-        std::unique_ptr<Dataset> dataset{nullptr};
-
-        switch (import.getImportDataType())
-        {
-            case ImportData::IMPORT_TYPE_INNER:
-            {
-                auto definitionInner =
-                    dynamic_cast<DatasetDefinitionInner*>(datasetDefinition);
-                if (nullptr != definitionInner)
-                {
-                    dataset = std::make_unique<DatasetInner>(definitionInner);
-                }
-
-                break;
-            }
-
-            case ImportData::IMPORT_TYPE_SPREADSHEET:
-            {
-                auto definitionSpreadsheet =
-                    dynamic_cast<DatasetDefinitionSpreadsheet*>(
-                        datasetDefinition);
-                if (nullptr != definitionSpreadsheet)
-                {
-                    dataset = std::make_unique<DatasetSpreadsheet>(
-                        definitionSpreadsheet);
-                }
-
-                break;
-            }
-        }
-
-        if (!dataset)
-        {
-            QMessageBox::critical(this, tr("Import error"),
-                                  datasetDefinition->getError());
-            return;
-        }
-
-        if (!loadDataset(*dataset))
-        {
-            return;
-        }
-
-        addMainTabForDataset(std::move(dataset));
-    }
+    addMainTabForDataset(std::move(dataset));
 }
 
 void VolbxMain::addMainTabForDataset(std::unique_ptr<Dataset> dataset)

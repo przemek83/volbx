@@ -2,7 +2,6 @@
 
 #include <memory>
 
-#include <ProgressBarCounter.h>
 #include <Qt5Quazip/quazipfile.h>
 #include <QApplication>
 #include <QDebug>
@@ -193,64 +192,39 @@ bool DatasetDefinitionInner::fillData(
     QTextStream stream(&zipFile);
     stream.setCodec("UTF-8");
 
-    QString barTitle =
-        Constants::getProgressBarTitle(Constants::BarTitle::LOADING);
-    std::unique_ptr<ProgressBarCounter> bar =
-        (fillSamplesOnly ? nullptr
-                         : std::make_unique<ProgressBarCounter>(
-                               barTitle, rowCount(), nullptr));
-    if (bar != nullptr)
-        bar->showDetached();
-
-    QTime performanceTimer;
-    performanceTimer.start();
-
-    int lineCounter = 0;
+    unsigned int lastEmittedPercent{0};
+    int lineCounter{0};
     while (!stream.atEnd() && lineCounter < dataContainer->size())
     {
         if (fillSamplesOnly && lineCounter >= SAMPLE_SIZE)
-        {
             break;
-        }
 
-        QStringList line = stream.readLine().split(';');
-
-        int columnToFill = 0;
+        QStringList line{stream.readLine().split(';')};
+        int columnToFill{0};
         for (int i = 0; i < columnCount(); ++i)
         {
             const QString& element = line.at(i);
 
             // If column is not active do nothing.
             if (!fillSamplesOnly && !activeColumns_[i])
-            {
                 continue;
-            }
 
             addElementToContainer(getColumnFormat(i), element, dataContainer,
                                   lineCounter, columnToFill);
-
             columnToFill++;
         }
-
         lineCounter++;
-
         if (!fillSamplesOnly)
-        {
-            bar->updateProgress(lineCounter);
-        }
+            updateProgress(lineCounter, rowCount(), lastEmittedPercent);
     }
 
     LOG(LogTypes::IMPORT_EXPORT,
-        "Loaded " + QString::number(dataContainer->size()) + " rows in time " +
-            QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
-            " seconds.");
+        "Loaded " + QString::number(dataContainer->size()) + " rows.");
 
     zipFile.close();
 
     if (!fillSamplesOnly)
-    {
         rebuildDefinitonUsingActiveColumnsOnly();
-    }
 
     return true;
 }
@@ -334,6 +308,20 @@ bool DatasetDefinitionInner::loadStrings(QuaZip& zip)
     }
 
     return true;
+}
+
+void DatasetDefinitionInner::updateProgress(unsigned int currentRow,
+                                            unsigned int rowCount,
+                                            unsigned int& lastEmittedPercent)
+{
+    const unsigned int currentPercent{
+        static_cast<unsigned int>(100. * (currentRow + 1) / rowCount)};
+    if (currentPercent > lastEmittedPercent)
+    {
+        Q_EMIT loadingPercentChanged(currentPercent);
+        lastEmittedPercent = currentPercent;
+        QCoreApplication::processEvents();
+    }
 }
 
 std::unique_ptr<QVariant[]> DatasetDefinitionInner::getSharedStringTable()

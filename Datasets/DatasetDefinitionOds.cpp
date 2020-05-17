@@ -3,7 +3,6 @@
 #include <future>
 #include <memory>
 
-#include <ProgressBarCounter.h>
 #include <Qt5Quazip/quazipfile.h>
 #include <QApplication>
 #include <QDebug>
@@ -21,6 +20,8 @@ DatasetDefinitionOds::DatasetDefinitionOds(const QString& name,
       importOds_(odsFile_)
 {
     importOds_.setNameForEmptyColumn(QObject::tr("no name"));
+    QObject::connect(&importOds_, &ImportSpreadsheet::progressPercentChanged,
+                     this, &DatasetDefinition::loadingPercentChanged);
 }
 
 bool DatasetDefinitionOds::getSheetList([[maybe_unused]] QuaZip& zip)
@@ -106,25 +107,6 @@ bool DatasetDefinitionOds::getDataFromZip(
     [[maybe_unused]] QuaZip& zip, const QString& sheetName,
     QVector<QVector<QVariant> >* dataContainer, bool fillSamplesOnly)
 {
-    const QString barTitle =
-        Constants::getProgressBarTitle(Constants::BarTitle::LOADING);
-    std::unique_ptr<ProgressBarCounter> bar =
-        (fillSamplesOnly
-             ? nullptr
-             : std::make_unique<ProgressBarCounter>(barTitle, 100, nullptr));
-    if (bar != nullptr)
-    {
-        QObject::connect(&importOds_,
-                         &ImportSpreadsheet::progressPercentChanged, &(*bar),
-                         &ProgressBarCounter::updateProgress);
-        bar->showDetached();
-    }
-
-    QApplication::processEvents();
-
-    QTime performanceTimer;
-    performanceTimer.start();
-
     bool success{false};
     if (fillSamplesOnly)
     {
@@ -152,12 +134,8 @@ bool DatasetDefinitionOds::getDataFromZip(
     if (!fillSamplesOnly)
     {
         Q_ASSERT(rowsCount_ == dataContainer->size());
-
         LOG(LogTypes::IMPORT_EXPORT,
-            "Loaded file having " + QString::number(rowsCount_) +
-                " rows in time " +
-                QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
-                " seconds.");
+            "Loaded file having " + QString::number(rowsCount_) + " rows.");
     }
 
     return true;

@@ -13,6 +13,7 @@
  */
 class DatasetDefinitionOds : public DatasetDefinitionSpreadsheet
 {
+    Q_OBJECT
 public:
     DatasetDefinitionOds(const QString& name, const QString& zipFileName);
 

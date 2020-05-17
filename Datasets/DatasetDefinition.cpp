@@ -10,8 +10,10 @@
 
 #include "Dataset.h"
 
-DatasetDefinition::DatasetDefinition(QString name)
-    : name_(std::move(name)), emptyColName_(QObject::tr("no name"))
+DatasetDefinition::DatasetDefinition(QString name, QObject* parent)
+    : QObject(parent),
+      name_(std::move(name)),
+      emptyColName_(QObject::tr("no name"))
 {
 }
 

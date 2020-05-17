@@ -15,10 +15,11 @@
 /**
  * @brief Dataset definition is "formula" for creation of dataset.
  */
-class DatasetDefinition
+class DatasetDefinition : public QObject
 {
+    Q_OBJECT
 public:
-    explicit DatasetDefinition(QString name);
+    explicit DatasetDefinition(QString name, QObject* parent = nullptr);
 
     virtual ~DatasetDefinition() = default;
 
@@ -114,6 +115,9 @@ protected:
     const QString DATASET_ROW_COUNT{QStringLiteral("ROW_COUNT")};
 
     bool valid_{false};
+
+signals:
+    void loadingPercentChanged(unsigned int newPercentage);
 };
 
 #endif  // DATASETDEFINITION_H

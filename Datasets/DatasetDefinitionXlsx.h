@@ -15,6 +15,7 @@ class ImportXlsx;
  */
 class DatasetDefinitionXlsx : public DatasetDefinitionSpreadsheet
 {
+    Q_OBJECT
 public:
     DatasetDefinitionXlsx(const QString& name, QString& zipFileName);
 

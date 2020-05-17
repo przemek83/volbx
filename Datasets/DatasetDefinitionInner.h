@@ -12,6 +12,7 @@
  */
 class DatasetDefinitionInner : public DatasetDefinition
 {
+    Q_OBJECT
 public:
     explicit DatasetDefinitionInner(const QString& name);
 
@@ -47,6 +48,9 @@ private:
 
     /// Load strings from zip file.
     bool loadStrings(QuaZip& zip);
+
+    void updateProgress(unsigned int currentRow, unsigned int rowCount,
+                        unsigned int& lastEmittedPercent);
 
     /// Array with strings.
     std::unique_ptr<QVariant[]> stringsTable_{nullptr};

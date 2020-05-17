@@ -56,8 +56,6 @@ private:
 
     void manageActions(bool tabExists);
 
-    bool loadDataset(Dataset& dataset);
-
     Ui::VolbxMain* ui;
 
     void setupStatusBar();
