@@ -153,7 +153,7 @@ void DatasetDefinition::rebuildDefinitonUsingActiveColumnsOnly()
     // Set new column count.
     columnsCount_ = getActiveColumnCount();
 
-    // Those info is not needed anymore.
+    // Those info is not needed any more.
     activeColumns_.clear();
 }
 

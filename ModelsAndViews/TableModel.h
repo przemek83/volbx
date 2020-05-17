@@ -33,7 +33,7 @@ public:
     TableModel(TableModel&& other) = delete;
 
     /**
-     * @brief Overridem method for row count check.
+     * @brief Overridden method for row count check.
      * @return row count.
      */
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
@@ -45,7 +45,7 @@ public:
     int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 
     /**
-     * @brief Overridem method returning data from model for given index.
+     * @brief Overridden method returning data from model for given index.
      * @param index index used to retrieve data.
      * @return data.
      */
@@ -53,7 +53,7 @@ public:
                   int role = Qt::DisplayRole) const override;
 
     /**
-     * @brief Overridem method returning data used for column header.
+     * @brief Overridden method returning data used for column header.
      * @param section column.
      * @param orientation orientation (vertical or horizontal).
      * @param role role of returned data.
@@ -66,7 +66,7 @@ public:
      * @brief fill max and min for given numeric column.
      * @param column Column number.
      * @returns Minimum for column,
-     *          maksimum cor column.
+     *          maximum cor column.
      */
     std::tuple<double, double> getNumericRange(int column) const;
 
@@ -74,8 +74,8 @@ public:
      * @brief Fill max and min for given date column.
      * @param column Column number.
      * @returns minimum date for column,
-     *          maksimum date for column,
-     *          existance of empty dates in column.
+     *          maximum date for column,
+     *          existence of empty dates in column.
      */
     std::tuple<QDate, QDate, bool> getDateRange(int column) const;
 

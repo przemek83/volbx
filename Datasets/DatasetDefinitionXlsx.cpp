@@ -22,6 +22,7 @@ DatasetDefinitionXlsx::DatasetDefinitionXlsx(const QString& name,
 
 bool DatasetDefinitionXlsx::loadSharedStrings()
 {
+    // TODO 17.05.2020 get rid of get() on smart pointer.
     auto [success, sharedStringsList] =
         dynamic_cast<ImportXlsx*>(importer_.get())->getSharedStrings();
     if (!success)
