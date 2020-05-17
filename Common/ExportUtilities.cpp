@@ -39,8 +39,9 @@ std::tuple<bool, int, QByteArray> saveDatasetDataFile(
     QHash<QString, int> stringsMap;
     int nextIndex = 1;
     constexpr char newLine = '\n';
-    int rowCount = 0;
+    int rowCounter = 0;
     QByteArray stringsContent;
+    unsigned int lastEmittedPercent{0};
     for (int i = 0; i < proxyRowCount; ++i)
     {
         if (multiSelection &&
@@ -108,15 +109,24 @@ std::tuple<bool, int, QByteArray> saveDatasetDataFile(
         }
 
         zipFile.write(QByteArray(1, newLine));
-        rowCount++;
+        rowCounter++;
 
         if (bar != nullptr)
-            bar->updateProgress(i + 1);
+        {
+            const unsigned int currentPercent{static_cast<unsigned int>(
+                100. * (rowCounter + 1) / proxyRowCount)};
+            if (currentPercent > lastEmittedPercent)
+            {
+                bar->updateProgress(currentPercent);
+                lastEmittedPercent = currentPercent;
+                QCoreApplication::processEvents();
+            }
+        }
     }
 
     zipFile.close();
 
-    return {true, rowCount, stringsContent};
+    return {true, rowCounter, stringsContent};
 }
 
 bool saveDatasetStringsFile(QuaZipFile& zipFile,

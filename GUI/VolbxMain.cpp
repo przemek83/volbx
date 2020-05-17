@@ -362,7 +362,7 @@ void VolbxMain::actionSaveDatasetAsTriggered()
 
         QString barTitle =
             Constants::getProgressBarTitle(Constants::BarTitle::SAVING);
-        ProgressBarCounter bar(barTitle, view->model()->rowCount(), nullptr);
+        ProgressBarCounter bar(barTitle, 100, nullptr);
         bar.showDetached();
         QTime performanceTimer;
         performanceTimer.start();
