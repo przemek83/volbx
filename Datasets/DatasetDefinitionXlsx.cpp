@@ -15,27 +15,24 @@
 
 DatasetDefinitionXlsx::DatasetDefinitionXlsx(const QString& name,
                                              QString& zipFileName)
-    : DatasetDefinitionSpreadsheet(name),
-      xlsxFile_(zipFileName),
-      importXlsx_(xlsxFile_)
+    : DatasetDefinitionSpreadsheet(name, zipFileName)
 {
-    importXlsx_.setNameForEmptyColumn(QObject::tr("no name"));
-    QObject::connect(&importXlsx_, &ImportSpreadsheet::progressPercentChanged,
-                     this, &DatasetDefinition::loadingPercentChanged);
+    importer_ = std::make_unique<ImportXlsx>(zipFile_);
 }
 
 bool DatasetDefinitionXlsx::getSheetList()
 {
     bool success{false};
-    std::tie(success, sheets_) = importXlsx_.getSheetNames();
+    std::tie(success, sheets_) = importer_->getSheetNames();
     if (!success)
         LOG(LogTypes::IMPORT_EXPORT, importXlsx_.getLastError());
     return success;
 }
 
-bool DatasetDefinitionXlsx::loadSharedStrings(ImportXlsx& importXlsx)
+bool DatasetDefinitionXlsx::loadSharedStrings()
 {
-    auto [success, sharedStringsList] = importXlsx.getSharedStrings();
+    auto [success, sharedStringsList] =
+        dynamic_cast<ImportXlsx*>(importer_.get())->getSharedStrings();
     if (!success)
     {
         LOG(LogTypes::IMPORT_EXPORT, importXlsx_.getLastError());
@@ -53,7 +50,7 @@ bool DatasetDefinitionXlsx::getColumnList(const QString& sheetName)
 {
     bool success{false};
     std::tie(success, headerColumnNames_) =
-        importXlsx_.getColumnNames(sheetName);
+        importer_->getColumnNames(sheetName);
     if (!success)
         LOG(LogTypes::IMPORT_EXPORT, importXlsx_.getLastError());
     return success;
@@ -62,13 +59,13 @@ bool DatasetDefinitionXlsx::getColumnList(const QString& sheetName)
 bool DatasetDefinitionXlsx::getColumnTypes(const QString& sheetName)
 {
     bool success{false};
-    std::tie(success, columnTypes_) = importXlsx_.getColumnTypes(sheetName);
+    std::tie(success, columnTypes_) = importer_->getColumnTypes(sheetName);
     if (!success)
     {
         LOG(LogTypes::IMPORT_EXPORT, importXlsx_.getLastError());
         return false;
     }
-    rowsCount_ = static_cast<int>(importXlsx_.getRowCount(sheetName).second);
+    rowsCount_ = static_cast<int>(importer_->getRowCount(sheetName).second);
     return true;
 }
 
@@ -79,7 +76,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(
     bool success{false};
     if (fillSamplesOnly)
     {
-        std::tie(success, *dataContainer) = importXlsx_.getLimitedData(
+        std::tie(success, *dataContainer) = importer_->getLimitedData(
             sheetName, {}, SAMPLE_SIZE < rowsCount_ ? SAMPLE_SIZE : rowsCount_);
     }
     else
@@ -91,7 +88,7 @@ bool DatasetDefinitionXlsx::getDataFromZip(
                 excludedColumns.append(i);
         }
         std::tie(success, *dataContainer) =
-            importXlsx_.getData(sheetName, excludedColumns);
+            importer_->getData(sheetName, excludedColumns);
     }
 
     if (!success)
@@ -114,9 +111,9 @@ const QString& DatasetDefinitionXlsx::getSheetName() { return sheets_.front(); }
 
 bool DatasetDefinitionXlsx::loadSpecificData()
 {
-    if (!loadSharedStrings(importXlsx_))
+    if (!loadSharedStrings())
     {
-        error_ = QObject::tr("File ") + xlsxFile_.fileName() +
+        error_ = QObject::tr("File ") + zipFile_.fileName() +
                  QObject::tr(" is damaged.");
         return false;
     }

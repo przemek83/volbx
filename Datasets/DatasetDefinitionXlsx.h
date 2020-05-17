@@ -44,10 +44,8 @@ protected:
     bool loadSpecificData() override;
 
 private:
-    bool loadSharedStrings(ImportXlsx& importXlsx);
+    bool loadSharedStrings();
 
-    QFile xlsxFile_;
-    ImportXlsx importXlsx_;
     QStringList sheets_;
 };
 

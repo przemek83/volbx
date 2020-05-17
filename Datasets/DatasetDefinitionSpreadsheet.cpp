@@ -1,16 +1,23 @@
 #include "DatasetDefinitionSpreadsheet.h"
 
+#include <ImportSpreadsheet.h>
 #include <QDebug>
 
 #include "Shared/Logger.h"
 
-DatasetDefinitionSpreadsheet::DatasetDefinitionSpreadsheet(const QString& name)
-    : DatasetDefinition(name)
+DatasetDefinitionSpreadsheet::DatasetDefinitionSpreadsheet(
+    const QString& name, const QString& zipFileName)
+    : DatasetDefinition(name), zipFile_(zipFileName)
 {
 }
 
 bool DatasetDefinitionSpreadsheet::init()
 {
+    importer_->setNameForEmptyColumn(QObject::tr("no name"));
+    QObject::connect(importer_.get(),
+                     &ImportSpreadsheet::progressPercentChanged, this,
+                     &DatasetDefinition::loadingPercentChanged);
+
     if (!getSheetList() || !loadSpecificData() ||
         !getColumnList(getSheetName()))
         return false;

@@ -7,6 +7,8 @@
 
 #include "DatasetDefinition.h"
 
+class ImportSpreadsheet;
+
 /**
  * @brief Dataset definition for spreadsheet files.
  */
@@ -14,7 +16,8 @@ class DatasetDefinitionSpreadsheet : public DatasetDefinition
 {
     Q_OBJECT
 public:
-    explicit DatasetDefinitionSpreadsheet(const QString& name);
+    DatasetDefinitionSpreadsheet(const QString& name,
+                                 const QString& zipFileName);
 
     ~DatasetDefinitionSpreadsheet() override = default;
 
@@ -57,6 +60,9 @@ protected:
 
     /// Next index to be used in strings hash map.
     int nextSharedStringIndex_{0};
+
+    QFile zipFile_;
+    std::unique_ptr<ImportSpreadsheet> importer_{nullptr};
 };
 
 #endif  // DATASETDEFINITIONSPREADSHEET_H

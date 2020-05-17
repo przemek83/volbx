@@ -41,8 +41,6 @@ protected:
     bool getColumnTypes(const QString& sheetName) override;
 
 private:
-    QFile odsFile_;
-    ImportOds importOds_;
     QStringList sheetNames_;
 };
 

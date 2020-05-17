@@ -15,18 +15,14 @@
 
 DatasetDefinitionOds::DatasetDefinitionOds(const QString& name,
                                            const QString& zipFileName)
-    : DatasetDefinitionSpreadsheet(name),
-      odsFile_(zipFileName),
-      importOds_(odsFile_)
+    : DatasetDefinitionSpreadsheet(name, zipFileName)
 {
-    importOds_.setNameForEmptyColumn(QObject::tr("no name"));
-    QObject::connect(&importOds_, &ImportSpreadsheet::progressPercentChanged,
-                     this, &DatasetDefinition::loadingPercentChanged);
+    importer_ = std::make_unique<ImportOds>(zipFile_);
 }
 
 bool DatasetDefinitionOds::getSheetList()
 {
-    auto [success, sheetNames] = importOds_.getSheetNames();
+    auto [success, sheetNames] = importer_->getSheetNames();
     if (!success)
         LOG(LogTypes::IMPORT_EXPORT, importOds_.getLastError());
     sheetNames_ = std::move(sheetNames);
@@ -35,7 +31,7 @@ bool DatasetDefinitionOds::getSheetList()
 
 bool DatasetDefinitionOds::getColumnList(const QString& sheetName)
 {
-    auto [success, columnNames] = importOds_.getColumnNames(sheetName);
+    auto [success, columnNames] = importer_->getColumnNames(sheetName);
     if (!success)
         LOG(LogTypes::IMPORT_EXPORT, importOds_.getLastError());
     headerColumnNames_ = std::move(columnNames);
@@ -45,13 +41,13 @@ bool DatasetDefinitionOds::getColumnList(const QString& sheetName)
 bool DatasetDefinitionOds::getColumnTypes(const QString& sheetName)
 {
     bool success{false};
-    std::tie(success, columnTypes_) = importOds_.getColumnTypes(sheetName);
+    std::tie(success, columnTypes_) = importer_->getColumnTypes(sheetName);
     if (!success)
     {
         LOG(LogTypes::IMPORT_EXPORT, importOds_.getLastError());
         return false;
     }
-    rowsCount_ = static_cast<int>(importOds_.getRowCount(sheetName).second);
+    rowsCount_ = static_cast<int>(importer_->getRowCount(sheetName).second);
     return true;
 }
 
@@ -62,7 +58,7 @@ bool DatasetDefinitionOds::getDataFromZip(
     bool success{false};
     if (fillSamplesOnly)
     {
-        std::tie(success, *dataContainer) = importOds_.getLimitedData(
+        std::tie(success, *dataContainer) = importer_->getLimitedData(
             sheetName, {}, SAMPLE_SIZE < rowsCount_ ? SAMPLE_SIZE : rowsCount_);
     }
     else
@@ -74,7 +70,7 @@ bool DatasetDefinitionOds::getDataFromZip(
                 excludedColumns.append(i);
         }
         std::tie(success, *dataContainer) =
-            importOds_.getData(sheetName, excludedColumns);
+            importer_->getData(sheetName, excludedColumns);
     }
 
     if (!success)
