@@ -17,9 +17,6 @@
 #include "Common/Constants.h"
 #include "Common/ExportUtilities.h"
 #include "Datasets/Dataset.h"
-#include "Datasets/DatasetDefinitionInner.h"
-#include "Datasets/DatasetDefinitionOds.h"
-#include "Datasets/DatasetDefinitionXlsx.h"
 #include "Datasets/DatasetInner.h"
 #include "Datasets/DatasetSpreadsheet.h"
 #include "FiltersDock.h"
@@ -387,10 +384,9 @@ void VolbxMain::actionImportDataTriggered()
     if (QDialog::Accepted != import.exec())
         return;
 
-    DatasetDefinition* datasetDefinition =
-        import.getSelectedDataset().release();
+    std::unique_ptr<Dataset> dataset{import.getSelectedDataset()};
 
-    if (datasetDefinition == nullptr || !datasetDefinition->isValid())
+    if (dataset == nullptr || !dataset->isValid())
     {
         QMessageBox::critical(
             this, tr("Import error"),
@@ -399,50 +395,18 @@ void VolbxMain::actionImportDataTriggered()
     }
 
     // Sample data is not needed any more.
-    datasetDefinition->clearSampleData();
-
-    std::unique_ptr<Dataset> dataset{nullptr};
-
-    switch (import.getImportDataType())
-    {
-        case ImportData::IMPORT_TYPE_INNER:
-        {
-            auto definitionInner =
-                dynamic_cast<DatasetDefinitionInner*>(datasetDefinition);
-            if (nullptr != definitionInner)
-            {
-                dataset = std::make_unique<DatasetInner>(definitionInner);
-            }
-
-            break;
-        }
-
-        case ImportData::IMPORT_TYPE_SPREADSHEET:
-        {
-            auto definitionSpreadsheet =
-                dynamic_cast<DatasetDefinitionSpreadsheet*>(datasetDefinition);
-            if (nullptr != definitionSpreadsheet)
-            {
-                dataset =
-                    std::make_unique<DatasetSpreadsheet>(definitionSpreadsheet);
-            }
-
-            break;
-        }
-    }
+    dataset->clearSampleData();
 
     if (!dataset)
     {
-        QMessageBox::critical(this, tr("Import error"),
-                              datasetDefinition->getError());
+        QMessageBox::critical(this, tr("Import error"), dataset->getError());
         return;
     }
 
     const QString barTitle =
         Constants::getProgressBarTitle(Constants::BarTitle::LOADING);
     ProgressBarCounter bar(barTitle, 100, nullptr);
-    QObject::connect(datasetDefinition,
-                     &DatasetDefinition::loadingPercentChanged, &bar,
+    QObject::connect(dataset.get(), &Dataset::loadingPercentChanged, &bar,
                      &ProgressBarCounter::updateProgress);
     bar.showDetached();
 
@@ -456,7 +420,7 @@ void VolbxMain::actionImportDataTriggered()
     // Try to create vector of pointers to 1d arrays.
     try
     {
-        dataset->init();
+        dataset->loadData();
     }
     catch (std::bad_alloc&)
     {

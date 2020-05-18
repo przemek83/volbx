@@ -1,4 +1,4 @@
-#include "DatasetDefinitionXlsx.h"
+#include "DatasetXlsx.h"
 
 #include <cmath>
 #include <future>
@@ -13,14 +13,13 @@
 #include "Common/Constants.h"
 #include "Shared/Logger.h"
 
-DatasetDefinitionXlsx::DatasetDefinitionXlsx(const QString& name,
-                                             QString& zipFileName)
-    : DatasetDefinitionSpreadsheet(name, zipFileName)
+DatasetXlsx::DatasetXlsx(const QString& name, QString& zipFileName)
+    : DatasetSpreadsheet(name, zipFileName)
 {
     importer_ = std::make_unique<ImportXlsx>(zipFile_);
 }
 
-bool DatasetDefinitionXlsx::loadSharedStrings()
+bool DatasetXlsx::loadSharedStrings()
 {
     // TODO 17.05.2020 get rid of get() on smart pointer.
     auto [success, sharedStringsList] =
@@ -38,7 +37,7 @@ bool DatasetDefinitionXlsx::loadSharedStrings()
     return success;
 }
 
-bool DatasetDefinitionXlsx::loadSpecificData()
+bool DatasetXlsx::loadSpecificData()
 {
     if (!loadSharedStrings())
     {

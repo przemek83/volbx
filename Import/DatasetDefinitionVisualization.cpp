@@ -1,11 +1,11 @@
 #include "DatasetDefinitionVisualization.h"
 
+#include <Dataset.h>
 #include <QDebug>
 #include <QTreeWidgetItem>
 #include <QTreeWidgetItemIterator>
 
 #include "Common/Constants.h"
-#include "Datasets/DatasetDefinition.h"
 
 #include "ui_DatasetDefinitionVisualization.h"
 
@@ -14,8 +14,7 @@ DatasetDefinitionVisualization::DatasetDefinitionVisualization(QWidget* parent)
       ui(new Ui::DatasetDefinitionVisualization),
       typeNameString_(tr("Name")),
       typeNameFloat_(tr("Number")),
-      typeNameDate_(tr("Date")),
-      datasetDefinition_(nullptr)
+      typeNameDate_(tr("Date"))
 {
     ui->setupUi(this);
 
@@ -43,34 +42,32 @@ DatasetDefinitionVisualization::DatasetDefinitionVisualization(QWidget* parent)
 
 DatasetDefinitionVisualization::~DatasetDefinitionVisualization() { delete ui; }
 
-void DatasetDefinitionVisualization::setDatasetDefiniton(
-    std::unique_ptr<DatasetDefinition> datasetDefinition)
+void DatasetDefinitionVisualization::setDataset(
+    std::unique_ptr<Dataset> dataset)
 {
     clear();
 
     ui->dateCombo->blockSignals(true);
     ui->pricePerUnitCombo->blockSignals(true);
 
-    datasetDefinition_ = std::move(datasetDefinition);
+    dataset_ = std::move(dataset);
 
     auto [dateOfTransactionPointed, specialColumnTransaction] =
-        datasetDefinition_->getSpecialColumnIfExists(
-            SPECIAL_COLUMN_TRANSACTION_DATE);
+        dataset_->getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE);
 
     auto [pricePerUnitPointed, specialColumnPrice] =
-        datasetDefinition_->getSpecialColumnIfExists(
-            SPECIAL_COLUMN_PRICE_PER_UNIT);
+        dataset_->getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT);
 
     ui->columnsList->sortByColumn(Constants::NOT_SET_COLUMN);
     ui->columnsList->setSortingEnabled(false);
 
     // Column list.
-    for (int i = 0; i < datasetDefinition_->columnCount(); ++i)
+    for (int i = 0; i < dataset_->columnCount(); ++i)
     {
         QStringList list;
-        list << datasetDefinition_->getColumnName(i);
+        list << dataset_->getHeaderName(i);
         QString typeName(QLatin1String(""));
-        switch (datasetDefinition_->getColumnFormat(i))
+        switch (dataset_->getColumnFormat(i))
         {
             case ColumnType::STRING:
             {
@@ -81,16 +78,15 @@ void DatasetDefinitionVisualization::setDatasetDefiniton(
             case ColumnType::NUMBER:
             {
                 typeName = QString(typeNameFloat_);
-                ui->pricePerUnitCombo->addItem(
-                    datasetDefinition_->getColumnName(i), QVariant(i));
+                ui->pricePerUnitCombo->addItem(dataset_->getHeaderName(i),
+                                               QVariant(i));
                 break;
             }
 
             case ColumnType::DATE:
             {
                 typeName = QString(typeNameDate_);
-                ui->dateCombo->addItem(datasetDefinition_->getColumnName(i),
-                                       QVariant(i));
+                ui->dateCombo->addItem(dataset_->getHeaderName(i), QVariant(i));
                 break;
             }
 
@@ -161,7 +157,7 @@ void DatasetDefinitionVisualization::clear()
 
     ui->specialColumnsWidget->setEnabled(false);
 
-    datasetDefinition_ = nullptr;
+    dataset_ = nullptr;
 }
 
 void DatasetDefinitionVisualization::searchTextChanged(const QString& newText)
@@ -175,10 +171,9 @@ void DatasetDefinitionVisualization::searchTextChanged(const QString& newText)
     }
 }
 
-std::unique_ptr<DatasetDefinition>
-DatasetDefinitionVisualization::retrieveDatasetDefinition()
+std::unique_ptr<Dataset> DatasetDefinitionVisualization::retrieveDataset()
 {
-    if (datasetDefinition_ == nullptr)
+    if (dataset_ == nullptr)
     {
         return nullptr;
     }
@@ -206,25 +201,23 @@ DatasetDefinitionVisualization::retrieveDatasetDefinition()
         activeColumns[currentLoopItem->data(0, Qt::UserRole).toInt()] = active;
     }
 
-    datasetDefinition_->setActiveColumns(activeColumns);
+    dataset_->setActiveColumns(activeColumns);
 
     if (ui->dateCombo->currentIndex() != -1)
     {
         int column =
             ui->dateCombo->itemData(ui->dateCombo->currentIndex()).toInt();
-        datasetDefinition_->setSpecialColumn(SPECIAL_COLUMN_TRANSACTION_DATE,
-                                             column);
+        dataset_->setSpecialColumn(SPECIAL_COLUMN_TRANSACTION_DATE, column);
     }
 
     if (ui->pricePerUnitCombo->currentIndex() != -1)
     {
         int index = ui->pricePerUnitCombo->currentIndex();
         int column = ui->pricePerUnitCombo->itemData(index).toInt();
-        datasetDefinition_->setSpecialColumn(SPECIAL_COLUMN_PRICE_PER_UNIT,
-                                             column);
+        dataset_->setSpecialColumn(SPECIAL_COLUMN_PRICE_PER_UNIT, column);
     }
 
-    return std::move(datasetDefinition_);
+    return std::move(dataset_);
 }
 
 void DatasetDefinitionVisualization::currentColumnOnTreeChanged(

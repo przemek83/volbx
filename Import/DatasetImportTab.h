@@ -5,6 +5,8 @@
 
 #include "ImportTab.h"
 
+class Dataset;
+
 /**
  *@brief Inner dataset type import tab.
  */
@@ -22,7 +24,7 @@ public:
     DatasetImportTab& operator=(DatasetImportTab&& other) = delete;
     DatasetImportTab(DatasetImportTab&& other) = delete;
 
-    std::unique_ptr<DatasetDefinition> getDatasetDefinition() override;
+    std::unique_ptr<Dataset> getDataset() override;
 
     bool datasetsAreAvailable();
 

@@ -10,9 +10,7 @@
 
 #include "Common/Configuration.h"
 #include "Common/Constants.h"
-#include "Datasets/DatasetDefinitionInner.h"
-#include "Datasets/DatasetDefinitionOds.h"
-#include "Datasets/DatasetDefinitionXlsx.h"
+#include "Datasets/Dataset.h"
 
 #include "DatasetImportTab.h"
 #include "SpreadsheetsImportTab.h"
@@ -34,13 +32,11 @@ ImportData::ImportData(QWidget* parent)
     // Create tabs.
     auto datasetsTab = new DatasetImportTab(ui->tabWidget);
     connect(datasetsTab, &ImportTab::definitionIsReady, enableOpenButton);
-    ui->tabWidget->insertTab(static_cast<int>(IMPORT_TYPE_INNER), datasetsTab,
-                             tr("Datasets"));
+    ui->tabWidget->addTab(datasetsTab, tr("Datasets"));
 
     auto spreadsheetsTab = new SpreadsheetsImportTab(ui->tabWidget);
     connect(spreadsheetsTab, &ImportTab::definitionIsReady, enableOpenButton);
-    ui->tabWidget->insertTab(static_cast<int>(IMPORT_TYPE_SPREADSHEET),
-                             spreadsheetsTab, tr("Spreadsheets"));
+    ui->tabWidget->addTab(spreadsheetsTab, tr("Spreadsheets"));
 
     // If no datasets, than switch to spreadsheets tab.
     if (datasetsTab->datasetsAreAvailable())
@@ -64,13 +60,8 @@ ImportData::ImportData(QWidget* parent)
 
 ImportData::~ImportData() { delete ui; }
 
-std::unique_ptr<DatasetDefinition> ImportData::getSelectedDataset()
+std::unique_ptr<Dataset> ImportData::getSelectedDataset()
 {
     auto tab = dynamic_cast<ImportTab*>(ui->tabWidget->currentWidget());
-    return tab->getDatasetDefinition();
-}
-
-ImportData::ImportDataType ImportData::getImportDataType() const
-{
-    return static_cast<ImportDataType>(ui->tabWidget->currentIndex());
+    return tab->getDataset();
 }

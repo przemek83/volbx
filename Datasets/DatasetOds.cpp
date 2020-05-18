@@ -1,4 +1,4 @@
-#include "DatasetDefinitionOds.h"
+#include "DatasetOds.h"
 
 #include <future>
 #include <memory>
@@ -13,14 +13,13 @@
 #include "Common/Constants.h"
 #include "Shared/Logger.h"
 
-DatasetDefinitionOds::DatasetDefinitionOds(const QString& name,
-                                           const QString& zipFileName)
-    : DatasetDefinitionSpreadsheet(name, zipFileName)
+DatasetOds::DatasetOds(const QString& name, const QString& zipFileName)
+    : DatasetSpreadsheet(name, zipFileName)
 {
     importer_ = std::make_unique<ImportOds>(zipFile_);
 }
 
-bool DatasetDefinitionOds::loadSpecificData()
+bool DatasetOds::loadSpecificData()
 {
     // Nothing specific for .ods.
     return true;

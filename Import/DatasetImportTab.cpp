@@ -1,11 +1,11 @@
 #include "DatasetImportTab.h"
 
+#include <Dataset.h>
+#include <DatasetInner.h>
 #include <QHeaderView>
 #include <QMessageBox>
 #include <QSplitter>
 #include <QVBoxLayout>
-
-#include "Datasets/DatasetDefinitionInner.h"
 
 #include "ColumnsPreview.h"
 #include "DatasetDefinitionVisualization.h"
@@ -49,10 +49,10 @@ DatasetImportTab::DatasetImportTab(QWidget* parent) : ImportTab(parent)
             &DatasetDefinitionVisualization::selectCurrentColumn);
 }
 
-std::unique_ptr<DatasetDefinition> DatasetImportTab::getDatasetDefinition()
+std::unique_ptr<Dataset> DatasetImportTab::getDataset()
 {
     auto definition = findChild<DatasetDefinitionVisualization*>();
-    return definition->retrieveDatasetDefinition();
+    return definition->retrieveDataset();
 }
 
 void DatasetImportTab::selectedDatasetChanged(const QString& current)
@@ -77,16 +77,16 @@ void DatasetImportTab::selectedDatasetChanged(const QString& current)
     }
     else
     {
-        std::unique_ptr<DatasetDefinition> datasetDefinition =
-            std::make_unique<DatasetDefinitionInner>(current);
+        std::unique_ptr<Dataset> dataset =
+            std::make_unique<DatasetInner>(current);
 
         // If definition is valid, than fill details.
-        if (datasetDefinition && datasetDefinition->isValid())
+        if (dataset->isValid())
         {
-            columnsPreview->setDatasetDefinitionSampleInfo(*datasetDefinition);
+            columnsPreview->setDatasetSampleInfo(*dataset);
             columnsPreview->setEnabled(true);
 
-            visualization->setDatasetDefiniton(std::move(datasetDefinition));
+            visualization->setDataset(std::move(dataset));
             visualization->setEnabled(true);
 
             Q_EMIT definitionIsReady(true);

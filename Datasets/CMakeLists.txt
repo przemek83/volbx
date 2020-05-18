@@ -3,16 +3,10 @@ project(datasets)
 set(${PROJECT_NAME}_SOURCES
     Dataset.cpp
     Dataset.h
-    DatasetDefinition.cpp
-    DatasetDefinition.h
-    DatasetDefinitionInner.cpp
-    DatasetDefinitionInner.h
-    DatasetDefinitionOds.cpp
-    DatasetDefinitionOds.h
-    DatasetDefinitionSpreadsheet.cpp
-    DatasetDefinitionSpreadsheet.h
-    DatasetDefinitionXlsx.cpp
-    DatasetDefinitionXlsx.h
+    DatasetOds.cpp
+    DatasetOds.h
+    DatasetXlsx.cpp
+    DatasetXlsx.h
     DatasetInner.cpp
     DatasetInner.h
     DatasetSpreadsheet.cpp

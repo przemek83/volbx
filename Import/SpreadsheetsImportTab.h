@@ -8,7 +8,7 @@ namespace Ui
 class SpreadsheetsImportTab;
 }  // namespace Ui
 
-class DatasetDefinitionSpreadsheet;
+class DatasetSpreadsheet;
 
 class SpreadsheetsImportTab : public ImportTab
 {
@@ -25,14 +25,13 @@ public:
     SpreadsheetsImportTab& operator=(SpreadsheetsImportTab&& other) = delete;
     SpreadsheetsImportTab(SpreadsheetsImportTab&& other) = delete;
 
-    std::unique_ptr<DatasetDefinition> getDatasetDefinition() override;
+    std::unique_ptr<Dataset> getDataset() override;
 
 private Q_SLOTS:
     void openFileButtonClicked();
 
 private:
-    void analyzeFile(
-        std::unique_ptr<DatasetDefinitionSpreadsheet>& datasetDefinition);
+    void analyzeFile(std::unique_ptr<DatasetSpreadsheet>& dataset);
 
     Ui::SpreadsheetsImportTab* ui;
 };

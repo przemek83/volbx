@@ -9,9 +9,8 @@
 class DatasetsListBrowser;
 class DatasetDefinitionVisualization;
 class ColumnsPreview;
-class DatasetDefinitionInner;
-class DatasetDefinition;
 class QDialogButtonBox;
+class Dataset;
 
 namespace Ui
 {
@@ -36,16 +35,7 @@ public:
     ImportData& operator=(ImportData&& other) = delete;
     ImportData(ImportData&& other) = delete;
 
-    std::unique_ptr<DatasetDefinition> getSelectedDataset();
-
-    /// Type enum used during creation of Dataset objects.
-    enum ImportDataType
-    {
-        IMPORT_TYPE_INNER = 0,
-        IMPORT_TYPE_SPREADSHEET
-    };
-
-    ImportDataType getImportDataType() const;
+    std::unique_ptr<Dataset> getSelectedDataset();
 
     QString getZipFileName() const;
 

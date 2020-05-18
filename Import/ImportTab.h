@@ -5,7 +5,7 @@
 
 #include <QWidget>
 
-class DatasetDefinition;
+class Dataset;
 
 /**
  * @brief Import tabs base class.
@@ -24,7 +24,7 @@ public:
     ImportTab& operator=(ImportTab&& other) = delete;
     ImportTab(ImportTab&& other) = delete;
 
-    virtual std::unique_ptr<DatasetDefinition> getDatasetDefinition() = 0;
+    virtual std::unique_ptr<Dataset> getDataset() = 0;
 
 Q_SIGNALS:
     void definitionIsReady(bool);

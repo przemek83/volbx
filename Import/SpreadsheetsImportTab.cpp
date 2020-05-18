@@ -13,9 +13,9 @@
 
 #include "Common/Configuration.h"
 #include "Common/Constants.h"
-#include "Datasets/DatasetDefinitionOds.h"
-#include "Datasets/DatasetDefinitionSpreadsheet.h"
-#include "Datasets/DatasetDefinitionXlsx.h"
+#include "Datasets/DatasetOds.h"
+#include "Datasets/DatasetSpreadsheet.h"
+#include "Datasets/DatasetXlsx.h"
 #include "Shared/Logger.h"
 
 #include "ColumnsPreview.h"
@@ -60,7 +60,7 @@ SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent)
 SpreadsheetsImportTab::~SpreadsheetsImportTab() { delete ui; }
 
 void SpreadsheetsImportTab::analyzeFile(
-    std::unique_ptr<DatasetDefinitionSpreadsheet>& datasetDefinition)
+    std::unique_ptr<DatasetSpreadsheet>& dataset)
 {
     const QString barTitle =
         Constants::getProgressBarTitle(Constants::BarTitle::ANALYSING);
@@ -73,21 +73,20 @@ void SpreadsheetsImportTab::analyzeFile(
 
     bool success{false};
     // TODO get rid of get() on smart pointer.
-    auto futureInit = std::async(&DatasetDefinitionSpreadsheet::init,
-                                 datasetDefinition.get());
+    auto futureInit = std::async(&Dataset::analyze, dataset.get());
     std::chrono::milliseconds span(1);
     while (futureInit.wait_for(span) == std::future_status::timeout)
         QCoreApplication::processEvents();
     success = futureInit.get();
     if (!success)
     {
-        LOG(LogTypes::IMPORT_EXPORT, datasetDefinition->getError());
+        LOG(LogTypes::IMPORT_EXPORT, dataset->getError());
         return;
     }
 
     LOG(LogTypes::IMPORT_EXPORT,
-        "Analysed file having " +
-            QString::number(datasetDefinition->rowCount()) + " rows in time " +
+        "Analysed file having " + QString::number(dataset->rowCount()) +
+            " rows in time " +
             QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
             " seconds.");
 }
@@ -115,7 +114,7 @@ void SpreadsheetsImportTab::openFileButtonClicked()
 
     ui->fileNameLineEdit->setText(fileName);
 
-    std::unique_ptr<DatasetDefinitionSpreadsheet> datasetDefinition{nullptr};
+    std::unique_ptr<DatasetSpreadsheet> dataset{nullptr};
 
     // Remove all not allowed characters from file name.
     QString regexpString = Constants::getDatasetNameRegExp().replace(
@@ -130,15 +129,13 @@ void SpreadsheetsImportTab::openFileButtonClicked()
 
     if (0 == fileInfo.suffix().toLower().compare(QLatin1String("ods")))
     {
-        datasetDefinition =
-            std::make_unique<DatasetDefinitionOds>(datasetName, fileName);
+        dataset = std::make_unique<DatasetOds>(datasetName, fileName);
     }
     else
     {
         if (0 == fileInfo.suffix().toLower().compare(QLatin1String("xlsx")))
         {
-            datasetDefinition =
-                std::make_unique<DatasetDefinitionXlsx>(datasetName, fileName);
+            dataset = std::make_unique<DatasetXlsx>(datasetName, fileName);
         }
         else
         {
@@ -149,7 +146,7 @@ void SpreadsheetsImportTab::openFileButtonClicked()
         }
     }
 
-    analyzeFile(datasetDefinition);
+    analyzeFile(dataset);
 
     auto visualization = findChild<DatasetDefinitionVisualization*>();
     if (nullptr == visualization)
@@ -163,17 +160,17 @@ void SpreadsheetsImportTab::openFileButtonClicked()
         return;
     }
 
-    columnsPreview->setDatasetDefinitionSampleInfo(*datasetDefinition);
+    columnsPreview->setDatasetSampleInfo(*dataset);
     columnsPreview->setEnabled(true);
 
-    visualization->setDatasetDefiniton(std::move(datasetDefinition));
+    visualization->setDataset(std::move(dataset));
     visualization->setEnabled(true);
 
     Q_EMIT definitionIsReady(true);
 }
 
-std::unique_ptr<DatasetDefinition> SpreadsheetsImportTab::getDatasetDefinition()
+std::unique_ptr<Dataset> SpreadsheetsImportTab::getDataset()
 {
     auto definition = findChild<DatasetDefinitionVisualization*>();
-    return definition->retrieveDatasetDefinition();
+    return definition->retrieveDataset();
 }

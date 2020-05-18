@@ -18,7 +18,7 @@ private:
     void generateDumpData();
 
     void checkDatasetDefinition(const QString& fileName,
-                                DatasetDefinitionInner* definition) const;
+                                DatasetInner* dataset) const;
 
     void checkDatasetData(const QString& fileName,
                           const QTableView& view) const;
@@ -29,8 +29,7 @@ private:
      * @param definition dataset definition.
      * @param view view from which data will be extracted.
      */
-    void checkImport(const QString& fileName,
-                     DatasetDefinitionInner* definition,
+    void checkImport(const QString& fileName, DatasetInner* dataset,
                      const QTableView& view);
 
     /**

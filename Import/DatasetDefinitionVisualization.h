@@ -5,9 +5,8 @@
 
 #include <QWidget>
 
-#include "DatasetDefinition.h"
-
 class QTreeWidgetItem;
+class Dataset;
 
 namespace Ui
 {
@@ -35,16 +34,15 @@ public:
     DatasetDefinitionVisualization(DatasetDefinitionVisualization&& other) =
         delete;
 
-    void setDatasetDefiniton(
-        std::unique_ptr<DatasetDefinition> datasetDefinition);
+    void setDataset(std::unique_ptr<Dataset> dataset);
 
     void clear();
 
-    std::unique_ptr<DatasetDefinition> retrieveDatasetDefinition();
+    std::unique_ptr<Dataset> retrieveDataset();
 
 public Q_SLOTS:
     /**
-     * Trigerred when currently selected column in coupled widget changed.
+     * Triggered when currently selected column in coupled widget changed.
      * Used to sync widgets displaying columns.
      * @param column currently selected column.
      */
@@ -59,7 +57,7 @@ private:
 
     const QString typeNameDate_;
 
-    std::unique_ptr<DatasetDefinition> datasetDefinition_{nullptr};
+    std::unique_ptr<Dataset> dataset_{nullptr};
 
 private Q_SLOTS:
     void searchTextChanged(const QString& newText);

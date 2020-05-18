@@ -3,7 +3,7 @@
 #include <QDebug>
 #include <QTableWidgetItem>
 
-#include "Datasets/DatasetDefinition.h"
+#include "Datasets/Dataset.h"
 
 ColumnsPreview::ColumnsPreview(QWidget* parent) : QTableWidget(parent)
 {
@@ -13,27 +13,25 @@ ColumnsPreview::ColumnsPreview(QWidget* parent) : QTableWidget(parent)
             &ColumnsPreview::onItemSelectionChanged);
 }
 
-void ColumnsPreview::setDatasetDefinitionSampleInfo(
-    const DatasetDefinition& datasetDefinition)
+void ColumnsPreview::setDatasetSampleInfo(const Dataset& dataset)
 {
     clear();
     setColumnCount(0);
     setRowCount(0);
 
-    int columns = datasetDefinition.columnCount();
+    int columns = dataset.columnCount();
     setColumnCount(columns);
 
     QStringList labels;
     labels.reserve(columns);
     for (int i = 0; i < columns; ++i)
     {
-        labels.append(datasetDefinition.getColumnName(i));
+        labels.append(dataset.getHeaderName(i));
     }
 
     setHorizontalHeaderLabels(labels);
 
-    const QVector<QVector<QVariant> >* sampleData =
-        datasetDefinition.getSampleData();
+    const QVector<QVector<QVariant> >* sampleData = dataset.getSampleData();
 
     int rows = sampleData->size();
     setRowCount(rows);

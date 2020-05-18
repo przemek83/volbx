@@ -12,7 +12,6 @@
 
 #include "Common/Constants.h"
 #include "Common/ExportUtilities.h"
-#include "Datasets/DatasetDefinitionInner.h"
 #include "Datasets/DatasetInner.h"
 #include "ModelsAndViews/FilteringProxyModel.h"
 #include "ModelsAndViews/TableModel.h"
@@ -35,23 +34,19 @@ void InnerTests::generateDumpData()
         QFileInfo fileInfo(dirIt.filePath());
         if (fileInfo.isFile() && (fileInfo.suffix() == "vbx"))
         {
-            DatasetDefinitionInner* definition =
-                new DatasetDefinitionInner(fileInfo.baseName());
+            DatasetInner* dataset = new DatasetInner(fileInfo.baseName());
 
-            QString definitionDump = definition->dumpDatasetDefinition();
+            QString definitionDump = dataset->dumpDatasetDefinition();
             Common::saveFile(DatasetInner::getDatasetsDir() +
                                  fileInfo.baseName() +
                                  Common::getDefinitionDumpSuffix(),
                              definitionDump);
 
-            QVector<bool> activeColumns(definition->columnCount(), true);
-            definition->setActiveColumns(activeColumns);
+            QVector<bool> activeColumns(dataset->columnCount(), true);
+            dataset->setActiveColumns(activeColumns);
+            dataset->loadData();
 
-            std::unique_ptr<Dataset> dataset =
-                std::make_unique<DatasetInner>(definition);
-            dataset->init();
-
-            TableModel model(std::move(dataset));
+            TableModel model((std::unique_ptr<Dataset>(dataset)));
             FilteringProxyModel proxyModel;
             proxyModel.setSourceModel(&model);
 
@@ -72,28 +67,25 @@ void InnerTests::testDatasets()
     QStringList datasets = DatasetInner::getListOfAvailableDatasets();
     foreach (QString datasetName, datasets)
     {
-        DatasetDefinitionInner* definition =
-            new DatasetDefinitionInner(datasetName);
-
-        QVERIFY(true == definition->isValid());
-
-        QVector<bool> activeColumns(definition->columnCount(), true);
-        definition->setActiveColumns(activeColumns);
-
-        std::unique_ptr<Dataset> dataset =
-            std::make_unique<DatasetInner>(definition);
-        dataset->init();
+        DatasetInner* dataset = new DatasetInner(datasetName);
 
         QVERIFY(true == dataset->isValid());
 
-        TableModel model(std::move(dataset));
+        QVector<bool> activeColumns(dataset->columnCount(), true);
+        dataset->setActiveColumns(activeColumns);
+
+        dataset->loadData();
+
+        QVERIFY(true == dataset->isValid());
+
+        TableModel model((std::unique_ptr<Dataset>(dataset)));
         FilteringProxyModel proxyModel;
         proxyModel.setSourceModel(&model);
 
         QTableView view;
         view.setModel(&proxyModel);
 
-        checkImport(datasetName, definition, view);
+        checkImport(datasetName, dataset, view);
 
         QString filePath{DatasetInner::getDatasetsDir() + tempFilename_ +
                          Constants::getDatasetExtension()};
@@ -102,15 +94,15 @@ void InnerTests::testDatasets()
     }
 }
 
-void InnerTests::checkDatasetDefinition(
-    const QString& fileName, DatasetDefinitionInner* definition) const
+void InnerTests::checkDatasetDefinition(const QString& fileName,
+                                        DatasetInner* dataset) const
 {
     QString datasetFilePath(DatasetInner::getDatasetsDir() + fileName);
 
     QString compareData =
         Common::loadFile(datasetFilePath + Common::getDefinitionDumpSuffix());
 
-    QCOMPARE(definition->dumpDatasetDefinition().split('\n'),
+    QCOMPARE(dataset->dumpDatasetDefinition().split('\n'),
              compareData.split('\n'));
 }
 
@@ -126,11 +118,10 @@ void InnerTests::checkDatasetData(const QString& fileName,
     QCOMPARE(actualData.split('\n'), compareData.split('\n'));
 }
 
-void InnerTests::checkImport(const QString& fileName,
-                             DatasetDefinitionInner* definition,
+void InnerTests::checkImport(const QString& fileName, DatasetInner* dataset,
                              const QTableView& view)
 {
-    checkDatasetDefinition(fileName, definition);
+    checkDatasetDefinition(fileName, dataset);
     checkDatasetData(fileName, view);
 }
 

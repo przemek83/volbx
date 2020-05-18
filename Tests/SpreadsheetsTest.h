@@ -3,10 +3,7 @@
 
 #include <QObject>
 
-#include "Datasets/DatasetDefinitionSpreadsheet.h"
 #include "Datasets/DatasetSpreadsheet.h"
-
-class DatasetDefinition;
 
 /**
  * @brief Unit test for spreadsheets.
@@ -23,7 +20,7 @@ private:
      * @param activeColumns number of active columns.
      * @param name name of dataset to compare.
      */
-    void testBasicInfo(DatasetDefinition& definition, int rows, int columns,
+    void testBasicInfo(Dataset& dataset, int rows, int columns,
                        int activeColumns, QString name);
 
     /**
@@ -32,7 +29,7 @@ private:
      * @param columnFormats format of columns to compare.
      * @param columnNames names of columns to compare.
      */
-    void testColumnInfo(DatasetDefinition& definition,
+    void testColumnInfo(Dataset& definition,
                         const QVector<QPair<int, ColumnType> >& columnFormats,
                         const QVector<QPair<int, QString> >& columnNames);
 
@@ -43,7 +40,7 @@ private:
      * @param columns number of columns.
      * @param fields values to compare with data in dataset.
      */
-    void testSampleData(DatasetDefinition& definition, int rows, int columns,
+    void testSampleData(Dataset& definition, int rows, int columns,
                         const QVector<std::tuple<QVariant, int, int> >& fields);
 
     void generateDataDumpsForFile(QString name);
@@ -52,18 +49,14 @@ private:
 
     QString getSpreadsheetsDir();
 
-    void testSpreadsheetFile01(DatasetDefinitionSpreadsheet* definition,
-                               QString file);
+    void testSpreadsheetFile01(DatasetSpreadsheet* dataset, QString file);
 
-    void testSpreadsheetFile01SomeColumns(
-        DatasetDefinitionSpreadsheet* definition);
+    void testSpreadsheetFile01SomeColumns(DatasetSpreadsheet* dataset);
 
     //    void testSpreadsheetFile02(DatasetDefinitionSpreadsheet* definition,
     //                               QString file);
-    void testSpreadsheetFile03(DatasetDefinitionSpreadsheet* definition,
-                               QString file);
-    void testSpreadsheetFile04(DatasetDefinitionSpreadsheet* definition,
-                               QString file);
+    void testSpreadsheetFile03(DatasetSpreadsheet* dataset, QString file);
+    void testSpreadsheetFile04(DatasetSpreadsheet* dataset, QString file);
     //    void testSpreadsheetFile05(DatasetDefinitionSpreadsheet* definition,
     //                               QString file);
 

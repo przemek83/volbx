@@ -3,7 +3,7 @@
 
 #include <QTableWidget>
 
-class DatasetDefinition;
+class Dataset;
 
 /**
  * Columns preview widget. When set DatasetDefinition it displays
@@ -23,14 +23,13 @@ public:
     ColumnsPreview& operator=(ColumnsPreview&& other) = delete;
     ColumnsPreview(ColumnsPreview&& other) = delete;
 
-    void setDatasetDefinitionSampleInfo(
-        const DatasetDefinition& datasetDefinition);
+    void setDatasetSampleInfo(const Dataset& dataset);
 
     void clearDataAndDisable();
 
 public Q_SLOTS:
     /**
-     * Trigerred when currently selected column in coupled widget changed.
+     * Triggered when currently selected column in coupled widget changed.
      * Used to sync widgets displaying columns.
      * @param column currently selected column.
      */
@@ -38,7 +37,7 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     /**
-     * Trigerred when selection in table changed.
+     * Triggered when selection in table changed.
      */
     void onItemSelectionChanged();
 
