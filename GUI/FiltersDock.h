@@ -30,12 +30,6 @@ public:
 
     ~FiltersDock() override;
 
-    FiltersDock& operator=(const FiltersDock& other) = delete;
-    FiltersDock(const FiltersDock& other) = delete;
-
-    FiltersDock& operator=(FiltersDock&& other) = delete;
-    FiltersDock(FiltersDock&& other) = delete;
-
     /// Adds new widget with filters for given model.
     void addModel(const FilteringProxyModel* model);
 

@@ -15,12 +15,6 @@ public:
 
     ~DatasetInner() override = default;
 
-    DatasetInner& operator=(const DatasetInner& other) = delete;
-    DatasetInner(const DatasetInner& other) = delete;
-
-    DatasetInner& operator=(DatasetInner&& other) = delete;
-    DatasetInner(DatasetInner&& other) = delete;
-
     /// Return names without extension of available datasets in datasets dir.
     static QStringList getListOfAvailableDatasets();
 

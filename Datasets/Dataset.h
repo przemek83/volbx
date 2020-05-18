@@ -25,12 +25,6 @@ public:
 
     virtual ~Dataset();
 
-    Dataset& operator=(const Dataset& other) = delete;
-    Dataset(const Dataset& other) = delete;
-
-    Dataset& operator=(Dataset&& other) = delete;
-    Dataset(Dataset&& other) = delete;
-
     int rowCount() const;
 
     int columnCount() const;

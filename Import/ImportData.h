@@ -29,12 +29,6 @@ public:
 
     ~ImportData() override;
 
-    ImportData& operator=(const ImportData& other) = delete;
-    ImportData(const ImportData& other) = delete;
-
-    ImportData& operator=(ImportData&& other) = delete;
-    ImportData(ImportData&& other) = delete;
-
     std::unique_ptr<Dataset> getSelectedDataset();
 
     QString getZipFileName() const;

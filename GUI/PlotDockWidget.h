@@ -17,12 +17,6 @@ public:
 
     ~PlotDockWidget() override = default;
 
-    PlotDockWidget& operator=(const PlotDockWidget& other) = delete;
-    PlotDockWidget(const PlotDockWidget& other) = delete;
-
-    PlotDockWidget& operator=(PlotDockWidget&& other) = delete;
-    PlotDockWidget(PlotDockWidget&& other) = delete;
-
     QList<PlotBase*> exportContent();
 
 private Q_SLOTS:

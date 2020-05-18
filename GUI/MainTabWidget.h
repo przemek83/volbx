@@ -23,12 +23,6 @@ public:
 
     ~MainTabWidget() override = default;
 
-    MainTabWidget& operator=(const MainTabWidget& other) = delete;
-    MainTabWidget(const MainTabWidget& other) = delete;
-
-    MainTabWidget& operator=(MainTabWidget&& other) = delete;
-    MainTabWidget(MainTabWidget&& other) = delete;
-
     FilteringProxyModel* getCurrentProxyModel();
 
     TableModel* getCurrentDataModel();

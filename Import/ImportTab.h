@@ -18,12 +18,6 @@ public:
 
     ~ImportTab() override = default;
 
-    ImportTab& operator=(const ImportTab& other) = delete;
-    ImportTab(const ImportTab& other) = delete;
-
-    ImportTab& operator=(ImportTab&& other) = delete;
-    ImportTab(ImportTab&& other) = delete;
-
     virtual std::unique_ptr<Dataset> getDataset() = 0;
 
 Q_SIGNALS:

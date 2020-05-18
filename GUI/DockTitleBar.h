@@ -21,12 +21,6 @@ public:
 
     ~DockTitleBar() override;
 
-    DockTitleBar& operator=(const DockTitleBar& other) = delete;
-    DockTitleBar(const DockTitleBar& other) = delete;
-
-    DockTitleBar& operator=(DockTitleBar&& other) = delete;
-    DockTitleBar(DockTitleBar&& other) = delete;
-
     QPushButton* getCloseButton();
 
     QPushButton* getFloatingButton();

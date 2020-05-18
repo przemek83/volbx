@@ -25,12 +25,6 @@ public:
 
     ~TableModel() override = default;
 
-    TableModel& operator=(const TableModel& other) = delete;
-    TableModel(const TableModel& other) = delete;
-
-    TableModel& operator=(TableModel&& other) = delete;
-    TableModel(TableModel&& other) = delete;
-
     /**
      * @brief Overridden method for row count check.
      * @return row count.

@@ -33,12 +33,6 @@ public:
 
     ~VolbxMain() override;
 
-    VolbxMain& operator=(const VolbxMain& other) = delete;
-    VolbxMain(const VolbxMain& other) = delete;
-
-    VolbxMain& operator=(VolbxMain&& other) = delete;
-    VolbxMain(VolbxMain&& other) = delete;
-
     void checkForUpdates();
 
 protected:

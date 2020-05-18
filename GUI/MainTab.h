@@ -23,12 +23,6 @@ public:
 
     ~MainTab() override = default;
 
-    MainTab& operator=(const MainTab& other) = delete;
-    MainTab(const MainTab& other) = delete;
-
-    MainTab& operator=(MainTab&& other) = delete;
-    MainTab(MainTab&& other) = delete;
-
     FilteringProxyModel* getCurrentProxyModel();
 
     TableModel* getCurrentDataModel();

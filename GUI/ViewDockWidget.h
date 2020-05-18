@@ -17,12 +17,6 @@ public:
 
     ~ViewDockWidget() override = default;
 
-    ViewDockWidget& operator=(const ViewDockWidget& other) = delete;
-    ViewDockWidget(const ViewDockWidget& other) = delete;
-
-    ViewDockWidget& operator=(ViewDockWidget&& other) = delete;
-    ViewDockWidget(ViewDockWidget&& other) = delete;
-
     void activateSelectButtons();
 
     void deactivateSelectButtons();

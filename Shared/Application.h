@@ -22,7 +22,7 @@ public:
     static void setAdditionalApplicatioInfo(const char* productName);
 
     /**
-     * @brief set aplication style using css style file.
+     * @brief set application style using css style file.
      * @param styleName name of style file.
      */
     static void setCssStyle(const QString& styleName);

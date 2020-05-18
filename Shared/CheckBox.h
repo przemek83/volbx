@@ -12,12 +12,6 @@ public:
 
     ~CheckBox() override = default;
 
-    CheckBox& operator=(const CheckBox& other) = delete;
-    CheckBox(const CheckBox& other) = delete;
-
-    CheckBox& operator=(CheckBox&& other) = delete;
-    CheckBox(CheckBox&& other) = delete;
-
     LogTypes logType();
 
 private:

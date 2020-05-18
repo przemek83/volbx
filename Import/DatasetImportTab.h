@@ -18,12 +18,6 @@ public:
 
     ~DatasetImportTab() override = default;
 
-    DatasetImportTab& operator=(const DatasetImportTab& other) = delete;
-    DatasetImportTab(const DatasetImportTab& other) = delete;
-
-    DatasetImportTab& operator=(DatasetImportTab&& other) = delete;
-    DatasetImportTab(DatasetImportTab&& other) = delete;
-
     std::unique_ptr<Dataset> getDataset() override;
 
     bool datasetsAreAvailable();

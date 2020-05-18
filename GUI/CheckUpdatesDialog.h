@@ -19,12 +19,6 @@ public:
 
     ~CheckUpdatesDialog() override;
 
-    CheckUpdatesDialog& operator=(const CheckUpdatesDialog& other) = delete;
-    CheckUpdatesDialog(const CheckUpdatesDialog& other) = delete;
-
-    CheckUpdatesDialog& operator=(CheckUpdatesDialog&& other) = delete;
-    CheckUpdatesDialog(CheckUpdatesDialog&& other) = delete;
-
     bool saveFlagSet();
 
 private:

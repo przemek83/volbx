@@ -18,12 +18,6 @@ public:
 
     ~DatasetSpreadsheet() override = default;
 
-    DatasetSpreadsheet& operator=(const DatasetSpreadsheet& other) = delete;
-    DatasetSpreadsheet(const DatasetSpreadsheet& other) = delete;
-
-    DatasetSpreadsheet& operator=(DatasetSpreadsheet&& other) = delete;
-    DatasetSpreadsheet(DatasetSpreadsheet&& other) = delete;
-
     bool loadData() override;
 
     bool analyze() override;

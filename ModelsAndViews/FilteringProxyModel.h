@@ -20,12 +20,6 @@ public:
 
     ~FilteringProxyModel() override = default;
 
-    FilteringProxyModel& operator=(const FilteringProxyModel& other) = delete;
-    FilteringProxyModel(const FilteringProxyModel& other) = delete;
-
-    FilteringProxyModel& operator=(FilteringProxyModel&& other) = delete;
-    FilteringProxyModel(FilteringProxyModel&& other) = delete;
-
     /**
      * @brief get pointer to parent model.
      * @return parent parent model.

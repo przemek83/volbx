@@ -24,16 +24,6 @@ public:
 
     ~DatasetDefinitionVisualization() override;
 
-    DatasetDefinitionVisualization& operator=(
-        const DatasetDefinitionVisualization& other) = delete;
-    DatasetDefinitionVisualization(
-        const DatasetDefinitionVisualization& other) = delete;
-
-    DatasetDefinitionVisualization& operator=(
-        DatasetDefinitionVisualization&& other) = delete;
-    DatasetDefinitionVisualization(DatasetDefinitionVisualization&& other) =
-        delete;
-
     void setDataset(std::unique_ptr<Dataset> dataset);
 
     void clear();

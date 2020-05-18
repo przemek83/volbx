@@ -21,12 +21,6 @@ public:
 
     ~DatasetsListBrowser() override;
 
-    DatasetsListBrowser& operator=(const DatasetsListBrowser& other) = delete;
-    DatasetsListBrowser(const DatasetsListBrowser& other) = delete;
-
-    DatasetsListBrowser& operator=(DatasetsListBrowser&& other) = delete;
-    DatasetsListBrowser(DatasetsListBrowser&& other) = delete;
-
     QString getSelectedDataset() const;
 
     void clearSelection();

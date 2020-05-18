@@ -18,13 +18,6 @@ public:
 
     ~SpreadsheetsImportTab() override;
 
-    SpreadsheetsImportTab& operator=(const SpreadsheetsImportTab& other) =
-        delete;
-    SpreadsheetsImportTab(const SpreadsheetsImportTab& other) = delete;
-
-    SpreadsheetsImportTab& operator=(SpreadsheetsImportTab&& other) = delete;
-    SpreadsheetsImportTab(SpreadsheetsImportTab&& other) = delete;
-
     std::unique_ptr<Dataset> getDataset() override;
 
 private Q_SLOTS:

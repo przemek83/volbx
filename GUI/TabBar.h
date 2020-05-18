@@ -15,12 +15,6 @@ public:
 
     ~TabBar() override = default;
 
-    TabBar& operator=(const TabBar& other) = delete;
-    TabBar(const TabBar& other) = delete;
-
-    TabBar& operator=(TabBar&& other) = delete;
-    TabBar(TabBar&& other) = delete;
-
 protected:
     void mouseDoubleClickEvent(QMouseEvent* event) override;
 

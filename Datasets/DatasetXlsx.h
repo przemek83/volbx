@@ -21,12 +21,6 @@ public:
 
     ~DatasetXlsx() override = default;
 
-    DatasetXlsx& operator=(const DatasetXlsx& other) = delete;
-    DatasetXlsx(const DatasetXlsx& other) = delete;
-
-    DatasetXlsx& operator=(DatasetXlsx&& other) = delete;
-    DatasetXlsx(DatasetXlsx&& other) = delete;
-
 protected:
     bool loadSpecificData() override;
 

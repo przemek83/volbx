@@ -19,12 +19,6 @@ public:
 
     ~About() override;
 
-    About& operator=(const About& other) = delete;
-    About(const About& other) = delete;
-
-    About& operator=(About&& other) = delete;
-    About(About&& other) = delete;
-
 private:
     Ui::About* ui;
 };

@@ -17,12 +17,6 @@ public:
 
     ~DockWidget() override = default;
 
-    DockWidget& operator=(const DockWidget& other) = delete;
-    DockWidget(const DockWidget& other) = delete;
-
-    DockWidget& operator=(DockWidget&& other) = delete;
-    DockWidget(DockWidget&& other) = delete;
-
 public Q_SLOTS:
     void setNewToolTip(const QString& text);
 

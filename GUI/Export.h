@@ -21,12 +21,6 @@ public:
 
     ~Export() override;
 
-    Export& operator=(const Export& other) = delete;
-    Export(const Export& other) = delete;
-
-    Export& operator=(Export&& other) = delete;
-    Export(Export&& other) = delete;
-
 private Q_SLOTS:
     void saveClicked();
 

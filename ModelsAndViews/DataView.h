@@ -27,12 +27,6 @@ public:
 
     ~DataView() override = default;
 
-    DataView& operator=(const DataView& other) = delete;
-    DataView(const DataView& other) = delete;
-
-    DataView& operator=(DataView&& other) = delete;
-    DataView(DataView&& other) = delete;
-
     void setModel(QAbstractItemModel* model) override;
 
     const PlotDataProvider* getPlotDataProvider();

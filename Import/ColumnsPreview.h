@@ -17,12 +17,6 @@ public:
 
     ~ColumnsPreview() override = default;
 
-    ColumnsPreview& operator=(const ColumnsPreview& other) = delete;
-    ColumnsPreview(const ColumnsPreview& other) = delete;
-
-    ColumnsPreview& operator=(ColumnsPreview&& other) = delete;
-    ColumnsPreview(ColumnsPreview&& other) = delete;
-
     void setDatasetSampleInfo(const Dataset& dataset);
 
     void clearDataAndDisable();

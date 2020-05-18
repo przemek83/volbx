@@ -14,12 +14,6 @@ public:
 
     ~NumericDelegate() override = default;
 
-    NumericDelegate& operator=(const NumericDelegate& other) = delete;
-    NumericDelegate(const NumericDelegate& other) = delete;
-
-    NumericDelegate& operator=(NumericDelegate&& other) = delete;
-    NumericDelegate(NumericDelegate&& other) = delete;
-
     QString displayText(const QVariant& value,
                         const QLocale& locale) const override;
 };

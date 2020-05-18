@@ -25,14 +25,8 @@ public:
 
     ~SaveDatasetAs() override;
 
-    SaveDatasetAs& operator=(const SaveDatasetAs& other) = delete;
-    SaveDatasetAs(const SaveDatasetAs& other) = delete;
-
-    SaveDatasetAs& operator=(SaveDatasetAs&& other) = delete;
-    SaveDatasetAs(SaveDatasetAs&& other) = delete;
-
     /**
-     * @brief acces to entered by user name of dataset.
+     * @brief access to entered by user name of dataset.
      * @return name.
      */
     QString getChosenDatasetName();

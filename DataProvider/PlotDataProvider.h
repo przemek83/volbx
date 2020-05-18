@@ -28,12 +28,6 @@ public:
 
     ~PlotDataProvider() override = default;
 
-    PlotDataProvider& operator=(const PlotDataProvider& other) = delete;
-    PlotDataProvider(const PlotDataProvider& other) = delete;
-
-    PlotDataProvider& operator=(PlotDataProvider&& other) = delete;
-    PlotDataProvider(PlotDataProvider&& other) = delete;
-
     void setGroupingColumn(int groupingColumn);
 
     /**
