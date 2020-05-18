@@ -62,13 +62,13 @@ public:
 
     bool isValid() const;
 
-    const DatasetDefinition* getDatasetDefinition() const;
-
     QString getName() const;
 
     virtual void init() = 0;
 
     QString getNameForTabBar();
+
+    QByteArray definitionToXml(int rowCount) const;
 
 protected:
     /// Definition done to create dataset. Memory owned by dataset object.

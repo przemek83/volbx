@@ -146,11 +146,6 @@ QString Dataset::getHeaderName(int column) const
 
 bool Dataset::isValid() const { return valid_; }
 
-const DatasetDefinition* Dataset::getDatasetDefinition() const
-{
-    return datasetDefinition_;
-}
-
 QString Dataset::getName() const { return datasetDefinition_->getName(); }
 
 QString Dataset::getNameForTabBar()
@@ -165,4 +160,11 @@ QString Dataset::getNameForTabBar()
     }
 
     return tabName;
+}
+
+QByteArray Dataset::definitionToXml(int rowCount) const
+{
+    QByteArray data;
+    datasetDefinition_->toXml(data, rowCount);
+    return data;
 }

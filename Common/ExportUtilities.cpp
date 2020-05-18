@@ -151,8 +151,7 @@ bool saveDatasetDefinitionFile(QuaZipFile& zipFile,
     const TableModel* parentModel =
         (qobject_cast<FilteringProxyModel*>(view->model()))->getParentModel();
 
-    QByteArray definitionContent;
-    parentModel->getDatasetDefinition()->toXml(definitionContent, rowCount);
+    QByteArray definitionContent{parentModel->definitionToXml(rowCount)};
 
     bool result =
         zipFile.open(QIODevice::WriteOnly,

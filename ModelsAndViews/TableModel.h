@@ -12,7 +12,6 @@
 #include "Dataset.h"
 
 class Dataset;
-class DatasetDefinition;
 
 /**
  * @brief 2d data model.
@@ -104,7 +103,7 @@ public:
      * @brief get dataset used in model.
      * @return dataset definition pointer.
      */
-    const DatasetDefinition* getDatasetDefinition() const;
+    QByteArray definitionToXml(int rowCount) const;
 
     bool isSpecialColumnsSet() const;
 

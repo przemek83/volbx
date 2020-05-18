@@ -68,9 +68,9 @@ std::tuple<bool, int> TableModel::getSpecialColumnIfExists(
     return dataset_->getSpecialColumnIfExists(columnTag);
 }
 
-const DatasetDefinition* TableModel::getDatasetDefinition() const
+QByteArray TableModel::definitionToXml(int rowCount) const
 {
-    return dataset_->getDatasetDefinition();
+    return dataset_->definitionToXml(rowCount);
 }
 
 bool TableModel::isSpecialColumnsSet() const
