@@ -299,33 +299,6 @@ void Dataset::rebuildDefinitonUsingActiveColumnsOnly()
     activeColumns_.clear();
 }
 
-QVariant Dataset::getDefaultVariantForFormat(const ColumnType format) const
-{
-    switch (format)
-    {
-        case ColumnType::STRING:
-        {
-            return QVariant(QVariant::Int);
-        }
-
-        case ColumnType::NUMBER:
-        {
-            return QVariant(QVariant::Double);
-        }
-        case ColumnType::DATE:
-        {
-            return QVariant(QVariant::Date);
-        }
-
-        case ColumnType::UNKNOWN:
-        default:
-        {
-            Q_ASSERT(false);
-            return QVariant(QVariant::String);
-        }
-    }
-}
-
 int Dataset::getActiveColumnCount() const { return activeColumns_.count(true); }
 
 bool Dataset::isSpecialColumnTagged(SpecialColumn column) const

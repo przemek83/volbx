@@ -54,9 +54,9 @@ bool DatasetInner::datasetDirExistAndUserHavePermisions()
            QFile::permissions(directory.path()).testFlag(QFile::WriteUser);
 }
 
-bool DatasetInner::removeDataset(const QString& name)
+bool DatasetInner::removeDataset(const QString& datasetName)
 {
-    QString datasetFile{getDatasetsDir() + name +
+    QString datasetFile{getDatasetsDir() + datasetName +
                         Constants::getDatasetExtension()};
     return QFile::remove(datasetFile);
 }
@@ -66,27 +66,18 @@ bool DatasetInner::loadData()
     if (!isValid())
         return false;
 
-    data_.resize(rowCount());
-
-    const int activeColumnsCount{activeColumns_.size()};
-    for (int i = 0; i < rowCount(); ++i)
-        data_[i].resize(activeColumnsCount);
-
     if (!zip_.open(QuaZip::mdUnzip))
     {
         LOG(LogTypes::IMPORT_EXPORT, "Can not open file " + zip_.getZipName());
         return false;
     }
 
-    bool result{fillData(zip_, data_, false)};
+    std::tie(valid_, data_) = fillData(zip_, false);
     zip_.close();
-    if (result)
-    {
-        valid_ = true;
+    if (valid_)
         sharedStrings_ = getSharedStringTable();
-    }
 
-    return result;
+    return valid_;
 }
 
 std::unique_ptr<QVariant[]> DatasetInner::getSharedStringTable()
@@ -116,14 +107,9 @@ bool DatasetInner::load()
         return false;
     }
 
-    int rowsCountForSamples =
-        (rowCount() > SAMPLE_SIZE ? SAMPLE_SIZE : rowCount());
-    sampleData_.resize(rowsCountForSamples);
-
-    for (int i = 0; i < rowsCountForSamples; ++i)
-        sampleData_[i].resize(columnsCount_);
-
-    if (!fillData(zip_, sampleData_, true))
+    bool success{false};
+    std::tie(success, sampleData_) = fillData(zip_, true);
+    if (!success)
     {
         zip_.close();
         return false;
@@ -237,64 +223,6 @@ bool DatasetInner::loadStrings(QuaZip& zip)
     return true;
 }
 
-bool DatasetInner::fillData(QuaZip& zip,
-                            QVector<QVector<QVariant> >& dataContainer,
-                            bool fillSamplesOnly)
-{
-    QuaZipFile zipFile(&zip);
-    zip.setCurrentFile(Constants::getDatasetDataFilename());
-
-    if (!zipFile.open(QIODevice::ReadOnly))
-    {
-        LOG(LogTypes::IMPORT_EXPORT,
-            "Can not open csv file " +
-                QString(Constants::getDatasetDataFilename()) + ".");
-        return false;
-    }
-
-    LOG(LogTypes::IMPORT_EXPORT,
-        "Csv file " + Constants::getDatasetDataFilename() + " opened.");
-
-    QTextStream stream(&zipFile);
-    stream.setCodec("UTF-8");
-
-    unsigned int lastEmittedPercent{0};
-    int lineCounter{0};
-    while (!stream.atEnd() && lineCounter < dataContainer.size())
-    {
-        if (fillSamplesOnly && lineCounter >= SAMPLE_SIZE)
-            break;
-
-        QStringList line{stream.readLine().split(';')};
-        int columnToFill{0};
-        for (int i = 0; i < columnCount(); ++i)
-        {
-            const QString& element{line.at(i)};
-
-            // If column is not active do nothing.
-            if (!fillSamplesOnly && !activeColumns_[i])
-                continue;
-
-            addElementToContainer(getColumnFormat(i), element, dataContainer,
-                                  lineCounter, columnToFill);
-            columnToFill++;
-        }
-        lineCounter++;
-        if (!fillSamplesOnly)
-            updateProgress(lineCounter, rowCount(), lastEmittedPercent);
-    }
-
-    LOG(LogTypes::IMPORT_EXPORT,
-        "Loaded " + QString::number(dataContainer->size()) + " rows.");
-
-    zipFile.close();
-
-    if (!fillSamplesOnly)
-        rebuildDefinitonUsingActiveColumnsOnly();
-
-    return true;
-}
-
 void DatasetInner::updateProgress(unsigned int currentRow,
                                   unsigned int rowCount,
                                   unsigned int& lastEmittedPercent)
@@ -311,7 +239,7 @@ void DatasetInner::updateProgress(unsigned int currentRow,
 
 void DatasetInner::addElementToContainer(
     const ColumnType columnFormat, const QString& element,
-    QVector<QVector<QVariant> >& dataContainer, const int lineCounter,
+    QVector<QVector<QVariant>>& dataContainer, const int lineCounter,
     const int columnToFill) const
 {
     if (element.isEmpty())
@@ -353,4 +281,111 @@ void DatasetInner::addElementToContainer(
             }
         }
     }
+}
+
+QVariant DatasetInner::getDefaultVariantForFormat(const ColumnType format) const
+{
+    switch (format)
+    {
+        case ColumnType::STRING:
+        {
+            return QVariant(QVariant::Int);
+        }
+
+        case ColumnType::NUMBER:
+        {
+            return QVariant(QVariant::Double);
+        }
+        case ColumnType::DATE:
+        {
+            return QVariant(QVariant::Date);
+        }
+
+        case ColumnType::UNKNOWN:
+        default:
+        {
+            Q_ASSERT(false);
+            return QVariant(QVariant::String);
+        }
+    }
+}
+
+std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::fillData(
+    QuaZip& zip, bool fillSamplesOnly)
+{
+    QuaZipFile zipFile(&zip);
+    zip.setCurrentFile(Constants::getDatasetDataFilename());
+
+    if (!zipFile.open(QIODevice::ReadOnly))
+    {
+        LOG(LogTypes::IMPORT_EXPORT,
+            "Can not open csv file " +
+                QString(Constants::getDatasetDataFilename()) + ".");
+        return {false, {}};
+    }
+
+    LOG(LogTypes::IMPORT_EXPORT,
+        "Csv file " + Constants::getDatasetDataFilename() + " opened.");
+
+    QTextStream stream(&zipFile);
+    stream.setCodec("UTF-8");
+
+    unsigned int lastEmittedPercent{0};
+    int lineCounter{0};
+    QVector<QVector<QVariant>> data{prepareContainerForData(fillSamplesOnly)};
+    while (!stream.atEnd() && lineCounter < rowCount())
+    {
+        if (fillSamplesOnly && lineCounter >= SAMPLE_SIZE)
+            break;
+
+        QStringList line{stream.readLine().split(';')};
+        int columnToFill{0};
+        for (int i = 0; i < columnCount(); ++i)
+        {
+            const QString& element{line.at(i)};
+
+            // Do nothing if column is not active.
+            if (!fillSamplesOnly && !activeColumns_[i])
+                continue;
+
+            addElementToContainer(getColumnFormat(i), element, data,
+                                  lineCounter, columnToFill);
+            columnToFill++;
+        }
+        lineCounter++;
+        if (!fillSamplesOnly)
+            updateProgress(lineCounter, rowCount(), lastEmittedPercent);
+    }
+
+    LOG(LogTypes::IMPORT_EXPORT,
+        "Loaded " + QString::number(data->size()) + " rows.");
+
+    zipFile.close();
+
+    if (!fillSamplesOnly)
+        rebuildDefinitonUsingActiveColumnsOnly();
+
+    return {true, data};
+}
+
+QVector<QVector<QVariant>> DatasetInner::prepareContainerForData(
+    bool fillSamplesOnly) const
+{
+    QVector<QVector<QVariant>> data;
+    if (fillSamplesOnly)
+    {
+        const int rowsCountForSamples =
+            (rowCount() > SAMPLE_SIZE ? SAMPLE_SIZE : rowCount());
+        data.resize(rowsCountForSamples);
+        for (int i = 0; i < rowsCountForSamples; ++i)
+            data[i].resize(columnsCount_);
+    }
+    else
+    {
+        data.resize(rowCount());
+        const int activeColumnsCount{activeColumns_.size()};
+        for (int i = 0; i < data.size(); ++i)
+            data[i].resize(activeColumnsCount);
+    }
+    return data;
 }

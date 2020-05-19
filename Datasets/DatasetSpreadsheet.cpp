@@ -147,8 +147,6 @@ bool DatasetSpreadsheet::loadData()
     if (!isValid())
         return false;
 
-    data_.resize(rowCount());
-
     const bool result{getDataFromZip(getSheetName(), data_, false)};
     if (result)
     {

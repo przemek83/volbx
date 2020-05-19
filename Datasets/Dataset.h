@@ -86,8 +86,6 @@ protected:
 
     virtual std::unique_ptr<QVariant[]> getSharedStringTable() = 0;
 
-    QVariant getDefaultVariantForFormat(const ColumnType format) const;
-
     /// Data of dataset. String columns got names in sharedStrings_.
     QVector<QVector<QVariant> > data_;
 

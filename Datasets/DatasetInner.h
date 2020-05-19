@@ -30,7 +30,7 @@ public:
     static bool datasetDirExistAndUserHavePermisions();
 
     /// Removes given dataset from disk.
-    static bool removeDataset(const QString& name);
+    static bool removeDataset(const QString& datasetName);
 
 protected:
     std::unique_ptr<QVariant[]> getSharedStringTable() override;
@@ -47,17 +47,22 @@ private:
 
     bool loadStrings(QuaZip& zip);
 
-    bool fillData(QuaZip& zip, QVector<QVector<QVariant> >& dataContainer,
-                  bool fillSamplesOnly);
+    std::tuple<bool, QVector<QVector<QVariant>>> fillData(QuaZip& zip,
+                                                          bool fillSamplesOnly);
 
     void updateProgress(unsigned int currentRow, unsigned int rowCount,
                         unsigned int& lastEmittedPercent);
 
     void addElementToContainer(const ColumnType columnFormat,
                                const QString& element,
-                               QVector<QVector<QVariant> >& dataContainer,
+                               QVector<QVector<QVariant>>& dataContainer,
                                const int lineCounter,
                                const int columnToFill) const;
+
+    QVariant getDefaultVariantForFormat(const ColumnType format) const;
+
+    QVector<QVector<QVariant>> prepareContainerForData(
+        bool fillSamplesOnly) const;
 
     std::unique_ptr<QVariant[]> stringsTable_{nullptr};
 
