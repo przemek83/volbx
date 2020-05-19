@@ -1,20 +1,12 @@
 #include "DatasetXlsx.h"
 
-#include <cmath>
-#include <future>
-#include <memory>
+#include <ImportXlsx.h>
 
-#include <QApplication>
-#include <QDebug>
-#include <QDomDocument>
-#include <QFuture>
-#include <QVariant>
-
-#include "Common/Constants.h"
 #include "Shared/Logger.h"
 
-DatasetXlsx::DatasetXlsx(const QString& name, QString& zipFileName)
-    : DatasetSpreadsheet(name, zipFileName)
+DatasetXlsx::DatasetXlsx(const QString& name, QString& zipFileName,
+                         QObject* parent)
+    : DatasetSpreadsheet(name, zipFileName, parent)
 {
     importer_ = std::make_unique<ImportXlsx>(zipFile_);
 }

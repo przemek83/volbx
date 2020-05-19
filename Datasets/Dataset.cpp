@@ -1,19 +1,9 @@
 #include "Dataset.h"
 
-#include <vector>
-
-#include <QApplication>
 #include <QDate>
-#include <QDebug>
-#include <QDir>
 #include <QDomDocument>
-#include <QFile>
-#include <QStringList>
-#include <QTime>
-#include <QVariant>
 
 #include "Common/Constants.h"
-#include "Shared/Logger.h"
 
 Dataset::Dataset(const QString& name, QObject* parent)
     : QObject(parent), nullStringVariant_(QVariant::String), name_(name)

@@ -2,11 +2,8 @@
 
 #include <Qt5Quazip/quazipfile.h>
 #include <QApplication>
-#include <QDebug>
 #include <QDir>
 #include <QDomDocument>
-#include <QFile>
-#include <QStandardPaths>
 #include <QTextStream>
 
 #include "Common/Constants.h"

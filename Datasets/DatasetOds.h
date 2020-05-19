@@ -1,11 +1,6 @@
 #ifndef DATASETODS_H
 #define DATASETODS_H
 
-#include <ImportOds.h>
-#include <Qt5Quazip/quazip.h>
-#include <Qt5Quazip/quazipfile.h>
-#include <QXmlStreamReader>
-
 #include "DatasetSpreadsheet.h"
 
 /**
@@ -15,7 +10,8 @@ class DatasetOds : public DatasetSpreadsheet
 {
     Q_OBJECT
 public:
-    DatasetOds(const QString& name, const QString& zipFileName);
+    DatasetOds(const QString& name, const QString& zipFileName,
+               QObject* parent = nullptr);
 
     ~DatasetOds() override = default;
 

@@ -1,20 +1,10 @@
 #include "DatasetOds.h"
 
-#include <future>
-#include <memory>
+#include <ImportOds.h>
 
-#include <Qt5Quazip/quazipfile.h>
-#include <QApplication>
-#include <QDebug>
-#include <QDomDocument>
-#include <QDomElement>
-#include <QXmlStreamReader>
-
-#include "Common/Constants.h"
-#include "Shared/Logger.h"
-
-DatasetOds::DatasetOds(const QString& name, const QString& zipFileName)
-    : DatasetSpreadsheet(name, zipFileName)
+DatasetOds::DatasetOds(const QString& name, const QString& zipFileName,
+                       QObject* parent)
+    : DatasetSpreadsheet(name, zipFileName, parent)
 {
     importer_ = std::make_unique<ImportOds>(zipFile_);
 }

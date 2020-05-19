@@ -1,7 +1,7 @@
 #ifndef DATASETSPREADSHEET_H
 #define DATASETSPREADSHEET_H
 
-#include <Qt5Quazip/quazip.h>
+#include <QFile>
 
 #include "Dataset.h"
 
@@ -16,7 +16,7 @@ public:
     explicit DatasetSpreadsheet(const QString& name, const QString& zipFileName,
                                 QObject* parent = nullptr);
 
-    ~DatasetSpreadsheet() override = default;
+    ~DatasetSpreadsheet() override;
 
     bool loadData() override;
 

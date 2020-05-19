@@ -4,7 +4,8 @@
 #include <memory>
 
 #include <ColumnType.h>
-#include <QStringList>
+#include <QMap>
+#include <QObject>
 #include <QVariant>
 #include <QVector>
 
