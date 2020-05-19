@@ -41,13 +41,10 @@ private:
     /// Load definition, strings and sample data.
     bool load();
 
-    // Parse given xml and fill inner definition containers.
     bool fromXml(QByteArray& definitionContent);
 
-    /// Load definition file from zip.
     bool loadXmlFile(QByteArray& definitionContent, QuaZip& zip);
 
-    /// Load strings from zip file.
     bool loadStrings(QuaZip& zip);
 
     bool fillData(QuaZip& zip, QVector<QVector<QVariant> >& dataContainer,
@@ -56,21 +53,17 @@ private:
     void updateProgress(unsigned int currentRow, unsigned int rowCount,
                         unsigned int& lastEmittedPercent);
 
-    /// Add current element into given container.
     void addElementToContainer(const ColumnType columnFormat,
                                const QString& element,
                                QVector<QVector<QVariant> >& dataContainer,
                                const int lineCounter,
                                const int columnToFill) const;
 
-    /// Array with strings.
     std::unique_ptr<QVariant[]> stringsTable_{nullptr};
 
-    /// Zip file.
     QuaZip zip_;
 
-    /// Name of folder with datasets.
-    static const char* datasetsDir_;
+    static const QString datasetsDir_;
 };
 
 #endif  // DATASETINNER_H

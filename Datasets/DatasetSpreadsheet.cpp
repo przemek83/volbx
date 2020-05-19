@@ -27,12 +27,9 @@ bool DatasetSpreadsheet::analyze()
     columnsCount_ = importer_->getColumnCount(getSheetName()).second;
     rowsCount_ = importer_->getRowCount(getSheetName()).second;
 
-    sampleData_.resize(SAMPLE_SIZE < rowCount() ? SAMPLE_SIZE : rowCount());
-    if (!getDataFromZip(getSheetName(), sampleData_, true))
+    if (!prepareSampleData())
         return false;
 
-    // Set proper strings for sample data.
-    updateSampleDataStrings();
     valid_ = true;
 
     return true;
@@ -52,6 +49,16 @@ void DatasetSpreadsheet::updateSampleDataStrings()
 const QString& DatasetSpreadsheet::getSheetName()
 {
     return sheetNames_.constFirst();
+}
+
+bool DatasetSpreadsheet::prepareSampleData()
+{
+    sampleData_.resize(SAMPLE_SIZE < rowCount() ? SAMPLE_SIZE : rowCount());
+    if (!getDataFromZip(getSheetName(), sampleData_, true))
+        return false;
+
+    updateSampleDataStrings();
+    return true;
 }
 
 bool DatasetSpreadsheet::getSheetList()
@@ -99,10 +106,8 @@ bool DatasetSpreadsheet::getDataFromZip(
     {
         QVector<unsigned int> excludedColumns;
         for (int i = 0; i < columnCount(); ++i)
-        {
             if (!activeColumns_.at(i))
                 excludedColumns.append(i);
-        }
         std::tie(success, dataContainer) =
             importer_->getData(sheetName, excludedColumns);
     }
@@ -127,11 +132,11 @@ std::unique_ptr<QVariant[]> DatasetSpreadsheet::getSharedStringTable()
 {
     auto stringsTable = std::make_unique<QVariant[]>(
         static_cast<size_t>(nextSharedStringIndex_));
-    QHash<QString, int>::const_iterator i = stringsMap_.constBegin();
-    while (i != stringsMap_.constEnd())
+    auto it = stringsMap_.constBegin();
+    while (it != stringsMap_.constEnd())
     {
-        stringsTable[static_cast<size_t>(i.value())] = QVariant(i.key());
-        ++i;
+        stringsTable[static_cast<size_t>(it.value())] = QVariant(it.key());
+        ++it;
     }
     stringsMap_.clear();
     return stringsTable;
@@ -139,7 +144,6 @@ std::unique_ptr<QVariant[]> DatasetSpreadsheet::getSharedStringTable()
 
 bool DatasetSpreadsheet::loadData()
 {
-    // Load data if definition is valid.
     if (!isValid())
         return false;
 

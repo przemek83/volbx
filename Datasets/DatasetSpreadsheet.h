@@ -48,6 +48,8 @@ private:
 
     const QString& getSheetName();
 
+    bool prepareSampleData();
+
     QStringList sheetNames_;
 };
 

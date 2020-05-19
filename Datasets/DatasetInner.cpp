@@ -9,7 +9,7 @@
 #include "Common/Constants.h"
 #include "Shared/Logger.h"
 
-const char* DatasetInner::datasetsDir_ = "Data";
+const QString DatasetInner::datasetsDir_{"Data"};
 
 DatasetInner::DatasetInner(const QString& name, QObject* parent)
     : Dataset(name, parent)
@@ -21,12 +21,9 @@ DatasetInner::DatasetInner(const QString& name, QObject* parent)
 
 QStringList DatasetInner::getListOfAvailableDatasets()
 {
-    QDir datasetsDir(getDatasetsDir());
-
+    QDir datasetsDir{getDatasetsDir()};
     if (!datasetDirExistAndUserHavePermisions())
-    {
         return QStringList();
-    }
 
     datasetsDir.setFilter(QDir::Files | QDir::Readable | QDir::NoSymLinks |
                           QDir::NoDotAndDotDot);
@@ -34,7 +31,7 @@ QStringList DatasetInner::getListOfAvailableDatasets()
         QStringList("*" + Constants::getDatasetExtension()));
     datasetsDir.setSorting(QDir::Name);
 
-    QStringList entries = datasetsDir.entryList();
+    QStringList entries{datasetsDir.entryList()};
     return entries.replaceInStrings(Constants::getDatasetExtension(),
                                     QLatin1String(""));
 }
@@ -45,21 +42,13 @@ QString DatasetInner::getDatasetsDir()
                    "/");
 }
 
-bool DatasetInner::analyze() { return true; }
+bool DatasetInner::analyze() { return valid_; }
 
 bool DatasetInner::datasetDirExistAndUserHavePermisions()
 {
-    QDir directory(getDatasetsDir());
-
-    if (!directory.exists())
-    {
-        bool created = directory.mkpath(directory.path());
-
-        if (!created)
-        {
-            return false;
-        }
-    }
+    QDir directory{getDatasetsDir()};
+    if (!directory.exists() && !directory.mkpath(directory.path()))
+        return false;
 
     return QFile::permissions(directory.path()).testFlag(QFile::ReadUser) &&
            QFile::permissions(directory.path()).testFlag(QFile::WriteUser);
@@ -67,33 +56,29 @@ bool DatasetInner::datasetDirExistAndUserHavePermisions()
 
 bool DatasetInner::removeDataset(const QString& name)
 {
-    QString datasetFile =
-        getDatasetsDir() + name + Constants::getDatasetExtension();
+    QString datasetFile{getDatasetsDir() + name +
+                        Constants::getDatasetExtension()};
     return QFile::remove(datasetFile);
 }
 
 bool DatasetInner::loadData()
 {
-    // If definition is not valid than skip loading data.
     if (!isValid())
         return false;
 
     data_.resize(rowCount());
 
-    const int activeColumnsCount = activeColumns_.size();
+    const int activeColumnsCount{activeColumns_.size()};
     for (int i = 0; i < rowCount(); ++i)
-    {
         data_[i].resize(activeColumnsCount);
-    }
 
-    // Open archive.
     if (!zip_.open(QuaZip::mdUnzip))
     {
         LOG(LogTypes::IMPORT_EXPORT, "Can not open file " + zip_.getZipName());
         return false;
     }
 
-    bool result = fillData(zip_, data_, false);
+    bool result{fillData(zip_, data_, false)};
     zip_.close();
     if (result)
     {
@@ -112,47 +97,20 @@ std::unique_ptr<QVariant[]> DatasetInner::getSharedStringTable()
 void DatasetInner::updateSampleDataStrings()
 {
     for (int i = 0; i < columnsCount_; ++i)
-    {
         if (ColumnType::STRING == columnTypes_.at(i))
-        {
             for (auto& sampleDataRow : sampleData_)
-            {
                 sampleDataRow[i] =
                     stringsTable_[sampleDataRow[i].toULongLong()];
-            }
-        }
-    }
 }
 
 bool DatasetInner::load()
 {
-    // Open archive.
-    bool result = zip_.open(QuaZip::mdUnzip);
-    if (!result)
-    {
+    if (!zip_.open(QuaZip::mdUnzip))
         return false;
-    }
 
     QByteArray definitionContent;
-
-    result = loadXmlFile(definitionContent, zip_);
-
-    if (!result)
-    {
-        zip_.close();
-        return false;
-    }
-
-    result = fromXml(definitionContent);
-
-    if (!result)
-    {
-        zip_.close();
-        return false;
-    }
-
-    result = loadStrings(zip_);
-    if (!result)
+    if (!loadXmlFile(definitionContent, zip_) || !fromXml(definitionContent) ||
+        !loadStrings(zip_))
     {
         zip_.close();
         return false;
@@ -163,24 +121,19 @@ bool DatasetInner::load()
     sampleData_.resize(rowsCountForSamples);
 
     for (int i = 0; i < rowsCountForSamples; ++i)
-    {
         sampleData_[i].resize(columnsCount_);
-    }
 
-    result = fillData(zip_, sampleData_, true);
-
-    if (!result)
+    if (!fillData(zip_, sampleData_, true))
     {
         zip_.close();
         return false;
     }
 
-    // Set proper strings for sample data.
     updateSampleDataStrings();
 
     zip_.close();
 
-    return result;
+    return true;
 }
 
 bool DatasetInner::fromXml(QByteArray& definitionContent)
@@ -200,10 +153,10 @@ bool DatasetInner::fromXml(QByteArray& definitionContent)
 
     LOG(LogTypes::IMPORT_EXPORT, "Read xml file:\n" + xmlDocument.toString());
 
-    QDomElement root = xmlDocument.documentElement();
+    QDomElement root{xmlDocument.documentElement()};
 
     // Load columns elements.
-    QDomNodeList columns = root.firstChildElement(DATASET_COLUMNS).childNodes();
+    QDomNodeList columns{root.firstChildElement(DATASET_COLUMNS).childNodes()};
 
     LOG(LogTypes::IMPORT_EXPORT,
         "Read column count: " + QString::number(columns.count()));
@@ -211,16 +164,14 @@ bool DatasetInner::fromXml(QByteArray& definitionContent)
     columnsCount_ = columns.size();
     for (int i = 0; i < columnsCount_; ++i)
     {
-        QDomElement column = columns.at(i).toElement();
+        QDomElement column{columns.at(i).toElement()};
         headerColumnNames_.push_back(column.attribute(DATASET_COLUMN_NAME));
         columnTypes_.push_back(static_cast<ColumnType>(
             column.attribute(DATASET_COLUMN_FORMAT).toInt()));
 
-        QString special = column.attribute(DATASET_COLUMN_SPECIAL_TAG);
+        QString special{column.attribute(DATASET_COLUMN_SPECIAL_TAG)};
         if (0 != special.compare(QLatin1String("")))
-        {
             specialColumns_[static_cast<SpecialColumn>(special.toInt())] = i;
-        }
     }
 
     // Read row count.
@@ -235,14 +186,12 @@ bool DatasetInner::loadXmlFile(QByteArray& definitionContent, QuaZip& zip)
 {
     QuaZipFile zipFile(&zip);
     zip.setCurrentFile(Constants::getDatasetDefinitionFilename());
-
-    bool result = zipFile.open(QIODevice::ReadOnly);
-    if (!result)
+    if (!zipFile.open(QIODevice::ReadOnly))
     {
         LOG(LogTypes::IMPORT_EXPORT,
             "Can not open xml file " +
                 Constants::getDatasetDefinitionFilename() + ".");
-        return result;
+        return false;
     }
 
     LOG(LogTypes::IMPORT_EXPORT,
@@ -259,27 +208,26 @@ bool DatasetInner::loadStrings(QuaZip& zip)
     QuaZipFile zipFile(&zip);
     zip.setCurrentFile(Constants::getDatasetStringsFilename());
 
-    bool result = zipFile.open(QIODevice::ReadOnly);
-    if (!result)
+    if (!zipFile.open(QIODevice::ReadOnly))
     {
         LOG(LogTypes::IMPORT_EXPORT,
             "Can not open strings file " +
                 Constants::getDatasetStringsFilename() + ".");
-        return result;
+        return false;
     }
 
     LOG(LogTypes::IMPORT_EXPORT,
         "Strings file " + Constants::getDatasetStringsFilename() + " opened.");
 
-    QByteArray stringsContent = zipFile.readAll();
+    QByteArray stringsContent{zipFile.readAll()};
     zipFile.close();
 
-    QList<QByteArray> strings = stringsContent.split('\n');
+    QList<QByteArray> strings{stringsContent.split('\n')};
     // First element is empty.
     stringsTable_ =
         std::make_unique<QVariant[]>(static_cast<size_t>(strings.size()) + 1);
     stringsTable_[0] = QVariant(QString());
-    size_t counter = 1;
+    size_t counter{1};
     for (const auto& currentString : strings)
     {
         stringsTable_[counter] = QVariant(QString::fromUtf8(currentString));
@@ -296,13 +244,12 @@ bool DatasetInner::fillData(QuaZip& zip,
     QuaZipFile zipFile(&zip);
     zip.setCurrentFile(Constants::getDatasetDataFilename());
 
-    bool result = zipFile.open(QIODevice::ReadOnly);
-    if (!result)
+    if (!zipFile.open(QIODevice::ReadOnly))
     {
         LOG(LogTypes::IMPORT_EXPORT,
             "Can not open csv file " +
                 QString(Constants::getDatasetDataFilename()) + ".");
-        return result;
+        return false;
     }
 
     LOG(LogTypes::IMPORT_EXPORT,
@@ -322,7 +269,7 @@ bool DatasetInner::fillData(QuaZip& zip,
         int columnToFill{0};
         for (int i = 0; i < columnCount(); ++i)
         {
-            const QString& element = line.at(i);
+            const QString& element{line.at(i)};
 
             // If column is not active do nothing.
             if (!fillSamplesOnly && !activeColumns_[i])
