@@ -16,7 +16,6 @@ DatasetInner::DatasetInner(const QString& name, QObject* parent)
 {
     zip_.setZipName(DatasetInner::getDatasetsDir() + name +
                     Constants::getDatasetExtension());
-    valid_ = load();
 }
 
 QStringList DatasetInner::getListOfAvailableDatasets()
@@ -42,7 +41,24 @@ QString DatasetInner::getDatasetsDir()
                    "/");
 }
 
-bool DatasetInner::analyze() { return valid_; }
+bool DatasetInner::analyze()
+{
+    if (!zip_.open(QuaZip::mdUnzip))
+        return false;
+
+    QByteArray definitionContent;
+    if (!loadXmlFile(definitionContent, zip_) || !fromXml(definitionContent) ||
+        !loadStrings(zip_))
+    {
+        zip_.close();
+        return false;
+    }
+
+    zip_.close();
+    valid_ = true;
+
+    return true;
+}
 
 bool DatasetInner::datasetDirExistAndUserHavePermisions()
 {
@@ -61,23 +77,43 @@ bool DatasetInner::removeDataset(const QString& datasetName)
     return QFile::remove(datasetFile);
 }
 
-bool DatasetInner::loadData()
+std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::getSample()
+{
+    if (!zip_.open(QuaZip::mdUnzip))
+        return {false, {}};
+
+    auto [success, data] = fillData(zip_, true);
+    if (!success)
+    {
+        zip_.close();
+        return {false, {}};
+    }
+
+    updateSampleDataStrings(data);
+
+    zip_.close();
+
+    return {true, data};
+}
+
+std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::getAllData()
 {
     if (!isValid())
-        return false;
+        return {false, {}};
 
     if (!zip_.open(QuaZip::mdUnzip))
     {
         LOG(LogTypes::IMPORT_EXPORT, "Can not open file " + zip_.getZipName());
-        return false;
+        return {false, {}};
     }
 
-    std::tie(valid_, data_) = fillData(zip_, false);
+    QVector<QVector<QVariant>> data;
+    std::tie(valid_, data) = fillData(zip_, false);
     zip_.close();
     if (valid_)
         sharedStrings_ = getSharedStringTable();
 
-    return valid_;
+    return {true, data};
 }
 
 std::unique_ptr<QVariant[]> DatasetInner::getSharedStringTable()
@@ -85,41 +121,13 @@ std::unique_ptr<QVariant[]> DatasetInner::getSharedStringTable()
     return std::move(stringsTable_);
 }
 
-void DatasetInner::updateSampleDataStrings()
+void DatasetInner::updateSampleDataStrings(QVector<QVector<QVariant>>& data)
 {
     for (int i = 0; i < columnsCount_; ++i)
         if (ColumnType::STRING == columnTypes_.at(i))
-            for (auto& sampleDataRow : sampleData_)
+            for (auto& sampleDataRow : data)
                 sampleDataRow[i] =
                     stringsTable_[sampleDataRow[i].toULongLong()];
-}
-
-bool DatasetInner::load()
-{
-    if (!zip_.open(QuaZip::mdUnzip))
-        return false;
-
-    QByteArray definitionContent;
-    if (!loadXmlFile(definitionContent, zip_) || !fromXml(definitionContent) ||
-        !loadStrings(zip_))
-    {
-        zip_.close();
-        return false;
-    }
-
-    bool success{false};
-    std::tie(success, sampleData_) = fillData(zip_, true);
-    if (!success)
-    {
-        zip_.close();
-        return false;
-    }
-
-    updateSampleDataStrings();
-
-    zip_.close();
-
-    return true;
 }
 
 bool DatasetInner::fromXml(QByteArray& definitionContent)

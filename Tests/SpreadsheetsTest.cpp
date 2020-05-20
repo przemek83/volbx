@@ -94,7 +94,7 @@ void SpreadsheetsTest::detailedSpreadsheetFileTest04()
 void SpreadsheetsTest::testSpreadsheetFile01(DatasetSpreadsheet* dataset,
                                              QString file)
 {
-    QVERIFY(true == dataset->analyze());
+    QVERIFY(true == dataset->initialize());
     testBasicInfo(*dataset, 4000, 7, 0, file);
 
     QVector<QPair<int, ColumnType> > columnFormats;
@@ -153,7 +153,7 @@ void SpreadsheetsTest::testSpreadsheetFile01(DatasetSpreadsheet* dataset,
 void SpreadsheetsTest::testSpreadsheetFile01SomeColumns(
     DatasetSpreadsheet* dataset)
 {
-    QVERIFY(true == dataset->analyze());
+    QVERIFY(true == dataset->initialize());
     QVector<bool> activeColumns(dataset->columnCount(), true);
     activeColumns[0] = false;
     activeColumns[1] = false;
@@ -200,7 +200,7 @@ void SpreadsheetsTest::testSpreadsheetFile01SomeColumns(
 void SpreadsheetsTest::testSpreadsheetFile03(DatasetSpreadsheet* dataset,
                                              QString file)
 {
-    QVERIFY(true == dataset->analyze());
+    QVERIFY(true == dataset->initialize());
     testBasicInfo(*dataset, 4, 5, 0, file);
 
     QVector<QPair<int, ColumnType> > columnFormats;
@@ -249,7 +249,7 @@ void SpreadsheetsTest::testSpreadsheetFile03(DatasetSpreadsheet* dataset,
 void SpreadsheetsTest::testSpreadsheetFile04(DatasetSpreadsheet* dataset,
                                              QString file)
 {
-    QVERIFY(true == dataset->analyze());
+    QVERIFY(true == dataset->initialize());
     testBasicInfo(*dataset, 30, 12, 0, file);
 
     QVector<QPair<int, ColumnType> > columnFormats;
@@ -428,11 +428,11 @@ void SpreadsheetsTest::compareDataWithDumps(const QString& category,
         if (true == damaged)
         {
             // Damaged files test.
-            QVERIFY(false == dataset->analyze());
+            QVERIFY(false == dataset->initialize());
         }
         else
         {
-            QVERIFY(true == dataset->analyze());
+            QVERIFY(true == dataset->initialize());
             QString dump = Common::loadFile(
                 QString(fileName + Common::getDefinitionDumpSuffix()));
             QCOMPARE(dataset->dumpDatasetDefinition(), dump);
@@ -531,7 +531,7 @@ void SpreadsheetsTest::generateDataDumpsForFile(QString name)
         dataset = new DatasetOds(name, name);
     }
 
-    dataset->analyze();
+    dataset->initialize();
     QString dumpedDefinition = dataset->dumpDatasetDefinition();
     Common::saveFile(name + Common::getDefinitionDumpSuffix(),
                      dumpedDefinition);

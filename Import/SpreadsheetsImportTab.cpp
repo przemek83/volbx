@@ -73,7 +73,7 @@ void SpreadsheetsImportTab::analyzeFile(
 
     bool success{false};
     // TODO get rid of get() on smart pointer.
-    auto futureInit = std::async(&Dataset::analyze, dataset.get());
+    auto futureInit = std::async(&Dataset::initialize, dataset.get());
     std::chrono::milliseconds span(1);
     while (futureInit.wait_for(span) == std::future_status::timeout)
         QCoreApplication::processEvents();

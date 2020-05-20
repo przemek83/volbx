@@ -68,7 +68,7 @@ void InnerTests::testDatasets()
     foreach (QString datasetName, datasets)
     {
         DatasetInner* dataset = new DatasetInner(datasetName);
-
+        QVERIFY(true == dataset->initialize());
         QVERIFY(true == dataset->isValid());
 
         QVector<bool> activeColumns(dataset->columnCount(), true);

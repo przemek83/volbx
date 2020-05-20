@@ -21,10 +21,6 @@ public:
     /// Returns datasets directory/folder.
     static QString getDatasetsDir();
 
-    bool analyze() override;
-
-    bool loadData() override;
-
     /// Checks if it is possible to use default datasets directory to store
     /// data.
     static bool datasetDirExistAndUserHavePermisions();
@@ -33,10 +29,16 @@ public:
     static bool removeDataset(const QString& datasetName);
 
 protected:
+    std::tuple<bool, QVector<QVector<QVariant>>> getSample() override;
+
+    std::tuple<bool, QVector<QVector<QVariant>>> getAllData() override;
+
+    bool analyze() override;
+
     std::unique_ptr<QVariant[]> getSharedStringTable() override;
 
 private:
-    void updateSampleDataStrings();
+    void updateSampleDataStrings(QVector<QVector<QVariant>>& data);
 
     /// Load definition, strings and sample data.
     bool load();

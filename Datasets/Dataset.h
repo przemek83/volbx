@@ -58,15 +58,15 @@ public:
 
     QString getName() const;
 
-    virtual bool analyze() = 0;
+    bool initialize();
 
-    virtual bool loadData() = 0;
+    bool loadData();
 
     QString getNameForTabBar();
 
     QByteArray definitionToXml(int rowCount) const;
 
-    const QVector<QVector<QVariant> >* getSampleData() const;
+    const QVector<QVector<QVariant>>* getSampleData() const;
 
     /// Clear sample data when it is not necessary.
     void clearSampleData();
@@ -82,12 +82,15 @@ public:
     int getActiveColumnCount() const;
 
 protected:
+    virtual bool analyze() = 0;
+
+    virtual std::tuple<bool, QVector<QVector<QVariant>>> getSample() = 0;
+
+    virtual std::tuple<bool, QVector<QVector<QVariant>>> getAllData() = 0;
+
     void rebuildDefinitonUsingActiveColumnsOnly();
 
     virtual std::unique_ptr<QVariant[]> getSharedStringTable() = 0;
-
-    /// Data of dataset. String columns got names in sharedStrings_.
-    QVector<QVector<QVariant> > data_;
 
     /// Array with shared strings, Done for memory optimization.
     std::unique_ptr<QVariant[]> sharedStrings_{nullptr};
@@ -104,8 +107,6 @@ protected:
 
     /// Active columns information.
     QVector<bool> activeColumns_;
-
-    QVector<QVector<QVariant> > sampleData_;
 
     int rowsCount_{0};
 
@@ -130,8 +131,12 @@ private:
 
     QVariant nullStringVariant_;
 
-    /// Dataset name.
     const QString name_;
+
+    QVector<QVector<QVariant>> sampleData_;
+
+    /// Data of dataset. String columns got names in sharedStrings_.
+    QVector<QVector<QVariant>> data_;
 
 signals:
     void loadingPercentChanged(unsigned int newPercentage);

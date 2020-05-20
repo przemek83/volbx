@@ -149,6 +149,22 @@ bool Dataset::isValid() const { return valid_; }
 
 QString Dataset::getName() const { return name_; }
 
+bool Dataset::initialize()
+{
+    if (!analyze())
+        return false;
+    bool success{false};
+    std::tie(success, sampleData_) = getSample();
+    return success;
+}
+
+bool Dataset::loadData()
+{
+    bool success{false};
+    std::tie(success, data_) = getAllData();
+    return success;
+}
+
 QString Dataset::getNameForTabBar()
 {
     QString tabName = getName();

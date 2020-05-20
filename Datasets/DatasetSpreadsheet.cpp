@@ -27,22 +27,20 @@ bool DatasetSpreadsheet::analyze()
     columnsCount_ = importer_->getColumnCount(getSheetName()).second;
     rowsCount_ = importer_->getRowCount(getSheetName()).second;
 
-    if (!prepareSampleData())
-        return false;
-
     valid_ = true;
 
     return true;
 }
 
-void DatasetSpreadsheet::updateSampleDataStrings()
+void DatasetSpreadsheet::updateSampleDataStrings(
+    QVector<QVector<QVariant>>& data)
 {
     if (stringsMap_.isEmpty())
         return;
 
     for (int i = 0; i < columnCount(); ++i)
         if (ColumnType::STRING == columnTypes_.at(i))
-            for (auto& sampleDataRow : sampleData_)
+            for (auto& sampleDataRow : data)
                 sampleDataRow[i] = stringsMap_.key(sampleDataRow[i].toInt());
 }
 
@@ -51,14 +49,29 @@ const QString& DatasetSpreadsheet::getSheetName()
     return sheetNames_.constFirst();
 }
 
-bool DatasetSpreadsheet::prepareSampleData()
+std::tuple<bool, QVector<QVector<QVariant>>> DatasetSpreadsheet::getSample()
 {
-    sampleData_.resize(SAMPLE_SIZE < rowCount() ? SAMPLE_SIZE : rowCount());
-    if (!getDataFromZip(getSheetName(), sampleData_, true))
-        return false;
+    auto [success, data] = getDataFromZip(getSheetName(), true);
+    if (!success)
+        return {false, {}};
 
-    updateSampleDataStrings();
-    return true;
+    updateSampleDataStrings(data);
+    return {true, data};
+}
+
+std::tuple<bool, QVector<QVector<QVariant>>> DatasetSpreadsheet::getAllData()
+{
+    if (!isValid())
+        return {false, {}};
+
+    auto [result, data] = getDataFromZip(getSheetName(), false);
+    if (result)
+    {
+        valid_ = true;
+        sharedStrings_ = getSharedStringTable();
+    }
+    rebuildDefinitonUsingActiveColumnsOnly();
+    return {true, data};
 }
 
 bool DatasetSpreadsheet::getSheetList()
@@ -92,14 +105,14 @@ bool DatasetSpreadsheet::getColumnTypes(const QString& sheetName)
     return true;
 }
 
-bool DatasetSpreadsheet::getDataFromZip(
-    const QString& sheetName, QVector<QVector<QVariant> >& dataContainer,
-    bool fillSamplesOnly)
+std::tuple<bool, QVector<QVector<QVariant>>> DatasetSpreadsheet::getDataFromZip(
+    const QString& sheetName, bool fillSamplesOnly)
 {
+    QVector<QVector<QVariant>> data;
     bool success{false};
     if (fillSamplesOnly)
     {
-        std::tie(success, dataContainer) = importer_->getLimitedData(
+        std::tie(success, data) = importer_->getLimitedData(
             sheetName, {}, SAMPLE_SIZE < rowCount() ? SAMPLE_SIZE : rowCount());
     }
     else
@@ -108,24 +121,24 @@ bool DatasetSpreadsheet::getDataFromZip(
         for (int i = 0; i < columnCount(); ++i)
             if (!activeColumns_.at(i))
                 excludedColumns.append(i);
-        std::tie(success, dataContainer) =
+        std::tie(success, data) =
             importer_->getData(sheetName, excludedColumns);
     }
 
     if (!success)
     {
         LOG(LogTypes::IMPORT_EXPORT, importXlsx_.getLastError());
-        return false;
+        return {false, {}};
     }
 
     if (!fillSamplesOnly)
     {
-        Q_ASSERT(rowCount() == dataContainer.size());
+        Q_ASSERT(rowCount() == data.size());
         LOG(LogTypes::IMPORT_EXPORT,
             "Loaded file having " + QString::number(rowsCount_) + " rows.");
     }
 
-    return true;
+    return {true, data};
 }
 
 std::unique_ptr<QVariant[]> DatasetSpreadsheet::getSharedStringTable()
@@ -142,17 +155,3 @@ std::unique_ptr<QVariant[]> DatasetSpreadsheet::getSharedStringTable()
     return stringsTable;
 }
 
-bool DatasetSpreadsheet::loadData()
-{
-    if (!isValid())
-        return false;
-
-    const bool result{getDataFromZip(getSheetName(), data_, false)};
-    if (result)
-    {
-        valid_ = true;
-        sharedStrings_ = getSharedStringTable();
-    }
-    rebuildDefinitonUsingActiveColumnsOnly();
-    return result;
-}

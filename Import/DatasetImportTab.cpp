@@ -81,7 +81,7 @@ void DatasetImportTab::selectedDatasetChanged(const QString& current)
             std::make_unique<DatasetInner>(current);
 
         // If definition is valid, than fill details.
-        if (dataset->isValid())
+        if (dataset->initialize() && dataset->isValid())
         {
             columnsPreview->setDatasetSampleInfo(*dataset);
             columnsPreview->setEnabled(true);

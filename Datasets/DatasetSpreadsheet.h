@@ -18,14 +18,16 @@ public:
 
     ~DatasetSpreadsheet() override;
 
-    bool loadData() override;
-
+protected:
     bool analyze() override;
 
-protected:
     std::unique_ptr<QVariant[]> getSharedStringTable() override;
 
     virtual bool loadSpecificData() = 0;
+
+    std::tuple<bool, QVector<QVector<QVariant>>> getSample() override;
+
+    std::tuple<bool, QVector<QVector<QVariant>>> getAllData() override;
 
     /// Temporary string <-> index map used to build shared string table.
     QHash<QString, int> stringsMap_;
@@ -37,18 +39,15 @@ protected:
     std::unique_ptr<ImportSpreadsheet> importer_{nullptr};
 
 private:
-    void updateSampleDataStrings();
+    void updateSampleDataStrings(QVector<QVector<QVariant>>& data);
 
     bool getSheetList();
     bool getHeadersList(const QString& sheetName);
     bool getColumnTypes(const QString& sheetName);
-    bool getDataFromZip(const QString& sheetName,
-                        QVector<QVector<QVariant> >& dataContainer,
-                        bool fillSamplesOnly);
+    std::tuple<bool, QVector<QVector<QVariant>>> getDataFromZip(
+        const QString& sheetName, bool fillSamplesOnly);
 
     const QString& getSheetName();
-
-    bool prepareSampleData();
 
     QStringList sheetNames_;
 };
