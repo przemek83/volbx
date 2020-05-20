@@ -215,15 +215,9 @@ QByteArray Dataset::definitionToXml(int rowCount) const
     return data;
 }
 
-const QVector<QVector<QVariant> >* Dataset::getSampleData() const
+QVector<QVector<QVariant> > Dataset::retrieveSampleData() const
 {
-    return &sampleData_;
-}
-
-void Dataset::clearSampleData()
-{
-    sampleData_.clear();
-    sampleData_.resize(0);
+    return std::move(sampleData_);
 }
 
 void Dataset::setActiveColumns(const QVector<bool>& activeColumns)

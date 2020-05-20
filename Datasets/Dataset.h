@@ -66,10 +66,7 @@ public:
 
     QByteArray definitionToXml(int rowCount) const;
 
-    const QVector<QVector<QVariant>>* getSampleData() const;
-
-    /// Clear sample data when it is not necessary.
-    void clearSampleData();
+    QVector<QVector<QVariant>> retrieveSampleData() const;
 
     void setActiveColumns(const QVector<bool>& activeColumns);
 

@@ -31,20 +31,19 @@ void ColumnsPreview::setDatasetSampleInfo(const Dataset& dataset)
 
     setHorizontalHeaderLabels(labels);
 
-    const QVector<QVector<QVariant> >* sampleData = dataset.getSampleData();
+    QVector<QVector<QVariant> > sampleData{dataset.retrieveSampleData()};
 
-    int rows = sampleData->size();
+    int rows = sampleData.size();
     setRowCount(rows);
 
-    Q_ASSERT(sampleData->isEmpty() ? true
-                                   : columns == sampleData->at(0).size());
+    Q_ASSERT(sampleData.isEmpty() ? true : columns == sampleData.at(0).size());
 
     for (int i = 0; i < rows; ++i)
     {
         for (int j = 0; j < columns; ++j)
         {
             QTableWidgetItem* item =
-                new QTableWidgetItem(sampleData->at(i).at(j).toString());
+                new QTableWidgetItem(sampleData.at(i).at(j).toString());
             item->setFlags(item->flags() & ~Qt::ItemIsEditable);
             setItem(i, j, item);
         }

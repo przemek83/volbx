@@ -362,14 +362,14 @@ void SpreadsheetsTest::testSampleData(
     Dataset& dataset, int rows, int columns,
     const QVector<std::tuple<QVariant, int, int> >& fields)
 {
-    const QVector<QVector<QVariant> >* sampleData = dataset.getSampleData();
+    QVector<QVector<QVariant> > sampleData{dataset.retrieveSampleData()};
 
-    QCOMPARE(sampleData->size(), rows);
-    QCOMPARE(sampleData->front().size(), columns);
+    QCOMPARE(sampleData.size(), rows);
+    QCOMPARE(sampleData.front().size(), columns);
 
     std::tuple<QVariant, int, int> fieldsTuple;
     for (auto [value, row, column] : fields)
-        QCOMPARE(sampleData->at(row)[column], value);
+        QCOMPARE(sampleData.at(row)[column], value);
 }
 
 void SpreadsheetsTest::testDatasetConstruction(

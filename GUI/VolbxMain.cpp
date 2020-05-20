@@ -394,9 +394,6 @@ void VolbxMain::actionImportDataTriggered()
         return;
     }
 
-    // Sample data is not needed any more.
-    dataset->clearSampleData();
-
     if (!dataset)
     {
         QMessageBox::critical(this, tr("Import error"), dataset->getError());
