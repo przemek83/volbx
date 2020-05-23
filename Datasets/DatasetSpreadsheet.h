@@ -13,8 +13,8 @@ class ImportSpreadsheet;
 class DatasetSpreadsheet : public Dataset
 {
 public:
-    explicit DatasetSpreadsheet(const QString& name, const QString& zipFileName,
-                                QObject* parent = nullptr);
+    DatasetSpreadsheet(const QString& name, const QString& zipFileName,
+                       QObject* parent = nullptr);
 
     ~DatasetSpreadsheet() override;
 
@@ -31,8 +31,6 @@ protected:
     std::unique_ptr<ImportSpreadsheet> importer_{nullptr};
 
 private:
-    void updateSampleDataStrings(QVector<QVector<QVariant>>& data);
-
     bool getSheetList();
     bool getHeadersList(const QString& sheetName);
     bool getColumnTypes(const QString& sheetName);

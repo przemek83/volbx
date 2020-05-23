@@ -32,27 +32,6 @@ bool DatasetSpreadsheet::analyze()
     return true;
 }
 
-void DatasetSpreadsheet::updateSampleDataStrings(
-    QVector<QVector<QVariant>>& data)
-{
-    if (sharedStrings_.isEmpty())
-        return;
-
-    for (int i = 0; i < columnCount(); ++i)
-    {
-        if (ColumnType::STRING != columnTypes_.at(i))
-            continue;
-        for (auto& sampleDataRow : data)
-        {
-            if (sampleDataRow[i].type() != QVariant::Int)
-                continue;
-            const int index{sampleDataRow[i].toInt()};
-            sampleDataRow[i] =
-                (index > sharedStrings_.size() ? 0 : sharedStrings_[index]);
-        }
-    }
-}
-
 const QString& DatasetSpreadsheet::getSheetName()
 {
     return sheetNames_.constFirst();

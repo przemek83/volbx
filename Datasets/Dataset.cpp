@@ -205,7 +205,7 @@ QByteArray Dataset::definitionToXml(int rowCount) const
     return data;
 }
 
-QVector<QVector<QVariant> > Dataset::retrieveSampleData() const
+QVector<QVector<QVariant>> Dataset::retrieveSampleData() const
 {
     return std::move(sampleData_);
 }
@@ -300,6 +300,26 @@ void Dataset::rebuildDefinitonUsingActiveColumnsOnly()
 }
 
 int Dataset::getActiveColumnCount() const { return activeColumns_.count(true); }
+
+void Dataset::updateSampleDataStrings(QVector<QVector<QVariant>>& data) const
+{
+    if (sharedStrings_.isEmpty())
+        return;
+
+    for (int i = 0; i < columnCount(); ++i)
+    {
+        if (columnTypes_.at(i) != ColumnType::STRING)
+            continue;
+        for (auto& sampleDataRow : data)
+        {
+            if (sampleDataRow[i].type() != QVariant::Int)
+                continue;
+            const int index{sampleDataRow[i].toInt()};
+            sampleDataRow[i] =
+                (index > sharedStrings_.size() ? 0 : sharedStrings_[index]);
+        }
+    }
+}
 
 bool Dataset::isSpecialColumnTagged(SpecialColumn column) const
 {

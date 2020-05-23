@@ -36,8 +36,6 @@ protected:
     bool analyze() override;
 
 private:
-    void updateSampleDataStrings(QVector<QVector<QVariant>>& data);
-
     /// Load definition, strings and sample data.
     bool load();
 

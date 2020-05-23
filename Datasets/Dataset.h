@@ -78,6 +78,8 @@ public:
 
     int getActiveColumnCount() const;
 
+    void updateSampleDataStrings(QVector<QVector<QVariant>>& data) const;
+
 protected:
     virtual bool analyze() = 0;
 

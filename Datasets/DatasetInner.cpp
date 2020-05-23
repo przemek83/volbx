@@ -114,15 +114,6 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::getAllData()
     return {true, data};
 }
 
-void DatasetInner::updateSampleDataStrings(QVector<QVector<QVariant>>& data)
-{
-    for (int i = 0; i < columnsCount_; ++i)
-        if (ColumnType::STRING == columnTypes_.at(i))
-            for (auto& sampleDataRow : data)
-                sampleDataRow[i] =
-                    sharedStrings_[sampleDataRow[i].toULongLong()];
-}
-
 bool DatasetInner::fromXml(QByteArray& definitionContent)
 {
     QDomDocument xmlDocument;
