@@ -70,7 +70,6 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetSpreadsheet::getAllData()
         valid_ = true;
         sharedStrings_ = getSharedStringTable();
     }
-    rebuildDefinitonUsingActiveColumnsOnly();
     return {true, data};
 }
 
@@ -154,4 +153,3 @@ std::unique_ptr<QVariant[]> DatasetSpreadsheet::getSharedStringTable()
     stringsMap_.clear();
     return stringsTable;
 }
-

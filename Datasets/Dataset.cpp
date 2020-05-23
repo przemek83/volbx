@@ -162,20 +162,17 @@ bool Dataset::loadData()
 {
     bool success{false};
     std::tie(success, data_) = getAllData();
+    rebuildDefinitonUsingActiveColumnsOnly();
     return success;
 }
 
 QString Dataset::getNameForTabBar()
 {
-    QString tabName = getName();
-
+    QString tabName{getName()};
     if (auto [ok, column] =
             getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT);
         ok)
-    {
         tabName.append(" (" + getHeaderName(column) + ")");
-    }
-
     return tabName;
 }
 

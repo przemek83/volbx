@@ -22,7 +22,7 @@ class Dataset : public QObject
 {
     Q_OBJECT
 public:
-    Dataset(const QString& name, QObject* parent = nullptr);
+    explicit Dataset(const QString& name, QObject* parent = nullptr);
 
     virtual ~Dataset();
 
@@ -85,8 +85,6 @@ protected:
 
     virtual std::tuple<bool, QVector<QVector<QVariant>>> getAllData() = 0;
 
-    void rebuildDefinitonUsingActiveColumnsOnly();
-
     virtual std::unique_ptr<QVariant[]> getSharedStringTable() = 0;
 
     /// Array with shared strings, Done for memory optimization.
@@ -120,10 +118,9 @@ protected:
     const QString DATASET_COLUMN_SPECIAL_TAG{QStringLiteral("SPECIAL_TAG")};
     const QString DATASET_ROW_COUNT{QStringLiteral("ROW_COUNT")};
 
-    /// Stores information about columns which are tagged as "special".
-    QMap<SpecialColumn, int> specialColumns_;
-
 private:
+    void rebuildDefinitonUsingActiveColumnsOnly();
+
     bool isSpecialColumnTagged(SpecialColumn column) const;
 
     QVariant nullStringVariant_;
@@ -134,6 +131,9 @@ private:
 
     /// Data of dataset. String columns got names in sharedStrings_.
     QVector<QVector<QVariant>> data_;
+
+    /// Stores information about columns which are tagged as "special".
+    QMap<SpecialColumn, int> specialColumns_;
 
 signals:
     void loadingPercentChanged(unsigned int newPercentage);

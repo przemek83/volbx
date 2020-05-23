@@ -132,10 +132,6 @@ void DatasetInner::updateSampleDataStrings(QVector<QVector<QVariant>>& data)
 
 bool DatasetInner::fromXml(QByteArray& definitionContent)
 {
-    headerColumnNames_.clear();
-    columnTypes_.clear();
-    specialColumns_.clear();
-
     QDomDocument xmlDocument;
 
     // If parsing failure than exit.
@@ -165,7 +161,7 @@ bool DatasetInner::fromXml(QByteArray& definitionContent)
 
         QString special{column.attribute(DATASET_COLUMN_SPECIAL_TAG)};
         if (0 != special.compare(QLatin1String("")))
-            specialColumns_[static_cast<SpecialColumn>(special.toInt())] = i;
+            setSpecialColumn(static_cast<SpecialColumn>(special.toInt()), i);
     }
 
     // Read row count.
@@ -369,9 +365,6 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::fillData(
         "Loaded " + QString::number(data->size()) + " rows.");
 
     zipFile.close();
-
-    if (!fillSamplesOnly)
-        rebuildDefinitonUsingActiveColumnsOnly();
 
     return {true, data};
 }
