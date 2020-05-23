@@ -25,14 +25,12 @@ ColumnType Dataset::getColumnFormat(int column) const
 std::tuple<double, double> Dataset::getNumericRange(int column) const
 {
     Q_ASSERT(ColumnType::NUMBER == getColumnFormat(column));
-
     double min{0.};
     double max{0.};
-
     bool first{true};
     for (int i = 0; i < rowCount(); ++i)
     {
-        double value = data_[i][column].toDouble();
+        double value{data_[i][column].toDouble()};
         if (first)
         {
             min = value;
@@ -42,40 +40,30 @@ std::tuple<double, double> Dataset::getNumericRange(int column) const
         }
 
         if (value < min)
-        {
             min = value;
-        }
 
         if (value > max)
-        {
             max = value;
-        }
     }
-
     return {min, max};
 }
 
 std::tuple<QDate, QDate, bool> Dataset::getDateRange(int column) const
 {
     Q_ASSERT(ColumnType::DATE == getColumnFormat(column));
-
     QDate minDate;
     QDate maxDate;
     bool emptyDates{false};
-
     bool first{true};
     for (int i = 0; i < rowCount(); ++i)
     {
-        const QVariant& dateVariant = data_[i][column];
-
+        const QVariant& dateVariant{data_[i][column]};
         if (dateVariant.isNull())
         {
             emptyDates = true;
             continue;
         }
-
-        QDate date = dateVariant.toDate();
-
+        QDate date{dateVariant.toDate()};
         if (first)
         {
             minDate = date;
@@ -85,14 +73,10 @@ std::tuple<QDate, QDate, bool> Dataset::getDateRange(int column) const
         }
 
         if (date < minDate)
-        {
             minDate = date;
-        }
 
         if (date > maxDate)
-        {
             maxDate = date;
-        }
     }
 
     return {minDate, maxDate, emptyDates};
@@ -101,20 +85,19 @@ std::tuple<QDate, QDate, bool> Dataset::getDateRange(int column) const
 QStringList Dataset::getStringList(int column) const
 {
     Q_ASSERT(ColumnType::STRING == getColumnFormat(column));
-
     QStringList listToFill;
     listToFill.reserve(rowCount());
-    for (int row = 0; row < rowCount(); ++row)
+    for (const auto& row : data_)
     {
-        if (data_[row][column].isNull())
+        if (row[column].isNull())
             continue;
 
-        if (data_[row][column].type() == QVariant::String)
+        if (row[column].type() == QVariant::String)
         {
-            listToFill.append(data_[row][column].toString());
+            listToFill.append(row[column].toString());
             continue;
         }
-        const uint32_t index{data_[row][column].toUInt()};
+        const uint32_t index{row[column].toUInt()};
         listToFill.append(sharedStrings_[index].toString());
     }
     listToFill.removeDuplicates();
@@ -133,7 +116,6 @@ QString Dataset::getHeaderName(int column) const
 {
     if (columnsCount_ - 1 >= column)
         return headerColumnNames_[column];
-
     Q_ASSERT(false);
     return QLatin1String("");
 }
@@ -171,38 +153,28 @@ QString Dataset::getNameForTabBar()
 
 QByteArray Dataset::definitionToXml(int rowCount) const
 {
-    QByteArray data;
     QDomDocument xmlDocument(DATASET_NAME);
-    QDomElement root = xmlDocument.createElement(DATASET_NAME);
+    QDomElement root{xmlDocument.createElement(DATASET_NAME)};
     xmlDocument.appendChild(root);
-
-    // Columns.
-    QDomElement columns = xmlDocument.createElement(DATASET_COLUMNS);
+    QDomElement columns{xmlDocument.createElement(DATASET_COLUMNS)};
     root.appendChild(columns);
-
     for (int i = 0; i < columnsCount_; ++i)
     {
-        QDomElement node = xmlDocument.createElement(DATASET_COLUMN);
+        QDomElement node{xmlDocument.createElement(DATASET_COLUMN)};
         node.setAttribute(DATASET_COLUMN_NAME, headerColumnNames_.at(i));
         node.setAttribute(DATASET_COLUMN_FORMAT,
                           static_cast<int>(columnTypes_.at(i)));
-
         QMapIterator<SpecialColumn, int> it(specialColumns_);
         if (it.findNext(i))
-        {
             node.setAttribute(DATASET_COLUMN_SPECIAL_TAG,
                               QString::number(static_cast<int>(it.key())));
-        }
         columns.appendChild(node);
     }
 
-    // Add row count.
-    QDomElement rowCountElement = xmlDocument.createElement(DATASET_ROW_COUNT);
+    QDomElement rowCountElement{xmlDocument.createElement(DATASET_ROW_COUNT)};
     rowCountElement.setAttribute(DATASET_ROW_COUNT, QString::number(rowCount));
     root.appendChild(rowCountElement);
-
-    data = xmlDocument.toByteArray();
-    return data;
+    return xmlDocument.toByteArray();
 }
 
 QVector<QVector<QVariant>> Dataset::retrieveSampleData() const
@@ -240,9 +212,7 @@ QString Dataset::dumpDatasetDefinition() const
 
         QMapIterator<SpecialColumn, int> it(specialColumns_);
         if (it.findNext(i))
-        {
             dump += " special=" + QString::number(static_cast<int>(it.key()));
-        }
         dump.append(QLatin1String("\n"));
     }
     return dump;
@@ -251,17 +221,13 @@ QString Dataset::dumpDatasetDefinition() const
 void Dataset::rebuildDefinitonUsingActiveColumnsOnly()
 {
     QVector<ColumnType> tempColumnsFormat;
-
-    QStringList tempHeaderColumnNames = QStringList();
-
-    QMap<SpecialColumn, int> specialColumnsTemp = QMap<SpecialColumn, int>();
-
-    int activeColumnNumber = 0;
-
-    bool specialColumnDateMarked =
-        isSpecialColumnTagged(SPECIAL_COLUMN_TRANSACTION_DATE);
-    bool specialColumnPriceMarked =
-        isSpecialColumnTagged(SPECIAL_COLUMN_PRICE_PER_UNIT);
+    QStringList tempHeaderColumnNames;
+    QMap<SpecialColumn, int> specialColumnsTemp{QMap<SpecialColumn, int>()};
+    int activeColumnNumber{0};
+    bool specialColumnDateMarked{
+        isSpecialColumnTagged(SPECIAL_COLUMN_TRANSACTION_DATE)};
+    bool specialColumnPriceMarked{
+        isSpecialColumnTagged(SPECIAL_COLUMN_PRICE_PER_UNIT)};
 
     for (int i = 0; i < activeColumns_.count(); ++i)
     {
@@ -269,21 +235,14 @@ void Dataset::rebuildDefinitonUsingActiveColumnsOnly()
         {
             tempColumnsFormat.push_back(columnTypes_[i]);
             tempHeaderColumnNames << headerColumnNames_[i];
-
             if (specialColumnDateMarked &&
                 specialColumns_.value(SPECIAL_COLUMN_TRANSACTION_DATE) == i)
-            {
                 specialColumnsTemp[SPECIAL_COLUMN_TRANSACTION_DATE] =
                     activeColumnNumber;
-            }
-
             if (specialColumnPriceMarked &&
                 specialColumns_.value(SPECIAL_COLUMN_PRICE_PER_UNIT) == i)
-            {
                 specialColumnsTemp[SPECIAL_COLUMN_PRICE_PER_UNIT] =
                     activeColumnNumber;
-            }
-
             activeColumnNumber++;
         }
     }
@@ -291,11 +250,7 @@ void Dataset::rebuildDefinitonUsingActiveColumnsOnly()
     columnTypes_ = tempColumnsFormat;
     headerColumnNames_ = tempHeaderColumnNames;
     specialColumns_ = specialColumnsTemp;
-
-    // Set new column count.
     columnsCount_ = getActiveColumnCount();
-
-    // Those info is not needed any more.
     activeColumns_.clear();
 }
 
