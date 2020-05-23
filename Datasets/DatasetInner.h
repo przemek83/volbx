@@ -35,8 +35,6 @@ protected:
 
     bool analyze() override;
 
-    std::unique_ptr<QVariant[]> getSharedStringTable() override;
-
 private:
     void updateSampleDataStrings(QVector<QVector<QVariant>>& data);
 
@@ -65,8 +63,6 @@ private:
 
     QVector<QVector<QVariant>> prepareContainerForData(
         bool fillSamplesOnly) const;
-
-    std::unique_ptr<QVariant[]> stringsTable_{nullptr};
 
     QuaZip zip_;
 

@@ -21,19 +21,11 @@ public:
 protected:
     bool analyze() override;
 
-    std::unique_ptr<QVariant[]> getSharedStringTable() override;
-
     virtual bool loadSpecificData() = 0;
 
     std::tuple<bool, QVector<QVector<QVariant>>> getSample() override;
 
     std::tuple<bool, QVector<QVector<QVariant>>> getAllData() override;
-
-    /// Temporary string <-> index map used to build shared string table.
-    QHash<QString, int> stringsMap_;
-
-    /// Next index to be used in strings hash map.
-    int nextSharedStringIndex_{0};
 
     QFile zipFile_;
     std::unique_ptr<ImportSpreadsheet> importer_{nullptr};

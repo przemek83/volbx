@@ -85,10 +85,7 @@ protected:
 
     virtual std::tuple<bool, QVector<QVector<QVariant>>> getAllData() = 0;
 
-    virtual std::unique_ptr<QVariant[]> getSharedStringTable() = 0;
-
-    /// Array with shared strings, Done for memory optimization.
-    std::unique_ptr<QVariant[]> sharedStrings_{nullptr};
+    QVector<QVariant> sharedStrings_;
 
     /// Dataset is valid.
     bool valid_{false};

@@ -114,12 +114,8 @@ QStringList Dataset::getStringList(int column) const
             listToFill.append(data_[row][column].toString());
             continue;
         }
-
-        if (sharedStrings_ != nullptr)
-        {
-            const uint32_t index = data_[row][column].toUInt();
-            listToFill.append(sharedStrings_[index].toString());
-        }
+        const uint32_t index{data_[row][column].toUInt()};
+        listToFill.append(sharedStrings_[index].toString());
     }
     listToFill.removeDuplicates();
     return listToFill;
@@ -129,10 +125,7 @@ std::tuple<bool, int> Dataset::getSpecialColumnIfExists(
     SpecialColumn columnTag) const
 {
     if (isSpecialColumnTagged(columnTag))
-    {
         return {true, specialColumns_[columnTag]};
-    }
-
     return {false, Constants::NOT_SET_COLUMN};
 }
 

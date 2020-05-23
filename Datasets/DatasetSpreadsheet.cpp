@@ -35,13 +35,22 @@ bool DatasetSpreadsheet::analyze()
 void DatasetSpreadsheet::updateSampleDataStrings(
     QVector<QVector<QVariant>>& data)
 {
-    if (stringsMap_.isEmpty())
+    if (sharedStrings_.isEmpty())
         return;
 
     for (int i = 0; i < columnCount(); ++i)
-        if (ColumnType::STRING == columnTypes_.at(i))
-            for (auto& sampleDataRow : data)
-                sampleDataRow[i] = stringsMap_.key(sampleDataRow[i].toInt());
+    {
+        if (ColumnType::STRING != columnTypes_.at(i))
+            continue;
+        for (auto& sampleDataRow : data)
+        {
+            if (sampleDataRow[i].type() != QVariant::Int)
+                continue;
+            const int index{sampleDataRow[i].toInt()};
+            sampleDataRow[i] =
+                (index > sharedStrings_.size() ? 0 : sharedStrings_[index]);
+        }
+    }
 }
 
 const QString& DatasetSpreadsheet::getSheetName()
@@ -64,13 +73,9 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetSpreadsheet::getAllData()
     if (!isValid())
         return {false, {}};
 
-    auto [result, data] = getDataFromZip(getSheetName(), false);
-    if (result)
-    {
-        valid_ = true;
-        sharedStrings_ = getSharedStringTable();
-    }
-    return {true, data};
+    QVector<QVector<QVariant>> data;
+    std::tie(valid_, data) = getDataFromZip(getSheetName(), false);
+    return {valid_, data};
 }
 
 bool DatasetSpreadsheet::getSheetList()
@@ -138,18 +143,4 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetSpreadsheet::getDataFromZip(
     }
 
     return {true, data};
-}
-
-std::unique_ptr<QVariant[]> DatasetSpreadsheet::getSharedStringTable()
-{
-    auto stringsTable = std::make_unique<QVariant[]>(
-        static_cast<size_t>(nextSharedStringIndex_));
-    auto it = stringsMap_.constBegin();
-    while (it != stringsMap_.constEnd())
-    {
-        stringsTable[static_cast<size_t>(it.value())] = QVariant(it.key());
-        ++it;
-    }
-    stringsMap_.clear();
-    return stringsTable;
 }

@@ -22,10 +22,7 @@ bool DatasetXlsx::loadSharedStrings()
         return false;
     }
     for (const auto& sharedString : sharedStringsList)
-    {
-        stringsMap_[sharedString] = nextSharedStringIndex_;
-        nextSharedStringIndex_++;
-    }
+        sharedStrings_.append(QVariant(sharedString));
     return success;
 }
 

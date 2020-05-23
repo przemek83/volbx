@@ -110,15 +110,8 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::getAllData()
     QVector<QVector<QVariant>> data;
     std::tie(valid_, data) = fillData(zip_, false);
     zip_.close();
-    if (valid_)
-        sharedStrings_ = getSharedStringTable();
 
     return {true, data};
-}
-
-std::unique_ptr<QVariant[]> DatasetInner::getSharedStringTable()
-{
-    return std::move(stringsTable_);
 }
 
 void DatasetInner::updateSampleDataStrings(QVector<QVector<QVariant>>& data)
@@ -127,7 +120,7 @@ void DatasetInner::updateSampleDataStrings(QVector<QVector<QVariant>>& data)
         if (ColumnType::STRING == columnTypes_.at(i))
             for (auto& sampleDataRow : data)
                 sampleDataRow[i] =
-                    stringsTable_[sampleDataRow[i].toULongLong()];
+                    sharedStrings_[sampleDataRow[i].toULongLong()];
 }
 
 bool DatasetInner::fromXml(QByteArray& definitionContent)
@@ -214,15 +207,9 @@ bool DatasetInner::loadStrings(QuaZip& zip)
 
     QList<QByteArray> strings{stringsContent.split('\n')};
     // First element is empty.
-    stringsTable_ =
-        std::make_unique<QVariant[]>(static_cast<size_t>(strings.size()) + 1);
-    stringsTable_[0] = QVariant(QString());
-    size_t counter{1};
+    sharedStrings_.append(QVariant(QString()));
     for (const auto& currentString : strings)
-    {
-        stringsTable_[counter] = QVariant(QString::fromUtf8(currentString));
-        counter++;
-    }
+        sharedStrings_.append(QVariant(QString::fromUtf8(currentString)));
 
     return true;
 }
