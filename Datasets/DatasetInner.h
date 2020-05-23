@@ -15,19 +15,6 @@ public:
 
     ~DatasetInner() override = default;
 
-    /// Return names without extension of available datasets in datasets dir.
-    static QStringList getListOfAvailableDatasets();
-
-    /// Returns datasets directory/folder.
-    static QString getDatasetsDir();
-
-    /// Checks if it is possible to use default datasets directory to store
-    /// data.
-    static bool datasetDirExistAndUserHavePermisions();
-
-    /// Removes given dataset from disk.
-    static bool removeDataset(const QString& datasetName);
-
 protected:
     std::tuple<bool, QVector<QVector<QVariant>>> getSample() override;
 
@@ -64,7 +51,7 @@ private:
 
     QuaZip zip_;
 
-    static const QString datasetsDir_;
+    const QString datasetsDir_;
 };
 
 #endif  // DATASETINNER_H

@@ -16,7 +16,7 @@ public:
     Configuration(Configuration&& other) = delete;
 
     /**
-     * Used to access Config singleton.
+     * Used to access configuration singleton.
      * @return singleton instance.
      */
     static Configuration& getInstance();
@@ -26,7 +26,7 @@ public:
     bool needToCheckForUpdates() const;
 
     /**
-     * Save config into file.
+     * Save configuration into file.
      * @return true if success.
      */
     bool save();
@@ -41,7 +41,7 @@ public:
     bool configWasValid() const;
 
     /**
-     * Load/reload Config. Public for unit tests.
+     * Load/reload configuration. Public for unit tests.
      * @return true if loading finished with success.
      */
     bool load();
@@ -54,7 +54,7 @@ private:
     Configuration();
     ~Configuration() = default;
 
-    /// Flag indicating that config existed and was valid.
+    /// Flag indicating that configuration existed and was valid.
     bool configValid_{false};
 
     enum UpdateOption
@@ -77,8 +77,8 @@ private:
     const QString XML_NAME_IMPORTPATH{QStringLiteral("IMPORTPATH")};
 
     /**
-     * Get viewable for of config.
-     * @return config in readable text form.
+     * Get viewable for of configuration.
+     * @return configuration in readable text form.
      */
     QString configDump() const;
 };

@@ -17,6 +17,7 @@
 #include "ModelsAndViews/TableModel.h"
 
 #include "Common.h"
+#include "DatasetUtilities.h"
 
 void InnerTests::initTestCase()
 {
@@ -26,7 +27,7 @@ void InnerTests::initTestCase()
 
 void InnerTests::generateDumpData()
 {
-    QDirIterator dirIt(DatasetInner::getDatasetsDir(),
+    QDirIterator dirIt(DatasetUtilities::getDatasetsDir(),
                        QDirIterator::Subdirectories);
     while (dirIt.hasNext())
     {
@@ -37,7 +38,7 @@ void InnerTests::generateDumpData()
             DatasetInner* dataset = new DatasetInner(fileInfo.baseName());
 
             QString definitionDump = dataset->dumpDatasetDefinition();
-            Common::saveFile(DatasetInner::getDatasetsDir() +
+            Common::saveFile(DatasetUtilities::getDatasetsDir() +
                                  fileInfo.baseName() +
                                  Common::getDefinitionDumpSuffix(),
                              definitionDump);
@@ -54,7 +55,7 @@ void InnerTests::generateDumpData()
             view.setModel(&proxyModel);
 
             QString tsvData{Common::getExportedTsv(view)};
-            Common::saveFile(DatasetInner::getDatasetsDir() +
+            Common::saveFile(DatasetUtilities::getDatasetsDir() +
                                  fileInfo.baseName() +
                                  Common::getDataTsvDumpSuffix(),
                              tsvData);
@@ -64,7 +65,7 @@ void InnerTests::generateDumpData()
 
 void InnerTests::testDatasets()
 {
-    QStringList datasets = DatasetInner::getListOfAvailableDatasets();
+    QStringList datasets = DatasetUtilities::getListOfAvailableDatasets();
     foreach (QString datasetName, datasets)
     {
         DatasetInner* dataset = new DatasetInner(datasetName);
@@ -87,8 +88,8 @@ void InnerTests::testDatasets()
 
         checkImport(datasetName, dataset, view);
 
-        QString filePath{DatasetInner::getDatasetsDir() + tempFilename_ +
-                         Constants::getDatasetExtension()};
+        QString filePath{DatasetUtilities::getDatasetsDir() + tempFilename_ +
+                         DatasetUtilities::getDatasetExtension()};
         ExportUtilities::saveDataset(filePath, &view, nullptr);
         checkExport(datasetName);
     }
@@ -97,7 +98,7 @@ void InnerTests::testDatasets()
 void InnerTests::checkDatasetDefinition(const QString& fileName,
                                         DatasetInner* dataset) const
 {
-    QString datasetFilePath(DatasetInner::getDatasetsDir() + fileName);
+    QString datasetFilePath(DatasetUtilities::getDatasetsDir() + fileName);
 
     QString compareData =
         Common::loadFile(datasetFilePath + Common::getDefinitionDumpSuffix());
@@ -111,7 +112,7 @@ void InnerTests::checkDatasetData(const QString& fileName,
 {
     QString actualData{Common::getExportedTsv(view)};
 
-    QString datasetFilePath(DatasetInner::getDatasetsDir() + fileName);
+    QString datasetFilePath(DatasetUtilities::getDatasetsDir() + fileName);
     QString compareData =
         Common::loadFile(datasetFilePath + Common::getDataTsvDumpSuffix());
 
@@ -128,48 +129,50 @@ void InnerTests::checkImport(const QString& fileName, DatasetInner* dataset,
 void InnerTests::checkExport(QString fileName)
 {
     // Open original archive.
-    QuaZip zipOriginal(DatasetInner::getDatasetsDir() + fileName +
-                       Constants::getDatasetExtension());
+    QuaZip zipOriginal(DatasetUtilities::getDatasetsDir() + fileName +
+                       DatasetUtilities::getDatasetExtension());
     QVERIFY(true == zipOriginal.open(QuaZip::mdUnzip));
 
     // Open generated archive.
-    QuaZip zipGenerated(DatasetInner::getDatasetsDir() + tempFilename_ +
-                        Constants::getDatasetExtension());
+    QuaZip zipGenerated(DatasetUtilities::getDatasetsDir() + tempFilename_ +
+                        DatasetUtilities::getDatasetExtension());
     QVERIFY(true == zipGenerated.open(QuaZip::mdUnzip));
 
     // Open data files in archives and compare it.
     QuaZipFile zipFileOriginal(&zipOriginal);
-    zipOriginal.setCurrentFile(Constants::getDatasetDataFilename());
+    zipOriginal.setCurrentFile(DatasetUtilities::getDatasetDataFilename());
     QVERIFY(true == zipFileOriginal.open(QIODevice::ReadOnly));
     QByteArray originalData = zipFileOriginal.readAll();
     zipFileOriginal.close();
 
     QuaZipFile zipFileGenerated(&zipGenerated);
-    zipGenerated.setCurrentFile(Constants::getDatasetDataFilename());
+    zipGenerated.setCurrentFile(DatasetUtilities::getDatasetDataFilename());
     QVERIFY(true == zipFileGenerated.open(QIODevice::ReadOnly));
     QByteArray generatedData = zipFileGenerated.readAll();
     zipFileGenerated.close();
     QCOMPARE(generatedData, originalData);
 
     // Open strings files in archives and compare it.
-    zipOriginal.setCurrentFile(Constants::getDatasetStringsFilename());
+    zipOriginal.setCurrentFile(DatasetUtilities::getDatasetStringsFilename());
     QVERIFY(true == zipFileOriginal.open(QIODevice::ReadOnly));
     originalData = zipFileOriginal.readAll();
     zipFileOriginal.close();
 
-    zipGenerated.setCurrentFile(Constants::getDatasetStringsFilename());
+    zipGenerated.setCurrentFile(DatasetUtilities::getDatasetStringsFilename());
     QVERIFY(true == zipFileGenerated.open(QIODevice::ReadOnly));
     generatedData = zipFileGenerated.readAll();
     zipFileGenerated.close();
     QCOMPARE(generatedData, originalData);
 
     // Open definitions files.
-    zipOriginal.setCurrentFile(Constants::getDatasetDefinitionFilename());
+    zipOriginal.setCurrentFile(
+        DatasetUtilities::getDatasetDefinitionFilename());
     QVERIFY(true == zipFileOriginal.open(QIODevice::ReadOnly));
     originalData = zipFileOriginal.readAll();
     zipFileOriginal.close();
 
-    zipGenerated.setCurrentFile(Constants::getDatasetDefinitionFilename());
+    zipGenerated.setCurrentFile(
+        DatasetUtilities::getDatasetDefinitionFilename());
     QVERIFY(true == zipFileGenerated.open(QIODevice::ReadOnly));
     generatedData = zipFileGenerated.readAll();
     zipFileGenerated.close();
@@ -258,6 +261,6 @@ void InnerTests::testPartialData()
 
 void InnerTests::cleanupTestCase()
 {
-    QFile::remove(DatasetInner::getDatasetsDir() + tempFilename_ +
-                  Constants::getDatasetExtension());
+    QFile::remove(DatasetUtilities::getDatasetsDir() + tempFilename_ +
+                  DatasetUtilities::getDatasetExtension());
 }

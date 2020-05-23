@@ -6,39 +6,14 @@
 #include <QDomDocument>
 #include <QTextStream>
 
-#include "Common/Constants.h"
+#include "Common/DatasetUtilities.h"
 #include "Shared/Logger.h"
 
-const QString DatasetInner::datasetsDir_{"Data"};
-
 DatasetInner::DatasetInner(const QString& name, QObject* parent)
-    : Dataset(name, parent)
+    : Dataset(name, parent), datasetsDir_(DatasetUtilities::getDatasetsDir())
 {
-    zip_.setZipName(DatasetInner::getDatasetsDir() + name +
-                    Constants::getDatasetExtension());
-}
-
-QStringList DatasetInner::getListOfAvailableDatasets()
-{
-    QDir datasetsDir{getDatasetsDir()};
-    if (!datasetDirExistAndUserHavePermisions())
-        return QStringList();
-
-    datasetsDir.setFilter(QDir::Files | QDir::Readable | QDir::NoSymLinks |
-                          QDir::NoDotAndDotDot);
-    datasetsDir.setNameFilters(
-        QStringList("*" + Constants::getDatasetExtension()));
-    datasetsDir.setSorting(QDir::Name);
-
-    QStringList entries{datasetsDir.entryList()};
-    return entries.replaceInStrings(Constants::getDatasetExtension(),
-                                    QLatin1String(""));
-}
-
-QString DatasetInner::getDatasetsDir()
-{
-    return QString(QApplication::applicationDirPath() + "/" + datasetsDir_ +
-                   "/");
+    zip_.setZipName(datasetsDir_ + name +
+                    DatasetUtilities::getDatasetExtension());
 }
 
 bool DatasetInner::analyze()
@@ -58,23 +33,6 @@ bool DatasetInner::analyze()
     valid_ = true;
 
     return true;
-}
-
-bool DatasetInner::datasetDirExistAndUserHavePermisions()
-{
-    QDir directory{getDatasetsDir()};
-    if (!directory.exists() && !directory.mkpath(directory.path()))
-        return false;
-
-    return QFile::permissions(directory.path()).testFlag(QFile::ReadUser) &&
-           QFile::permissions(directory.path()).testFlag(QFile::WriteUser);
-}
-
-bool DatasetInner::removeDataset(const QString& datasetName)
-{
-    QString datasetFile{getDatasetsDir() + datasetName +
-                        Constants::getDatasetExtension()};
-    return QFile::remove(datasetFile);
 }
 
 std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::getSample()
@@ -159,7 +117,7 @@ bool DatasetInner::fromXml(QByteArray& definitionContent)
 bool DatasetInner::loadXmlFile(QByteArray& definitionContent, QuaZip& zip)
 {
     QuaZipFile zipFile(&zip);
-    zip.setCurrentFile(Constants::getDatasetDefinitionFilename());
+    zip.setCurrentFile(DatasetUtilities::getDatasetDefinitionFilename());
     if (!zipFile.open(QIODevice::ReadOnly))
     {
         LOG(LogTypes::IMPORT_EXPORT,
@@ -180,7 +138,7 @@ bool DatasetInner::loadXmlFile(QByteArray& definitionContent, QuaZip& zip)
 bool DatasetInner::loadStrings(QuaZip& zip)
 {
     QuaZipFile zipFile(&zip);
-    zip.setCurrentFile(Constants::getDatasetStringsFilename());
+    zip.setCurrentFile(DatasetUtilities::getDatasetStringsFilename());
 
     if (!zipFile.open(QIODevice::ReadOnly))
     {
@@ -296,7 +254,7 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::fillData(
     QuaZip& zip, bool fillSamplesOnly)
 {
     QuaZipFile zipFile(&zip);
-    zip.setCurrentFile(Constants::getDatasetDataFilename());
+    zip.setCurrentFile(DatasetUtilities::getDatasetDataFilename());
 
     if (!zipFile.open(QIODevice::ReadOnly))
     {

@@ -16,17 +16,6 @@ QString getTemporaryFileSuffix() { return QStringLiteral(".tmp"); }
 
 QString getConfigurationFileName() { return QStringLiteral("config"); }
 
-QString getDatasetDefinitionFilename()
-{
-    return QStringLiteral("definition.xml");
-}
-
-QString getDatasetDataFilename() { return QStringLiteral("data.csv"); }
-
-QString getDatasetStringsFilename() { return QStringLiteral("strings.txt"); }
-
-QString getDatasetExtension() { return QStringLiteral(".vbx"); }
-
 static QVector<QString> initProgressBarNames()
 {
     QVector<QString> progressTitles(static_cast<int>(BarTitle::END));
@@ -43,7 +32,5 @@ QString getProgressBarTitle(BarTitle barTitle)
     static const QVector<QString> progressTitles{initProgressBarNames()};
     return progressTitles[static_cast<int>(barTitle)];
 }
-
-QString getDatasetNameRegExp() { return QStringLiteral("[\\w\\s-]+"); }
 
 }  // namespace Constants

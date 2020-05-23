@@ -3,7 +3,7 @@
 #include <QMenu>
 #include <QMessageBox>
 
-#include "Common/Constants.h"
+#include "Common/DatasetUtilities.h"
 #include "Datasets/DatasetInner.h"
 
 #include "ui_DatasetsListBrowser.h"
@@ -16,8 +16,8 @@ DatasetsListBrowser::DatasetsListBrowser(QWidget* parent)
     connect(ui->searchLineEdit, &QLineEdit::textChanged, this,
             &DatasetsListBrowser::searchTextChanged);
 
-    ui->datasetsList->insertItems(0,
-                                  DatasetInner::getListOfAvailableDatasets());
+    ui->datasetsList->insertItems(
+        0, DatasetUtilities::getListOfAvailableDatasets());
 
     ui->datasetsList->setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -88,7 +88,7 @@ void DatasetsListBrowser::showContextMenu(QPoint pos)
 
         if (QMessageBox::Yes == answer)
         {
-            if (!DatasetInner::removeDataset(datasetName))
+            if (!DatasetUtilities::removeDataset(datasetName))
             {
                 QMessageBox::warning(this, tr("Error"),
                                      tr("Can not delete ") + datasetName + ".");
@@ -96,7 +96,7 @@ void DatasetsListBrowser::showContextMenu(QPoint pos)
 
             ui->datasetsList->clear();
             ui->datasetsList->insertItems(
-                0, DatasetInner::getListOfAvailableDatasets());
+                0, DatasetUtilities::getListOfAvailableDatasets());
         }
     }
 }

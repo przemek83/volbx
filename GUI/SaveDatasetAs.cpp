@@ -5,7 +5,7 @@
 #include <QPushButton>
 #include <QRegExpValidator>
 
-#include "Common/Constants.h"
+#include "Common/DatasetUtilities.h"
 
 #include "ui_SaveDatasetAs.h"
 
@@ -22,8 +22,8 @@ SaveDatasetAs::SaveDatasetAs(QStringList alreadyUsedNames, QWidget* parent)
     connect(ui->cancel, &QPushButton::clicked, this,
             &SaveDatasetAs::cancelClicked);
 
-    ui->nameLineEdit->setValidator(
-        new QRegExpValidator(QRegExp(Constants::getDatasetNameRegExp()), this));
+    ui->nameLineEdit->setValidator(new QRegExpValidator(
+        QRegExp(DatasetUtilities::getDatasetNameRegExp()), this));
     ui->save->setEnabled(false);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);

@@ -8,12 +8,13 @@
 #include <QTabWidget>
 
 #include "Common/Constants.h"
+#include "Common/DatasetUtilities.h"
 
 TabBar::TabBar(QWidget* parent) : QTabBar(parent)
 {
     lineEdit_.setParent(this);
-    lineEdit_.setValidator(
-        new QRegExpValidator(QRegExp(Constants::getDatasetNameRegExp()), this));
+    lineEdit_.setValidator(new QRegExpValidator(
+        QRegExp(DatasetUtilities::getDatasetNameRegExp()), this));
     lineEdit_.hide();
 
     connect(&lineEdit_, &QLineEdit::editingFinished, this,

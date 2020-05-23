@@ -11,7 +11,7 @@
 #include "ModelsAndViews/TableModel.h"
 #include "Shared/Logger.h"
 
-#include "Constants.h"
+#include "DatasetUtilities.h"
 
 namespace
 {
@@ -23,7 +23,7 @@ std::tuple<bool, int, QByteArray> saveDatasetDataFile(
 {
     bool result =
         zipFile.open(QIODevice::WriteOnly,
-                     QuaZipNewInfo(Constants::getDatasetDataFilename()));
+                     QuaZipNewInfo(DatasetUtilities::getDatasetDataFilename()));
     if (!result)
     {
         LOG(LogTypes::IMPORT_EXPORT, "Error while saving data file.");
@@ -132,9 +132,9 @@ std::tuple<bool, int, QByteArray> saveDatasetDataFile(
 bool saveDatasetStringsFile(QuaZipFile& zipFile,
                             const QByteArray& stringsContent)
 {
-    bool result =
-        zipFile.open(QIODevice::WriteOnly,
-                     QuaZipNewInfo(Constants::getDatasetStringsFilename()));
+    bool result = zipFile.open(
+        QIODevice::WriteOnly,
+        QuaZipNewInfo(DatasetUtilities::getDatasetStringsFilename()));
     if (!result || zipFile.write(stringsContent) == -1)
     {
         LOG(LogTypes::IMPORT_EXPORT, "Error while saving strings file.");
@@ -153,9 +153,9 @@ bool saveDatasetDefinitionFile(QuaZipFile& zipFile,
 
     QByteArray definitionContent{parentModel->definitionToXml(rowCount)};
 
-    bool result =
-        zipFile.open(QIODevice::WriteOnly,
-                     QuaZipNewInfo(Constants::getDatasetDefinitionFilename()));
+    bool result = zipFile.open(
+        QIODevice::WriteOnly,
+        QuaZipNewInfo(DatasetUtilities::getDatasetDefinitionFilename()));
     if (!result || zipFile.write(definitionContent) == -1)
     {
         LOG(LogTypes::IMPORT_EXPORT, "Error while saving definition file.");

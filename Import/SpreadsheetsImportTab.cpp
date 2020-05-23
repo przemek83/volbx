@@ -13,6 +13,7 @@
 
 #include "Common/Configuration.h"
 #include "Common/Constants.h"
+#include "Common/DatasetUtilities.h"
 #include "Datasets/DatasetOds.h"
 #include "Datasets/DatasetSpreadsheet.h"
 #include "Datasets/DatasetXlsx.h"
@@ -117,7 +118,7 @@ void SpreadsheetsImportTab::openFileButtonClicked()
     std::unique_ptr<DatasetSpreadsheet> dataset{nullptr};
 
     // Remove all not allowed characters from file name.
-    QString regexpString = Constants::getDatasetNameRegExp().replace(
+    QString regexpString = DatasetUtilities::getDatasetNameRegExp().replace(
         QLatin1String("["), QLatin1String("[^"));
     QString datasetName =
         fileInfo.completeBaseName().remove(QRegExp(regexpString));

@@ -14,7 +14,7 @@
 #include <QVariant>
 
 #include "Common/Configuration.h"
-#include "Common/Constants.h"
+#include "Common/DatasetUtilities.h"
 #include "Common/ExportUtilities.h"
 #include "Datasets/Dataset.h"
 #include "Datasets/DatasetInner.h"
@@ -339,17 +339,17 @@ void VolbxMain::manageActions(bool tabExists)
 
 void VolbxMain::actionSaveDatasetAsTriggered()
 {
-    if (!DatasetInner::datasetDirExistAndUserHavePermisions())
+    if (!DatasetUtilities::isDatasetDirExistAndUserHavePermisions())
     {
         QString msg(tr("Can not access folder "));
-        msg.append(DatasetInner::getDatasetsDir());
+        msg.append(DatasetUtilities::getDatasetsDir());
         msg.append(tr(" needed for saving dataset."));
         QMessageBox::critical(this, QString(tr("Access denied")), msg);
 
         return;
     }
 
-    SaveDatasetAs save(DatasetInner::getListOfAvailableDatasets());
+    SaveDatasetAs save(DatasetUtilities::getListOfAvailableDatasets());
 
     if (QDialog::Accepted == save.exec())
     {
@@ -366,8 +366,8 @@ void VolbxMain::actionSaveDatasetAsTriggered()
 
         QString name{save.getChosenDatasetName()};
         LOG(LogTypes::IMPORT_EXPORT, "Saving dataset " + name);
-        QString filePath{DatasetInner::getDatasetsDir() + name +
-                         Constants::getDatasetExtension()};
+        QString filePath{DatasetUtilities::getDatasetsDir() + name +
+                         DatasetUtilities::getDatasetExtension()};
         ExportUtilities::saveDataset(filePath, view, &bar);
 
         LOG(LogTypes::IMPORT_EXPORT,
