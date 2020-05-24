@@ -78,8 +78,6 @@ public:
 
     QString dumpDatasetDefinition() const;
 
-    unsigned int getActiveColumnCount() const;
-
     void updateSampleDataStrings(QVector<QVector<QVariant>>& data) const;
 
 protected:

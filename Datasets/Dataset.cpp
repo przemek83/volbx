@@ -260,13 +260,8 @@ void Dataset::rebuildDefinitonUsingActiveColumnsOnly()
     columnTypes_ = tempColumnsFormat;
     headerColumnNames_ = tempHeaderColumnNames;
     specialColumns_ = specialColumnsTemp;
-    columnsCount_ = getActiveColumnCount();
+    columnsCount_ = activeColumns_.count(true);
     activeColumns_.clear();
-}
-
-unsigned int Dataset::getActiveColumnCount() const
-{
-    return activeColumns_.count(true);
 }
 
 void Dataset::updateSampleDataStrings(QVector<QVector<QVariant>>& data) const

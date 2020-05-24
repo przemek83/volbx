@@ -20,8 +20,7 @@ private:
      * @param activeColumns number of active columns.
      * @param name name of dataset to compare.
      */
-    void testBasicInfo(Dataset& dataset, int rows, int columns,
-                       int activeColumns, QString name);
+    void testBasicInfo(Dataset& dataset, int rows, int columns, QString name);
 
     /**
      * @brief check some columns if matches hardcoded values.

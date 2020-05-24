@@ -95,7 +95,7 @@ void SpreadsheetsTest::testSpreadsheetFile01(DatasetSpreadsheet* dataset,
                                              QString file)
 {
     QVERIFY(true == dataset->initialize());
-    testBasicInfo(*dataset, 4000, 7, 0, file);
+    testBasicInfo(*dataset, 4000, 7, file);
 
     QVector<QPair<int, ColumnType> > columnFormats;
     columnFormats.append(qMakePair(0, ColumnType::STRING));
@@ -201,7 +201,7 @@ void SpreadsheetsTest::testSpreadsheetFile03(DatasetSpreadsheet* dataset,
                                              QString file)
 {
     QVERIFY(true == dataset->initialize());
-    testBasicInfo(*dataset, 4, 5, 0, file);
+    testBasicInfo(*dataset, 4, 5, file);
 
     QVector<QPair<int, ColumnType> > columnFormats;
     columnFormats.append(qMakePair(0, ColumnType::NUMBER));
@@ -250,7 +250,7 @@ void SpreadsheetsTest::testSpreadsheetFile04(DatasetSpreadsheet* dataset,
                                              QString file)
 {
     QVERIFY(true == dataset->initialize());
-    testBasicInfo(*dataset, 30, 12, 0, file);
+    testBasicInfo(*dataset, 30, 12, file);
 
     QVector<QPair<int, ColumnType> > columnFormats;
     columnFormats.append(qMakePair(0, ColumnType::STRING));
@@ -319,12 +319,11 @@ void SpreadsheetsTest::testSpreadsheetFile04(DatasetSpreadsheet* dataset,
 //}
 
 void SpreadsheetsTest::testBasicInfo(Dataset& dataset, int rows, int columns,
-                                     int activeColumns, QString name)
+                                     QString name)
 {
     QVERIFY(dataset.isValid());
     QCOMPARE(dataset.rowCount(), rows);
     QCOMPARE(dataset.columnCount(), columns);
-    QCOMPARE(dataset.getActiveColumnCount(), activeColumns);
 
     QString dump = Common::loadFile(
         QString(dataset.getName() + Common::getDefinitionDumpSuffix()));
