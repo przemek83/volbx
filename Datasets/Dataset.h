@@ -78,14 +78,14 @@ public:
 
     QString dumpDatasetDefinition() const;
 
-    void updateSampleDataStrings(QVector<QVector<QVariant>>& data) const;
-
 protected:
     virtual bool analyze() = 0;
 
     virtual std::tuple<bool, QVector<QVector<QVariant>>> getSample() = 0;
 
     virtual std::tuple<bool, QVector<QVector<QVariant>>> getAllData() = 0;
+
+    void updateSampleDataStrings(QVector<QVector<QVariant>>& data) const;
 
     QVector<QVariant> sharedStrings_;
 

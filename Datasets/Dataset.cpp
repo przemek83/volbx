@@ -212,12 +212,6 @@ QString Dataset::dumpDatasetDefinition() const
                 " name=" + headerColumnNames_.at(i);
         dump +=
             " format=" + QString::number(static_cast<int>(columnTypes_.at(i)));
-        if (!activeColumns_.isEmpty())
-        {
-            const QString notActive(QStringLiteral(" not active"));
-            const QString active(QStringLiteral(" active"));
-            dump += " active=" + (activeColumns_[i] ? active : notActive);
-        }
 
         QMapIterator<SpecialColumn, unsigned int> it(specialColumns_);
         if (it.findNext(i))

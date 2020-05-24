@@ -416,13 +416,9 @@ void SpreadsheetsTest::compareDataWithDumps(const QString& category,
         QString fileName(f.filePath());
         DatasetSpreadsheet* dataset = nullptr;
         if (fileName.endsWith(".xlsx"))
-        {
             dataset = new DatasetXlsx(fileName, fileName);
-        }
         else
-        {
             dataset = new DatasetOds(fileName, fileName);
-        }
 
         if (true == damaged)
         {
