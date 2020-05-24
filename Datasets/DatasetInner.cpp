@@ -94,7 +94,7 @@ bool DatasetInner::fromXml(QByteArray& definitionContent)
         "Read column count: " + QString::number(columns.count()));
 
     columnsCount_ = columns.size();
-    for (int i = 0; i < columnsCount_; ++i)
+    for (unsigned int i = 0; i < columnsCount_; ++i)
     {
         QDomElement column{columns.at(i).toElement()};
         headerColumnNames_.push_back(column.attribute(DATASET_COLUMN_NAME));
@@ -179,8 +179,8 @@ void DatasetInner::updateProgress(unsigned int currentRow,
 
 void DatasetInner::addElementToContainer(
     const ColumnType columnFormat, const QString& element,
-    QVector<QVector<QVariant>>& dataContainer, const int lineCounter,
-    const int columnToFill) const
+    QVector<QVector<QVariant>>& dataContainer, const unsigned int lineCounter,
+    const unsigned int columnToFill) const
 {
     if (element.isEmpty())
     {
@@ -271,7 +271,7 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::fillData(
     stream.setCodec("UTF-8");
 
     unsigned int lastEmittedPercent{0};
-    int lineCounter{0};
+    unsigned int lineCounter{0};
     QVector<QVector<QVariant>> data{prepareContainerForData(fillSamplesOnly)};
     while (!stream.atEnd() && lineCounter < rowCount())
     {
@@ -280,7 +280,7 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::fillData(
 
         QStringList line{stream.readLine().split(';')};
         int columnToFill{0};
-        for (int i = 0; i < columnCount(); ++i)
+        for (unsigned int i = 0; i < columnCount(); ++i)
         {
             const QString& element{line.at(i)};
 

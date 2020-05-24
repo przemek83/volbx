@@ -26,9 +26,9 @@ public:
 
     virtual ~Dataset();
 
-    int rowCount() const;
+    unsigned int rowCount() const;
 
-    int columnCount() const;
+    unsigned int columnCount() const;
 
     virtual inline QVariant* getData(int row, int column)
     {
@@ -42,17 +42,17 @@ public:
         return &data_[row][column];
     }
 
-    ColumnType getColumnFormat(int column) const;
+    ColumnType getColumnFormat(unsigned int column) const;
 
-    std::tuple<double, double> getNumericRange(int column) const;
+    std::tuple<double, double> getNumericRange(unsigned int column) const;
 
-    std::tuple<QDate, QDate, bool> getDateRange(int column) const;
-    QStringList getStringList(int column) const;
+    std::tuple<QDate, QDate, bool> getDateRange(unsigned int column) const;
+    QStringList getStringList(unsigned int column) const;
 
-    std::tuple<bool, int> getSpecialColumnIfExists(
+    std::tuple<bool, unsigned int> getSpecialColumnIfExists(
         SpecialColumn columnTag) const;
 
-    QString getHeaderName(int column) const;
+    QString getHeaderName(unsigned int column) const;
 
     bool isValid() const;
 
@@ -64,19 +64,19 @@ public:
 
     QString getNameForTabBar();
 
-    QByteArray definitionToXml(int rowCount) const;
+    QByteArray definitionToXml(unsigned int rowCount) const;
 
     QVector<QVector<QVariant>> retrieveSampleData() const;
 
     void setActiveColumns(const QVector<bool>& activeColumns);
 
-    void setSpecialColumn(SpecialColumn columnTag, int column);
+    void setSpecialColumn(SpecialColumn columnTag, unsigned int column);
 
     QString getError() const;
 
     QString dumpDatasetDefinition() const;
 
-    int getActiveColumnCount() const;
+    unsigned int getActiveColumnCount() const;
 
     void updateSampleDataStrings(QVector<QVector<QVariant>>& data) const;
 
@@ -93,7 +93,7 @@ protected:
     bool valid_{false};
 
     /// Number of lines in sample data.
-    static constexpr int SAMPLE_SIZE{10};
+    static constexpr unsigned int SAMPLE_SIZE{10};
 
     QVector<ColumnType> columnTypes_;
 
@@ -102,9 +102,9 @@ protected:
     /// Active columns information.
     QVector<bool> activeColumns_;
 
-    int rowsCount_{0};
+    unsigned int rowsCount_{0};
 
-    int columnsCount_{0};
+    unsigned int columnsCount_{0};
 
     QString error_;
 
@@ -132,7 +132,7 @@ private:
     QVector<QVector<QVariant>> data_;
 
     /// Stores information about columns which are tagged as "special".
-    QMap<SpecialColumn, int> specialColumns_;
+    QMap<SpecialColumn, unsigned int> specialColumns_;
 
 signals:
     void loadingPercentChanged(unsigned int newPercentage);

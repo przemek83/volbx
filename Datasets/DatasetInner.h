@@ -41,8 +41,8 @@ private:
     void addElementToContainer(const ColumnType columnFormat,
                                const QString& element,
                                QVector<QVector<QVariant>>& dataContainer,
-                               const int lineCounter,
-                               const int columnToFill) const;
+                               const unsigned int lineCounter,
+                               const unsigned int columnToFill) const;
 
     QVariant getDefaultVariantForFormat(const ColumnType format) const;
 

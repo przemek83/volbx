@@ -101,7 +101,7 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetSpreadsheet::getDataFromZip(
     else
     {
         QVector<unsigned int> excludedColumns;
-        for (int i = 0; i < columnCount(); ++i)
+        for (unsigned int i = 0; i < columnCount(); ++i)
             if (!activeColumns_.at(i))
                 excludedColumns.append(i);
         std::tie(success, data) =
@@ -116,7 +116,7 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetSpreadsheet::getDataFromZip(
 
     if (!fillSamplesOnly)
     {
-        Q_ASSERT(rowCount() == data.size());
+        Q_ASSERT(rowCount() == static_cast<unsigned int>(data.size()));
         LOG(LogTypes::IMPORT_EXPORT,
             "Loaded file having " + QString::number(rowsCount_) + " rows.");
     }

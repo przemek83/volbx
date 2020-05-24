@@ -12,23 +12,23 @@ Dataset::Dataset(const QString& name, QObject* parent)
 
 Dataset::~Dataset() {}
 
-int Dataset::rowCount() const { return rowsCount_; }
+unsigned int Dataset::rowCount() const { return rowsCount_; }
 
-int Dataset::columnCount() const { return columnsCount_; }
+unsigned int Dataset::columnCount() const { return columnsCount_; }
 
-ColumnType Dataset::getColumnFormat(int column) const
+ColumnType Dataset::getColumnFormat(unsigned int column) const
 {
     Q_ASSERT(column >= 0 && column < columnCount());
     return columnTypes_[column];
 }
 
-std::tuple<double, double> Dataset::getNumericRange(int column) const
+std::tuple<double, double> Dataset::getNumericRange(unsigned int column) const
 {
     Q_ASSERT(ColumnType::NUMBER == getColumnFormat(column));
     double min{0.};
     double max{0.};
     bool first{true};
-    for (int i = 0; i < rowCount(); ++i)
+    for (unsigned int i = 0; i < rowCount(); ++i)
     {
         double value{data_[i][column].toDouble()};
         if (first)
@@ -48,14 +48,14 @@ std::tuple<double, double> Dataset::getNumericRange(int column) const
     return {min, max};
 }
 
-std::tuple<QDate, QDate, bool> Dataset::getDateRange(int column) const
+std::tuple<QDate, QDate, bool> Dataset::getDateRange(unsigned int column) const
 {
     Q_ASSERT(ColumnType::DATE == getColumnFormat(column));
     QDate minDate;
     QDate maxDate;
     bool emptyDates{false};
     bool first{true};
-    for (int i = 0; i < rowCount(); ++i)
+    for (unsigned int i = 0; i < rowCount(); ++i)
     {
         const QVariant& dateVariant{data_[i][column]};
         if (dateVariant.isNull())
@@ -82,7 +82,7 @@ std::tuple<QDate, QDate, bool> Dataset::getDateRange(int column) const
     return {minDate, maxDate, emptyDates};
 }
 
-QStringList Dataset::getStringList(int column) const
+QStringList Dataset::getStringList(unsigned int column) const
 {
     Q_ASSERT(ColumnType::STRING == getColumnFormat(column));
     QStringList listToFill;
@@ -104,7 +104,7 @@ QStringList Dataset::getStringList(int column) const
     return listToFill;
 }
 
-std::tuple<bool, int> Dataset::getSpecialColumnIfExists(
+std::tuple<bool, unsigned int> Dataset::getSpecialColumnIfExists(
     SpecialColumn columnTag) const
 {
     if (isSpecialColumnTagged(columnTag))
@@ -112,7 +112,7 @@ std::tuple<bool, int> Dataset::getSpecialColumnIfExists(
     return {false, Constants::NOT_SET_COLUMN};
 }
 
-QString Dataset::getHeaderName(int column) const
+QString Dataset::getHeaderName(unsigned int column) const
 {
     if (columnsCount_ - 1 >= column)
         return headerColumnNames_[column];
@@ -151,20 +151,20 @@ QString Dataset::getNameForTabBar()
     return tabName;
 }
 
-QByteArray Dataset::definitionToXml(int rowCount) const
+QByteArray Dataset::definitionToXml(unsigned int rowCount) const
 {
     QDomDocument xmlDocument(DATASET_NAME);
     QDomElement root{xmlDocument.createElement(DATASET_NAME)};
     xmlDocument.appendChild(root);
     QDomElement columns{xmlDocument.createElement(DATASET_COLUMNS)};
     root.appendChild(columns);
-    for (int i = 0; i < columnsCount_; ++i)
+    for (unsigned int i = 0; i < columnsCount_; ++i)
     {
         QDomElement node{xmlDocument.createElement(DATASET_COLUMN)};
         node.setAttribute(DATASET_COLUMN_NAME, headerColumnNames_.at(i));
         node.setAttribute(DATASET_COLUMN_FORMAT,
                           static_cast<int>(columnTypes_.at(i)));
-        QMapIterator<SpecialColumn, int> it(specialColumns_);
+        QMapIterator<SpecialColumn, unsigned int> it(specialColumns_);
         if (it.findNext(i))
             node.setAttribute(DATASET_COLUMN_SPECIAL_TAG,
                               QString::number(static_cast<int>(it.key())));
@@ -187,7 +187,7 @@ void Dataset::setActiveColumns(const QVector<bool>& activeColumns)
     activeColumns_ = activeColumns;
 }
 
-void Dataset::setSpecialColumn(SpecialColumn columnTag, int column)
+void Dataset::setSpecialColumn(SpecialColumn columnTag, unsigned int column)
 {
     specialColumns_[columnTag] = column;
 }
@@ -197,7 +197,7 @@ QString Dataset::getError() const { return error_; }
 QString Dataset::dumpDatasetDefinition() const
 {
     QString dump;
-    for (int i = 0; i < columnsCount_; ++i)
+    for (unsigned int i = 0; i < columnsCount_; ++i)
     {
         dump += "Column " + QString::number(i) +
                 " name=" + headerColumnNames_.at(i);
@@ -210,7 +210,7 @@ QString Dataset::dumpDatasetDefinition() const
             dump += " active=" + (activeColumns_[i] ? active : notActive);
         }
 
-        QMapIterator<SpecialColumn, int> it(specialColumns_);
+        QMapIterator<SpecialColumn, unsigned int> it(specialColumns_);
         if (it.findNext(i))
             dump += " special=" + QString::number(static_cast<int>(it.key()));
         dump.append(QLatin1String("\n"));
@@ -222,14 +222,15 @@ void Dataset::rebuildDefinitonUsingActiveColumnsOnly()
 {
     QVector<ColumnType> tempColumnsFormat;
     QStringList tempHeaderColumnNames;
-    QMap<SpecialColumn, int> specialColumnsTemp{QMap<SpecialColumn, int>()};
+    QMap<SpecialColumn, unsigned int> specialColumnsTemp;
     int activeColumnNumber{0};
-    bool specialColumnDateMarked{
+    const bool specialColumnDateMarked{
         isSpecialColumnTagged(SPECIAL_COLUMN_TRANSACTION_DATE)};
-    bool specialColumnPriceMarked{
+    const bool specialColumnPriceMarked{
         isSpecialColumnTagged(SPECIAL_COLUMN_PRICE_PER_UNIT)};
 
-    for (int i = 0; i < activeColumns_.count(); ++i)
+    for (unsigned int i = 0;
+         i < static_cast<unsigned int>(activeColumns_.count()); ++i)
     {
         if (activeColumns_.at(i))
         {
@@ -254,14 +255,17 @@ void Dataset::rebuildDefinitonUsingActiveColumnsOnly()
     activeColumns_.clear();
 }
 
-int Dataset::getActiveColumnCount() const { return activeColumns_.count(true); }
+unsigned int Dataset::getActiveColumnCount() const
+{
+    return activeColumns_.count(true);
+}
 
 void Dataset::updateSampleDataStrings(QVector<QVector<QVariant>>& data) const
 {
     if (sharedStrings_.isEmpty())
         return;
 
-    for (int i = 0; i < columnCount(); ++i)
+    for (unsigned int i = 0; i < columnCount(); ++i)
     {
         if (columnTypes_.at(i) != ColumnType::STRING)
             continue;
