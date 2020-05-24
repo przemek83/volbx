@@ -107,7 +107,7 @@ QVector<TransactionData> DataView::fillDataFromSelection(
 
     int pricePerMeterColumn;
     if (auto [ok, columnId] = parentModel->getSpecialColumnIfExists(
-            SPECIAL_COLUMN_PRICE_PER_UNIT);
+            SpecialColumn::PRICE_PER_UNIT);
         ok)
         pricePerMeterColumn = columnId;
     else
@@ -115,7 +115,7 @@ QVector<TransactionData> DataView::fillDataFromSelection(
 
     int transactionDateColumn;
     if (auto [ok, columnId] = parentModel->getSpecialColumnIfExists(
-            SPECIAL_COLUMN_TRANSACTION_DATE);
+            SpecialColumn::TRANSACTION_DATE);
         ok)
         transactionDateColumn = columnId;
     else

@@ -65,7 +65,7 @@ ColumnType TableModel::getColumnFormat(int column) const
 std::tuple<bool, int> TableModel::getSpecialColumnIfExists(
     SpecialColumn columnTag) const
 {
-    return dataset_->getSpecialColumnIfExists(columnTag);
+    return dataset_->getSpecialColumn(columnTag);
 }
 
 QByteArray TableModel::definitionToXml(int rowCount) const
@@ -76,9 +76,9 @@ QByteArray TableModel::definitionToXml(int rowCount) const
 bool TableModel::isSpecialColumnsSet() const
 {
     auto [transDateColumnSet, transDateColumnId] =
-        getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE);
+        getSpecialColumnIfExists(SpecialColumn::TRANSACTION_DATE);
     auto [priceColumnSet, priceColumnId] =
-        getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT);
+        getSpecialColumnIfExists(SpecialColumn::PRICE_PER_UNIT);
 
     return transDateColumnSet && priceColumnSet;
 }
@@ -93,7 +93,7 @@ int TableModel::getDefaultGroupingColumn() const
 {
     int pricePerMeterColumn = noColumn_;
     if (auto [ok, columnId] =
-            getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT);
+            getSpecialColumnIfExists(SpecialColumn::PRICE_PER_UNIT);
         ok)
     {
         pricePerMeterColumn = columnId;

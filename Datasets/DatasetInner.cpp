@@ -88,7 +88,7 @@ bool DatasetInner::fromXml(QByteArray& definitionContent)
     QDomElement root{xmlDocument.documentElement()};
 
     // Load columns elements.
-    QDomNodeList columns{root.firstChildElement(DATASET_COLUMNS).childNodes()};
+    QDomNodeList columns{root.firstChildElement(XML_COLUMNS).childNodes()};
 
     LOG(LogTypes::IMPORT_EXPORT,
         "Read column count: " + QString::number(columns.count()));
@@ -97,17 +97,17 @@ bool DatasetInner::fromXml(QByteArray& definitionContent)
     for (unsigned int i = 0; i < columnsCount_; ++i)
     {
         QDomElement column{columns.at(i).toElement()};
-        headerColumnNames_.push_back(column.attribute(DATASET_COLUMN_NAME));
+        headerColumnNames_.push_back(column.attribute(XML_COLUMN_NAME));
         columnTypes_.push_back(static_cast<ColumnType>(
-            column.attribute(DATASET_COLUMN_FORMAT).toInt()));
+            column.attribute(XML_COLUMN_FORMAT).toInt()));
 
-        QString special{column.attribute(DATASET_COLUMN_SPECIAL_TAG)};
+        QString special{column.attribute(XML_COLUMN_SPECIAL_TAG)};
         if (0 != special.compare(QLatin1String("")))
             setSpecialColumn(static_cast<SpecialColumn>(special.toInt()), i);
     }
 
     // Read row count.
-    const QString rowCountTag(DATASET_ROW_COUNT);
+    const QString rowCountTag(XML_ROW_COUNT);
     rowsCount_ =
         root.firstChildElement(rowCountTag).attribute(rowCountTag).toInt();
 

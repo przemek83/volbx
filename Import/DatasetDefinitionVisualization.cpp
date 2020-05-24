@@ -53,16 +53,16 @@ void DatasetDefinitionVisualization::setDataset(
     dataset_ = std::move(dataset);
 
     auto [dateOfTransactionPointed, specialColumnTransaction] =
-        dataset_->getSpecialColumnIfExists(SPECIAL_COLUMN_TRANSACTION_DATE);
+        dataset_->getSpecialColumn(SpecialColumn::TRANSACTION_DATE);
 
     auto [pricePerUnitPointed, specialColumnPrice] =
-        dataset_->getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT);
+        dataset_->getSpecialColumn(SpecialColumn::PRICE_PER_UNIT);
 
     ui->columnsList->sortByColumn(Constants::NOT_SET_COLUMN);
     ui->columnsList->setSortingEnabled(false);
 
     // Column list.
-    for (int i = 0; i < dataset_->columnCount(); ++i)
+    for (unsigned int i = 0; i < dataset_->columnCount(); ++i)
     {
         QStringList list;
         list << dataset_->getHeaderName(i);
@@ -114,7 +114,7 @@ void DatasetDefinitionVisualization::setDataset(
     {
         for (int i = 0; i < ui->dateCombo->count(); ++i)
         {
-            if (specialColumnTransaction == ui->dateCombo->itemData(i).toInt())
+            if (specialColumnTransaction == ui->dateCombo->itemData(i).toUInt())
             {
                 ui->dateCombo->setCurrentIndex(i);
                 break;
@@ -127,7 +127,7 @@ void DatasetDefinitionVisualization::setDataset(
         for (int i = 0; i < ui->pricePerUnitCombo->count(); ++i)
         {
             if (specialColumnPrice ==
-                ui->pricePerUnitCombo->itemData(i).toInt())
+                ui->pricePerUnitCombo->itemData(i).toUInt())
             {
                 ui->pricePerUnitCombo->setCurrentIndex(i);
                 break;
@@ -207,14 +207,14 @@ std::unique_ptr<Dataset> DatasetDefinitionVisualization::retrieveDataset()
     {
         int column =
             ui->dateCombo->itemData(ui->dateCombo->currentIndex()).toInt();
-        dataset_->setSpecialColumn(SPECIAL_COLUMN_TRANSACTION_DATE, column);
+        dataset_->setSpecialColumn(SpecialColumn::TRANSACTION_DATE, column);
     }
 
     if (ui->pricePerUnitCombo->currentIndex() != -1)
     {
         int index = ui->pricePerUnitCombo->currentIndex();
         int column = ui->pricePerUnitCombo->itemData(index).toInt();
-        dataset_->setSpecialColumn(SPECIAL_COLUMN_PRICE_PER_UNIT, column);
+        dataset_->setSpecialColumn(SpecialColumn::PRICE_PER_UNIT, column);
     }
 
     return std::move(dataset_);

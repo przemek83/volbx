@@ -12,6 +12,8 @@
 #include "Common/SpecialColumns.h"
 
 class DatasetDefinition;
+class QDomDocument;
+class QDomElement;
 
 /**
  * @brief Representation of dataset.
@@ -49,7 +51,7 @@ public:
     std::tuple<QDate, QDate, bool> getDateRange(unsigned int column) const;
     QStringList getStringList(unsigned int column) const;
 
-    std::tuple<bool, unsigned int> getSpecialColumnIfExists(
+    std::tuple<bool, unsigned int> getSpecialColumn(
         SpecialColumn columnTag) const;
 
     QString getHeaderName(unsigned int column) const;
@@ -108,19 +110,23 @@ protected:
 
     QString error_;
 
-    /// Names used in definition file.
-    const QString DATASET_NAME{QStringLiteral("DATASET")};
-    const QString DATASET_COLUMNS{QStringLiteral("COLUMNS")};
-    const QString DATASET_COLUMN{QStringLiteral("COLUMN")};
-    const QString DATASET_COLUMN_NAME{QStringLiteral("NAME")};
-    const QString DATASET_COLUMN_FORMAT{QStringLiteral("FORMAT")};
-    const QString DATASET_COLUMN_SPECIAL_TAG{QStringLiteral("SPECIAL_TAG")};
-    const QString DATASET_ROW_COUNT{QStringLiteral("ROW_COUNT")};
+    const QString XML_NAME{QStringLiteral("DATASET")};
+    const QString XML_COLUMNS{QStringLiteral("COLUMNS")};
+    const QString XML_COLUMN{QStringLiteral("COLUMN")};
+    const QString XML_COLUMN_NAME{QStringLiteral("NAME")};
+    const QString XML_COLUMN_FORMAT{QStringLiteral("FORMAT")};
+    const QString XML_COLUMN_SPECIAL_TAG{QStringLiteral("SPECIAL_TAG")};
+    const QString XML_ROW_COUNT{QStringLiteral("ROW_COUNT")};
 
 private:
     void rebuildDefinitonUsingActiveColumnsOnly();
 
     bool isSpecialColumnTagged(SpecialColumn column) const;
+
+    QDomElement columnsToXml(QDomDocument& xmlDocument) const;
+
+    QDomElement rowCountToXml(QDomDocument& xmlDocument,
+                              unsigned int rowCount) const;
 
     QVariant nullStringVariant_;
 

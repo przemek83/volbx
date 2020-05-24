@@ -30,7 +30,7 @@ std::tuple<double, double> Dataset::getNumericRange(unsigned int column) const
     bool first{true};
     for (unsigned int i = 0; i < rowCount(); ++i)
     {
-        double value{data_[i][column].toDouble()};
+        const double value{data_[i][column].toDouble()};
         if (first)
         {
             min = value;
@@ -104,7 +104,7 @@ QStringList Dataset::getStringList(unsigned int column) const
     return listToFill;
 }
 
-std::tuple<bool, unsigned int> Dataset::getSpecialColumnIfExists(
+std::tuple<bool, unsigned int> Dataset::getSpecialColumn(
     SpecialColumn columnTag) const
 {
     if (isSpecialColumnTagged(columnTag))
@@ -144,36 +144,45 @@ bool Dataset::loadData()
 QString Dataset::getNameForTabBar()
 {
     QString tabName{getName()};
-    if (auto [ok, column] =
-            getSpecialColumnIfExists(SPECIAL_COLUMN_PRICE_PER_UNIT);
-        ok)
+    auto [exist, column] = getSpecialColumn(SpecialColumn::PRICE_PER_UNIT);
+    if (exist)
         tabName.append(" (" + getHeaderName(column) + ")");
     return tabName;
 }
 
-QByteArray Dataset::definitionToXml(unsigned int rowCount) const
+QDomElement Dataset::columnsToXml(QDomDocument& xmlDocument) const
 {
-    QDomDocument xmlDocument(DATASET_NAME);
-    QDomElement root{xmlDocument.createElement(DATASET_NAME)};
-    xmlDocument.appendChild(root);
-    QDomElement columns{xmlDocument.createElement(DATASET_COLUMNS)};
-    root.appendChild(columns);
-    for (unsigned int i = 0; i < columnsCount_; ++i)
+    QDomElement columns{xmlDocument.createElement(XML_COLUMNS)};
+    for (unsigned int column = 0; column < columnsCount_; ++column)
     {
-        QDomElement node{xmlDocument.createElement(DATASET_COLUMN)};
-        node.setAttribute(DATASET_COLUMN_NAME, headerColumnNames_.at(i));
-        node.setAttribute(DATASET_COLUMN_FORMAT,
-                          static_cast<int>(columnTypes_.at(i)));
+        QDomElement node{xmlDocument.createElement(XML_COLUMN)};
+        node.setAttribute(XML_COLUMN_NAME, headerColumnNames_.at(column));
+        node.setAttribute(XML_COLUMN_FORMAT,
+                          static_cast<int>(columnTypes_.at(column)));
         QMapIterator<SpecialColumn, unsigned int> it(specialColumns_);
-        if (it.findNext(i))
-            node.setAttribute(DATASET_COLUMN_SPECIAL_TAG,
+        if (it.findNext(column))
+            node.setAttribute(XML_COLUMN_SPECIAL_TAG,
                               QString::number(static_cast<int>(it.key())));
         columns.appendChild(node);
     }
+    return columns;
+}
 
-    QDomElement rowCountElement{xmlDocument.createElement(DATASET_ROW_COUNT)};
-    rowCountElement.setAttribute(DATASET_ROW_COUNT, QString::number(rowCount));
-    root.appendChild(rowCountElement);
+QDomElement Dataset::rowCountToXml(QDomDocument& xmlDocument,
+                                   unsigned int rowCount) const
+{
+    QDomElement rowCountElement{xmlDocument.createElement(XML_ROW_COUNT)};
+    rowCountElement.setAttribute(XML_ROW_COUNT, QString::number(rowCount));
+    return rowCountElement;
+}
+
+QByteArray Dataset::definitionToXml(unsigned int rowCount) const
+{
+    QDomDocument xmlDocument;
+    QDomElement root{xmlDocument.createElement(XML_NAME)};
+    root.appendChild(columnsToXml(xmlDocument));
+    root.appendChild(rowCountToXml(xmlDocument, rowCount));
+    xmlDocument.appendChild(root);
     return xmlDocument.toByteArray();
 }
 
@@ -225,9 +234,9 @@ void Dataset::rebuildDefinitonUsingActiveColumnsOnly()
     QMap<SpecialColumn, unsigned int> specialColumnsTemp;
     int activeColumnNumber{0};
     const bool specialColumnDateMarked{
-        isSpecialColumnTagged(SPECIAL_COLUMN_TRANSACTION_DATE)};
+        isSpecialColumnTagged(SpecialColumn::TRANSACTION_DATE)};
     const bool specialColumnPriceMarked{
-        isSpecialColumnTagged(SPECIAL_COLUMN_PRICE_PER_UNIT)};
+        isSpecialColumnTagged(SpecialColumn::PRICE_PER_UNIT)};
 
     for (unsigned int i = 0;
          i < static_cast<unsigned int>(activeColumns_.count()); ++i)
@@ -237,12 +246,12 @@ void Dataset::rebuildDefinitonUsingActiveColumnsOnly()
             tempColumnsFormat.push_back(columnTypes_[i]);
             tempHeaderColumnNames << headerColumnNames_[i];
             if (specialColumnDateMarked &&
-                specialColumns_.value(SPECIAL_COLUMN_TRANSACTION_DATE) == i)
-                specialColumnsTemp[SPECIAL_COLUMN_TRANSACTION_DATE] =
+                specialColumns_.value(SpecialColumn::TRANSACTION_DATE) == i)
+                specialColumnsTemp[SpecialColumn::TRANSACTION_DATE] =
                     activeColumnNumber;
             if (specialColumnPriceMarked &&
-                specialColumns_.value(SPECIAL_COLUMN_PRICE_PER_UNIT) == i)
-                specialColumnsTemp[SPECIAL_COLUMN_PRICE_PER_UNIT] =
+                specialColumns_.value(SpecialColumn::PRICE_PER_UNIT) == i)
+                specialColumnsTemp[SpecialColumn::PRICE_PER_UNIT] =
                     activeColumnNumber;
             activeColumnNumber++;
         }
