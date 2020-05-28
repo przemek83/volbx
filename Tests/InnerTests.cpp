@@ -36,8 +36,9 @@ void InnerTests::generateDumpData()
         if (fileInfo.isFile() && (fileInfo.suffix() == "vbx"))
         {
             DatasetInner* dataset = new DatasetInner(fileInfo.baseName());
-
-            QString definitionDump = dataset->dumpDatasetDefinition();
+            dataset->initialize();
+            QByteArray definitionDump =
+                dataset->definitionToXml(dataset->rowCount());
             Common::saveFile(DatasetUtilities::getDatasetsDir() +
                                  fileInfo.baseName() +
                                  Common::getDefinitionDumpSuffix(),
@@ -99,12 +100,11 @@ void InnerTests::checkDatasetDefinition(const QString& fileName,
                                         DatasetInner* dataset) const
 {
     QString datasetFilePath(DatasetUtilities::getDatasetsDir() + fileName);
-
-    QString compareData =
-        Common::loadFile(datasetFilePath + Common::getDefinitionDumpSuffix());
-
-    QCOMPARE(dataset->dumpDatasetDefinition().split('\n'),
-             compareData.split('\n'));
+    const QString dumpFileName{datasetFilePath +
+                               Common::getDefinitionDumpSuffix()};
+    QByteArray dumpFromFile{Common::loadFile(dumpFileName).toUtf8()};
+    QByteArray dumpFromDataset{dataset->definitionToXml(dataset->rowCount())};
+    QVERIFY(Common::xmlsAreEqual(dumpFromFile, dumpFromDataset));
 }
 
 void InnerTests::checkDatasetData(const QString& fileName,

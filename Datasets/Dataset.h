@@ -76,8 +76,6 @@ public:
 
     QString getError() const;
 
-    QString dumpDatasetDefinition() const;
-
 protected:
     virtual bool analyze() = 0;
 

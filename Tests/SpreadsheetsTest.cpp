@@ -325,9 +325,11 @@ void SpreadsheetsTest::testBasicInfo(Dataset& dataset, int rows, int columns,
     QCOMPARE(dataset.rowCount(), rows);
     QCOMPARE(dataset.columnCount(), columns);
 
-    QString dump = Common::loadFile(
-        QString(dataset.getName() + Common::getDefinitionDumpSuffix()));
-    QCOMPARE(dataset.dumpDatasetDefinition(), dump);
+    const QString fileName{dataset.getName() +
+                           Common::getDefinitionDumpSuffix()};
+    QByteArray dumpFromFile{Common::loadFile(fileName).toUtf8()};
+    QByteArray dumpFromDataset{dataset.definitionToXml(rows)};
+    QVERIFY(Common::xmlsAreEqual(dumpFromFile, dumpFromDataset));
 
     QCOMPARE(dataset.getName(), name);
 }
@@ -428,9 +430,12 @@ void SpreadsheetsTest::compareDataWithDumps(const QString& category,
         else
         {
             QVERIFY(true == dataset->initialize());
-            QString dump = Common::loadFile(
-                QString(fileName + Common::getDefinitionDumpSuffix()));
-            QCOMPARE(dataset->dumpDatasetDefinition(), dump);
+            const QString dumpFileName{fileName +
+                                       Common::getDefinitionDumpSuffix()};
+            QByteArray dumpFromFile{Common::loadFile(dumpFileName).toUtf8()};
+            QByteArray dumpFromDataset{
+                dataset->definitionToXml(dataset->rowCount())};
+            QVERIFY(Common::xmlsAreEqual(dumpFromFile, dumpFromDataset));
 
             QVector<bool> activeColumns(dataset->columnCount(), true);
             dataset->setActiveColumns(activeColumns);
@@ -527,7 +532,7 @@ void SpreadsheetsTest::generateDataDumpsForFile(QString name)
     }
 
     dataset->initialize();
-    QString dumpedDefinition = dataset->dumpDatasetDefinition();
+    QByteArray dumpedDefinition = dataset->definitionToXml(dataset->rowCount());
     Common::saveFile(name + Common::getDefinitionDumpSuffix(),
                      dumpedDefinition);
 

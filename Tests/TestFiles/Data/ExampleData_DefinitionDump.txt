@@ -1,7 +1,12 @@
-Column 0 name=Trait #1 format=0
-Column 1 name=Value #1 format=1
-Column 2 name=Transaction date format=2 special=0
-Column 3 name=Units format=1
-Column 4 name=Price format=1
-Column 5 name=Price per unit format=1 special=3
-Column 6 name=Another trait format=0
+<DATASET>
+ <COLUMNS>
+  <COLUMN FORMAT="0" NAME="Trait #1"/>
+  <COLUMN FORMAT="1" NAME="Value #1"/>
+  <COLUMN FORMAT="2" SPECIAL_TAG="0" NAME="Transaction date"/>
+  <COLUMN FORMAT="1" NAME="Units"/>
+  <COLUMN FORMAT="1" NAME="Price"/>
+  <COLUMN FORMAT="1" SPECIAL_TAG="3" NAME="Price per unit"/>
+  <COLUMN FORMAT="0" NAME="Another trait"/>
+ </COLUMNS>
+ <ROW_COUNT ROW_COUNT="4000"/>
+</DATASET>

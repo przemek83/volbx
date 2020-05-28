@@ -1,12 +1,17 @@
-Column 0 name=Data transakcji format=2
-Column 1 name=Cena transkacji format=1
-Column 2 name=pow format=1
-Column 3 name=cena metra format=1
-Column 4 name=prawa format=0
-Column 5 name=waga format=1
-Column 6 name=nic format=2
-Column 7 name=pusta format=0
-Column 8 name=cosjednak format=0
-Column 9 name=test1 format=0
-Column 10 name=test2 format=0
-Column 11 name=test3 format=0
+<DATASET>
+ <COLUMNS>
+  <COLUMN FORMAT="2" NAME="Data transakcji"/>
+  <COLUMN FORMAT="1" NAME="Cena transkacji"/>
+  <COLUMN FORMAT="1" NAME="pow"/>
+  <COLUMN FORMAT="1" NAME="cena metra"/>
+  <COLUMN FORMAT="0" NAME="prawa"/>
+  <COLUMN FORMAT="1" NAME="waga"/>
+  <COLUMN FORMAT="2" NAME="nic"/>
+  <COLUMN FORMAT="0" NAME="pusta"/>
+  <COLUMN FORMAT="0" NAME="cosjednak"/>
+  <COLUMN FORMAT="0" NAME="test1"/>
+  <COLUMN FORMAT="0" NAME="test2"/>
+  <COLUMN FORMAT="0" NAME="test3"/>
+ </COLUMNS>
+ <ROW_COUNT ROW_COUNT="18"/>
+</DATASET>

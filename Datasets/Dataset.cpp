@@ -203,24 +203,6 @@ void Dataset::setSpecialColumn(SpecialColumn columnTag, unsigned int column)
 
 QString Dataset::getError() const { return error_; }
 
-QString Dataset::dumpDatasetDefinition() const
-{
-    QString dump;
-    for (unsigned int i = 0; i < columnsCount_; ++i)
-    {
-        dump += "Column " + QString::number(i) +
-                " name=" + headerColumnNames_.at(i);
-        dump +=
-            " format=" + QString::number(static_cast<int>(columnTypes_.at(i)));
-
-        QMapIterator<SpecialColumn, unsigned int> it(specialColumns_);
-        if (it.findNext(i))
-            dump += " special=" + QString::number(static_cast<int>(it.key()));
-        dump.append(QLatin1String("\n"));
-    }
-    return dump;
-}
-
 void Dataset::rebuildDefinitonUsingActiveColumnsOnly()
 {
     QVector<ColumnType> tempColumnsFormat;

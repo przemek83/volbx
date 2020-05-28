@@ -1,4 +1,9 @@
-Column 0 name=cena nier format=1
-Column 1 name=pow format=1
-Column 2 name=cena metra format=1
-Column 3 name=data transakcji format=2
+<DATASET>
+ <COLUMNS>
+  <COLUMN FORMAT="1" NAME="cena nier"/>
+  <COLUMN FORMAT="1" NAME="pow"/>
+  <COLUMN FORMAT="1" NAME="cena metra"/>
+  <COLUMN FORMAT="2" NAME="data transakcji"/>
+ </COLUMNS>
+ <ROW_COUNT ROW_COUNT="4"/>
+</DATASET>

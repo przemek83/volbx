@@ -106,10 +106,8 @@ bool DatasetInner::fromXml(QByteArray& definitionContent)
             setSpecialColumn(static_cast<SpecialColumn>(special.toInt()), i);
     }
 
-    // Read row count.
-    const QString rowCountTag(XML_ROW_COUNT);
     rowsCount_ =
-        root.firstChildElement(rowCountTag).attribute(rowCountTag).toInt();
+        root.firstChildElement(XML_ROW_COUNT).attribute(XML_ROW_COUNT).toInt();
 
     return true;
 }

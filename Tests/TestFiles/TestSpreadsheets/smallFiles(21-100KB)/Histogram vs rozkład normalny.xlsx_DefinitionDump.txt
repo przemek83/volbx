@@ -1,3 +1,8 @@
-Column 0 name=modificator format=1
-Column 1 name=x format=1
-Column 2 name=y format=1
+<DATASET>
+ <COLUMNS>
+  <COLUMN FORMAT="1" NAME="modificator"/>
+  <COLUMN FORMAT="1" NAME="x"/>
+  <COLUMN FORMAT="1" NAME="y"/>
+ </COLUMNS>
+ <ROW_COUNT ROW_COUNT="100"/>
+</DATASET>

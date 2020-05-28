@@ -1,3 +1,8 @@
-Column 0 name=Data transakcji format=2 special=0
-Column 1 name=Cena 1 mkw format=1 special=3
-Column 2 name=Zaktualizowana cena działek format=1
+<DATASET>
+ <COLUMNS>
+  <COLUMN FORMAT="2" SPECIAL_TAG="0" NAME="Data transakcji"/>
+  <COLUMN FORMAT="1" SPECIAL_TAG="3" NAME="Cena 1 mkw"/>
+  <COLUMN FORMAT="1" NAME="Zaktualizowana cena działek"/>
+ </COLUMNS>
+ <ROW_COUNT ROW_COUNT="27"/>
+</DATASET>

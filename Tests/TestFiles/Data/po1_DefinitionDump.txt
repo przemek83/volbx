@@ -1,7 +1,11 @@
-Column 0 name=Num #0" format=1
-Column 1 name=String ; #1 format=0
-Column 2 name=String 
-#2 format=0
-Column 3 name=Data #3 format=2 special=0
-Column 4 name=Num #4 format=1 special=3
-Column 5 name=Data #5 format=2
+<DATASET>
+ <COLUMNS>
+  <COLUMN FORMAT="1" NAME="Num #0&quot;"/>
+  <COLUMN FORMAT="0" NAME="String ; #1"/>
+  <COLUMN FORMAT="0" NAME="String &#xa;#2"/>
+  <COLUMN FORMAT="2" SPECIAL_TAG="0" NAME="Data #3"/>
+  <COLUMN FORMAT="1" SPECIAL_TAG="3" NAME="Num #4"/>
+  <COLUMN FORMAT="2" NAME="Data #5"/>
+ </COLUMNS>
+ <ROW_COUNT ROW_COUNT="5"/>
+</DATASET>

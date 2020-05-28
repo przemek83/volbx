@@ -2,6 +2,7 @@
 
 #include <ExportDsv.h>
 #include <QBuffer>
+#include <QDomDocument>
 #include <QFile>
 #include <QTextStream>
 
@@ -61,4 +62,71 @@ QString getExportedTsv(const QAbstractItemView& view)
 
     return QString::fromUtf8(exportedByteArray);
 }
+
+static QHash<QString, QString> getAttributesMap(QDomElement& element)
+{
+    QHash<QString, QString> attributeMap;
+    QDomNamedNodeMap attributes{element.attributes()};
+    for (int i = 0; i < attributes.size(); ++i)
+        attributeMap[attributes.item(i).toAttr().name()] =
+            attributes.item(i).toAttr().value();
+    return attributeMap;
+}
+
+static bool areAtrributesEqual(QDomElement& left, QDomElement& right)
+{
+    return getAttributesMap(left) == getAttributesMap(right);
+}
+
+static bool domElementsAreEqual(QDomElement& left, QDomElement& right)
+{
+    if (left.childNodes().count() != right.childNodes().count())
+        return false;
+
+    if (!left.hasChildNodes())
+        return areAtrributesEqual(left, right);
+
+    QDomNodeList leftNodes{left.childNodes()};
+    QDomNodeList rightNodes{right.childNodes()};
+    bool equal{true};
+    for (int i = 0; i < leftNodes.size(); ++i)
+    {
+        bool found{false};
+        for (int j = 0; j < rightNodes.size(); ++j)
+        {
+            QDomElement currentLeft{leftNodes.at(i).toElement()};
+            QDomElement currentRight{rightNodes.at(j).toElement()};
+            if (!currentLeft.hasChildNodes() && !currentRight.hasChildNodes())
+            {
+                if (areAtrributesEqual(currentLeft, currentRight))
+                {
+                    found = true;
+                    break;
+                }
+                continue;
+            }
+
+            if (currentLeft.tagName() == currentRight.tagName())
+            {
+                equal = equal && domElementsAreEqual(currentLeft, currentRight);
+                found = true;
+            }
+        }
+        if (!found || !equal)
+            return false;
+    }
+    return equal;
+}
+
+bool xmlsAreEqual(const QByteArray& left, const QByteArray& right)
+{
+    QDomDocument leftDom;
+    leftDom.setContent(left);
+    QDomDocument rightDom;
+    rightDom.setContent(right);
+    QDomElement leftRoot{leftDom.documentElement()};
+    QDomElement rightRoot{rightDom.documentElement()};
+    return domElementsAreEqual(leftRoot, rightRoot);
+}
+
 }  // namespace Common
