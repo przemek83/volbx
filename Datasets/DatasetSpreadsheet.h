@@ -27,6 +27,8 @@ protected:
 
     std::tuple<bool, QVector<QVector<QVariant>>> getAllData() override;
 
+    void closeZip() override;
+
     QFile zipFile_;
     std::unique_ptr<ImportSpreadsheet> importer_{nullptr};
 

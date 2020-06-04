@@ -138,6 +138,7 @@ bool Dataset::loadData()
     bool success{false};
     std::tie(success, data_) = getAllData();
     rebuildDefinitonUsingActiveColumnsOnly();
+    closeZip();
     return success;
 }
 

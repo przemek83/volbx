@@ -83,6 +83,8 @@ protected:
 
     virtual std::tuple<bool, QVector<QVector<QVariant>>> getAllData() = 0;
 
+    virtual void closeZip() = 0;
+
     void updateSampleDataStrings(QVector<QVector<QVariant>>& data) const;
 
     QVector<QVariant> sharedStrings_;

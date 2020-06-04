@@ -57,6 +57,12 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetSpreadsheet::getAllData()
     return {valid_, data};
 }
 
+void DatasetSpreadsheet::closeZip()
+{
+    zipFile_.close();
+    importer_ = nullptr;
+}
+
 bool DatasetSpreadsheet::getSheetList()
 {
     bool success{false};
