@@ -205,37 +205,33 @@ QString Dataset::getError() const { return error_; }
 
 void Dataset::rebuildDefinitonUsingActiveColumnsOnly()
 {
-    QVector<ColumnType> tempColumnsFormat;
-    QStringList tempHeaderColumnNames;
-    QMap<SpecialColumn, unsigned int> specialColumnsTemp;
+    QVector<ColumnType> rebuiltColumnsFormat;
+    QStringList rebuiltHeaderColumnNames;
+    QMap<SpecialColumn, unsigned int> rebuiltSpecialColumns;
     int activeColumnNumber{0};
-    const bool specialColumnDateMarked{
-        isSpecialColumnTagged(SpecialColumn::TRANSACTION_DATE)};
-    const bool specialColumnPriceMarked{
-        isSpecialColumnTagged(SpecialColumn::PRICE_PER_UNIT)};
+    const SpecialColumn dateTag{SpecialColumn::TRANSACTION_DATE};
+    const SpecialColumn priceTag{SpecialColumn::PRICE_PER_UNIT};
+    const bool dateColumnTagged{isSpecialColumnTagged(dateTag)};
+    const bool priceColumnTagged{isSpecialColumnTagged(priceTag)};
 
     for (unsigned int i = 0;
          i < static_cast<unsigned int>(activeColumns_.count()); ++i)
     {
-        if (activeColumns_.at(i))
-        {
-            tempColumnsFormat.push_back(columnTypes_[i]);
-            tempHeaderColumnNames << headerColumnNames_[i];
-            if (specialColumnDateMarked &&
-                specialColumns_.value(SpecialColumn::TRANSACTION_DATE) == i)
-                specialColumnsTemp[SpecialColumn::TRANSACTION_DATE] =
-                    activeColumnNumber;
-            if (specialColumnPriceMarked &&
-                specialColumns_.value(SpecialColumn::PRICE_PER_UNIT) == i)
-                specialColumnsTemp[SpecialColumn::PRICE_PER_UNIT] =
-                    activeColumnNumber;
-            activeColumnNumber++;
-        }
+        if (!activeColumns_.at(i))
+            continue;
+
+        rebuiltColumnsFormat.push_back(columnTypes_[i]);
+        rebuiltHeaderColumnNames << headerColumnNames_[i];
+        if (dateColumnTagged && specialColumns_.value(dateTag) == i)
+            rebuiltSpecialColumns[dateTag] = activeColumnNumber;
+        if (priceColumnTagged && specialColumns_.value(priceTag) == i)
+            rebuiltSpecialColumns[priceTag] = activeColumnNumber;
+        activeColumnNumber++;
     }
 
-    columnTypes_ = tempColumnsFormat;
-    headerColumnNames_ = tempHeaderColumnNames;
-    specialColumns_ = specialColumnsTemp;
+    columnTypes_ = rebuiltColumnsFormat;
+    headerColumnNames_ = rebuiltHeaderColumnNames;
+    specialColumns_ = rebuiltSpecialColumns;
     columnsCount_ = activeColumns_.count(true);
     activeColumns_.clear();
 }
@@ -249,10 +245,12 @@ void Dataset::updateSampleDataStrings(QVector<QVector<QVariant>>& data) const
     {
         if (columnTypes_.at(i) != ColumnType::STRING)
             continue;
+
         for (auto& sampleDataRow : data)
         {
             if (sampleDataRow[i].type() != QVariant::Int)
                 continue;
+
             const int index{sampleDataRow[i].toInt()};
             sampleDataRow[i] =
                 (index > sharedStrings_.size() ? 0 : sharedStrings_[index]);
