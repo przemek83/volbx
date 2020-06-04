@@ -110,7 +110,7 @@ static bool domNodeListsEqual(const QDomNodeList& leftNodes,
         if (!found || !equal)
             return false;
     }
-    return true;
+    return equal;
 }
 
 static bool domElementsEqual(QDomElement& left, QDomElement& right)
