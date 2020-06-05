@@ -6,6 +6,7 @@
 #include <Qt5Quazip/quazip.h>
 
 class QuaZipFile;
+class QTextStream;
 
 /**
  * @brief Dataset class for inner format.
@@ -43,6 +44,9 @@ private:
     bool loadStrings(QuaZip& zip);
 
     QVector<QVariant> fillRow(const QStringList& line, bool fillSamplesOnly);
+
+    QVector<QVector<QVariant>> parseData(QTextStream& stream,
+                                         bool fillSamplesOnly);
 
     std::tuple<bool, QVector<QVector<QVariant>>> fillData(QuaZip& zip,
                                                           bool fillSamplesOnly);

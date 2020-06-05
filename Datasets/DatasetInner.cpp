@@ -228,17 +228,9 @@ QVector<QVariant> DatasetInner::fillRow(const QStringList& line,
     return row;
 }
 
-std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::fillData(
-    QuaZip& zip, bool fillSamplesOnly)
+QVector<QVector<QVariant>> DatasetInner::parseData(QTextStream& stream,
+                                                   bool fillSamplesOnly)
 {
-    QuaZipFile zipFile(&zip);
-    zip.setCurrentFile(DatasetUtilities::getDatasetDataFilename());
-    if (!openQuaZipFile(zipFile))
-        return {false, {}};
-
-    QTextStream stream(&zipFile);
-    stream.setCodec("UTF-8");
-
     unsigned int lastEmittedPercent{0};
     unsigned int lineCounter{0};
     QVector<QVector<QVariant>> data{prepareContainerForData(fillSamplesOnly)};
@@ -253,7 +245,20 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::fillData(
         if (!fillSamplesOnly)
             updateProgress(lineCounter, rowCount(), lastEmittedPercent);
     }
+    return data;
+}
 
+std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::fillData(
+    QuaZip& zip, bool fillSamplesOnly)
+{
+    QuaZipFile zipFile(&zip);
+    zip.setCurrentFile(DatasetUtilities::getDatasetDataFilename());
+    if (!openQuaZipFile(zipFile))
+        return {false, {}};
+
+    QTextStream stream(&zipFile);
+    stream.setCodec("UTF-8");
+    QVector<QVector<QVariant>> data{parseData(stream, fillSamplesOnly)};
     LOG(LogTypes::IMPORT_EXPORT,
         "Loaded " + QString::number(data->size()) + " rows.");
 
