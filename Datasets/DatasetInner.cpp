@@ -213,6 +213,21 @@ QVariant DatasetInner::getDefaultVariantForFormat(const ColumnType format) const
     }
 }
 
+QVector<QVariant> DatasetInner::fillRow(const QStringList& line,
+                                        bool fillSamplesOnly)
+{
+    QVector<QVariant> row;
+    for (unsigned int i = 0; i < columnCount(); ++i)
+    {
+        if (!fillSamplesOnly && !activeColumns_[i])
+            continue;
+
+        const QString& element{line.at(i)};
+        row.append(getElementAsVariant(getColumnFormat(i), element));
+    }
+    return row;
+}
+
 std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::fillData(
     QuaZip& zip, bool fillSamplesOnly)
 {
@@ -233,17 +248,7 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::fillData(
             break;
 
         QStringList line{stream.readLine().split(';')};
-        int columnToFill{0};
-        for (unsigned int i = 0; i < columnCount(); ++i)
-        {
-            if (!fillSamplesOnly && !activeColumns_[i])
-                continue;
-
-            const QString& element{line.at(i)};
-            data[lineCounter][columnToFill] =
-                getElementAsVariant(getColumnFormat(i), element);
-            columnToFill++;
-        }
+        data[lineCounter] = fillRow(line, fillSamplesOnly);
         lineCounter++;
         if (!fillSamplesOnly)
             updateProgress(lineCounter, rowCount(), lastEmittedPercent);

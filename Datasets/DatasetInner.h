@@ -42,6 +42,8 @@ private:
 
     bool loadStrings(QuaZip& zip);
 
+    QVector<QVariant> fillRow(const QStringList& line, bool fillSamplesOnly);
+
     std::tuple<bool, QVector<QVector<QVariant>>> fillData(QuaZip& zip,
                                                           bool fillSamplesOnly);
 
