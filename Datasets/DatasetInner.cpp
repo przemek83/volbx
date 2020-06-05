@@ -233,7 +233,9 @@ QVector<QVector<QVariant>> DatasetInner::parseData(QTextStream& stream,
 {
     unsigned int lastEmittedPercent{0};
     unsigned int lineCounter{0};
-    QVector<QVector<QVariant>> data{prepareContainerForData(fillSamplesOnly)};
+    QVector<QVector<QVariant>> data{fillSamplesOnly
+                                        ? prepareContainerForSampleData()
+                                        : prepareContainerForAllData()};
     while (!stream.atEnd() && lineCounter < rowCount())
     {
         if (fillSamplesOnly && lineCounter >= SAMPLE_SIZE)
@@ -265,24 +267,23 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::fillData(
     return {true, data};
 }
 
-QVector<QVector<QVariant>> DatasetInner::prepareContainerForData(
-    bool fillSamplesOnly) const
+QVector<QVector<QVariant>> DatasetInner::prepareContainerForAllData() const
 {
     QVector<QVector<QVariant>> data;
-    if (fillSamplesOnly)
-    {
-        const int rowsCountForSamples =
-            (rowCount() > SAMPLE_SIZE ? SAMPLE_SIZE : rowCount());
-        data.resize(rowsCountForSamples);
-        for (int i = 0; i < rowsCountForSamples; ++i)
-            data[i].resize(columnsCount_);
-    }
-    else
-    {
-        data.resize(rowCount());
-        const int activeColumnsCount{activeColumns_.size()};
-        for (int i = 0; i < data.size(); ++i)
-            data[i].resize(activeColumnsCount);
-    }
+    const int rowsCountForSamples =
+        (rowCount() > SAMPLE_SIZE ? SAMPLE_SIZE : rowCount());
+    data.resize(rowsCountForSamples);
+    for (int i = 0; i < rowsCountForSamples; ++i)
+        data[i].resize(columnsCount_);
+    return data;
+}
+
+QVector<QVector<QVariant>> DatasetInner::prepareContainerForSampleData() const
+{
+    QVector<QVector<QVariant>> data;
+    data.resize(rowCount());
+    const int activeColumnsCount{activeColumns_.size()};
+    for (int i = 0; i < data.size(); ++i)
+        data[i].resize(activeColumnsCount);
     return data;
 }

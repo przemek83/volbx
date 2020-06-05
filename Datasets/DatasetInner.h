@@ -59,8 +59,9 @@ private:
 
     QVariant getDefaultVariantForFormat(const ColumnType format) const;
 
-    QVector<QVector<QVariant>> prepareContainerForData(
-        bool fillSamplesOnly) const;
+    QVector<QVector<QVariant>> prepareContainerForAllData() const;
+
+    QVector<QVector<QVariant>> prepareContainerForSampleData() const;
 
     QuaZip zip_;
 
