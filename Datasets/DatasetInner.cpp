@@ -135,8 +135,7 @@ bool DatasetInner::loadStrings(QuaZip& zip)
     if (!openQuaZipFile(zipFile))
         return false;
 
-    QByteArray stringsContent{zipFile.readAll()};
-    QList<QByteArray> strings{stringsContent.split('\n')};
+    QList<QByteArray> strings{zipFile.readAll().split('\n')};
 
     // First element need to be empty.
     sharedStrings_.append(QVariant(QString()));
@@ -160,50 +159,36 @@ void DatasetInner::updateProgress(unsigned int currentRow,
     }
 }
 
-void DatasetInner::addElementToContainer(
-    const ColumnType columnFormat, const QString& element,
-    QVector<QVector<QVariant>>& dataContainer, const unsigned int lineCounter,
-    const unsigned int columnToFill) const
+QVariant DatasetInner::getElementAsVariant(ColumnType columnFormat,
+                                           const QString& element) const
 {
+    QVariant elementAsVariant;
     if (element.isEmpty())
-    {
-        dataContainer[lineCounter][columnToFill] =
-            getDefaultVariantForFormat(columnFormat);
-    }
+        elementAsVariant = getDefaultVariantForFormat(columnFormat);
     else
     {
         switch (columnFormat)
         {
             case ColumnType::NUMBER:
-            {
-                dataContainer[lineCounter][columnToFill] =
-                    QVariant(element.toDouble());
+                elementAsVariant = QVariant(element.toDouble());
                 break;
-            }
 
             case ColumnType::STRING:
-            {
-                dataContainer[lineCounter][columnToFill] =
-                    QVariant(element.toInt());
+                elementAsVariant = QVariant(element.toInt());
                 break;
-            }
 
             case ColumnType::DATE:
-            {
-                dataContainer[lineCounter][columnToFill] =
+                elementAsVariant =
                     QVariant(QDate::fromJulianDay(element.toInt()));
                 break;
-            }
 
             case ColumnType::UNKNOWN:
-            {
                 Q_ASSERT(false);
-                dataContainer[lineCounter][columnToFill] =
-                    QVariant(QVariant::String);
+                elementAsVariant = QVariant(QVariant::String);
                 break;
-            }
         }
     }
+    return elementAsVariant;
 }
 
 QVariant DatasetInner::getDefaultVariantForFormat(const ColumnType format) const
@@ -251,14 +236,12 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::fillData(
         int columnToFill{0};
         for (unsigned int i = 0; i < columnCount(); ++i)
         {
-            const QString& element{line.at(i)};
-
-            // Do nothing if column is not active.
             if (!fillSamplesOnly && !activeColumns_[i])
                 continue;
 
-            addElementToContainer(getColumnFormat(i), element, data,
-                                  lineCounter, columnToFill);
+            const QString& element{line.at(i)};
+            data[lineCounter][columnToFill] =
+                getElementAsVariant(getColumnFormat(i), element);
             columnToFill++;
         }
         lineCounter++;

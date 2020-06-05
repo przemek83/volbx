@@ -48,11 +48,8 @@ private:
     void updateProgress(unsigned int currentRow, unsigned int rowCount,
                         unsigned int& lastEmittedPercent);
 
-    void addElementToContainer(const ColumnType columnFormat,
-                               const QString& element,
-                               QVector<QVector<QVariant>>& dataContainer,
-                               const unsigned int lineCounter,
-                               const unsigned int columnToFill) const;
+    QVariant getElementAsVariant(ColumnType columnFormat,
+                                 const QString& element) const;
 
     QVariant getDefaultVariantForFormat(const ColumnType format) const;
 
