@@ -32,9 +32,6 @@ private:
 
     bool openQuaZipFile(QuaZipFile& zipFile);
 
-    /// Load definition, strings and sample data.
-    bool load();
-
     void retrieveColumnsFromXml(const QDomElement& root);
 
     bool fromXml(QByteArray& definitionContent);

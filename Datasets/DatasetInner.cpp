@@ -270,20 +270,20 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::fillData(
 QVector<QVector<QVariant>> DatasetInner::prepareContainerForAllData() const
 {
     QVector<QVector<QVariant>> data;
-    const int rowsCountForSamples =
-        (rowCount() > SAMPLE_SIZE ? SAMPLE_SIZE : rowCount());
-    data.resize(rowsCountForSamples);
-    for (int i = 0; i < rowsCountForSamples; ++i)
-        data[i].resize(columnsCount_);
+    data.resize(rowCount());
+    const int activeColumnsCount{activeColumns_.size()};
+    for (int i = 0; i < data.size(); ++i)
+        data[i].resize(activeColumnsCount);
     return data;
 }
 
 QVector<QVector<QVariant>> DatasetInner::prepareContainerForSampleData() const
 {
     QVector<QVector<QVariant>> data;
-    data.resize(rowCount());
-    const int activeColumnsCount{activeColumns_.size()};
-    for (int i = 0; i < data.size(); ++i)
-        data[i].resize(activeColumnsCount);
+    const int rowsCountForSamples =
+        (rowCount() > SAMPLE_SIZE ? SAMPLE_SIZE : rowCount());
+    data.resize(rowsCountForSamples);
+    for (int i = 0; i < rowsCountForSamples; ++i)
+        data[i].resize(columnsCount_);
     return data;
 }
