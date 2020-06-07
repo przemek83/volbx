@@ -1,25 +1,10 @@
 #include "DataView.h"
 
-#include <iostream>
-
-#include <qwt_plot.h>
-#include <qwt_plot_curve.h>
-#include <qwt_text.h>
-#include <QAction>
 #include <QApplication>
-#include <QContextMenuEvent>
-#include <QDebug>
 #include <QHeaderView>
-#include <QLabel>
-#include <QMainWindow>
-#include <QMenu>
-#include <QModelIndexList>
-#include <QSpinBox>
+#include <QMouseEvent>
 
-#include <Constants.h>
-#include <Logger.h>
-#include <SpecialColumns.h>
-#include "GUI/PlotDockWidget.h"
+#include "Logger.h"
 
 #include "DateDelegate.h"
 #include "FilteringProxyModel.h"

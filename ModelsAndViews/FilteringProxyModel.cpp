@@ -1,7 +1,6 @@
 #include "FilteringProxyModel.h"
 
-#include <Constants.h>
-#include <Logger.h>
+#include <QDate>
 
 #include "TableModel.h"
 
