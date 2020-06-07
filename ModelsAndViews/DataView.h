@@ -1,19 +1,9 @@
 #ifndef DATAVIEW_H
 #define DATAVIEW_H
 
-#include <memory>
-
 #include <QTableView>
-#include <QVariant>
-#include <QVector>
 
 #include "PlotDataProvider.h"
-#include "TransactionData.h"
-
-class TrendPlot;
-class QMainWindow;
-class QDockWidget;
-class TableModel;
 
 /**
  * @brief 2d view for data.
@@ -47,7 +37,7 @@ private:
     /**
      * @brief get selected on view data.
      * @param groupByColumn column used in grouping.
-     * @return vector of structs containg data, price and grouping data.
+     * @return vector of structures containing data, price and grouping data.
      */
     QVector<TransactionData> fillDataFromSelection(int groupByColumn) const;
 };

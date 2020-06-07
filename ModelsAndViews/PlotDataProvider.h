@@ -3,20 +3,11 @@
 
 #include <ColumnType.h>
 #include <Quantiles.h>
-#include <qwt_series_data.h>
-#include <QDate>
-#include <QMap>
 #include <QObject>
-#include <QVariant>
-#include <QVector>
 
-#include <Constants.h>
+#include "Constants.h"
 
 #include "TransactionData.h"
-
-class QwtIntervalSeriesData;
-class QwtPointSeriesData;
-class QDate;
 
 /**
  * @brief class used for computation of values for all plots.

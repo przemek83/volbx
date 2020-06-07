@@ -1,11 +1,7 @@
 #ifndef FILTERINGPROXYMODEL_H
 #define FILTERINGPROXYMODEL_H
 
-#include <map>
-
-#include <QDate>
 #include <QSortFilterProxyModel>
-#include <QStringList>
 
 class TableModel;
 

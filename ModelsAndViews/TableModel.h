@@ -2,16 +2,12 @@
 #define TABLEMODEL_H
 
 #include <memory>
-#include <vector>
 
 #include <ColumnType.h>
 #include <QAbstractTableModel>
 
-#include <SpecialColumns.h>
-
 #include "Dataset.h"
-
-class Dataset;
+#include "SpecialColumns.h"
 
 /**
  * @brief 2d data model.
