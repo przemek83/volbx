@@ -142,15 +142,6 @@ bool Dataset::loadData()
     return success;
 }
 
-QString Dataset::getNameForTabBar()
-{
-    QString tabName{getName()};
-    auto [exist, column] = getSpecialColumn(SpecialColumn::PRICE_PER_UNIT);
-    if (exist)
-        tabName.append(" (" + getHeaderName(column) + ")");
-    return tabName;
-}
-
 QDomElement Dataset::columnsToXml(QDomDocument& xmlDocument) const
 {
     QDomElement columns{xmlDocument.createElement(XML_COLUMNS)};
@@ -202,7 +193,7 @@ void Dataset::setSpecialColumn(SpecialColumn columnTag, unsigned int column)
     specialColumns_[columnTag] = column;
 }
 
-QString Dataset::getError() const { return error_; }
+QString Dataset::getLastError() const { return error_; }
 
 void Dataset::rebuildDefinitonUsingActiveColumnsOnly()
 {

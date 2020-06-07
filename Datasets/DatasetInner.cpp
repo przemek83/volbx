@@ -9,7 +9,7 @@
 #include "Common/DatasetUtilities.h"
 #include "Shared/Logger.h"
 
-DatasetInner::DatasetInner(const QString& name, QObject* parent)
+DatasetInner::DaMletInner(const QString& name, QObject* parent)
     : Dataset(name, parent), datasetsDir_(DatasetUtilities::getDatasetsDir())
 {
     zip_.setZipName(datasetsDir_ + name +
@@ -87,7 +87,7 @@ bool DatasetInner::fromXml(QByteArray& definitionContent)
     QDomDocument xmlDocument;
     if (!xmlDocument.setContent(definitionContent))
     {
-        LOG(LogTypes::IMPORT_EXPORT, "Xml file is corrupted.");
+        LOG(LogTypes::IMPORT_EXPORT, "XML file is corrupted.");
         return false;
     }
 

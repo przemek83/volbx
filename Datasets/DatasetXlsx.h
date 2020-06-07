@@ -4,6 +4,7 @@
 #include "DatasetSpreadsheet.h"
 
 /**
+ * @class DatasetXlsx
  * @brief Dataset definition for .xlsx files.
  */
 class DatasetXlsx : public DatasetSpreadsheet

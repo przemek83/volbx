@@ -8,6 +8,7 @@
 class ImportSpreadsheet;
 
 /**
+ * @class DatasetSpreadsheet
  * @brief Dataset class for spreadsheets.
  */
 class DatasetSpreadsheet : public Dataset

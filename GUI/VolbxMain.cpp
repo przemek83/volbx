@@ -396,7 +396,8 @@ void VolbxMain::actionImportDataTriggered()
 
     if (!dataset)
     {
-        QMessageBox::critical(this, tr("Import error"), dataset->getError());
+        QMessageBox::critical(this, tr("Import error"),
+                              dataset->getLastError());
         return;
     }
 
@@ -440,7 +441,12 @@ void VolbxMain::actionImportDataTriggered()
 
 void VolbxMain::addMainTabForDataset(std::unique_ptr<Dataset> dataset)
 {
-    QString nameForTabBar{dataset->getNameForTabBar()};
+    QString nameForTabBar{dataset->getName()};
+    auto [exist, column] =
+        dataset->getSpecialColumn(SpecialColumn::PRICE_PER_UNIT);
+    if (exist)
+        nameForTabBar.append(" (" + dataset->getHeaderName(column) + ")");
+
     QString datasetName{dataset->getName()};
     auto mainTab = new MainTab(std::move(dataset), tabWidget_);
     const FilteringProxyModel* proxyModel = mainTab->getCurrentProxyModel();
