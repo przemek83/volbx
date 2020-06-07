@@ -34,46 +34,58 @@ void FilteringProxyModel::setNumericFilter(int column, double from, double to)
     invalidate();
 }
 
-bool FilteringProxyModel::filterAcceptsRow(
+bool FilteringProxyModel::acceptRowAccordingToStringRestrictions(
     int sourceRow, const QModelIndex& sourceParent) const
 {
-    // Filter strings.
     for (const auto& [column, bannedStrings] : stringsRestrictions_)
     {
-        QModelIndex index =
-            sourceModel()->index(sourceRow, column, sourceParent);
+        QModelIndex index{
+            sourceModel()->index(sourceRow, column, sourceParent)};
         if (bannedStrings.contains(index.data().toString()))
             return false;
     }
+    return true;
+}
 
-    // Filter dates.
+bool FilteringProxyModel::acceptRowAccordingToDateRestrictions(
+    int sourceRow, const QModelIndex& sourceParent) const
+{
     for (const auto& [column, dateRestriction] : datesRestrictions_)
     {
-        QModelIndex index =
-            sourceModel()->index(sourceRow, column, sourceParent);
-        std::tuple<QDate, QDate, bool> datesRestrictions = dateRestriction;
-        const QVariant& dateVariant = index.data();
-
+        QModelIndex index{
+            sourceModel()->index(sourceRow, column, sourceParent)};
+        auto [min, max, emptyDates] = dateRestriction;
+        const QVariant& dateVariant{index.data()};
         if (dateVariant.isNull())
-            return !std::get<2>(datesRestrictions);
+            return !emptyDates;
 
-        QDate itemDate = dateVariant.toDate();
-        if (itemDate < std::get<0>(datesRestrictions) ||
-            itemDate > std::get<1>(datesRestrictions))
+        const QDate itemDate{dateVariant.toDate()};
+        if (itemDate < min || itemDate > max)
             return false;
     }
+    return true;
+}
 
-    // Filter numbers.
+bool FilteringProxyModel::acceptRowAccordingToNumericRestrictions(
+    int sourceRow, const QModelIndex& sourceParent) const
+{
     for (const auto& [column, numericRestriction] : numericRestrictions_)
     {
-        QModelIndex index =
-            sourceModel()->index(sourceRow, column, sourceParent);
-        std::pair<double, double> intPair = numericRestriction;
-        double itemDouble =
-            QString::number(index.data().toDouble(), 'f', 2).toDouble();
-        if (itemDouble < intPair.first || itemDouble > intPair.second)
+        QModelIndex index{
+            sourceModel()->index(sourceRow, column, sourceParent)};
+        auto [min, max] = numericRestriction;
+        const double itemDouble{
+            QString::number(index.data().toDouble(), 'f', 2).toDouble()};
+        if (itemDouble < min || itemDouble > max)
             return false;
     }
-
     return true;
+}
+
+bool FilteringProxyModel::filterAcceptsRow(
+    int sourceRow, const QModelIndex& sourceParent) const
+{
+    return acceptRowAccordingToStringRestrictions(sourceRow, sourceParent) &&
+           acceptRowAccordingToDateRestrictions(sourceRow, sourceParent) &&
+           acceptRowAccordingToNumericRestrictions(sourceRow, sourceParent);
 }

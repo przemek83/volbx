@@ -56,6 +56,15 @@ protected:
                           const QModelIndex& sourceParent) const override;
 
 private:
+    bool acceptRowAccordingToStringRestrictions(
+        int sourceRow, const QModelIndex& sourceParent) const;
+
+    bool acceptRowAccordingToDateRestrictions(
+        int sourceRow, const QModelIndex& sourceParent) const;
+
+    bool acceptRowAccordingToNumericRestrictions(
+        int sourceRow, const QModelIndex& sourceParent) const;
+
     /// Filter set for strings.
     std::map<int, QStringList> stringsRestrictions_;
 
