@@ -49,6 +49,11 @@ private:
 
     const TableModel* getParentModel() const;
 
+    std::tuple<bool, int, int> getSpecialColumns(
+        const TableModel* parentModel) const;
+
+    void createTransactionData() const;
+
     PlotDataProvider plotDataProvider_;
 };
 
