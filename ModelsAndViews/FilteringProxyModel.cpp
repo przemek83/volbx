@@ -24,13 +24,13 @@ void FilteringProxyModel::setStringFilter(int column,
 void FilteringProxyModel::setDateFilter(int column, QDate from, QDate to,
                                         bool filterEmptyDates)
 {
-    datesRestrictions_[column] = std::make_tuple(from, to, filterEmptyDates);
+    datesRestrictions_[column] = {from, to, filterEmptyDates};
     invalidate();
 }
 
 void FilteringProxyModel::setNumericFilter(int column, double from, double to)
 {
-    numericRestrictions_[column] = std::make_pair(from, to);
+    numericRestrictions_[column] = {from, to};
     invalidate();
 }
 
@@ -38,24 +38,20 @@ bool FilteringProxyModel::filterAcceptsRow(
     int sourceRow, const QModelIndex& sourceParent) const
 {
     // Filter strings.
-    std::map<int, QStringList>::const_iterator iterStrings;
-    for (iterStrings = stringsRestrictions_.begin();
-         iterStrings != stringsRestrictions_.end(); ++iterStrings)
+    for (const auto& [column, bannedStrings] : stringsRestrictions_)
     {
         QModelIndex index =
-            sourceModel()->index(sourceRow, iterStrings->first, sourceParent);
-        if (iterStrings->second.contains(index.data().toString()))
+            sourceModel()->index(sourceRow, column, sourceParent);
+        if (bannedStrings.contains(index.data().toString()))
             return false;
     }
 
     // Filter dates.
-    std::map<int, std::tuple<QDate, QDate, bool> >::const_iterator iterDates;
-    for (iterDates = datesRestrictions_.begin();
-         iterDates != datesRestrictions_.end(); ++iterDates)
+    for (const auto& [column, dateRestriction] : datesRestrictions_)
     {
         QModelIndex index =
-            sourceModel()->index(sourceRow, iterDates->first, sourceParent);
-        std::tuple<QDate, QDate, bool> datesRestrictions = iterDates->second;
+            sourceModel()->index(sourceRow, column, sourceParent);
+        std::tuple<QDate, QDate, bool> datesRestrictions = dateRestriction;
         const QVariant& dateVariant = index.data();
 
         if (dateVariant.isNull())
@@ -68,13 +64,11 @@ bool FilteringProxyModel::filterAcceptsRow(
     }
 
     // Filter numbers.
-    std::map<int, std::pair<double, double> >::const_iterator iterNumbers;
-    for (iterNumbers = numericRestrictions_.begin();
-         iterNumbers != numericRestrictions_.end(); ++iterNumbers)
+    for (const auto& [column, numericRestriction] : numericRestrictions_)
     {
         QModelIndex index =
-            sourceModel()->index(sourceRow, iterNumbers->first, sourceParent);
-        std::pair<double, double> intPair = iterNumbers->second;
+            sourceModel()->index(sourceRow, column, sourceParent);
+        std::pair<double, double> intPair = numericRestriction;
         double itemDouble =
             QString::number(index.data().toDouble(), 'f', 2).toDouble();
         if (itemDouble < intPair.first || itemDouble > intPair.second)
