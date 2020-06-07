@@ -9,7 +9,7 @@
 #include <QVariant>
 #include <QVector>
 
-#include "Common/SpecialColumns.h"
+#include <SpecialColumns.h>
 
 class DatasetDefinition;
 class QDomDocument;

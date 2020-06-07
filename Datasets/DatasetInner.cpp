@@ -1,15 +1,14 @@
 #include "DatasetInner.h"
 
 #include <Qt5Quazip/quazipfile.h>
-#include <QApplication>
 #include <QDir>
 #include <QDomDocument>
 #include <QTextStream>
 
-#include "Common/DatasetUtilities.h"
-#include "Shared/Logger.h"
+#include <DatasetUtilities.h>
+#include <Logger.h>
 
-DatasetInner::DaMletInner(const QString& name, QObject* parent)
+DatasetInner::DatasetInner(const QString& name, QObject* parent)
     : Dataset(name, parent), datasetsDir_(DatasetUtilities::getDatasetsDir())
 {
     zip_.setZipName(datasetsDir_ + name +
@@ -155,7 +154,6 @@ void DatasetInner::updateProgress(unsigned int currentRow,
     {
         Q_EMIT loadingPercentChanged(currentPercent);
         lastEmittedPercent = currentPercent;
-        QCoreApplication::processEvents();
     }
 }
 

@@ -2,7 +2,7 @@
 
 #include <ImportSpreadsheet.h>
 
-#include "Shared/Logger.h"
+#include <Logger.h>
 
 DatasetSpreadsheet::DatasetSpreadsheet(const QString& name,
                                        const QString& zipFileName,

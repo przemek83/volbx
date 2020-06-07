@@ -6,6 +6,8 @@
 #include <QTime>
 #include <QVBoxLayout>
 
+#include "CheckBox.h"
+
 Logger::Logger([[maybe_unused]] QObject* parent)
     : logNames_{{LogTypes::DB, "DATA_BASE"},
                 {LogTypes::CONFIG, "CONFIG"},

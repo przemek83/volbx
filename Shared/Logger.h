@@ -1,12 +1,11 @@
 #ifndef LOGWINDOW_H
 #define LOGWINDOW_H
 
-#include <QCheckBox>
 #include <QLatin1String>
 #include <QMap>
 #include <QObject>
+#include <QWidget>
 
-#include "CheckBox.h"
 #include "Debugging.h"
 #include "LogType.h"
 
