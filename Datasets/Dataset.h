@@ -174,17 +174,14 @@ protected:
 
     QVector<QVariant> sharedStrings_;
 
-    /// Dataset is valid.
     bool valid_{false};
 
-    /// Number of lines in sample data.
     static constexpr unsigned int SAMPLE_SIZE{10};
 
     QVector<ColumnType> columnTypes_;
 
     QStringList headerColumnNames_;
 
-    /// Active columns information.
     QVector<bool> activeColumns_;
 
     unsigned int rowsCount_{0};
@@ -224,6 +221,10 @@ private:
     QMap<SpecialColumn, unsigned int> specialColumns_;
 
 signals:
+    /**
+     * @brief Signal for loading percent changes
+     * @param newPercentage New percent.
+     */
     void loadingPercentChanged(unsigned int newPercentage);
 };
 
