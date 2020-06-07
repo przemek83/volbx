@@ -1,8 +1,6 @@
 #include "TableModel.h"
 
-#include <QDebug>
-
-#include "Common/Constants.h"
+#include <Constants.h>
 #include "Datasets/Dataset.h"
 
 const int TableModel::noColumn_ = Constants::NOT_SET_COLUMN;

@@ -28,8 +28,6 @@ public:
     double pricePerMeter_{0.};
 
     void clear();
-
-    void print() const;
 };
 
 #endif  // TRANSACTIONDATA_H

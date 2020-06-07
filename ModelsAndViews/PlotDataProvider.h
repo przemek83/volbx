@@ -10,7 +10,7 @@
 #include <QVariant>
 #include <QVector>
 
-#include "Common/Constants.h"
+#include <Constants.h>
 
 #include "TransactionData.h"
 

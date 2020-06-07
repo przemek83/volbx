@@ -7,7 +7,7 @@
 #include <ColumnType.h>
 #include <QAbstractTableModel>
 
-#include "Common/SpecialColumns.h"
+#include <SpecialColumns.h>
 
 #include "Dataset.h"
 

@@ -16,8 +16,8 @@
 #include <QModelIndexList>
 #include <QSpinBox>
 
-#include "Common/Constants.h"
-#include "Common/SpecialColumns.h"
+#include <Constants.h>
+#include <SpecialColumns.h>
 #include "GUI/PlotDockWidget.h"
 #include "Shared/Logger.h"
 
