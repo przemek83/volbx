@@ -11,8 +11,12 @@ set(${PROJECT_NAME}_SOURCES
     NumericDelegate.h
     TableModel.cpp
     TableModel.h
+    PlotDataProvider.cpp
+    PlotDataProvider.h
+    TransactionData.cpp
+    TransactionData.h
     )
 
 ADD_LIBRARY(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SOURCES})
 
-target_link_libraries(${PROJECT_NAME} dataProvider Qt5::Core Qt5::Widgets)
+target_link_libraries(${PROJECT_NAME} qwtble Qt5::Core Qt5::Widgets)

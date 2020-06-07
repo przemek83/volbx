@@ -6,9 +6,9 @@
 #include <QApplication>
 #include <QDebug>
 
-#include "DataProvider/PlotDataProvider.h"
 #include "ModelsAndViews/DataView.h"
 #include "ModelsAndViews/FilteringProxyModel.h"
+#include "ModelsAndViews/PlotDataProvider.h"
 #include "ModelsAndViews/TableModel.h"
 #include "Shared/Logger.h"
 

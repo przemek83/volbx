@@ -11,7 +11,8 @@
 #include <QVector>
 
 #include "Common/Constants.h"
-#include "DataProvider/TransactionData.h"
+
+#include "TransactionData.h"
 
 class QwtIntervalSeriesData;
 class QwtPointSeriesData;

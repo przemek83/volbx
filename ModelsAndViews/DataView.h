@@ -7,10 +7,9 @@
 #include <QVariant>
 #include <QVector>
 
-#include "DataProvider/PlotDataProvider.h"
-#include "DataProvider/TransactionData.h"
+#include "PlotDataProvider.h"
+#include "TransactionData.h"
 
-class PlotDataProvider;
 class TrendPlot;
 class QMainWindow;
 class QDockWidget;
