@@ -10,7 +10,7 @@
 #include <QVariant>
 #include <QtCore>
 
-#include "Shared/Logger.h"
+#include <Logger.h>
 
 PlotDataProvider::PlotDataProvider(QObject* parent) : QObject(parent) {}
 

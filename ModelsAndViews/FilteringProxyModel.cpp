@@ -1,7 +1,7 @@
 #include "FilteringProxyModel.h"
 
 #include <Constants.h>
-#include "Shared/Logger.h"
+#include <Logger.h>
 
 #include "TableModel.h"
 

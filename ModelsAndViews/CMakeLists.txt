@@ -19,4 +19,4 @@ set(${PROJECT_NAME}_SOURCES
 
 ADD_LIBRARY(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SOURCES})
 
-target_link_libraries(${PROJECT_NAME} qwtble common Qt5::Core Qt5::Widgets)
+target_link_libraries(${PROJECT_NAME} qwtble common shared Qt5::Core Qt5::Widgets)

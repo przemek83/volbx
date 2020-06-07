@@ -17,9 +17,9 @@
 #include <QSpinBox>
 
 #include <Constants.h>
+#include <Logger.h>
 #include <SpecialColumns.h>
 #include "GUI/PlotDockWidget.h"
-#include "Shared/Logger.h"
 
 #include "DateDelegate.h"
 #include "FilteringProxyModel.h"

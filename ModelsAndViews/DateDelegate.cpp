@@ -2,7 +2,6 @@
 
 #include <QwtBleUtilities.h>
 #include <QDate>
-#include <QDebug>
 
 DateDelegate::DateDelegate(QObject* parent)
     : QStyledItemDelegate(parent),

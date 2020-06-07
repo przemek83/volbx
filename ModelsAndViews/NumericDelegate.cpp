@@ -1,7 +1,6 @@
 #include "NumericDelegate.h"
 
 #include <QwtBleUtilities.h>
-#include <QDebug>
 
 NumericDelegate::NumericDelegate(QObject* parent) : QStyledItemDelegate(parent)
 {
