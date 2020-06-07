@@ -16,28 +16,17 @@ DataView::DataView(QWidget* parent)
 {
     setSelectionMode(QAbstractItemView::SingleSelection);
     setSelectionBehavior(QAbstractItemView::SelectRows);
-    const int rowHeight = static_cast<int>(fontMetrics().height() * 1.5);
-    verticalHeader()->setDefaultSectionSize(rowHeight);
     setEditTriggers(QAbstractItemView::NoEditTriggers);
-    verticalHeader()->setVisible(false);
     setSortingEnabled(true);
-    horizontalHeader()->setSortIndicatorShown(false);
 
-    horizontalHeader()->setSectionsMovable(true);
-
-    auto showSortIndicator = [=]() {
-        if (!horizontalHeader()->isSortIndicatorShown())
-            horizontalHeader()->setSortIndicatorShown(true);
-    };
-    connect(horizontalHeader(), &QHeaderView::sectionClicked,
-            showSortIndicator);
+    initHorizontalHeader();
+    initVerticalHeader();
 }
 
 void DataView::setModel(QAbstractItemModel* model)
 {
-    const TableModel* parentModel =
-        (qobject_cast<FilteringProxyModel*>(model))->getParentModel();
-    auto proxyModel = qobject_cast<FilteringProxyModel*>(model);
+    const auto proxyModel = qobject_cast<FilteringProxyModel*>(model);
+    const TableModel* parentModel = proxyModel->getParentModel();
 
     for (int i = 0; i < proxyModel->columnCount(); ++i)
     {
@@ -67,16 +56,11 @@ void DataView::setModel(QAbstractItemModel* model)
 
     plotDataProvider_.setGroupingColumn(
         parentModel->getDefaultGroupingColumn());
-
-    // Performance problem.
-    // resizeColumnsToContents();
 }
 
 void DataView::groupingColumnChanged(int column)
 {
-    const TableModel* parentModel =
-        (qobject_cast<FilteringProxyModel*>(model()))->getParentModel();
-
+    const TableModel* parentModel{getParentModel()};
     plotDataProvider_.recomputeGroupData(fillDataFromSelection(column), column,
                                          parentModel->getColumnFormat(column));
 }
@@ -84,11 +68,8 @@ void DataView::groupingColumnChanged(int column)
 QVector<TransactionData> DataView::fillDataFromSelection(
     int groupByColumn) const
 {
-    auto proxyModel = qobject_cast<FilteringProxyModel*>(model());
-    Q_ASSERT(nullptr != proxyModel);
-
-    const TableModel* parentModel = proxyModel->getParentModel();
-    Q_ASSERT(nullptr != parentModel);
+    const FilteringProxyModel* proxyModel{getProxyModel()};
+    const TableModel* parentModel{getParentModel()};
 
     int pricePerMeterColumn;
     if (auto [ok, columnId] = parentModel->getSpecialColumnIfExists(
@@ -165,9 +146,7 @@ void DataView::reloadSelectionDataAndRecompute()
     ColumnType columnFormat = ColumnType::UNKNOWN;
     if (groupByColumn != Constants::NOT_SET_COLUMN)
     {
-        const TableModel* parentModel =
-            (qobject_cast<FilteringProxyModel*>(model()))->getParentModel();
-
+        const TableModel* parentModel{getParentModel()};
         columnFormat = parentModel->getColumnFormat(groupByColumn);
     }
 
@@ -200,7 +179,37 @@ void DataView::keyPressEvent(QKeyEvent* event)
         reloadSelectionDataAndRecompute();
 }
 
-const PlotDataProvider* DataView::getPlotDataProvider()
+const PlotDataProvider& DataView::getPlotDataProvider() const
 {
-    return &plotDataProvider_;
+    return plotDataProvider_;
+}
+
+void DataView::initHorizontalHeader()
+{
+    horizontalHeader()->setSortIndicatorShown(false);
+    horizontalHeader()->setSectionsMovable(true);
+
+    auto showSortIndicator = [=]() {
+        if (!horizontalHeader()->isSortIndicatorShown())
+            horizontalHeader()->setSortIndicatorShown(true);
+    };
+    connect(horizontalHeader(), &QHeaderView::sectionClicked,
+            showSortIndicator);
+}
+
+void DataView::initVerticalHeader()
+{
+    const int rowHeight{static_cast<int>(fontMetrics().height() * 1.5)};
+    verticalHeader()->setDefaultSectionSize(rowHeight);
+    verticalHeader()->setVisible(false);
+}
+
+const FilteringProxyModel* DataView::getProxyModel() const
+{
+    return qobject_cast<FilteringProxyModel*>(model());
+}
+
+const TableModel* DataView::getParentModel() const
+{
+    return getProxyModel()->getParentModel();
 }

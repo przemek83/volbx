@@ -16,7 +16,7 @@ class PlotDataProvider : public QObject
 {
     Q_OBJECT
 public:
-    explicit PlotDataProvider(QObject* parent);
+    explicit PlotDataProvider(QObject* parent = nullptr);
 
     ~PlotDataProvider() override = default;
 

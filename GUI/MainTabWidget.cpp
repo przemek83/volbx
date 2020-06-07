@@ -225,7 +225,7 @@ void MainTabWidget::addBasicPlot()
     const auto createBasicPlot = [=]() -> BasicDataPlot* {
         DataView* view = getCurrentDataView();
         auto basicPlot = new BasicDataPlot();
-        connect(view->getPlotDataProvider(),
+        connect(&(view->getPlotDataProvider()),
                 &PlotDataProvider::basicPlotDataChanged, basicPlot,
                 &BasicDataPlot::setNewData);
         return basicPlot;
@@ -239,7 +239,7 @@ void MainTabWidget::addHistogramPlot()
     const auto createHistogramPlot = [=]() -> HistogramPlotUI* {
         DataView* view = getCurrentDataView();
         auto histogramPlot = new HistogramPlotUI();
-        connect(view->getPlotDataProvider(),
+        connect(&(view->getPlotDataProvider()),
                 &PlotDataProvider::basicDataChanged, histogramPlot,
                 &HistogramPlotUI::setNewData);
         return histogramPlot;
@@ -254,7 +254,7 @@ void MainTabWidget::addGroupingPlot()
         DataView* view = getCurrentDataView();
         TableModel* model = getCurrentDataModel();
         auto groupPlot = new GroupPlotUI(getStringColumnsWithIndexes(model));
-        connect(view->getPlotDataProvider(),
+        connect(&(view->getPlotDataProvider()),
                 &PlotDataProvider::setNewDataForGrouping, groupPlot,
                 &GroupPlotUI::setNewData);
         connect(groupPlot, &GroupPlotUI::traitIndexChanged, view,

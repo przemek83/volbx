@@ -5,6 +5,9 @@
 
 #include "PlotDataProvider.h"
 
+class TableModel;
+class FilteringProxyModel;
+
 /**
  * @brief 2d view for data.
  */
@@ -18,7 +21,7 @@ public:
 
     void setModel(QAbstractItemModel* model) override;
 
-    const PlotDataProvider* getPlotDataProvider();
+    const PlotDataProvider& getPlotDataProvider() const;
 
     void reloadSelectionDataAndRecompute();
 
@@ -31,15 +34,22 @@ protected:
     void keyPressEvent(QKeyEvent* event) override;
 
 private:
-    /// Object for recomputing plot data.
-    PlotDataProvider plotDataProvider_;
-
     /**
      * @brief get selected on view data.
      * @param groupByColumn column used in grouping.
      * @return vector of structures containing data, price and grouping data.
      */
     QVector<TransactionData> fillDataFromSelection(int groupByColumn) const;
+
+    void initHorizontalHeader();
+
+    void initVerticalHeader();
+
+    const FilteringProxyModel* getProxyModel() const;
+
+    const TableModel* getParentModel() const;
+
+    PlotDataProvider plotDataProvider_;
 };
 
 #endif  // DATAVIEW_H

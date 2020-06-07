@@ -45,9 +45,7 @@ bool FilteringProxyModel::filterAcceptsRow(
         QModelIndex index =
             sourceModel()->index(sourceRow, iterStrings->first, sourceParent);
         if (iterStrings->second.contains(index.data().toString()))
-        {
             return false;
-        }
     }
 
     // Filter dates.
@@ -61,16 +59,12 @@ bool FilteringProxyModel::filterAcceptsRow(
         const QVariant& dateVariant = index.data();
 
         if (dateVariant.isNull())
-        {
             return !std::get<2>(datesRestrictions);
-        }
 
         QDate itemDate = dateVariant.toDate();
         if (itemDate < std::get<0>(datesRestrictions) ||
             itemDate > std::get<1>(datesRestrictions))
-        {
             return false;
-        }
     }
 
     // Filter numbers.
@@ -84,9 +78,7 @@ bool FilteringProxyModel::filterAcceptsRow(
         double itemDouble =
             QString::number(index.data().toDouble(), 'f', 2).toDouble();
         if (itemDouble < intPair.first || itemDouble > intPair.second)
-        {
             return false;
-        }
     }
 
     return true;
