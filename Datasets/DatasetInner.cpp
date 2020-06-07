@@ -1,6 +1,7 @@
 #include "DatasetInner.h"
 
 #include <Qt5Quazip/quazipfile.h>
+#include <QCoreApplication>
 #include <QDir>
 #include <QDomDocument>
 #include <QTextStream>
@@ -154,6 +155,7 @@ void DatasetInner::updateProgress(unsigned int currentRow,
     {
         Q_EMIT loadingPercentChanged(currentPercent);
         lastEmittedPercent = currentPercent;
+        QCoreApplication::processEvents();
     }
 }
 

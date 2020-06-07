@@ -15,4 +15,4 @@ set(${PROJECT_NAME}_SOURCES
 
 ADD_LIBRARY(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SOURCES})
 
-target_link_libraries(${PROJECT_NAME} eible shared common Qt5::Xml)
+target_link_libraries(${PROJECT_NAME} eible shared common Qt5::Core Qt5::Xml)
