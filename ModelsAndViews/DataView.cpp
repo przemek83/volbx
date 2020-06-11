@@ -61,7 +61,7 @@ void DataView::setModel(QAbstractItemModel* model)
 void DataView::groupingColumnChanged(int column)
 {
     const TableModel* parentModel{getParentModel()};
-    plotDataProvider_.recomputeGroupData(fillDataFromSelection(column), column,
+    plotDataProvider_.recomputeGroupingData(fillDataFromSelection(column), column,
                                          parentModel->getColumnFormat(column));
 }
 

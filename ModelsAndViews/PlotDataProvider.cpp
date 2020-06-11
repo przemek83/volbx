@@ -16,8 +16,7 @@ void PlotDataProvider::reCompute(QVector<TransactionData> newCalcData,
     calcData_ = std::move(newCalcData);
     quantiles_ = computeQuantiles(calcData_);
 
-    // Left part of group plot.
-    recomputeGroupData(calcData_, groupingColumn_, columnFormat);
+    recomputeGroupingData(calcData_, groupingColumn_, columnFormat);
 
     auto [points, linearRegression] = computePointsAndRegression();
 
@@ -29,13 +28,13 @@ void PlotDataProvider::reCompute(QVector<TransactionData> newCalcData,
     Q_EMIT basicPlotDataChanged(std::move(points), quantiles_,
                                 std::move(linearRegression));
 
-    // Currently only histogram plot attached.
+    // Currently only histogram plot is attached under this signal.
     Q_EMIT fundamentalDataChanged(std::move(yAxisValues), quantiles_);
 }
 
-void PlotDataProvider::recomputeGroupData(QVector<TransactionData> calcData,
-                                          int groupingColumn,
-                                          ColumnType columnFormat)
+void PlotDataProvider::recomputeGroupingData(QVector<TransactionData> calcData,
+                                             int groupingColumn,
+                                             ColumnType columnFormat)
 {
     calcData_ = std::move(calcData);
     groupingColumn_ = groupingColumn;
@@ -48,18 +47,17 @@ void PlotDataProvider::recomputeGroupData(QVector<TransactionData> calcData,
         return;
     }
 
-    QVector<QString> names;
-    QVector<Quantiles> quantilesForIntervals;
-    fillDataForStringGrouping(calcData_, names, quantilesForIntervals);
-
+    auto [names, quantilesForIntervals] = fillDataForStringGrouping(calcData_);
     Q_EMIT groupingPlotDataChanged(
         std::move(names), std::move(quantilesForIntervals), quantiles_);
 }
 
-void PlotDataProvider::fillDataForStringGrouping(
-    const QVector<TransactionData>& calcData, QVector<QString>& names,
-    QVector<Quantiles>& quantilesForIntervals)
+std::tuple<QVector<QString>, QVector<Quantiles>>
+PlotDataProvider::fillDataForStringGrouping(
+    const QVector<TransactionData>& calcData)
 {
+    QVector<QString> names;
+    QVector<Quantiles> quantilesForIntervals;
     QMap<QString, QVector<double>> map;
     const int dataSize = calcData.size();
 
@@ -78,6 +76,8 @@ void PlotDataProvider::fillDataForStringGrouping(
         quantilesForIntervals.append(quantiles);
         ++iterator;
     }
+
+    return {names, quantilesForIntervals};
 }
 
 std::tuple<QVector<QPointF>, QVector<QPointF>>

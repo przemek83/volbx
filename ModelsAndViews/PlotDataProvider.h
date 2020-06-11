@@ -36,8 +36,8 @@ public:
      * @param groupingColumn number of column used for grouping.
      * @param columnFormat format of grouping column.
      */
-    void recomputeGroupData(QVector<TransactionData> calcData,
-                            int groupingColumn, ColumnType columnFormat);
+    void recomputeGroupingData(QVector<TransactionData> calcData,
+                               int groupingColumn, ColumnType columnFormat);
 
     /**
      * @brief get number of column used for grouping.
@@ -52,9 +52,8 @@ private:
      * @param names vector where names will be added.
      * @param quantilesForIntervals vector where quantiles will be added.
      */
-    void fillDataForStringGrouping(const QVector<TransactionData>& calcData,
-                                   QVector<QString>& names,
-                                   QVector<Quantiles>& quantilesForIntervals);
+    std::tuple<QVector<QString>, QVector<Quantiles>> fillDataForStringGrouping(
+        const QVector<TransactionData>& calcData);
 
     /**
      * @brief compute data used for simple plots (histogram and basic plots).
