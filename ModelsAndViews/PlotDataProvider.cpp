@@ -14,35 +14,23 @@ void PlotDataProvider::reCompute(QVector<TransactionData> newCalcData,
                                  ColumnType columnFormat)
 {
     calcData_ = std::move(newCalcData);
-
-    quantiles_.clear();
-
-    int dataSize = calcData_.size();
-    if (dataSize != 0)
-    {
-        QVector<double> valuePerUnit{};
-        valuePerUnit.reserve(dataSize);
-        for (int i = 0; i < dataSize; ++i)
-            valuePerUnit.push_back(calcData_.at(i).pricePerMeter_);
-        quantiles_.init(std::move(valuePerUnit));
-    }
+    quantiles_ = computeQuantiles(calcData_);
 
     // Left part of group plot.
     recomputeGroupData(calcData_, groupingColumn_, columnFormat);
 
-    auto [plotData, linearRegression] = computeBasicData();
+    auto [points, linearRegression] = computePointsAndRegression();
 
-    QVector<double> yAxisData;
-    yAxisData.reserve(plotData.size());
-    for (const auto& point : qAsConst(plotData))
-        yAxisData.append(point.y());
+    QVector<double> yAxisValues;
+    yAxisValues.reserve(points.size());
+    for (const auto& point : qAsConst(points))
+        yAxisValues.append(point.y());
 
-    // Basic data plot.
-    Q_EMIT basicPlotDataChanged(std::move(plotData), quantiles_,
+    Q_EMIT basicPlotDataChanged(std::move(points), quantiles_,
                                 std::move(linearRegression));
 
-    // Currently histogram only.
-    Q_EMIT basicDataChanged(std::move(yAxisData), quantiles_);
+    // Currently only histogram plot attached.
+    Q_EMIT fundamentalDataChanged(std::move(yAxisValues), quantiles_);
 }
 
 void PlotDataProvider::recomputeGroupData(QVector<TransactionData> calcData,
@@ -50,24 +38,22 @@ void PlotDataProvider::recomputeGroupData(QVector<TransactionData> calcData,
                                           ColumnType columnFormat)
 {
     calcData_ = std::move(calcData);
-
-    // Set grouping column. Different only than actual one when changed on
-    // group plot.
     groupingColumn_ = groupingColumn;
-
-    // Remove when other column types will be managed.
     if (groupingColumn_ == Constants::NOT_SET_COLUMN)
         return;
 
+    if (ColumnType::STRING != columnFormat)
+    {
+        Q_EMIT groupingPlotDataChanged({}, {}, quantiles_);
+        return;
+    }
+
     QVector<QString> names;
     QVector<Quantiles> quantilesForIntervals;
+    fillDataForStringGrouping(calcData_, names, quantilesForIntervals);
 
-    // For now only string type columns managed.
-    if (ColumnType::STRING == columnFormat)
-        fillDataForStringGrouping(calcData_, names, quantilesForIntervals);
-
-    Q_EMIT setNewDataForGrouping(std::move(names),
-                                 std::move(quantilesForIntervals), quantiles_);
+    Q_EMIT groupingPlotDataChanged(
+        std::move(names), std::move(quantilesForIntervals), quantiles_);
 }
 
 void PlotDataProvider::fillDataForStringGrouping(
@@ -95,7 +81,7 @@ void PlotDataProvider::fillDataForStringGrouping(
 }
 
 std::tuple<QVector<QPointF>, QVector<QPointF>>
-PlotDataProvider::computeBasicData()
+PlotDataProvider::computePointsAndRegression()
 {
     int dataSize = calcData_.size();
     if (dataSize <= 0)
@@ -155,6 +141,22 @@ PlotDataProvider::computeBasicData()
     linearRegression.append(linearRegressionTo);
 
     return {data, linearRegression};
+}
+
+Quantiles PlotDataProvider::computeQuantiles(
+    const QVector<TransactionData>& transactionData)
+{
+    Quantiles quantiles;
+    int dataSize = transactionData.size();
+    if (dataSize != 0)
+    {
+        QVector<double> valuePerUnit{};
+        valuePerUnit.reserve(dataSize);
+        for (int i = 0; i < dataSize; ++i)
+            valuePerUnit.push_back(transactionData.at(i).pricePerMeter_);
+        quantiles.init(std::move(valuePerUnit));
+    }
+    return quantiles;
 }
 
 int PlotDataProvider::getGroupByColumn() { return groupingColumn_; }

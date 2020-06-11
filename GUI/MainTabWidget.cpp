@@ -240,7 +240,7 @@ void MainTabWidget::addHistogramPlot()
         DataView* view = getCurrentDataView();
         auto histogramPlot = new HistogramPlotUI();
         connect(&(view->getPlotDataProvider()),
-                &PlotDataProvider::basicDataChanged, histogramPlot,
+                &PlotDataProvider::fundamentalDataChanged, histogramPlot,
                 &HistogramPlotUI::setNewData);
         return histogramPlot;
     };
@@ -255,7 +255,7 @@ void MainTabWidget::addGroupingPlot()
         TableModel* model = getCurrentDataModel();
         auto groupPlot = new GroupPlotUI(getStringColumnsWithIndexes(model));
         connect(&(view->getPlotDataProvider()),
-                &PlotDataProvider::setNewDataForGrouping, groupPlot,
+                &PlotDataProvider::groupingPlotDataChanged, groupPlot,
                 &GroupPlotUI::setNewData);
         connect(groupPlot, &GroupPlotUI::traitIndexChanged, view,
                 &DataView::groupingColumnChanged);

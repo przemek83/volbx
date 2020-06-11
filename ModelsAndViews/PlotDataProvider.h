@@ -46,13 +46,11 @@ public:
     int getGroupByColumn();
 
 private:
-    void setNewCalcData(QVector<TransactionData> calcData);
-
     /**
      * @brief groups strings and for each group calculate quantiles and names.
      * @param calcData data used for calculations.
      * @param names vector where names will be added.
-     * @param quantilesForIntervals vectore where quantiles will be added.
+     * @param quantilesForIntervals vector where quantiles will be added.
      */
     void fillDataForStringGrouping(const QVector<TransactionData>& calcData,
                                    QVector<QString>& names,
@@ -61,24 +59,25 @@ private:
     /**
      * @brief compute data used for simple plots (histogram and basic plots).
      */
-    std::tuple<QVector<QPointF>, QVector<QPointF>> computeBasicData();
+    std::tuple<QVector<QPointF>, QVector<QPointF>> computePointsAndRegression();
+
+    Quantiles computeQuantiles(const QVector<TransactionData>& transactionData);
 
     Quantiles quantiles_;
 
     QVector<TransactionData> calcData_;
 
-    /// Column used for grouping.
     int groupingColumn_{Constants::NOT_SET_COLUMN};
 
 Q_SIGNALS:
-    void setNewDataForGrouping(QVector<QString> intervalsNames,
-                               QVector<Quantiles> quantilesForIntervals,
-                               Quantiles quantiles);
+    void groupingPlotDataChanged(QVector<QString> intervalsNames,
+                                 QVector<Quantiles> quantilesForIntervals,
+                                 Quantiles quantiles);
 
     void basicPlotDataChanged(QVector<QPointF> data, Quantiles quantiles,
                               QVector<QPointF> linearRegression);
 
-    void basicDataChanged(QVector<double> data, Quantiles quantiles);
+    void fundamentalDataChanged(QVector<double> data, Quantiles quantiles);
 };
 
 #endif  // PLOTDATAPROVIDER_H
