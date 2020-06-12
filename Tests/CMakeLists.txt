@@ -10,6 +10,8 @@ set(${PROJECT_NAME}_SOURCES
     SpreadsheetsTest.cpp
     SpreadsheetsTest.h
     Tests.cpp
+    PlotDataProviderTest.h
+    PlotDataProviderTest.cpp
     )
 
 add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})

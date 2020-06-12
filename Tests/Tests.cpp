@@ -2,6 +2,7 @@
 
 #include "ConfigurationTest.h"
 #include "InnerTests.h"
+#include "PlotDataProviderTest.h"
 #include "SpreadsheetsTest.h"
 
 int main(int argc, char* argv[])
@@ -15,6 +16,9 @@ int main(int argc, char* argv[])
 
     SpreadsheetsTest spreadsheetsTest;
     QTest::qExec(&spreadsheetsTest);
+
+    PlotDataProviderTest plotDataProviderTest;
+    QTest::qExec(&plotDataProviderTest);
 
     InnerTests ineerTests;
     QTest::qExec(&ineerTests);
