@@ -45,6 +45,16 @@ public:
      */
     int getGroupByColumn();
 
+Q_SIGNALS:
+    void groupingPlotDataChanged(QVector<QString> intervalsNames,
+                                 QVector<Quantiles> quantilesForIntervals,
+                                 Quantiles quantiles);
+
+    void basicPlotDataChanged(QVector<QPointF> data, Quantiles quantiles,
+                              QVector<QPointF> linearRegression);
+
+    void fundamentalDataChanged(QVector<double> data, Quantiles quantiles);
+
 private:
     /**
      * @brief groups strings and for each group calculate quantiles and names.
@@ -67,16 +77,6 @@ private:
     QVector<TransactionData> calcData_;
 
     int groupingColumn_{Constants::NOT_SET_COLUMN};
-
-Q_SIGNALS:
-    void groupingPlotDataChanged(QVector<QString> intervalsNames,
-                                 QVector<Quantiles> quantilesForIntervals,
-                                 Quantiles quantiles);
-
-    void basicPlotDataChanged(QVector<QPointF> data, Quantiles quantiles,
-                              QVector<QPointF> linearRegression);
-
-    void fundamentalDataChanged(QVector<double> data, Quantiles quantiles);
 };
 
 #endif  // PLOTDATAPROVIDER_H
