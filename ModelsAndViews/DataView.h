@@ -54,6 +54,8 @@ private:
 
     void createTransactionData() const;
 
+    int groupByColumn_{0};
+
     PlotDataProvider plotDataProvider_;
 };
 

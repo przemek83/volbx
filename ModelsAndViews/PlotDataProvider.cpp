@@ -5,18 +5,13 @@
 
 PlotDataProvider::PlotDataProvider(QObject* parent) : QObject(parent) {}
 
-void PlotDataProvider::setGroupingColumn(int groupingColumn)
-{
-    groupingColumn_ = groupingColumn;
-}
-
 void PlotDataProvider::reCompute(QVector<TransactionData> newCalcData,
                                  ColumnType columnFormat)
 {
     calcData_ = std::move(newCalcData);
     quantiles_ = computeQuantiles(calcData_);
 
-    recomputeGroupingData(calcData_, groupingColumn_, columnFormat);
+    recomputeGroupingData(calcData_, columnFormat);
 
     auto [points, linearRegression] = computePointsAndRegression();
 
@@ -33,13 +28,9 @@ void PlotDataProvider::reCompute(QVector<TransactionData> newCalcData,
 }
 
 void PlotDataProvider::recomputeGroupingData(QVector<TransactionData> calcData,
-                                             int groupingColumn,
                                              ColumnType columnFormat)
 {
     calcData_ = std::move(calcData);
-    groupingColumn_ = groupingColumn;
-    if (groupingColumn_ == Constants::NOT_SET_COLUMN)
-        return;
 
     if (ColumnType::STRING != columnFormat)
     {
@@ -158,5 +149,3 @@ Quantiles PlotDataProvider::computeQuantiles(
     }
     return quantiles;
 }
-
-int PlotDataProvider::getGroupByColumn() { return groupingColumn_; }

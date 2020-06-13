@@ -53,16 +53,15 @@ void DataView::setModel(QAbstractItemModel* model)
     }
 
     QTableView::setModel(model);
-
-    plotDataProvider_.setGroupingColumn(
-        parentModel->getDefaultGroupingColumn());
+    groupByColumn_ = parentModel->getDefaultGroupingColumn();
 }
 
 void DataView::groupingColumnChanged(int column)
 {
+    groupByColumn_ = column;
     const TableModel* parentModel{getParentModel()};
-    plotDataProvider_.recomputeGroupingData(fillDataFromSelection(column), column,
-                                         parentModel->getColumnFormat(column));
+    plotDataProvider_.recomputeGroupingData(
+        fillDataFromSelection(column), parentModel->getColumnFormat(column));
 }
 
 std::tuple<bool, int, int> DataView::getSpecialColumns(
@@ -140,18 +139,17 @@ void DataView::reloadSelectionDataAndRecompute()
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
 
-    const int groupByColumn{plotDataProvider_.getGroupByColumn()};
     ColumnType columnFormat{ColumnType::UNKNOWN};
-    if (groupByColumn != Constants::NOT_SET_COLUMN)
+    if (groupByColumn_ != Constants::NOT_SET_COLUMN)
     {
         const TableModel* parentModel{getParentModel()};
-        columnFormat = parentModel->getColumnFormat(groupByColumn);
+        columnFormat = parentModel->getColumnFormat(groupByColumn_);
     }
 
     QTime performanceTimer;
     performanceTimer.start();
 
-    plotDataProvider_.reCompute(fillDataFromSelection(groupByColumn),
+    plotDataProvider_.reCompute(fillDataFromSelection(groupByColumn_),
                                 columnFormat);
 
     LOG(LogTypes::CALC,

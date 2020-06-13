@@ -20,8 +20,6 @@ public:
 
     ~PlotDataProvider() override = default;
 
-    void setGroupingColumn(int groupingColumn);
-
     /**
      * @brief reCompute all data for plots.
      * @param newCalcData new data used for computations.
@@ -33,17 +31,10 @@ public:
     /**
      * @brief recompute data for grouping plot.
      * @param calcData new data used for calculations.
-     * @param groupingColumn number of column used for grouping.
      * @param columnFormat format of grouping column.
      */
     void recomputeGroupingData(QVector<TransactionData> calcData,
-                               int groupingColumn, ColumnType columnFormat);
-
-    /**
-     * @brief get number of column used for grouping.
-     * @return column number.
-     */
-    int getGroupByColumn();
+                               ColumnType columnFormat);
 
 Q_SIGNALS:
     void groupingPlotDataChanged(QVector<QString> intervalsNames,
@@ -59,8 +50,6 @@ private:
     /**
      * @brief groups strings and for each group calculate quantiles and names.
      * @param calcData data used for calculations.
-     * @param names vector where names will be added.
-     * @param quantilesForIntervals vector where quantiles will be added.
      */
     std::tuple<QVector<QString>, QVector<Quantiles>> fillDataForStringGrouping(
         const QVector<TransactionData>& calcData);
@@ -75,8 +64,6 @@ private:
     Quantiles quantiles_;
 
     QVector<TransactionData> calcData_;
-
-    int groupingColumn_{Constants::NOT_SET_COLUMN};
 };
 
 #endif  // PLOTDATAPROVIDER_H

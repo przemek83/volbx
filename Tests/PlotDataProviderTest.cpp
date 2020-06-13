@@ -6,21 +6,6 @@
 
 PlotDataProviderTest::PlotDataProviderTest(QObject* parent) : QObject(parent) {}
 
-void PlotDataProviderTest::testNotSetGroupingColumn()
-{
-    PlotDataProvider provider;
-    QCOMPARE(provider.getGroupByColumn(), Constants::NOT_SET_COLUMN);
-}
-
-void PlotDataProviderTest::testRecomputeGroupingDataNotSetColumn()
-{
-    PlotDataProvider provider;
-    QSignalSpy spy(&provider, &PlotDataProvider::groupingPlotDataChanged);
-    provider.recomputeGroupingData({}, Constants::NOT_SET_COLUMN,
-                                   ColumnType::STRING);
-    QCOMPARE(spy.count(), NO_SIGNAL);
-}
-
 void PlotDataProviderTest::testRecomputeGroupingDataWrongColumnFormat()
 {
     checkRecomputeGroupingDataForColumnType(ColumnType::DATE);
@@ -28,12 +13,20 @@ void PlotDataProviderTest::testRecomputeGroupingDataWrongColumnFormat()
     checkRecomputeGroupingDataForColumnType(ColumnType::UNKNOWN);
 }
 
+void PlotDataProviderTest::testRecomputeGroupingData()
+{
+    PlotDataProvider provider;
+    QSignalSpy spy(&provider, &PlotDataProvider::groupingPlotDataChanged);
+    provider.recomputeGroupingData(calcData_, ColumnType::STRING);
+    QCOMPARE(spy.count(), SIGNAL);
+}
+
 void PlotDataProviderTest::checkRecomputeGroupingDataForColumnType(
     ColumnType columnType)
 {
     PlotDataProvider provider;
     QSignalSpy spy(&provider, &PlotDataProvider::groupingPlotDataChanged);
-    provider.recomputeGroupingData(calcData_, 1, columnType);
+    provider.recomputeGroupingData(calcData_, columnType);
     QCOMPARE(spy.count(), SIGNAL);
     checkSignalParamsForRecomputeGroupingAreEmpty(spy.first());
 }
