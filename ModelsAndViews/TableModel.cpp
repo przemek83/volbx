@@ -2,8 +2,6 @@
 
 #include "Constants.h"
 
-const int TableModel::noColumn_ = Constants::NOT_SET_COLUMN;
-
 TableModel::TableModel(std::unique_ptr<Dataset> dataset, QObject* parent)
     : QAbstractTableModel(parent), dataset_(std::move(dataset))
 {
@@ -88,7 +86,7 @@ bool TableModel::isEmptyCellsDetected() const
 
 int TableModel::getDefaultGroupingColumn() const
 {
-    int pricePerMeterColumn = noColumn_;
+    int pricePerMeterColumn = Constants::NOT_SET_COLUMN;
     if (auto [ok, columnId] =
             getSpecialColumnIfExists(SpecialColumn::PRICE_PER_UNIT);
         ok)
@@ -96,7 +94,7 @@ int TableModel::getDefaultGroupingColumn() const
         pricePerMeterColumn = columnId;
     }
 
-    int defaultGroupingColumn = noColumn_;
+    int defaultGroupingColumn = Constants::NOT_SET_COLUMN;
     for (int i = 0; i < columnCount(); ++i)
     {
         if (i == pricePerMeterColumn ||

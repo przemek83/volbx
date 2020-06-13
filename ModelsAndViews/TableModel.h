@@ -103,8 +103,6 @@ public:
 
 private:
     std::unique_ptr<Dataset> dataset_;
-
-    static const int noColumn_;
 };
 
 #endif  // TABLEMODEL_H
