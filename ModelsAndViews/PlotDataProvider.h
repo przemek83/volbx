@@ -25,7 +25,7 @@ public:
      * @param newCalcData new data used for computations.
      * @param columnFormat format of grouping column.
      */
-    void reCompute(QVector<TransactionData> newCalcData,
+    void recompute(QVector<TransactionData> newCalcData,
                    ColumnType columnFormat);
 
     /**

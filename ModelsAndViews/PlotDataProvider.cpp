@@ -5,7 +5,7 @@
 
 PlotDataProvider::PlotDataProvider(QObject* parent) : QObject(parent) {}
 
-void PlotDataProvider::reCompute(QVector<TransactionData> newCalcData,
+void PlotDataProvider::recompute(QVector<TransactionData> newCalcData,
                                  ColumnType columnFormat)
 {
     calcData_ = std::move(newCalcData);

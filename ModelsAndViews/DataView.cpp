@@ -149,7 +149,7 @@ void DataView::reloadSelectionDataAndRecompute()
     QTime performanceTimer;
     performanceTimer.start();
 
-    plotDataProvider_.reCompute(fillDataFromSelection(groupByColumn_),
+    plotDataProvider_.recompute(fillDataFromSelection(groupByColumn_),
                                 columnFormat);
 
     LOG(LogTypes::CALC,
