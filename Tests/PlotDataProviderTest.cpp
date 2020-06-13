@@ -82,6 +82,35 @@ void PlotDataProviderTest::testRecomputeGroupingDataEmptyCalcData()
     QCOMPARE(signalParameters[2].value<Quantiles>(), Quantiles());
 }
 
+void PlotDataProviderTest::testRecomputeEmptyCalcData()
+{
+    PlotDataProvider provider;
+    QSignalSpy groupingPlotDataChangedSpy(
+        &provider, &PlotDataProvider::groupingPlotDataChanged);
+    QSignalSpy basicPlotDataChangedSpy(&provider,
+                                       &PlotDataProvider::basicPlotDataChanged);
+    QSignalSpy fundamentalDataChangedSpy(
+        &provider, &PlotDataProvider::fundamentalDataChanged);
+    provider.recompute({}, ColumnType::STRING);
+
+    QCOMPARE(groupingPlotDataChangedSpy.count(), SIGNAL);
+    checkSignalParamsForRecomputeGroupingAreEmpty(
+        groupingPlotDataChangedSpy.first());
+
+    QCOMPARE(basicPlotDataChangedSpy.count(), SIGNAL);
+    QList<QVariant>& signalParameters{basicPlotDataChangedSpy.first()};
+    QCOMPARE(signalParameters.size(), 3);
+    QCOMPARE(signalParameters[0].value<QVector<QPointF>>(), {});
+    QCOMPARE(signalParameters[1].value<Quantiles>(), Quantiles());
+    QCOMPARE(signalParameters[2].value<QVector<QPointF>>(), {});
+
+    QCOMPARE(fundamentalDataChangedSpy.count(), SIGNAL);
+    signalParameters = fundamentalDataChangedSpy.first();
+    QCOMPARE(signalParameters.size(), 2);
+    QCOMPARE(signalParameters[0].value<QVector<double>>(), {});
+    QCOMPARE(signalParameters[1].value<Quantiles>(), Quantiles());
+}
+
 void PlotDataProviderTest::checkRecomputeGroupingDataForColumnType(
     ColumnType columnType)
 {
@@ -98,5 +127,5 @@ void PlotDataProviderTest::checkSignalParamsForRecomputeGroupingAreEmpty(
     QCOMPARE(signalParameters.size(), 3);
     QCOMPARE(signalParameters[0].value<QVector<QString>>(), {});
     QCOMPARE(signalParameters[1].value<QVector<Quantiles>>(), {});
-    QCOMPARE(signalParameters[2].value<Quantiles>().count_, Quantiles().count_);
+    QCOMPARE(signalParameters[2].value<Quantiles>(), Quantiles());
 }

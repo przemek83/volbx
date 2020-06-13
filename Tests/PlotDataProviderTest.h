@@ -22,6 +22,8 @@ private Q_SLOTS:
     void testRecomputeGroupingData();
     void testRecomputeGroupingDataEmptyCalcData();
 
+    void testRecomputeEmptyCalcData();
+
 private:
     void checkRecomputeGroupingDataForColumnType(ColumnType columnType);
     void checkSignalParamsForRecomputeGroupingAreEmpty(
