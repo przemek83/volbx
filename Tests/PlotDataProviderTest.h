@@ -1,9 +1,11 @@
 #ifndef PLOTDATAPROVIDERTEST_H
 #define PLOTDATAPROVIDERTEST_H
 
-#include <ColumnType.h>
 #include <QObject>
 #include <QSignalSpy>
+
+#include <ColumnType.h>
+#include <Quantiles.h>
 
 #include "TransactionData.h"
 
@@ -14,6 +16,8 @@ public:
 
     Q_OBJECT
 private Q_SLOTS:
+    void initTestCase();
+
     void testRecomputeGroupingDataWrongColumnFormat();
     void testRecomputeGroupingData();
 
@@ -32,6 +36,10 @@ private:
         {QDate(1, 3, 2010), QVariant("column2"), 1},
         {QDate(4, 3, 2010), QVariant("column2"), 5},
         {QDate(6, 3, 2010), QVariant("column2"), 2}};
+
+    Quantiles mainQuantiles_;
+    Quantiles firstQuantiles_;
+    Quantiles secondQuantiles_;
 };
 
 #endif  // PLOTDATAPROVIDERTEST_H
