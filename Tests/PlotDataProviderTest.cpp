@@ -69,6 +69,19 @@ void PlotDataProviderTest::testRecomputeGroupingData()
     QCOMPARE(signalParameters[2].value<Quantiles>(), Quantiles());
 }
 
+void PlotDataProviderTest::testRecomputeGroupingDataEmptyCalcData()
+{
+    PlotDataProvider provider;
+    QSignalSpy spy(&provider, &PlotDataProvider::groupingPlotDataChanged);
+    provider.recomputeGroupingData({}, ColumnType::STRING);
+    QCOMPARE(spy.count(), SIGNAL);
+    QList<QVariant>& signalParameters{spy.first()};
+    QCOMPARE(signalParameters.size(), 3);
+    QCOMPARE(signalParameters[0].value<QVector<QString>>(), {});
+    QCOMPARE(signalParameters[1].value<QVector<Quantiles>>(), {});
+    QCOMPARE(signalParameters[2].value<Quantiles>(), Quantiles());
+}
+
 void PlotDataProviderTest::checkRecomputeGroupingDataForColumnType(
     ColumnType columnType)
 {

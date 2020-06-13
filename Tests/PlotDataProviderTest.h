@@ -20,6 +20,7 @@ private Q_SLOTS:
 
     void testRecomputeGroupingDataWrongColumnFormat();
     void testRecomputeGroupingData();
+    void testRecomputeGroupingDataEmptyCalcData();
 
 private:
     void checkRecomputeGroupingDataForColumnType(ColumnType columnType);
