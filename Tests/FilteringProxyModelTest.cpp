@@ -50,6 +50,21 @@ void FilteringProxyModelTest::testDateFilter()
     QCOMPARE(proxy.data(proxy.index(1, 0)), items[1]->data(Qt::DisplayRole));
 }
 
+void FilteringProxyModelTest::testNumberFilter()
+{
+    QList<QStandardItem*> items{getNumberItems()};
+    QStandardItemModel standardItemModel;
+    standardItemModel.appendColumn(items);
+
+    FilteringProxyModel proxy;
+    proxy.setSourceModel(&standardItemModel);
+    proxy.setNumericFilter(0, 2, 10);
+
+    QCOMPARE(proxy.rowCount(), 2);
+    QCOMPARE(proxy.data(proxy.index(0, 0)), items[1]->data(Qt::DisplayRole));
+    QCOMPARE(proxy.data(proxy.index(1, 0)), items[2]->data(Qt::DisplayRole));
+}
+
 void FilteringProxyModelTest::checkProxyHasAllItems(
     const FilteringProxyModel& proxy, const QList<QStandardItem*>& items)
 {
@@ -75,6 +90,21 @@ QList<QStandardItem*> FilteringProxyModelTest::getDateItems()
     dateItems.append(dateItem);
     dateItem = new QStandardItem();
     dateItem->setData(QDate(2020, 4, 28), Qt::DisplayRole);
+    dateItems.append(dateItem);
+    return dateItems;
+}
+
+QList<QStandardItem*> FilteringProxyModelTest::getNumberItems()
+{
+    QList<QStandardItem*> dateItems;
+    QStandardItem* dateItem = new QStandardItem();
+    dateItem->setData(1., Qt::DisplayRole);
+    dateItems.append(dateItem);
+    dateItem = new QStandardItem();
+    dateItem->setData(2., Qt::DisplayRole);
+    dateItems.append(dateItem);
+    dateItem = new QStandardItem();
+    dateItem->setData(3., Qt::DisplayRole);
     dateItems.append(dateItem);
     return dateItems;
 }

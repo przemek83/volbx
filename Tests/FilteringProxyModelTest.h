@@ -19,12 +19,15 @@ private Q_SLOTS:
 
     void testDateFilter();
 
+    void testNumberFilter();
+
 private:
     void checkProxyHasAllItems(const FilteringProxyModel& proxy,
                                const QList<QStandardItem*>& items);
 
     QList<QStandardItem*> getStringItems();
     QList<QStandardItem*> getDateItems();
+    QList<QStandardItem*> getNumberItems();
 };
 
 #endif  // FILTERINGPROXYMODELTEST_H
