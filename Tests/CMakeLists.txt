@@ -12,6 +12,8 @@ set(${PROJECT_NAME}_SOURCES
     Tests.cpp
     PlotDataProviderTest.h
     PlotDataProviderTest.cpp
+    FilteringProxyModelTest.h
+    FilteringProxyModelTest.cpp
     )
 
 add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})

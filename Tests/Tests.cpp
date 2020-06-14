@@ -1,6 +1,7 @@
 #include <QtTest/QtTest>
 
 #include "ConfigurationTest.h"
+#include "FilteringProxyModelTest.h"
 #include "InnerTests.h"
 #include "PlotDataProviderTest.h"
 #include "SpreadsheetsTest.h"
@@ -19,6 +20,9 @@ int main(int argc, char* argv[])
 
     PlotDataProviderTest plotDataProviderTest;
     QTest::qExec(&plotDataProviderTest);
+
+    FilteringProxyModelTest filteringProxyModelTest;
+    QTest::qExec(&filteringProxyModelTest);
 
     InnerTests ineerTests;
     QTest::qExec(&ineerTests);
