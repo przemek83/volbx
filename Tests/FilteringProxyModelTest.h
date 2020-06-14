@@ -18,6 +18,7 @@ private Q_SLOTS:
     void testStringFilter();
 
     void testDateFilter();
+    void testDateFilterFilterEmptyDates();
 
     void testNumberFilter();
 

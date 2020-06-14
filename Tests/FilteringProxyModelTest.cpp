@@ -50,6 +50,22 @@ void FilteringProxyModelTest::testDateFilter()
     QCOMPARE(proxy.data(proxy.index(1, 0)), items[1]->data(Qt::DisplayRole));
 }
 
+void FilteringProxyModelTest::testDateFilterFilterEmptyDates()
+{
+    QList<QStandardItem*> items{getDateItems()};
+    items.append(new QStandardItem());
+    QStandardItemModel standardItemModel;
+    standardItemModel.appendColumn(items);
+
+    FilteringProxyModel proxy;
+    proxy.setSourceModel(&standardItemModel);
+    proxy.setDateFilter(0, QDate(2020, 3, 11), QDate(2020, 4, 27), true);
+    QCOMPARE(proxy.rowCount(), 2);
+
+    proxy.setDateFilter(0, QDate(2020, 3, 11), QDate(2020, 4, 27), false);
+    QCOMPARE(proxy.rowCount(), 3);
+}
+
 void FilteringProxyModelTest::testNumberFilter()
 {
     QList<QStandardItem*> items{getNumberItems()};
