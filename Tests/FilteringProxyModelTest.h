@@ -3,6 +3,9 @@
 
 #include <QObject>
 
+class QStandardItem;
+class FilteringProxyModel;
+
 class FilteringProxyModelTest : public QObject
 {
     Q_OBJECT
@@ -10,8 +13,18 @@ public:
     explicit FilteringProxyModelTest(QObject* parent = nullptr);
 
 private Q_SLOTS:
-    void testStringFilterNoFilter();
+    void testNoFilter();
+
     void testStringFilter();
+
+    void testDateFilter();
+
+private:
+    void checkProxyHasAllItems(const FilteringProxyModel& proxy,
+                               const QList<QStandardItem*>& items);
+
+    QList<QStandardItem*> getStringItems();
+    QList<QStandardItem*> getDateItems();
 };
 
 #endif  // FILTERINGPROXYMODELTEST_H
