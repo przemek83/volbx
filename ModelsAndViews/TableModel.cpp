@@ -19,21 +19,16 @@ int TableModel::columnCount([[maybe_unused]] const QModelIndex& parent) const
 
 QVariant TableModel::data(const QModelIndex& index, int role) const
 {
-    if (Qt::DisplayRole == role)
-    {
+    if (role == Qt::DisplayRole)
         return *dataset_->getData(index.row(), index.column());
-    }
-
     return QVariant();
 }
 
 QVariant TableModel::headerData(int section, Qt::Orientation orientation,
                                 int role) const
 {
-    if (Qt::DisplayRole == role && Qt::Horizontal == orientation)
-    {
+    if (role == Qt::DisplayRole && orientation == Qt::Horizontal)
         return dataset_->getHeaderName(section);
-    }
     return QVariant();
 }
 
@@ -70,9 +65,9 @@ QByteArray TableModel::definitionToXml(int rowCount) const
 
 bool TableModel::areSpecialColumnsSet() const
 {
-    auto [transDateColumnSet, transDateColumnId] =
+    const auto [transDateColumnSet, transDateColumnId] =
         getSpecialColumnIfExists(SpecialColumn::TRANSACTION_DATE);
-    auto [priceColumnSet, priceColumnId] =
+    const auto [priceColumnSet, priceColumnId] =
         getSpecialColumnIfExists(SpecialColumn::PRICE_PER_UNIT);
 
     return transDateColumnSet && priceColumnSet;
@@ -80,26 +75,15 @@ bool TableModel::areSpecialColumnsSet() const
 
 int TableModel::getDefaultGroupingColumn() const
 {
-    int pricePerMeterColumn = Constants::NOT_SET_COLUMN;
+    int pricePerMeterColumn{Constants::NOT_SET_COLUMN};
     if (auto [ok, columnId] =
             getSpecialColumnIfExists(SpecialColumn::PRICE_PER_UNIT);
         ok)
-    {
         pricePerMeterColumn = columnId;
-    }
 
-    int defaultGroupingColumn = Constants::NOT_SET_COLUMN;
-    for (int i = 0; i < columnCount(); ++i)
-    {
-        if (i == pricePerMeterColumn ||
-            ColumnType::STRING != getColumnFormat(i))
-        {
-            continue;
-        }
+    for (int column = 0; column < columnCount(); ++column)
+        if (getColumnFormat(column) == ColumnType::STRING)
+            return column;
 
-        defaultGroupingColumn = i;
-        break;
-    }
-
-    return defaultGroupingColumn;
+    return Constants::NOT_SET_COLUMN;
 }
