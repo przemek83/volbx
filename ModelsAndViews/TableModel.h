@@ -97,8 +97,6 @@ public:
 
     bool isSpecialColumnsSet() const;
 
-    bool isEmptyCellsDetected() const;
-
     int getDefaultGroupingColumn() const;
 
 private:

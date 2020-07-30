@@ -78,12 +78,6 @@ bool TableModel::isSpecialColumnsSet() const
     return transDateColumnSet && priceColumnSet;
 }
 
-bool TableModel::isEmptyCellsDetected() const
-{
-    // TODO or delete.
-    return true;
-}
-
 int TableModel::getDefaultGroupingColumn() const
 {
     int pricePerMeterColumn = Constants::NOT_SET_COLUMN;
