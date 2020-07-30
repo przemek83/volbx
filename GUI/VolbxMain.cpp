@@ -311,7 +311,7 @@ void VolbxMain::manageActions(bool tabExists)
         if (nullptr != dataModel)
         {
             activateCharts =
-                (activateCharts && dataModel->isSpecialColumnsSet());
+                (activateCharts && dataModel->isAnySpecialColumnSet());
         }
     }
 

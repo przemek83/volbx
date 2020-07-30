@@ -68,7 +68,7 @@ QByteArray TableModel::definitionToXml(int rowCount) const
     return dataset_->definitionToXml(rowCount);
 }
 
-bool TableModel::isSpecialColumnsSet() const
+bool TableModel::isAnySpecialColumnSet() const
 {
     auto [transDateColumnSet, transDateColumnId] =
         getSpecialColumnIfExists(SpecialColumn::TRANSACTION_DATE);
