@@ -82,9 +82,6 @@ PlotDataProvider::computePointsAndRegression()
     double sumY = 0.;
     double sumXX = 0.;
     double sumXY = 0.;
-    double a = 0.;
-    double b = 0.;
-
     double minX = 0.;
     double maxX = 0.;
     bool set = false;
@@ -95,7 +92,7 @@ PlotDataProvider::computePointsAndRegression()
     {
         double x =
             QwtBleUtilities::getStartOfTheWorld().daysTo(calcData_.at(i).date_);
-        auto y = calcData_.at(i).pricePerMeter_;
+        auto y{calcData_.at(i).pricePerMeter_};
         data.append({x, y});
 
         sumX += x;
@@ -122,8 +119,9 @@ PlotDataProvider::computePointsAndRegression()
     quantiles_.maxX_ = maxX;
 
     // Calc linear regression and create points.
-    a = (dataSize * sumXY - sumX * sumY) / (dataSize * sumXX - sumX * sumX);
-    b = sumY / dataSize - a * sumX / dataSize;
+    double a{(dataSize * sumXY - sumX * sumY) /
+             (dataSize * sumXX - sumX * sumX)};
+    double b{sumY / dataSize - a * sumX / dataSize};
 
     QPointF linearRegressionFrom(minX, a * minX + b);
     QPointF linearRegressionTo(maxX, a * maxX + b);
