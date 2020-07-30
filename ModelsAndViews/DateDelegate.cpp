@@ -9,7 +9,7 @@ DateDelegate::DateDelegate(QObject* parent)
 }
 
 QString DateDelegate::displayText(const QVariant& value,
-                                  const QLocale& /*locale*/) const
+                                  [[maybe_unused]] const QLocale& locale) const
 {
     return value.toDate().toString(defaultDateFormat_);
 }
