@@ -95,7 +95,7 @@ public:
      */
     QByteArray definitionToXml(int rowCount) const;
 
-    bool isAnySpecialColumnSet() const;
+    bool areSpecialColumnsSet() const;
 
     int getDefaultGroupingColumn() const;
 
