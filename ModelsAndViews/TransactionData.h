@@ -26,8 +26,6 @@ public:
     QVariant groupedBy_;
 
     double pricePerMeter_{0.};
-
-    void clear();
 };
 
 #endif  // TRANSACTIONDATA_H

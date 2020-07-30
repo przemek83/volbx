@@ -13,7 +13,6 @@ set(${PROJECT_NAME}_SOURCES
     TableModel.h
     PlotDataProvider.cpp
     PlotDataProvider.h
-    TransactionData.cpp
     TransactionData.h
     )
 
