@@ -113,7 +113,7 @@ void MainTabWidget::setTextFilterInProxy(int column,
     model->setStringFilter(column, bannedStrings);
 
     view->selectAll();
-    view->reloadSelectionDataAndRecompute();
+    view->recomputeAllData();
 
     QApplication::restoreOverrideCursor();
 }
@@ -134,7 +134,7 @@ void MainTabWidget::setDateFilterInProxy(int column, QDate from, QDate to,
     model->setDateFilter(column, from, to, filterEmptyDates);
 
     view->selectAll();
-    view->reloadSelectionDataAndRecompute();
+    view->recomputeAllData();
 
     QApplication::restoreOverrideCursor();
 }
@@ -155,7 +155,7 @@ void MainTabWidget::setNumericFilterInProxy(int column, double from, double to)
     model->setNumericFilter(column, from, to);
 
     view->selectAll();
-    view->reloadSelectionDataAndRecompute();
+    view->recomputeAllData();
 
     QApplication::restoreOverrideCursor();
 }
@@ -195,7 +195,7 @@ void MainTabWidget::addPlot(const QString& title,
     dock->setVisible(true);
     dock->raise();
 
-    view->reloadSelectionDataAndRecompute();
+    view->recomputeAllData();
     QApplication::restoreOverrideCursor();
 }
 

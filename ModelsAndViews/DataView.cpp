@@ -132,7 +132,7 @@ QVector<TransactionData> DataView::fillDataFromSelection(
     return calcDataContainer;
 }
 
-void DataView::reloadSelectionDataAndRecompute()
+void DataView::recomputeAllData()
 {
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
@@ -156,14 +156,14 @@ void DataView::mouseReleaseEvent(QMouseEvent* event)
 {
     QTableView::mouseReleaseEvent(event);
     if (event->button() == Qt::LeftButton)
-        reloadSelectionDataAndRecompute();
+        recomputeAllData();
 }
 
 void DataView::keyPressEvent(QKeyEvent* event)
 {
     QTableView::keyPressEvent(event);
     if (event->key() == Qt::Key_A && event->modifiers() == Qt::CTRL)
-        reloadSelectionDataAndRecompute();
+        recomputeAllData();
 }
 
 const PlotDataProvider& DataView::getPlotDataProvider() const

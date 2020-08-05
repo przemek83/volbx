@@ -53,7 +53,7 @@ void ViewDockWidget::selectAll()
         return;
 
     view->selectAll();
-    view->reloadSelectionDataAndRecompute();
+    view->recomputeAllData();
 }
 
 void ViewDockWidget::unselectAll()
@@ -64,7 +64,7 @@ void ViewDockWidget::unselectAll()
         return;
 
     view->clearSelection();
-    view->reloadSelectionDataAndRecompute();
+    view->recomputeAllData();
 }
 
 void ViewDockWidget::activateSelectButtons()
