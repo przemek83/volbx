@@ -2,15 +2,15 @@
 
 #include "Logger.h"
 
-TimeLogger::TimeLogger(const QString& operationName)
-    : operationName_(operationName)
+TimeLogger::TimeLogger(LogTypes logType, const QString& operationName)
+    : logType_(logType), operationName_(operationName)
 {
     performanceTimer_.start();
 }
 
 TimeLogger::~TimeLogger()
 {
-    LOG(LogTypes::CALC,
+    LOG(logType_,
         operationName_ + " in " +
             QString::number(performanceTimer_.elapsed() * 1.0 / 1000) +
             " seconds.");

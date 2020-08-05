@@ -98,7 +98,7 @@ QVector<TransactionData> DataView::fillDataFromSelection(
     if (!success)
         return {};
 
-    TimeLogger timeLogger("Data updated");
+    TimeLogger timeLogger(LogTypes::CALC, "Data updated");
 
     const QItemSelectionModel* selectionModelOfView{selectionModel()};
     QVector<TransactionData> calcDataContainer;
@@ -144,7 +144,7 @@ void DataView::reloadSelectionDataAndRecompute()
         columnFormat = parentModel->getColumnFormat(groupByColumn_);
     }
 
-    TimeLogger timeLogger("Plots recomputed");
+    TimeLogger timeLogger(LogTypes::CALC, "Plots recomputed");
 
     plotDataProvider_.recompute(fillDataFromSelection(groupByColumn_),
                                 columnFormat);

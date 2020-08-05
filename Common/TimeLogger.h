@@ -3,14 +3,17 @@
 
 #include <QTime>
 
+#include <Shared/LogType.h>
+
 class TimeLogger
 {
 public:
-    explicit TimeLogger(const QString& operationName);
+    TimeLogger(LogTypes logType, const QString& operationName);
 
     ~TimeLogger();
 
 private:
+    const LogTypes logType_;
     const QString operationName_;
     QTime performanceTimer_;
 };
