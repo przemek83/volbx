@@ -6,6 +6,7 @@
 #include <QApplication>
 #include <QDebug>
 
+#include "Common/TimeLogger.h"
 #include "ModelsAndViews/DataView.h"
 #include "ModelsAndViews/FilteringProxyModel.h"
 #include "ModelsAndViews/PlotDataProvider.h"
@@ -102,11 +103,10 @@ void MainTabWidget::setTextFilterInProxy(int column,
         return;
     }
 
-    QTime performanceTimer;
-    performanceTimer.start();
-
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
+
+    TimeLogger timeLogger(LogTypes::CALC, "Filtration changed");
 
     view->clearSelection();
 
@@ -116,11 +116,6 @@ void MainTabWidget::setTextFilterInProxy(int column,
     view->reloadSelectionDataAndRecompute();
 
     QApplication::restoreOverrideCursor();
-
-    LOG(LogTypes::CALC,
-        "Filtration change took " +
-            QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
-            " seconds.");
 }
 
 void MainTabWidget::setDateFilterInProxy(int column, QDate from, QDate to,
@@ -129,12 +124,9 @@ void MainTabWidget::setDateFilterInProxy(int column, QDate from, QDate to,
     DataView* view = getCurrentDataView();
     FilteringProxyModel* model = getCurrentProxyModel();
     if (nullptr == view || nullptr == model)
-    {
         return;
-    }
 
-    QTime performanceTimer;
-    performanceTimer.start();
+    TimeLogger timeLogger(LogTypes::CALC, "Filtration changed");
 
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
@@ -145,11 +137,6 @@ void MainTabWidget::setDateFilterInProxy(int column, QDate from, QDate to,
     view->reloadSelectionDataAndRecompute();
 
     QApplication::restoreOverrideCursor();
-
-    LOG(LogTypes::CALC,
-        "Filtration change took " +
-            QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
-            " seconds.");
 }
 
 void MainTabWidget::setNumericFilterInProxy(int column, double from, double to)
@@ -159,8 +146,7 @@ void MainTabWidget::setNumericFilterInProxy(int column, double from, double to)
     if (nullptr == view || nullptr == model)
         return;
 
-    QTime performanceTimer;
-    performanceTimer.start();
+    TimeLogger timeLogger(LogTypes::CALC, "Filtration changed");
 
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
@@ -172,11 +158,6 @@ void MainTabWidget::setNumericFilterInProxy(int column, double from, double to)
     view->reloadSelectionDataAndRecompute();
 
     QApplication::restoreOverrideCursor();
-
-    LOG(LogTypes::CALC,
-        "Filtration change took " +
-            QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
-            " seconds.");
 }
 
 template <class T>

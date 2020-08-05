@@ -16,6 +16,7 @@
 #include "Common/Configuration.h"
 #include "Common/DatasetUtilities.h"
 #include "Common/ExportUtilities.h"
+#include "Common/TimeLogger.h"
 #include "Datasets/Dataset.h"
 #include "Datasets/DatasetInner.h"
 #include "Datasets/DatasetSpreadsheet.h"
@@ -361,19 +362,14 @@ void VolbxMain::actionSaveDatasetAsTriggered()
             Constants::getProgressBarTitle(Constants::BarTitle::SAVING);
         ProgressBarCounter bar(barTitle, 100, nullptr);
         bar.showDetached();
-        QTime performanceTimer;
-        performanceTimer.start();
 
         QString name{save.getChosenDatasetName()};
         LOG(LogTypes::IMPORT_EXPORT, "Saving dataset " + name);
         QString filePath{DatasetUtilities::getDatasetsDir() + name +
                          DatasetUtilities::getDatasetExtension()};
-        ExportUtilities::saveDataset(filePath, view, &bar);
 
-        LOG(LogTypes::IMPORT_EXPORT,
-            "File saved in total time " +
-                QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
-                " seconds.");
+        TimeLogger timeLogger(LogTypes::IMPORT_EXPORT, "File saved");
+        ExportUtilities::saveDataset(filePath, view, &bar);
     }
 }
 
