@@ -28,29 +28,8 @@ void DataView::setModel(QAbstractItemModel* model)
     const auto proxyModel = qobject_cast<FilteringProxyModel*>(model);
     const TableModel* parentModel = proxyModel->getParentModel();
 
-    for (int i = 0; i < proxyModel->columnCount(); ++i)
-    {
-        switch (parentModel->getColumnFormat(i))
-        {
-            case ColumnType::NUMBER:
-            {
-                setItemDelegateForColumn(i, new NumericDelegate(this));
-                break;
-            }
-
-            case ColumnType::DATE:
-            {
-                setItemDelegateForColumn(i, new DateDelegate(this));
-                break;
-            }
-
-            case ColumnType::STRING:
-            case ColumnType::UNKNOWN:
-            {
-                break;
-            }
-        }
-    }
+    for (int column = 0; column < proxyModel->columnCount(); ++column)
+        setDelegate(column, parentModel);
 
     QTableView::setModel(model);
     groupByColumn_ = parentModel->getDefaultGroupingColumn();
@@ -85,13 +64,36 @@ std::tuple<bool, int, int> DataView::getSpecialColumns(
     return {true, pricePerMeterColumn, transactionDateColumn};
 }
 
+void DataView::setDelegate(int column, const TableModel* parentModel)
+{
+    switch (parentModel->getColumnFormat(column))
+    {
+        case ColumnType::NUMBER:
+        {
+            setItemDelegateForColumn(column, new NumericDelegate(this));
+            break;
+        }
+
+        case ColumnType::DATE:
+        {
+            setItemDelegateForColumn(column, new DateDelegate(this));
+            break;
+        }
+
+        case ColumnType::STRING:
+        case ColumnType::UNKNOWN:
+        {
+            break;
+        }
+    }
+}
+
 QVector<TransactionData> DataView::fillDataFromSelection(
     int groupByColumn) const
 {
-    const FilteringProxyModel* proxyModel{getProxyModel()};
     const TableModel* parentModel{getParentModel()};
 
-    auto [success, pricePerMeterColumn, transactionDateColumn] =
+    const auto [success, pricePerMeterColumn, transactionDateColumn] =
         getSpecialColumns(parentModel);
     if (!success)
         return {};
@@ -102,6 +104,8 @@ QVector<TransactionData> DataView::fillDataFromSelection(
     const QItemSelectionModel* selectionModelOfView{selectionModel()};
     QVector<TransactionData> calcDataContainer;
     const int batchSize{1000};
+
+    const FilteringProxyModel* proxyModel{getProxyModel()};
     for (int i = 0; i < proxyModel->rowCount(); ++i)
     {
         if (i % batchSize == 0)
@@ -163,14 +167,14 @@ void DataView::reloadSelectionDataAndRecompute()
 void DataView::mouseReleaseEvent(QMouseEvent* event)
 {
     QTableView::mouseReleaseEvent(event);
-    if (Qt::LeftButton == event->button())
+    if (event->button() == Qt::LeftButton)
         reloadSelectionDataAndRecompute();
 }
 
 void DataView::keyPressEvent(QKeyEvent* event)
 {
     QTableView::keyPressEvent(event);
-    if (Qt::Key_A == event->key() && Qt::CTRL == event->modifiers())
+    if (event->key() == Qt::Key_A && event->modifiers() == Qt::CTRL)
         reloadSelectionDataAndRecompute();
 }
 
