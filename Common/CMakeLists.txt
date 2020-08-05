@@ -12,6 +12,8 @@ set(${PROJECT_NAME}_SOURCES
     SpecialColumns.h
     DatasetUtilities.cpp
     DatasetUtilities.h
+    TimeLogger.cpp
+    TimeLogger.h
     )
 
 ADD_LIBRARY(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SOURCES})

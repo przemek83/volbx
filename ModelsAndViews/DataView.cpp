@@ -4,7 +4,7 @@
 #include <QHeaderView>
 #include <QMouseEvent>
 
-#include "Logger.h"
+#include <Common/TimeLogger.h>
 
 #include "DateDelegate.h"
 #include "FilteringProxyModel.h"
@@ -98,8 +98,7 @@ QVector<TransactionData> DataView::fillDataFromSelection(
     if (!success)
         return {};
 
-    QTime performanceTimer;
-    performanceTimer.start();
+    TimeLogger timeLogger("Data updated");
 
     const QItemSelectionModel* selectionModelOfView{selectionModel()};
     QVector<TransactionData> calcDataContainer;
@@ -130,11 +129,6 @@ QVector<TransactionData> DataView::fillDataFromSelection(
         calcDataContainer.append(transactionData);
     }
 
-    LOG(LogTypes::CALC,
-        "Data updated in time " +
-            QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
-            " seconds.");
-
     return calcDataContainer;
 }
 
@@ -150,16 +144,10 @@ void DataView::reloadSelectionDataAndRecompute()
         columnFormat = parentModel->getColumnFormat(groupByColumn_);
     }
 
-    QTime performanceTimer;
-    performanceTimer.start();
+    TimeLogger timeLogger("Plots recomputed");
 
     plotDataProvider_.recompute(fillDataFromSelection(groupByColumn_),
                                 columnFormat);
-
-    LOG(LogTypes::CALC,
-        "Plots recomputed in " +
-            QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
-            " seconds.");
 
     QApplication::restoreOverrideCursor();
 }
