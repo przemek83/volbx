@@ -7,7 +7,6 @@
 #include <QAbstractTableModel>
 
 #include "Dataset.h"
-#include "SpecialColumns.h"
 
 /**
  * @brief 2d data model.
