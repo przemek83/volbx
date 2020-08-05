@@ -12,6 +12,12 @@ public:
 
     ~TimeLogger();
 
+    TimeLogger& operator=(const TimeLogger& other) = delete;
+    TimeLogger(const TimeLogger& other) = delete;
+
+    TimeLogger& operator=(TimeLogger&& other) = delete;
+    TimeLogger(TimeLogger&& other) = delete;
+
 private:
     const LogTypes logType_;
     const QString operationName_;
