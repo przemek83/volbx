@@ -432,7 +432,8 @@ void VolbxMain::actionImportDataTriggered()
     }
 
     LOG(LogTypes::IMPORT_EXPORT,
-        "Loaded file having " + QString::number(rowsCount_) + " rows in time " +
+        "Loaded file having " + QString::number(dataset->rowCount()) +
+            " rows in time " +
             QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
             " seconds.");
 

@@ -106,8 +106,8 @@ bool DatasetInner::openQuaZipFile(QuaZipFile& zipFile)
     if (!zipFile.open(QIODevice::ReadOnly))
     {
         LOG(LogTypes::IMPORT_EXPORT,
-            "Can not open xml file " + zipFile.getZip()->getCurrentFileName();
-            + ".");
+            "Can not open xml file " + zipFile.getZip()->getCurrentFileName() +
+                ".");
         return false;
     }
 
@@ -262,7 +262,7 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::fillData(
     stream.setCodec("UTF-8");
     QVector<QVector<QVariant>> data{parseData(stream, fillSamplesOnly)};
     LOG(LogTypes::IMPORT_EXPORT,
-        "Loaded " + QString::number(data->size()) + " rows.");
+        "Loaded " + QString::number(data.size()) + " rows.");
 
     return {true, data};
 }

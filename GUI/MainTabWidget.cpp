@@ -157,9 +157,7 @@ void MainTabWidget::setNumericFilterInProxy(int column, double from, double to)
     DataView* view = getCurrentDataView();
     FilteringProxyModel* model = getCurrentProxyModel();
     if (nullptr == view || nullptr == model)
-    {
         return;
-    }
 
     QTime performanceTimer;
     performanceTimer.start();

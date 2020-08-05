@@ -68,7 +68,7 @@ bool DatasetSpreadsheet::getSheetList()
     bool success{false};
     std::tie(success, sheetNames_) = importer_->getSheetNames();
     if (!success)
-        LOG(LogTypes::IMPORT_EXPORT, importXlsx_.getLastError());
+        LOG(LogTypes::IMPORT_EXPORT, importer_->getLastError());
     return success;
 }
 
@@ -78,7 +78,7 @@ bool DatasetSpreadsheet::getHeadersList(const QString& sheetName)
     std::tie(success, headerColumnNames_) =
         importer_->getColumnNames(sheetName);
     if (!success)
-        LOG(LogTypes::IMPORT_EXPORT, importXlsx_.getLastError());
+        LOG(LogTypes::IMPORT_EXPORT, importer_->getLastError());
     return success;
 }
 
@@ -88,7 +88,7 @@ bool DatasetSpreadsheet::getColumnTypes(const QString& sheetName)
     std::tie(success, columnTypes_) = importer_->getColumnTypes(sheetName);
     if (!success)
     {
-        LOG(LogTypes::IMPORT_EXPORT, importOds_.getLastError());
+        LOG(LogTypes::IMPORT_EXPORT, importer_->getLastError());
         return false;
     }
     return true;
@@ -116,7 +116,7 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetSpreadsheet::getDataFromZip(
 
     if (!success)
     {
-        LOG(LogTypes::IMPORT_EXPORT, importXlsx_.getLastError());
+        LOG(LogTypes::IMPORT_EXPORT, importer_->getLastError());
         return {false, {}};
     }
 

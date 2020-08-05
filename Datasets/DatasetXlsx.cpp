@@ -17,7 +17,7 @@ bool DatasetXlsx::loadSharedStrings()
         dynamic_cast<ImportXlsx*>(importer_.get())->getSharedStrings();
     if (!success)
     {
-        LOG(LogTypes::IMPORT_EXPORT, importXlsx_.getLastError());
+        LOG(LogTypes::IMPORT_EXPORT, importer_->getLastError());
         return false;
     }
     for (const auto& sharedString : sharedStringsList)
