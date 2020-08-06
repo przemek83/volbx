@@ -45,9 +45,9 @@ Logger::Logger([[maybe_unused]] QObject* parent)
     display_.resize(defaultLoggerWindowWidth, defaultLoggerWindowHeight);
 }
 
-Logger* Logger::getInstance()
+Logger& Logger::getInstance()
 {
-    static auto instance = new Logger();
+    static Logger instance;
     return instance;
 }
 

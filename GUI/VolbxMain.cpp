@@ -94,7 +94,7 @@ VolbxMain::VolbxMain(QWidget* parent)
     connect(ui->actionFilters, &QAction::triggered, this,
             &VolbxMain::actionFiltersTriggered);
     connect(ui->actionLogs, &QAction::triggered, this,
-            []() { Logger::getInstance()->switchVisibility(); });
+            []() { Logger::getInstance().switchVisibility(); });
     connect(ui->actionAbout, &QAction::triggered, this,
             &VolbxMain::actionAboutTriggered);
     connect(ui->actionExport, &QAction::triggered, this,
