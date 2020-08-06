@@ -32,6 +32,8 @@ private:
     explicit Logger(QObject* parent = nullptr);
     ~Logger() override = default;
 
+    QTextEdit* createLogsTextEdit();
+
     void reloadCheckBoxes();
 
     QMap<LogTypes, bool> activeLogs_;
@@ -39,9 +41,15 @@ private:
     /// Widget to display logs (text edit on it).
     QWidget display_;
 
-    QTextEdit* textEdit_{nullptr};
-
-    const QMap<LogTypes, QString> logNames_;
+    const QMap<LogTypes, QString> logNames_{
+        {LogTypes::DB, "DATA_BASE"},
+        {LogTypes::CONFIG, "CONFIG"},
+        {LogTypes::MODEL, "DATA_MODEL"},
+        {LogTypes::CALC, "CALCULATIONS"},
+        {LogTypes::NETWORK, "NETWORK"},
+        {LogTypes::LOGIN, "LOGIN"},
+        {LogTypes::APP, "APPLICATION"},
+        {LogTypes::IMPORT_EXPORT, "IMPORT_EXPORT"}};
 
 private Q_SLOTS:
     void changeActiveLogs(bool state);

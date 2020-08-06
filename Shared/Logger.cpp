@@ -8,30 +8,15 @@
 
 #include "LoggerCheckBox.h"
 
-Logger::Logger([[maybe_unused]] QObject* parent)
-    : logNames_{{LogTypes::DB, "DATA_BASE"},
-                {LogTypes::CONFIG, "CONFIG"},
-                {LogTypes::MODEL, "DATA_MODEL"},
-                {LogTypes::CALC, "CALCULATIONS"},
-                {LogTypes::NETWORK, "NETWORK"},
-                {LogTypes::LOGIN, "LOGIN"},
-                {LogTypes::APP, "APPLICATION"},
-                {LogTypes::IMPORT_EXPORT, "IMPORT_EXPORT"}}
+Logger::Logger(QObject* parent) : QObject(parent)
 {
-    display_.setWindowTitle(QStringLiteral("Logs"));
-
     auto verticalLayout{new QVBoxLayout()};
-    auto horizontalLayout{new QHBoxLayout()};
-
-    textEdit_ = new QTextEdit(&display_);
-    textEdit_->setLineWrapMode(QTextEdit::NoWrap);
-    textEdit_->setReadOnly(true);
-
     verticalLayout->addStretch();
-
+    auto horizontalLayout{new QHBoxLayout()};
     horizontalLayout->addLayout(verticalLayout);
-    horizontalLayout->addWidget(textEdit_);
+    horizontalLayout->addWidget(createLogsTextEdit());
 
+    display_.setWindowTitle(QStringLiteral("Logs"));
     display_.setLayout(horizontalLayout);
 
     // Default config, set all active.
@@ -45,6 +30,14 @@ Logger::Logger([[maybe_unused]] QObject* parent)
     display_.resize(defaultLoggerWindowWidth, defaultLoggerWindowHeight);
 }
 
+QTextEdit* Logger::createLogsTextEdit()
+{
+    auto textEdit{new QTextEdit(&display_)};
+    textEdit->setLineWrapMode(QTextEdit::NoWrap);
+    textEdit->setReadOnly(true);
+    return textEdit;
+}
+
 Logger& Logger::getInstance()
 {
     static Logger instance;
@@ -54,7 +47,8 @@ Logger& Logger::getInstance()
 void Logger::log(LogTypes type, const char* file, const char* function,
                  int line, const QString& msg)
 {
-    if (textEdit_ == nullptr)
+    auto* logTextEdit{display_.findChild<QTextEdit*>()};
+    if (logTextEdit == nullptr)
         return;
 
     // TODO Use __file__ and __line__
@@ -73,7 +67,7 @@ void Logger::log(LogTypes type, const char* file, const char* function,
 
     QString time;
     time.append(QTime::currentTime().toString(QStringLiteral("hh:mm:ss")));
-    textEdit_->insertHtml(
+    logTextEdit->insertHtml(
         timeStyleBegin + time + styleEnd + QStringLiteral(" (") +
         logNames_[type] + QStringLiteral(")") + QStringLiteral(" - ") +
         functionStyleBegin + QLatin1String(function) + styleEnd +
@@ -81,11 +75,11 @@ void Logger::log(LogTypes type, const char* file, const char* function,
         QStringLiteral(" (") + lineStyleBegin + QString::number(line) +
         styleEnd + QStringLiteral(")") + QStringLiteral(":<br>"));
 
-    textEdit_->insertPlainText(msg + QStringLiteral("\n\n"));
+    logTextEdit->insertPlainText(msg + QStringLiteral("\n\n"));
 
-    QTextCursor c{textEdit_->textCursor()};
+    QTextCursor c{logTextEdit->textCursor()};
     c.movePosition(QTextCursor::End);
-    textEdit_->setTextCursor(c);
+    logTextEdit->setTextCursor(c);
 }
 
 void Logger::reloadCheckBoxes()
