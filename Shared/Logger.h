@@ -14,6 +14,7 @@
 class QTextEdit;
 class QWidget;
 class QHBoxLayout;
+class QVBoxLayout;
 
 /**
  * @brief GUI Logger class.
@@ -37,7 +38,9 @@ private:
 
     QHBoxLayout* createLayout();
 
-    void reloadCheckBoxes();
+    void createCheckBoxes();
+
+    void moveCursorToTheEnd(QTextEdit* logTextEdit);
 
     QMap<LogTypes, bool> activeLogs_;
 

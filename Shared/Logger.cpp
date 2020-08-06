@@ -17,7 +17,7 @@ Logger::Logger(QObject* parent) : QObject(parent)
     for (int i = 0; i < static_cast<int>(LogTypes::END); ++i)
         activeLogs_[static_cast<LogTypes>(i)] = true;
 
-    reloadCheckBoxes();
+    createCheckBoxes();
 
     const int defaultLoggerWindowWidth{600};
     const int defaultLoggerWindowHeight{400};
@@ -71,34 +71,23 @@ void Logger::log(LogTypes type, const char* file, const char* function,
                  QString::number(line) + styleEnd_ + QStringLiteral(")"));
     entry.append(QStringLiteral(":<br>"));
 
+    moveCursorToTheEnd(logTextEdit);
     logTextEdit->insertHtml(entry);
-    logTextEdit->insertPlainText(msg + QStringLiteral("\n\n"));
-
-    QTextCursor c{logTextEdit->textCursor()};
-    c.movePosition(QTextCursor::End);
-    logTextEdit->setTextCursor(c);
+    logTextEdit->insertPlainText(msg);
+    logTextEdit->insertPlainText(QStringLiteral("\n\n"));
+    moveCursorToTheEnd(logTextEdit);
 }
 
-void Logger::reloadCheckBoxes()
+void Logger::createCheckBoxes()
 {
     auto verticalLayout{display_.findChild<QVBoxLayout*>()};
     if (verticalLayout == nullptr)
         return;
 
-    // Delete all.
-    QList<QCheckBox*> checkBoxes{verticalLayout->findChildren<QCheckBox*>()};
-    for (QCheckBox* checkBox : checkBoxes)
-    {
-        verticalLayout->removeWidget(checkBox);
-        delete checkBox;
-    }
-
-    // Create new.
     QMapIterator<LogTypes, bool> i(activeLogs_);
     while (i.hasNext())
     {
         i.next();
-
         LoggerCheckBox* check{
             new LoggerCheckBox(i.key(), logNames_[i.key()], &display_)};
         check->setChecked(i.value());
@@ -107,11 +96,21 @@ void Logger::reloadCheckBoxes()
         verticalLayout->insertWidget(static_cast<int>(i.key()), check);
     }
 }
+
+void Logger::moveCursorToTheEnd(QTextEdit* logTextEdit)
+{
+    QTextCursor cursor{logTextEdit->textCursor()};
+    cursor.movePosition(QTextCursor::End);
+    logTextEdit->setTextCursor(cursor);
+}
+
 void Logger::changeActiveLogs(bool state)
 {
-    auto checkBox{qobject_cast<LoggerCheckBox*>(sender())};
-    activeLogs_[checkBox->logType()] = state;
-    QString msg(logNames_[checkBox->logType()]);
+    auto clickedCheckBox{qobject_cast<LoggerCheckBox*>(sender())};
+    const LogTypes logType{clickedCheckBox->logType()};
+    activeLogs_[logType] = state;
+
+    QString msg(logNames_[logType]);
     msg.append(QStringLiteral(" is ") + (state ? QStringLiteral("enabled")
                                                : QStringLiteral("disabled")));
     LOG(LogTypes::APP, msg);
