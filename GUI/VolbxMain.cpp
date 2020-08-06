@@ -460,14 +460,14 @@ void VolbxMain::updateCheckReplyFinished(QNetworkReply* reply)
     reply->deleteLater();
 
     // Check errors.
-    if (Networking::errorsOccuredCheck(reply))
+    if (!Networking::replyIsValid(reply))
     {
         ui->statusBar->showMessage(tr("Connection error encountered."));
         return;
     }
 
     auto [newestVersion, notNeededHereList] =
-        Networking::checkReplyAndReturnAvailableVersion(reply);
+        Networking::getAvailableVersionAndFiles(reply);
 
     if (newestVersion.isEmpty())
     {

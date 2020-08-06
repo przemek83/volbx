@@ -52,7 +52,7 @@ void Update::initialInfoNetworkReplyFinished(QNetworkReply* reply)
     reply->deleteLater();
 
     // Check errors.
-    if (Networking::errorsOccuredCheck(reply))
+    if (!Networking::replyIsValid(reply))
     {
         insertNewLineIntoDetails();
         insertErrorInfoIntoDetails(tr("Error") + QLatin1Char(':') +
@@ -66,7 +66,7 @@ void Update::initialInfoNetworkReplyFinished(QNetworkReply* reply)
     insertNewLineIntoDetails();
 
     auto [newestVersion, replyStringList] =
-        Networking::checkReplyAndReturnAvailableVersion(reply);
+        Networking::getAvailableVersionAndFiles(reply);
 
     if (newestVersion.isEmpty())
     {
@@ -160,7 +160,7 @@ void Update::downloadFinished(QNetworkReply* reply)
 {
     reply->deleteLater();
 
-    if (Networking::errorsOccuredCheck(reply))
+    if (!Networking::replyIsValid(reply))
     {
         insertNewLineIntoDetails();
         insertErrorInfoIntoDetails(tr("Error") + QLatin1Char(':') +
@@ -232,7 +232,7 @@ bool Update::handleVerificationError(QString& fileName, QString& fileSize)
     insertErrorInfoIntoDetails(tr("Error during verification!"));
 
     // Add corrupted file to front of vector if max tries not reached yet.
-    if (currentTriesCount_ >= Networking::getMaxTries())
+    if (currentTriesCount_ >= Networking::getMaxRetries())
     {
         insertErrorInfoIntoDetails(tr("Can not download file."));
         QString msg(tr(

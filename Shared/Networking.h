@@ -6,32 +6,44 @@
 
 class QNetworkReply;
 
-class Networking final
+/**
+ * Networking related functions shared between binaries.
+ */
+namespace Networking
 {
-public:
-    Networking() = delete;
-    ~Networking() = delete;
+/**
+ * @brief Create network request checking for available version.
+ * @return Network request.
+ */
+QNetworkRequest getCurrentVersionRequest();
 
-    Networking& operator=(const Networking& other) = delete;
-    Networking(const Networking& other) = delete;
+/**
+ * @brief Create network request for downloading given file.
+ * @param file File to download.
+ * @return Network request.
+ */
+QNetworkRequest getDownloadFileRequest(const QString& file);
 
-    Networking& operator=(Networking&& other) = delete;
-    Networking(Networking&& other) = delete;
+/**
+ * @brief Check if reply is valid.
+ * @param reply Network Reply.
+ * @return True if valid, false otherwise.
+ */
+bool replyIsValid(QNetworkReply* reply);
 
-    static QNetworkRequest getCurrentVersionRequest();
+/**
+ * @brief Get available version along with available file list.
+ * @param reply Reply to parse.
+ * @return Available version and file to download list.
+ */
+std::tuple<QString, QStringList> getAvailableVersionAndFiles(
+    QNetworkReply* reply);
 
-    static QNetworkRequest getDownloadFileRequest(const QString& file);
-
-    static bool errorsOccuredCheck(QNetworkReply* reply);
-
-    static std::tuple<QString, QStringList> checkReplyAndReturnAvailableVersion(
-        QNetworkReply* reply);
-
-    static int getMaxTries();
-
-private:
-    /// Max network tries before reporting error.
-    static const int maxTries_;
-};
+/**
+ * @brief Get max retires which should be done when connecting.
+ * @return Max retries.
+ */
+int getMaxRetries();
+}  // namespace Networking
 
 #endif  // NETWORKING_H
