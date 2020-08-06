@@ -10,16 +10,10 @@
 
 Logger::Logger(QObject* parent) : QObject(parent)
 {
-    auto verticalLayout{new QVBoxLayout()};
-    verticalLayout->addStretch();
-    auto horizontalLayout{new QHBoxLayout()};
-    horizontalLayout->addLayout(verticalLayout);
-    horizontalLayout->addWidget(createLogsTextEdit());
-
     display_.setWindowTitle(QStringLiteral("Logs"));
-    display_.setLayout(horizontalLayout);
+    display_.setLayout(createLayout());
 
-    // Default config, set all active.
+    // Activate all logs as default.
     for (int i = 0; i < static_cast<int>(LogTypes::END); ++i)
         activeLogs_[static_cast<LogTypes>(i)] = true;
 
@@ -38,6 +32,16 @@ QTextEdit* Logger::createLogsTextEdit()
     return textEdit;
 }
 
+QHBoxLayout* Logger::createLayout()
+{
+    auto verticalLayout{new QVBoxLayout()};
+    verticalLayout->addStretch();
+    auto horizontalLayout{new QHBoxLayout()};
+    horizontalLayout->addLayout(verticalLayout);
+    horizontalLayout->addWidget(createLogsTextEdit());
+    return horizontalLayout;
+}
+
 Logger& Logger::getInstance()
 {
     static Logger instance;
@@ -51,29 +55,19 @@ void Logger::log(LogTypes type, const char* file, const char* function,
     if (logTextEdit == nullptr)
         return;
 
-    // TODO Use __file__ and __line__
     if (!activeLogs_[type])
         return;
-
-    const QString timeStyleBegin(
-        QStringLiteral("<b><font size=\"3\" color=\"blue\">"));
-    const QString fileStyleBegin(
-        QStringLiteral("<b><font size=\"3\" color=\"black\">"));
-    const QString functionStyleBegin(
-        QStringLiteral("<b><font size=\"3\" color=\"red\">"));
-    const QString lineStyleBegin(
-        QStringLiteral("<b><font size=\"3\" color=\"green\">"));
-    const QString styleEnd(QStringLiteral("</b></font>"));
 
     QString time;
     time.append(QTime::currentTime().toString(QStringLiteral("hh:mm:ss")));
     logTextEdit->insertHtml(
-        timeStyleBegin + time + styleEnd + QStringLiteral(" (") +
+        timeStyleBegin_ + time + styleEnd_ + QStringLiteral(" (") +
         logNames_[type] + QStringLiteral(")") + QStringLiteral(" - ") +
-        functionStyleBegin + QLatin1String(function) + styleEnd +
-        QStringLiteral(", ") + fileStyleBegin + QLatin1String(file) + styleEnd +
-        QStringLiteral(" (") + lineStyleBegin + QString::number(line) +
-        styleEnd + QStringLiteral(")") + QStringLiteral(":<br>"));
+        functionStyleBegin_ + QLatin1String(function) + styleEnd_ +
+        QStringLiteral(", ") + fileStyleBegin_ + QLatin1String(file) +
+        styleEnd_ + QStringLiteral(" (") + lineStyleBegin_ +
+        QString::number(line) + styleEnd_ + QStringLiteral(")") +
+        QStringLiteral(":<br>"));
 
     logTextEdit->insertPlainText(msg + QStringLiteral("\n\n"));
 

@@ -13,6 +13,7 @@
 
 class QTextEdit;
 class QWidget;
+class QHBoxLayout;
 
 /**
  * @brief GUI Logger class.
@@ -34,6 +35,8 @@ private:
 
     QTextEdit* createLogsTextEdit();
 
+    QHBoxLayout* createLayout();
+
     void reloadCheckBoxes();
 
     QMap<LogTypes, bool> activeLogs_;
@@ -50,6 +53,12 @@ private:
         {LogTypes::LOGIN, "LOGIN"},
         {LogTypes::APP, "APPLICATION"},
         {LogTypes::IMPORT_EXPORT, "IMPORT_EXPORT"}};
+
+    const QString timeStyleBegin_{"<b><font size=\"3\" color=\"blue\">"};
+    const QString fileStyleBegin_{"<b><font size=\"3\" color=\"black\">"};
+    const QString functionStyleBegin_{"<b><font size=\"3\" color=\"red\">"};
+    const QString lineStyleBegin_{"<b><font size=\"3\" color=\"green\">"};
+    const QString styleEnd_{"</b></font>"};
 
 private Q_SLOTS:
     void changeActiveLogs(bool state);
