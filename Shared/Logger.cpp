@@ -6,7 +6,7 @@
 #include <QTime>
 #include <QVBoxLayout>
 
-#include "CheckBox.h"
+#include "LoggerCheckBox.h"
 
 Logger::Logger([[maybe_unused]] QObject* parent)
     : logNames_{{LogTypes::DB, "DATA_BASE"},
@@ -121,15 +121,17 @@ void Logger::reloadCheckBoxes()
     {
         i.next();
 
-        CheckBox* check = new CheckBox(i.key(), logNames_[i.key()], &display_);
+        LoggerCheckBox* check =
+            new LoggerCheckBox(i.key(), logNames_[i.key()], &display_);
         check->setChecked(i.value());
-        connect(check, &CheckBox::toggled, this, &Logger::changeActiveLogs);
+        connect(check, &LoggerCheckBox::toggled, this,
+                &Logger::changeActiveLogs);
         verticalLayout->insertWidget(static_cast<int>(i.key()), check);
     }
 }
 void Logger::changeActiveLogs(bool state)
 {
-    auto checkBox = qobject_cast<CheckBox*>(sender());
+    auto checkBox = qobject_cast<LoggerCheckBox*>(sender());
     activeLogs_[checkBox->logType()] = state;
     QString msg(logNames_[checkBox->logType()]);
     msg.append(QStringLiteral(" is ") +

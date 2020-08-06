@@ -3,8 +3,8 @@ project(shared)
 set(${PROJECT_NAME}_SOURCES
     Application.cpp
     Application.h
-    CheckBox.cpp
-    CheckBox.h
+    LoggerCheckBox.cpp
+    LoggerCheckBox.h
     CommonProperties.h
     Logger.cpp
     Logger.h
