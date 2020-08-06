@@ -69,8 +69,6 @@ private Q_SLOTS:
 
     void actionFiltersTriggered();
 
-    void actionLogsTriggered();
-
     void tabWasChanged(int index);
 
     void actionAboutTriggered();

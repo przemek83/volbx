@@ -26,7 +26,6 @@
 #include "ModelsAndViews/FilteringProxyModel.h"
 #include "ModelsAndViews/TableModel.h"
 #include "Shared/Application.h"
-#include "Shared/Debugging.h"
 #include "Shared/Logger.h"
 #include "Shared/Networking.h"
 
@@ -81,9 +80,7 @@ VolbxMain::VolbxMain(QWidget* parent)
     connect(tabWidget_, &MainTabWidget::tabCloseRequested, this,
             &VolbxMain::closeTab);
 
-#ifndef DEBUGGING
-    ui->actionLogs->setVisible(false);
-#endif
+    ui->actionLogs->setVisible(true);
 
     ui->actionBugReport->setVisible(false);
     ui->actionSendErrorOrIdea->setVisible(false);
@@ -97,7 +94,7 @@ VolbxMain::VolbxMain(QWidget* parent)
     connect(ui->actionFilters, &QAction::triggered, this,
             &VolbxMain::actionFiltersTriggered);
     connect(ui->actionLogs, &QAction::triggered, this,
-            &VolbxMain::actionLogsTriggered);
+            []() { Logger::getInstance()->switchVisibility(); });
     connect(ui->actionAbout, &QAction::triggered, this,
             &VolbxMain::actionAboutTriggered);
     connect(ui->actionExport, &QAction::triggered, this,
@@ -236,13 +233,6 @@ void VolbxMain::actionExitTriggered() { close(); }
 void VolbxMain::actionFiltersTriggered()
 {
     filters_->setVisible(!filters_->isVisible());
-}
-
-void VolbxMain::actionLogsTriggered()
-{
-#ifdef DEBUGGING
-    Logger::getInstance()->switchVisibility();
-#endif
 }
 
 void VolbxMain::tabWasChanged(int index)

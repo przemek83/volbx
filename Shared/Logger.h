@@ -6,17 +6,10 @@
 #include <QObject>
 #include <QWidget>
 
-#include "Debugging.h"
 #include "LogType.h"
 
-// If debug is not activated use empty logger. For debugging on use logging
-// window.
-#ifdef DEBUGGING
 #define LOG(type, msg) \
     Logger::getInstance()->log(type, __FILE__, __FUNCTION__, __LINE__, msg)
-#else
-#define LOG(...)
-#endif
 
 class QTextEdit;
 class QWidget;

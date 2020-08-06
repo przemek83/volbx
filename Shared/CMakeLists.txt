@@ -6,7 +6,6 @@ set(${PROJECT_NAME}_SOURCES
     CheckBox.cpp
     CheckBox.h
     CommonProperties.h
-    Debugging.h
     Logger.cpp
     Logger.h
     LogType.h

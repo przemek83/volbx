@@ -45,7 +45,6 @@ Logger::Logger([[maybe_unused]] QObject* parent)
     const int defaultLoggerWindowWidth{600};
     const int defaultLoggerWindowHeight{400};
     display_.resize(defaultLoggerWindowWidth, defaultLoggerWindowHeight);
-    display_.show();
 }
 
 Logger* Logger::getInstance()
