@@ -4,47 +4,33 @@
 #include <QString>
 
 /**
- * @brief Set of static methods used to change application look or behaviour.
+ * Set of functions used to change application look or behaviour.
  */
-class Application final
+namespace Application
 {
-public:
-    Application() = delete;
-    ~Application() = delete;
+/**
+ * @brief Set version, application name, company name.
+ * @param productName Name of product,
+ */
+void setAdditionalApplicatioInfo(const char* productName);
 
-    Application& operator=(const Application& other) = delete;
-    Application(const Application& other) = delete;
+/**
+ * @brief Set application style using css style file.
+ * @param styleName Name of style file.
+ */
+void setCssStyle(const QString& styleName);
 
-    Application& operator=(Application&& other) = delete;
-    Application(Application&& other) = delete;
+/**
+ * @brief Set Qt inner style.
+ * @param name Name of inner style.
+ */
+void setQtStyle(const QString& name);
 
-    /// Set version, application name, company name.
-    static void setAdditionalApplicatioInfo(const char* productName);
-
-    /**
-     * @brief set application style using css style file.
-     * @param styleName name of style file.
-     */
-    static void setCssStyle(const QString& styleName);
-
-    /**
-     * @brief set Qt inner style.
-     * @param name name of inner style.
-     */
-    static void setQtStyle(const QString& name);
-
-    static void initStyle(const QString& nameFromConfig);
-
-private:
-    static QString getStylePath(const QString& styleName);
-
-    static QString getResStylePath(const QString& styleName);
-
-    static QString getLocalStyleFilePath(const QString& styleName);
-
-    static void clearAppFocus();
-
-    static const char* cssSuffix_;
-};
+/**
+ * @brief initStyle Initialize css style to one passed as parameter.
+ * @param nameFromConfig Name of style retrieved from config.
+ */
+void initStyle(const QString& nameFromConfig);
+}  // namespace Application
 
 #endif  // APPLICATION_H
