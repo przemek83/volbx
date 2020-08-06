@@ -10,8 +10,6 @@ TimeLogger::TimeLogger(LogTypes logType, const QString& operationName)
 
 TimeLogger::~TimeLogger()
 {
-    LOG(logType_,
-        operationName_ + " in " +
-            QString::number(performanceTimer_.elapsed() * 1.0 / 1000) +
-            " seconds.");
+    QString seconds{QString::number(performanceTimer_.elapsed() * 1.0 / 1000)};
+    LOG(logType_, operationName_ + " in " + seconds + " seconds.");
 }
