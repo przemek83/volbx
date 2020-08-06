@@ -60,15 +60,18 @@ void Logger::log(LogTypes type, const char* file, const char* function,
 
     QString time;
     time.append(QTime::currentTime().toString(QStringLiteral("hh:mm:ss")));
-    logTextEdit->insertHtml(
-        timeStyleBegin_ + time + styleEnd_ + QStringLiteral(" (") +
-        logNames_[type] + QStringLiteral(")") + QStringLiteral(" - ") +
-        functionStyleBegin_ + QLatin1String(function) + styleEnd_ +
-        QStringLiteral(", ") + fileStyleBegin_ + QLatin1String(file) +
-        styleEnd_ + QStringLiteral(" (") + lineStyleBegin_ +
-        QString::number(line) + styleEnd_ + QStringLiteral(")") +
-        QStringLiteral(":<br>"));
+    QString entry;
+    entry.append(timeStyleBegin_ + time + styleEnd_);
+    entry.append(QStringLiteral(" (") + logNames_[type] + QStringLiteral(")"));
+    entry.append(QStringLiteral(" - "));
+    entry.append(functionStyleBegin_ + QLatin1String(function) + styleEnd_);
+    entry.append(QStringLiteral(", "));
+    entry.append(fileStyleBegin_ + QLatin1String(file) + styleEnd_);
+    entry.append(QStringLiteral(" (") + lineStyleBegin_ +
+                 QString::number(line) + styleEnd_ + QStringLiteral(")"));
+    entry.append(QStringLiteral(":<br>"));
 
+    logTextEdit->insertHtml(entry);
     logTextEdit->insertPlainText(msg + QStringLiteral("\n\n"));
 
     QTextCursor c{logTextEdit->textCursor()};
