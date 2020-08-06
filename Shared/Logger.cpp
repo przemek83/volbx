@@ -20,8 +20,8 @@ Logger::Logger([[maybe_unused]] QObject* parent)
 {
     display_.setWindowTitle(QStringLiteral("Logs"));
 
-    auto verticalLayout = new QVBoxLayout();
-    auto horizontalLayout = new QHBoxLayout();
+    auto verticalLayout{new QVBoxLayout()};
+    auto horizontalLayout{new QHBoxLayout()};
 
     textEdit_ = new QTextEdit(&display_);
     textEdit_->setLineWrapMode(QTextEdit::NoWrap);
@@ -36,9 +36,7 @@ Logger::Logger([[maybe_unused]] QObject* parent)
 
     // Default config, set all active.
     for (int i = 0; i < static_cast<int>(LogTypes::END); ++i)
-    {
         activeLogs_[static_cast<LogTypes>(i)] = true;
-    }
 
     reloadCheckBoxes();
 
@@ -56,18 +54,12 @@ Logger* Logger::getInstance()
 void Logger::log(LogTypes type, const char* file, const char* function,
                  int line, const QString& msg)
 {
-    Q_ASSERT(nullptr != textEdit_);
-
-    if (nullptr == textEdit_)
-    {
+    if (textEdit_ == nullptr)
         return;
-    }
 
     // TODO Use __file__ and __line__
     if (!activeLogs_[type])
-    {
         return;
-    }
 
     const QString timeStyleBegin(
         QStringLiteral("<b><font size=\"3\" color=\"blue\">"));
@@ -91,24 +83,19 @@ void Logger::log(LogTypes type, const char* file, const char* function,
 
     textEdit_->insertPlainText(msg + QStringLiteral("\n\n"));
 
-    QTextCursor c = textEdit_->textCursor();
+    QTextCursor c{textEdit_->textCursor()};
     c.movePosition(QTextCursor::End);
     textEdit_->setTextCursor(c);
 }
 
 void Logger::reloadCheckBoxes()
 {
-    auto verticalLayout = display_.findChild<QVBoxLayout*>();
-
-    Q_ASSERT(verticalLayout != nullptr);
-
+    auto verticalLayout{display_.findChild<QVBoxLayout*>()};
     if (verticalLayout == nullptr)
-    {
         return;
-    }
 
     // Delete all.
-    QList<QCheckBox*> checkBoxes = verticalLayout->findChildren<QCheckBox*>();
+    QList<QCheckBox*> checkBoxes{verticalLayout->findChildren<QCheckBox*>()};
     for (QCheckBox* checkBox : checkBoxes)
     {
         verticalLayout->removeWidget(checkBox);
@@ -121,8 +108,8 @@ void Logger::reloadCheckBoxes()
     {
         i.next();
 
-        LoggerCheckBox* check =
-            new LoggerCheckBox(i.key(), logNames_[i.key()], &display_);
+        LoggerCheckBox* check{
+            new LoggerCheckBox(i.key(), logNames_[i.key()], &display_)};
         check->setChecked(i.value());
         connect(check, &LoggerCheckBox::toggled, this,
                 &Logger::changeActiveLogs);
@@ -131,11 +118,11 @@ void Logger::reloadCheckBoxes()
 }
 void Logger::changeActiveLogs(bool state)
 {
-    auto checkBox = qobject_cast<LoggerCheckBox*>(sender());
+    auto checkBox{qobject_cast<LoggerCheckBox*>(sender())};
     activeLogs_[checkBox->logType()] = state;
     QString msg(logNames_[checkBox->logType()]);
-    msg.append(QStringLiteral(" is ") +
-               (state ? QStringLiteral("active") : QStringLiteral("disabled")));
+    msg.append(QStringLiteral(" is ") + (state ? QStringLiteral("enabled")
+                                               : QStringLiteral("disabled")));
     LOG(LogTypes::APP, msg);
 }
 
