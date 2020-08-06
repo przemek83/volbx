@@ -17,7 +17,7 @@ class QHBoxLayout;
 class QVBoxLayout;
 
 /**
- * @brief GUI Logger class.
+ * @brief Visual Logger class.
  */
 class Logger : public QObject
 {
@@ -28,7 +28,10 @@ public:
     void log(LogTypes type, const char* file, const char* function, int line,
              const QString& msg);
 
-    void switchVisibility();
+    /**
+     * @brief Toggle visibility of logging window.
+     */
+    void toggleVisibility();
 
 private:
     explicit Logger(QObject* parent = nullptr);

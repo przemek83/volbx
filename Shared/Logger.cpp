@@ -116,4 +116,4 @@ void Logger::changeActiveLogs(bool state)
     LOG(LogTypes::APP, msg);
 }
 
-void Logger::switchVisibility() { display_.setVisible(!display_.isVisible()); }
+void Logger::toggleVisibility() { display_.setVisible(!display_.isVisible()); }
