@@ -4,6 +4,9 @@
 
 #include "LogType.h"
 
+/**
+ * @brief Check box class used for enabling or disabling logs categories.
+ */
 class LoggerCheckBox : public QCheckBox
 {
     Q_OBJECT
