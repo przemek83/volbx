@@ -136,12 +136,12 @@ void DatasetDefinitionVisualization::setDataset(
 
     ui->columnsList->setEnabled(true);
 
-    ui->specialColumnsWidget->setEnabled(true);
+    ui->taggedColumnsWidget->setEnabled(true);
 
     ui->dateCombo->blockSignals(false);
     ui->pricePerUnitCombo->blockSignals(false);
 
-    // Set on tree picked special columns in combos.
+    // Set on tree picked tagged columns in combos.
     taggedColumnChanged(0);
 }
 
@@ -154,7 +154,7 @@ void DatasetDefinitionVisualization::clear()
 
     ui->columnsList->setEnabled(false);
 
-    ui->specialColumnsWidget->setEnabled(false);
+    ui->taggedColumnsWidget->setEnabled(false);
 
     dataset_ = nullptr;
 }
