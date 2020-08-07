@@ -3,6 +3,9 @@
 
 #include <QString>
 
+/**
+ * Functions related to files.
+ */
 namespace FileUtilities
 {
 std::pair<bool, QString> loadFile(QString name);
