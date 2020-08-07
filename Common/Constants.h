@@ -4,6 +4,9 @@
 #include <QDate>
 #include <QString>
 
+/**
+ * Helper functions for constants.
+ */
 namespace Constants
 {
 QString getUpdaterName();
