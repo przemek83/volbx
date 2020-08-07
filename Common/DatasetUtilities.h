@@ -3,6 +3,9 @@
 
 #include <QStringList>
 
+/**
+ * Helper functions for dataset related operations.
+ */
 namespace DatasetUtilities
 {
 QString getDatasetsDir();
@@ -10,9 +13,8 @@ QString getDatasetsDir();
 /// Return names without extension of available datasets in datasets dir.
 QStringList getListOfAvailableDatasets();
 
-/// Checks if it is possible to use default datasets directory to store
-/// data.
-bool isDatasetDirExistAndUserHavePermisions();
+/// Checks if default datasets directory can be used.
+bool doesDatasetDirExistAndUserHavePermisions();
 
 /// Removes given dataset from disk.
 bool removeDataset(const QString& datasetName);

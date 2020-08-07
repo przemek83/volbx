@@ -330,7 +330,7 @@ void VolbxMain::manageActions(bool tabExists)
 
 void VolbxMain::actionSaveDatasetAsTriggered()
 {
-    if (!DatasetUtilities::isDatasetDirExistAndUserHavePermisions())
+    if (!DatasetUtilities::doesDatasetDirExistAndUserHavePermisions())
     {
         QString msg(tr("Can not access folder "));
         msg.append(DatasetUtilities::getDatasetsDir());

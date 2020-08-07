@@ -16,7 +16,7 @@ QString getDatasetsDir()
 QStringList getListOfAvailableDatasets()
 {
     QDir datasetsDir{getDatasetsDir()};
-    if (!isDatasetDirExistAndUserHavePermisions())
+    if (!doesDatasetDirExistAndUserHavePermisions())
         return QStringList();
 
     datasetsDir.setFilter(QDir::Files | QDir::Readable | QDir::NoSymLinks |
@@ -28,9 +28,9 @@ QStringList getListOfAvailableDatasets()
     return entries.replaceInStrings(getDatasetExtension(), QLatin1String(""));
 }
 
-bool isDatasetDirExistAndUserHavePermisions()
+bool doesDatasetDirExistAndUserHavePermisions()
 {
-    QDir directory{getDatasetsDir()};
+    const QDir directory{getDatasetsDir()};
     if (!directory.exists() && !directory.mkpath(directory.path()))
         return false;
 
@@ -40,7 +40,8 @@ bool isDatasetDirExistAndUserHavePermisions()
 
 bool removeDataset(const QString& datasetName)
 {
-    QString datasetFile{getDatasetsDir() + datasetName + getDatasetExtension()};
+    const QString datasetFile{getDatasetsDir() + datasetName +
+                              getDatasetExtension()};
     return QFile::remove(datasetFile);
 }
 
