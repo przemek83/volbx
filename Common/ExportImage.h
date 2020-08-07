@@ -1,39 +1,28 @@
 #ifndef EXPORTIMAGE_H
 #define EXPORTIMAGE_H
 
-#include <QString>
+#include <QList>
 
 class PlotBase;
-class QwtPlotRenderer;
+class QString;
 
 /**
- * @brief static methods used to export images taken from plots.
+ * Functions for exporting images.
  */
-class ExportImage
+namespace ExportImage
 {
-public:
-    ExportImage() = delete;
-    ~ExportImage() = delete;
+/**
+ * @brief Expert given plot as image.
+ * @param plot Plot to export.
+ * @param fileName Name for image.
+ */
+void exportAsImage(PlotBase* plot, const QString& fileName);
 
-    ExportImage& operator=(const ExportImage& other) = delete;
-    ExportImage(const ExportImage& other) = delete;
-
-    ExportImage& operator=(ExportImage&& other) = delete;
-    ExportImage(ExportImage&& other) = delete;
-
-    static void exportAsImage(PlotBase* plot, const QString& fileName);
-
-    static void quickExportAsImage(const QList<PlotBase*>& list);
-
-private:
-    static void exportSingleImage(const QwtPlotRenderer& rend,
-                                  const QList<PlotBase*>& list);
-
-    static void exportTwinImage(const QList<PlotBase*>& list,
-                                const QwtPlotRenderer& rend);
-
-    static void exportFourPlotsImage(const QList<PlotBase*>& list,
-                                     const QwtPlotRenderer& rend);
-};
+/**
+ * @brief Export images into clipboard.
+ * @param list Plots to export.
+ */
+void quickExportAsImage(const QList<PlotBase*>& list);
+}  // namespace ExportImage
 
 #endif  // EXPORTIMAGE_H

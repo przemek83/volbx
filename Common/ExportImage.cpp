@@ -7,42 +7,106 @@
 #include <QImage>
 #include <QPainter>
 
-void ExportImage::exportAsImage(PlotBase* plot, const QString& fileName)
+namespace
 {
-    QwtPlotRenderer rend;
-    rend.setDiscardFlags(QwtPlotRenderer::DiscardNone);
-    rend.setDiscardFlags(QwtPlotRenderer::DiscardBackground |
-                         QwtPlotRenderer::DiscardCanvasBackground);
-
-    QSize size(plot->widthMM(), plot->heightMM());
-
-    rend.renderDocument(plot, fileName, QStringLiteral("png"), size);
+QImage createImage(QSize size)
+{
+    QImage image(size, QImage::Format_ARGB32);
+    image.fill(QColor(Qt::white).rgb());
+    return image;
 }
 
-void ExportImage::quickExportAsImage(const QList<PlotBase*>& list)
+void exportSingleImage(const QwtPlotRenderer& plotRenderer,
+                       const QList<PlotBase*>& plotsList)
 {
-    QwtPlotRenderer rend;
-    rend.setDiscardFlags(QwtPlotRenderer::DiscardNone);
-    rend.setDiscardFlags(QwtPlotRenderer::DiscardBackground |
-                         QwtPlotRenderer::DiscardCanvasBackground);
+    PlotBase* plot{plotsList.front()};
+    QImage image(createImage(plot->size()));
+    QPainter painter(&image);
+    plotRenderer.render(plot, &painter, plot->rect());
+
+    QApplication::clipboard()->setImage(image);
+}
+
+void exportTwinImage(const QList<PlotBase*>& plotsList,
+                     const QwtPlotRenderer& plotRenderer)
+{
+    PlotBase* leftPlot{plotsList.first()};
+    PlotBase* rightPlot{plotsList.at(1)};
+    const QSize leftSize{leftPlot->size()};
+    const QSize rightSize{rightPlot->size()};
+
+    QSize imageSize(leftSize.width() + rightSize.width(),
+                    qMax(leftSize.height(), rightSize.height()));
+    QImage image(createImage(imageSize));
+    QPainter painter(&image);
+
+    QRect rect(0, 0, leftSize.width(), leftSize.height());
+    plotRenderer.render(leftPlot, &painter, rect);
+    rect.setRect(leftSize.width(), 0, rightSize.width(), rightSize.height());
+    plotRenderer.render(rightPlot, &painter, rect);
+
+    QApplication::clipboard()->setImage(image);
+}
+
+void exportQuadImage(const QList<PlotBase*>& plotsList,
+                     const QwtPlotRenderer& plotRenderer)
+{
+    const int width{plotsList.front()->size().width()};
+    const int height{plotsList.front()->size().height()};
+    const QSize imageSize(width * 2, height * 2);
+    QImage image(createImage(imageSize));
+    QPainter painter(&image);
+
+    QRect rect(0, 0, width, height);
+    plotRenderer.render(plotsList[0], &painter, rect);
+    rect.adjust(width, 0, width, 0);
+    plotRenderer.render(plotsList[1], &painter, rect);
+    rect.adjust(-width, height, -width, height);
+    plotRenderer.render(plotsList[2], &painter, rect);
+    rect.adjust(width, 0, width, 0);
+    plotRenderer.render(plotsList[3], &painter, rect);
+
+    QApplication::clipboard()->setImage(image);
+}
+}  // namespace
+
+namespace ExportImage
+{
+void exportAsImage(PlotBase* plot, const QString& fileName)
+{
+    QSize size(plot->widthMM(), plot->heightMM());
+
+    QwtPlotRenderer plotRenderer;
+    plotRenderer.setDiscardFlags(QwtPlotRenderer::DiscardNone);
+    plotRenderer.setDiscardFlags(QwtPlotRenderer::DiscardBackground |
+                                 QwtPlotRenderer::DiscardCanvasBackground);
+    plotRenderer.renderDocument(plot, fileName, QStringLiteral("png"), size);
+}
+
+void quickExportAsImage(const QList<PlotBase*>& list)
+{
+    QwtPlotRenderer plotRenderer;
+    plotRenderer.setDiscardFlags(QwtPlotRenderer::DiscardNone);
+    plotRenderer.setDiscardFlags(QwtPlotRenderer::DiscardBackground |
+                                 QwtPlotRenderer::DiscardCanvasBackground);
 
     switch (list.size())
     {
         case 1:
         {
-            exportSingleImage(rend, list);
+            exportSingleImage(plotRenderer, list);
             break;
         }
 
         case 2:
         {
-            exportTwinImage(list, rend);
+            exportTwinImage(list, plotRenderer);
             break;
         }
 
         case 4:
         {
-            exportFourPlotsImage(list, rend);
+            exportQuadImage(list, plotRenderer);
             break;
         }
 
@@ -53,58 +117,4 @@ void ExportImage::quickExportAsImage(const QList<PlotBase*>& list)
         }
     }
 }
-
-void ExportImage::exportSingleImage(const QwtPlotRenderer& rend,
-                                    const QList<PlotBase*>& list)
-{
-    QImage img(list.front()->size(), QImage::Format_ARGB32);
-    img.fill(QColor(Qt::white).rgb());
-    QPainter painter(&img);
-
-    rend.render(list.front(), &painter, list.front()->rect());
-
-    QApplication::clipboard()->setImage(img);
-}
-
-void ExportImage::exportTwinImage(const QList<PlotBase*>& list,
-                                  const QwtPlotRenderer& rend)
-{
-    PlotBase* left = list.first();
-    PlotBase* right = list.at(1);
-    QSize size(left->size().width() + right->size().width(),
-               qMax(left->size().height(), right->size().height()));
-    QImage img(size, QImage::Format_ARGB32);
-    img.fill(QColor(Qt::white).rgb());
-    QPainter painter(&img);
-
-    QRect rect(0, 0, left->size().width(), left->size().height());
-    rend.render(left, &painter, rect);
-
-    rect.setRect(left->size().width(), 0, right->size().width(),
-                 right->size().height());
-    rend.render(right, &painter, rect);
-
-    QApplication::clipboard()->setImage(img);
-}
-
-void ExportImage::exportFourPlotsImage(const QList<PlotBase*>& list,
-                                       const QwtPlotRenderer& rend)
-{
-    int width = list.front()->size().width();
-    int height = list.front()->size().height();
-    QSize size(width * 2, height * 2);
-    QImage img(size, QImage::Format_ARGB32);
-    img.fill(QColor(Qt::white).rgb());
-    QPainter painter(&img);
-
-    QRect rect(0, 0, width, height);
-    rend.render(list[0], &painter, rect);
-    rect.adjust(width, 0, width, 0);
-    rend.render(list[1], &painter, rect);
-    rect.adjust(-width, height, -width, height);
-    rend.render(list[2], &painter, rect);
-    rect.adjust(width, 0, width, 0);
-    rend.render(list[3], &painter, rect);
-
-    QApplication::clipboard()->setImage(img);
-}
+}  // namespace ExportImage
