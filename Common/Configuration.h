@@ -3,6 +3,8 @@
 
 #include <QString>
 
+class QDomDocument;
+
 /**
  * @brief Singleton for configuration.
  */
@@ -59,6 +61,10 @@ private:
      * @return configuration in readable text form.
      */
     QString configDump() const;
+
+    bool loadConfigXml(QDomDocument& configXml) const;
+
+    void parseConfigXml(QDomDocument& configXml);
 
     /// Flag indicating that configuration existed and was valid.
     bool configValid_{false};

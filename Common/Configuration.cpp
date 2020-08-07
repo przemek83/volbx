@@ -7,8 +7,10 @@
 #include <QString>
 #include <QtXml/QDomDocument>
 
-#include "Constants.h"
 #include "Shared/Logger.h"
+
+#include "Constants.h"
+#include "FileUtilities.h"
 
 Configuration::Configuration() { load(); }
 
@@ -32,60 +34,14 @@ bool Configuration::load()
 {
     configValid_ = false;
 
-    // Default style.
     if (styleName_.isEmpty())
         styleName_ = QStringLiteral("Fusion");
 
-    QString filename(QApplication::applicationDirPath() + "/" +
-                     Constants::getConfigurationFileName());
-
-    QFile file(filename);
-
-    if (!file.open(QIODevice::ReadOnly))
-    {
-        LOG(LogTypes::CONFIG, "Config file " + filename +
-                                  " can not be opened. Default config used.");
-
+    QDomDocument configXML;
+    if (!loadConfigXml(configXML))
         return false;
-    }
 
-    LOG(LogTypes::CONFIG, "Found config file " + filename + ".");
-
-    QTextStream stream(&file);
-    QString initial(stream.readAll());
-    QDomDocument configXML(filename);
-
-    // If could not parse config.
-    if (!configXML.setContent(initial))
-    {
-        LOG(LogTypes::CONFIG,
-            "Config file " + filename +
-                " is damaged and will be deleted. Default config used.");
-
-        file.close();
-
-        return false;
-    }
-
-    file.close();
-
-    LOG(LogTypes::CONFIG, "Loaded config file:\n" + configXML.toString());
-
-    QDomNodeList list = configXML.elementsByTagName(XML_NAME_UPDATE);
-    QDomElement updateElement = list.at(0).toElement();
-    if (!updateElement.isNull())
-        updatePolicy_ = static_cast<UpdatePolicy>(
-            updateElement.attribute(XML_NAME_VALUE).toInt());
-
-    list = configXML.elementsByTagName(XML_NAME_STYLE);
-    QDomElement styleElement = list.at(0).toElement();
-    if (!styleElement.isNull())
-        styleName_ = styleElement.attribute(XML_NAME_VALUE);
-
-    list = configXML.elementsByTagName(XML_NAME_IMPORTPATH);
-    QDomElement importPathElement = list.at(0).toElement();
-    if (!importPathElement.isNull())
-        importFilePath_ = importPathElement.attribute(XML_NAME_VALUE);
+    parseConfigXml(configXML);
 
     LOG(LogTypes::CONFIG, configDump());
 
@@ -169,6 +125,54 @@ QString Configuration::configDump() const
     dump.append("Style: " + styleName_);
 
     return dump;
+}
+
+bool Configuration::loadConfigXml(QDomDocument& configXml) const
+{
+    const QString filename(QApplication::applicationDirPath() + "/" +
+                           Constants::getConfigurationFileName());
+
+    const auto [success, content] = FileUtilities::loadFile(filename);
+    if (!success)
+    {
+        LOG(LogTypes::CONFIG, "Config file " + filename +
+                                  " can not be opened. Default config used.");
+
+        return false;
+    }
+
+    LOG(LogTypes::CONFIG, "Found config file " + filename + ".");
+
+    if (!configXml.setContent(content))
+    {
+        LOG(LogTypes::CONFIG,
+            "Config file " + filename +
+                " is damaged and will be deleted. Default config used.");
+        return false;
+    }
+
+    LOG(LogTypes::CONFIG, "Loaded config file:\n" + configXml.toString());
+
+    return true;
+}
+
+void Configuration::parseConfigXml(QDomDocument& configXml)
+{
+    QDomNodeList list{configXml.elementsByTagName(XML_NAME_UPDATE)};
+    QDomElement updateElement{list.at(0).toElement()};
+    if (!updateElement.isNull())
+        updatePolicy_ = static_cast<UpdatePolicy>(
+            updateElement.attribute(XML_NAME_VALUE).toInt());
+
+    list = configXml.elementsByTagName(XML_NAME_STYLE);
+    QDomElement styleElement{list.at(0).toElement()};
+    if (!styleElement.isNull())
+        styleName_ = styleElement.attribute(XML_NAME_VALUE);
+
+    list = configXml.elementsByTagName(XML_NAME_IMPORTPATH);
+    QDomElement importPathElement{list.at(0).toElement()};
+    if (!importPathElement.isNull())
+        importFilePath_ = importPathElement.attribute(XML_NAME_VALUE);
 }
 
 void Configuration::setUpdatesCheckingOption(bool alwaysCheck)
