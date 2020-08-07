@@ -5,6 +5,9 @@
 
 #include <Shared/LogType.h>
 
+/**
+ * @brief Automatic time logger for mesauring time of execution.
+ */
 class TimeLogger
 {
 public:
