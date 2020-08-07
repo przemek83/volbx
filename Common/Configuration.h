@@ -16,8 +16,8 @@ public:
     Configuration(Configuration&& other) = delete;
 
     /**
-     * Used to access configuration singleton.
-     * @return singleton instance.
+     * @brief Used to access configuration singleton.
+     * @return Singleton instance.
      */
     static Configuration& getInstance();
 
@@ -54,6 +54,12 @@ private:
     Configuration();
     ~Configuration() = default;
 
+    /**
+     * Get viewable for of configuration.
+     * @return configuration in readable text form.
+     */
+    QString configDump() const;
+
     /// Flag indicating that configuration existed and was valid.
     bool configValid_{false};
 
@@ -75,12 +81,6 @@ private:
     const QString XML_NAME_VALUE{QStringLiteral("VALUE")};
     const QString XML_NAME_STYLE{QStringLiteral("STYLE")};
     const QString XML_NAME_IMPORTPATH{QStringLiteral("IMPORTPATH")};
-
-    /**
-     * Get viewable for of configuration.
-     * @return configuration in readable text form.
-     */
-    QString configDump() const;
 };
 
 #endif  // CONFIGURATION_H

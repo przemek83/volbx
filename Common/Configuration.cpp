@@ -34,9 +34,7 @@ bool Configuration::load()
 
     // Default style.
     if (style_.isEmpty())
-    {
         style_ = QStringLiteral("Fusion");
-    }
 
     QString filename(QApplication::applicationDirPath() + "/" +
                      Constants::getConfigurationFileName());
@@ -76,24 +74,18 @@ bool Configuration::load()
     QDomNodeList list = configXML.elementsByTagName(XML_NAME_UPDATE);
     QDomElement updateElement = list.at(0).toElement();
     if (!updateElement.isNull())
-    {
         updateOption_ = static_cast<UpdateOption>(
             updateElement.attribute(XML_NAME_VALUE).toInt());
-    }
 
     list = configXML.elementsByTagName(XML_NAME_STYLE);
     QDomElement styleElement = list.at(0).toElement();
     if (!styleElement.isNull())
-    {
         style_ = styleElement.attribute(XML_NAME_VALUE);
-    }
 
     list = configXML.elementsByTagName(XML_NAME_IMPORTPATH);
     QDomElement importPathElement = list.at(0).toElement();
     if (!importPathElement.isNull())
-    {
         importFilePath_ = importPathElement.attribute(XML_NAME_VALUE);
-    }
 
     LOG(LogTypes::CONFIG, configDump());
 
@@ -138,7 +130,7 @@ bool Configuration::save()
         return false;
     }
 
-    if (-1 != file.write(xml.toStdString().c_str()))
+    if (file.write(xml.toStdString().c_str()) != -1)
     {
         LOG(LogTypes::CONFIG, "Config saved.");
         file.close();
@@ -182,14 +174,7 @@ QString Configuration::configDump() const
 
 void Configuration::setUpdatesCheckingOption(bool alwaysCheck)
 {
-    if (alwaysCheck)
-    {
-        updateOption_ = UPDATES_ALWAYS_CHECK;
-    }
-    else
-    {
-        updateOption_ = UPDATES_NEVER_CHECK;
-    }
+    updateOption_ = (alwaysCheck ? UPDATES_ALWAYS_CHECK : UPDATES_NEVER_CHECK);
 }
 
 QString Configuration::getStyle() const { return style_; }
@@ -201,10 +186,7 @@ bool Configuration::configWasValid() const { return configValid_; }
 QString Configuration::getImportFilePath() const
 {
     if (!importFilePath_.isEmpty() && QFile::exists(importFilePath_))
-    {
         return importFilePath_;
-    }
-
     return QDir::homePath();
 }
 
