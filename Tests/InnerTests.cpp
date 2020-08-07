@@ -12,6 +12,7 @@
 
 #include "Common/Constants.h"
 #include "Common/ExportUtilities.h"
+#include "Common/FileUtilities.h"
 #include "Datasets/DatasetInner.h"
 #include "ModelsAndViews/FilteringProxyModel.h"
 #include "ModelsAndViews/TableModel.h"
@@ -102,7 +103,8 @@ void InnerTests::checkDatasetDefinition(const QString& fileName,
     QString datasetFilePath(DatasetUtilities::getDatasetsDir() + fileName);
     const QString dumpFileName{datasetFilePath +
                                Common::getDefinitionDumpSuffix()};
-    QByteArray dumpFromFile{Common::loadFile(dumpFileName).toUtf8()};
+    QByteArray dumpFromFile{
+        FileUtilities::loadFile(dumpFileName).second.toUtf8()};
     QByteArray dumpFromDataset{dataset->definitionToXml(dataset->rowCount())};
     QVERIFY(Common::xmlsAreEqual(dumpFromFile, dumpFromDataset));
 }
@@ -113,8 +115,9 @@ void InnerTests::checkDatasetData(const QString& fileName,
     QString actualData{Common::getExportedTsv(view)};
 
     QString datasetFilePath(DatasetUtilities::getDatasetsDir() + fileName);
-    QString compareData =
-        Common::loadFile(datasetFilePath + Common::getDataTsvDumpSuffix());
+    QString compareData = FileUtilities::loadFile(
+                              datasetFilePath + Common::getDataTsvDumpSuffix())
+                              .second;
 
     QCOMPARE(actualData.split('\n'), compareData.split('\n'));
 }

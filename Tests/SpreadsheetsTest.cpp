@@ -11,6 +11,7 @@
 #include "Common/Configuration.h"
 #include "Common/Constants.h"
 #include "Common/ExportUtilities.h"
+#include "Common/FileUtilities.h"
 #include "Datasets/Dataset.h"
 #include "Datasets/DatasetOds.h"
 #include "Datasets/DatasetXlsx.h"
@@ -327,7 +328,7 @@ void SpreadsheetsTest::testBasicInfo(Dataset& dataset, int rows, int columns,
 
     const QString fileName{dataset.getName() +
                            Common::getDefinitionDumpSuffix()};
-    QByteArray dumpFromFile{Common::loadFile(fileName).toUtf8()};
+    QByteArray dumpFromFile{FileUtilities::loadFile(fileName).second.toUtf8()};
     QByteArray dumpFromDataset{dataset.definitionToXml(rows)};
     QVERIFY(Common::xmlsAreEqual(dumpFromFile, dumpFromDataset));
 
@@ -428,7 +429,8 @@ void SpreadsheetsTest::compareDataWithDumps(const QString& category,
             QVERIFY(true == dataset->initialize());
             const QString dumpFileName{fileName +
                                        Common::getDefinitionDumpSuffix()};
-            QByteArray dumpFromFile{Common::loadFile(dumpFileName).toUtf8()};
+            QByteArray dumpFromFile{
+                FileUtilities::loadFile(dumpFileName).second.toUtf8()};
             QByteArray dumpFromDataset{
                 dataset->definitionToXml(dataset->rowCount())};
             QVERIFY(Common::xmlsAreEqual(dumpFromFile, dumpFromDataset));
@@ -453,11 +455,14 @@ void SpreadsheetsTest::compareAllDefinitionDumps()
         if (fileInfo.isFile() &&
             (fileInfo.suffix() == "xlsx" || fileInfo.suffix() == "ods"))
         {
-            QCOMPARE(
-                Common::loadFile(fileInfo.path() + "/" + fileInfo.baseName() +
-                                 ".xlsx" + Common::getDefinitionDumpSuffix()),
-                Common::loadFile(fileInfo.path() + "/" + fileInfo.baseName() +
-                                 ".ods" + Common::getDefinitionDumpSuffix()));
+            QCOMPARE(FileUtilities::loadFile(fileInfo.path() + "/" +
+                                             fileInfo.baseName() + ".xlsx" +
+                                             Common::getDefinitionDumpSuffix())
+                         .second,
+                     FileUtilities::loadFile(fileInfo.path() + "/" +
+                                             fileInfo.baseName() + ".ods" +
+                                             Common::getDefinitionDumpSuffix())
+                         .second);
         }
     }
 }
@@ -472,11 +477,14 @@ void SpreadsheetsTest::compareAllTsvDumps()
         if (fileInfo.isFile() &&
             (fileInfo.suffix() == "xlsx" || fileInfo.suffix() == "ods"))
         {
-            QCOMPARE(
-                Common::loadFile(fileInfo.path() + "/" + fileInfo.baseName() +
-                                 ".xlsx" + Common::getDataTsvDumpSuffix()),
-                Common::loadFile(fileInfo.path() + "/" + fileInfo.baseName() +
-                                 ".ods" + Common::getDataTsvDumpSuffix()));
+            QCOMPARE(FileUtilities::loadFile(fileInfo.path() + "/" +
+                                             fileInfo.baseName() + ".xlsx" +
+                                             Common::getDataTsvDumpSuffix())
+                         .second,
+                     FileUtilities::loadFile(fileInfo.path() + "/" +
+                                             fileInfo.baseName() + ".ods" +
+                                             Common::getDataTsvDumpSuffix())
+                         .second);
         }
     }
 }
@@ -511,7 +519,8 @@ void SpreadsheetsTest::compareExportDataWithDump(
 
     QString actualData{Common::getExportedTsv(view)};
     QString expectedData{
-        Common::loadFile(datasetName + Common::getDataTsvDumpSuffix())};
+        FileUtilities::loadFile(datasetName + Common::getDataTsvDumpSuffix())
+            .second};
     QCOMPARE(actualData.split('\n'), expectedData.split('\n'));
 }
 

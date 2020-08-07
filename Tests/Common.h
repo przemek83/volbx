@@ -10,8 +10,6 @@ class QAbstractItemView;
  */
 namespace Common
 {
-QString loadFile(QString name);
-
 void saveFile(QString fileName, const QString& data);
 
 QString getDefinitionDumpSuffix();

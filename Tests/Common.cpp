@@ -8,18 +8,6 @@
 
 namespace Common
 {
-QString loadFile(QString name)
-{
-    QFile file(name);
-
-    if (!file.open(QIODevice::ReadOnly))
-        return "";
-
-    QTextStream stream(&file);
-    stream.setCodec("UTF-8");
-    return stream.readAll();
-}
-
 void saveFile(QString fileName, const QString& data)
 {
     QFile file(fileName);
