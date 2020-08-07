@@ -48,7 +48,7 @@ std::tuple<bool, int, int> DataView::getSpecialColumns(
 {
     int pricePerMeterColumn;
     if (auto [ok, columnId] = parentModel->getSpecialColumnIfExists(
-            SpecialColumn::PRICE_PER_UNIT);
+            ColumnTag::VALUE);
         ok)
         pricePerMeterColumn = columnId;
     else
@@ -56,7 +56,7 @@ std::tuple<bool, int, int> DataView::getSpecialColumns(
 
     int transactionDateColumn;
     if (auto [ok, columnId] = parentModel->getSpecialColumnIfExists(
-            SpecialColumn::TRANSACTION_DATE);
+            ColumnTag::DATE);
         ok)
         transactionDateColumn = columnId;
     else

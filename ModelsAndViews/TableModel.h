@@ -86,7 +86,7 @@ public:
      * @return true if found (column number in int passed as ref.).
      */
     std::tuple<bool, int> getSpecialColumnIfExists(
-        SpecialColumn columnTag) const;
+        ColumnTag columnTag) const;
 
     /**
      * @brief get dataset used in model.

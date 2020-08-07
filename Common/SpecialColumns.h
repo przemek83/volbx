@@ -1,15 +1,10 @@
-#ifndef SPECIALCOLUMNS_H
-#define SPECIALCOLUMNS_H
+#pragma once
 
 /**
  * @brief Enum used to tag special columns in plots.
  */
-enum class SpecialColumn : unsigned char
+enum class ColumnTag : unsigned char
 {
-    TRANSACTION_DATE = 0,  // Date of event.
-    NUMBER_OF_UNITS,       // Number of units.
-    PRICE,                 // Price
-    PRICE_PER_UNIT         // Price per unit.
+    DATE = 0,  // Date of event.
+    VALUE      // Value (price, price per unit, number of units etc.).
 };
-
-#endif  // SPECIALCOLUMNS_H

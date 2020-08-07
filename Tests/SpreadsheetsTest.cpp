@@ -141,8 +141,8 @@ void SpreadsheetsTest::testSpreadsheetFile01(DatasetSpreadsheet* dataset,
     dataset->loadData();
 
     // Special column after rebuild done in dataset init.
-    dataset->setSpecialColumn(SpecialColumn::TRANSACTION_DATE, 2);
-    dataset->setSpecialColumn(SpecialColumn::PRICE_PER_UNIT, 5);
+    dataset->setSpecialColumn(ColumnTag::DATE, 2);
+    dataset->setSpecialColumn(ColumnTag::VALUE, 5);
 
     testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
                             compareDateValues, compareList, false);
@@ -181,8 +181,8 @@ void SpreadsheetsTest::testSpreadsheetFile01SomeColumns(
                 << "orange";
 
     dataset->loadData();
-    dataset->setSpecialColumn(SpecialColumn::TRANSACTION_DATE, 0);
-    dataset->setSpecialColumn(SpecialColumn::PRICE_PER_UNIT, 2);
+    dataset->setSpecialColumn(ColumnTag::DATE, 0);
+    dataset->setSpecialColumn(ColumnTag::VALUE, 2);
 
     testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
                             compareDateValues, compareList, false);
@@ -237,8 +237,8 @@ void SpreadsheetsTest::testSpreadsheetFile03(DatasetSpreadsheet* dataset,
                 << "c";
 
     dataset->loadData();
-    dataset->setSpecialColumn(SpecialColumn::TRANSACTION_DATE, 3);
-    dataset->setSpecialColumn(SpecialColumn::PRICE_PER_UNIT, 2);
+    dataset->setSpecialColumn(ColumnTag::DATE, 3);
+    dataset->setSpecialColumn(ColumnTag::VALUE, 2);
 
     testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
                             compareDateValues, compareList, true);
@@ -301,8 +301,8 @@ void SpreadsheetsTest::testSpreadsheetFile04(DatasetSpreadsheet* dataset,
     QStringList compareList;
 
     dataset->loadData();
-    dataset->setSpecialColumn(SpecialColumn::TRANSACTION_DATE, 1);
-    dataset->setSpecialColumn(SpecialColumn::PRICE_PER_UNIT, 2);
+    dataset->setSpecialColumn(ColumnTag::DATE, 1);
+    dataset->setSpecialColumn(ColumnTag::VALUE, 2);
 
     testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
                             compareDateValues, compareList, false);
@@ -346,10 +346,10 @@ void SpreadsheetsTest::testColumnInfo(
 
     // No special columns yet.
     auto [ok, column] =
-        dataset.getSpecialColumn(SpecialColumn::TRANSACTION_DATE);
+        dataset.getSpecialColumn(ColumnTag::DATE);
     QVERIFY(!ok);
     std::tie(ok, column) =
-        dataset.getSpecialColumn(SpecialColumn::PRICE_PER_UNIT);
+        dataset.getSpecialColumn(ColumnTag::VALUE);
     QVERIFY(!ok);
 
     QPair<int, QString> pairNames;
@@ -397,10 +397,10 @@ void SpreadsheetsTest::testDatasetConstruction(
     QCOMPARE(list, compareList);
 
     auto [ok, column] =
-        dataset.getSpecialColumn(SpecialColumn::TRANSACTION_DATE);
+        dataset.getSpecialColumn(ColumnTag::DATE);
     QCOMPARE(column, columnsToTest[4]);
     std::tie(ok, column) =
-        dataset.getSpecialColumn(SpecialColumn::PRICE_PER_UNIT);
+        dataset.getSpecialColumn(ColumnTag::VALUE);
     QCOMPARE(column, columnsToTest[5]);
 }
 

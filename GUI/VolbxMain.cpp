@@ -430,7 +430,7 @@ void VolbxMain::addMainTabForDataset(std::unique_ptr<Dataset> dataset)
 {
     QString nameForTabBar{dataset->getName()};
     auto [exist, column] =
-        dataset->getSpecialColumn(SpecialColumn::PRICE_PER_UNIT);
+        dataset->getSpecialColumn(ColumnTag::VALUE);
     if (exist)
         nameForTabBar.append(" (" + dataset->getHeaderName(column) + ")");
 

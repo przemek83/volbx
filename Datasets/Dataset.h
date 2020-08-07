@@ -96,7 +96,7 @@ public:
      * @return Flag indicating there is special column and column index.
      */
     std::tuple<bool, unsigned int> getSpecialColumn(
-        SpecialColumn columnTag) const;
+        ColumnTag columnTag) const;
 
     /**
      * @brief Get header name for given column.
@@ -153,7 +153,7 @@ public:
      * @param columnTag Special column tag.
      * @param column Column index.
      */
-    void setSpecialColumn(SpecialColumn columnTag, unsigned int column);
+    void setSpecialColumn(ColumnTag columnTag, unsigned int column);
 
     /**
      * @brief Get last error.
@@ -201,7 +201,7 @@ protected:
 private:
     void rebuildDefinitonUsingActiveColumnsOnly();
 
-    bool isSpecialColumnTagged(SpecialColumn column) const;
+    bool isSpecialColumnTagged(ColumnTag column) const;
 
     QDomElement columnsToXml(QDomDocument& xmlDocument) const;
 
@@ -218,7 +218,7 @@ private:
     QVector<QVector<QVariant>> data_;
 
     /// Stores information about columns which are tagged as "special".
-    QMap<SpecialColumn, unsigned int> specialColumns_;
+    QMap<ColumnTag, unsigned int> specialColumns_;
 
 signals:
     /**

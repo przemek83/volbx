@@ -105,7 +105,7 @@ QStringList Dataset::getStringList(unsigned int column) const
 }
 
 std::tuple<bool, unsigned int> Dataset::getSpecialColumn(
-    SpecialColumn columnTag) const
+    ColumnTag columnTag) const
 {
     if (isSpecialColumnTagged(columnTag))
         return {true, specialColumns_[columnTag]};
@@ -151,7 +151,7 @@ QDomElement Dataset::columnsToXml(QDomDocument& xmlDocument) const
         node.setAttribute(XML_COLUMN_NAME, headerColumnNames_.at(column));
         node.setAttribute(XML_COLUMN_FORMAT,
                           static_cast<int>(columnTypes_.at(column)));
-        QMapIterator<SpecialColumn, unsigned int> it(specialColumns_);
+        QMapIterator<ColumnTag, unsigned int> it(specialColumns_);
         if (it.findNext(column))
             node.setAttribute(XML_COLUMN_SPECIAL_TAG,
                               QString::number(static_cast<int>(it.key())));
@@ -188,7 +188,7 @@ void Dataset::setActiveColumns(const QVector<bool>& activeColumns)
     activeColumns_ = activeColumns;
 }
 
-void Dataset::setSpecialColumn(SpecialColumn columnTag, unsigned int column)
+void Dataset::setSpecialColumn(ColumnTag columnTag, unsigned int column)
 {
     specialColumns_[columnTag] = column;
 }
@@ -199,10 +199,10 @@ void Dataset::rebuildDefinitonUsingActiveColumnsOnly()
 {
     QVector<ColumnType> rebuiltColumnsFormat;
     QStringList rebuiltHeaderColumnNames;
-    QMap<SpecialColumn, unsigned int> rebuiltSpecialColumns;
+    QMap<ColumnTag, unsigned int> rebuiltSpecialColumns;
     int activeColumnNumber{0};
-    const SpecialColumn dateTag{SpecialColumn::TRANSACTION_DATE};
-    const SpecialColumn priceTag{SpecialColumn::PRICE_PER_UNIT};
+    const ColumnTag dateTag{ColumnTag::DATE};
+    const ColumnTag priceTag{ColumnTag::VALUE};
     const bool dateColumnTagged{isSpecialColumnTagged(dateTag)};
     const bool priceColumnTagged{isSpecialColumnTagged(priceTag)};
 
@@ -250,7 +250,7 @@ void Dataset::updateSampleDataStrings(QVector<QVector<QVariant>>& data) const
     }
 }
 
-bool Dataset::isSpecialColumnTagged(SpecialColumn column) const
+bool Dataset::isSpecialColumnTagged(ColumnTag column) const
 {
     return specialColumns_.contains(column);
 }

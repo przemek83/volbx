@@ -53,10 +53,10 @@ void DatasetDefinitionVisualization::setDataset(
     dataset_ = std::move(dataset);
 
     auto [dateOfTransactionPointed, specialColumnTransaction] =
-        dataset_->getSpecialColumn(SpecialColumn::TRANSACTION_DATE);
+        dataset_->getSpecialColumn(ColumnTag::DATE);
 
     auto [pricePerUnitPointed, specialColumnPrice] =
-        dataset_->getSpecialColumn(SpecialColumn::PRICE_PER_UNIT);
+        dataset_->getSpecialColumn(ColumnTag::VALUE);
 
     ui->columnsList->sortByColumn(Constants::NOT_SET_COLUMN);
     ui->columnsList->setSortingEnabled(false);
@@ -207,14 +207,14 @@ std::unique_ptr<Dataset> DatasetDefinitionVisualization::retrieveDataset()
     {
         int column =
             ui->dateCombo->itemData(ui->dateCombo->currentIndex()).toInt();
-        dataset_->setSpecialColumn(SpecialColumn::TRANSACTION_DATE, column);
+        dataset_->setSpecialColumn(ColumnTag::DATE, column);
     }
 
     if (ui->pricePerUnitCombo->currentIndex() != -1)
     {
         int index = ui->pricePerUnitCombo->currentIndex();
         int column = ui->pricePerUnitCombo->itemData(index).toInt();
-        dataset_->setSpecialColumn(SpecialColumn::PRICE_PER_UNIT, column);
+        dataset_->setSpecialColumn(ColumnTag::VALUE, column);
     }
 
     return std::move(dataset_);

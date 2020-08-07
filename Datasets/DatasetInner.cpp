@@ -78,7 +78,7 @@ void DatasetInner::retrieveColumnsFromXml(const QDomElement& root)
 
         const QString special{column.attribute(XML_COLUMN_SPECIAL_TAG)};
         if (!special.isEmpty())
-            setSpecialColumn(static_cast<SpecialColumn>(special.toInt()), i);
+            setSpecialColumn(static_cast<ColumnTag>(special.toInt()), i);
     }
 }
 
