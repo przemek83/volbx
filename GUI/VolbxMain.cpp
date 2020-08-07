@@ -141,7 +141,7 @@ void VolbxMain::createOptionsMenu()
 
     ui->menuOptions->addSection(tr("Styles"));
 
-    QString activeStyl = Configuration::getInstance().getStyle();
+    QString activeStyl = Configuration::getInstance().getStyleName();
 
     auto actionsGroup = new QActionGroup(this);
 
@@ -202,7 +202,7 @@ void VolbxMain::checkForUpdates()
 {
     bool checkForUpdates = false;
 
-    if (Configuration::getInstance().needToShowUpdatePickerDialog())
+    if (!Configuration::getInstance().isUpdatePolicyPicked())
     {
         CheckUpdatesDialog dialog(this);
 
@@ -524,7 +524,7 @@ void VolbxMain::qtStylePicked()
     {
         QString style = action->text();
         Application::setQtStyle(style);
-        Configuration::getInstance().setStyle(style);
+        Configuration::getInstance().setStyleName(style);
     }
 }
 
@@ -535,6 +535,6 @@ void VolbxMain::customStylePicked()
     {
         QString styleName = action->text();
         Application::setCssStyle(styleName);
-        Configuration::getInstance().setStyle(styleName);
+        Configuration::getInstance().setStyleName(styleName);
     }
 }

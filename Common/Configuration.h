@@ -21,27 +21,27 @@ public:
      */
     static Configuration& getInstance();
 
-    bool needToShowUpdatePickerDialog() const;
+    bool isUpdatePolicyPicked() const;
 
     bool needToCheckForUpdates() const;
 
     /**
-     * Save configuration into file.
+     * @brief Save configuration into file.
      * @return true if success.
      */
     bool save();
 
     void setUpdatesCheckingOption(bool alwaysCheck);
 
-    QString getStyle() const;
+    QString getStyleName() const;
 
-    void setStyle(const QString& style);
+    void setStyleName(const QString& style);
 
     /// For unit tests.
-    bool configWasValid() const;
+    bool configValid() const;
 
     /**
-     * Load/reload configuration. Public for unit tests.
+     * @brief Load/reload configuration. Public for unit tests.
      * @return true if loading finished with success.
      */
     bool load();
@@ -55,7 +55,7 @@ private:
     ~Configuration() = default;
 
     /**
-     * Get viewable for of configuration.
+     * @brief Get viewable for of configuration.
      * @return configuration in readable text form.
      */
     QString configDump() const;
@@ -63,18 +63,18 @@ private:
     /// Flag indicating that configuration existed and was valid.
     bool configValid_{false};
 
-    enum UpdateOption
+    enum class UpdatePolicy : unsigned char
     {
-        UPDATES_CHOICE_NOT_PICKED,
-        UPDATES_ALWAYS_CHECK,
-        UPDATES_NEVER_CHECK
+        NOT_DECIDED,
+        ALWAYS_CHECK,
+        NEVER_CHECK
     };
 
-    QString style_;
+    QString styleName_;
 
     QString importFilePath_;
 
-    UpdateOption updateOption_{UPDATES_CHOICE_NOT_PICKED};
+    UpdatePolicy updatePolicy_{UpdatePolicy::NOT_DECIDED};
 
     const QString XML_NAME_CONFIG{QStringLiteral("CONFIG")};
     const QString XML_NAME_UPDATE{QStringLiteral("UPDATE")};

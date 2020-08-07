@@ -18,14 +18,14 @@ Configuration& Configuration::getInstance()
     return instance;
 }
 
-bool Configuration::needToShowUpdatePickerDialog() const
+bool Configuration::isUpdatePolicyPicked() const
 {
-    return (configValid_ && UPDATES_CHOICE_NOT_PICKED == updateOption_);
+    return (configValid_ && updatePolicy_ != UpdatePolicy::NOT_DECIDED);
 }
 
 bool Configuration::needToCheckForUpdates() const
 {
-    return (UPDATES_ALWAYS_CHECK == updateOption_);
+    return (updatePolicy_ == UpdatePolicy::ALWAYS_CHECK);
 }
 
 bool Configuration::load()
@@ -33,8 +33,8 @@ bool Configuration::load()
     configValid_ = false;
 
     // Default style.
-    if (style_.isEmpty())
-        style_ = QStringLiteral("Fusion");
+    if (styleName_.isEmpty())
+        styleName_ = QStringLiteral("Fusion");
 
     QString filename(QApplication::applicationDirPath() + "/" +
                      Constants::getConfigurationFileName());
@@ -74,13 +74,13 @@ bool Configuration::load()
     QDomNodeList list = configXML.elementsByTagName(XML_NAME_UPDATE);
     QDomElement updateElement = list.at(0).toElement();
     if (!updateElement.isNull())
-        updateOption_ = static_cast<UpdateOption>(
+        updatePolicy_ = static_cast<UpdatePolicy>(
             updateElement.attribute(XML_NAME_VALUE).toInt());
 
     list = configXML.elementsByTagName(XML_NAME_STYLE);
     QDomElement styleElement = list.at(0).toElement();
     if (!styleElement.isNull())
-        style_ = styleElement.attribute(XML_NAME_VALUE);
+        styleName_ = styleElement.attribute(XML_NAME_VALUE);
 
     list = configXML.elementsByTagName(XML_NAME_IMPORTPATH);
     QDomElement importPathElement = list.at(0).toElement();
@@ -102,11 +102,11 @@ bool Configuration::save()
 
     QDomElement updates = doc.createElement(XML_NAME_UPDATE);
     updates.setAttribute(XML_NAME_VALUE,
-                         QString::number(static_cast<int>(updateOption_)));
+                         QString::number(static_cast<int>(updatePolicy_)));
     root.appendChild(updates);
 
     QDomElement style = doc.createElement(XML_NAME_STYLE);
-    style.setAttribute(XML_NAME_VALUE, style_);
+    style.setAttribute(XML_NAME_VALUE, styleName_);
     root.appendChild(style);
 
     QDomElement importPath = doc.createElement(XML_NAME_IMPORTPATH);
@@ -145,12 +145,11 @@ bool Configuration::save()
 QString Configuration::configDump() const
 {
     QString dump;
-
     dump.append("Configuration(" + Constants::getConfigurationFileName() +
                 "):\n");
 
     dump.append(QLatin1String("Updates choice picked = "));
-    dump.append((updateOption_ == UPDATES_CHOICE_NOT_PICKED
+    dump.append((updatePolicy_ == UpdatePolicy::NOT_DECIDED
                      ? QLatin1String("No")
                      : QLatin1String("Yes")));
 
@@ -158,30 +157,31 @@ QString Configuration::configDump() const
 
     dump.append("Import file path = " + importFilePath_ + "\n");
 
-    if (updateOption_ != UPDATES_CHOICE_NOT_PICKED)
+    if (updatePolicy_ != UpdatePolicy::NOT_DECIDED)
     {
         dump.append(QLatin1String("AutoUpdate active = "));
-        dump.append((updateOption_ == UPDATES_ALWAYS_CHECK
+        dump.append((updatePolicy_ == UpdatePolicy::ALWAYS_CHECK
                          ? QLatin1String("Yes")
                          : QLatin1String("No")));
         dump.append(QLatin1String("\n"));
     }
 
-    dump.append("Style: " + style_);
+    dump.append("Style: " + styleName_);
 
     return dump;
 }
 
 void Configuration::setUpdatesCheckingOption(bool alwaysCheck)
 {
-    updateOption_ = (alwaysCheck ? UPDATES_ALWAYS_CHECK : UPDATES_NEVER_CHECK);
+    updatePolicy_ =
+        (alwaysCheck ? UpdatePolicy::ALWAYS_CHECK : UpdatePolicy::NEVER_CHECK);
 }
 
-QString Configuration::getStyle() const { return style_; }
+QString Configuration::getStyleName() const { return styleName_; }
 
-void Configuration::setStyle(const QString& style) { style_ = style; }
+void Configuration::setStyleName(const QString& style) { styleName_ = style; }
 
-bool Configuration::configWasValid() const { return configValid_; }
+bool Configuration::configValid() const { return configValid_; }
 
 QString Configuration::getImportFilePath() const
 {

@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
 
     Application::setAdditionalApplicatioInfo(VER_PRODUCTNAME_STR);
 
-    Application::initStyle(Configuration::getInstance().getStyle());
+    Application::initStyle(Configuration::getInstance().getStyleName());
 
     LOG(LogTypes::APP, "Application start");
 
