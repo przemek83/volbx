@@ -213,8 +213,7 @@ void VolbxMain::checkForUpdates()
 
         // Remember if choice was checked.
         if (dialog.saveFlagSet())
-            Configuration::getInstance().setUpdatesCheckingOption(
-                checkForUpdates);
+            Configuration::getInstance().setUpdatePolicy(checkForUpdates);
     }
     else
     {
@@ -514,7 +513,7 @@ void VolbxMain::actionCheckForNewVersionTriggered()
 
 void VolbxMain::actionUpdateAutoToggled(bool alwaysCheck)
 {
-    Configuration::getInstance().setUpdatesCheckingOption(alwaysCheck);
+    Configuration::getInstance().setUpdatePolicy(alwaysCheck);
 }
 
 void VolbxMain::qtStylePicked()

@@ -23,17 +23,29 @@ public:
      */
     static Configuration& getInstance();
 
+    /**
+     * @brief Check if update policy was picked in past.
+     * @return True is picked, false if not.
+     */
     bool isUpdatePolicyPicked() const;
 
+    /**
+     * @brief Check if application should check for updates.
+     * @return True if should check, false otherwise.
+     */
     bool needToCheckForUpdates() const;
 
     /**
      * @brief Save configuration into file.
-     * @return true if success.
+     * @return True if success, false otherwise.
      */
     bool save();
 
-    void setUpdatesCheckingOption(bool alwaysCheck);
+    /**
+     * @brief Set update policy.
+     * @param alwaysCheck True is should always check.
+     */
+    void setUpdatePolicy(bool alwaysCheck);
 
     QString getStyleName() const;
 
@@ -56,10 +68,6 @@ private:
     Configuration();
     ~Configuration() = default;
 
-    /**
-     * @brief Get viewable for of configuration.
-     * @return configuration in readable text form.
-     */
     QString configDump() const;
 
     bool loadConfigXml(QDomDocument& configXml) const;
@@ -70,7 +78,6 @@ private:
 
     bool saveConfigXml(const QString& configXml) const;
 
-    /// Flag indicating that configuration existed and was valid.
     bool configValid_{false};
 
     enum class UpdatePolicy : unsigned char

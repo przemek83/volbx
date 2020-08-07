@@ -183,7 +183,7 @@ bool Configuration::saveConfigXml(const QString& configXml) const
     return true;
 }
 
-void Configuration::setUpdatesCheckingOption(bool alwaysCheck)
+void Configuration::setUpdatePolicy(bool alwaysCheck)
 {
     updatePolicy_ =
         (alwaysCheck ? UpdatePolicy::ALWAYS_CHECK : UpdatePolicy::NEVER_CHECK);
