@@ -66,6 +66,10 @@ private:
 
     void parseConfigXml(QDomDocument& configXml);
 
+    QString generateConfigXml() const;
+
+    bool saveConfigXml(const QString& configXml) const;
+
     /// Flag indicating that configuration existed and was valid.
     bool configValid_{false};
 

@@ -52,50 +52,11 @@ bool Configuration::load()
 
 bool Configuration::save()
 {
-    QDomDocument doc(XML_NAME_CONFIG);
-    QDomElement root = doc.createElement(XML_NAME_CONFIG);
-    doc.appendChild(root);
+    QString configXml{generateConfigXml()};
 
-    QDomElement updates = doc.createElement(XML_NAME_UPDATE);
-    updates.setAttribute(XML_NAME_VALUE,
-                         QString::number(static_cast<int>(updatePolicy_)));
-    root.appendChild(updates);
+    LOG(LogTypes::CONFIG, "Config to save:\n" + configXml);
 
-    QDomElement style = doc.createElement(XML_NAME_STYLE);
-    style.setAttribute(XML_NAME_VALUE, styleName_);
-    root.appendChild(style);
-
-    QDomElement importPath = doc.createElement(XML_NAME_IMPORTPATH);
-    importPath.setAttribute(XML_NAME_VALUE, importFilePath_);
-    root.appendChild(importPath);
-
-    QString xml = doc.toString();
-
-    LOG(LogTypes::CONFIG, "Config to save:\n" + xml);
-
-    QString filename(QApplication::applicationDirPath() + "/" +
-                     Constants::getConfigurationFileName());
-    QFile::remove(filename);
-    QFile file(filename);
-
-    if (!file.open(QIODevice::WriteOnly))
-    {
-        LOG(LogTypes::CONFIG,
-            "Config file " + Constants::getConfigurationFileName() +
-                " can not be opened for writing. Config not saved.");
-        return false;
-    }
-
-    if (file.write(xml.toStdString().c_str()) != -1)
-    {
-        LOG(LogTypes::CONFIG, "Config saved.");
-        file.close();
-        return true;
-    }
-
-    LOG(LogTypes::CONFIG, "Error during config file save.");
-    file.close();
-    return false;
+    return saveConfigXml(configXml);
 }
 
 QString Configuration::configDump() const
@@ -173,6 +134,53 @@ void Configuration::parseConfigXml(QDomDocument& configXml)
     QDomElement importPathElement{list.at(0).toElement()};
     if (!importPathElement.isNull())
         importFilePath_ = importPathElement.attribute(XML_NAME_VALUE);
+}
+
+QString Configuration::generateConfigXml() const
+{
+    QDomDocument doc(XML_NAME_CONFIG);
+    QDomElement root = doc.createElement(XML_NAME_CONFIG);
+    doc.appendChild(root);
+
+    QDomElement updates = doc.createElement(XML_NAME_UPDATE);
+    updates.setAttribute(XML_NAME_VALUE,
+                         QString::number(static_cast<int>(updatePolicy_)));
+    root.appendChild(updates);
+
+    QDomElement style = doc.createElement(XML_NAME_STYLE);
+    style.setAttribute(XML_NAME_VALUE, styleName_);
+    root.appendChild(style);
+
+    QDomElement importPath = doc.createElement(XML_NAME_IMPORTPATH);
+    importPath.setAttribute(XML_NAME_VALUE, importFilePath_);
+    root.appendChild(importPath);
+
+    return doc.toString();
+}
+
+bool Configuration::saveConfigXml(const QString& configXml) const
+{
+    QString filename(QApplication::applicationDirPath() + "/" +
+                     Constants::getConfigurationFileName());
+    QFile::remove(filename);
+    QFile file(filename);
+
+    if (!file.open(QIODevice::WriteOnly))
+    {
+        LOG(LogTypes::CONFIG,
+            "Config file " + Constants::getConfigurationFileName() +
+                " can not be opened for writing. Config not saved.");
+        return false;
+    }
+
+    if (file.write(configXml.toStdString().c_str()) == -1)
+    {
+        LOG(LogTypes::CONFIG, "Error during config file save.");
+        return false;
+    }
+
+    LOG(LogTypes::CONFIG, "Config saved.");
+    return true;
 }
 
 void Configuration::setUpdatesCheckingOption(bool alwaysCheck)
