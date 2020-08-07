@@ -76,9 +76,9 @@ void DatasetInner::retrieveColumnsFromXml(const QDomElement& root)
         columnTypes_.push_back(static_cast<ColumnType>(
             column.attribute(XML_COLUMN_FORMAT).toInt()));
 
-        const QString special{column.attribute(XML_COLUMN_SPECIAL_TAG)};
-        if (!special.isEmpty())
-            setSpecialColumn(static_cast<ColumnTag>(special.toInt()), i);
+        const QString columnTag{column.attribute(XML_COLUMN_TAG)};
+        if (!columnTag.isEmpty())
+            setTaggedColumn(static_cast<ColumnTag>(columnTag.toInt()), i);
     }
 }
 

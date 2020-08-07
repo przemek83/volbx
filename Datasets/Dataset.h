@@ -9,7 +9,7 @@
 #include <QVariant>
 #include <QVector>
 
-#include <SpecialColumns.h>
+#include <ColumnTag.h>
 
 class DatasetDefinition;
 class QDomDocument;
@@ -91,12 +91,11 @@ public:
     QStringList getStringList(unsigned int column) const;
 
     /**
-     * @brief Get index of special column if available.
-     * @param columnTag Type of special column.
-     * @return Flag indicating there is special column and column index.
+     * @brief Get index of tagged column if available.
+     * @param columnTag Type of tagged column.
+     * @return Flag indicating there is tagged column and column index.
      */
-    std::tuple<bool, unsigned int> getSpecialColumn(
-        ColumnTag columnTag) const;
+    std::tuple<bool, unsigned int> getTaggedColumn(ColumnTag columnTag) const;
 
     /**
      * @brief Get header name for given column.
@@ -149,11 +148,11 @@ public:
     void setActiveColumns(const QVector<bool>& activeColumns);
 
     /**
-     * @brief Set special column in dataset.
-     * @param columnTag Special column tag.
+     * @brief Set tagged column in dataset.
+     * @param columnTag Column tag.
      * @param column Column index.
      */
-    void setSpecialColumn(ColumnTag columnTag, unsigned int column);
+    void setTaggedColumn(ColumnTag columnTag, unsigned int column);
 
     /**
      * @brief Get last error.
@@ -195,13 +194,13 @@ protected:
     const QString XML_COLUMN{QStringLiteral("COLUMN")};
     const QString XML_COLUMN_NAME{QStringLiteral("NAME")};
     const QString XML_COLUMN_FORMAT{QStringLiteral("FORMAT")};
-    const QString XML_COLUMN_SPECIAL_TAG{QStringLiteral("SPECIAL_TAG")};
+    const QString XML_COLUMN_TAG{QStringLiteral("SPECIAL_TAG")};
     const QString XML_ROW_COUNT{QStringLiteral("ROW_COUNT")};
 
 private:
     void rebuildDefinitonUsingActiveColumnsOnly();
 
-    bool isSpecialColumnTagged(ColumnTag column) const;
+    bool isColumnTagged(ColumnTag column) const;
 
     QDomElement columnsToXml(QDomDocument& xmlDocument) const;
 
@@ -217,8 +216,8 @@ private:
     /// Data of dataset. String columns got names in sharedStrings_.
     QVector<QVector<QVariant>> data_;
 
-    /// Stores information about columns which are tagged as "special".
-    QMap<ColumnTag, unsigned int> specialColumns_;
+    /// Stores information about columns which are tagged.
+    QMap<ColumnTag, unsigned int> taggedColumns_;
 
 signals:
     /**

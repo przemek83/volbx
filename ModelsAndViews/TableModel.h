@@ -81,12 +81,11 @@ public:
     ColumnType getColumnFormat(int column) const;
 
     /**
-     * @brief get special column if exist (data, units, price).
+     * @brief get tagged column if exist (date, value).
      * @param columnTag searched column tag.
      * @return true if found (column number in int passed as ref.).
      */
-    std::tuple<bool, int> getSpecialColumnIfExists(
-        ColumnTag columnTag) const;
+    std::tuple<bool, int> getTaggedColumnIfExists(ColumnTag columnTag) const;
 
     /**
      * @brief get dataset used in model.
@@ -94,7 +93,7 @@ public:
      */
     QByteArray definitionToXml(int rowCount) const;
 
-    bool areSpecialColumnsSet() const;
+    bool areTaggedColumnsSet() const;
 
     int getDefaultGroupingColumn() const;
 

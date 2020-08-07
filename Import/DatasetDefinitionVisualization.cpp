@@ -27,11 +27,11 @@ DatasetDefinitionVisualization::DatasetDefinitionVisualization(QWidget* parent)
             &DatasetDefinitionVisualization::currentColumnOnTreeChanged);
 
     connect(ui->dateCombo, qOverload<int>(&QComboBox::currentIndexChanged),
-            this, &DatasetDefinitionVisualization::specialColumnChanged);
+            this, &DatasetDefinitionVisualization::taggedColumnChanged);
 
     connect(ui->pricePerUnitCombo,
             qOverload<int>(&QComboBox::currentIndexChanged), this,
-            &DatasetDefinitionVisualization::specialColumnChanged);
+            &DatasetDefinitionVisualization::taggedColumnChanged);
 
     connect(ui->SelectAll, &QPushButton::clicked, this,
             &DatasetDefinitionVisualization::selectAllClicked);
@@ -52,11 +52,11 @@ void DatasetDefinitionVisualization::setDataset(
 
     dataset_ = std::move(dataset);
 
-    auto [dateOfTransactionPointed, specialColumnTransaction] =
-        dataset_->getSpecialColumn(ColumnTag::DATE);
+    auto [dateOfTransactionPointed, dateColumn] =
+        dataset_->getTaggedColumn(ColumnTag::DATE);
 
-    auto [pricePerUnitPointed, specialColumnPrice] =
-        dataset_->getSpecialColumn(ColumnTag::VALUE);
+    auto [pricePerUnitPointed, valueColumn] =
+        dataset_->getTaggedColumn(ColumnTag::VALUE);
 
     ui->columnsList->sortByColumn(Constants::NOT_SET_COLUMN);
     ui->columnsList->setSortingEnabled(false);
@@ -109,12 +109,12 @@ void DatasetDefinitionVisualization::setDataset(
     ui->columnsList->setSortingEnabled(true);
     ui->columnsList->sortByColumn(Constants::NOT_SET_COLUMN);
 
-    // Set proper special columns.
+    // Set proper tagged columns.
     if (dateOfTransactionPointed)
     {
         for (int i = 0; i < ui->dateCombo->count(); ++i)
         {
-            if (specialColumnTransaction == ui->dateCombo->itemData(i).toUInt())
+            if (dateColumn == ui->dateCombo->itemData(i).toUInt())
             {
                 ui->dateCombo->setCurrentIndex(i);
                 break;
@@ -126,8 +126,7 @@ void DatasetDefinitionVisualization::setDataset(
     {
         for (int i = 0; i < ui->pricePerUnitCombo->count(); ++i)
         {
-            if (specialColumnPrice ==
-                ui->pricePerUnitCombo->itemData(i).toUInt())
+            if (valueColumn == ui->pricePerUnitCombo->itemData(i).toUInt())
             {
                 ui->pricePerUnitCombo->setCurrentIndex(i);
                 break;
@@ -143,7 +142,7 @@ void DatasetDefinitionVisualization::setDataset(
     ui->pricePerUnitCombo->blockSignals(false);
 
     // Set on tree picked special columns in combos.
-    specialColumnChanged(0);
+    taggedColumnChanged(0);
 }
 
 void DatasetDefinitionVisualization::clear()
@@ -207,14 +206,14 @@ std::unique_ptr<Dataset> DatasetDefinitionVisualization::retrieveDataset()
     {
         int column =
             ui->dateCombo->itemData(ui->dateCombo->currentIndex()).toInt();
-        dataset_->setSpecialColumn(ColumnTag::DATE, column);
+        dataset_->setTaggedColumn(ColumnTag::DATE, column);
     }
 
     if (ui->pricePerUnitCombo->currentIndex() != -1)
     {
         int index = ui->pricePerUnitCombo->currentIndex();
         int column = ui->pricePerUnitCombo->itemData(index).toInt();
-        dataset_->setSpecialColumn(ColumnTag::VALUE, column);
+        dataset_->setTaggedColumn(ColumnTag::VALUE, column);
     }
 
     return std::move(dataset_);
@@ -282,7 +281,7 @@ void DatasetDefinitionVisualization::unselectAllClicked()
     }
 }
 
-void DatasetDefinitionVisualization::specialColumnChanged(int /*newIndex*/)
+void DatasetDefinitionVisualization::taggedColumnChanged(int /*newIndex*/)
 {
     int dateColumn = Constants::NOT_SET_COLUMN;
     if (ui->dateCombo->currentIndex() != -1)

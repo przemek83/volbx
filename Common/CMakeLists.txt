@@ -9,7 +9,7 @@ set(${PROJECT_NAME}_SOURCES
     ExportUtilities.h
     ExportImage.cpp
     ExportImage.h
-    SpecialColumns.h
+    ColumnTag.h
     DatasetUtilities.cpp
     DatasetUtilities.h
     TimeLogger.cpp

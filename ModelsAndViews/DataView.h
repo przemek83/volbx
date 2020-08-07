@@ -56,7 +56,7 @@ private:
 
     const TableModel* getParentModel() const;
 
-    std::tuple<bool, int, int> getSpecialColumns(
+    std::tuple<bool, int, int> getTaggedColumns(
         const TableModel* parentModel) const;
 
     void createTransactionData() const;

@@ -52,10 +52,10 @@ ColumnType TableModel::getColumnFormat(int column) const
     return dataset_->getColumnFormat(column);
 }
 
-std::tuple<bool, int> TableModel::getSpecialColumnIfExists(
+std::tuple<bool, int> TableModel::getTaggedColumnIfExists(
     ColumnTag columnTag) const
 {
-    return dataset_->getSpecialColumn(columnTag);
+    return dataset_->getTaggedColumn(columnTag);
 }
 
 QByteArray TableModel::definitionToXml(int rowCount) const
@@ -63,12 +63,12 @@ QByteArray TableModel::definitionToXml(int rowCount) const
     return dataset_->definitionToXml(rowCount);
 }
 
-bool TableModel::areSpecialColumnsSet() const
+bool TableModel::areTaggedColumnsSet() const
 {
     const auto [transDateColumnSet, transDateColumnId] =
-        getSpecialColumnIfExists(ColumnTag::DATE);
+        getTaggedColumnIfExists(ColumnTag::DATE);
     const auto [priceColumnSet, priceColumnId] =
-        getSpecialColumnIfExists(ColumnTag::VALUE);
+        getTaggedColumnIfExists(ColumnTag::VALUE);
 
     return transDateColumnSet && priceColumnSet;
 }
@@ -77,7 +77,7 @@ int TableModel::getDefaultGroupingColumn() const
 {
     int pricePerMeterColumn{Constants::NOT_SET_COLUMN};
     if (auto [ok, columnId] =
-            getSpecialColumnIfExists(ColumnTag::VALUE);
+            getTaggedColumnIfExists(ColumnTag::VALUE);
         ok)
         pricePerMeterColumn = columnId;
 

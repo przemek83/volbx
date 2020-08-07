@@ -302,7 +302,7 @@ void VolbxMain::manageActions(bool tabExists)
         if (nullptr != dataModel)
         {
             activateCharts =
-                (activateCharts && dataModel->areSpecialColumnsSet());
+                (activateCharts && dataModel->areTaggedColumnsSet());
         }
     }
 
@@ -429,8 +429,7 @@ void VolbxMain::actionImportDataTriggered()
 void VolbxMain::addMainTabForDataset(std::unique_ptr<Dataset> dataset)
 {
     QString nameForTabBar{dataset->getName()};
-    auto [exist, column] =
-        dataset->getSpecialColumn(ColumnTag::VALUE);
+    auto [exist, column] = dataset->getTaggedColumn(ColumnTag::VALUE);
     if (exist)
         nameForTabBar.append(" (" + dataset->getHeaderName(column) + ")");
 

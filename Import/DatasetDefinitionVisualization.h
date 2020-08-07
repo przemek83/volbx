@@ -59,7 +59,7 @@ private Q_SLOTS:
 
     void unselectAllClicked();
 
-    void specialColumnChanged(int newIndex);
+    void taggedColumnChanged(int newIndex);
 
 Q_SIGNALS:
     /**

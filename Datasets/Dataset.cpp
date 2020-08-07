@@ -104,11 +104,11 @@ QStringList Dataset::getStringList(unsigned int column) const
     return listToFill;
 }
 
-std::tuple<bool, unsigned int> Dataset::getSpecialColumn(
+std::tuple<bool, unsigned int> Dataset::getTaggedColumn(
     ColumnTag columnTag) const
 {
-    if (isSpecialColumnTagged(columnTag))
-        return {true, specialColumns_[columnTag]};
+    if (isColumnTagged(columnTag))
+        return {true, taggedColumns_[columnTag]};
     return {false, Constants::NOT_SET_COLUMN};
 }
 
@@ -151,9 +151,9 @@ QDomElement Dataset::columnsToXml(QDomDocument& xmlDocument) const
         node.setAttribute(XML_COLUMN_NAME, headerColumnNames_.at(column));
         node.setAttribute(XML_COLUMN_FORMAT,
                           static_cast<int>(columnTypes_.at(column)));
-        QMapIterator<ColumnTag, unsigned int> it(specialColumns_);
+        QMapIterator<ColumnTag, unsigned int> it(taggedColumns_);
         if (it.findNext(column))
-            node.setAttribute(XML_COLUMN_SPECIAL_TAG,
+            node.setAttribute(XML_COLUMN_TAG,
                               QString::number(static_cast<int>(it.key())));
         columns.appendChild(node);
     }
@@ -188,9 +188,9 @@ void Dataset::setActiveColumns(const QVector<bool>& activeColumns)
     activeColumns_ = activeColumns;
 }
 
-void Dataset::setSpecialColumn(ColumnTag columnTag, unsigned int column)
+void Dataset::setTaggedColumn(ColumnTag columnTag, unsigned int column)
 {
-    specialColumns_[columnTag] = column;
+    taggedColumns_[columnTag] = column;
 }
 
 QString Dataset::getLastError() const { return error_; }
@@ -199,12 +199,12 @@ void Dataset::rebuildDefinitonUsingActiveColumnsOnly()
 {
     QVector<ColumnType> rebuiltColumnsFormat;
     QStringList rebuiltHeaderColumnNames;
-    QMap<ColumnTag, unsigned int> rebuiltSpecialColumns;
+    QMap<ColumnTag, unsigned int> rebuiltTaggedColumns;
     int activeColumnNumber{0};
     const ColumnTag dateTag{ColumnTag::DATE};
     const ColumnTag priceTag{ColumnTag::VALUE};
-    const bool dateColumnTagged{isSpecialColumnTagged(dateTag)};
-    const bool priceColumnTagged{isSpecialColumnTagged(priceTag)};
+    const bool dateColumnTagged{isColumnTagged(dateTag)};
+    const bool priceColumnTagged{isColumnTagged(priceTag)};
 
     for (unsigned int i = 0;
          i < static_cast<unsigned int>(activeColumns_.count()); ++i)
@@ -214,16 +214,16 @@ void Dataset::rebuildDefinitonUsingActiveColumnsOnly()
 
         rebuiltColumnsFormat.push_back(columnTypes_[i]);
         rebuiltHeaderColumnNames << headerColumnNames_[i];
-        if (dateColumnTagged && specialColumns_.value(dateTag) == i)
-            rebuiltSpecialColumns[dateTag] = activeColumnNumber;
-        if (priceColumnTagged && specialColumns_.value(priceTag) == i)
-            rebuiltSpecialColumns[priceTag] = activeColumnNumber;
+        if (dateColumnTagged && taggedColumns_.value(dateTag) == i)
+            rebuiltTaggedColumns[dateTag] = activeColumnNumber;
+        if (priceColumnTagged && taggedColumns_.value(priceTag) == i)
+            rebuiltTaggedColumns[priceTag] = activeColumnNumber;
         activeColumnNumber++;
     }
 
     columnTypes_ = rebuiltColumnsFormat;
     headerColumnNames_ = rebuiltHeaderColumnNames;
-    specialColumns_ = rebuiltSpecialColumns;
+    taggedColumns_ = rebuiltTaggedColumns;
     columnsCount_ = activeColumns_.count(true);
     activeColumns_.clear();
 }
@@ -250,7 +250,7 @@ void Dataset::updateSampleDataStrings(QVector<QVector<QVariant>>& data) const
     }
 }
 
-bool Dataset::isSpecialColumnTagged(ColumnTag column) const
+bool Dataset::isColumnTagged(ColumnTag column) const
 {
-    return specialColumns_.contains(column);
+    return taggedColumns_.contains(column);
 }

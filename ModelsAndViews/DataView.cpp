@@ -43,11 +43,11 @@ void DataView::groupingColumnChanged(int column)
         fillDataFromSelection(column), parentModel->getColumnFormat(column));
 }
 
-std::tuple<bool, int, int> DataView::getSpecialColumns(
+std::tuple<bool, int, int> DataView::getTaggedColumns(
     const TableModel* parentModel) const
 {
     int pricePerMeterColumn;
-    if (auto [ok, columnId] = parentModel->getSpecialColumnIfExists(
+    if (auto [ok, columnId] = parentModel->getTaggedColumnIfExists(
             ColumnTag::VALUE);
         ok)
         pricePerMeterColumn = columnId;
@@ -55,7 +55,7 @@ std::tuple<bool, int, int> DataView::getSpecialColumns(
         return {false, Constants::NOT_SET_COLUMN, Constants::NOT_SET_COLUMN};
 
     int transactionDateColumn;
-    if (auto [ok, columnId] = parentModel->getSpecialColumnIfExists(
+    if (auto [ok, columnId] = parentModel->getTaggedColumnIfExists(
             ColumnTag::DATE);
         ok)
         transactionDateColumn = columnId;
@@ -94,7 +94,7 @@ QVector<TransactionData> DataView::fillDataFromSelection(
     const TableModel* parentModel{getParentModel()};
 
     const auto [success, pricePerMeterColumn, transactionDateColumn] =
-        getSpecialColumns(parentModel);
+        getTaggedColumns(parentModel);
     if (!success)
         return {};
 

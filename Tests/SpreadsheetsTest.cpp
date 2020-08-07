@@ -140,9 +140,9 @@ void SpreadsheetsTest::testSpreadsheetFile01(DatasetSpreadsheet* dataset,
 
     dataset->loadData();
 
-    // Special column after rebuild done in dataset init.
-    dataset->setSpecialColumn(ColumnTag::DATE, 2);
-    dataset->setSpecialColumn(ColumnTag::VALUE, 5);
+    // Tagged column after rebuild done in dataset init.
+    dataset->setTaggedColumn(ColumnTag::DATE, 2);
+    dataset->setTaggedColumn(ColumnTag::VALUE, 5);
 
     testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
                             compareDateValues, compareList, false);
@@ -181,8 +181,8 @@ void SpreadsheetsTest::testSpreadsheetFile01SomeColumns(
                 << "orange";
 
     dataset->loadData();
-    dataset->setSpecialColumn(ColumnTag::DATE, 0);
-    dataset->setSpecialColumn(ColumnTag::VALUE, 2);
+    dataset->setTaggedColumn(ColumnTag::DATE, 0);
+    dataset->setTaggedColumn(ColumnTag::VALUE, 2);
 
     testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
                             compareDateValues, compareList, false);
@@ -237,8 +237,8 @@ void SpreadsheetsTest::testSpreadsheetFile03(DatasetSpreadsheet* dataset,
                 << "c";
 
     dataset->loadData();
-    dataset->setSpecialColumn(ColumnTag::DATE, 3);
-    dataset->setSpecialColumn(ColumnTag::VALUE, 2);
+    dataset->setTaggedColumn(ColumnTag::DATE, 3);
+    dataset->setTaggedColumn(ColumnTag::VALUE, 2);
 
     testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
                             compareDateValues, compareList, true);
@@ -301,8 +301,8 @@ void SpreadsheetsTest::testSpreadsheetFile04(DatasetSpreadsheet* dataset,
     QStringList compareList;
 
     dataset->loadData();
-    dataset->setSpecialColumn(ColumnTag::DATE, 1);
-    dataset->setSpecialColumn(ColumnTag::VALUE, 2);
+    dataset->setTaggedColumn(ColumnTag::DATE, 1);
+    dataset->setTaggedColumn(ColumnTag::VALUE, 2);
 
     testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
                             compareDateValues, compareList, false);
@@ -344,12 +344,10 @@ void SpreadsheetsTest::testColumnInfo(
         QCOMPARE(dataset.getColumnFormat(pairFormat.first), pairFormat.second);
     }
 
-    // No special columns yet.
-    auto [ok, column] =
-        dataset.getSpecialColumn(ColumnTag::DATE);
+    // No tagged columns yet.
+    auto [ok, column] = dataset.getTaggedColumn(ColumnTag::DATE);
     QVERIFY(!ok);
-    std::tie(ok, column) =
-        dataset.getSpecialColumn(ColumnTag::VALUE);
+    std::tie(ok, column) = dataset.getTaggedColumn(ColumnTag::VALUE);
     QVERIFY(!ok);
 
     QPair<int, QString> pairNames;
@@ -396,11 +394,9 @@ void SpreadsheetsTest::testDatasetConstruction(
     QStringList list = dataset.getStringList(columnsToTest[3]);
     QCOMPARE(list, compareList);
 
-    auto [ok, column] =
-        dataset.getSpecialColumn(ColumnTag::DATE);
+    auto [ok, column] = dataset.getTaggedColumn(ColumnTag::DATE);
     QCOMPARE(column, columnsToTest[4]);
-    std::tie(ok, column) =
-        dataset.getSpecialColumn(ColumnTag::VALUE);
+    std::tie(ok, column) = dataset.getTaggedColumn(ColumnTag::VALUE);
     QCOMPARE(column, columnsToTest[5]);
 }
 
