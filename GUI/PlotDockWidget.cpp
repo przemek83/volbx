@@ -6,7 +6,7 @@
 #include <QPushButton>
 
 #include "Common/Constants.h"
-#include "Common/ExportImage.h"
+#include "Export/ExportImage.h"
 
 #include "DockTitleBar.h"
 

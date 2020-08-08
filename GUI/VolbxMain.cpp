@@ -15,11 +15,11 @@
 
 #include "Common/Configuration.h"
 #include "Common/DatasetUtilities.h"
-#include "Common/ExportUtilities.h"
 #include "Common/TimeLogger.h"
 #include "Datasets/Dataset.h"
 #include "Datasets/DatasetInner.h"
 #include "Datasets/DatasetSpreadsheet.h"
+#include "Export/ExportUtilities.h"
 #include "FiltersDock.h"
 #include "Import/ImportData.h"
 #include "ModelsAndViews/DataView.h"

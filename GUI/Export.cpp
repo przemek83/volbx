@@ -13,8 +13,8 @@
 
 #include "Common/Configuration.h"
 #include "Common/Constants.h"
-#include "Common/ExportImage.h"
-#include "Common/ExportUtilities.h"
+#include "Export/ExportImage.h"
+#include "Export/ExportUtilities.h"
 #include "ModelsAndViews/DataView.h"
 #include "Shared/Logger.h"
 

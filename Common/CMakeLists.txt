@@ -5,10 +5,6 @@ set(${PROJECT_NAME}_SOURCES
     Configuration.h
     Constants.cpp
     Constants.h
-    ExportUtilities.cpp
-    ExportUtilities.h
-    ExportImage.cpp
-    ExportImage.h
     ColumnTag.h
     DatasetUtilities.cpp
     DatasetUtilities.h

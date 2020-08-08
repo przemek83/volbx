@@ -18,7 +18,7 @@ set(${PROJECT_NAME}_SOURCES
 
 add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})
 
-target_link_libraries(${PROJECT_NAME} common datasets modelsAndViews Qt5::Xml Qt5::Test Qt5::Core)
+target_link_libraries(${PROJECT_NAME} common datasets modelsAndViews export Qt5::Xml Qt5::Test Qt5::Core)
 target_link_libraries(${PROJECT_NAME} optimized Qt5Quazip)
 target_link_libraries(${PROJECT_NAME} debug Qt5Quazipd)
 

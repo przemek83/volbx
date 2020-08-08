@@ -10,11 +10,11 @@
 
 #include "Common/Configuration.h"
 #include "Common/Constants.h"
-#include "Common/ExportUtilities.h"
 #include "Common/FileUtilities.h"
 #include "Datasets/Dataset.h"
 #include "Datasets/DatasetOds.h"
 #include "Datasets/DatasetXlsx.h"
+#include "Export/ExportUtilities.h"
 #include "ModelsAndViews/FilteringProxyModel.h"
 #include "ModelsAndViews/TableModel.h"
 

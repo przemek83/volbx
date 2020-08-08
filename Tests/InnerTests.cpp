@@ -11,9 +11,9 @@
 #include <QtTest/QtTest>
 
 #include "Common/Constants.h"
-#include "Common/ExportUtilities.h"
 #include "Common/FileUtilities.h"
 #include "Datasets/DatasetInner.h"
+#include "Export/ExportUtilities.h"
 #include "ModelsAndViews/FilteringProxyModel.h"
 #include "ModelsAndViews/TableModel.h"
 
