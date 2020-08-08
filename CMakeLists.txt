@@ -77,11 +77,13 @@ include_directories(Shared)
 include_directories(Common)
 include_directories(Datasets)
 include_directories(ModelsAndViews)
+include_directories(Export)
 
 add_subdirectory(Shared)
 add_subdirectory(Common)
 add_subdirectory(Datasets)
 add_subdirectory(ModelsAndViews)
+add_subdirectory(Export)
 
 set(${PROJECT_NAME}_SOURCES
     Volbx/main.cpp
@@ -173,7 +175,7 @@ add_custom_target(generated_qrc DEPENDS ${RESOURCES})
 add_executable(${PROJECT_NAME} ${GUI_TYPE} ${${PROJECT_NAME}_SOURCES} ${RESOURCES} Volbx/VolbxProperties.rc)
 add_dependencies(${PROJECT_NAME} generated_qrc)
 
-target_link_libraries(${PROJECT_NAME} Threads::Threads shared common datasets modelsAndViews wble qwtble eible Qt5::Core Qt5::Network Qt5::Widgets Qt5::Gui Qt5::Xml)
+target_link_libraries(${PROJECT_NAME} Threads::Threads shared common datasets modelsAndViews export wble qwtble eible Qt5::Core Qt5::Network Qt5::Widgets Qt5::Gui Qt5::Xml)
 if(WIN32)
     target_link_libraries(${PROJECT_NAME} optimized qwt debug qwtd)
 else()
