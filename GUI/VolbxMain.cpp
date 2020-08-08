@@ -354,11 +354,13 @@ void VolbxMain::actionSaveDatasetAsTriggered()
 
         QString name{save.getChosenDatasetName()};
         LOG(LogTypes::IMPORT_EXPORT, "Saving dataset " + name);
+        QString filePath{DatasetUtilities::getDatasetsDir() + name +
+                         DatasetUtilities::getDatasetExtension()};
 
         QTime performanceTimer;
         performanceTimer.start();
 
-        QFile file(name);
+        QFile file(filePath);
         ExportVbx exportVbx;
         connect(&exportVbx, &ExportData::progressPercentChanged, &bar,
                 &ProgressBarCounter::updateProgress);
