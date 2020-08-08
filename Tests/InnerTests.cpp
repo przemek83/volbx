@@ -13,7 +13,7 @@
 #include "Common/Constants.h"
 #include "Common/FileUtilities.h"
 #include "Datasets/DatasetInner.h"
-#include "Export/ExportUtilities.h"
+#include "Export/ExportVbx.h"
 #include "ModelsAndViews/FilteringProxyModel.h"
 #include "ModelsAndViews/TableModel.h"
 
@@ -92,7 +92,10 @@ void InnerTests::testDatasets()
 
         QString filePath{DatasetUtilities::getDatasetsDir() + tempFilename_ +
                          DatasetUtilities::getDatasetExtension()};
-        ExportUtilities::saveDataset(filePath, &view, nullptr);
+        QFile file(filePath);
+        ExportVbx exportVbx;
+        exportVbx.generateVbx(view, file);
+
         checkExport(datasetName);
     }
 }

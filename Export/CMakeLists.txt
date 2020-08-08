@@ -1,10 +1,10 @@
 project(export)
 
 set(${PROJECT_NAME}_SOURCES
-    ExportUtilities.cpp
-    ExportUtilities.h
     ExportImage.cpp
     ExportImage.h
+    ExportVbx.cpp
+    ExportVbx.h
     )
 
 ADD_LIBRARY(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SOURCES})

@@ -19,7 +19,7 @@
 #include "Datasets/Dataset.h"
 #include "Datasets/DatasetInner.h"
 #include "Datasets/DatasetSpreadsheet.h"
-#include "Export/ExportUtilities.h"
+#include "Export/ExportVbx.h"
 #include "FiltersDock.h"
 #include "Import/ImportData.h"
 #include "ModelsAndViews/DataView.h"
@@ -354,11 +354,21 @@ void VolbxMain::actionSaveDatasetAsTriggered()
 
         QString name{save.getChosenDatasetName()};
         LOG(LogTypes::IMPORT_EXPORT, "Saving dataset " + name);
-        QString filePath{DatasetUtilities::getDatasetsDir() + name +
-                         DatasetUtilities::getDatasetExtension()};
 
-        TimeLogger timeLogger(LogTypes::IMPORT_EXPORT, "File saved");
-        ExportUtilities::saveDataset(filePath, view, &bar);
+        QTime performanceTimer;
+        performanceTimer.start();
+
+        QFile file(name);
+        ExportVbx exportVbx;
+        connect(&exportVbx, &ExportData::progressPercentChanged, &bar,
+                &ProgressBarCounter::updateProgress);
+        if (!exportVbx.generateVbx(*view, file))
+            LOG(LogTypes::IMPORT_EXPORT, "Saving failed.");
+
+        LOG(LogTypes::IMPORT_EXPORT,
+            "File saved in " +
+                QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
+                " seconds.");
     }
 }
 

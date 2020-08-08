@@ -14,7 +14,6 @@
 #include "Datasets/Dataset.h"
 #include "Datasets/DatasetOds.h"
 #include "Datasets/DatasetXlsx.h"
-#include "Export/ExportUtilities.h"
 #include "ModelsAndViews/FilteringProxyModel.h"
 #include "ModelsAndViews/TableModel.h"
 
