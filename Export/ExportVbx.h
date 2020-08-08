@@ -6,6 +6,8 @@
 #include <ExportData.h>
 #include <QHash>
 
+#include <Qt5Quazip/quazip.h>
+
 class QAbstractItemModel;
 class QAbstractItemView;
 class QIODevice;
@@ -22,6 +24,12 @@ public:
     explicit ExportVbx(QObject* parent = nullptr);
     ~ExportVbx() override = default;
 
+    /**
+     * @brief Generate inner Volbx format of data (.vbx).
+     * @param view View with selected data to export.
+     * @param ioDevice Device to write to.
+     * @return True on success, false otherwise.
+     */
     bool generateVbx(const QAbstractItemView& view, QIODevice& ioDevice);
 
 protected:
@@ -40,10 +48,12 @@ private:
     void variantToString(const QVariant& variant, QByteArray& destinationArray,
                          char separator);
 
-    bool exportStrings(QuaZipFile& zipFile, const QByteArray& stringsContent);
+    bool exportStrings(QIODevice& ioDevice);
 
-    bool exportDefinition(QuaZipFile& zipFile, const QAbstractItemView& view,
-                          int rowCount);
+    bool exportDefinition(QIODevice& ioDevice, const QAbstractItemView& view);
+
+    bool write(QIODevice& ioDevice, const QString& fileName,
+               const QByteArray& data, QuaZip::Mode mode);
 
     static constexpr char separator_{';'};
     QHash<QString, int> stringsMap_;

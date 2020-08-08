@@ -3,7 +3,6 @@
 #include <FilteringProxyModel.h>
 #include <Qt5Quazip/quazipfile.h>
 #include <QAbstractItemView>
-#include <QCoreApplication>
 #include <QFile>
 #include <QVariant>
 
@@ -15,46 +14,14 @@ ExportVbx::ExportVbx(QObject* parent) : ExportData(parent) {}
 
 bool ExportVbx::generateVbx(const QAbstractItemView& view, QIODevice& ioDevice)
 {
-    if (!exportView(view, ioDevice))
-        return false;
-
-    QuaZip outZip(&ioDevice);
-    bool openSuccess = outZip.open(QuaZip::mdAdd);
-    if (!openSuccess)
-        return false;
-
-    QuaZipFile zipFile(&outZip);
-
-    if (!exportStrings(zipFile, stringsContent_))
-        return false;
-
-    if (!exportDefinition(zipFile, view, lines_))
-        return false;
-
-    return true;
+    return exportView(view, ioDevice) && exportStrings(ioDevice) &&
+           exportDefinition(ioDevice, view);
 }
 
 bool ExportVbx::writeContent(const QByteArray& content, QIODevice& ioDevice)
 {
-    // Create out xlsx.
-    QuaZip outZip(&ioDevice);
-    bool openSuccess = outZip.open(QuaZip::mdCreate);
-    if (!openSuccess)
-        return false;
-
-    QuaZipFile zipFile(&outZip);
-
-    bool result =
-        zipFile.open(QIODevice::WriteOnly,
-                     QuaZipNewInfo(DatasetUtilities::getDatasetDataFilename()));
-    if (!result || zipFile.write(content) == -1)
-    {
-        LOG(LogTypes::IMPORT_EXPORT, "Error while saving definition file.");
-        return false;
-    }
-    zipFile.close();
-
-    return true;
+    return write(ioDevice, DatasetUtilities::getDatasetDataFilename(), content,
+                 QuaZip::mdCreate);
 }
 
 QByteArray ExportVbx::getEmptyContent() { return QByteArrayLiteral(""); }
@@ -87,6 +54,23 @@ QByteArray ExportVbx::generateRowContent(const QAbstractItemModel& model,
 
 QByteArray ExportVbx::getContentEnding() { return QByteArrayLiteral(""); }
 
+bool ExportVbx::exportStrings(QIODevice& ioDevice)
+{
+    return write(ioDevice, DatasetUtilities::getDatasetStringsFilename(),
+                 stringsContent_, QuaZip::mdAdd);
+}
+
+bool ExportVbx::exportDefinition(QIODevice& ioDevice,
+                                 const QAbstractItemView& view)
+{
+    const TableModel* parentModel =
+        (qobject_cast<FilteringProxyModel*>(view.model()))->getParentModel();
+    QByteArray definitionContent{parentModel->definitionToXml(lines_)};
+
+    return write(ioDevice, DatasetUtilities::getDatasetDefinitionFilename(),
+                 definitionContent, QuaZip::mdAdd);
+}
+
 void ExportVbx::variantToString(const QVariant& variant,
                                 QByteArray& destinationArray,
                                 [[maybe_unused]] char separator)
@@ -112,15 +96,13 @@ void ExportVbx::variantToString(const QVariant& variant,
         {
             QString tmpString(variant.toString());
             int& index = stringsMap_[tmpString];
-            if (0 == index)
+            if (index == 0)
             {
                 index = nextIndex_;
                 tmpString.replace(newLine_, QLatin1String("\t"));
                 // No new line for first string.
-                if (1 != nextIndex_)
-                {
+                if (nextIndex_ != 1)
                     stringsContent_.append(newLine_);
-                }
                 stringsContent_.append(tmpString);
                 nextIndex_++;
             }
@@ -136,39 +118,22 @@ void ExportVbx::variantToString(const QVariant& variant,
     }
 }
 
-bool ExportVbx::exportStrings(QuaZipFile& zipFile,
-                              const QByteArray& stringsContent)
+bool ExportVbx::write(QIODevice& ioDevice, const QString& fileName,
+                      const QByteArray& data, QuaZip::Mode mode)
 {
-    bool result = zipFile.open(
-        QIODevice::WriteOnly,
-        QuaZipNewInfo(DatasetUtilities::getDatasetStringsFilename()));
-    if (!result || zipFile.write(stringsContent) == -1)
+    QuaZip outZip(&ioDevice);
+    bool openSuccess = outZip.open(mode);
+    if (!openSuccess)
+        return false;
+
+    QuaZipFile zipFile(&outZip);
+    bool result = zipFile.open(QIODevice::WriteOnly, QuaZipNewInfo(fileName));
+    if (!result || zipFile.write(data) == -1)
     {
-        LOG(LogTypes::IMPORT_EXPORT, "Error while saving strings file.");
+        LOG(LogTypes::IMPORT_EXPORT,
+            "Error while saving file " + fileName + ".");
         return false;
     }
-    zipFile.close();
-
-    return true;
-}
-
-bool ExportVbx::exportDefinition(QuaZipFile& zipFile,
-                                 const QAbstractItemView& view, int rowCount)
-{
-    const TableModel* parentModel =
-        (qobject_cast<FilteringProxyModel*>(view.model()))->getParentModel();
-
-    QByteArray definitionContent{parentModel->definitionToXml(rowCount)};
-
-    bool result = zipFile.open(
-        QIODevice::WriteOnly,
-        QuaZipNewInfo(DatasetUtilities::getDatasetDefinitionFilename()));
-    if (!result || zipFile.write(definitionContent) == -1)
-    {
-        LOG(LogTypes::IMPORT_EXPORT, "Error while saving definition file.");
-        return false;
-    }
-    zipFile.close();
 
     return true;
 }
