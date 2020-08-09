@@ -1,5 +1,4 @@
-#ifndef NUMERICDELEGATE_H
-#define NUMERICDELEGATE_H
+#pragma once
 
 #include <QStyledItemDelegate>
 
@@ -17,5 +16,3 @@ public:
     QString displayText(const QVariant& value,
                         const QLocale& locale) const override;
 };
-
-#endif  // NUMERICDELEGATE_H

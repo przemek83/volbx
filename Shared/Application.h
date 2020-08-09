@@ -1,5 +1,4 @@
-#ifndef APPLICATION_H
-#define APPLICATION_H
+#pragma once
 
 #include <QString>
 
@@ -32,5 +31,3 @@ void setQtStyle(const QString& name);
  */
 void initStyle(const QString& nameFromConfig);
 }  // namespace Application
-
-#endif  // APPLICATION_H

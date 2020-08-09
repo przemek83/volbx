@@ -1,5 +1,4 @@
-#ifndef PLOTDOCKWIDGET_H
-#define PLOTDOCKWIDGET_H
+#pragma once
 
 #include "DockWidget.h"
 
@@ -24,5 +23,3 @@ private Q_SLOTS:
 
     void resetPlot();
 };
-
-#endif  // PLOTDOCKWIDGET_H

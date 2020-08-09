@@ -1,5 +1,4 @@
-#ifndef DOCKTITLEBAR_H
-#define DOCKTITLEBAR_H
+#pragma once
 
 #include <QWidget>
 
@@ -41,5 +40,3 @@ protected:
 private:
     Ui::DockTitleBar* ui;
 };
-
-#endif  // DOCKTITLEBAR_H

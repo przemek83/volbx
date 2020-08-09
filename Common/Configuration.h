@@ -1,5 +1,4 @@
-#ifndef CONFIGURATION_H
-#define CONFIGURATION_H
+#pragma once
 
 #include <QString>
 
@@ -99,5 +98,3 @@ private:
     const QString XML_NAME_STYLE{QStringLiteral("STYLE")};
     const QString XML_NAME_IMPORTPATH{QStringLiteral("IMPORTPATH")};
 };
-
-#endif  // CONFIGURATION_H

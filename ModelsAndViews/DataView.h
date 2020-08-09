@@ -1,5 +1,4 @@
-#ifndef DATAVIEW_H
-#define DATAVIEW_H
+#pragma once
 
 #include <QTableView>
 
@@ -67,5 +66,3 @@ private:
 
     PlotDataProvider plotDataProvider_;
 };
-
-#endif  // DATAVIEW_H

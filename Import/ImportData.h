@@ -1,5 +1,4 @@
-#ifndef IMPORTDATA_H
-#define IMPORTDATA_H
+#pragma once
 
 #include <memory>
 
@@ -36,5 +35,3 @@ public:
 private:
     Ui::ImportData* ui;
 };
-
-#endif  // IMPORTDATA_H

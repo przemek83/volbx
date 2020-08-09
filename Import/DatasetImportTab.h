@@ -1,5 +1,4 @@
-#ifndef DATASETIMPORTTAB_H
-#define DATASETIMPORTTAB_H
+#pragma once
 
 #include <memory>
 
@@ -25,5 +24,3 @@ public:
 private Q_SLOTS:
     void selectedDatasetChanged(const QString& current);
 };
-
-#endif  // DATASETIMPORTTAB_H

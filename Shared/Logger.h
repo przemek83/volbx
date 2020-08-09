@@ -1,5 +1,4 @@
-#ifndef LOGWINDOW_H
-#define LOGWINDOW_H
+#pragma once
 
 #include <QLatin1String>
 #include <QMap>
@@ -69,5 +68,3 @@ private:
 private Q_SLOTS:
     void changeActiveLogs(bool state);
 };
-
-#endif  // LOGWINDOW_H

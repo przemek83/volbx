@@ -1,5 +1,4 @@
-#ifndef DATASETINNER_H
-#define DATASETINNER_H
+#pragma once
 
 #include "Dataset.h"
 
@@ -65,5 +64,3 @@ private:
 
     const QString datasetsDir_;
 };
-
-#endif  // DATASETINNER_H

@@ -1,5 +1,4 @@
-#ifndef DATASETSPREADSHEET_H
-#define DATASETSPREADSHEET_H
+#pragma once
 
 #include <QFile>
 
@@ -44,5 +43,3 @@ private:
 
     QStringList sheetNames_;
 };
-
-#endif  // DATASETSPREADSHEET_H

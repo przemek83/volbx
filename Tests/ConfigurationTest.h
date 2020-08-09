@@ -1,5 +1,4 @@
-#ifndef CONFIGURATIONTEST_H
-#define CONFIGURATIONTEST_H
+#pragma once
 
 #include <QObject>
 
@@ -21,5 +20,3 @@ private slots:
     void testReadingEmptyConfigurationFile();
     void cleanupTestCase();
 };
-
-#endif  // CONFIGURATIONTEST_H

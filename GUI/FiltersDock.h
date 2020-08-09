@@ -1,5 +1,4 @@
-#ifndef FILTERSDOCK_H
-#define FILTERSDOCK_H
+#pragma once
 
 #include <QDate>
 #include <QMap>
@@ -71,5 +70,3 @@ Q_SIGNALS:
     void newDateFiltering(int column, QDate from, QDate to,
                           bool filterEmptyDates);
 };
-
-#endif  // FILTERSDOCK_H

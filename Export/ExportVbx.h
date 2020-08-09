@@ -1,5 +1,4 @@
-#ifndef EXPORTVBX_H
-#define EXPORTVBX_H
+#pragma once
 
 #include <QVector>
 
@@ -62,5 +61,3 @@ private:
     unsigned int lines_{0};
     static constexpr char newLine_{'\n'};
 };
-
-#endif  // EXPORTVBX_H

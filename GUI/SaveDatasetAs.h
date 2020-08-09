@@ -1,5 +1,4 @@
-#ifndef SAVEDATASETAS_H
-#define SAVEDATASETAS_H
+#pragma once
 
 #include <QDialog>
 
@@ -48,5 +47,3 @@ private:
     /// Existing datasets names.
     QStringList alreadyUsedNames_;
 };
-
-#endif  // SAVEDATASETAS_H

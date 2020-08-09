@@ -1,5 +1,4 @@
-#ifndef CHECKUPDATESDIALOG_H
-#define CHECKUPDATESDIALOG_H
+#pragma once
 
 #include <QDialog>
 
@@ -24,5 +23,3 @@ public:
 private:
     Ui::CheckUpdatesDialog* ui;
 };
-
-#endif  // CHECKUPDATESDIALOG_H

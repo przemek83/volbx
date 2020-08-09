@@ -1,5 +1,4 @@
-#ifndef VIEWDOCKWIDGET_H
-#define VIEWDOCKWIDGET_H
+#pragma once
 
 #include "DockWidget.h"
 
@@ -28,5 +27,3 @@ private Q_SLOTS:
 
     void unselectAll();
 };
-
-#endif  // VIEWDOCKWIDGET_H

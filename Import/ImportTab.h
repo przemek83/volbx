@@ -1,5 +1,4 @@
-#ifndef IMPORTTAB_H
-#define IMPORTTAB_H
+#pragma once
 
 #include <memory>
 
@@ -23,5 +22,3 @@ public:
 Q_SIGNALS:
     void definitionIsReady(bool);
 };
-
-#endif  // IMPORTTAB_H

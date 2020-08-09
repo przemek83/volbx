@@ -1,5 +1,4 @@
-#ifndef UPDATE_H
-#define UPDATE_H
+#pragma once
 
 #include <QNetworkAccessManager>
 #include <QWidget>
@@ -93,5 +92,3 @@ private Q_SLOTS:
 
     void showDetailsToggled(bool checked);
 };
-
-#endif  // UPDATE_H

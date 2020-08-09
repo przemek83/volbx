@@ -1,5 +1,4 @@
-#ifndef COLUMNSPREVIEW_H
-#define COLUMNSPREVIEW_H
+#pragma once
 
 #include <QTableWidget>
 
@@ -43,5 +42,3 @@ Q_SIGNALS:
      */
     void currentColumnNeedSync(int currentColumn);
 };
-
-#endif  // COLUMNSPREVIEW_H

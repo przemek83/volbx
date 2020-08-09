@@ -1,5 +1,4 @@
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
+#pragma once
 
 #include <QDate>
 #include <QString>
@@ -29,5 +28,3 @@ QString getProgressBarTitle(BarTitle barTitle);
 
 const int NOT_SET_COLUMN{-1};
 };  // namespace Constants
-
-#endif  // CONSTANTS_H

@@ -1,5 +1,4 @@
-#ifndef DATASETDEFINITIONVISUALIZATION_H
-#define DATASETDEFINITIONVISUALIZATION_H
+#pragma once
 
 #include <memory>
 
@@ -69,5 +68,3 @@ Q_SIGNALS:
      */
     void currentColumnNeedSync(int currentColumn);
 };
-
-#endif  // DATASETDEFINITIONVISUALIZATION_H

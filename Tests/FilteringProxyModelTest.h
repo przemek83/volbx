@@ -1,5 +1,4 @@
-#ifndef FILTERINGPROXYMODELTEST_H
-#define FILTERINGPROXYMODELTEST_H
+#pragma once
 
 #include <QObject>
 
@@ -30,5 +29,3 @@ private:
     QList<QStandardItem*> getDateItems();
     QList<QStandardItem*> getNumberItems();
 };
-
-#endif  // FILTERINGPROXYMODELTEST_H

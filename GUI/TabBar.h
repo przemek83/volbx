@@ -1,5 +1,4 @@
-#ifndef TABBAR_H
-#define TABBAR_H
+#pragma once
 
 #include <QLineEdit>
 #include <QTabBar>
@@ -27,5 +26,3 @@ private:
 private Q_SLOTS:
     void editingOfnameFinished();
 };
-
-#endif  // TABBAR_H

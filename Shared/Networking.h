@@ -1,5 +1,4 @@
-#ifndef NETWORKING_H
-#define NETWORKING_H
+#pragma once
 
 #include <QNetworkRequest>
 #include <QString>
@@ -45,5 +44,3 @@ std::tuple<QString, QStringList> getAvailableVersionAndFiles(
  */
 int getMaxRetries();
 }  // namespace Networking
-
-#endif  // NETWORKING_H

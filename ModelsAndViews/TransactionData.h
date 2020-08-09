@@ -1,5 +1,4 @@
-#ifndef TRANSACTIONDATA_H
-#define TRANSACTIONDATA_H
+#pragma once
 
 #include <QDate>
 #include <QVariant>
@@ -27,5 +26,3 @@ public:
 
     double pricePerMeter_{0.};
 };
-
-#endif  // TRANSACTIONDATA_H

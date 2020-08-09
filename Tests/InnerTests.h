@@ -1,5 +1,4 @@
-#ifndef INNERTESTS_H
-#define INNERTESTS_H
+#pragma once
 
 #include <QFileInfo>
 #include <QObject>
@@ -65,5 +64,3 @@ private slots:
      */
     void cleanupTestCase();
 };
-
-#endif  // INNERTESTS_H

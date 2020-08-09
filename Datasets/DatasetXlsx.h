@@ -1,5 +1,4 @@
-#ifndef DATASETXLSX_H
-#define DATASETXLSX_H
+#pragma once
 
 #include "DatasetSpreadsheet.h"
 
@@ -22,5 +21,3 @@ protected:
 private:
     bool loadSharedStrings();
 };
-
-#endif  // DATASETXLSX_H

@@ -1,5 +1,4 @@
-#ifndef DATASETUTILITIES_H
-#define DATASETUTILITIES_H
+#pragma once
 
 #include <QStringList>
 
@@ -29,5 +28,3 @@ QString getDatasetExtension();
 
 QString getDatasetNameRegExp();
 };  // namespace DatasetUtilities
-
-#endif  // DATASETUTILITIES_H

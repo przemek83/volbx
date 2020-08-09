@@ -1,5 +1,4 @@
-#ifndef PLOTDATAPROVIDER_H
-#define PLOTDATAPROVIDER_H
+#pragma once
 
 #include <ColumnType.h>
 #include <Quantiles.h>
@@ -65,5 +64,3 @@ private:
 
     QVector<TransactionData> calcData_;
 };
-
-#endif  // PLOTDATAPROVIDER_H

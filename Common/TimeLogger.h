@@ -1,5 +1,4 @@
-#ifndef TIMELOGGER_H
-#define TIMELOGGER_H
+#pragma once
 
 #include <QTime>
 
@@ -26,5 +25,3 @@ private:
     const QString operationName_;
     QTime performanceTimer_;
 };
-
-#endif  // TIMELOGGER_H

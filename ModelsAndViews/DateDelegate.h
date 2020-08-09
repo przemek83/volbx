@@ -1,5 +1,4 @@
-#ifndef DATEDELEGATE_H
-#define DATEDELEGATE_H
+#pragma once
 
 #include <QStyledItemDelegate>
 
@@ -20,5 +19,3 @@ public:
 private:
     QString defaultDateFormat_;
 };
-
-#endif  // DATEDELEGATE_H

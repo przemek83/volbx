@@ -1,5 +1,4 @@
-#ifndef PLOTDATAPROVIDERTEST_H
-#define PLOTDATAPROVIDERTEST_H
+#pragma once
 
 #include <QObject>
 #include <QPointF>
@@ -58,5 +57,3 @@ private:
 
     QVector<double> yAxisValues_{10., 15., 12., 1., 5., 2.};
 };
-
-#endif  // PLOTDATAPROVIDERTEST_H

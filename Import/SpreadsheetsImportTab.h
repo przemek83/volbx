@@ -1,5 +1,4 @@
-#ifndef SPREADSHEETSIMPORTTAB_H
-#define SPREADSHEETSIMPORTTAB_H
+#pragma once
 
 #include "ImportTab.h"
 
@@ -28,5 +27,3 @@ private:
 
     Ui::SpreadsheetsImportTab* ui;
 };
-
-#endif  // SPREADSHEETSIMPORTTAB_H

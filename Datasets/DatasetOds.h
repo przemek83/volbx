@@ -1,5 +1,4 @@
-#ifndef DATASETODS_H
-#define DATASETODS_H
+#pragma once
 
 #include "DatasetSpreadsheet.h"
 
@@ -19,5 +18,3 @@ public:
 protected:
     bool loadSpecificData() override;
 };
-
-#endif  // DATASETODS_H

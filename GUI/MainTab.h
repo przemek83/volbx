@@ -1,5 +1,4 @@
-#ifndef MAINTAB_H
-#define MAINTAB_H
+#pragma once
 
 #include <memory>
 
@@ -29,5 +28,3 @@ public:
 
     DataView* getCurrentDataView();
 };
-
-#endif  // MAINTAB_H

@@ -1,5 +1,4 @@
-#ifndef EXPORTIMAGE_H
-#define EXPORTIMAGE_H
+#pragma once
 
 #include <QList>
 
@@ -24,5 +23,3 @@ void exportAsImage(PlotBase* plot, const QString& fileName);
  */
 void quickExportAsImage(const QList<PlotBase*>& list);
 }  // namespace ExportImage
-
-#endif  // EXPORTIMAGE_H

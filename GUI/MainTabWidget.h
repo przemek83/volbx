@@ -1,5 +1,4 @@
-#ifndef MAINTABWIDGET_H
-#define MAINTABWIDGET_H
+#pragma once
 
 #include <functional>
 
@@ -56,5 +55,3 @@ private:
     QVector<std::pair<QString, int>> getStringColumnsWithIndexes(
         TableModel* model) const;
 };
-
-#endif  // MAINTABWIDGET_H

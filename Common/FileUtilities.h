@@ -1,5 +1,4 @@
-#ifndef FILEUTILITIES_H
-#define FILEUTILITIES_H
+#pragma once
 
 #include <QString>
 
@@ -15,5 +14,3 @@ namespace FileUtilities
  */
 std::pair<bool, QString> loadFile(QString name);
 }  // namespace FileUtilities
-
-#endif  // FILEUTILITIES_H

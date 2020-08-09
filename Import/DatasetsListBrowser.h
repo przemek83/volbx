@@ -1,5 +1,4 @@
-#ifndef DATASETSLISTBROWSER_H
-#define DATASETSLISTBROWSER_H
+#pragma once
 
 #include <QWidget>
 
@@ -40,5 +39,3 @@ private Q_SLOTS:
 Q_SIGNALS:
     void currentDatasetChanged(QString current);
 };
-
-#endif  // DATASETSLISTBROWSER_H

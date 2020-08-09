@@ -1,5 +1,4 @@
-#ifndef EXPORT_H
-#define EXPORT_H
+#pragma once
 
 #include <QDialog>
 
@@ -35,5 +34,3 @@ private:
 
     const QString exportFilesDateFormat_{QStringLiteral("yyyyMMdd")};
 };
-
-#endif  // EXPORT_H

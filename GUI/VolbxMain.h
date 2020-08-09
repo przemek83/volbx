@@ -1,5 +1,4 @@
-#ifndef VOLBXMAIN_H
-#define VOLBXMAIN_H
+#pragma once
 
 #include <memory>
 
@@ -97,5 +96,3 @@ private Q_SLOTS:
      */
     void customStylePicked();
 };
-
-#endif  // VOLBXMAIN_H

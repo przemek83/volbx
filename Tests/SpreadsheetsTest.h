@@ -1,5 +1,4 @@
-#ifndef SPREADSHEETSTEST_H
-#define SPREADSHEETSTEST_H
+#pragma once
 
 #include <QObject>
 
@@ -95,5 +94,3 @@ private slots:
 
     void cleanupTestCase();
 };
-
-#endif  // SPREADSHEETSTEST_H

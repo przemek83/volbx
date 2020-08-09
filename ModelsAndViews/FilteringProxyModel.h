@@ -1,5 +1,4 @@
-#ifndef FILTERINGPROXYMODEL_H
-#define FILTERINGPROXYMODEL_H
+#pragma once
 
 #include <QSortFilterProxyModel>
 
@@ -74,5 +73,3 @@ private:
     /// Filter set for numeric.
     std::map<int, std::pair<double, double> > numericRestrictions_;
 };
-
-#endif  // FILTERINGPROXYMODEL_H

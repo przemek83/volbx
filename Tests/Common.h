@@ -1,5 +1,4 @@
-#ifndef COMMON_H
-#define COMMON_H
+#pragma once
 
 #include <QString>
 
@@ -22,5 +21,3 @@ QString getExportedTsv(const QAbstractItemView& view);
 
 bool xmlsAreEqual(const QByteArray& left, const QByteArray& right);
 };  // namespace Common
-
-#endif  // COMMON_H

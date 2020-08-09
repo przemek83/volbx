@@ -1,5 +1,4 @@
-#ifndef TABLEMODEL_H
-#define TABLEMODEL_H
+#pragma once
 
 #include <memory>
 
@@ -100,5 +99,3 @@ public:
 private:
     std::unique_ptr<Dataset> dataset_;
 };
-
-#endif  // TABLEMODEL_H

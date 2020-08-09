@@ -1,5 +1,4 @@
-﻿#ifndef DOCKWIDGET_H
-#define DOCKWIDGET_H
+﻿#pragma once
 
 #include <QDockWidget>
 
@@ -26,5 +25,3 @@ protected:
 private Q_SLOTS:
     void manageFloating();
 };
-
-#endif  // DOCKWIDGET_H
