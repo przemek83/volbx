@@ -6,70 +6,27 @@
 #include <QFile>
 #include <QTextStream>
 
-namespace Common
+namespace
 {
-void saveFile(QString fileName, const QString& data)
-{
-    QFile file(fileName);
-
-    file.open(QIODevice::WriteOnly);
-
-    QTextStream stream(&file);
-    stream.setCodec("UTF-8");
-    stream << data;
-
-    file.close();
-}
-
-QString getDefinitionDumpSuffix()
-{
-    static QString definitionDumpSuffix = "_DefinitionDump.txt";
-    return definitionDumpSuffix;
-}
-
-QString getDefinitionRefSuffix()
-{
-    static QString definitionDumpSuffix = "_DefinitionRef.txt";
-    return definitionDumpSuffix;
-}
-
-QString getDataTsvDumpSuffix()
-{
-    static QString dataTsvDumpSuffix = "_tsvDump.txt";
-    return dataTsvDumpSuffix;
-}
-
-QString getExportedTsv(const QAbstractItemView& view)
-{
-    QByteArray exportedByteArray;
-    QBuffer exportedBuffer(&exportedByteArray);
-    exportedBuffer.open(QIODevice::WriteOnly);
-
-    ExportDsv exportDsv('\t');
-    exportDsv.exportView(view, exportedBuffer);
-
-    return QString::fromUtf8(exportedByteArray);
-}
-
-static QHash<QString, QString> getAttributesMap(QDomElement& element)
+QHash<QString, QString> getAttributesMap(const QDomElement& element)
 {
     QHash<QString, QString> attributeMap;
-    QDomNamedNodeMap attributes{element.attributes()};
+    const QDomNamedNodeMap attributes{element.attributes()};
     for (int i = 0; i < attributes.size(); ++i)
         attributeMap[attributes.item(i).toAttr().name()] =
             attributes.item(i).toAttr().value();
     return attributeMap;
 }
 
-static bool atrributesEqual(QDomElement& left, QDomElement& right)
+bool atrributesEqual(QDomElement& left, QDomElement& right)
 {
     return getAttributesMap(left) == getAttributesMap(right);
 }
 
-static bool domElementsEqual(QDomElement& left, QDomElement& right);
+bool domElementsEqual(QDomElement& left, QDomElement& right);
 
-static bool domNodeListsEqual(const QDomNodeList& leftNodes,
-                              const QDomNodeList& rightNodes)
+bool domNodeListsEqual(const QDomNodeList& leftNodes,
+                       const QDomNodeList& rightNodes)
 {
     bool equal{true};
     for (int i = 0; i < leftNodes.size(); ++i)
@@ -101,7 +58,7 @@ static bool domNodeListsEqual(const QDomNodeList& leftNodes,
     return equal;
 }
 
-static bool domElementsEqual(QDomElement& left, QDomElement& right)
+bool domElementsEqual(QDomElement& left, QDomElement& right)
 {
     if (left.childNodes().count() != right.childNodes().count())
         return false;
@@ -114,6 +71,49 @@ static bool domElementsEqual(QDomElement& left, QDomElement& right)
     return domNodeListsEqual(leftNodes, rightNodes) &&
            domNodeListsEqual(rightNodes, leftNodes);
 }
+}  // namespace
+
+namespace Common
+{
+void saveFile(const QString& fileName, const QString& data)
+{
+    QFile file(fileName);
+    file.open(QIODevice::WriteOnly);
+
+    QTextStream stream(&file);
+    stream.setCodec("UTF-8");
+    stream << data;
+}
+
+QString getDefinitionDumpSuffix()
+{
+    QString definitionDumpSuffix = "_DefinitionDump.txt";
+    return definitionDumpSuffix;
+}
+
+QString getDefinitionRefSuffix()
+{
+    QString definitionDumpSuffix = "_DefinitionRef.txt";
+    return definitionDumpSuffix;
+}
+
+QString getDataTsvDumpSuffix()
+{
+    QString dataTsvDumpSuffix = "_tsvDump.txt";
+    return dataTsvDumpSuffix;
+}
+
+QString getExportedTsv(const QAbstractItemView& view)
+{
+    QByteArray exportedByteArray;
+    QBuffer exportedBuffer(&exportedByteArray);
+    exportedBuffer.open(QIODevice::WriteOnly);
+
+    ExportDsv exportDsv('\t');
+    exportDsv.exportView(view, exportedBuffer);
+
+    return QString::fromUtf8(exportedByteArray);
+}
 
 bool xmlsAreEqual(const QByteArray& left, const QByteArray& right)
 {
@@ -123,6 +123,7 @@ bool xmlsAreEqual(const QByteArray& left, const QByteArray& right)
     rightDom.setContent(right);
     QDomElement leftRoot{leftDom.documentElement()};
     QDomElement rightRoot{rightDom.documentElement()};
+
     return domElementsEqual(leftRoot, rightRoot);
 }
 

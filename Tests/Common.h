@@ -5,11 +5,11 @@
 class QAbstractItemView;
 
 /**
- * @brief common functions for unit tests.
+ * @brief Common functions for unit tests.
  */
 namespace Common
 {
-void saveFile(QString fileName, const QString& data);
+void saveFile(const QString& fileName, const QString& data);
 
 QString getDefinitionDumpSuffix();
 
