@@ -4,8 +4,6 @@
 
 #include <PlotDataProvider.h>
 
-PlotDataProviderTest::PlotDataProviderTest(QObject* parent) : QObject(parent) {}
-
 void PlotDataProviderTest::initTestCase()
 {
     mainQuantiles_.max_ = 15.;
@@ -42,11 +40,11 @@ void PlotDataProviderTest::initTestCase()
     secondQuantiles_.stdDev_ = 1.70;
 }
 
-void PlotDataProviderTest::testRecomputeGroupingDataWrongColumnFormat()
+void PlotDataProviderTest::testRecomputeGroupingIvalidFormat()
 {
-    checkRecomputeGroupingDataForColumnType(ColumnType::DATE);
-    checkRecomputeGroupingDataForColumnType(ColumnType::NUMBER);
-    checkRecomputeGroupingDataForColumnType(ColumnType::UNKNOWN);
+    for (auto columnType :
+         {ColumnType::DATE, ColumnType::NUMBER, ColumnType::UNKNOWN})
+        checkRecomputeGroupingDataForColumnType(columnType);
 }
 
 bool operator==(const Quantiles& left, const Quantiles& right)
@@ -85,6 +83,7 @@ void PlotDataProviderTest::testRecomputeEmptyCalcData()
                                        &PlotDataProvider::basicPlotDataChanged);
     QSignalSpy fundamentalDataChangedSpy(
         &provider, &PlotDataProvider::fundamentalDataChanged);
+
     provider.recompute({}, ColumnType::STRING);
 
     QCOMPARE(groupingPlotDataChangedSpy.count(), SIGNAL);
@@ -140,6 +139,7 @@ void PlotDataProviderTest::checkRecomputeGroupingDataForColumnType(
     PlotDataProvider provider;
     QSignalSpy spy(&provider, &PlotDataProvider::groupingPlotDataChanged);
     provider.recomputeGroupingData(calcData_, columnType);
+
     QCOMPARE(spy.count(), SIGNAL);
     checkSignalParamsForRecomputeGroupingAreEmpty(spy.first());
 }

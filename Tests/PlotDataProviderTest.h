@@ -1,24 +1,22 @@
 #pragma once
 
-#include <QObject>
 #include <QPointF>
-#include <QSignalSpy>
 
 #include <ColumnType.h>
 #include <Quantiles.h>
 
 #include "TransactionData.h"
 
+/**
+ * @brief Tests for PlotDataProvider class.
+ */
 class PlotDataProviderTest : public QObject
 {
-public:
-    explicit PlotDataProviderTest(QObject* parent = nullptr);
-
     Q_OBJECT
 private Q_SLOTS:
     void initTestCase();
 
-    void testRecomputeGroupingDataWrongColumnFormat();
+    void testRecomputeGroupingIvalidFormat();
     void testRecomputeGroupingData();
     void testRecomputeGroupingDataEmptyCalcData();
 
