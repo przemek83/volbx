@@ -13,12 +13,8 @@ void ConfigurationTest::initTestCase()
     QFile file(configurationFileName_);
     QVERIFY(file.open(QIODevice::ReadOnly));
     QTextStream stream(&file);
-
-    configurationFile_ = stream.readAll();
-
-    QVERIFY(configurationFile_ != "");
-
-    file.close();
+    configurationFileContent_ = stream.readAll();
+    QVERIFY(configurationFileContent_ != "");
 }
 
 void ConfigurationTest::testSavingConfigurationFile()
@@ -34,7 +30,7 @@ void ConfigurationTest::testReadingFilledConfigurationFile()
 {
     QVERIFY(QFile::exists(configurationFileName_));
     QVERIFY(Configuration::getInstance().configValid());
-    QCOMPARE(Configuration::getInstance().getStyleName(), QString("Fusion"));
+    QCOMPARE(Configuration::getInstance().getStyleName(), defaultStyle_);
     QVERIFY(Configuration::getInstance().isUpdatePolicyPicked());
     QVERIFY(!Configuration::getInstance().needToCheckForUpdates());
 }
@@ -45,7 +41,7 @@ void ConfigurationTest::testReadingEmptyConfigurationFile()
     QVERIFY(!QFile::exists(configurationFileName_));
     QVERIFY(!Configuration::getInstance().load());
     QVERIFY(!Configuration::getInstance().configValid());
-    QCOMPARE(Configuration::getInstance().getStyleName(), QString("Fusion"));
+    QCOMPARE(Configuration::getInstance().getStyleName(), defaultStyle_);
     QVERIFY(!Configuration::getInstance().isUpdatePolicyPicked());
     QVERIFY(!Configuration::getInstance().needToCheckForUpdates());
 }
@@ -54,8 +50,6 @@ void ConfigurationTest::cleanupTestCase()
 {
     QFile::remove(configurationFileName_);
     QFile file(configurationFileName_);
-
     QVERIFY(file.open(QIODevice::WriteOnly));
-
-    QVERIFY(-1 != file.write(configurationFile_.toStdString().c_str()));
+    QVERIFY(-1 != file.write(configurationFileContent_.toStdString().c_str()));
 }
