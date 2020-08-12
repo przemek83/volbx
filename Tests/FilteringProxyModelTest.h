@@ -5,12 +5,12 @@
 class QStandardItem;
 class FilteringProxyModel;
 
+/**
+ * @brief Tests for FilteringProxyModel class.
+ */
 class FilteringProxyModelTest : public QObject
 {
     Q_OBJECT
-public:
-    explicit FilteringProxyModelTest(QObject* parent = nullptr);
-
 private Q_SLOTS:
     void testNoFilter();
 
@@ -25,6 +25,8 @@ private:
     void checkProxyHasAllItems(const FilteringProxyModel& proxy,
                                const QList<QStandardItem*>& items);
 
+    QVariant getData(QStandardItem* item) const;
+    QStandardItem* createItem(QVariant data) const;
     QList<QStandardItem*> getStringItems();
     QList<QStandardItem*> getDateItems();
     QList<QStandardItem*> getNumberItems();
