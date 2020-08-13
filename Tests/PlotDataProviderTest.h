@@ -33,6 +33,15 @@ private:
         const QVector<Quantiles>& expectedQuantilesForIntervals,
         const Quantiles& expectedQuantiles);
 
+    void checkBasicDataChangedSignal(
+        const QSignalSpy& spy, const QVector<QPointF>& expectedPoints,
+        const Quantiles& expectedQuantiles,
+        const QVector<QPointF>& expectedRegression);
+
+    void checkFundamentalDataChangedSignal(
+        const QSignalSpy& spy, const QVector<double>& expectedYAxisValues,
+        const Quantiles& expectedQuantiles);
+
     static constexpr int NO_SIGNAL{0};
     static constexpr int SIGNAL{1};
 

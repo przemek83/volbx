@@ -117,18 +117,11 @@ void PlotDataProviderTest::testRecompute()
     checkGroupingDataChangedSignal(groupingPlotDataChangedSpy, intervalsNames,
                                    quantilesForIntervals, quantiles);
 
-    QCOMPARE(basicPlotDataChangedSpy.count(), SIGNAL);
-    QList<QVariant>& signalParameters{basicPlotDataChangedSpy.first()};
-    QCOMPARE(signalParameters.size(), 3);
-    QCOMPARE(signalParameters[0].value<QVector<QPointF>>(), points);
-    QCOMPARE(signalParameters[1].value<Quantiles>(), quantiles);
-    QCOMPARE(signalParameters[2].value<QVector<QPointF>>(), regression);
+    checkBasicDataChangedSignal(basicPlotDataChangedSpy, points, quantiles,
+                                regression);
 
-    QCOMPARE(fundamentalDataChangedSpy.count(), SIGNAL);
-    signalParameters = fundamentalDataChangedSpy.first();
-    QCOMPARE(signalParameters.size(), 2);
-    QCOMPARE(signalParameters[0].value<QVector<double>>(), yAxisValues);
-    QCOMPARE(signalParameters[1].value<Quantiles>(), quantiles);
+    checkFundamentalDataChangedSignal(fundamentalDataChangedSpy, yAxisValues,
+                                      quantiles);
 }
 
 void PlotDataProviderTest::checkRecomputeGroupingDataForColumnType(
@@ -153,4 +146,28 @@ void PlotDataProviderTest::checkGroupingDataChangedSignal(
     QCOMPARE(signalParameters[1].value<QVector<Quantiles>>(),
              expectedQuantilesForIntervals);
     QCOMPARE(signalParameters[2].value<Quantiles>(), expectedQuantiles);
+}
+
+void PlotDataProviderTest::checkBasicDataChangedSignal(
+    const QSignalSpy& spy, const QVector<QPointF>& expectedPoints,
+    const Quantiles& expectedQuantiles,
+    const QVector<QPointF>& expectedRegression)
+{
+    QCOMPARE(spy.count(), SIGNAL);
+    const QList<QVariant>& signalParameters{spy.first()};
+    QCOMPARE(signalParameters.size(), 3);
+    QCOMPARE(signalParameters[0].value<QVector<QPointF>>(), expectedPoints);
+    QCOMPARE(signalParameters[1].value<Quantiles>(), expectedQuantiles);
+    QCOMPARE(signalParameters[2].value<QVector<QPointF>>(), expectedRegression);
+}
+
+void PlotDataProviderTest::checkFundamentalDataChangedSignal(
+    const QSignalSpy& spy, const QVector<double>& expectedYAxisValues,
+    const Quantiles& expectedQuantiles)
+{
+    QCOMPARE(spy.count(), SIGNAL);
+    const QList<QVariant>& signalParameters{spy.first()};
+    QCOMPARE(signalParameters.size(), 2);
+    QCOMPARE(signalParameters[0].value<QVector<double>>(), expectedYAxisValues);
+    QCOMPARE(signalParameters[1].value<Quantiles>(), expectedQuantiles);
 }
