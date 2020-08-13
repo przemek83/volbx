@@ -59,7 +59,6 @@ void PlotDataProviderTest::testRecomputeGroupingData()
     provider.recomputeGroupingData(calcData_, ColumnType::STRING);
 
     QCOMPARE(spy.count(), SIGNAL);
-
     // General Quantiles data is empty as recompute() was not called.
     checkSignalParametersForRecomputeGrouping(
         spy.first(), QVector{QString("column1"), QString("column2")},
@@ -71,12 +70,9 @@ void PlotDataProviderTest::testRecomputeGroupingDataEmptyCalcData()
     PlotDataProvider provider;
     QSignalSpy spy(&provider, &PlotDataProvider::groupingPlotDataChanged);
     provider.recomputeGroupingData({}, ColumnType::STRING);
+
     QCOMPARE(spy.count(), SIGNAL);
-    QList<QVariant>& signalParameters{spy.first()};
-    QCOMPARE(signalParameters.size(), 3);
-    QCOMPARE(signalParameters[0].value<QVector<QString>>(), {});
-    QCOMPARE(signalParameters[1].value<QVector<Quantiles>>(), {});
-    QCOMPARE(signalParameters[2].value<Quantiles>(), Quantiles());
+    checkSignalParametersForRecomputeGrouping(spy.first(), {}, {}, Quantiles());
 }
 
 void PlotDataProviderTest::testRecompute_data()
