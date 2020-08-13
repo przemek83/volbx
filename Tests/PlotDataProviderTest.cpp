@@ -57,8 +57,13 @@ void PlotDataProviderTest::testRecomputeGroupingData()
     PlotDataProvider provider;
     QSignalSpy spy(&provider, &PlotDataProvider::groupingPlotDataChanged);
     provider.recomputeGroupingData(calcData_, ColumnType::STRING);
+
     QCOMPARE(spy.count(), SIGNAL);
-    checkSignalParametersForRecomputeGrouping(spy.first(), Quantiles());
+
+    // General Quantiles data is empty as recompute() was not called.
+    checkSignalParametersForRecomputeGrouping(
+        spy.first(), QVector{QString("column1"), QString("column2")},
+        QVector{firstQuantiles_, secondQuantiles_}, Quantiles());
 }
 
 void PlotDataProviderTest::testRecomputeGroupingDataEmptyCalcData()
@@ -74,38 +79,38 @@ void PlotDataProviderTest::testRecomputeGroupingDataEmptyCalcData()
     QCOMPARE(signalParameters[2].value<Quantiles>(), Quantiles());
 }
 
-void PlotDataProviderTest::testRecomputeEmptyCalcData()
+void PlotDataProviderTest::testRecompute_data()
 {
-    PlotDataProvider provider;
-    QSignalSpy groupingPlotDataChangedSpy(
-        &provider, &PlotDataProvider::groupingPlotDataChanged);
-    QSignalSpy basicPlotDataChangedSpy(&provider,
-                                       &PlotDataProvider::basicPlotDataChanged);
-    QSignalSpy fundamentalDataChangedSpy(
-        &provider, &PlotDataProvider::fundamentalDataChanged);
+    QTest::addColumn<QVector<TransactionData>>("calcData");
+    QTest::addColumn<Quantiles>("quantiles");
+    QTest::addColumn<QVector<QString>>("intervalsNames");
+    QTest::addColumn<QVector<Quantiles>>("quantilesForIntervals");
+    QTest::addColumn<QVector<QPointF>>("points");
+    QTest::addColumn<QVector<QPointF>>("regression");
+    QTest::addColumn<QVector<double>>("yAxisValues");
 
-    provider.recompute({}, ColumnType::STRING);
+    QTest::newRow("Test recompute empty data")
+        << QVector<TransactionData>() << Quantiles() << QVector<QString>()
+        << QVector<Quantiles>() << QVector<QPointF>() << QVector<QPointF>()
+        << QVector<double>();
 
-    QCOMPARE(groupingPlotDataChangedSpy.count(), SIGNAL);
-    checkSignalParamsForRecomputeGroupingAreEmpty(
-        groupingPlotDataChangedSpy.first());
-
-    QCOMPARE(basicPlotDataChangedSpy.count(), SIGNAL);
-    QList<QVariant>& signalParameters{basicPlotDataChangedSpy.first()};
-    QCOMPARE(signalParameters.size(), 3);
-    QCOMPARE(signalParameters[0].value<QVector<QPointF>>(), {});
-    QCOMPARE(signalParameters[1].value<Quantiles>(), Quantiles());
-    QCOMPARE(signalParameters[2].value<QVector<QPointF>>(), {});
-
-    QCOMPARE(fundamentalDataChangedSpy.count(), SIGNAL);
-    signalParameters = fundamentalDataChangedSpy.first();
-    QCOMPARE(signalParameters.size(), 2);
-    QCOMPARE(signalParameters[0].value<QVector<double>>(), {});
-    QCOMPARE(signalParameters[1].value<Quantiles>(), Quantiles());
+    QTest::newRow("Test recompute")
+        << calcData_ << mainQuantiles_
+        << QVector{QString("column1"), QString("column2")}
+        << QVector{firstQuantiles_, secondQuantiles_} << points_ << regression_
+        << yAxisValues_;
 }
 
 void PlotDataProviderTest::testRecompute()
 {
+    QFETCH(QVector<TransactionData>, calcData);
+    QFETCH(Quantiles, quantiles);
+    QFETCH(QVector<QString>, intervalsNames);
+    QFETCH(QVector<Quantiles>, quantilesForIntervals);
+    QFETCH(QVector<QPointF>, points);
+    QFETCH(QVector<QPointF>, regression);
+    QFETCH(QVector<double>, yAxisValues);
+
     PlotDataProvider provider;
     QSignalSpy groupingPlotDataChangedSpy(
         &provider, &PlotDataProvider::groupingPlotDataChanged);
@@ -113,24 +118,25 @@ void PlotDataProviderTest::testRecompute()
                                        &PlotDataProvider::basicPlotDataChanged);
     QSignalSpy fundamentalDataChangedSpy(
         &provider, &PlotDataProvider::fundamentalDataChanged);
-    provider.recompute(calcData_, ColumnType::STRING);
+    provider.recompute(calcData, ColumnType::STRING);
 
     QCOMPARE(groupingPlotDataChangedSpy.count(), SIGNAL);
     checkSignalParametersForRecomputeGrouping(
-        groupingPlotDataChangedSpy.first(), mainQuantiles_);
+        groupingPlotDataChangedSpy.first(), intervalsNames,
+        quantilesForIntervals, quantiles);
 
     QCOMPARE(basicPlotDataChangedSpy.count(), SIGNAL);
     QList<QVariant>& signalParameters{basicPlotDataChangedSpy.first()};
     QCOMPARE(signalParameters.size(), 3);
-    QCOMPARE(signalParameters[0].value<QVector<QPointF>>(), points_);
-    QCOMPARE(signalParameters[1].value<Quantiles>(), mainQuantiles_);
-    QCOMPARE(signalParameters[2].value<QVector<QPointF>>(), regression_);
+    QCOMPARE(signalParameters[0].value<QVector<QPointF>>(), points);
+    QCOMPARE(signalParameters[1].value<Quantiles>(), quantiles);
+    QCOMPARE(signalParameters[2].value<QVector<QPointF>>(), regression);
 
     QCOMPARE(fundamentalDataChangedSpy.count(), SIGNAL);
     signalParameters = fundamentalDataChangedSpy.first();
     QCOMPARE(signalParameters.size(), 2);
-    QCOMPARE(signalParameters[0].value<QVector<double>>(), yAxisValues_);
-    QCOMPARE(signalParameters[1].value<Quantiles>(), mainQuantiles_);
+    QCOMPARE(signalParameters[0].value<QVector<double>>(), yAxisValues);
+    QCOMPARE(signalParameters[1].value<Quantiles>(), quantiles);
 }
 
 void PlotDataProviderTest::checkRecomputeGroupingDataForColumnType(
@@ -141,25 +147,19 @@ void PlotDataProviderTest::checkRecomputeGroupingDataForColumnType(
     provider.recomputeGroupingData(calcData_, columnType);
 
     QCOMPARE(spy.count(), SIGNAL);
-    checkSignalParamsForRecomputeGroupingAreEmpty(spy.first());
-}
-
-void PlotDataProviderTest::checkSignalParamsForRecomputeGroupingAreEmpty(
-    const QList<QVariant>& signalParameters)
-{
-    QCOMPARE(signalParameters.size(), 3);
-    QCOMPARE(signalParameters[0].value<QVector<QString>>(), {});
-    QCOMPARE(signalParameters[1].value<QVector<Quantiles>>(), {});
-    QCOMPARE(signalParameters[2].value<Quantiles>(), Quantiles());
+    checkSignalParametersForRecomputeGrouping(spy.first(), {}, {}, Quantiles());
 }
 
 void PlotDataProviderTest::checkSignalParametersForRecomputeGrouping(
-    const QList<QVariant>& signalParameters, Quantiles quantiles)
+    const QList<QVariant>& signalParameters,
+    const QVector<QString>& expectedIntervalsNames,
+    const QVector<Quantiles>& expectedQuantilesForIntervals,
+    const Quantiles& expectedQuantiles)
 {
     QCOMPARE(signalParameters.size(), 3);
     QCOMPARE(signalParameters[0].value<QVector<QString>>(),
-             QVector({QString("column1"), QString("column2")}));
+             expectedIntervalsNames);
     QCOMPARE(signalParameters[1].value<QVector<Quantiles>>(),
-             QVector({firstQuantiles_, secondQuantiles_}));
-    QCOMPARE(signalParameters[2].value<Quantiles>(), quantiles);
+             expectedQuantilesForIntervals);
+    QCOMPARE(signalParameters[2].value<Quantiles>(), expectedQuantiles);
 }

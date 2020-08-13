@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QDate>
+#include <QMetaType>
 #include <QVariant>
 
 /**
@@ -26,3 +27,5 @@ public:
 
     double pricePerMeter_{0.};
 };
+
+Q_DECLARE_METATYPE(TransactionData)

@@ -20,16 +20,17 @@ private Q_SLOTS:
     void testRecomputeGroupingData();
     void testRecomputeGroupingDataEmptyCalcData();
 
-    void testRecomputeEmptyCalcData();
+    void testRecompute_data();
     void testRecompute();
 
 private:
     void checkRecomputeGroupingDataForColumnType(ColumnType columnType);
-    void checkSignalParamsForRecomputeGroupingAreEmpty(
-        const QList<QVariant>& signalParameters);
 
     void checkSignalParametersForRecomputeGrouping(
-        const QList<QVariant>& signalParameters, Quantiles quantiles);
+        const QList<QVariant>& signalParameters,
+        const QVector<QString>& expectedIntervalsNames,
+        const QVector<Quantiles>& expectedQuantilesForIntervals,
+        const Quantiles& expectedQuantiles);
 
     static constexpr int NO_SIGNAL{0};
     static constexpr int SIGNAL{1};
