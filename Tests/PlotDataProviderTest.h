@@ -7,6 +7,8 @@
 
 #include "TransactionData.h"
 
+class QSignalSpy;
+
 /**
  * @brief Tests for PlotDataProvider class.
  */
@@ -26,9 +28,8 @@ private Q_SLOTS:
 private:
     void checkRecomputeGroupingDataForColumnType(ColumnType columnType);
 
-    void checkSignalParametersForRecomputeGrouping(
-        const QList<QVariant>& signalParameters,
-        const QVector<QString>& expectedIntervalsNames,
+    void checkGroupingDataChangedSignal(
+        const QSignalSpy& spy, const QVector<QString>& expectedIntervalsNames,
         const QVector<Quantiles>& expectedQuantilesForIntervals,
         const Quantiles& expectedQuantiles);
 

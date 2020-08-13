@@ -58,10 +58,9 @@ void PlotDataProviderTest::testRecomputeGroupingData()
     QSignalSpy spy(&provider, &PlotDataProvider::groupingPlotDataChanged);
     provider.recomputeGroupingData(calcData_, ColumnType::STRING);
 
-    QCOMPARE(spy.count(), SIGNAL);
     // General Quantiles data is empty as recompute() was not called.
-    checkSignalParametersForRecomputeGrouping(
-        spy.first(), QVector{QString("column1"), QString("column2")},
+    checkGroupingDataChangedSignal(
+        spy, QVector{QString("column1"), QString("column2")},
         QVector{firstQuantiles_, secondQuantiles_}, Quantiles());
 }
 
@@ -71,8 +70,7 @@ void PlotDataProviderTest::testRecomputeGroupingDataEmptyCalcData()
     QSignalSpy spy(&provider, &PlotDataProvider::groupingPlotDataChanged);
     provider.recomputeGroupingData({}, ColumnType::STRING);
 
-    QCOMPARE(spy.count(), SIGNAL);
-    checkSignalParametersForRecomputeGrouping(spy.first(), {}, {}, Quantiles());
+    checkGroupingDataChangedSignal(spy, {}, {}, Quantiles());
 }
 
 void PlotDataProviderTest::testRecompute_data()
@@ -116,10 +114,8 @@ void PlotDataProviderTest::testRecompute()
         &provider, &PlotDataProvider::fundamentalDataChanged);
     provider.recompute(calcData, ColumnType::STRING);
 
-    QCOMPARE(groupingPlotDataChangedSpy.count(), SIGNAL);
-    checkSignalParametersForRecomputeGrouping(
-        groupingPlotDataChangedSpy.first(), intervalsNames,
-        quantilesForIntervals, quantiles);
+    checkGroupingDataChangedSignal(groupingPlotDataChangedSpy, intervalsNames,
+                                   quantilesForIntervals, quantiles);
 
     QCOMPARE(basicPlotDataChangedSpy.count(), SIGNAL);
     QList<QVariant>& signalParameters{basicPlotDataChangedSpy.first()};
@@ -141,17 +137,16 @@ void PlotDataProviderTest::checkRecomputeGroupingDataForColumnType(
     PlotDataProvider provider;
     QSignalSpy spy(&provider, &PlotDataProvider::groupingPlotDataChanged);
     provider.recomputeGroupingData(calcData_, columnType);
-
-    QCOMPARE(spy.count(), SIGNAL);
-    checkSignalParametersForRecomputeGrouping(spy.first(), {}, {}, Quantiles());
+    checkGroupingDataChangedSignal(spy, {}, {}, Quantiles());
 }
 
-void PlotDataProviderTest::checkSignalParametersForRecomputeGrouping(
-    const QList<QVariant>& signalParameters,
-    const QVector<QString>& expectedIntervalsNames,
+void PlotDataProviderTest::checkGroupingDataChangedSignal(
+    const QSignalSpy& spy, const QVector<QString>& expectedIntervalsNames,
     const QVector<Quantiles>& expectedQuantilesForIntervals,
     const Quantiles& expectedQuantiles)
 {
+    QCOMPARE(spy.count(), SIGNAL);
+    const QList<QVariant>& signalParameters{spy.first()};
     QCOMPARE(signalParameters.size(), 3);
     QCOMPARE(signalParameters[0].value<QVector<QString>>(),
              expectedIntervalsNames);
