@@ -10,7 +10,7 @@ class DatasetXlsx : public DatasetSpreadsheet
 {
     Q_OBJECT
 public:
-    DatasetXlsx(const QString& name, QString& zipFileName,
+    DatasetXlsx(const QString& name, const QString& zipFileName,
                 QObject* parent = nullptr);
 
     ~DatasetXlsx() override = default;

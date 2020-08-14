@@ -3,7 +3,7 @@
 #include <ImportXlsx.h>
 #include <Logger.h>
 
-DatasetXlsx::DatasetXlsx(const QString& name, QString& zipFileName,
+DatasetXlsx::DatasetXlsx(const QString& name, const QString& zipFileName,
                          QObject* parent)
     : DatasetSpreadsheet(name, zipFileName, parent)
 {
