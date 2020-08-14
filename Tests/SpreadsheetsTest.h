@@ -58,8 +58,6 @@ private:
     //    void testSpreadsheetFile05(DatasetDefinitionSpreadsheet* definition,
     //                               QString file);
 
-    void compareDataWithDumps(const QString& category, bool damaged);
-
     void testDatasetConstruction(const Dataset& dataset,
                                  QVector<int>& columnsToTest,
                                  QVector<double>& compareNumericValues,
@@ -68,9 +66,11 @@ private:
 
     void compareExportDataWithDump(std::unique_ptr<Dataset> dataset);
 
-    /// To be used when .ods and .xlsx has same data. Actualy data is not same
+    /// To be used when .ods and .xlsx has same data. Actually data is not same
     /// :(
     void compareAllTsvDumps();
+
+    void addTestCasesForFileNames(const QVector<QString>& fileNames);
 
 private slots:
     void initTestCase();
@@ -82,13 +82,11 @@ private slots:
     void detailedSpreadsheetFileTest04();
     // void detailedSpreadsheetFileTest05();
 
-    /// Test for each category (directory).
-    void verySmallFiles();
-    void smallFiles();
-    void mediumFiles();
-    void bigFiles();
-    void veryBigFiles();
-    void damaged();
+    void compareSpreadsheetFiles_data();
+    void compareSpreadsheetFiles();
+
+    void compareSpreadsheetFilesDamaged_data();
+    void compareSpreadsheetFilesDamaged();
 
     void compareAllDefinitionDumps();
 
