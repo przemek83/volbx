@@ -39,7 +39,7 @@ void SpreadsheetsTest::testCompareSpreadsheetFiles()
 {
     QFETCH(QString, fileName);
 
-    DatasetSpreadsheet* dataset{createDataset(fileName)};
+    std::unique_ptr<DatasetSpreadsheet> dataset{createDataset(fileName)};
     QVERIFY(dataset->initialize());
 
     compareDatasetDefinitionWithDump(dataset, fileName);
@@ -48,7 +48,7 @@ void SpreadsheetsTest::testCompareSpreadsheetFiles()
     QVERIFY(dataset->loadData());
     QVERIFY(dataset->isValid());
 
-    Common::compareExportDataWithDump((std::unique_ptr<Dataset>(dataset)));
+    Common::compareExportDataWithDump(std::move(dataset));
 }
 
 void SpreadsheetsTest::testCompareSpreadsheetFilesDamaged_data()
@@ -60,7 +60,7 @@ void SpreadsheetsTest::testCompareSpreadsheetFilesDamaged()
 {
     QFETCH(QString, fileName);
 
-    DatasetSpreadsheet* dataset{createDataset(fileName)};
+    std::unique_ptr<DatasetSpreadsheet> dataset{createDataset(fileName)};
     QVERIFY(!dataset->initialize());
 }
 
@@ -84,14 +84,15 @@ void SpreadsheetsTest::testCompareTsvDumps()
     compareDumps(Common::getDataTsvDumpSuffix());
 }
 
-DatasetSpreadsheet* SpreadsheetsTest::createDataset(const QString& fileName)
+std::unique_ptr<DatasetSpreadsheet> SpreadsheetsTest::createDataset(
+    const QString& fileName)
 {
     QString filePath{getSpreadsheetsDir() + fileName};
-    DatasetSpreadsheet* dataset = nullptr;
+    std::unique_ptr<DatasetSpreadsheet> dataset{nullptr};
     if (fileName.endsWith(".xlsx"))
-        dataset = new DatasetXlsx(filePath, filePath);
+        dataset = std::make_unique<DatasetXlsx>(filePath, filePath);
     else
-        dataset = new DatasetOds(filePath, filePath);
+        dataset = std::make_unique<DatasetOds>(filePath, filePath);
     return dataset;
 }
 
@@ -124,7 +125,7 @@ void SpreadsheetsTest::compareDumps(const QString& fileSuffix)
 }
 
 void SpreadsheetsTest::compareDatasetDefinitionWithDump(
-    DatasetSpreadsheet* dataset, const QString& fileName)
+    const std::unique_ptr<DatasetSpreadsheet>& dataset, const QString& fileName)
 {
     QString filePath{getSpreadsheetsDir() + fileName};
     const QString dumpFileName{filePath + Common::getDefinitionDumpSuffix()};
@@ -134,7 +135,8 @@ void SpreadsheetsTest::compareDatasetDefinitionWithDump(
     QVERIFY(Common::xmlsAreEqual(dumpFromFile, dumpFromDataset));
 }
 
-void SpreadsheetsTest::activateAllDatasetColumns(DatasetSpreadsheet* dataset)
+void SpreadsheetsTest::activateAllDatasetColumns(
+    const std::unique_ptr<DatasetSpreadsheet>& dataset)
 {
     QVector<bool> activeColumns(dataset->columnCount(), true);
     dataset->setActiveColumns(activeColumns);

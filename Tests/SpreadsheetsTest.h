@@ -38,16 +38,18 @@ private:
                                 "testDataWithPlot",
                                 "test"};
 
-    DatasetSpreadsheet* createDataset(const QString& fileName);
+    std::unique_ptr<DatasetSpreadsheet> createDataset(const QString& fileName);
 
     void addTestDataForDumpsComparison(const QString& testNamePrefix);
 
     void compareDumps(const QString& fileSuffix);
 
-    void compareDatasetDefinitionWithDump(DatasetSpreadsheet* dataset,
-                                          const QString& fileName);
+    void compareDatasetDefinitionWithDump(
+        const std::unique_ptr<DatasetSpreadsheet>& dataset,
+        const QString& fileName);
 
-    void activateAllDatasetColumns(DatasetSpreadsheet* dataset);
+    void activateAllDatasetColumns(
+        const std::unique_ptr<DatasetSpreadsheet>& dataset);
 
     void generateDataDumpsForFile(QString name);
 
