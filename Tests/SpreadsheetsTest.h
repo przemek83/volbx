@@ -38,6 +38,8 @@ private:
                                 "testDataWithPlot",
                                 "test"};
 
+    DatasetSpreadsheet* createDataset(const QString& fileName);
+
     void addTestDataForDumpsComparison(const QString& testNamePrefix);
 
     void compareDumps(const QString& fileSuffix);

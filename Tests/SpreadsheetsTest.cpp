@@ -39,14 +39,10 @@ void SpreadsheetsTest::testCompareSpreadsheetFiles()
 {
     QFETCH(QString, fileName);
 
-    QString filePath{getSpreadsheetsDir() + fileName};
-    DatasetSpreadsheet* dataset = nullptr;
-    if (fileName.endsWith(".xlsx"))
-        dataset = new DatasetXlsx(filePath, filePath);
-    else
-        dataset = new DatasetOds(filePath, filePath);
+    DatasetSpreadsheet* dataset{createDataset(fileName)};
+    QVERIFY(dataset->initialize());
 
-    QVERIFY(true == dataset->initialize());
+    QString filePath{getSpreadsheetsDir() + fileName};
     const QString dumpFileName{filePath + Common::getDefinitionDumpSuffix()};
     QByteArray dumpFromFile{
         FileUtilities::loadFile(dumpFileName).second.toUtf8()};
@@ -70,14 +66,8 @@ void SpreadsheetsTest::testCompareSpreadsheetFilesDamaged()
 {
     QFETCH(QString, fileName);
 
-    QString filePath{getSpreadsheetsDir() + fileName};
-    DatasetSpreadsheet* dataset = nullptr;
-    if (fileName.endsWith(".xlsx"))
-        dataset = new DatasetXlsx(filePath, filePath);
-    else
-        dataset = new DatasetOds(filePath, filePath);
-
-    QVERIFY(false == dataset->initialize());
+    DatasetSpreadsheet* dataset{createDataset(fileName)};
+    QVERIFY(!dataset->initialize());
 }
 
 void SpreadsheetsTest::testCompareDefinitionDumps_data()
@@ -98,6 +88,17 @@ void SpreadsheetsTest::testCompareTsvDumps_data()
 void SpreadsheetsTest::testCompareTsvDumps()
 {
     compareDumps(Common::getDataTsvDumpSuffix());
+}
+
+DatasetSpreadsheet* SpreadsheetsTest::createDataset(const QString& fileName)
+{
+    QString filePath{getSpreadsheetsDir() + fileName};
+    DatasetSpreadsheet* dataset = nullptr;
+    if (fileName.endsWith(".xlsx"))
+        dataset = new DatasetXlsx(filePath, filePath);
+    else
+        dataset = new DatasetOds(filePath, filePath);
+    return dataset;
 }
 
 void SpreadsheetsTest::addTestDataForDumpsComparison(
