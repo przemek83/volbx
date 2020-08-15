@@ -86,7 +86,7 @@ void SpreadsheetsTest::testCompareDefinitionDumps_data()
 
     for (const auto& fileName : fileNames_)
     {
-        QString testName{"Compare definition dumps (xlsx vs ods) " + fileName};
+        QString testName{"Compare definition dumps for " + fileName};
         QTest::newRow(testName.toStdString().c_str()) << fileName;
     }
 }
@@ -107,26 +107,31 @@ void SpreadsheetsTest::testCompareDefinitionDumps()
     QCOMPARE(xlsxFileContent, odsFileContent);
 }
 
-void SpreadsheetsTest::compareAllTsvDumps()
+void SpreadsheetsTest::testCompareTsvDumps_data()
 {
-    QDirIterator dirIt(getSpreadsheetsDir(), QDirIterator::Subdirectories);
-    while (dirIt.hasNext())
+    QTest::addColumn<QString>("fileName");
+
+    for (const auto& fileName : fileNames_)
     {
-        dirIt.next();
-        QFileInfo fileInfo(dirIt.filePath());
-        if (fileInfo.isFile() &&
-            (fileInfo.suffix() == "xlsx" || fileInfo.suffix() == "ods"))
-        {
-            QCOMPARE(FileUtilities::loadFile(fileInfo.path() + "/" +
-                                             fileInfo.baseName() + ".xlsx" +
-                                             Common::getDataTsvDumpSuffix())
-                         .second,
-                     FileUtilities::loadFile(fileInfo.path() + "/" +
-                                             fileInfo.baseName() + ".ods" +
-                                             Common::getDataTsvDumpSuffix())
-                         .second);
-        }
+        QString testName{"Compare tsv dumps for " + fileName};
+        QTest::newRow(testName.toStdString().c_str()) << fileName;
     }
+}
+
+void SpreadsheetsTest::testCompareTsvDumps()
+{
+    QFETCH(QString, fileName);
+
+    QString filePath{getSpreadsheetsDir() + fileName};
+    auto [xlsxLoaded, xlsxTsvDump] = FileUtilities::loadFile(
+        filePath + ".xlsx" + Common::getDataTsvDumpSuffix());
+    QVERIFY(xlsxLoaded);
+
+    auto [odsLoaded, odsTsvDump] = FileUtilities::loadFile(
+        filePath + ".ods" + Common::getDataTsvDumpSuffix());
+    QVERIFY(odsLoaded);
+
+    QCOMPARE(xlsxTsvDump, odsTsvDump);
 }
 
 void SpreadsheetsTest::addTestCasesForFileNames(

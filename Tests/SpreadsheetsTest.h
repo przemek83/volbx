@@ -22,6 +22,9 @@ private slots:
     void testCompareDefinitionDumps_data();
     void testCompareDefinitionDumps();
 
+    void testCompareTsvDumps_data();
+    void testCompareTsvDumps();
+
 private:
     QVector<QString> fileNames_{"excel",
                                 "HistVsNormal",
@@ -40,10 +43,6 @@ private:
     void generateAllDumpData();
 
     QString getSpreadsheetsDir();
-
-    /// To be used when .ods and .xlsx has same data. Actually data is not same
-    /// :(
-    void compareAllTsvDumps();
 
     void addTestCasesForFileNames(const QVector<QString>& fileNames);
 };
