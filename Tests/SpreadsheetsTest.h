@@ -44,6 +44,11 @@ private:
 
     void compareDumps(const QString& fileSuffix);
 
+    void compareDatasetDefinitionWithDump(DatasetSpreadsheet* dataset,
+                                          const QString& fileName);
+
+    void activateAllDatasetColumns(DatasetSpreadsheet* dataset);
+
     void generateDataDumpsForFile(QString name);
 
     void generateAllDumpData();

@@ -42,17 +42,11 @@ void SpreadsheetsTest::testCompareSpreadsheetFiles()
     DatasetSpreadsheet* dataset{createDataset(fileName)};
     QVERIFY(dataset->initialize());
 
-    QString filePath{getSpreadsheetsDir() + fileName};
-    const QString dumpFileName{filePath + Common::getDefinitionDumpSuffix()};
-    QByteArray dumpFromFile{
-        FileUtilities::loadFile(dumpFileName).second.toUtf8()};
-    QByteArray dumpFromDataset{dataset->definitionToXml(dataset->rowCount())};
-    QVERIFY(Common::xmlsAreEqual(dumpFromFile, dumpFromDataset));
+    compareDatasetDefinitionWithDump(dataset, fileName);
 
-    QVector<bool> activeColumns(dataset->columnCount(), true);
-    dataset->setActiveColumns(activeColumns);
-    dataset->loadData();
-    QVERIFY(true == dataset->isValid());
+    activateAllDatasetColumns(dataset);
+    QVERIFY(dataset->loadData());
+    QVERIFY(dataset->isValid());
 
     Common::compareExportDataWithDump((std::unique_ptr<Dataset>(dataset)));
 }
@@ -127,6 +121,23 @@ void SpreadsheetsTest::compareDumps(const QString& fileSuffix)
     QVERIFY(odsLoaded);
 
     QCOMPARE(xlsxDump, odsDump);
+}
+
+void SpreadsheetsTest::compareDatasetDefinitionWithDump(
+    DatasetSpreadsheet* dataset, const QString& fileName)
+{
+    QString filePath{getSpreadsheetsDir() + fileName};
+    const QString dumpFileName{filePath + Common::getDefinitionDumpSuffix()};
+    QByteArray dumpFromFile{
+        FileUtilities::loadFile(dumpFileName).second.toUtf8()};
+    QByteArray dumpFromDataset{dataset->definitionToXml(dataset->rowCount())};
+    QVERIFY(Common::xmlsAreEqual(dumpFromFile, dumpFromDataset));
+}
+
+void SpreadsheetsTest::activateAllDatasetColumns(DatasetSpreadsheet* dataset)
+{
+    QVector<bool> activeColumns(dataset->columnCount(), true);
+    dataset->setActiveColumns(activeColumns);
 }
 
 void SpreadsheetsTest::addTestCasesForFileNames(
