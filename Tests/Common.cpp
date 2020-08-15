@@ -1,10 +1,17 @@
 #include "Common.h"
 
-#include <ExportDsv.h>
 #include <QBuffer>
 #include <QDomDocument>
 #include <QFile>
+#include <QTableView>
 #include <QTextStream>
+#include <QtTest/QtTest>
+
+#include <Dataset.h>
+#include <ExportDsv.h>
+#include <FileUtilities.h>
+#include <FilteringProxyModel.h>
+#include <TableModel.h>
 
 namespace
 {
@@ -125,6 +132,23 @@ bool xmlsAreEqual(const QByteArray& left, const QByteArray& right)
     QDomElement rightRoot{rightDom.documentElement()};
 
     return domElementsEqual(leftRoot, rightRoot);
+}
+
+void compareExportDataWithDump(std::unique_ptr<Dataset> dataset)
+{
+    QString datasetName{dataset->getName()};
+    TableModel model(std::move(dataset));
+    FilteringProxyModel proxyModel;
+    proxyModel.setSourceModel(&model);
+
+    QTableView view;
+    view.setModel(&proxyModel);
+
+    QString actualData{Common::getExportedTsv(view)};
+    QString expectedData{
+        FileUtilities::loadFile(datasetName + Common::getDataTsvDumpSuffix())
+            .second};
+    QCOMPARE(actualData.split('\n'), expectedData.split('\n'));
 }
 
 }  // namespace Common
