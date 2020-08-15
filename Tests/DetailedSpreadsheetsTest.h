@@ -15,10 +15,10 @@ private slots:
     void initTestCase();
 
     /// Detailed test for 5 files.
-    void detailedSpreadsheetFileTest01();
+    void testDetailedSpreadsheetFile01();
     // void detailedSpreadsheetFileTest02();
-    void detailedSpreadsheetFileTest03();
-    void detailedSpreadsheetFileTest04();
+    void testDetailedSpreadsheetFile03();
+    void testDetailedSpreadsheetFile04();
     // void detailedSpreadsheetFileTest05();
 
     //    void compareAllDefinitionDumps();

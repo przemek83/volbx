@@ -30,12 +30,12 @@ QString SpreadsheetsTest::getSpreadsheetsDir()
                    QLatin1String("/TestSpreadsheets/"));
 }
 
-void SpreadsheetsTest::compareSpreadsheetFiles_data()
+void SpreadsheetsTest::testCompareSpreadsheetFiles_data()
 {
     addTestCasesForFileNames(fileNames_);
 }
 
-void SpreadsheetsTest::compareSpreadsheetFiles()
+void SpreadsheetsTest::testCompareSpreadsheetFiles()
 {
     QFETCH(QString, fileName);
 
@@ -61,12 +61,12 @@ void SpreadsheetsTest::compareSpreadsheetFiles()
     Common::compareExportDataWithDump((std::unique_ptr<Dataset>(dataset)));
 }
 
-void SpreadsheetsTest::compareSpreadsheetFilesDamaged_data()
+void SpreadsheetsTest::testCompareSpreadsheetFilesDamaged_data()
 {
     addTestCasesForFileNames({"damaged"});
 }
 
-void SpreadsheetsTest::compareSpreadsheetFilesDamaged()
+void SpreadsheetsTest::testCompareSpreadsheetFilesDamaged()
 {
     QFETCH(QString, fileName);
 
@@ -80,7 +80,7 @@ void SpreadsheetsTest::compareSpreadsheetFilesDamaged()
     QVERIFY(false == dataset->initialize());
 }
 
-void SpreadsheetsTest::compareDefinitionDumps_data()
+void SpreadsheetsTest::testCompareDefinitionDumps_data()
 {
     QTest::addColumn<QString>("fileName");
 
@@ -91,7 +91,7 @@ void SpreadsheetsTest::compareDefinitionDumps_data()
     }
 }
 
-void SpreadsheetsTest::compareDefinitionDumps()
+void SpreadsheetsTest::testCompareDefinitionDumps()
 {
     QFETCH(QString, fileName);
 

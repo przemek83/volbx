@@ -13,14 +13,14 @@ class SpreadsheetsTest : public QObject
 private slots:
     void initTestCase();
 
-    void compareSpreadsheetFiles_data();
-    void compareSpreadsheetFiles();
+    void testCompareSpreadsheetFiles_data();
+    void testCompareSpreadsheetFiles();
 
-    void compareSpreadsheetFilesDamaged_data();
-    void compareSpreadsheetFilesDamaged();
+    void testCompareSpreadsheetFilesDamaged_data();
+    void testCompareSpreadsheetFilesDamaged();
 
-    void compareDefinitionDumps_data();
-    void compareDefinitionDumps();
+    void testCompareDefinitionDumps_data();
+    void testCompareDefinitionDumps();
 
 private:
     QVector<QString> fileNames_{"excel",

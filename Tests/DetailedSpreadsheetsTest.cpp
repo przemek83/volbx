@@ -173,7 +173,7 @@ void DetailedSpreadsheetsTest::testSpreadsheetFile01SomeColumns(
         (std::unique_ptr<Dataset>(dataset)));  //"partial"
 }
 
-void DetailedSpreadsheetsTest::detailedSpreadsheetFileTest01()
+void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile01()
 {
     QString file(getSpreadsheetsDir() + "test01.xlsx");
     DatasetXlsx* definitionXlsx = new DatasetXlsx(file, file);
@@ -201,7 +201,7 @@ void DetailedSpreadsheetsTest::detailedSpreadsheetFileTest01()
 //    file); testSpreadsheetFile02(definitionOds, file);
 //}
 
-void DetailedSpreadsheetsTest::detailedSpreadsheetFileTest03()
+void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile03()
 {
     QString file(getSpreadsheetsDir() + "test03.xlsx");
     DatasetXlsx* definitionXlsx = new DatasetXlsx(file, file);
@@ -212,7 +212,7 @@ void DetailedSpreadsheetsTest::detailedSpreadsheetFileTest03()
     testSpreadsheetFile03(definitionOds, file);
 }
 
-void DetailedSpreadsheetsTest::detailedSpreadsheetFileTest04()
+void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile04()
 {
     QString file(getSpreadsheetsDir() + "test04.xlsx");
     DatasetXlsx* definitionXlsx = new DatasetXlsx(file, file);
