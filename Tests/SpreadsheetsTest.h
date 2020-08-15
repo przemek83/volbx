@@ -38,6 +38,10 @@ private:
                                 "testDataWithPlot",
                                 "test"};
 
+    void addTestDataForDumpsComparison(const QString& testNamePrefix);
+
+    void compareDumps(const QString& fileSuffix);
+
     void generateDataDumpsForFile(QString name);
 
     void generateAllDumpData();
