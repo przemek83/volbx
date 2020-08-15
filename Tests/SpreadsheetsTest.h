@@ -19,9 +19,22 @@ private slots:
     void compareSpreadsheetFilesDamaged_data();
     void compareSpreadsheetFilesDamaged();
 
-    void compareAllDefinitionDumps();
+    void compareDefinitionDumps_data();
+    void compareDefinitionDumps();
 
 private:
+    QVector<QString> fileNames_{"excel",
+                                "HistVsNormal",
+                                "import1",
+                                "import2",
+                                "import3",
+                                "smallDataSet",
+                                "test2",
+                                "testAccounts",
+                                "testDataWithPlot",
+                                "testDataWithPlot",
+                                "test"};
+
     void generateDataDumpsForFile(QString name);
 
     void generateAllDumpData();

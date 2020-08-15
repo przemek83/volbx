@@ -32,18 +32,7 @@ QString SpreadsheetsTest::getSpreadsheetsDir()
 
 void SpreadsheetsTest::compareSpreadsheetFiles_data()
 {
-    QVector<QString> fileNames{"excel",
-                               "HistVsNormal",
-                               "import1",
-                               "import2",
-                               "import3",
-                               "smallDataSet",
-                               "test2",
-                               "testAccounts",
-                               "testDataWithPlot",
-                               "testDataWithPlot",
-                               "test"};
-    addTestCasesForFileNames(fileNames);
+    addTestCasesForFileNames(fileNames_);
 }
 
 void SpreadsheetsTest::compareSpreadsheetFiles()
@@ -91,26 +80,31 @@ void SpreadsheetsTest::compareSpreadsheetFilesDamaged()
     QVERIFY(false == dataset->initialize());
 }
 
-void SpreadsheetsTest::compareAllDefinitionDumps()
+void SpreadsheetsTest::compareDefinitionDumps_data()
 {
-    QDirIterator dirIt(getSpreadsheetsDir(), QDirIterator::Subdirectories);
-    while (dirIt.hasNext())
+    QTest::addColumn<QString>("fileName");
+
+    for (const auto& fileName : fileNames_)
     {
-        dirIt.next();
-        QFileInfo fileInfo(dirIt.filePath());
-        if (fileInfo.isFile() &&
-            (fileInfo.suffix() == "xlsx" || fileInfo.suffix() == "ods"))
-        {
-            QCOMPARE(FileUtilities::loadFile(fileInfo.path() + "/" +
-                                             fileInfo.baseName() + ".xlsx" +
-                                             Common::getDefinitionDumpSuffix())
-                         .second,
-                     FileUtilities::loadFile(fileInfo.path() + "/" +
-                                             fileInfo.baseName() + ".ods" +
-                                             Common::getDefinitionDumpSuffix())
-                         .second);
-        }
+        QString testName{"Compare definition dumps (xlsx vs ods) " + fileName};
+        QTest::newRow(testName.toStdString().c_str()) << fileName;
     }
+}
+
+void SpreadsheetsTest::compareDefinitionDumps()
+{
+    QFETCH(QString, fileName);
+
+    QString filePath{getSpreadsheetsDir() + fileName};
+    auto [xlsxLoaded, xlsxFileContent] = FileUtilities::loadFile(
+        filePath + ".xlsx" + Common::getDefinitionDumpSuffix());
+    QVERIFY(xlsxLoaded);
+
+    auto [odsLoaded, odsFileContent] = FileUtilities::loadFile(
+        filePath + ".ods" + Common::getDefinitionDumpSuffix());
+    QVERIFY(odsLoaded);
+
+    QCOMPARE(xlsxFileContent, odsFileContent);
 }
 
 void SpreadsheetsTest::compareAllTsvDumps()
