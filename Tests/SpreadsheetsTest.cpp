@@ -173,11 +173,11 @@ void SpreadsheetsTest::generateAllDumpData()
 
 void SpreadsheetsTest::generateDataDumpsForFile(QString name)
 {
-    DatasetSpreadsheet* dataset = nullptr;
+    std::unique_ptr<DatasetSpreadsheet> dataset{nullptr};
     if (name.endsWith(".xlsx"))
-        dataset = new DatasetXlsx(name, name);
+        dataset = std::make_unique<DatasetXlsx>(name, name);
     else
-        dataset = new DatasetOds(name, name);
+        dataset = std::make_unique<DatasetOds>(name, name);
 
     dataset->initialize();
     QByteArray dumpedDefinition = dataset->definitionToXml(dataset->rowCount());
@@ -191,7 +191,7 @@ void SpreadsheetsTest::generateDataDumpsForFile(QString name)
     dataset->setActiveColumns(activeColumns);
     dataset->loadData();
 
-    TableModel model((std::unique_ptr<Dataset>(dataset)));
+    TableModel model(std::move(dataset));
     FilteringProxyModel proxyModel;
     proxyModel.setSourceModel(&model);
 
