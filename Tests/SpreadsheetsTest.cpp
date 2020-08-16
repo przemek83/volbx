@@ -162,12 +162,13 @@ void SpreadsheetsTest::addTestCasesForFileNames(
 
 void SpreadsheetsTest::generateExpectedData()
 {
-    QDir().mkdir(QApplication::applicationDirPath() +
-                 "/generatedSpreadsheetsData/");
+    QString generatedFilesDir{QApplication::applicationDirPath() +
+                              "/generatedSpreadsheetsTestData/"};
+    QDir().mkdir(generatedFilesDir);
     for (const auto& fileName : testFileNames_)
     {
-        generateExpectedDataForFile(fileName + ".xlsx");
-        generateExpectedDataForFile(fileName + ".ods");
+        generateExpectedDataForFile(fileName + ".xlsx", generatedFilesDir);
+        generateExpectedDataForFile(fileName + ".ods", generatedFilesDir);
     }
 }
 
@@ -186,13 +187,13 @@ void SpreadsheetsTest::saveExpectedTsv(const QTableView& view,
     Common::saveFile(filePath + Common::getDataTsvDumpSuffix(), tsvData);
 }
 
-void SpreadsheetsTest::generateExpectedDataForFile(const QString& fileName)
+void SpreadsheetsTest::generateExpectedDataForFile(const QString& fileName,
+                                                   const QString& dir)
 {
     std::unique_ptr<DatasetSpreadsheet> dataset{createDataset(fileName)};
     dataset->initialize();
 
-    QString filePath{QApplication::applicationDirPath() +
-                     QLatin1String("/generatedSpreadsheetsData/") + fileName};
+    QString filePath{dir + fileName};
     saveExpectedDefinition(dataset, filePath);
 
     activateAllDatasetColumns(dataset);

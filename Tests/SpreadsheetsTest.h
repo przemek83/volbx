@@ -48,7 +48,8 @@ private:
     void activateAllDatasetColumns(
         const std::unique_ptr<DatasetSpreadsheet>& dataset);
 
-    void generateExpectedDataForFile(const QString& fileName);
+    void generateExpectedDataForFile(const QString& fileName,
+                                     const QString& dir);
 
     void generateExpectedData();
 
