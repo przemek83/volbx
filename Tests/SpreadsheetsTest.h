@@ -38,7 +38,8 @@ private:
                                 "testAccounts",
                                 "testDataWithPlot",
                                 "testDataWithPlot",
-                                "test"};
+                                "test",
+                                "testFileData"};
 
     std::unique_ptr<DatasetSpreadsheet> createDataset(const QString& fileName);
 
