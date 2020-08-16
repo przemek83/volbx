@@ -33,10 +33,6 @@ target_link_libraries(${PROJECT_NAME} debug Qt5Quazipd)
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                    ${CMAKE_CURRENT_SOURCE_DIR}/TestFiles/Data $<TARGET_FILE_DIR:tests>/Data)
-                   
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy_directory
-                   ${CMAKE_CURRENT_SOURCE_DIR}/TestFiles/TestSpreadsheets/detailedTests $<TARGET_FILE_DIR:tests>/detailedTests)
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy 

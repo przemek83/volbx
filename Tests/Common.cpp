@@ -148,7 +148,18 @@ void compareExportDataWithDump(std::unique_ptr<Dataset> dataset)
     QString expectedData{
         FileUtilities::loadFile(datasetName + Common::getDataTsvDumpSuffix())
             .second};
-    QCOMPARE(actualData.split('\n'), expectedData.split('\n'));
+
+    QVector<QStringRef> actualDataLines{actualData.splitRef('\n')};
+    QVector<QStringRef> expectedDataLines{expectedData.splitRef('\n')};
+    QCOMPARE(actualDataLines.size(), expectedDataLines.size());
+    for (int i = 0; i < actualDataLines.size(); ++i)
+        if (actualDataLines[i] != expectedDataLines[i])
+        {
+            QString msg{"Difference in line " + QString::number(i + 1) +
+                        "\nActual:  " + actualDataLines[i] +
+                        "\nExpected: " + expectedDataLines[i]};
+            QFAIL(msg.toStdString().c_str());
+        }
 }
 
 }  // namespace Common

@@ -70,5 +70,29 @@
         <file>TestFiles/TestSpreadsheets/testFileData.xlsx_DefinitionDump.txt</file>
         <file>TestFiles/TestSpreadsheets/testFileData.xlsx_tsvDump.txt</file>
         <file>TestFiles/TestSpreadsheets/damaged.ods</file>
+        <file>TestFiles/TestSpreadsheets/test01.ods</file>
+        <file>TestFiles/TestSpreadsheets/test01.ods_DefinitionDump.txt</file>
+        <file>TestFiles/TestSpreadsheets/test01.ods_tsvDump.txt</file>
+        <file>TestFiles/TestSpreadsheets/test01.xlsx</file>
+        <file>TestFiles/TestSpreadsheets/test01.xlsx_DefinitionDump.txt</file>
+        <file>TestFiles/TestSpreadsheets/test01.xlsx_tsvDump.txt</file>
+        <file>TestFiles/TestSpreadsheets/test01Partial.ods</file>
+        <file>TestFiles/TestSpreadsheets/test01Partial.ods_DefinitionDump.txt</file>
+        <file>TestFiles/TestSpreadsheets/test01Partial.ods_tsvDump.txt</file>
+        <file>TestFiles/TestSpreadsheets/test01Partial.xlsx</file>
+        <file>TestFiles/TestSpreadsheets/test01Partial.xlsx_DefinitionDump.txt</file>
+        <file>TestFiles/TestSpreadsheets/test01Partial.xlsx_tsvDump.txt</file>
+        <file>TestFiles/TestSpreadsheets/test03.ods</file>
+        <file>TestFiles/TestSpreadsheets/test03.ods_DefinitionDump.txt</file>
+        <file>TestFiles/TestSpreadsheets/test03.ods_tsvDump.txt</file>
+        <file>TestFiles/TestSpreadsheets/test03.xlsx</file>
+        <file>TestFiles/TestSpreadsheets/test03.xlsx_DefinitionDump.txt</file>
+        <file>TestFiles/TestSpreadsheets/test03.xlsx_tsvDump.txt</file>
+        <file>TestFiles/TestSpreadsheets/test04.ods</file>
+        <file>TestFiles/TestSpreadsheets/test04.ods_DefinitionDump.txt</file>
+        <file>TestFiles/TestSpreadsheets/test04.xlsx</file>
+        <file>TestFiles/TestSpreadsheets/test04.ods_tsvDump.txt</file>
+        <file>TestFiles/TestSpreadsheets/test04.xlsx_DefinitionDump.txt</file>
+        <file>TestFiles/TestSpreadsheets/test04.xlsx_tsvDump.txt</file>
     </qresource>
 </RCC>

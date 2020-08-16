@@ -14,7 +14,7 @@
 
 void SpreadsheetsTest::initTestCase()
 {
-    // generateDumpData();
+    // generateExpectedData();
 }
 
 QString SpreadsheetsTest::getSpreadsheetsDir()
@@ -115,7 +115,16 @@ void SpreadsheetsTest::compareOdsAndXlsxExpectedData(const QString& fileSuffix)
         FileUtilities::loadFile(filePath + ".ods" + fileSuffix);
     QVERIFY(odsLoaded);
 
-    QCOMPARE(xlsxDump, odsDump);
+    QVector<QStringRef> xlsxLines{xlsxDump.splitRef('\n')};
+    QVector<QStringRef> odsLines{odsDump.splitRef('\n')};
+    QCOMPARE(xlsxLines.size(), odsLines.size());
+    for (int i = 0; i < xlsxLines.size(); ++i)
+        if (xlsxLines[i] != odsLines[i])
+        {
+            QString msg{"Difference in line " + QString::number(i + 1) +
+                        "\nXlsx: " + xlsxLines[i] + "\nOds : " + odsLines[i]};
+            QFAIL(msg.toStdString().c_str());
+        }
 }
 
 void SpreadsheetsTest::checkDatasetDefinition(
@@ -153,6 +162,8 @@ void SpreadsheetsTest::addTestCasesForFileNames(
 
 void SpreadsheetsTest::generateExpectedData()
 {
+    QDir().mkdir(QApplication::applicationDirPath() +
+                 "/generatedSpreadsheetsData/");
     for (const auto& fileName : testFileNames_)
     {
         generateExpectedDataForFile(fileName + ".xlsx");
@@ -180,7 +191,8 @@ void SpreadsheetsTest::generateExpectedDataForFile(const QString& fileName)
     std::unique_ptr<DatasetSpreadsheet> dataset{createDataset(fileName)};
     dataset->initialize();
 
-    QString filePath{getSpreadsheetsDir() + fileName};
+    QString filePath{QApplication::applicationDirPath() +
+                     QLatin1String("/generatedSpreadsheetsData/") + fileName};
     saveExpectedDefinition(dataset, filePath);
 
     activateAllDatasetColumns(dataset);
