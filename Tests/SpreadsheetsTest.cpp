@@ -30,12 +30,12 @@ QString SpreadsheetsTest::getSpreadsheetsDir()
                    QLatin1String("/TestSpreadsheets/"));
 }
 
-void SpreadsheetsTest::testCompareSpreadsheetFiles_data()
+void SpreadsheetsTest::testFiles_data()
 {
     addTestCasesForFileNames(fileNames_);
 }
 
-void SpreadsheetsTest::testCompareSpreadsheetFiles()
+void SpreadsheetsTest::testFiles()
 {
     QFETCH(QString, fileName);
 
@@ -51,12 +51,12 @@ void SpreadsheetsTest::testCompareSpreadsheetFiles()
     Common::compareExportDataWithDump(std::move(dataset));
 }
 
-void SpreadsheetsTest::testCompareSpreadsheetFilesDamaged_data()
+void SpreadsheetsTest::testDamagedFiles_data()
 {
     addTestCasesForFileNames({"damaged"});
 }
 
-void SpreadsheetsTest::testCompareSpreadsheetFilesDamaged()
+void SpreadsheetsTest::testDamagedFiles()
 {
     QFETCH(QString, fileName);
 
@@ -64,22 +64,22 @@ void SpreadsheetsTest::testCompareSpreadsheetFilesDamaged()
     QVERIFY(!dataset->initialize());
 }
 
-void SpreadsheetsTest::testCompareDefinitionDumps_data()
+void SpreadsheetsTest::compareDefinitionsOfOdsAndXlsx_data()
 {
     addTestDataForDumpsComparison("Compare definition dumps");
 }
 
-void SpreadsheetsTest::testCompareDefinitionDumps()
+void SpreadsheetsTest::compareDefinitionsOfOdsAndXlsx()
 {
     compareDumps(Common::getDefinitionDumpSuffix());
 }
 
-void SpreadsheetsTest::testCompareTsvDumps_data()
+void SpreadsheetsTest::compareTsvDumpsOfOdsAndXlsx_data()
 {
     addTestDataForDumpsComparison("Compare tsv dumps");
 }
 
-void SpreadsheetsTest::testCompareTsvDumps()
+void SpreadsheetsTest::compareTsvDumpsOfOdsAndXlsx()
 {
     compareDumps(Common::getDataTsvDumpSuffix());
 }
