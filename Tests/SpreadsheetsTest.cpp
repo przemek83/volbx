@@ -19,7 +19,10 @@
 
 #include "Common.h"
 
-void SpreadsheetsTest::initTestCase() { generateDumpData(); }
+void SpreadsheetsTest::initTestCase()
+{
+    // generateDumpData();
+}
 
 QString SpreadsheetsTest::getSpreadsheetsDir()
 {
