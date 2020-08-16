@@ -9,11 +9,6 @@
 
 #include "Common.h"
 
-void DetailedSpreadsheetsTest::initTestCase()
-{
-    // generateAllDumpData();
-}
-
 void DetailedSpreadsheetsTest::testBasicInfo(Dataset& dataset, int rows,
                                              int columns, QString name)
 {
@@ -34,11 +29,8 @@ void DetailedSpreadsheetsTest::testColumnInfo(
     Dataset& dataset, const QVector<QPair<int, ColumnType>>& columnFormats,
     const QVector<QPair<int, QString>>& columnNames)
 {
-    QPair<int, ColumnType> pairFormat;
-    foreach (pairFormat, columnFormats)
-    {
-        QCOMPARE(dataset.getColumnFormat(pairFormat.first), pairFormat.second);
-    }
+    for (auto& [column, expectedColumnType] : columnFormats)
+        QCOMPARE(dataset.getColumnFormat(column), expectedColumnType);
 
     // No tagged columns yet.
     auto [ok, column] = dataset.getTaggedColumn(ColumnTag::DATE);
@@ -46,11 +38,8 @@ void DetailedSpreadsheetsTest::testColumnInfo(
     std::tie(ok, column) = dataset.getTaggedColumn(ColumnTag::VALUE);
     QVERIFY(!ok);
 
-    QPair<int, QString> pairNames;
-    foreach (pairNames, columnNames)
-    {
-        QCOMPARE(dataset.getHeaderName(pairNames.first), pairNames.second);
-    }
+    for (auto& [column, expectedColumnName] : columnNames)
+        QCOMPARE(dataset.getHeaderName(column), expectedColumnName);
 }
 
 void DetailedSpreadsheetsTest::testSampleData(
@@ -75,7 +64,7 @@ QString DetailedSpreadsheetsTest::getSpreadsheetsDir()
 void DetailedSpreadsheetsTest::testSpreadsheetFile01(
     DatasetSpreadsheet* dataset, QString file)
 {
-    QVERIFY(true == dataset->initialize());
+    QVERIFY(dataset->initialize());
     testBasicInfo(*dataset, 4000, 7, file);
 
     QVector<QPair<int, ColumnType>> columnFormats;
@@ -132,7 +121,7 @@ void DetailedSpreadsheetsTest::testSpreadsheetFile01(
 void DetailedSpreadsheetsTest::testSpreadsheetFile01SomeColumns(
     DatasetSpreadsheet* dataset)
 {
-    QVERIFY(true == dataset->initialize());
+    QVERIFY(dataset->initialize());
     QVector<bool> activeColumns(dataset->columnCount(), true);
     activeColumns[0] = false;
     activeColumns[1] = false;
@@ -231,7 +220,7 @@ void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile04()
 void DetailedSpreadsheetsTest::testSpreadsheetFile03(
     DatasetSpreadsheet* dataset, QString file)
 {
-    QVERIFY(true == dataset->initialize());
+    QVERIFY(dataset->initialize());
     testBasicInfo(*dataset, 4, 5, file);
 
     QVector<QPair<int, ColumnType>> columnFormats;
@@ -278,7 +267,7 @@ void DetailedSpreadsheetsTest::testSpreadsheetFile03(
 void DetailedSpreadsheetsTest::testSpreadsheetFile04(
     DatasetSpreadsheet* dataset, QString file)
 {
-    QVERIFY(true == dataset->initialize());
+    QVERIFY(dataset->initialize());
     testBasicInfo(*dataset, 30, 12, file);
 
     QVector<QPair<int, ColumnType>> columnFormats;

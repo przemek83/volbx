@@ -12,18 +12,12 @@ class DetailedSpreadsheetsTest : public QObject
 {
     Q_OBJECT
 private slots:
-    void initTestCase();
-
     /// Detailed test for 5 files.
     void testDetailedSpreadsheetFile01();
     // void detailedSpreadsheetFileTest02();
     void testDetailedSpreadsheetFile03();
     void testDetailedSpreadsheetFile04();
     // void detailedSpreadsheetFileTest05();
-
-    //    void compareAllDefinitionDumps();
-
-    //    void cleanupTestCase();
 
 private:
     /**
