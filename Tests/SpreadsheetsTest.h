@@ -7,7 +7,7 @@
 class QTableView;
 
 /**
- * @brief Unit test for spreadsheets.
+ * @brief Standard tests for spreadsheets.
  */
 class SpreadsheetsTest : public QObject
 {
@@ -21,49 +21,50 @@ private slots:
     void testDamagedFiles_data();
     void testDamagedFiles();
 
-    void compareDefinitionsOfOdsAndXlsx_data();
-    void compareDefinitionsOfOdsAndXlsx();
+    void compareExpectedDefinitionsOfOdsAndXlsx_data();
+    void compareExpectedDefinitionsOfOdsAndXlsx();
 
-    void compareTsvDumpsOfOdsAndXlsx_data();
-    void compareTsvDumpsOfOdsAndXlsx();
+    void compareExpectedTsvDumpsOfOdsAndXlsx_data();
+    void compareExpectedTsvDumpsOfOdsAndXlsx();
 
 private:
-    QVector<QString> fileNames_{"excel",
-                                "HistVsNormal",
-                                "import1",
-                                "import2",
-                                "import3",
-                                "smallDataSet",
-                                "test2",
-                                "testAccounts",
-                                "testDataWithPlot",
-                                "testDataWithPlot",
-                                "test",
-                                "testFileData"};
+    QVector<QString> testFileNames_{"excel",
+                                    "HistVsNormal",
+                                    "import1",
+                                    "import2",
+                                    "import3",
+                                    "smallDataSet",
+                                    "test2",
+                                    "testAccounts",
+                                    "testDataWithPlot",
+                                    "testDataWithPlot",
+                                    "test",
+                                    "testFileData"};
 
     std::unique_ptr<DatasetSpreadsheet> createDataset(const QString& fileName);
 
-    void addTestDataForDumpsComparison(const QString& testNamePrefix);
+    void addTestCaseForOdsAndXlsxComparison(const QString& testNamePrefix);
 
-    void compareDumps(const QString& fileSuffix);
+    void compareOdsAndXlsxExpectedData(const QString& fileSuffix);
 
-    void compareDatasetDefinitionWithDump(
+    void checkDatasetDefinition(
         const std::unique_ptr<DatasetSpreadsheet>& dataset,
-        const QString& fileName);
+        const QString& expectedDefinitionFileName);
 
     void activateAllDatasetColumns(
         const std::unique_ptr<DatasetSpreadsheet>& dataset);
 
-    void generateDataDumpsForFile(const QString& name);
+    void generateExpectedDataForFile(const QString& fileName);
 
-    void generateDumpData();
+    void generateExpectedData();
 
     QString getSpreadsheetsDir();
 
-    void saveDefinition(const std::unique_ptr<DatasetSpreadsheet>& dataset,
-                        const QString& filePath);
+    void saveExpectedDefinition(
+        const std::unique_ptr<DatasetSpreadsheet>& dataset,
+        const QString& filePath);
 
-    void saveTsv(const QTableView& view, const QString& filePath);
+    void saveExpectedTsv(const QTableView& view, const QString& filePath);
 
     void addTestCasesForFileNames(const QVector<QString>& fileNames);
 };

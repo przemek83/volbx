@@ -1,21 +1,14 @@
 #include "SpreadsheetsTest.h"
 
-#include <memory>
-
 #include <QApplication>
-#include <QClipboard>
-#include <QString>
 #include <QTableView>
 #include <QtTest/QtTest>
 
-#include "Common/Configuration.h"
-#include "Common/Constants.h"
-#include "Common/FileUtilities.h"
-#include "Datasets/Dataset.h"
-#include "Datasets/DatasetOds.h"
-#include "Datasets/DatasetXlsx.h"
-#include "ModelsAndViews/FilteringProxyModel.h"
-#include "ModelsAndViews/TableModel.h"
+#include <Common/FileUtilities.h>
+#include <Datasets/DatasetOds.h>
+#include <Datasets/DatasetXlsx.h>
+#include <ModelsAndViews/FilteringProxyModel.h>
+#include <ModelsAndViews/TableModel.h>
 
 #include "Common.h"
 
@@ -32,7 +25,7 @@ QString SpreadsheetsTest::getSpreadsheetsDir()
 
 void SpreadsheetsTest::testFiles_data()
 {
-    addTestCasesForFileNames(fileNames_);
+    addTestCasesForFileNames(testFileNames_);
 }
 
 void SpreadsheetsTest::testFiles()
@@ -42,7 +35,9 @@ void SpreadsheetsTest::testFiles()
     std::unique_ptr<DatasetSpreadsheet> dataset{createDataset(fileName)};
     QVERIFY(dataset->initialize());
 
-    compareDatasetDefinitionWithDump(dataset, fileName);
+    const QString expectedDefinitionFileName{getSpreadsheetsDir() + fileName +
+                                             Common::getDefinitionDumpSuffix()};
+    checkDatasetDefinition(dataset, expectedDefinitionFileName);
 
     activateAllDatasetColumns(dataset);
     QVERIFY(dataset->loadData());
@@ -64,24 +59,24 @@ void SpreadsheetsTest::testDamagedFiles()
     QVERIFY(!dataset->initialize());
 }
 
-void SpreadsheetsTest::compareDefinitionsOfOdsAndXlsx_data()
+void SpreadsheetsTest::compareExpectedDefinitionsOfOdsAndXlsx_data()
 {
-    addTestDataForDumpsComparison("Compare definition dumps");
+    addTestCaseForOdsAndXlsxComparison("Compare definition dumps");
 }
 
-void SpreadsheetsTest::compareDefinitionsOfOdsAndXlsx()
+void SpreadsheetsTest::compareExpectedDefinitionsOfOdsAndXlsx()
 {
-    compareDumps(Common::getDefinitionDumpSuffix());
+    compareOdsAndXlsxExpectedData(Common::getDefinitionDumpSuffix());
 }
 
-void SpreadsheetsTest::compareTsvDumpsOfOdsAndXlsx_data()
+void SpreadsheetsTest::compareExpectedTsvDumpsOfOdsAndXlsx_data()
 {
-    addTestDataForDumpsComparison("Compare tsv dumps");
+    addTestCaseForOdsAndXlsxComparison("Compare tsv dumps");
 }
 
-void SpreadsheetsTest::compareTsvDumpsOfOdsAndXlsx()
+void SpreadsheetsTest::compareExpectedTsvDumpsOfOdsAndXlsx()
 {
-    compareDumps(Common::getDataTsvDumpSuffix());
+    compareOdsAndXlsxExpectedData(Common::getDataTsvDumpSuffix());
 }
 
 std::unique_ptr<DatasetSpreadsheet> SpreadsheetsTest::createDataset(
@@ -96,19 +91,19 @@ std::unique_ptr<DatasetSpreadsheet> SpreadsheetsTest::createDataset(
     return dataset;
 }
 
-void SpreadsheetsTest::addTestDataForDumpsComparison(
+void SpreadsheetsTest::addTestCaseForOdsAndXlsxComparison(
     const QString& testNamePrefix)
 {
     QTest::addColumn<QString>("fileName");
 
-    for (const auto& fileName : fileNames_)
+    for (const auto& fileName : testFileNames_)
     {
         QString testName{testNamePrefix + " for " + fileName};
         QTest::newRow(testName.toStdString().c_str()) << fileName;
     }
 }
 
-void SpreadsheetsTest::compareDumps(const QString& fileSuffix)
+void SpreadsheetsTest::compareOdsAndXlsxExpectedData(const QString& fileSuffix)
 {
     QFETCH(QString, fileName);
 
@@ -124,13 +119,12 @@ void SpreadsheetsTest::compareDumps(const QString& fileSuffix)
     QCOMPARE(xlsxDump, odsDump);
 }
 
-void SpreadsheetsTest::compareDatasetDefinitionWithDump(
-    const std::unique_ptr<DatasetSpreadsheet>& dataset, const QString& fileName)
+void SpreadsheetsTest::checkDatasetDefinition(
+    const std::unique_ptr<DatasetSpreadsheet>& dataset,
+    const QString& expectedDefinitionFileName)
 {
-    QString filePath{getSpreadsheetsDir() + fileName};
-    const QString dumpFileName{filePath + Common::getDefinitionDumpSuffix()};
     QByteArray dumpFromFile{
-        FileUtilities::loadFile(dumpFileName).second.toUtf8()};
+        FileUtilities::loadFile(expectedDefinitionFileName).second.toUtf8()};
     QByteArray dumpFromDataset{dataset->definitionToXml(dataset->rowCount())};
     QVERIFY(Common::xmlsAreEqual(dumpFromFile, dumpFromDataset));
 }
@@ -158,16 +152,16 @@ void SpreadsheetsTest::addTestCasesForFileNames(
     }
 }
 
-void SpreadsheetsTest::generateDumpData()
+void SpreadsheetsTest::generateExpectedData()
 {
-    for (const auto& fileName : fileNames_)
+    for (const auto& fileName : testFileNames_)
     {
-        generateDataDumpsForFile(fileName + ".xlsx");
-        generateDataDumpsForFile(fileName + ".ods");
+        generateExpectedDataForFile(fileName + ".xlsx");
+        generateExpectedDataForFile(fileName + ".ods");
     }
 }
 
-void SpreadsheetsTest::saveDefinition(
+void SpreadsheetsTest::saveExpectedDefinition(
     const std::unique_ptr<DatasetSpreadsheet>& dataset, const QString& filePath)
 {
     QByteArray dumpedDefinition{dataset->definitionToXml(dataset->rowCount())};
@@ -175,19 +169,20 @@ void SpreadsheetsTest::saveDefinition(
                      dumpedDefinition);
 }
 
-void SpreadsheetsTest::saveTsv(const QTableView& view, const QString& filePath)
+void SpreadsheetsTest::saveExpectedTsv(const QTableView& view,
+                                       const QString& filePath)
 {
     QString tsvData{Common::getExportedTsv(view)};
     Common::saveFile(filePath + Common::getDataTsvDumpSuffix(), tsvData);
 }
 
-void SpreadsheetsTest::generateDataDumpsForFile(const QString& fileName)
+void SpreadsheetsTest::generateExpectedDataForFile(const QString& fileName)
 {
     std::unique_ptr<DatasetSpreadsheet> dataset{createDataset(fileName)};
     dataset->initialize();
 
     QString filePath{getSpreadsheetsDir() + fileName};
-    saveDefinition(dataset, filePath);
+    saveExpectedDefinition(dataset, filePath);
 
     activateAllDatasetColumns(dataset);
     dataset->loadData();
@@ -198,5 +193,5 @@ void SpreadsheetsTest::generateDataDumpsForFile(const QString& fileName)
     QTableView view;
     view.setModel(&proxyModel);
 
-    saveTsv(view, filePath);
+    saveExpectedTsv(view, filePath);
 }
