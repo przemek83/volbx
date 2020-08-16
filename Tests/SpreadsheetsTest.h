@@ -4,6 +4,8 @@
 
 #include "Datasets/DatasetSpreadsheet.h"
 
+class QTableView;
+
 /**
  * @brief Unit test for spreadsheets.
  */
@@ -51,11 +53,16 @@ private:
     void activateAllDatasetColumns(
         const std::unique_ptr<DatasetSpreadsheet>& dataset);
 
-    void generateDataDumpsForFile(QString name);
+    void generateDataDumpsForFile(const QString& name);
 
-    void generateAllDumpData();
+    void generateDumpData();
 
     QString getSpreadsheetsDir();
+
+    void saveDefinition(const std::unique_ptr<DatasetSpreadsheet>& dataset,
+                        const QString& filePath);
+
+    void saveTsv(const QTableView& view, const QString& filePath);
 
     void addTestCasesForFileNames(const QVector<QString>& fileNames);
 };

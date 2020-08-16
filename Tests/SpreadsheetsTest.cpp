@@ -19,10 +19,7 @@
 
 #include "Common.h"
 
-void SpreadsheetsTest::initTestCase()
-{
-    // generateAllDumpData();
-}
+void SpreadsheetsTest::initTestCase() { generateDumpData(); }
 
 QString SpreadsheetsTest::getSpreadsheetsDir()
 {
@@ -158,46 +155,45 @@ void SpreadsheetsTest::addTestCasesForFileNames(
     }
 }
 
-void SpreadsheetsTest::generateAllDumpData()
+void SpreadsheetsTest::generateDumpData()
 {
-    QDirIterator dirIt(getSpreadsheetsDir(), QDirIterator::Subdirectories);
-    while (dirIt.hasNext())
+    for (const auto& fileName : fileNames_)
     {
-        dirIt.next();
-        QFileInfo fileInfo(dirIt.filePath());
-        if (fileInfo.isFile() &&
-            (fileInfo.suffix() == "xlsx" || fileInfo.suffix() == "ods"))
-            generateDataDumpsForFile(fileInfo.filePath());
+        generateDataDumpsForFile(fileName + ".xlsx");
+        generateDataDumpsForFile(fileName + ".ods");
     }
 }
 
-void SpreadsheetsTest::generateDataDumpsForFile(QString name)
+void SpreadsheetsTest::saveDefinition(
+    const std::unique_ptr<DatasetSpreadsheet>& dataset, const QString& filePath)
 {
-    std::unique_ptr<DatasetSpreadsheet> dataset{nullptr};
-    if (name.endsWith(".xlsx"))
-        dataset = std::make_unique<DatasetXlsx>(name, name);
-    else
-        dataset = std::make_unique<DatasetOds>(name, name);
-
-    dataset->initialize();
-    QByteArray dumpedDefinition = dataset->definitionToXml(dataset->rowCount());
-    Common::saveFile(name + Common::getDefinitionDumpSuffix(),
+    QByteArray dumpedDefinition{dataset->definitionToXml(dataset->rowCount())};
+    Common::saveFile(filePath + Common::getDefinitionDumpSuffix(),
                      dumpedDefinition);
+}
 
-    if (name.contains("damagedFiles"))
-        return;
+void SpreadsheetsTest::saveTsv(const QTableView& view, const QString& filePath)
+{
+    QString tsvData{Common::getExportedTsv(view)};
+    Common::saveFile(filePath + Common::getDataTsvDumpSuffix(), tsvData);
+}
 
-    QVector<bool> activeColumns(dataset->columnCount(), true);
-    dataset->setActiveColumns(activeColumns);
+void SpreadsheetsTest::generateDataDumpsForFile(const QString& fileName)
+{
+    std::unique_ptr<DatasetSpreadsheet> dataset{createDataset(fileName)};
+    dataset->initialize();
+
+    QString filePath{getSpreadsheetsDir() + fileName};
+    saveDefinition(dataset, filePath);
+
+    activateAllDatasetColumns(dataset);
     dataset->loadData();
 
     TableModel model(std::move(dataset));
     FilteringProxyModel proxyModel;
     proxyModel.setSourceModel(&model);
-
     QTableView view;
     view.setModel(&proxyModel);
 
-    QString tsvData{Common::getExportedTsv(view)};
-    Common::saveFile(name + Common::getDataTsvDumpSuffix(), tsvData);
+    saveTsv(view, filePath);
 }
