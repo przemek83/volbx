@@ -70,7 +70,7 @@ void DetailedSpreadsheetsTest::testSampleData(
 QString DetailedSpreadsheetsTest::getSpreadsheetsDir()
 {
     return QString(QApplication::applicationDirPath() +
-                   QLatin1String("/TestSpreadsheets/detailedTests/"));
+                   QLatin1String("/detailedTests/"));
 }
 
 void DetailedSpreadsheetsTest::testSpreadsheetFile01(

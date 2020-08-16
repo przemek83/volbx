@@ -19,8 +19,7 @@ void SpreadsheetsTest::initTestCase()
 
 QString SpreadsheetsTest::getSpreadsheetsDir()
 {
-    return QString(QApplication::applicationDirPath() +
-                   QLatin1String("/TestSpreadsheets/"));
+    return QString(":/TestFiles/TestSpreadsheets/");
 }
 
 void SpreadsheetsTest::testFiles_data()
