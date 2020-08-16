@@ -28,12 +28,21 @@ private slots:
     void compareExpectedTsvDumpsOfOdsAndXlsx();
 
 private:
-    QVector<QString> testFileNames_{
-        "excel", "HistVsNormal", "import1", "import2", "import3",
-        "smallDataSet", "test2", "testAccounts", "testDataWithPlot",
-        "testDataWithPlot", "test", "testFileData", "test01",
-        //"test01Partial",
-        "test03", "test04"};
+    QVector<QString> testFileNames_{"excel",
+                                    "HistVsNormal",
+                                    "import1",
+                                    "import2",
+                                    "import3",
+                                    "smallDataSet",
+                                    "test2",
+                                    "testAccounts",
+                                    "testDataWithPlot",
+                                    "testDataWithPlot",
+                                    "test",
+                                    "testFileData",
+                                    "test01",
+                                    "test03",
+                                    "test04"};
 
     std::unique_ptr<DatasetSpreadsheet> createDataset(const QString& fileName);
 

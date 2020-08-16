@@ -127,8 +127,6 @@ void DetailedSpreadsheetsTest::testSpreadsheetFile01(
 
     testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
                             compareDateValues, compareList, false);
-
-    Common::compareExportDataWithDump((std::unique_ptr<Dataset>(dataset)));
 }
 
 void DetailedSpreadsheetsTest::testSpreadsheetFile01SomeColumns(
@@ -275,8 +273,6 @@ void DetailedSpreadsheetsTest::testSpreadsheetFile03(
 
     testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
                             compareDateValues, compareList, true);
-
-    Common::compareExportDataWithDump((std::unique_ptr<Dataset>(dataset)));
 }
 
 void DetailedSpreadsheetsTest::testSpreadsheetFile04(
@@ -339,8 +335,6 @@ void DetailedSpreadsheetsTest::testSpreadsheetFile04(
 
     testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
                             compareDateValues, compareList, false);
-
-    Common::compareExportDataWithDump((std::unique_ptr<Dataset>(dataset)));
 }
 
 // void
