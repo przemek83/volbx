@@ -28,7 +28,9 @@ private:
      * @param activeColumns number of active columns.
      * @param name name of dataset to compare.
      */
-    void testBasicInfo(Dataset& dataset, int rows, int columns, QString name);
+    void performBasicChecks(const Dataset& dataset, int expectedRowCount,
+                            int expectedColumnCount,
+                            const QString& expectedDatasetName);
 
     /**
      * @brief check some columns if matches hardcoded values.

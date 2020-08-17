@@ -9,20 +9,14 @@
 
 #include "Common.h"
 
-void DetailedSpreadsheetsTest::testBasicInfo(Dataset& dataset, int rows,
-                                             int columns, QString name)
+void DetailedSpreadsheetsTest::performBasicChecks(
+    const Dataset& dataset, int expectedRowCount, int expectedColumnCount,
+    const QString& expectedDatasetName)
 {
     QVERIFY(dataset.isValid());
-    QCOMPARE(dataset.rowCount(), rows);
-    QCOMPARE(dataset.columnCount(), columns);
-
-    const QString fileName{dataset.getName() +
-                           Common::getDefinitionDumpSuffix()};
-    QByteArray dumpFromFile{FileUtilities::loadFile(fileName).second.toUtf8()};
-    QByteArray dumpFromDataset{dataset.definitionToXml(rows)};
-    QVERIFY(Common::xmlsAreEqual(dumpFromFile, dumpFromDataset));
-
-    QCOMPARE(dataset.getName(), name);
+    QCOMPARE(dataset.rowCount(), expectedRowCount);
+    QCOMPARE(dataset.columnCount(), expectedColumnCount);
+    QCOMPARE(dataset.getName(), expectedDatasetName);
 }
 
 void DetailedSpreadsheetsTest::testColumnInfo(
@@ -65,7 +59,7 @@ void DetailedSpreadsheetsTest::testSpreadsheetFile01(
     DatasetSpreadsheet* dataset, QString file)
 {
     QVERIFY(dataset->initialize());
-    testBasicInfo(*dataset, 4000, 7, file);
+    performBasicChecks(*dataset, 4000, 7, file);
 
     QVector<QPair<int, ColumnType>> columnFormats;
     columnFormats.append(qMakePair(0, ColumnType::STRING));
@@ -221,7 +215,7 @@ void DetailedSpreadsheetsTest::testSpreadsheetFile03(
     DatasetSpreadsheet* dataset, QString file)
 {
     QVERIFY(dataset->initialize());
-    testBasicInfo(*dataset, 4, 5, file);
+    performBasicChecks(*dataset, 4, 5, file);
 
     QVector<QPair<int, ColumnType>> columnFormats;
     columnFormats.append(qMakePair(0, ColumnType::NUMBER));
@@ -268,7 +262,7 @@ void DetailedSpreadsheetsTest::testSpreadsheetFile04(
     DatasetSpreadsheet* dataset, QString file)
 {
     QVERIFY(dataset->initialize());
-    testBasicInfo(*dataset, 30, 12, file);
+    performBasicChecks(*dataset, 30, 12, file);
 
     QVector<QPair<int, ColumnType>> columnFormats;
     columnFormats.append(qMakePair(0, ColumnType::STRING));
