@@ -1,6 +1,8 @@
 #ifndef DETAILEDSPREADSHEETSTEST_H
 #define DETAILEDSPREADSHEETSTEST_H
 
+#include <memory>
+
 #include <QObject>
 
 #include <ColumnType.h>
@@ -12,7 +14,8 @@ class DetailedSpreadsheetsTest : public QObject
 {
     Q_OBJECT
 private slots:
-    /// Detailed test for 5 files.
+
+    void testDetailedSpreadsheetFile01_data();
     void testDetailedSpreadsheetFile01();
     // void detailedSpreadsheetFileTest02();
     void testDetailedSpreadsheetFile03();
@@ -60,9 +63,11 @@ private:
                                  QVector<QDate>& compareDateValues,
                                  QStringList& compareList, bool emptyDates);
 
-    void testSpreadsheetFile01(DatasetSpreadsheet* dataset, QString file);
+    void testSpreadsheetFile01(std::unique_ptr<DatasetSpreadsheet> dataset,
+                               QString file);
 
-    void testSpreadsheetFile01SomeColumns(DatasetSpreadsheet* dataset);
+    void testSpreadsheetFile01SomeColumns(
+        std::unique_ptr<DatasetSpreadsheet> dataset);
 
     //    void testSpreadsheetFile02(DatasetDefinitionSpreadsheet* definition,
     //                               QString file);

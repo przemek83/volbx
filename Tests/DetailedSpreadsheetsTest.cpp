@@ -56,7 +56,7 @@ QString DetailedSpreadsheetsTest::getSpreadsheetsDir()
 }
 
 void DetailedSpreadsheetsTest::testSpreadsheetFile01(
-    DatasetSpreadsheet* dataset, QString file)
+    std::unique_ptr<DatasetSpreadsheet> dataset, QString file)
 {
     QVERIFY(dataset->initialize());
     performBasicChecks(*dataset, 4000, 7, file);
@@ -113,7 +113,7 @@ void DetailedSpreadsheetsTest::testSpreadsheetFile01(
 }
 
 void DetailedSpreadsheetsTest::testSpreadsheetFile01SomeColumns(
-    DatasetSpreadsheet* dataset)
+    std::unique_ptr<DatasetSpreadsheet> dataset)
 {
     QVERIFY(dataset->initialize());
     QVector<bool> activeColumns(dataset->columnCount(), true);
@@ -149,25 +149,33 @@ void DetailedSpreadsheetsTest::testSpreadsheetFile01SomeColumns(
     testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
                             compareDateValues, compareList, false);
 
-    Common::compareExportDataWithDump(
-        (std::unique_ptr<Dataset>(dataset)));  //"partial"
+    Common::compareExportDataWithDump(std::move(dataset));  //"partial"
+}
+
+void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile01_data()
+{
+    QTest::addColumn<QString>("fileName");
+    QTest::addColumn<QString>("partialFileName");
+    for (const auto& extension : QVector<QString>{"xlsx", "ods"})
+    {
+        QString testName{"Detailed test for test01 " + extension};
+        QTest::newRow(testName.toStdString().c_str())
+            << "test01." + extension << "test01Partial." + extension;
+    }
 }
 
 void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile01()
 {
-    QString file(getSpreadsheetsDir() + "test01.xlsx");
-    DatasetXlsx* definitionXlsx = new DatasetXlsx(file, file);
-    testSpreadsheetFile01(definitionXlsx, file);
-    file = getSpreadsheetsDir() + "test01Partial.xlsx";
-    definitionXlsx = new DatasetXlsx(file, file);
-    testSpreadsheetFile01SomeColumns(definitionXlsx);
+    QFETCH(QString, fileName);
+    QFETCH(QString, partialFileName);
 
-    file = getSpreadsheetsDir() + "test01.ods";
-    DatasetOds* definitionOds = new DatasetOds(file, file);
-    testSpreadsheetFile01(definitionOds, file);
-    file = getSpreadsheetsDir() + "test01Partial.ods";
-    definitionOds = new DatasetOds(file, file);
-    testSpreadsheetFile01SomeColumns(definitionOds);
+    QString filePath(getSpreadsheetsDir() + fileName);
+    std::unique_ptr<DatasetSpreadsheet> dataset{
+        Common::createDataset(filePath)};
+    testSpreadsheetFile01(std::move(dataset), filePath);
+    filePath = getSpreadsheetsDir() + partialFileName;
+    dataset = Common::createDataset(filePath);
+    testSpreadsheetFile01SomeColumns(std::move(dataset));
 }
 
 // void SpreadsheetsTest::detailedSpreadsheetFileTest02()
