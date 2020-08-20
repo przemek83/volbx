@@ -17,9 +17,15 @@ private slots:
 
     void testDetailedSpreadsheetFile01_data();
     void testDetailedSpreadsheetFile01();
+
     // void detailedSpreadsheetFileTest02();
+
+    void testDetailedSpreadsheetFile03_data();
     void testDetailedSpreadsheetFile03();
+
+    void testDetailedSpreadsheetFile04_data();
     void testDetailedSpreadsheetFile04();
+
     // void detailedSpreadsheetFileTest05();
 
 private:
@@ -71,8 +77,10 @@ private:
 
     //    void testSpreadsheetFile02(DatasetDefinitionSpreadsheet* definition,
     //                               QString file);
-    void testSpreadsheetFile03(DatasetSpreadsheet* dataset, QString file);
-    void testSpreadsheetFile04(DatasetSpreadsheet* dataset, QString file);
+    void testSpreadsheetFile03(std::unique_ptr<DatasetSpreadsheet> dataset,
+                               QString file);
+    void testSpreadsheetFile04(std::unique_ptr<DatasetSpreadsheet> dataset,
+                               QString file);
     //    void testSpreadsheetFile05(DatasetDefinitionSpreadsheet* definition,
     //                               QString file);
 };
