@@ -6,6 +6,7 @@
 
 class QAbstractItemView;
 class Dataset;
+class DatasetSpreadsheet;
 
 /**
  * @brief Common functions for unit tests.
@@ -25,4 +26,6 @@ QString getExportedTsv(const QAbstractItemView& view);
 bool xmlsAreEqual(const QByteArray& left, const QByteArray& right);
 
 void compareExportDataWithDump(std::unique_ptr<Dataset> dataset);
+
+std::unique_ptr<DatasetSpreadsheet> createDataset(const QString& filePath);
 };  // namespace Common

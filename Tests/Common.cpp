@@ -8,6 +8,8 @@
 #include <QtTest/QtTest>
 
 #include <Dataset.h>
+#include <DatasetOds.h>
+#include <DatasetXlsx.h>
 #include <ExportDsv.h>
 #include <FileUtilities.h>
 #include <FilteringProxyModel.h>
@@ -160,6 +162,16 @@ void compareExportDataWithDump(std::unique_ptr<Dataset> dataset)
                         "\nExpected: " + expectedDataLines[i]};
             QFAIL(msg.toStdString().c_str());
         }
+}
+
+std::unique_ptr<DatasetSpreadsheet> createDataset(const QString& filePath)
+{
+    std::unique_ptr<DatasetSpreadsheet> dataset{nullptr};
+    if (filePath.endsWith(".xlsx"))
+        dataset = std::make_unique<DatasetXlsx>(filePath, filePath);
+    else
+        dataset = std::make_unique<DatasetOds>(filePath, filePath);
+    return dataset;
 }
 
 }  // namespace Common

@@ -31,7 +31,8 @@ void SpreadsheetsTest::testFiles()
 {
     QFETCH(QString, fileName);
 
-    std::unique_ptr<DatasetSpreadsheet> dataset{createDataset(fileName)};
+    std::unique_ptr<DatasetSpreadsheet> dataset{
+        Common::createDataset(getSpreadsheetsDir() + fileName)};
     QVERIFY(dataset->initialize());
 
     const QString expectedDefinitionFileName{getSpreadsheetsDir() + fileName +
@@ -54,7 +55,8 @@ void SpreadsheetsTest::testDamagedFiles()
 {
     QFETCH(QString, fileName);
 
-    std::unique_ptr<DatasetSpreadsheet> dataset{createDataset(fileName)};
+    std::unique_ptr<DatasetSpreadsheet> dataset{
+        Common::createDataset(getSpreadsheetsDir() + fileName)};
     QVERIFY(!dataset->initialize());
 }
 
@@ -76,18 +78,6 @@ void SpreadsheetsTest::compareExpectedTsvDumpsOfOdsAndXlsx_data()
 void SpreadsheetsTest::compareExpectedTsvDumpsOfOdsAndXlsx()
 {
     compareOdsAndXlsxExpectedData(Common::getDataTsvDumpSuffix());
-}
-
-std::unique_ptr<DatasetSpreadsheet> SpreadsheetsTest::createDataset(
-    const QString& fileName)
-{
-    QString filePath{getSpreadsheetsDir() + fileName};
-    std::unique_ptr<DatasetSpreadsheet> dataset{nullptr};
-    if (fileName.endsWith(".xlsx"))
-        dataset = std::make_unique<DatasetXlsx>(filePath, filePath);
-    else
-        dataset = std::make_unique<DatasetOds>(filePath, filePath);
-    return dataset;
 }
 
 void SpreadsheetsTest::addTestCaseForOdsAndXlsxComparison(
@@ -190,7 +180,8 @@ void SpreadsheetsTest::saveExpectedTsv(const QTableView& view,
 void SpreadsheetsTest::generateExpectedDataForFile(const QString& fileName,
                                                    const QString& dir)
 {
-    std::unique_ptr<DatasetSpreadsheet> dataset{createDataset(fileName)};
+    std::unique_ptr<DatasetSpreadsheet> dataset{
+        Common::createDataset(getSpreadsheetsDir() + fileName)};
     dataset->initialize();
 
     QString filePath{dir + fileName};

@@ -44,8 +44,6 @@ private:
                                     "test03",
                                     "test04"};
 
-    std::unique_ptr<DatasetSpreadsheet> createDataset(const QString& fileName);
-
     void addTestCaseForOdsAndXlsxComparison(const QString& testNamePrefix);
 
     void compareOdsAndXlsxExpectedData(const QString& fileSuffix);
