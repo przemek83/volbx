@@ -167,8 +167,34 @@ QString DetailedSpreadsheetsTest::getSpreadsheetsDir()
     return QString(":/TestFiles/TestSpreadsheets/");
 }
 
-void DetailedSpreadsheetsTest::testSpreadsheetFile01(
-    std::unique_ptr<DatasetSpreadsheet> dataset, QString file)
+void DetailedSpreadsheetsTest::testDataFile01_data()
+{
+    QTest::addColumn<QString>("fileName");
+    QTest::addColumn<QString>("partialFileName");
+    for (const auto& extension : QVector<QString>{"xlsx", "ods"})
+    {
+        QString testName{"Detailed test for test01 " + extension};
+        QTest::newRow(testName.toStdString().c_str())
+            << "test01." + extension << "test01Partial." + extension;
+    }
+}
+
+void DetailedSpreadsheetsTest::testDataFile01()
+{
+    QFETCH(QString, fileName);
+    QFETCH(QString, partialFileName);
+
+    QString filePath(getSpreadsheetsDir() + fileName);
+    std::unique_ptr<DatasetSpreadsheet> dataset{
+        Common::createDataset(filePath)};
+    checkDataFile01(std::move(dataset));
+    filePath = getSpreadsheetsDir() + partialFileName;
+    dataset = Common::createDataset(filePath);
+    checkDataFile01SomeColumns(std::move(dataset));
+}
+
+void DetailedSpreadsheetsTest::checkDataFile01(
+    std::unique_ptr<DatasetSpreadsheet> dataset)
 {
     dataset->initialize();
 
@@ -205,7 +231,7 @@ void DetailedSpreadsheetsTest::testSpreadsheetFile01(
                             compareDateValues, compareList, false);
 }
 
-void DetailedSpreadsheetsTest::testSpreadsheetFile01SomeColumns(
+void DetailedSpreadsheetsTest::checkDataFile01SomeColumns(
     std::unique_ptr<DatasetSpreadsheet> dataset)
 {
     dataset->initialize();
@@ -245,32 +271,6 @@ void DetailedSpreadsheetsTest::testSpreadsheetFile01SomeColumns(
     Common::compareExportDataWithDump(std::move(dataset));  //"partial"
 }
 
-void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile01_data()
-{
-    QTest::addColumn<QString>("fileName");
-    QTest::addColumn<QString>("partialFileName");
-    for (const auto& extension : QVector<QString>{"xlsx", "ods"})
-    {
-        QString testName{"Detailed test for test01 " + extension};
-        QTest::newRow(testName.toStdString().c_str())
-            << "test01." + extension << "test01Partial." + extension;
-    }
-}
-
-void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile01()
-{
-    QFETCH(QString, fileName);
-    QFETCH(QString, partialFileName);
-
-    QString filePath(getSpreadsheetsDir() + fileName);
-    std::unique_ptr<DatasetSpreadsheet> dataset{
-        Common::createDataset(filePath)};
-    testSpreadsheetFile01(std::move(dataset), filePath);
-    filePath = getSpreadsheetsDir() + partialFileName;
-    dataset = Common::createDataset(filePath);
-    testSpreadsheetFile01SomeColumns(std::move(dataset));
-}
-
 // void SpreadsheetsTest::detailedSpreadsheetFileTest02()
 //{
 //    QString file(getSpreadsheetsDir() + "test02.xlsx");
@@ -282,7 +282,7 @@ void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile01()
 //    file); testSpreadsheetFile02(definitionOds, file);
 //}
 
-void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile03_data()
+void DetailedSpreadsheetsTest::testDataFile03_data()
 {
     QString file("test03");
     QTest::addColumn<QString>("fileName");
@@ -293,7 +293,7 @@ void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile03_data()
     }
 }
 
-void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile03()
+void DetailedSpreadsheetsTest::testDataFile03()
 {
     QFETCH(QString, fileName);
 
@@ -328,7 +328,7 @@ void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile03()
                             compareDateValues, compareList, true);
 }
 
-void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile04_data()
+void DetailedSpreadsheetsTest::testDataFile04_data()
 {
     QTest::addColumn<QString>("fileName");
     for (const auto& extension : QVector<QString>{"xlsx", "ods"})
@@ -338,27 +338,14 @@ void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile04_data()
     }
 }
 
-void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile04()
+void DetailedSpreadsheetsTest::testDataFile04()
 {
     QFETCH(QString, fileName);
 
     QString filePath(getSpreadsheetsDir() + fileName);
     std::unique_ptr<DatasetSpreadsheet> dataset{
         Common::createDataset(filePath)};
-    testSpreadsheetFile04(std::move(dataset), filePath);
-}
 
-// void
-// DetailedSpreadsheetsTest::testSpreadsheetFile02(DatasetDefinitionSpreadsheet*
-// definition,
-//                                         QString file)
-//{
-//    QVERIFY(true == definition->init());
-//}
-
-void DetailedSpreadsheetsTest::testSpreadsheetFile04(
-    std::unique_ptr<DatasetSpreadsheet> dataset, QString file)
-{
     dataset->initialize();
 
     QVector<bool> activeColumns(dataset->columnCount(), true);
@@ -382,6 +369,14 @@ void DetailedSpreadsheetsTest::testSpreadsheetFile04(
     testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
                             compareDateValues, compareList, false);
 }
+
+// void
+// DetailedSpreadsheetsTest::testSpreadsheetFile02(DatasetDefinitionSpreadsheet*
+// definition,
+//                                         QString file)
+//{
+//    QVERIFY(true == definition->init());
+//}
 
 void DetailedSpreadsheetsTest::checkColumnFormats(
     const std::unique_ptr<DatasetSpreadsheet>& dataset,

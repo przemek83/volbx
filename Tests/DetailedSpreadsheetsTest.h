@@ -27,16 +27,16 @@ private slots:
     void testSampleData_data();
     void testSampleData();
 
-    void testDetailedSpreadsheetFile01_data();
-    void testDetailedSpreadsheetFile01();
+    void testDataFile01_data();
+    void testDataFile01();
 
     // void detailedSpreadsheetFileTest02();
 
-    void testDetailedSpreadsheetFile03_data();
-    void testDetailedSpreadsheetFile03();
+    void testDataFile03_data();
+    void testDataFile03();
 
-    void testDetailedSpreadsheetFile04_data();
-    void testDetailedSpreadsheetFile04();
+    void testDataFile04_data();
+    void testDataFile04();
 
     // void detailedSpreadsheetFileTest05();
 
@@ -49,17 +49,13 @@ private:
                                  QVector<QDate>& compareDateValues,
                                  QStringList& compareList, bool emptyDates);
 
-    void testSpreadsheetFile01(std::unique_ptr<DatasetSpreadsheet> dataset,
-                               QString file);
+    void checkDataFile01(std::unique_ptr<DatasetSpreadsheet> dataset);
 
-    void testSpreadsheetFile01SomeColumns(
+    void checkDataFile01SomeColumns(
         std::unique_ptr<DatasetSpreadsheet> dataset);
 
     //    void testSpreadsheetFile02(DatasetDefinitionSpreadsheet* definition,
     //                               QString file);
-
-    void testSpreadsheetFile04(std::unique_ptr<DatasetSpreadsheet> dataset,
-                               QString file);
 
     //    void testSpreadsheetFile05(DatasetDefinitionSpreadsheet* definition,
     //                               QString file);
