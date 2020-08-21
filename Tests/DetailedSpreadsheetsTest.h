@@ -19,6 +19,9 @@ private slots:
     void testBasics_data();
     void testBasics();
 
+    void testColumns_data();
+    void testColumns();
+
     void testDetailedSpreadsheetFile01_data();
     void testDetailedSpreadsheetFile01();
 
@@ -33,16 +36,6 @@ private slots:
     // void detailedSpreadsheetFileTest05();
 
 private:
-    /**
-     * @brief check some columns if matches hardcoded values.
-     * @param definition dataset definition.
-     * @param columnFormats format of columns to compare.
-     * @param columnNames names of columns to compare.
-     */
-    void testColumnInfo(Dataset& definition,
-                        const QVector<ColumnType>& columnFormats,
-                        const QVector<QString>& columnNames);
-
     /**
      * @brief check number of rows, columns and some values in data.
      * @param definition dataset definition to test.
