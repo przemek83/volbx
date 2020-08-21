@@ -58,8 +58,8 @@ void DetailedSpreadsheetsTest::testBasics_data()
     const QVector<unsigned int> expectedRowCounts{4000, 4, 30};
     const QVector<unsigned int> expectedColumnCounts{7, 5, 12};
 
-    for (const auto& extension : extensions_)
-        for (int i = 0; i < fileNames_.size(); ++i)
+    for (int i = 0; i < fileNames_.size(); ++i)
+        for (const auto& extension : extensions_)
         {
             QString testName{"Basic test for " + fileNames_[i] + " " +
                              extension};
@@ -92,8 +92,8 @@ void DetailedSpreadsheetsTest::testColumns_data()
     QTest::addColumn<QVector<ColumnType>>("columnFormats");
     QTest::addColumn<QVector<QString>>("columnNames");
 
-    for (const auto& extension : extensions_)
-        for (int i = 0; i < fileNames_.size(); ++i)
+    for (int i = 0; i < fileNames_.size(); ++i)
+        for (const auto& extension : extensions_)
         {
             QString testName{"Column test for " + fileNames_[i] + " " +
                              extension};
@@ -129,8 +129,8 @@ void DetailedSpreadsheetsTest::testSampleData_data()
     const QVector<unsigned int> expectedSampleRowCounts{10, 4, 10};
     const QVector<unsigned int> expectedSampleColumnCounts{7, 5, 12};
 
-    for (const auto& extension : extensions_)
-        for (int i = 0; i < fileNames_.size(); ++i)
+    for (int i = 0; i < fileNames_.size(); ++i)
+        for (const auto& extension : extensions_)
         {
             QString testName{"Sample data test for " + fileNames_[i] + " " +
                              extension};
