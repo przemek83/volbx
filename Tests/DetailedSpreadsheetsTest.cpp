@@ -105,21 +105,11 @@ void DetailedSpreadsheetsTest::testColumns()
     QString filePath(getSpreadsheetsDir() + fileName);
     std::unique_ptr<DatasetSpreadsheet> dataset{
         Common::createDataset(filePath)};
-    QVERIFY(dataset->initialize());
+    dataset->initialize();
 
-    unsigned int column{0};
-    for (auto& expectedColumnType : columnFormats)
-        QCOMPARE(dataset->getColumnFormat(column++), expectedColumnType);
-
-    column = 0;
-    for (auto& expectedColumnName : columnNames)
-        QCOMPARE(dataset->getHeaderName(column++), expectedColumnName);
-
-    bool ok{false};
-    std::tie(ok, column) = dataset->getTaggedColumn(ColumnTag::DATE);
-    QVERIFY(!ok);
-    std::tie(ok, column) = dataset->getTaggedColumn(ColumnTag::VALUE);
-    QVERIFY(!ok);
+    checkColumnFormats(dataset, columnFormats);
+    checkColumnNames(dataset, columnNames);
+    checkTaggedColumnsNotSet(dataset);
 }
 
 void DetailedSpreadsheetsTest::testSampleData(
@@ -144,7 +134,7 @@ QString DetailedSpreadsheetsTest::getSpreadsheetsDir()
 void DetailedSpreadsheetsTest::testSpreadsheetFile01(
     std::unique_ptr<DatasetSpreadsheet> dataset, QString file)
 {
-    QVERIFY(dataset->initialize());
+    dataset->initialize();
 
     QVector<std::tuple<QVariant, int, int>> fields;
     fields.append(
@@ -190,7 +180,7 @@ void DetailedSpreadsheetsTest::testSpreadsheetFile01(
 void DetailedSpreadsheetsTest::testSpreadsheetFile01SomeColumns(
     std::unique_ptr<DatasetSpreadsheet> dataset)
 {
-    QVERIFY(dataset->initialize());
+    dataset->initialize();
     QVector<bool> activeColumns(dataset->columnCount(), true);
     activeColumns[0] = false;
     activeColumns[1] = false;
@@ -290,7 +280,7 @@ void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile03()
     std::unique_ptr<DatasetSpreadsheet> dataset{
         Common::createDataset(filePath)};
 
-    QVERIFY(dataset->initialize());
+    dataset->initialize();
 
     QVector<std::tuple<QVariant, int, int>> fields;
     fields.append(std::make_tuple(QVariant(3703.75925925926), 3, 2));
@@ -354,7 +344,7 @@ void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile04()
 void DetailedSpreadsheetsTest::testSpreadsheetFile04(
     std::unique_ptr<DatasetSpreadsheet> dataset, QString file)
 {
-    QVERIFY(dataset->initialize());
+    dataset->initialize();
 
     QVector<std::tuple<QVariant, int, int>> fields;
     fields.append(std::make_tuple(QVariant(1.55), 3, 3));
@@ -381,6 +371,35 @@ void DetailedSpreadsheetsTest::testSpreadsheetFile04(
 
     testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
                             compareDateValues, compareList, false);
+}
+
+void DetailedSpreadsheetsTest::checkColumnFormats(
+    const std::unique_ptr<DatasetSpreadsheet>& dataset,
+    const QVector<ColumnType>& columnFormats)
+{
+    unsigned int column{0};
+    for (auto& expectedColumnType : columnFormats)
+        QCOMPARE(dataset->getColumnFormat(column++), expectedColumnType);
+}
+
+void DetailedSpreadsheetsTest::checkColumnNames(
+    const std::unique_ptr<DatasetSpreadsheet>& dataset,
+    const QVector<QString>& columnNames)
+{
+    unsigned int column{0};
+    for (auto& expectedColumnName : columnNames)
+        QCOMPARE(dataset->getHeaderName(column++), expectedColumnName);
+}
+
+void DetailedSpreadsheetsTest::checkTaggedColumnsNotSet(
+    const std::unique_ptr<DatasetSpreadsheet>& dataset)
+{
+    unsigned int column{0};
+    bool ok{false};
+    std::tie(ok, column) = dataset->getTaggedColumn(ColumnTag::DATE);
+    QVERIFY(!ok);
+    std::tie(ok, column) = dataset->getTaggedColumn(ColumnTag::VALUE);
+    QVERIFY(!ok);
 }
 
 // void

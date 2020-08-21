@@ -69,6 +69,15 @@ private:
     //    void testSpreadsheetFile05(DatasetDefinitionSpreadsheet* definition,
     //                               QString file);
 
+    void checkColumnFormats(const std::unique_ptr<DatasetSpreadsheet>& dataset,
+                            const QVector<ColumnType>& columnFormats);
+
+    void checkColumnNames(const std::unique_ptr<DatasetSpreadsheet>& dataset,
+                          const QVector<QString>& columnNames);
+
+    void checkTaggedColumnsNotSet(
+        const std::unique_ptr<DatasetSpreadsheet>& dataset);
+
     const QVector<QString> fileNames_{"test01", "test03", "test04"};
     const QVector<QString> extensions_{"xlsx", "ods"};
 };
