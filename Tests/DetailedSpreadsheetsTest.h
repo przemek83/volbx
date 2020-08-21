@@ -5,12 +5,14 @@
 
 #include <QObject>
 #include <QString>
+#include <QVariant>
 #include <QVector>
 
 #include <ColumnType.h>
 
 class DatasetSpreadsheet;
 class Dataset;
+struct Field;
 
 class DetailedSpreadsheetsTest : public QObject
 {
@@ -21,6 +23,9 @@ private slots:
 
     void testColumns_data();
     void testColumns();
+
+    void testSampleData_data();
+    void testSampleData();
 
     void testDetailedSpreadsheetFile01_data();
     void testDetailedSpreadsheetFile01();
@@ -36,16 +41,6 @@ private slots:
     // void detailedSpreadsheetFileTest05();
 
 private:
-    /**
-     * @brief check number of rows, columns and some values in data.
-     * @param definition dataset definition to test.
-     * @param rows number of rows.
-     * @param columns number of columns.
-     * @param fields values to compare with data in dataset.
-     */
-    void testSampleData(Dataset& definition, int rows, int columns,
-                        const QVector<std::tuple<QVariant, int, int>>& fields);
-
     QString getSpreadsheetsDir();
 
     void testDatasetConstruction(const Dataset& dataset,
@@ -82,6 +77,7 @@ private:
     const QVector<QString> extensions_{"xlsx", "ods"};
     static const QVector<QVector<ColumnType>> columnFormats_;
     static const QVector<QVector<QString>> columnNames_;
+    static const QVector<QVector<Field>> sampleFields_;
 };
 
 #endif  // DETAILEDSPREADSHEETSTEST_H

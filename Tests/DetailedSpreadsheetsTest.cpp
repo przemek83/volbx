@@ -30,26 +30,43 @@ const QVector<QVector<QString>> DetailedSpreadsheetsTest::columnNames_{
     {"name", "date", "mass (kg)", "height", "no name", "no name", "no name",
      "no name", "no name", "no name", "no name", "no name"}};
 
+struct Field
+{
+    QVariant data;
+    unsigned int row;
+    unsigned int column;
+};
+
+Q_DECLARE_METATYPE(Field)
+
+const QVector<QVector<Field>> DetailedSpreadsheetsTest::sampleFields_{
+    {{QVariant(QDate::fromJulianDay(2455207)), 3, 2},
+     {QVariant("black"), 3, 6},
+     {QVariant(12.0), 5, 1},
+     {QVariant(4462.2), 3, 5}},
+    {{QVariant(3703.75925925926), 3, 2},
+     {QVariant(53.0), 2, 1},
+     {QVariant(3773.62264150943), 2, 2}},
+    {{QVariant(1.55), 3, 3}, {QVariant(58.57), 5, 2}}};
+
 void DetailedSpreadsheetsTest::testBasics_data()
 {
     QTest::addColumn<QString>("fileName");
     QTest::addColumn<unsigned int>("rowCount");
     QTest::addColumn<unsigned int>("columnCount");
 
+    const QVector<unsigned int> expectedRowCounts{4000, 4, 30};
+    const QVector<unsigned int> expectedColumnCounts{7, 5, 12};
+
     for (const auto& extension : extensions_)
-    {
-        QString testName{"Basic test for " + fileNames_[0] + " " + extension};
-        QTest::newRow(testName.toStdString().c_str())
-            << fileNames_[0] + "." + extension << 4000U << 7U;
-
-        testName = "Basic test for " + fileNames_[1] + " " + extension;
-        QTest::newRow(testName.toStdString().c_str())
-            << fileNames_[1] + "." + extension << 4U << 5U;
-
-        testName = "Basic test for " + fileNames_[2] + " " + extension;
-        QTest::newRow(testName.toStdString().c_str())
-            << fileNames_[2] + "." + extension << 30U << 12U;
-    }
+        for (int i = 0; i < fileNames_.size(); ++i)
+        {
+            QString testName{"Basic test for " + fileNames_[i] + " " +
+                             extension};
+            QTest::newRow(testName.toStdString().c_str())
+                << fileNames_[i] + "." + extension << expectedRowCounts[i]
+                << expectedColumnCounts[i];
+        }
 }
 
 void DetailedSpreadsheetsTest::testBasics()
@@ -102,17 +119,46 @@ void DetailedSpreadsheetsTest::testColumns()
     checkTaggedColumnsNotSet(dataset);
 }
 
-void DetailedSpreadsheetsTest::testSampleData(
-    Dataset& dataset, int rows, int columns,
-    const QVector<std::tuple<QVariant, int, int>>& fields)
+void DetailedSpreadsheetsTest::testSampleData_data()
 {
-    QVector<QVector<QVariant>> sampleData{dataset.retrieveSampleData()};
+    QTest::addColumn<QString>("fileName");
+    QTest::addColumn<unsigned int>("sampleRowCount");
+    QTest::addColumn<unsigned int>("sampleColumnCount");
+    QTest::addColumn<QVector<Field>>("sampleFields");
 
-    QCOMPARE(sampleData.size(), rows);
-    QCOMPARE(sampleData.front().size(), columns);
+    const QVector<unsigned int> expectedSampleRowCounts{10, 4, 10};
+    const QVector<unsigned int> expectedSampleColumnCounts{7, 5, 12};
+
+    for (const auto& extension : extensions_)
+        for (int i = 0; i < fileNames_.size(); ++i)
+        {
+            QString testName{"Sample data test for " + fileNames_[i] + " " +
+                             extension};
+            QTest::newRow(testName.toStdString().c_str())
+                << fileNames_[i] + "." + extension << expectedSampleRowCounts[i]
+                << expectedSampleColumnCounts[i] << sampleFields_[i];
+        }
+}
+
+void DetailedSpreadsheetsTest::testSampleData()
+{
+    QFETCH(QString, fileName);
+    QFETCH(unsigned int, sampleRowCount);
+    QFETCH(unsigned int, sampleColumnCount);
+    QFETCH(QVector<Field>, sampleFields);
+
+    QString filePath(getSpreadsheetsDir() + fileName);
+    std::unique_ptr<DatasetSpreadsheet> dataset{
+        Common::createDataset(filePath)};
+    dataset->initialize();
+
+    QVector<QVector<QVariant>> sampleData{dataset->retrieveSampleData()};
+
+    QCOMPARE(sampleData.size(), sampleRowCount);
+    QCOMPARE(sampleData.front().size(), sampleColumnCount);
 
     std::tuple<QVariant, int, int> fieldsTuple;
-    for (auto [value, row, column] : fields)
+    for (auto [value, row, column] : sampleFields)
         QCOMPARE(sampleData.at(row)[column], value);
 }
 
@@ -125,14 +171,6 @@ void DetailedSpreadsheetsTest::testSpreadsheetFile01(
     std::unique_ptr<DatasetSpreadsheet> dataset, QString file)
 {
     dataset->initialize();
-
-    QVector<std::tuple<QVariant, int, int>> fields;
-    fields.append(
-        std::make_tuple(QVariant(QDate::fromJulianDay(2455207)), 3, 2));
-    fields.append(std::make_tuple(QVariant("black"), 3, 6));
-    fields.append(std::make_tuple(QVariant(12.0), 5, 1));
-    fields.append(std::make_tuple(QVariant(4462.2), 3, 5));
-    testSampleData(*dataset, 10, 7, fields);
 
     QVector<bool> activeColumns(dataset->columnCount(), true);
     dataset->setActiveColumns(activeColumns);
@@ -247,36 +285,23 @@ void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile01()
 void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile03_data()
 {
     QString file("test03");
-    unsigned int rowCount{4};
-    unsigned int columnCount{5};
     QTest::addColumn<QString>("fileName");
-    QTest::addColumn<unsigned int>("rowCount");
-    QTest::addColumn<unsigned int>("columnCount");
     for (const auto& extension : QVector<QString>{"xlsx", "ods"})
     {
         QString testName{"Detailed test for " + file + " " + extension};
-        QTest::newRow(testName.toStdString().c_str())
-            << file + "." + extension << rowCount << columnCount;
+        QTest::newRow(testName.toStdString().c_str()) << file + "." + extension;
     }
 }
 
 void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile03()
 {
     QFETCH(QString, fileName);
-    QFETCH(unsigned int, rowCount);
-    QFETCH(unsigned int, columnCount);
 
     QString filePath(getSpreadsheetsDir() + fileName);
     std::unique_ptr<DatasetSpreadsheet> dataset{
         Common::createDataset(filePath)};
 
     dataset->initialize();
-
-    QVector<std::tuple<QVariant, int, int>> fields;
-    fields.append(std::make_tuple(QVariant(3703.75925925926), 3, 2));
-    fields.append(std::make_tuple(QVariant(53.0), 2, 1));
-    fields.append(std::make_tuple(QVariant(3773.62264150943), 2, 2));
-    testSampleData(*dataset, rowCount, columnCount, fields);
 
     QVector<bool> activeColumns(dataset->columnCount(), true);
     dataset->setActiveColumns(activeColumns);
@@ -335,11 +360,6 @@ void DetailedSpreadsheetsTest::testSpreadsheetFile04(
     std::unique_ptr<DatasetSpreadsheet> dataset, QString file)
 {
     dataset->initialize();
-
-    QVector<std::tuple<QVariant, int, int>> fields;
-    fields.append(std::make_tuple(QVariant(1.55), 3, 3));
-    fields.append(std::make_tuple(QVariant(58.57), 5, 2));
-    testSampleData(*dataset, 10, 12, fields);
 
     QVector<bool> activeColumns(dataset->columnCount(), true);
     dataset->setActiveColumns(activeColumns);
