@@ -157,7 +157,6 @@ void DetailedSpreadsheetsTest::testSampleData()
     QCOMPARE(sampleData.size(), sampleRowCount);
     QCOMPARE(sampleData.front().size(), sampleColumnCount);
 
-    std::tuple<QVariant, int, int> fieldsTuple;
     for (auto [value, row, column] : sampleFields)
         QCOMPARE(sampleData.at(row)[column], value);
 }
