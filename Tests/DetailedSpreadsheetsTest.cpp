@@ -9,6 +9,27 @@
 
 #include "Common.h"
 
+const QVector<QString> DetailedSpreadsheetsTest::fileNames_{"test01", "test03",
+                                                            "test04"};
+
+const QVector<QVector<ColumnType>> DetailedSpreadsheetsTest::columnFormats_{
+    {ColumnType::STRING, ColumnType::NUMBER, ColumnType::DATE,
+     ColumnType::NUMBER, ColumnType::NUMBER, ColumnType::NUMBER,
+     ColumnType::STRING},
+    {ColumnType::NUMBER, ColumnType::NUMBER, ColumnType::NUMBER,
+     ColumnType::DATE, ColumnType::STRING},
+    {ColumnType::STRING, ColumnType::DATE, ColumnType::NUMBER,
+     ColumnType::NUMBER, ColumnType::DATE, ColumnType::NUMBER,
+     ColumnType::STRING, ColumnType::STRING, ColumnType::NUMBER,
+     ColumnType::NUMBER, ColumnType::NUMBER, ColumnType::NUMBER}};
+
+const QVector<QVector<QString>> DetailedSpreadsheetsTest::columnNames_{
+    {"Trait #1", "Value #1", "Transaction date", "Units", "Price",
+     "Price per unit", "Another trait"},
+    {"cena nier", "pow", "cena metra", "data transakcji", "text"},
+    {"name", "date", "mass (kg)", "height", "no name", "no name", "no name",
+     "no name", "no name", "no name", "no name", "no name"}};
+
 void DetailedSpreadsheetsTest::testBasics_data()
 {
     QTest::addColumn<QString>("fileName");
@@ -17,20 +38,17 @@ void DetailedSpreadsheetsTest::testBasics_data()
 
     for (const auto& extension : extensions_)
     {
-        QString file("test01");
-        QString testName{"Basic test for " + file + " " + extension};
+        QString testName{"Basic test for " + fileNames_[0] + " " + extension};
         QTest::newRow(testName.toStdString().c_str())
-            << file + "." + extension << 4000U << 7U;
+            << fileNames_[0] + "." + extension << 4000U << 7U;
 
-        file = "test03";
-        testName = "Basic test for " + file + " " + extension;
+        testName = "Basic test for " + fileNames_[1] + " " + extension;
         QTest::newRow(testName.toStdString().c_str())
-            << file + "." + extension << 4U << 5U;
+            << fileNames_[1] + "." + extension << 4U << 5U;
 
-        file = "test04";
-        testName = "Basic test for " + file + " " + extension;
+        testName = "Basic test for " + fileNames_[2] + " " + extension;
         QTest::newRow(testName.toStdString().c_str())
-            << file + "." + extension << 30U << 12U;
+            << fileNames_[2] + "." + extension << 30U << 12U;
     }
 }
 
@@ -58,42 +76,14 @@ void DetailedSpreadsheetsTest::testColumns_data()
     QTest::addColumn<QVector<QString>>("columnNames");
 
     for (const auto& extension : extensions_)
-    {
-        QString file("test01");
-        QVector<ColumnType> columnFormats{
-            ColumnType::STRING, ColumnType::NUMBER, ColumnType::DATE,
-            ColumnType::NUMBER, ColumnType::NUMBER, ColumnType::NUMBER,
-            ColumnType::STRING};
-        QVector<QString> columnNames{
-            "Trait #1", "Value #1",       "Transaction date", "Units",
-            "Price",    "Price per unit", "Another trait"};
-        QString testName{"Column test for " + file + " " + extension};
-        QTest::newRow(testName.toStdString().c_str())
-            << file + "." + extension << columnFormats << columnNames;
-
-        file = "test03";
-        columnFormats = {ColumnType::NUMBER, ColumnType::NUMBER,
-                         ColumnType::NUMBER, ColumnType::DATE,
-                         ColumnType::STRING};
-        columnNames = {"cena nier", "pow", "cena metra", "data transakcji",
-                       "text"};
-        testName = "Column test for " + file + " " + extension;
-        QTest::newRow(testName.toStdString().c_str())
-            << file + "." + extension << columnFormats << columnNames;
-
-        file = "test04";
-        columnFormats = {
-            ColumnType::STRING, ColumnType::DATE,   ColumnType::NUMBER,
-            ColumnType::NUMBER, ColumnType::DATE,   ColumnType::NUMBER,
-            ColumnType::STRING, ColumnType::STRING, ColumnType::NUMBER,
-            ColumnType::NUMBER, ColumnType::NUMBER, ColumnType::NUMBER};
-        columnNames = {"name",    "date",    "mass (kg)", "height",
-                       "no name", "no name", "no name",   "no name",
-                       "no name", "no name", "no name",   "no name"};
-        testName = "Column test for " + file + " " + extension;
-        QTest::newRow(testName.toStdString().c_str())
-            << file + "." + extension << columnFormats << columnNames;
-    }
+        for (int i = 0; i < fileNames_.size(); ++i)
+        {
+            QString testName{"Column test for " + fileNames_[i] + " " +
+                             extension};
+            QTest::newRow(testName.toStdString().c_str())
+                << fileNames_[i] + "." + extension << columnFormats_[i]
+                << columnNames_[i];
+        }
 }
 
 void DetailedSpreadsheetsTest::testColumns()

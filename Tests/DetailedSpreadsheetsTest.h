@@ -44,7 +44,7 @@ private:
      * @param fields values to compare with data in dataset.
      */
     void testSampleData(Dataset& definition, int rows, int columns,
-                        const QVector<std::tuple<QVariant, int, int> >& fields);
+                        const QVector<std::tuple<QVariant, int, int>>& fields);
 
     QString getSpreadsheetsDir();
 
@@ -78,8 +78,10 @@ private:
     void checkTaggedColumnsNotSet(
         const std::unique_ptr<DatasetSpreadsheet>& dataset);
 
-    const QVector<QString> fileNames_{"test01", "test03", "test04"};
+    static const QVector<QString> fileNames_;
     const QVector<QString> extensions_{"xlsx", "ods"};
+    static const QVector<QVector<ColumnType>> columnFormats_;
+    static const QVector<QVector<QString>> columnNames_;
 };
 
 #endif  // DETAILEDSPREADSHEETSTEST_H
