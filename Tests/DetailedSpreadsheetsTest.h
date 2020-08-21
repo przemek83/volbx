@@ -4,6 +4,8 @@
 #include <memory>
 
 #include <QObject>
+#include <QString>
+#include <QVector>
 
 #include <ColumnType.h>
 
@@ -14,6 +16,8 @@ class DetailedSpreadsheetsTest : public QObject
 {
     Q_OBJECT
 private slots:
+    void testBasics_data();
+    void testBasics();
 
     void testDetailedSpreadsheetFile01_data();
     void testDetailedSpreadsheetFile01();
@@ -29,18 +33,6 @@ private slots:
     // void detailedSpreadsheetFileTest05();
 
 private:
-    /**
-     * @brief test few basic info of dataset.
-     * @param definition definition to test.
-     * @param rows number of rows to compare.
-     * @param columns number of columns to compare.
-     * @param activeColumns number of active columns.
-     * @param name name of dataset to compare.
-     */
-    void performBasicChecks(const Dataset& dataset, int expectedRowCount,
-                            int expectedColumnCount,
-                            const QString& expectedDatasetName);
-
     /**
      * @brief check some columns if matches hardcoded values.
      * @param definition dataset definition.
@@ -83,6 +75,9 @@ private:
 
     //    void testSpreadsheetFile05(DatasetDefinitionSpreadsheet* definition,
     //                               QString file);
+
+    const QVector<QString> fileNames_{"test01", "test03", "test04"};
+    const QVector<QString> extensions_{"xlsx", "ods"};
 };
 
 #endif  // DETAILEDSPREADSHEETSTEST_H

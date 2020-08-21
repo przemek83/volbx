@@ -9,14 +9,46 @@
 
 #include "Common.h"
 
-void DetailedSpreadsheetsTest::performBasicChecks(
-    const Dataset& dataset, int expectedRowCount, int expectedColumnCount,
-    const QString& expectedDatasetName)
+void DetailedSpreadsheetsTest::testBasics_data()
 {
-    QVERIFY(dataset.isValid());
-    QCOMPARE(dataset.rowCount(), expectedRowCount);
-    QCOMPARE(dataset.columnCount(), expectedColumnCount);
-    QCOMPARE(dataset.getName(), expectedDatasetName);
+    QTest::addColumn<QString>("fileName");
+    QTest::addColumn<unsigned int>("rowCount");
+    QTest::addColumn<unsigned int>("columnCount");
+
+    for (const auto& extension : extensions_)
+    {
+        QString file("test01");
+        QString testName{"Detailed test for " + file + " " + extension};
+        QTest::newRow(testName.toStdString().c_str())
+            << file + "." + extension << 4000U << 7U;
+
+        file = "test03";
+        testName = "Detailed test for " + file + " " + extension;
+        QTest::newRow(testName.toStdString().c_str())
+            << file + "." + extension << 4U << 5U;
+
+        file = "test04";
+        testName = "Detailed test for " + file + " " + extension;
+        QTest::newRow(testName.toStdString().c_str())
+            << file + "." + extension << 30U << 12U;
+    }
+}
+
+void DetailedSpreadsheetsTest::testBasics()
+{
+    QFETCH(QString, fileName);
+    QFETCH(unsigned int, rowCount);
+    QFETCH(unsigned int, columnCount);
+
+    QString filePath(getSpreadsheetsDir() + fileName);
+    std::unique_ptr<DatasetSpreadsheet> dataset{
+        Common::createDataset(filePath)};
+
+    QVERIFY(dataset->initialize());
+    QVERIFY(dataset->isValid());
+    QCOMPARE(dataset->rowCount(), rowCount);
+    QCOMPARE(dataset->columnCount(), columnCount);
+    QCOMPARE(dataset->getName(), filePath);
 }
 
 void DetailedSpreadsheetsTest::testColumnInfo(
@@ -61,8 +93,6 @@ void DetailedSpreadsheetsTest::testSpreadsheetFile01(
     std::unique_ptr<DatasetSpreadsheet> dataset, QString file)
 {
     QVERIFY(dataset->initialize());
-    performBasicChecks(*dataset, 4000, 7, file);
-
     QVector<ColumnType> columnFormats{ColumnType::STRING, ColumnType::NUMBER,
                                       ColumnType::DATE,   ColumnType::NUMBER,
                                       ColumnType::NUMBER, ColumnType::NUMBER,
@@ -223,8 +253,6 @@ void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile03()
         Common::createDataset(filePath)};
 
     QVERIFY(dataset->initialize());
-    performBasicChecks(*dataset, rowCount, columnCount, filePath);
-
     QVector<QString> columnNames{"cena nier", "pow", "cena metra",
                                  "data transakcji", "text"};
     testColumnInfo(*dataset, columnFormats, columnNames);
@@ -292,8 +320,6 @@ void DetailedSpreadsheetsTest::testSpreadsheetFile04(
     std::unique_ptr<DatasetSpreadsheet> dataset, QString file)
 {
     QVERIFY(dataset->initialize());
-    performBasicChecks(*dataset, 30, 12, file);
-
     QVector<ColumnType> columnFormats{
         ColumnType::STRING, ColumnType::DATE,   ColumnType::NUMBER,
         ColumnType::NUMBER, ColumnType::DATE,   ColumnType::NUMBER,
