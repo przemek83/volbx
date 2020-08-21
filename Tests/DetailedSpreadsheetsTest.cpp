@@ -20,20 +20,22 @@ void DetailedSpreadsheetsTest::performBasicChecks(
 }
 
 void DetailedSpreadsheetsTest::testColumnInfo(
-    Dataset& dataset, const QVector<QPair<int, ColumnType>>& columnFormats,
-    const QVector<QPair<int, QString>>& columnNames)
+    Dataset& dataset, const QVector<ColumnType>& columnFormats,
+    const QVector<QString>& columnNames)
 {
-    for (auto& [column, expectedColumnType] : columnFormats)
-        QCOMPARE(dataset.getColumnFormat(column), expectedColumnType);
+    unsigned int column{0};
+    for (auto& expectedColumnType : columnFormats)
+        QCOMPARE(dataset.getColumnFormat(column++), expectedColumnType);
 
-    // No tagged columns yet.
-    auto [ok, column] = dataset.getTaggedColumn(ColumnTag::DATE);
+    bool ok{false};
+    std::tie(ok, column) = dataset.getTaggedColumn(ColumnTag::DATE);
     QVERIFY(!ok);
     std::tie(ok, column) = dataset.getTaggedColumn(ColumnTag::VALUE);
     QVERIFY(!ok);
 
-    for (auto& [column, expectedColumnName] : columnNames)
-        QCOMPARE(dataset.getHeaderName(column), expectedColumnName);
+    column = 0;
+    for (auto& expectedColumnName : columnNames)
+        QCOMPARE(dataset.getHeaderName(column++), expectedColumnName);
 }
 
 void DetailedSpreadsheetsTest::testSampleData(
@@ -61,14 +63,13 @@ void DetailedSpreadsheetsTest::testSpreadsheetFile01(
     QVERIFY(dataset->initialize());
     performBasicChecks(*dataset, 4000, 7, file);
 
-    QVector<QPair<int, ColumnType>> columnFormats;
-    columnFormats.append(qMakePair(0, ColumnType::STRING));
-    columnFormats.append(qMakePair(3, ColumnType::NUMBER));
-    columnFormats.append(qMakePair(5, ColumnType::NUMBER));
-    QVector<QPair<int, QString>> columnNames;
-    columnNames.append(qMakePair(0, QString("Trait #1")));
-    columnNames.append(qMakePair(3, QString("Units")));
-    columnNames.append(qMakePair(5, QString("Price per unit")));
+    QVector<ColumnType> columnFormats{ColumnType::STRING, ColumnType::NUMBER,
+                                      ColumnType::DATE,   ColumnType::NUMBER,
+                                      ColumnType::NUMBER, ColumnType::NUMBER,
+                                      ColumnType::STRING};
+    QVector<QString> columnNames{"Trait #1",     "Value #1", "Transaction date",
+                                 "Units",        "Price",    "Price per unit",
+                                 "Another trait"};
     testColumnInfo(*dataset, columnFormats, columnNames);
 
     QVector<std::tuple<QVariant, int, int>> fields;
@@ -194,14 +195,19 @@ void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile03_data()
     QString file("test03");
     unsigned int rowCount{4};
     unsigned int columnCount{5};
+    QVector<ColumnType> columnFormats{ColumnType::NUMBER, ColumnType::NUMBER,
+                                      ColumnType::NUMBER, ColumnType::DATE,
+                                      ColumnType::STRING};
     QTest::addColumn<QString>("fileName");
     QTest::addColumn<unsigned int>("rowCount");
     QTest::addColumn<unsigned int>("columnCount");
+    QTest::addColumn<QVector<ColumnType>>("columnFormats");
     for (const auto& extension : QVector<QString>{"xlsx", "ods"})
     {
         QString testName{"Detailed test for " + file + " " + extension};
         QTest::newRow(testName.toStdString().c_str())
-            << file + "." + extension << rowCount << columnCount;
+            << file + "." + extension << rowCount << columnCount
+            << columnFormats;
     }
 }
 
@@ -210,6 +216,7 @@ void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile03()
     QFETCH(QString, fileName);
     QFETCH(unsigned int, rowCount);
     QFETCH(unsigned int, columnCount);
+    QFETCH(QVector<ColumnType>, columnFormats);
 
     QString filePath(getSpreadsheetsDir() + fileName);
     std::unique_ptr<DatasetSpreadsheet> dataset{
@@ -218,14 +225,8 @@ void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile03()
     QVERIFY(dataset->initialize());
     performBasicChecks(*dataset, rowCount, columnCount, filePath);
 
-    QVector<QPair<int, ColumnType>> columnFormats;
-    columnFormats.append(qMakePair(0, ColumnType::NUMBER));
-    columnFormats.append(qMakePair(1, ColumnType::NUMBER));
-    columnFormats.append(qMakePair(2, ColumnType::NUMBER));
-    QVector<QPair<int, QString>> columnNames;
-    columnNames.append(qMakePair(0, QString("cena nier")));
-    columnNames.append(qMakePair(1, QString("pow")));
-    columnNames.append(qMakePair(3, QString("data transakcji")));
+    QVector<QString> columnNames{"cena nier", "pow", "cena metra",
+                                 "data transakcji", "text"};
     testColumnInfo(*dataset, columnFormats, columnNames);
 
     QVector<std::tuple<QVariant, int, int>> fields;
@@ -257,8 +258,6 @@ void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile03()
 
     testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
                             compareDateValues, compareList, true);
-
-    //    testSpreadsheetFile03(std::move(dataset), filePath);
 }
 
 void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile04_data()
@@ -295,33 +294,15 @@ void DetailedSpreadsheetsTest::testSpreadsheetFile04(
     QVERIFY(dataset->initialize());
     performBasicChecks(*dataset, 30, 12, file);
 
-    QVector<QPair<int, ColumnType>> columnFormats;
-    columnFormats.append(qMakePair(0, ColumnType::STRING));
-    columnFormats.append(qMakePair(1, ColumnType::DATE));
-    columnFormats.append(qMakePair(2, ColumnType::NUMBER));
-    columnFormats.append(qMakePair(3, ColumnType::NUMBER));
-    columnFormats.append(qMakePair(4, ColumnType::DATE));
-    columnFormats.append(qMakePair(5, ColumnType::NUMBER));
-    columnFormats.append(qMakePair(6, ColumnType::STRING));
-    columnFormats.append(qMakePair(7, ColumnType::STRING));
-    columnFormats.append(qMakePair(8, ColumnType::NUMBER));
-    columnFormats.append(qMakePair(9, ColumnType::NUMBER));
-    columnFormats.append(qMakePair(10, ColumnType::NUMBER));
-    columnFormats.append(qMakePair(11, ColumnType::NUMBER));
+    QVector<ColumnType> columnFormats{
+        ColumnType::STRING, ColumnType::DATE,   ColumnType::NUMBER,
+        ColumnType::NUMBER, ColumnType::DATE,   ColumnType::NUMBER,
+        ColumnType::STRING, ColumnType::STRING, ColumnType::NUMBER,
+        ColumnType::NUMBER, ColumnType::NUMBER, ColumnType::NUMBER};
 
-    QVector<QPair<int, QString>> columnNames;
-    columnNames.append(qMakePair(0, QString("name")));
-    columnNames.append(qMakePair(1, QString("date")));
-    columnNames.append(qMakePair(2, QString("mass (kg)")));
-    columnNames.append(qMakePair(3, QString("height")));
-    columnNames.append(qMakePair(4, QString("no name")));
-    columnNames.append(qMakePair(5, QString("no name")));
-    columnNames.append(qMakePair(6, QString("no name")));
-    columnNames.append(qMakePair(7, QString("no name")));
-    columnNames.append(qMakePair(8, QString("no name")));
-    columnNames.append(qMakePair(9, QString("no name")));
-    columnNames.append(qMakePair(10, QString("no name")));
-    columnNames.append(qMakePair(11, QString("no name")));
+    QVector<QString> columnNames{"name",    "date",    "mass (kg)", "height",
+                                 "no name", "no name", "no name",   "no name",
+                                 "no name", "no name", "no name",   "no name"};
     testColumnInfo(*dataset, columnFormats, columnNames);
 
     QVector<std::tuple<QVariant, int, int>> fields;

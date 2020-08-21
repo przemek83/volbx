@@ -48,8 +48,8 @@ private:
      * @param columnNames names of columns to compare.
      */
     void testColumnInfo(Dataset& definition,
-                        const QVector<QPair<int, ColumnType> >& columnFormats,
-                        const QVector<QPair<int, QString> >& columnNames);
+                        const QVector<ColumnType>& columnFormats,
+                        const QVector<QString>& columnNames);
 
     /**
      * @brief check number of rows, columns and some values in data.
