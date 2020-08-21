@@ -191,22 +191,74 @@ void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile01()
 
 void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile03_data()
 {
+    QString file("test03");
+    unsigned int rowCount{4};
+    unsigned int columnCount{5};
     QTest::addColumn<QString>("fileName");
+    QTest::addColumn<unsigned int>("rowCount");
+    QTest::addColumn<unsigned int>("columnCount");
     for (const auto& extension : QVector<QString>{"xlsx", "ods"})
     {
-        QString testName{"Detailed test for test03 " + extension};
-        QTest::newRow(testName.toStdString().c_str()) << "test03." + extension;
+        QString testName{"Detailed test for " + file + " " + extension};
+        QTest::newRow(testName.toStdString().c_str())
+            << file + "." + extension << rowCount << columnCount;
     }
 }
 
 void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile03()
 {
     QFETCH(QString, fileName);
+    QFETCH(unsigned int, rowCount);
+    QFETCH(unsigned int, columnCount);
 
     QString filePath(getSpreadsheetsDir() + fileName);
     std::unique_ptr<DatasetSpreadsheet> dataset{
         Common::createDataset(filePath)};
-    testSpreadsheetFile03(std::move(dataset), filePath);
+
+    QVERIFY(dataset->initialize());
+    performBasicChecks(*dataset, rowCount, columnCount, filePath);
+
+    QVector<QPair<int, ColumnType>> columnFormats;
+    columnFormats.append(qMakePair(0, ColumnType::NUMBER));
+    columnFormats.append(qMakePair(1, ColumnType::NUMBER));
+    columnFormats.append(qMakePair(2, ColumnType::NUMBER));
+    QVector<QPair<int, QString>> columnNames;
+    columnNames.append(qMakePair(0, QString("cena nier")));
+    columnNames.append(qMakePair(1, QString("pow")));
+    columnNames.append(qMakePair(3, QString("data transakcji")));
+    testColumnInfo(*dataset, columnFormats, columnNames);
+
+    QVector<std::tuple<QVariant, int, int>> fields;
+    fields.append(std::make_tuple(QVariant(3703.75925925926), 3, 2));
+    fields.append(std::make_tuple(QVariant(53.0), 2, 1));
+    fields.append(std::make_tuple(QVariant(3773.62264150943), 2, 2));
+    testSampleData(*dataset, rowCount, columnCount, fields);
+
+    QVector<bool> activeColumns(dataset->columnCount(), true);
+    dataset->setActiveColumns(activeColumns);
+
+    QVector<int> columnsToTest;
+    columnsToTest << 0 << 1 << 3 << 4 << 3 << 2;
+
+    QVector<double> compareNumericValues;
+    compareNumericValues << 200000 << 200003 << 51 << 54;
+
+    QVector<QDate> compareDateValues;
+    compareDateValues << QDate(2012, 2, 2) << QDate(2012, 2, 5);
+
+    QStringList compareList;
+    compareList << "a"
+                << "b"
+                << "c";
+
+    dataset->loadData();
+    dataset->setTaggedColumn(ColumnTag::DATE, 3);
+    dataset->setTaggedColumn(ColumnTag::VALUE, 2);
+
+    testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
+                            compareDateValues, compareList, true);
+
+    //    testSpreadsheetFile03(std::move(dataset), filePath);
 }
 
 void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile04_data()
@@ -236,53 +288,6 @@ void DetailedSpreadsheetsTest::testDetailedSpreadsheetFile04()
 //{
 //    QVERIFY(true == definition->init());
 //}
-
-void DetailedSpreadsheetsTest::testSpreadsheetFile03(
-    std::unique_ptr<DatasetSpreadsheet> dataset, QString file)
-{
-    QVERIFY(dataset->initialize());
-    performBasicChecks(*dataset, 4, 5, file);
-
-    QVector<QPair<int, ColumnType>> columnFormats;
-    columnFormats.append(qMakePair(0, ColumnType::NUMBER));
-    columnFormats.append(qMakePair(1, ColumnType::NUMBER));
-    columnFormats.append(qMakePair(2, ColumnType::NUMBER));
-    QVector<QPair<int, QString>> columnNames;
-    columnNames.append(qMakePair(0, QString("cena nier")));
-    columnNames.append(qMakePair(1, QString("pow")));
-    columnNames.append(qMakePair(3, QString("data transakcji")));
-    testColumnInfo(*dataset, columnFormats, columnNames);
-
-    QVector<std::tuple<QVariant, int, int>> fields;
-    fields.append(std::make_tuple(QVariant(3703.75925925926), 3, 2));
-    fields.append(std::make_tuple(QVariant(53.0), 2, 1));
-    fields.append(std::make_tuple(QVariant(3773.62264150943), 2, 2));
-    testSampleData(*dataset, 4, 5, fields);
-
-    QVector<bool> activeColumns(dataset->columnCount(), true);
-    dataset->setActiveColumns(activeColumns);
-
-    QVector<int> columnsToTest;
-    columnsToTest << 0 << 1 << 3 << 4 << 3 << 2;
-
-    QVector<double> compareNumericValues;
-    compareNumericValues << 200000 << 200003 << 51 << 54;
-
-    QVector<QDate> compareDateValues;
-    compareDateValues << QDate(2012, 2, 2) << QDate(2012, 2, 5);
-
-    QStringList compareList;
-    compareList << "a"
-                << "b"
-                << "c";
-
-    dataset->loadData();
-    dataset->setTaggedColumn(ColumnTag::DATE, 3);
-    dataset->setTaggedColumn(ColumnTag::VALUE, 2);
-
-    testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
-                            compareDateValues, compareList, true);
-}
 
 void DetailedSpreadsheetsTest::testSpreadsheetFile04(
     std::unique_ptr<DatasetSpreadsheet> dataset, QString file)

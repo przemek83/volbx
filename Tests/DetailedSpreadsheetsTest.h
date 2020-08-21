@@ -77,10 +77,10 @@ private:
 
     //    void testSpreadsheetFile02(DatasetDefinitionSpreadsheet* definition,
     //                               QString file);
-    void testSpreadsheetFile03(std::unique_ptr<DatasetSpreadsheet> dataset,
-                               QString file);
+
     void testSpreadsheetFile04(std::unique_ptr<DatasetSpreadsheet> dataset,
                                QString file);
+
     //    void testSpreadsheetFile05(DatasetDefinitionSpreadsheet* definition,
     //                               QString file);
 };
