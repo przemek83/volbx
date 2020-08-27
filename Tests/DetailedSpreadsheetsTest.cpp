@@ -195,34 +195,26 @@ void DetailedSpreadsheetsTest::checkDataFile01(
     QVector<bool> activeColumns(dataset->columnCount(), true);
     dataset->setActiveColumns(activeColumns);
 
-    QVector<int> columnsToTest;
-    columnsToTest << 5 << 3 << 2 << 6 << 2 << 5;
-
-    QVector<double> compareNumericValues;
-    compareNumericValues << 803.25 << 39999.98 << 14.91 << 126.69;
-
-    QVector<QDate> compareDateValues;
-    compareDateValues << QDate(2010, 1, 1) << QDate(2011, 8, 31);
-
-    QStringList compareList;
-    compareList << "brown"
-                << "red"
-                << "yellow"
-                << "black"
-                << "blue"
-                << "pink"
-                << "white"
-                << "dark blue"
-                << "orange";
-
     dataset->loadData();
+
+    checkNumericColumnRange(dataset, 5, 803.25, 39999.98);
+    checkNumericColumnRange(dataset, 3, 14.91, 126.69);
+
+    checkDateColumnRange(dataset, 2, QDate(2010, 1, 1), QDate(2011, 8, 31),
+                         false);
+
+    QStringList compareList = {"brown", "red",   "yellow",    "black", "blue",
+                               "pink",  "white", "dark blue", "orange"};
+    checkStringColumnRange(dataset, 6, compareList);
+
+    QVector<int> columnsToTest;
+    columnsToTest << 2 << 5;
 
     // Tagged column after rebuild done in dataset init.
     dataset->setTaggedColumn(ColumnTag::DATE, 2);
     dataset->setTaggedColumn(ColumnTag::VALUE, 5);
 
-    testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
-                            compareDateValues, compareList, false);
+    checkSpecialColumns(*dataset, columnsToTest);
 }
 
 void DetailedSpreadsheetsTest::checkDataFile01SomeColumns(
@@ -235,32 +227,25 @@ void DetailedSpreadsheetsTest::checkDataFile01SomeColumns(
     activeColumns[4] = false;
     dataset->setActiveColumns(activeColumns);
 
-    QVector<int> columnsToTest;
-    columnsToTest << 2 << 1 << 0 << 3 << 0 << 2;
-
-    QVector<double> compareNumericValues;
-    compareNumericValues << 803.25 << 39999.98 << 14.91 << 126.69;
-
-    QVector<QDate> compareDateValues;
-    compareDateValues << QDate(2010, 1, 1) << QDate(2011, 8, 31);
-
-    QStringList compareList;
-    compareList << "brown"
-                << "red"
-                << "yellow"
-                << "black"
-                << "blue"
-                << "pink"
-                << "white"
-                << "dark blue"
-                << "orange";
-
     dataset->loadData();
+
+    checkNumericColumnRange(dataset, 1, 14.91, 126.69);
+    checkNumericColumnRange(dataset, 2, 803.25, 39999.98);
+
+    checkDateColumnRange(dataset, 0, QDate(2010, 1, 1), QDate(2011, 8, 31),
+                         false);
+
+    QStringList compareList = {"brown", "red",   "yellow",    "black", "blue",
+                               "pink",  "white", "dark blue", "orange"};
+    checkStringColumnRange(dataset, 3, compareList);
+
+    QVector<int> columnsToTest;
+    columnsToTest << 0 << 2;
+
     dataset->setTaggedColumn(ColumnTag::DATE, 0);
     dataset->setTaggedColumn(ColumnTag::VALUE, 2);
 
-    testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
-                            compareDateValues, compareList, false);
+    checkSpecialColumns(*dataset, columnsToTest);
 
     Common::compareExportDataWithDump(std::move(dataset));  //"partial"
 }
@@ -289,26 +274,24 @@ void DetailedSpreadsheetsTest::testDataFile03()
     QVector<bool> activeColumns(dataset->columnCount(), true);
     dataset->setActiveColumns(activeColumns);
 
-    QVector<int> columnsToTest;
-    columnsToTest << 0 << 1 << 3 << 4 << 3 << 2;
-
-    QVector<double> compareNumericValues;
-    compareNumericValues << 200000 << 200003 << 51 << 54;
-
-    QVector<QDate> compareDateValues;
-    compareDateValues << QDate(2012, 2, 2) << QDate(2012, 2, 5);
-
-    QStringList compareList;
-    compareList << "a"
-                << "b"
-                << "c";
-
     dataset->loadData();
+
+    checkNumericColumnRange(dataset, 0, 200000, 200003);
+    checkNumericColumnRange(dataset, 1, 51, 54);
+
+    checkDateColumnRange(dataset, 3, QDate(2012, 2, 2), QDate(2012, 2, 5),
+                         true);
+
+    QStringList compareList = {"a", "b", "c"};
+    checkStringColumnRange(dataset, 4, compareList);
+
+    QVector<int> columnsToTest;
+    columnsToTest << 3 << 2;
+
     dataset->setTaggedColumn(ColumnTag::DATE, 3);
     dataset->setTaggedColumn(ColumnTag::VALUE, 2);
 
-    testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
-                            compareDateValues, compareList, true);
+    checkSpecialColumns(*dataset, columnsToTest);
 }
 
 void DetailedSpreadsheetsTest::testDataFile04_data()
@@ -334,23 +317,24 @@ void DetailedSpreadsheetsTest::testDataFile04()
     QVector<bool> activeColumns(dataset->columnCount(), true);
     dataset->setActiveColumns(activeColumns);
 
-    QVector<int> columnsToTest;
-    columnsToTest << 2 << 3 << 1 << 0 << 1 << 2;
+    dataset->loadData();
 
-    QVector<double> compareNumericValues;
-    compareNumericValues << 0 << 74.46 << 0 << 1.83;
+    checkNumericColumnRange(dataset, 2, 0, 74.46);
+    checkNumericColumnRange(dataset, 3, 0, 1.83);
 
-    QVector<QDate> compareDateValues;
-    compareDateValues << QDate(1970, 1, 1) << QDate(1970, 1, 30);
+    checkDateColumnRange(dataset, 1, QDate(1970, 1, 1), QDate(1970, 1, 30),
+                         false);
 
     QStringList compareList;
+    checkStringColumnRange(dataset, 0, compareList);
 
-    dataset->loadData();
+    QVector<int> columnsToTest;
+    columnsToTest << 1 << 2;
+
     dataset->setTaggedColumn(ColumnTag::DATE, 1);
     dataset->setTaggedColumn(ColumnTag::VALUE, 2);
 
-    testDatasetConstruction(*dataset, columnsToTest, compareNumericValues,
-                            compareDateValues, compareList, false);
+    checkSpecialColumns(*dataset, columnsToTest);
 }
 
 void DetailedSpreadsheetsTest::checkColumnFormats(
@@ -382,31 +366,39 @@ void DetailedSpreadsheetsTest::checkTaggedColumnsNotSet(
     QVERIFY(!ok);
 }
 
-void DetailedSpreadsheetsTest::testDatasetConstruction(
-    const Dataset& dataset, QVector<int>& columnsToTest,
-    QVector<double>& compareNumericValues, QVector<QDate>& compareDateValues,
-    QStringList& compareList, bool emptyDates)
+void DetailedSpreadsheetsTest::checkNumericColumnRange(
+    const std::unique_ptr<DatasetSpreadsheet>& dataset, int columnIndex,
+    double expectedMin, double expectedMax)
 {
-    QVERIFY(dataset.isValid());
+    auto [currentMin, currentMax] = dataset->getNumericRange(columnIndex);
+    QCOMPARE(currentMin, expectedMin);
+    QCOMPARE(currentMax, expectedMax);
+}
 
-    auto [min, max] = dataset.getNumericRange(columnsToTest[0]);
-    QCOMPARE(min, compareNumericValues[0]);
-    QCOMPARE(max, compareNumericValues[1]);
+void DetailedSpreadsheetsTest::checkDateColumnRange(
+    const std::unique_ptr<DatasetSpreadsheet>& dataset, int columnIndex,
+    QDate expectedMin, QDate expectedMax, bool expectedEmptyDates)
+{
+    auto [currentMinDate, currentMaxDate, currentEmpty] =
+        dataset->getDateRange(columnIndex);
+    QCOMPARE(currentMinDate, expectedMin);
+    QCOMPARE(currentMaxDate, expectedMax);
+    QCOMPARE(currentEmpty, expectedEmptyDates);
+}
 
-    std::tie(min, max) = dataset.getNumericRange(columnsToTest[1]);
-    QCOMPARE(min, compareNumericValues[2]);
-    QCOMPARE(max, compareNumericValues[3]);
+void DetailedSpreadsheetsTest::checkStringColumnRange(
+    const std::unique_ptr<DatasetSpreadsheet>& dataset, int columnIndex,
+    QStringList& expectedList)
+{
+    QStringList currentList = dataset->getStringList(columnIndex);
+    QCOMPARE(currentList, expectedList);
+}
 
-    auto [minDate, maxDate, empty] = dataset.getDateRange(columnsToTest[2]);
-    QCOMPARE(minDate, compareDateValues[0]);
-    QCOMPARE(maxDate, compareDateValues[1]);
-    QCOMPARE(empty, emptyDates);
-
-    QStringList list = dataset.getStringList(columnsToTest[3]);
-    QCOMPARE(list, compareList);
-
+void DetailedSpreadsheetsTest::checkSpecialColumns(const Dataset& dataset,
+                                                   QVector<int>& columnsToTest)
+{
     auto [ok, column] = dataset.getTaggedColumn(ColumnTag::DATE);
-    QCOMPARE(column, columnsToTest[4]);
+    QCOMPARE(column, columnsToTest[0]);
     std::tie(ok, column) = dataset.getTaggedColumn(ColumnTag::VALUE);
-    QCOMPARE(column, columnsToTest[5]);
+    QCOMPARE(column, columnsToTest[1]);
 }

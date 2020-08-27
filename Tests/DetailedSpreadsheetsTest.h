@@ -36,11 +36,20 @@ private slots:
     void testDataFile04();
 
 private:
-    void testDatasetConstruction(const Dataset& dataset,
-                                 QVector<int>& columnsToTest,
-                                 QVector<double>& compareNumericValues,
-                                 QVector<QDate>& compareDateValues,
-                                 QStringList& compareList, bool emptyDates);
+    void checkNumericColumnRange(
+        const std::unique_ptr<DatasetSpreadsheet>& dataset, int columnIndex,
+        double expectedMin, double expectedMax);
+
+    void checkDateColumnRange(
+        const std::unique_ptr<DatasetSpreadsheet>& dataset, int columnIndex,
+        QDate expectedMin, QDate expectedMax, bool expectedEmptyDates);
+
+    void checkStringColumnRange(
+        const std::unique_ptr<DatasetSpreadsheet>& dataset, int columnIndex,
+        QStringList& expectedList);
+
+    void checkSpecialColumns(const Dataset& dataset,
+                             QVector<int>& columnsToTest);
 
     void checkDataFile01(std::unique_ptr<DatasetSpreadsheet> dataset);
 
