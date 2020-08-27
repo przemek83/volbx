@@ -62,6 +62,8 @@ private:
     void checkTaggedColumnsNotSet(
         const std::unique_ptr<DatasetSpreadsheet>& dataset);
 
+    void prepareDatasetForTest(std::unique_ptr<DatasetSpreadsheet>& dataset);
+
     static const QVector<QString> fileNames_;
     const QVector<QString> extensions_{"xlsx", "ods"};
     static const QVector<QVector<ColumnType>> columnFormats_;

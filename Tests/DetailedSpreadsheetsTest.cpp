@@ -187,15 +187,18 @@ void DetailedSpreadsheetsTest::testDataFile01()
     checkDataFile01SomeColumns(std::move(dataset));
 }
 
+void DetailedSpreadsheetsTest::prepareDatasetForTest(
+    std::unique_ptr<DatasetSpreadsheet>& dataset)
+{
+    dataset->initialize();
+    Common::activateAllDatasetColumns(dataset);
+    dataset->loadData();
+}
+
 void DetailedSpreadsheetsTest::checkDataFile01(
     std::unique_ptr<DatasetSpreadsheet> dataset)
 {
-    dataset->initialize();
-
-    QVector<bool> activeColumns(dataset->columnCount(), true);
-    dataset->setActiveColumns(activeColumns);
-
-    dataset->loadData();
+    prepareDatasetForTest(dataset);
 
     checkNumericColumnRange(dataset, 5, 803.25, 39999.98);
     checkNumericColumnRange(dataset, 3, 14.91, 126.69);
@@ -217,7 +220,6 @@ void DetailedSpreadsheetsTest::checkDataFile01SomeColumns(
     activeColumns[1] = false;
     activeColumns[4] = false;
     dataset->setActiveColumns(activeColumns);
-
     dataset->loadData();
 
     checkNumericColumnRange(dataset, 1, 14.91, 126.69);
@@ -252,12 +254,7 @@ void DetailedSpreadsheetsTest::testDataFile03()
     std::unique_ptr<DatasetSpreadsheet> dataset{
         Common::createDataset(filePath)};
 
-    dataset->initialize();
-
-    QVector<bool> activeColumns(dataset->columnCount(), true);
-    dataset->setActiveColumns(activeColumns);
-
-    dataset->loadData();
+    prepareDatasetForTest(dataset);
 
     checkNumericColumnRange(dataset, 0, 200000, 200003);
     checkNumericColumnRange(dataset, 1, 51, 54);
@@ -287,12 +284,7 @@ void DetailedSpreadsheetsTest::testDataFile04()
     std::unique_ptr<DatasetSpreadsheet> dataset{
         Common::createDataset(filePath)};
 
-    dataset->initialize();
-
-    QVector<bool> activeColumns(dataset->columnCount(), true);
-    dataset->setActiveColumns(activeColumns);
-
-    dataset->loadData();
+    prepareDatasetForTest(dataset);
 
     checkNumericColumnRange(dataset, 2, 0, 74.46);
     checkNumericColumnRange(dataset, 3, 0, 1.83);
