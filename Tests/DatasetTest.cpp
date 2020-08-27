@@ -1,0 +1,32 @@
+#include "DatasetTest.h"
+
+#include <QtTest/QtTest>
+
+#include <Constants.h>
+
+#include "DatasetDummy.h"
+
+void DatasetTest::testGetColumnFormatColumnsSet()
+{
+    const unsigned int dateColumnIndex{0};
+    const unsigned int valueColumnIndex{1};
+
+    DatasetDummy dataset("a");
+    dataset.setTaggedColumn(ColumnTag::DATE, dateColumnIndex);
+    dataset.setTaggedColumn(ColumnTag::VALUE, valueColumnIndex);
+
+    auto [ok, column] = dataset.getTaggedColumn(ColumnTag::DATE);
+    QCOMPARE(column, dateColumnIndex);
+    std::tie(ok, column) = dataset.getTaggedColumn(ColumnTag::VALUE);
+    QCOMPARE(column, valueColumnIndex);
+}
+
+void DatasetTest::testGetColumnFormatColumnsNotSet()
+{
+    DatasetDummy dataset("a");
+
+    auto [ok, column] = dataset.getTaggedColumn(ColumnTag::DATE);
+    QCOMPARE(column, Constants::NOT_SET_COLUMN);
+    std::tie(ok, column) = dataset.getTaggedColumn(ColumnTag::VALUE);
+    QCOMPARE(column, Constants::NOT_SET_COLUMN);
+}

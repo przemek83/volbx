@@ -20,6 +20,10 @@ set(${PROJECT_NAME}_SOURCES
     FilteringProxyModelTest.cpp
     DetailedSpreadsheetsTest.cpp
     DetailedSpreadsheetsTest.h
+    DatasetDummy.cpp
+    DatasetDummy.h
+    DatasetTest.cpp
+    DatasetTest.h
     )
 
 add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})

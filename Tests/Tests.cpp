@@ -1,6 +1,7 @@
 #include <QtTest/QtTest>
 
 #include "ConfigurationTest.h"
+#include "DatasetTest.h"
 #include "DetailedSpreadsheetsTest.h"
 #include "FilteringProxyModelTest.h"
 #include "InnerTests.h"
@@ -28,8 +29,11 @@ int main(int argc, char* argv[])
     FilteringProxyModelTest filteringProxyModelTest;
     QTest::qExec(&filteringProxyModelTest);
 
-    InnerTests ineerTests;
-    QTest::qExec(&ineerTests);
+    InnerTests innerTests;
+    QTest::qExec(&innerTests);
+
+    DatasetTest datasetTest;
+    QTest::qExec(&datasetTest);
 
     return 0;
 }
