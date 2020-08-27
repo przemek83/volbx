@@ -200,10 +200,10 @@ void DetailedSpreadsheetsTest::checkDataFile01(
 {
     prepareDatasetForTest(dataset);
 
-    checkNumericColumnRange(dataset, 5, 803.25, 39999.98);
-    checkNumericColumnRange(dataset, 3, 14.91, 126.69);
+    checkNumericColumnRange(dataset, 5, {803.25, 39999.98});
+    checkNumericColumnRange(dataset, 3, {14.91, 126.69});
 
-    checkDateColumnRange(dataset, 2, QDate(2010, 1, 1), QDate(2011, 8, 31),
+    checkDateColumnRange(dataset, 2, {QDate(2010, 1, 1), QDate(2011, 8, 31)},
                          false);
 
     QStringList compareList = {"brown", "red",   "yellow",    "black", "blue",
@@ -222,10 +222,10 @@ void DetailedSpreadsheetsTest::checkDataFile01SomeColumns(
     dataset->setActiveColumns(activeColumns);
     dataset->loadData();
 
-    checkNumericColumnRange(dataset, 1, 14.91, 126.69);
-    checkNumericColumnRange(dataset, 2, 803.25, 39999.98);
+    checkNumericColumnRange(dataset, 1, {14.91, 126.69});
+    checkNumericColumnRange(dataset, 2, {803.25, 39999.98});
 
-    checkDateColumnRange(dataset, 0, QDate(2010, 1, 1), QDate(2011, 8, 31),
+    checkDateColumnRange(dataset, 0, {QDate(2010, 1, 1), QDate(2011, 8, 31)},
                          false);
 
     QStringList compareList = {"brown", "red",   "yellow",    "black", "blue",
@@ -256,10 +256,10 @@ void DetailedSpreadsheetsTest::testDataFile03()
 
     prepareDatasetForTest(dataset);
 
-    checkNumericColumnRange(dataset, 0, 200000, 200003);
-    checkNumericColumnRange(dataset, 1, 51, 54);
+    checkNumericColumnRange(dataset, 0, {200000, 200003});
+    checkNumericColumnRange(dataset, 1, {51, 54});
 
-    checkDateColumnRange(dataset, 3, QDate(2012, 2, 2), QDate(2012, 2, 5),
+    checkDateColumnRange(dataset, 3, {QDate(2012, 2, 2), QDate(2012, 2, 5)},
                          true);
 
     QStringList compareList = {"a", "b", "c"};
@@ -286,10 +286,10 @@ void DetailedSpreadsheetsTest::testDataFile04()
 
     prepareDatasetForTest(dataset);
 
-    checkNumericColumnRange(dataset, 2, 0, 74.46);
-    checkNumericColumnRange(dataset, 3, 0, 1.83);
+    checkNumericColumnRange(dataset, 2, {0, 74.46});
+    checkNumericColumnRange(dataset, 3, {0, 1.83});
 
-    checkDateColumnRange(dataset, 1, QDate(1970, 1, 1), QDate(1970, 1, 30),
+    checkDateColumnRange(dataset, 1, {QDate(1970, 1, 1), QDate(1970, 1, 30)},
                          false);
 
     QStringList compareList;
@@ -327,19 +327,21 @@ void DetailedSpreadsheetsTest::checkTaggedColumnsNotSet(
 
 void DetailedSpreadsheetsTest::checkNumericColumnRange(
     const std::unique_ptr<DatasetSpreadsheet>& dataset, int columnIndex,
-    double expectedMin, double expectedMax)
+    std::pair<double, double> expectedRange)
 {
     auto [currentMin, currentMax] = dataset->getNumericRange(columnIndex);
+    const auto [expectedMin, expectedMax] = expectedRange;
     QCOMPARE(currentMin, expectedMin);
     QCOMPARE(currentMax, expectedMax);
 }
 
 void DetailedSpreadsheetsTest::checkDateColumnRange(
     const std::unique_ptr<DatasetSpreadsheet>& dataset, int columnIndex,
-    QDate expectedMin, QDate expectedMax, bool expectedEmptyDates)
+    std::pair<QDate, QDate> expectedRange, bool expectedEmptyDates)
 {
     auto [currentMinDate, currentMaxDate, currentEmpty] =
         dataset->getDateRange(columnIndex);
+    const auto [expectedMin, expectedMax] = expectedRange;
     QCOMPARE(currentMinDate, expectedMin);
     QCOMPARE(currentMaxDate, expectedMax);
     QCOMPARE(currentEmpty, expectedEmptyDates);

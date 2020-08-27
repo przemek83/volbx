@@ -38,11 +38,11 @@ private slots:
 private:
     void checkNumericColumnRange(
         const std::unique_ptr<DatasetSpreadsheet>& dataset, int columnIndex,
-        double expectedMin, double expectedMax);
+        std::pair<double, double> expectedRange);
 
     void checkDateColumnRange(
         const std::unique_ptr<DatasetSpreadsheet>& dataset, int columnIndex,
-        QDate expectedMin, QDate expectedMax, bool expectedEmptyDates);
+        std::pair<QDate, QDate> expectedRange, bool expectedEmptyDates);
 
     void checkStringColumnRange(
         const std::unique_ptr<DatasetSpreadsheet>& dataset, int columnIndex,
