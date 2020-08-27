@@ -29,6 +29,9 @@ private slots:
     void testNumericColumnRanges_data();
     void testNumericColumnRanges();
 
+    void testDateColumnRanges_data();
+    void testDateColumnRanges();
+
     void testDataFile01_data();
     void testDataFile01();
 
