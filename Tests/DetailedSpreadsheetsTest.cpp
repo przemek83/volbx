@@ -9,8 +9,9 @@
 
 #include "Common.h"
 
-const QVector<QString> DetailedSpreadsheetsTest::fileNames_{"test01", "test03",
-                                                            "test04"};
+const QVector<QString> DetailedSpreadsheetsTest::fileNames_{
+    "test01.xlsx", "test01.ods",  "test03.xlsx",
+    "test03.ods",  "test04.xlsx", "test04.ods"};
 
 const QVector<QVector<ColumnType>> DetailedSpreadsheetsTest::columnFormats_{
     {ColumnType::STRING, ColumnType::NUMBER, ColumnType::DATE,
@@ -59,14 +60,12 @@ void DetailedSpreadsheetsTest::testBasics_data()
     const QVector<unsigned int> expectedColumnCounts{7, 5, 12};
 
     for (int i = 0; i < fileNames_.size(); ++i)
-        for (const auto& extension : extensions_)
-        {
-            QString testName{"Basic test for " + fileNames_[i] + " " +
-                             extension};
-            QTest::newRow(testName.toStdString().c_str())
-                << fileNames_[i] + "." + extension << expectedRowCounts[i]
-                << expectedColumnCounts[i];
-        }
+    {
+        QString testName{"Basic test for " + fileNames_[i] + "."};
+        QTest::newRow(testName.toStdString().c_str())
+            << fileNames_[i] << expectedRowCounts[i / 2]
+            << expectedColumnCounts[i / 2];
+    }
 }
 
 void DetailedSpreadsheetsTest::testBasics()
@@ -93,14 +92,11 @@ void DetailedSpreadsheetsTest::testColumns_data()
     QTest::addColumn<QVector<QString>>("columnNames");
 
     for (int i = 0; i < fileNames_.size(); ++i)
-        for (const auto& extension : extensions_)
-        {
-            QString testName{"Column test for " + fileNames_[i] + " " +
-                             extension};
-            QTest::newRow(testName.toStdString().c_str())
-                << fileNames_[i] + "." + extension << columnFormats_[i]
-                << columnNames_[i];
-        }
+    {
+        QString testName{"Column test for " + fileNames_[i] + "."};
+        QTest::newRow(testName.toStdString().c_str())
+            << fileNames_[i] << columnFormats_[i / 2] << columnNames_[i / 2];
+    }
 }
 
 void DetailedSpreadsheetsTest::testColumns()
@@ -129,14 +125,12 @@ void DetailedSpreadsheetsTest::testSampleData_data()
     const QVector<unsigned int> expectedSampleColumnCounts{7, 5, 12};
 
     for (int i = 0; i < fileNames_.size(); ++i)
-        for (const auto& extension : extensions_)
-        {
-            QString testName{"Sample data test for " + fileNames_[i] + " " +
-                             extension};
-            QTest::newRow(testName.toStdString().c_str())
-                << fileNames_[i] + "." + extension << expectedSampleRowCounts[i]
-                << expectedSampleColumnCounts[i] << sampleFields_[i];
-        }
+    {
+        QString testName{"Sample data test for " + fileNames_[i] + "."};
+        QTest::newRow(testName.toStdString().c_str())
+            << fileNames_[i] << expectedSampleRowCounts[i / 2]
+            << expectedSampleColumnCounts[i / 2] << sampleFields_[i / 2];
+    }
 }
 
 void DetailedSpreadsheetsTest::testSampleData()
@@ -180,13 +174,11 @@ void DetailedSpreadsheetsTest::testNumericColumnRanges_data()
         {{2, 0, 74.46}, {3, 0, 1.83}}};
 
     for (int i = 0; i < fileNames_.size(); ++i)
-        for (const auto& extension : extensions_)
-        {
-            QString testName{"Numeric ranges test for " + fileNames_[i] + " " +
-                             extension};
-            QTest::newRow(testName.toStdString().c_str())
-                << fileNames_[i] + "." + extension << expectedRanges[i];
-        }
+    {
+        QString testName{"Numeric ranges test for " + fileNames_[i] + "."};
+        QTest::newRow(testName.toStdString().c_str())
+            << fileNames_[i] << expectedRanges[i / 2];
+    }
 }
 
 void DetailedSpreadsheetsTest::testNumericColumnRanges()
@@ -226,13 +218,11 @@ void DetailedSpreadsheetsTest::testDateColumnRanges_data()
         {1, QDate(1970, 1, 1), QDate(1970, 1, 30), false}};
 
     for (int i = 0; i < fileNames_.size(); ++i)
-        for (const auto& extension : extensions_)
-        {
-            QString testName{"Numeric ranges test for " + fileNames_[i] + " " +
-                             extension};
-            QTest::newRow(testName.toStdString().c_str())
-                << fileNames_[i] + "." + extension << expectedRanges[i];
-        }
+    {
+        QString testName{"Numeric ranges test for " + fileNames_[i] + "."};
+        QTest::newRow(testName.toStdString().c_str())
+            << fileNames_[i] << expectedRanges[i / 2];
+    }
 }
 
 void DetailedSpreadsheetsTest::testDateColumnRanges()
@@ -266,14 +256,11 @@ void DetailedSpreadsheetsTest::testStringColumnRanges_data()
         {}};
 
     for (int i = 0; i < fileNames_.size(); ++i)
-        for (const auto& extension : extensions_)
-        {
-            QString testName{"Numeric ranges test for " + fileNames_[i] + " " +
-                             extension};
-            QTest::newRow(testName.toStdString().c_str())
-                << fileNames_[i] + "." + extension << columnIndexes[i]
-                << expectedStrings[i];
-        }
+    {
+        QString testName{"Numeric ranges test for " + fileNames_[i] + "."};
+        QTest::newRow(testName.toStdString().c_str())
+            << fileNames_[i] << columnIndexes[i / 2] << expectedStrings[i / 2];
+    }
 }
 
 void DetailedSpreadsheetsTest::testStringColumnRanges()

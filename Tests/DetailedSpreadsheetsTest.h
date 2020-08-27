@@ -63,7 +63,6 @@ private:
     void prepareDatasetForTest(std::unique_ptr<DatasetSpreadsheet>& dataset);
 
     static const QVector<QString> fileNames_;
-    const QVector<QString> extensions_{"xlsx", "ods"};
     static const QVector<QVector<ColumnType>> columnFormats_;
     static const QVector<QVector<QString>> columnNames_;
     static const QVector<QVector<Field>> sampleFields_;
