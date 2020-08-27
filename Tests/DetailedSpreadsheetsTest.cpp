@@ -163,36 +163,25 @@ void DetailedSpreadsheetsTest::testSampleData()
 void DetailedSpreadsheetsTest::testDataFile01_data()
 {
     QTest::addColumn<QString>("fileName");
-    QTest::addColumn<QString>("partialFileName");
     for (const auto& extension : QVector<QString>{"xlsx", "ods"})
     {
         QString testName{"Detailed test for test01 " + extension};
-        QTest::newRow(testName.toStdString().c_str())
-            << "test01." + extension << "test01Partial." + extension;
+        QTest::newRow(testName.toStdString().c_str()) << "test01." + extension;
     }
 }
 
 void DetailedSpreadsheetsTest::testDataFile01()
 {
     QFETCH(QString, fileName);
-    QFETCH(QString, partialFileName);
 
     QString filePath(Common::getSpreadsheetsDir() + fileName);
     std::unique_ptr<DatasetSpreadsheet> dataset{
         Common::createDataset(filePath)};
-    checkDataFile01(std::move(dataset));
-    filePath = Common::getSpreadsheetsDir() + partialFileName;
-    dataset = Common::createDataset(filePath);
-    checkDataFile01SomeColumns(std::move(dataset));
-}
 
-void DetailedSpreadsheetsTest::checkDataFile01(
-    std::unique_ptr<DatasetSpreadsheet> dataset)
-{
     prepareDatasetForTest(dataset);
 
-    checkNumericColumnRange(dataset, 5, {803.25, 39999.98});
     checkNumericColumnRange(dataset, 3, {14.91, 126.69});
+    checkNumericColumnRange(dataset, 5, {803.25, 39999.98});
 
     checkDateColumnRange(dataset, 2, {QDate(2010, 1, 1), QDate(2011, 8, 31)},
                          false);
@@ -202,9 +191,24 @@ void DetailedSpreadsheetsTest::checkDataFile01(
     checkStringColumnRange(dataset, 6, compareList);
 }
 
-void DetailedSpreadsheetsTest::checkDataFile01SomeColumns(
-    std::unique_ptr<DatasetSpreadsheet> dataset)
+void DetailedSpreadsheetsTest::testDataFile01SomeColumns_data()
 {
+    QTest::addColumn<QString>("fileName");
+    for (const auto& extension : QVector<QString>{"xlsx", "ods"})
+    {
+        QString testName{"Detailed test for test01Partial " + extension};
+        QTest::newRow(testName.toStdString().c_str())
+            << "test01Partial." + extension;
+    }
+}
+
+void DetailedSpreadsheetsTest::testDataFile01SomeColumns()
+{
+    QFETCH(QString, fileName);
+    QString filePath(Common::getSpreadsheetsDir() + fileName);
+    std::unique_ptr<DatasetSpreadsheet> dataset{
+        Common::createDataset(filePath)};
+
     dataset->initialize();
     QVector<bool> activeColumns(dataset->columnCount(), true);
     activeColumns[0] = false;
@@ -223,7 +227,7 @@ void DetailedSpreadsheetsTest::checkDataFile01SomeColumns(
                                "pink",  "white", "dark blue", "orange"};
     checkStringColumnRange(dataset, 3, compareList);
 
-    Common::compareExportDataWithDump(std::move(dataset));  //"partial"
+    Common::compareExportDataWithDump(std::move(dataset));
 }
 
 void DetailedSpreadsheetsTest::testDataFile03_data()

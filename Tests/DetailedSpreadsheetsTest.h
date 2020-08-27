@@ -29,6 +29,9 @@ private slots:
     void testDataFile01_data();
     void testDataFile01();
 
+    void testDataFile01SomeColumns_data();
+    void testDataFile01SomeColumns();
+
     void testDataFile03_data();
     void testDataFile03();
 
@@ -47,11 +50,6 @@ private:
     void checkStringColumnRange(
         const std::unique_ptr<DatasetSpreadsheet>& dataset, int columnIndex,
         QStringList& expectedList);
-
-    void checkDataFile01(std::unique_ptr<DatasetSpreadsheet> dataset);
-
-    void checkDataFile01SomeColumns(
-        std::unique_ptr<DatasetSpreadsheet> dataset);
 
     void checkColumnFormats(const std::unique_ptr<DatasetSpreadsheet>& dataset,
                             const QVector<ColumnType>& columnFormats);
