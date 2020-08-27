@@ -116,7 +116,6 @@ void DetailedSpreadsheetsTest::testColumns()
 
     checkColumnFormats(dataset, columnFormats);
     checkColumnNames(dataset, columnNames);
-    checkTaggedColumnsNotSet(dataset);
 }
 
 void DetailedSpreadsheetsTest::testSampleData_data()
@@ -304,17 +303,6 @@ void DetailedSpreadsheetsTest::checkColumnNames(
     unsigned int column{0};
     for (auto& expectedColumnName : columnNames)
         QCOMPARE(dataset->getHeaderName(column++), expectedColumnName);
-}
-
-void DetailedSpreadsheetsTest::checkTaggedColumnsNotSet(
-    const std::unique_ptr<DatasetSpreadsheet>& dataset)
-{
-    unsigned int column{0};
-    bool ok{false};
-    std::tie(ok, column) = dataset->getTaggedColumn(ColumnTag::DATE);
-    QVERIFY(!ok);
-    std::tie(ok, column) = dataset->getTaggedColumn(ColumnTag::VALUE);
-    QVERIFY(!ok);
 }
 
 void DetailedSpreadsheetsTest::checkNumericColumnRange(

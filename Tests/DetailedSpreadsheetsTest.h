@@ -59,9 +59,6 @@ private:
     void checkColumnNames(const std::unique_ptr<DatasetSpreadsheet>& dataset,
                           const QVector<QString>& columnNames);
 
-    void checkTaggedColumnsNotSet(
-        const std::unique_ptr<DatasetSpreadsheet>& dataset);
-
     void prepareDatasetForTest(std::unique_ptr<DatasetSpreadsheet>& dataset);
 
     static const QVector<QString> fileNames_;
