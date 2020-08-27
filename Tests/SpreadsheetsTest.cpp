@@ -12,6 +12,22 @@
 
 #include "Common.h"
 
+const QVector<QString> SpreadsheetsTest::testFileNames_{"excel",
+                                                        "HistVsNormal",
+                                                        "import1",
+                                                        "import2",
+                                                        "import3",
+                                                        "smallDataSet",
+                                                        "test2",
+                                                        "testAccounts",
+                                                        "testDataWithPlot",
+                                                        "testDataWithPlot",
+                                                        "test",
+                                                        "testFileData",
+                                                        "test01",
+                                                        "test03",
+                                                        "test04"};
+
 void SpreadsheetsTest::initTestCase()
 {
     // generateExpectedData();

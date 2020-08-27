@@ -28,22 +28,6 @@ private slots:
     void compareExpectedTsvDumpsOfOdsAndXlsx();
 
 private:
-    QVector<QString> testFileNames_{"excel",
-                                    "HistVsNormal",
-                                    "import1",
-                                    "import2",
-                                    "import3",
-                                    "smallDataSet",
-                                    "test2",
-                                    "testAccounts",
-                                    "testDataWithPlot",
-                                    "testDataWithPlot",
-                                    "test",
-                                    "testFileData",
-                                    "test01",
-                                    "test03",
-                                    "test04"};
-
     void addTestCaseForOdsAndXlsxComparison(const QString& testNamePrefix);
 
     void compareOdsAndXlsxExpectedData(const QString& fileSuffix);
@@ -67,4 +51,6 @@ private:
     void saveExpectedTsv(const QTableView& view, const QString& filePath);
 
     void addTestCasesForFileNames(const QVector<QString>& fileNames);
+
+    static const QVector<QString> testFileNames_;
 };
