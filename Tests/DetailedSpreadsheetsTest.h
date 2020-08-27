@@ -13,6 +13,9 @@ class DatasetSpreadsheet;
 class Dataset;
 struct Field;
 
+/**
+ * @brief Detailed tests for spreadsheet files.
+ */
 class DetailedSpreadsheetsTest : public QObject
 {
     Q_OBJECT
@@ -35,8 +38,8 @@ private slots:
     void testStringColumnRanges_data();
     void testStringColumnRanges();
 
-    void testDataFile01SomeColumns_data();
-    void testDataFile01SomeColumns();
+    void testDataFile01SomeColumnsActive_data();
+    void testDataFile01SomeColumnsActive();
 
 private:
     void checkNumericColumnRange(

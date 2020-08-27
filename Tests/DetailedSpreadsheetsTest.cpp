@@ -291,7 +291,7 @@ void DetailedSpreadsheetsTest::testStringColumnRanges()
     checkStringColumnRange(dataset, columnIndex, expectedStrings);
 }
 
-void DetailedSpreadsheetsTest::testDataFile01SomeColumns_data()
+void DetailedSpreadsheetsTest::testDataFile01SomeColumnsActive_data()
 {
     QTest::addColumn<QString>("fileName");
     for (const auto& extension : QVector<QString>{"xlsx", "ods"})
@@ -302,7 +302,7 @@ void DetailedSpreadsheetsTest::testDataFile01SomeColumns_data()
     }
 }
 
-void DetailedSpreadsheetsTest::testDataFile01SomeColumns()
+void DetailedSpreadsheetsTest::testDataFile01SomeColumnsActive()
 {
     QFETCH(QString, fileName);
     QString filePath(Common::getSpreadsheetsDir() + fileName);
