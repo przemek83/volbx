@@ -32,17 +32,11 @@ private slots:
     void testDateColumnRanges_data();
     void testDateColumnRanges();
 
-    void testDataFile01_data();
-    void testDataFile01();
+    void testStringColumnRanges_data();
+    void testStringColumnRanges();
 
     void testDataFile01SomeColumns_data();
     void testDataFile01SomeColumns();
-
-    void testDataFile03_data();
-    void testDataFile03();
-
-    void testDataFile04_data();
-    void testDataFile04();
 
 private:
     void checkNumericColumnRange(
