@@ -265,17 +265,6 @@ void DetailedSpreadsheetsTest::checkDataFile01SomeColumns(
     Common::compareExportDataWithDump(std::move(dataset));  //"partial"
 }
 
-// void SpreadsheetsTest::detailedSpreadsheetFileTest02()
-//{
-//    QString file(getSpreadsheetsDir() + "test02.xlsx");
-//    DatasetXlsx* definitionXlsx = new DatasetXlsx(file,
-//    file); testSpreadsheetFile02(definitionXlsx, file);
-
-//    file = getSpreadsheetsDir() + "test02.ods";
-//    DatasetOds* definitionOds = new DatasetOds(file,
-//    file); testSpreadsheetFile02(definitionOds, file);
-//}
-
 void DetailedSpreadsheetsTest::testDataFile03_data()
 {
     QString file("test03");
@@ -364,14 +353,6 @@ void DetailedSpreadsheetsTest::testDataFile04()
                             compareDateValues, compareList, false);
 }
 
-// void
-// DetailedSpreadsheetsTest::testSpreadsheetFile02(DatasetDefinitionSpreadsheet*
-// definition,
-//                                         QString file)
-//{
-//    QVERIFY(true == definition->init());
-//}
-
 void DetailedSpreadsheetsTest::checkColumnFormats(
     const std::unique_ptr<DatasetSpreadsheet>& dataset,
     const QVector<ColumnType>& columnFormats)
@@ -400,14 +381,6 @@ void DetailedSpreadsheetsTest::checkTaggedColumnsNotSet(
     std::tie(ok, column) = dataset->getTaggedColumn(ColumnTag::VALUE);
     QVERIFY(!ok);
 }
-
-// void
-// DetailedSpreadsheetsTest::testSpreadsheetFile05(DatasetDefinitionSpreadsheet*
-// definition,
-//                                             QString file)
-//{
-//    QVERIFY(true == definition->init());
-//}
 
 void DetailedSpreadsheetsTest::testDatasetConstruction(
     const Dataset& dataset, QVector<int>& columnsToTest,

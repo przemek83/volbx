@@ -30,15 +30,11 @@ private slots:
     void testDataFile01_data();
     void testDataFile01();
 
-    // void detailedSpreadsheetFileTest02();
-
     void testDataFile03_data();
     void testDataFile03();
 
     void testDataFile04_data();
     void testDataFile04();
-
-    // void detailedSpreadsheetFileTest05();
 
 private:
     void testDatasetConstruction(const Dataset& dataset,
@@ -51,12 +47,6 @@ private:
 
     void checkDataFile01SomeColumns(
         std::unique_ptr<DatasetSpreadsheet> dataset);
-
-    //    void testSpreadsheetFile02(DatasetDefinitionSpreadsheet* definition,
-    //                               QString file);
-
-    //    void testSpreadsheetFile05(DatasetDefinitionSpreadsheet* definition,
-    //                               QString file);
 
     void checkColumnFormats(const std::unique_ptr<DatasetSpreadsheet>& dataset,
                             const QVector<ColumnType>& columnFormats);
