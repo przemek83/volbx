@@ -1,5 +1,4 @@
-#ifndef DETAILEDSPREADSHEETSTEST_H
-#define DETAILEDSPREADSHEETSTEST_H
+#pragma once
 
 #include <memory>
 
@@ -63,5 +62,3 @@ private:
     static const QVector<QVector<QString>> columnNames_;
     static const QVector<QVector<Field>> sampleFields_;
 };
-
-#endif  // DETAILEDSPREADSHEETSTEST_H
