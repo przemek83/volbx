@@ -17,11 +17,6 @@ void SpreadsheetsTest::initTestCase()
     // generateExpectedData();
 }
 
-QString SpreadsheetsTest::getSpreadsheetsDir()
-{
-    return QString(":/TestFiles/TestSpreadsheets/");
-}
-
 void SpreadsheetsTest::testFiles_data()
 {
     addTestCasesForFileNames(testFileNames_);
@@ -32,10 +27,11 @@ void SpreadsheetsTest::testFiles()
     QFETCH(QString, fileName);
 
     std::unique_ptr<DatasetSpreadsheet> dataset{
-        Common::createDataset(getSpreadsheetsDir() + fileName)};
+        Common::createDataset(Common::getSpreadsheetsDir() + fileName)};
     QVERIFY(dataset->initialize());
 
-    const QString expectedDefinitionFileName{getSpreadsheetsDir() + fileName +
+    const QString expectedDefinitionFileName{Common::getSpreadsheetsDir() +
+                                             fileName +
                                              Common::getDefinitionDumpSuffix()};
     checkDatasetDefinition(dataset, expectedDefinitionFileName);
 
@@ -56,7 +52,7 @@ void SpreadsheetsTest::testDamagedFiles()
     QFETCH(QString, fileName);
 
     std::unique_ptr<DatasetSpreadsheet> dataset{
-        Common::createDataset(getSpreadsheetsDir() + fileName)};
+        Common::createDataset(Common::getSpreadsheetsDir() + fileName)};
     QVERIFY(!dataset->initialize());
 }
 
@@ -96,7 +92,7 @@ void SpreadsheetsTest::compareOdsAndXlsxExpectedData(const QString& fileSuffix)
 {
     QFETCH(QString, fileName);
 
-    QString filePath{getSpreadsheetsDir() + fileName};
+    QString filePath{Common::getSpreadsheetsDir() + fileName};
     auto [xlsxLoaded, xlsxDump] =
         FileUtilities::loadFile(filePath + ".xlsx" + fileSuffix);
     QVERIFY(xlsxLoaded);
@@ -181,7 +177,7 @@ void SpreadsheetsTest::generateExpectedDataForFile(const QString& fileName,
                                                    const QString& dir)
 {
     std::unique_ptr<DatasetSpreadsheet> dataset{
-        Common::createDataset(getSpreadsheetsDir() + fileName)};
+        Common::createDataset(Common::getSpreadsheetsDir() + fileName)};
     dataset->initialize();
 
     QString filePath{dir + fileName};

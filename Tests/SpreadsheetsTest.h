@@ -60,8 +60,6 @@ private:
 
     void generateExpectedData();
 
-    QString getSpreadsheetsDir();
-
     void saveExpectedDefinition(
         const std::unique_ptr<DatasetSpreadsheet>& dataset,
         const QString& filePath);

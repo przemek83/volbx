@@ -41,8 +41,6 @@ private slots:
     // void detailedSpreadsheetFileTest05();
 
 private:
-    QString getSpreadsheetsDir();
-
     void testDatasetConstruction(const Dataset& dataset,
                                  QVector<int>& columnsToTest,
                                  QVector<double>& compareNumericValues,

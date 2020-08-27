@@ -75,7 +75,7 @@ void DetailedSpreadsheetsTest::testBasics()
     QFETCH(unsigned int, rowCount);
     QFETCH(unsigned int, columnCount);
 
-    QString filePath(getSpreadsheetsDir() + fileName);
+    QString filePath(Common::getSpreadsheetsDir() + fileName);
     std::unique_ptr<DatasetSpreadsheet> dataset{
         Common::createDataset(filePath)};
 
@@ -109,7 +109,7 @@ void DetailedSpreadsheetsTest::testColumns()
     QFETCH(QVector<ColumnType>, columnFormats);
     QFETCH(QVector<QString>, columnNames);
 
-    QString filePath(getSpreadsheetsDir() + fileName);
+    QString filePath(Common::getSpreadsheetsDir() + fileName);
     std::unique_ptr<DatasetSpreadsheet> dataset{
         Common::createDataset(filePath)};
     dataset->initialize();
@@ -147,7 +147,7 @@ void DetailedSpreadsheetsTest::testSampleData()
     QFETCH(unsigned int, sampleColumnCount);
     QFETCH(QVector<Field>, sampleFields);
 
-    QString filePath(getSpreadsheetsDir() + fileName);
+    QString filePath(Common::getSpreadsheetsDir() + fileName);
     std::unique_ptr<DatasetSpreadsheet> dataset{
         Common::createDataset(filePath)};
     dataset->initialize();
@@ -159,11 +159,6 @@ void DetailedSpreadsheetsTest::testSampleData()
 
     for (auto [value, row, column] : sampleFields)
         QCOMPARE(sampleData.at(row)[column], value);
-}
-
-QString DetailedSpreadsheetsTest::getSpreadsheetsDir()
-{
-    return QString(":/TestFiles/TestSpreadsheets/");
 }
 
 void DetailedSpreadsheetsTest::testDataFile01_data()
@@ -183,11 +178,11 @@ void DetailedSpreadsheetsTest::testDataFile01()
     QFETCH(QString, fileName);
     QFETCH(QString, partialFileName);
 
-    QString filePath(getSpreadsheetsDir() + fileName);
+    QString filePath(Common::getSpreadsheetsDir() + fileName);
     std::unique_ptr<DatasetSpreadsheet> dataset{
         Common::createDataset(filePath)};
     checkDataFile01(std::move(dataset));
-    filePath = getSpreadsheetsDir() + partialFileName;
+    filePath = Common::getSpreadsheetsDir() + partialFileName;
     dataset = Common::createDataset(filePath);
     checkDataFile01SomeColumns(std::move(dataset));
 }
@@ -296,7 +291,7 @@ void DetailedSpreadsheetsTest::testDataFile03()
 {
     QFETCH(QString, fileName);
 
-    QString filePath(getSpreadsheetsDir() + fileName);
+    QString filePath(Common::getSpreadsheetsDir() + fileName);
     std::unique_ptr<DatasetSpreadsheet> dataset{
         Common::createDataset(filePath)};
 
@@ -341,7 +336,7 @@ void DetailedSpreadsheetsTest::testDataFile04()
 {
     QFETCH(QString, fileName);
 
-    QString filePath(getSpreadsheetsDir() + fileName);
+    QString filePath(Common::getSpreadsheetsDir() + fileName);
     std::unique_ptr<DatasetSpreadsheet> dataset{
         Common::createDataset(filePath)};
 

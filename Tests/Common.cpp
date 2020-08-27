@@ -174,4 +174,9 @@ std::unique_ptr<DatasetSpreadsheet> createDataset(const QString& filePath)
     return dataset;
 }
 
+QString getSpreadsheetsDir()
+{
+    return QString(":/TestFiles/TestSpreadsheets/");
+}
+
 }  // namespace Common
