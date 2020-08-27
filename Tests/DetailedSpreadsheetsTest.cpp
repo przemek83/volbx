@@ -160,6 +160,51 @@ void DetailedSpreadsheetsTest::testSampleData()
         QCOMPARE(sampleData.at(row)[column], value);
 }
 
+struct NumericCheckData
+{
+    unsigned int columnIndex;
+    double min;
+    double max;
+};
+
+Q_DECLARE_METATYPE(NumericCheckData)
+
+void DetailedSpreadsheetsTest::testNumericColumnRanges_data()
+{
+    QTest::addColumn<QString>("fileName");
+    QTest::addColumn<QVector<NumericCheckData>>("expectedRanges");
+
+    const QVector<QVector<NumericCheckData>> expectedRanges{
+        {{3, 14.91, 126.69}, {5, 803.25, 39999.98}},
+        {{0, 200000, 200003}, {1, 51, 54}},
+        {{2, 0, 74.46}, {3, 0, 1.83}}};
+
+    for (int i = 0; i < fileNames_.size(); ++i)
+        for (const auto& extension : extensions_)
+        {
+            QString testName{"Numeric ranges test for " + fileNames_[i] + " " +
+                             extension};
+            QTest::newRow(testName.toStdString().c_str())
+                << fileNames_[i] + "." + extension << expectedRanges[i];
+        }
+}
+
+void DetailedSpreadsheetsTest::testNumericColumnRanges()
+{
+    QFETCH(QString, fileName);
+    QFETCH(QVector<NumericCheckData>, expectedRanges);
+
+    QString filePath(Common::getSpreadsheetsDir() + fileName);
+    std::unique_ptr<DatasetSpreadsheet> dataset{
+        Common::createDataset(filePath)};
+
+    prepareDatasetForTest(dataset);
+
+    for (const auto& [columnIndex, expectedMin, expectedMax] : expectedRanges)
+        checkNumericColumnRange(dataset, columnIndex,
+                                {expectedMin, expectedMax});
+}
+
 void DetailedSpreadsheetsTest::testDataFile01_data()
 {
     QTest::addColumn<QString>("fileName");
@@ -179,9 +224,6 @@ void DetailedSpreadsheetsTest::testDataFile01()
         Common::createDataset(filePath)};
 
     prepareDatasetForTest(dataset);
-
-    checkNumericColumnRange(dataset, 3, {14.91, 126.69});
-    checkNumericColumnRange(dataset, 5, {803.25, 39999.98});
 
     checkDateColumnRange(dataset, 2, {QDate(2010, 1, 1), QDate(2011, 8, 31)},
                          false);
@@ -251,9 +293,6 @@ void DetailedSpreadsheetsTest::testDataFile03()
 
     prepareDatasetForTest(dataset);
 
-    checkNumericColumnRange(dataset, 0, {200000, 200003});
-    checkNumericColumnRange(dataset, 1, {51, 54});
-
     checkDateColumnRange(dataset, 3, {QDate(2012, 2, 2), QDate(2012, 2, 5)},
                          true);
 
@@ -280,9 +319,6 @@ void DetailedSpreadsheetsTest::testDataFile04()
         Common::createDataset(filePath)};
 
     prepareDatasetForTest(dataset);
-
-    checkNumericColumnRange(dataset, 2, {0, 74.46});
-    checkNumericColumnRange(dataset, 3, {0, 1.83});
 
     checkDateColumnRange(dataset, 1, {QDate(1970, 1, 1), QDate(1970, 1, 30)},
                          false);

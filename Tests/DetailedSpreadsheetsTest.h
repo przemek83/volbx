@@ -26,6 +26,9 @@ private slots:
     void testSampleData_data();
     void testSampleData();
 
+    void testNumericColumnRanges_data();
+    void testNumericColumnRanges();
+
     void testDataFile01_data();
     void testDataFile01();
 
