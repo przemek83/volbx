@@ -48,9 +48,6 @@ private:
         const std::unique_ptr<DatasetSpreadsheet>& dataset, int columnIndex,
         QStringList& expectedList);
 
-    void checkSpecialColumns(const Dataset& dataset,
-                             QVector<int>& columnsToTest);
-
     void checkDataFile01(std::unique_ptr<DatasetSpreadsheet> dataset);
 
     void checkDataFile01SomeColumns(

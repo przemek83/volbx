@@ -206,15 +206,6 @@ void DetailedSpreadsheetsTest::checkDataFile01(
     QStringList compareList = {"brown", "red",   "yellow",    "black", "blue",
                                "pink",  "white", "dark blue", "orange"};
     checkStringColumnRange(dataset, 6, compareList);
-
-    QVector<int> columnsToTest;
-    columnsToTest << 2 << 5;
-
-    // Tagged column after rebuild done in dataset init.
-    dataset->setTaggedColumn(ColumnTag::DATE, 2);
-    dataset->setTaggedColumn(ColumnTag::VALUE, 5);
-
-    checkSpecialColumns(*dataset, columnsToTest);
 }
 
 void DetailedSpreadsheetsTest::checkDataFile01SomeColumns(
@@ -238,14 +229,6 @@ void DetailedSpreadsheetsTest::checkDataFile01SomeColumns(
     QStringList compareList = {"brown", "red",   "yellow",    "black", "blue",
                                "pink",  "white", "dark blue", "orange"};
     checkStringColumnRange(dataset, 3, compareList);
-
-    QVector<int> columnsToTest;
-    columnsToTest << 0 << 2;
-
-    dataset->setTaggedColumn(ColumnTag::DATE, 0);
-    dataset->setTaggedColumn(ColumnTag::VALUE, 2);
-
-    checkSpecialColumns(*dataset, columnsToTest);
 
     Common::compareExportDataWithDump(std::move(dataset));  //"partial"
 }
@@ -284,14 +267,6 @@ void DetailedSpreadsheetsTest::testDataFile03()
 
     QStringList compareList = {"a", "b", "c"};
     checkStringColumnRange(dataset, 4, compareList);
-
-    QVector<int> columnsToTest;
-    columnsToTest << 3 << 2;
-
-    dataset->setTaggedColumn(ColumnTag::DATE, 3);
-    dataset->setTaggedColumn(ColumnTag::VALUE, 2);
-
-    checkSpecialColumns(*dataset, columnsToTest);
 }
 
 void DetailedSpreadsheetsTest::testDataFile04_data()
@@ -327,14 +302,6 @@ void DetailedSpreadsheetsTest::testDataFile04()
 
     QStringList compareList;
     checkStringColumnRange(dataset, 0, compareList);
-
-    QVector<int> columnsToTest;
-    columnsToTest << 1 << 2;
-
-    dataset->setTaggedColumn(ColumnTag::DATE, 1);
-    dataset->setTaggedColumn(ColumnTag::VALUE, 2);
-
-    checkSpecialColumns(*dataset, columnsToTest);
 }
 
 void DetailedSpreadsheetsTest::checkColumnFormats(
@@ -392,13 +359,4 @@ void DetailedSpreadsheetsTest::checkStringColumnRange(
 {
     QStringList currentList = dataset->getStringList(columnIndex);
     QCOMPARE(currentList, expectedList);
-}
-
-void DetailedSpreadsheetsTest::checkSpecialColumns(const Dataset& dataset,
-                                                   QVector<int>& columnsToTest)
-{
-    auto [ok, column] = dataset.getTaggedColumn(ColumnTag::DATE);
-    QCOMPARE(column, columnsToTest[0]);
-    std::tie(ok, column) = dataset.getTaggedColumn(ColumnTag::VALUE);
-    QCOMPARE(column, columnsToTest[1]);
 }
