@@ -187,14 +187,6 @@ void DetailedSpreadsheetsTest::testDataFile01()
     checkDataFile01SomeColumns(std::move(dataset));
 }
 
-void DetailedSpreadsheetsTest::prepareDatasetForTest(
-    std::unique_ptr<DatasetSpreadsheet>& dataset)
-{
-    dataset->initialize();
-    Common::activateAllDatasetColumns(dataset);
-    dataset->loadData();
-}
-
 void DetailedSpreadsheetsTest::checkDataFile01(
     std::unique_ptr<DatasetSpreadsheet> dataset)
 {
@@ -353,4 +345,12 @@ void DetailedSpreadsheetsTest::checkStringColumnRange(
 {
     QStringList currentList = dataset->getStringList(columnIndex);
     QCOMPARE(currentList, expectedList);
+}
+
+void DetailedSpreadsheetsTest::prepareDatasetForTest(
+    std::unique_ptr<DatasetSpreadsheet>& dataset)
+{
+    dataset->initialize();
+    Common::activateAllDatasetColumns(dataset);
+    dataset->loadData();
 }
