@@ -51,7 +51,7 @@ void SpreadsheetsTest::testFiles()
                                              Common::getDefinitionDumpSuffix()};
     checkDatasetDefinition(dataset, expectedDefinitionFileName);
 
-    activateAllDatasetColumns(dataset);
+    Common::activateAllDatasetColumns(dataset);
     QVERIFY(dataset->loadData());
     QVERIFY(dataset->isValid());
 
@@ -139,13 +139,6 @@ void SpreadsheetsTest::checkDatasetDefinition(
     QVERIFY(Common::xmlsAreEqual(dumpFromFile, dumpFromDataset));
 }
 
-void SpreadsheetsTest::activateAllDatasetColumns(
-    const std::unique_ptr<DatasetSpreadsheet>& dataset)
-{
-    QVector<bool> activeColumns(dataset->columnCount(), true);
-    dataset->setActiveColumns(activeColumns);
-}
-
 void SpreadsheetsTest::addTestCasesForFileNames(
     const QVector<QString>& fileNames)
 {
@@ -199,7 +192,7 @@ void SpreadsheetsTest::generateExpectedDataForFile(const QString& fileName,
     QString filePath{dir + fileName};
     saveExpectedDefinition(dataset, filePath);
 
-    activateAllDatasetColumns(dataset);
+    Common::activateAllDatasetColumns(dataset);
     dataset->loadData();
 
     TableModel model(std::move(dataset));

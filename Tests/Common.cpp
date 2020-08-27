@@ -179,4 +179,11 @@ QString getSpreadsheetsDir()
     return QString(":/TestFiles/TestSpreadsheets/");
 }
 
+void activateAllDatasetColumns(
+    const std::unique_ptr<DatasetSpreadsheet>& dataset)
+{
+    QVector<bool> activeColumns(dataset->columnCount(), true);
+    dataset->setActiveColumns(activeColumns);
+}
+
 }  // namespace Common

@@ -30,4 +30,7 @@ void compareExportDataWithDump(std::unique_ptr<Dataset> dataset);
 std::unique_ptr<DatasetSpreadsheet> createDataset(const QString& filePath);
 
 QString getSpreadsheetsDir();
+
+void activateAllDatasetColumns(
+    const std::unique_ptr<DatasetSpreadsheet>& dataset);
 };  // namespace Common
