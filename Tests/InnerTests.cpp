@@ -1,28 +1,22 @@
 #include "InnerTests.h"
 
-#include <ExportDsv.h>
-#include <Qt5Quazip/quazip.h>
 #include <Qt5Quazip/quazipfile.h>
-#include <QApplication>
-#include <QClipboard>
-#include <QDebug>
 #include <QDirIterator>
 #include <QDomDocument>
+#include <QTableView>
 #include <QtTest/QtTest>
 
-#include "Common/Constants.h"
-#include "Common/FileUtilities.h"
-#include "Datasets/DatasetInner.h"
-#include "Export/ExportVbx.h"
-#include "ModelsAndViews/FilteringProxyModel.h"
-#include "ModelsAndViews/TableModel.h"
+#include <Common/FileUtilities.h>
+#include <Datasets/DatasetInner.h>
+#include <Export/ExportVbx.h>
+#include <ModelsAndViews/FilteringProxyModel.h>
+#include <ModelsAndViews/TableModel.h>
 
 #include "Common.h"
 #include "DatasetUtilities.h"
 
 void InnerTests::initTestCase()
 {
-    tempFilename_ = "temp";
     // generateDumpData();
 }
 

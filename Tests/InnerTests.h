@@ -1,18 +1,25 @@
 #pragma once
 
-#include <QFileInfo>
 #include <QObject>
-#include <QTableView>
 
-class DatasetDefinitionInner;
 class DatasetInner;
+class QTableView;
 
 /**
- * @brief Unit test of inner format functionalities.
+ * @brief Test for inner format functionalities.
  */
 class InnerTests : public QObject
 {
     Q_OBJECT
+private slots:
+    void initTestCase();
+
+    void testDatasets();
+
+    void testPartialData();
+
+    void cleanupTestCase();
+
 private:
     void generateDumpData();
 
@@ -37,8 +44,6 @@ private:
      */
     void checkExport(QString fileName);
 
-    QString tempFilename_;
-
     /**
      * @brief compare definition files
      * @param original original definition file.
@@ -46,21 +51,5 @@ private:
      */
     void compareDefinitionFiles(QByteArray& original, QByteArray& generated);
 
-private slots:
-    void initTestCase();
-
-    /**
-     * @brief test all datasets.
-     */
-    void testDatasets();
-
-    /**
-     * @brief test int details one definition file including export.
-     */
-    void testPartialData();
-
-    /**
-     * @brief cleanup temp file.
-     */
-    void cleanupTestCase();
+    const QString tempFilename_{"temp"};
 };
