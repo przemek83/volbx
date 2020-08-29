@@ -8,6 +8,7 @@
 #include <QtTest/QtTest>
 
 #include <Dataset.h>
+#include <DatasetInner.h>
 #include <DatasetOds.h>
 #include <DatasetXlsx.h>
 #include <ExportDsv.h>
@@ -166,11 +167,13 @@ void compareExportDataWithDump(std::unique_ptr<Dataset> dataset)
 
 std::unique_ptr<Dataset> createDataset(const QString& filePath)
 {
-    std::unique_ptr<DatasetSpreadsheet> dataset{nullptr};
+    std::unique_ptr<Dataset> dataset{nullptr};
     if (filePath.endsWith(".xlsx"))
         dataset = std::make_unique<DatasetXlsx>(filePath, filePath);
-    else
+    else if (filePath.endsWith(".ods"))
         dataset = std::make_unique<DatasetOds>(filePath, filePath);
+    else
+        dataset = std::make_unique<DatasetInner>(filePath);
     return dataset;
 }
 
