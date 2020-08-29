@@ -16,8 +16,14 @@ class InnerTests : public QObject
 private slots:
     void initTestCase();
 
-    void testDatasets_data();
-    void testDatasets();
+    void testDefinition_data();
+    void testDefinition();
+
+    void testData_data();
+    void testData();
+
+    void testExport_data();
+    void testExport();
 
     void testPartialData();
 

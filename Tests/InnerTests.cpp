@@ -23,9 +23,9 @@ void InnerTests::initTestCase()
     // generateDumpData();
 }
 
-void InnerTests::testDatasets_data() { addTestCases("Compare inner datasets"); }
+void InnerTests::testDefinition_data() { addTestCases("Test definition"); }
 
-void InnerTests::testDatasets()
+void InnerTests::testDefinition()
 {
     QFETCH(QString, datasetName);
 
@@ -33,11 +33,20 @@ void InnerTests::testDatasets()
     QVERIFY(dataset->initialize());
     QVERIFY(dataset->isValid());
 
+    checkDatasetDefinition(datasetName, dataset);
+}
+
+void InnerTests::testData_data() { addTestCases("Test data"); }
+
+void InnerTests::testData()
+{
+    QFETCH(QString, datasetName);
+
+    auto dataset{std::make_unique<DatasetInner>(datasetName)};
+    dataset->initialize();
     Common::activateAllDatasetColumns(*dataset);
     dataset->loadData();
     QVERIFY(dataset->isValid());
-
-    checkDatasetDefinition(datasetName, dataset);
 
     TableModel model(std::move(dataset));
     FilteringProxyModel proxyModel;
@@ -47,6 +56,26 @@ void InnerTests::testDatasets()
     view.setModel(&proxyModel);
 
     checkDatasetData(datasetName, view);
+}
+
+void InnerTests::testExport_data() { addTestCases("Test export"); }
+
+void InnerTests::testExport()
+{
+    QFETCH(QString, datasetName);
+
+    auto dataset{std::make_unique<DatasetInner>(datasetName)};
+    dataset->initialize();
+
+    Common::activateAllDatasetColumns(*dataset);
+    dataset->loadData();
+
+    TableModel model(std::move(dataset));
+    FilteringProxyModel proxyModel;
+    proxyModel.setSourceModel(&model);
+
+    QTableView view;
+    view.setModel(&proxyModel);
 
     QString filePath{DatasetUtilities::getDatasetsDir() + tempFilename_ +
                      DatasetUtilities::getDatasetExtension()};
