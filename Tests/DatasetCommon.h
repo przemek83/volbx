@@ -7,5 +7,5 @@ class QString;
 
 namespace DatasetCommon
 {
-void checkDefinition(const QString& fileName);
+void checkDefinition(const QString& fileName, const QString& filePath);
 };

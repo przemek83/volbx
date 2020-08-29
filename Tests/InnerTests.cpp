@@ -13,6 +13,7 @@
 #include <ModelsAndViews/TableModel.h>
 
 #include "Common.h"
+#include "DatasetCommon.h"
 #include "DatasetUtilities.h"
 
 const QVector<QString> InnerTests::testFileNames_{
@@ -28,12 +29,8 @@ void InnerTests::testDefinition_data() { addTestCases("Test definition"); }
 void InnerTests::testDefinition()
 {
     QFETCH(QString, datasetName);
-
-    std::unique_ptr<Dataset> dataset{Common::createDataset(datasetName)};
-    QVERIFY(dataset->initialize());
-    QVERIFY(dataset->isValid());
-
-    checkDatasetDefinition(datasetName, dataset);
+    DatasetCommon::checkDefinition(datasetName,
+                                   DatasetUtilities::getDatasetsDir());
 }
 
 void InnerTests::testData_data() { addTestCases("Test data"); }
@@ -42,7 +39,8 @@ void InnerTests::testData()
 {
     QFETCH(QString, datasetName);
 
-    std::unique_ptr<Dataset> dataset{Common::createDataset(datasetName)};
+    std::unique_ptr<Dataset> dataset{
+        Common::createDataset(datasetName, DatasetUtilities::getDatasetsDir())};
     dataset->initialize();
     Common::activateAllDatasetColumns(*dataset);
     dataset->loadData();
@@ -64,7 +62,8 @@ void InnerTests::testExport()
 {
     QFETCH(QString, datasetName);
 
-    std::unique_ptr<Dataset> dataset{Common::createDataset(datasetName)};
+    std::unique_ptr<Dataset> dataset{
+        Common::createDataset(datasetName, DatasetUtilities::getDatasetsDir())};
     dataset->initialize();
     Common::activateAllDatasetColumns(*dataset);
     dataset->loadData();

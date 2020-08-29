@@ -75,13 +75,13 @@ void DetailedSpreadsheetsTest::testBasics()
     QFETCH(unsigned int, columnCount);
 
     QString filePath(Common::getSpreadsheetsDir() + fileName);
-    std::unique_ptr<Dataset> dataset{Common::createDataset(filePath)};
+    std::unique_ptr<Dataset> dataset{Common::createDataset(fileName, filePath)};
 
     QVERIFY(dataset->initialize());
     QVERIFY(dataset->isValid());
     QCOMPARE(dataset->rowCount(), rowCount);
     QCOMPARE(dataset->columnCount(), columnCount);
-    QCOMPARE(dataset->getName(), filePath);
+    QCOMPARE(dataset->getName(), fileName);
 }
 
 void DetailedSpreadsheetsTest::testColumns_data()
@@ -105,7 +105,7 @@ void DetailedSpreadsheetsTest::testColumns()
     QFETCH(QVector<QString>, columnNames);
 
     QString filePath(Common::getSpreadsheetsDir() + fileName);
-    std::unique_ptr<Dataset> dataset{Common::createDataset(filePath)};
+    std::unique_ptr<Dataset> dataset{Common::createDataset(fileName, filePath)};
     dataset->initialize();
 
     checkColumnFormats(dataset, columnFormats);
@@ -139,7 +139,7 @@ void DetailedSpreadsheetsTest::testSampleData()
     QFETCH(QVector<Field>, sampleFields);
 
     QString filePath(Common::getSpreadsheetsDir() + fileName);
-    std::unique_ptr<Dataset> dataset{Common::createDataset(filePath)};
+    std::unique_ptr<Dataset> dataset{Common::createDataset(fileName, filePath)};
     dataset->initialize();
 
     QVector<QVector<QVariant>> sampleData{dataset->retrieveSampleData()};
@@ -184,7 +184,7 @@ void DetailedSpreadsheetsTest::testNumericColumnRanges()
     QFETCH(QVector<NumericCheckData>, expectedRanges);
 
     QString filePath(Common::getSpreadsheetsDir() + fileName);
-    std::unique_ptr<Dataset> dataset{Common::createDataset(filePath)};
+    std::unique_ptr<Dataset> dataset{Common::createDataset(fileName, filePath)};
 
     prepareDatasetForTest(dataset);
 
@@ -227,7 +227,7 @@ void DetailedSpreadsheetsTest::testDateColumnRanges()
     QFETCH(DateCheckData, expectedRanges);
 
     QString filePath(Common::getSpreadsheetsDir() + fileName);
-    std::unique_ptr<Dataset> dataset{Common::createDataset(filePath)};
+    std::unique_ptr<Dataset> dataset{Common::createDataset(fileName, filePath)};
 
     prepareDatasetForTest(dataset);
 
@@ -265,7 +265,7 @@ void DetailedSpreadsheetsTest::testStringColumnRanges()
     QFETCH(QStringList, expectedStrings);
 
     QString filePath(Common::getSpreadsheetsDir() + fileName);
-    std::unique_ptr<Dataset> dataset{Common::createDataset(filePath)};
+    std::unique_ptr<Dataset> dataset{Common::createDataset(fileName, filePath)};
 
     prepareDatasetForTest(dataset);
 
@@ -286,8 +286,8 @@ void DetailedSpreadsheetsTest::testDataFile01SomeColumnsActive_data()
 void DetailedSpreadsheetsTest::testDataFile01SomeColumnsActive()
 {
     QFETCH(QString, fileName);
-    QString filePath(Common::getSpreadsheetsDir() + fileName);
-    std::unique_ptr<Dataset> dataset{Common::createDataset(filePath)};
+    const QString filePath(Common::getSpreadsheetsDir() + fileName);
+    std::unique_ptr<Dataset> dataset{Common::createDataset(fileName, filePath)};
 
     dataset->initialize();
     QVector<bool> activeColumns(dataset->columnCount(), true);
@@ -307,7 +307,7 @@ void DetailedSpreadsheetsTest::testDataFile01SomeColumnsActive()
                                "pink",  "white", "dark blue", "orange"};
     checkStringColumnRange(dataset, 3, compareList);
 
-    Common::compareExportDataWithDump(std::move(dataset));
+    Common::compareExportDataWithDump(std::move(dataset), filePath);
 }
 
 void DetailedSpreadsheetsTest::checkColumnFormats(

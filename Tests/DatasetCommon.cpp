@@ -10,10 +10,10 @@
 namespace
 {
 void checkDatasetDefinition(const std::unique_ptr<Dataset>& dataset,
-                            const QString& expectedDefinitionFileName)
+                            const QString& expectedDefinitionFilePath)
 {
     QByteArray dumpFromFile{
-        FileUtilities::loadFile(expectedDefinitionFileName).second.toUtf8()};
+        FileUtilities::loadFile(expectedDefinitionFilePath).second.toUtf8()};
     QByteArray dumpFromDataset{dataset->definitionToXml(dataset->rowCount())};
     QVERIFY(Common::xmlsAreEqual(dumpFromFile, dumpFromDataset));
 }
@@ -21,16 +21,14 @@ void checkDatasetDefinition(const std::unique_ptr<Dataset>& dataset,
 
 namespace DatasetCommon
 {
-void checkDefinition(const QString& fileName)
+void checkDefinition(const QString& fileName, const QString& dir)
 {
-    std::unique_ptr<Dataset> dataset{
-        Common::createDataset(Common::getSpreadsheetsDir() + fileName)};
+    const QString filePath{dir + fileName};
+    std::unique_ptr<Dataset> dataset{Common::createDataset(fileName, filePath)};
     QVERIFY(dataset->initialize());
     QVERIFY(dataset->isValid());
 
-    const QString expectedDefinitionFileName{Common::getSpreadsheetsDir() +
-                                             fileName +
-                                             Common::getDefinitionDumpSuffix()};
-    checkDatasetDefinition(dataset, expectedDefinitionFileName);
+    checkDatasetDefinition(dataset,
+                           filePath + Common::getDefinitionDumpSuffix());
 }
 };  // namespace DatasetCommon

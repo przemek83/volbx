@@ -25,9 +25,11 @@ QString getExportedTsv(const QAbstractItemView& view);
 
 bool xmlsAreEqual(const QByteArray& left, const QByteArray& right);
 
-void compareExportDataWithDump(std::unique_ptr<Dataset> dataset);
+void compareExportDataWithDump(std::unique_ptr<Dataset> dataset,
+                               const QString& filePath);
 
-std::unique_ptr<Dataset> createDataset(const QString& filePath);
+std::unique_ptr<Dataset> createDataset(const QString& fileName,
+                                       const QString& filePath);
 
 QString getSpreadsheetsDir();
 
