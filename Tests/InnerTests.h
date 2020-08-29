@@ -4,7 +4,7 @@
 
 #include <QObject>
 
-class DatasetInner;
+class Dataset;
 class QTableView;
 
 /**
@@ -32,9 +32,8 @@ private slots:
 private:
     void generateDumpData();
 
-    void checkDatasetDefinition(
-        const QString& fileName,
-        const std::unique_ptr<DatasetInner>& dataset) const;
+    void checkDatasetDefinition(const QString& fileName,
+                                const std::unique_ptr<Dataset>& dataset) const;
 
     void checkDatasetData(const QString& fileName,
                           const QTableView& view) const;

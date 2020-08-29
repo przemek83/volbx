@@ -29,7 +29,7 @@ void InnerTests::testDefinition()
 {
     QFETCH(QString, datasetName);
 
-    auto dataset{std::make_unique<DatasetInner>(datasetName)};
+    std::unique_ptr<Dataset> dataset{Common::createDataset(datasetName)};
     QVERIFY(dataset->initialize());
     QVERIFY(dataset->isValid());
 
@@ -42,7 +42,7 @@ void InnerTests::testData()
 {
     QFETCH(QString, datasetName);
 
-    auto dataset{std::make_unique<DatasetInner>(datasetName)};
+    std::unique_ptr<Dataset> dataset{Common::createDataset(datasetName)};
     dataset->initialize();
     Common::activateAllDatasetColumns(*dataset);
     dataset->loadData();
@@ -64,9 +64,8 @@ void InnerTests::testExport()
 {
     QFETCH(QString, datasetName);
 
-    auto dataset{std::make_unique<DatasetInner>(datasetName)};
+    std::unique_ptr<Dataset> dataset{Common::createDataset(datasetName)};
     dataset->initialize();
-
     Common::activateAllDatasetColumns(*dataset);
     dataset->loadData();
 
@@ -126,7 +125,7 @@ void InnerTests::generateDumpData()
 }
 
 void InnerTests::checkDatasetDefinition(
-    const QString& fileName, const std::unique_ptr<DatasetInner>& dataset) const
+    const QString& fileName, const std::unique_ptr<Dataset>& dataset) const
 {
     QString datasetFilePath(DatasetUtilities::getDatasetsDir() + fileName);
     const QString dumpFileName{datasetFilePath +
