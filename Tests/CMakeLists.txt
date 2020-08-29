@@ -24,6 +24,8 @@ set(${PROJECT_NAME}_SOURCES
     DatasetDummy.h
     DatasetTest.cpp
     DatasetTest.h
+    DatasetCommon.cpp
+    DatasetCommon.h
     )
 
 add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})

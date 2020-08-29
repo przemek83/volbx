@@ -35,9 +35,6 @@ private:
 
     void compareOdsAndXlsxExpectedData(const QString& fileSuffix);
 
-    void checkDatasetDefinition(const std::unique_ptr<Dataset>& dataset,
-                                const QString& expectedDefinitionFileName);
-
     void activateAllDatasetColumns(
         const std::unique_ptr<DatasetSpreadsheet>& dataset);
 

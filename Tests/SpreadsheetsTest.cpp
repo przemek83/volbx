@@ -11,6 +11,7 @@
 #include <ModelsAndViews/TableModel.h>
 
 #include "Common.h"
+#include "DatasetCommon.h"
 
 const QVector<QString> SpreadsheetsTest::testFileNames_{"excel",
                                                         "HistVsNormal",
@@ -41,15 +42,7 @@ void SpreadsheetsTest::testDefinition_data()
 void SpreadsheetsTest::testDefinition()
 {
     QFETCH(QString, fileName);
-
-    std::unique_ptr<Dataset> dataset{
-        Common::createDataset(Common::getSpreadsheetsDir() + fileName)};
-    QVERIFY(dataset->initialize());
-
-    const QString expectedDefinitionFileName{Common::getSpreadsheetsDir() +
-                                             fileName +
-                                             Common::getDefinitionDumpSuffix()};
-    checkDatasetDefinition(dataset, expectedDefinitionFileName);
+    DatasetCommon::checkDefinition(fileName);
 }
 
 void SpreadsheetsTest::testData_data()
@@ -141,16 +134,6 @@ void SpreadsheetsTest::compareOdsAndXlsxExpectedData(const QString& fileSuffix)
                         "\nXlsx: " + xlsxLines[i] + "\nOds : " + odsLines[i]};
             QFAIL(msg.toStdString().c_str());
         }
-}
-
-void SpreadsheetsTest::checkDatasetDefinition(
-    const std::unique_ptr<Dataset>& dataset,
-    const QString& expectedDefinitionFileName)
-{
-    QByteArray dumpFromFile{
-        FileUtilities::loadFile(expectedDefinitionFileName).second.toUtf8()};
-    QByteArray dumpFromDataset{dataset->definitionToXml(dataset->rowCount())};
-    QVERIFY(Common::xmlsAreEqual(dumpFromFile, dumpFromDataset));
 }
 
 void SpreadsheetsTest::addTestCasesForFileNames(
