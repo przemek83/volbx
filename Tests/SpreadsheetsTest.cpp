@@ -42,7 +42,7 @@ void SpreadsheetsTest::testDefinition()
 {
     QFETCH(QString, fileName);
 
-    std::unique_ptr<DatasetSpreadsheet> dataset{
+    std::unique_ptr<Dataset> dataset{
         Common::createDataset(Common::getSpreadsheetsDir() + fileName)};
     QVERIFY(dataset->initialize());
 
@@ -61,7 +61,7 @@ void SpreadsheetsTest::testData()
 {
     QFETCH(QString, fileName);
 
-    std::unique_ptr<DatasetSpreadsheet> dataset{
+    std::unique_ptr<Dataset> dataset{
         Common::createDataset(Common::getSpreadsheetsDir() + fileName)};
     dataset->initialize();
 
@@ -81,7 +81,7 @@ void SpreadsheetsTest::testDamagedFiles()
 {
     QFETCH(QString, fileName);
 
-    std::unique_ptr<DatasetSpreadsheet> dataset{
+    std::unique_ptr<Dataset> dataset{
         Common::createDataset(Common::getSpreadsheetsDir() + fileName)};
     QVERIFY(!dataset->initialize());
 }
@@ -144,7 +144,7 @@ void SpreadsheetsTest::compareOdsAndXlsxExpectedData(const QString& fileSuffix)
 }
 
 void SpreadsheetsTest::checkDatasetDefinition(
-    const std::unique_ptr<DatasetSpreadsheet>& dataset,
+    const std::unique_ptr<Dataset>& dataset,
     const QString& expectedDefinitionFileName)
 {
     QByteArray dumpFromFile{
@@ -182,7 +182,7 @@ void SpreadsheetsTest::generateExpectedData()
 }
 
 void SpreadsheetsTest::saveExpectedDefinition(
-    const std::unique_ptr<DatasetSpreadsheet>& dataset, const QString& filePath)
+    const std::unique_ptr<Dataset>& dataset, const QString& filePath)
 {
     QByteArray dumpedDefinition{dataset->definitionToXml(dataset->rowCount())};
     Common::saveFile(filePath + Common::getDefinitionDumpSuffix(),
@@ -199,7 +199,7 @@ void SpreadsheetsTest::saveExpectedTsv(const QTableView& view,
 void SpreadsheetsTest::generateExpectedDataForFile(const QString& fileName,
                                                    const QString& dir)
 {
-    std::unique_ptr<DatasetSpreadsheet> dataset{
+    std::unique_ptr<Dataset> dataset{
         Common::createDataset(Common::getSpreadsheetsDir() + fileName)};
     dataset->initialize();
 

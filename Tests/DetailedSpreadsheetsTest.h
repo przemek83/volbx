@@ -42,25 +42,25 @@ private slots:
     void testDataFile01SomeColumnsActive();
 
 private:
-    void checkNumericColumnRange(
-        const std::unique_ptr<DatasetSpreadsheet>& dataset, int columnIndex,
-        std::pair<double, double> expectedRange);
+    void checkNumericColumnRange(const std::unique_ptr<Dataset>& dataset,
+                                 int columnIndex,
+                                 std::pair<double, double> expectedRange);
 
-    void checkDateColumnRange(
-        const std::unique_ptr<DatasetSpreadsheet>& dataset, int columnIndex,
-        std::pair<QDate, QDate> expectedRange, bool expectedEmptyDates);
+    void checkDateColumnRange(const std::unique_ptr<Dataset>& dataset,
+                              int columnIndex,
+                              std::pair<QDate, QDate> expectedRange,
+                              bool expectedEmptyDates);
 
-    void checkStringColumnRange(
-        const std::unique_ptr<DatasetSpreadsheet>& dataset, int columnIndex,
-        QStringList& expectedList);
+    void checkStringColumnRange(const std::unique_ptr<Dataset>& dataset,
+                                int columnIndex, QStringList& expectedList);
 
-    void checkColumnFormats(const std::unique_ptr<DatasetSpreadsheet>& dataset,
+    void checkColumnFormats(const std::unique_ptr<Dataset>& dataset,
                             const QVector<ColumnType>& columnFormats);
 
-    void checkColumnNames(const std::unique_ptr<DatasetSpreadsheet>& dataset,
+    void checkColumnNames(const std::unique_ptr<Dataset>& dataset,
                           const QVector<QString>& columnNames);
 
-    void prepareDatasetForTest(std::unique_ptr<DatasetSpreadsheet>& dataset);
+    void prepareDatasetForTest(std::unique_ptr<Dataset>& dataset);
 
     static const QVector<QString> fileNames_;
     static const QVector<QVector<ColumnType>> columnFormats_;

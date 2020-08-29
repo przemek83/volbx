@@ -75,8 +75,7 @@ void DetailedSpreadsheetsTest::testBasics()
     QFETCH(unsigned int, columnCount);
 
     QString filePath(Common::getSpreadsheetsDir() + fileName);
-    std::unique_ptr<DatasetSpreadsheet> dataset{
-        Common::createDataset(filePath)};
+    std::unique_ptr<Dataset> dataset{Common::createDataset(filePath)};
 
     QVERIFY(dataset->initialize());
     QVERIFY(dataset->isValid());
@@ -106,8 +105,7 @@ void DetailedSpreadsheetsTest::testColumns()
     QFETCH(QVector<QString>, columnNames);
 
     QString filePath(Common::getSpreadsheetsDir() + fileName);
-    std::unique_ptr<DatasetSpreadsheet> dataset{
-        Common::createDataset(filePath)};
+    std::unique_ptr<Dataset> dataset{Common::createDataset(filePath)};
     dataset->initialize();
 
     checkColumnFormats(dataset, columnFormats);
@@ -141,8 +139,7 @@ void DetailedSpreadsheetsTest::testSampleData()
     QFETCH(QVector<Field>, sampleFields);
 
     QString filePath(Common::getSpreadsheetsDir() + fileName);
-    std::unique_ptr<DatasetSpreadsheet> dataset{
-        Common::createDataset(filePath)};
+    std::unique_ptr<Dataset> dataset{Common::createDataset(filePath)};
     dataset->initialize();
 
     QVector<QVector<QVariant>> sampleData{dataset->retrieveSampleData()};
@@ -187,8 +184,7 @@ void DetailedSpreadsheetsTest::testNumericColumnRanges()
     QFETCH(QVector<NumericCheckData>, expectedRanges);
 
     QString filePath(Common::getSpreadsheetsDir() + fileName);
-    std::unique_ptr<DatasetSpreadsheet> dataset{
-        Common::createDataset(filePath)};
+    std::unique_ptr<Dataset> dataset{Common::createDataset(filePath)};
 
     prepareDatasetForTest(dataset);
 
@@ -231,8 +227,7 @@ void DetailedSpreadsheetsTest::testDateColumnRanges()
     QFETCH(DateCheckData, expectedRanges);
 
     QString filePath(Common::getSpreadsheetsDir() + fileName);
-    std::unique_ptr<DatasetSpreadsheet> dataset{
-        Common::createDataset(filePath)};
+    std::unique_ptr<Dataset> dataset{Common::createDataset(filePath)};
 
     prepareDatasetForTest(dataset);
 
@@ -270,8 +265,7 @@ void DetailedSpreadsheetsTest::testStringColumnRanges()
     QFETCH(QStringList, expectedStrings);
 
     QString filePath(Common::getSpreadsheetsDir() + fileName);
-    std::unique_ptr<DatasetSpreadsheet> dataset{
-        Common::createDataset(filePath)};
+    std::unique_ptr<Dataset> dataset{Common::createDataset(filePath)};
 
     prepareDatasetForTest(dataset);
 
@@ -293,8 +287,7 @@ void DetailedSpreadsheetsTest::testDataFile01SomeColumnsActive()
 {
     QFETCH(QString, fileName);
     QString filePath(Common::getSpreadsheetsDir() + fileName);
-    std::unique_ptr<DatasetSpreadsheet> dataset{
-        Common::createDataset(filePath)};
+    std::unique_ptr<Dataset> dataset{Common::createDataset(filePath)};
 
     dataset->initialize();
     QVector<bool> activeColumns(dataset->columnCount(), true);
@@ -318,7 +311,7 @@ void DetailedSpreadsheetsTest::testDataFile01SomeColumnsActive()
 }
 
 void DetailedSpreadsheetsTest::checkColumnFormats(
-    const std::unique_ptr<DatasetSpreadsheet>& dataset,
+    const std::unique_ptr<Dataset>& dataset,
     const QVector<ColumnType>& columnFormats)
 {
     unsigned int column{0};
@@ -327,7 +320,7 @@ void DetailedSpreadsheetsTest::checkColumnFormats(
 }
 
 void DetailedSpreadsheetsTest::checkColumnNames(
-    const std::unique_ptr<DatasetSpreadsheet>& dataset,
+    const std::unique_ptr<Dataset>& dataset,
     const QVector<QString>& columnNames)
 {
     unsigned int column{0};
@@ -336,7 +329,7 @@ void DetailedSpreadsheetsTest::checkColumnNames(
 }
 
 void DetailedSpreadsheetsTest::checkNumericColumnRange(
-    const std::unique_ptr<DatasetSpreadsheet>& dataset, int columnIndex,
+    const std::unique_ptr<Dataset>& dataset, int columnIndex,
     std::pair<double, double> expectedRange)
 {
     auto [currentMin, currentMax] = dataset->getNumericRange(columnIndex);
@@ -346,7 +339,7 @@ void DetailedSpreadsheetsTest::checkNumericColumnRange(
 }
 
 void DetailedSpreadsheetsTest::checkDateColumnRange(
-    const std::unique_ptr<DatasetSpreadsheet>& dataset, int columnIndex,
+    const std::unique_ptr<Dataset>& dataset, int columnIndex,
     std::pair<QDate, QDate> expectedRange, bool expectedEmptyDates)
 {
     auto [currentMinDate, currentMaxDate, currentEmpty] =
@@ -358,7 +351,7 @@ void DetailedSpreadsheetsTest::checkDateColumnRange(
 }
 
 void DetailedSpreadsheetsTest::checkStringColumnRange(
-    const std::unique_ptr<DatasetSpreadsheet>& dataset, int columnIndex,
+    const std::unique_ptr<Dataset>& dataset, int columnIndex,
     QStringList& expectedList)
 {
     QStringList currentList = dataset->getStringList(columnIndex);
@@ -366,7 +359,7 @@ void DetailedSpreadsheetsTest::checkStringColumnRange(
 }
 
 void DetailedSpreadsheetsTest::prepareDatasetForTest(
-    std::unique_ptr<DatasetSpreadsheet>& dataset)
+    std::unique_ptr<Dataset>& dataset)
 {
     dataset->initialize();
     Common::activateAllDatasetColumns(*dataset);

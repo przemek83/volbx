@@ -35,9 +35,8 @@ private:
 
     void compareOdsAndXlsxExpectedData(const QString& fileSuffix);
 
-    void checkDatasetDefinition(
-        const std::unique_ptr<DatasetSpreadsheet>& dataset,
-        const QString& expectedDefinitionFileName);
+    void checkDatasetDefinition(const std::unique_ptr<Dataset>& dataset,
+                                const QString& expectedDefinitionFileName);
 
     void activateAllDatasetColumns(
         const std::unique_ptr<DatasetSpreadsheet>& dataset);
@@ -47,9 +46,8 @@ private:
 
     void generateExpectedData();
 
-    void saveExpectedDefinition(
-        const std::unique_ptr<DatasetSpreadsheet>& dataset,
-        const QString& filePath);
+    void saveExpectedDefinition(const std::unique_ptr<Dataset>& dataset,
+                                const QString& filePath);
 
     void saveExpectedTsv(const QTableView& view, const QString& filePath);
 

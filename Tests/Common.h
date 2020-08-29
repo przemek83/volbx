@@ -27,7 +27,7 @@ bool xmlsAreEqual(const QByteArray& left, const QByteArray& right);
 
 void compareExportDataWithDump(std::unique_ptr<Dataset> dataset);
 
-std::unique_ptr<DatasetSpreadsheet> createDataset(const QString& filePath);
+std::unique_ptr<Dataset> createDataset(const QString& filePath);
 
 QString getSpreadsheetsDir();
 
