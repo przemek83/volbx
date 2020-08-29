@@ -369,6 +369,6 @@ void DetailedSpreadsheetsTest::prepareDatasetForTest(
     std::unique_ptr<DatasetSpreadsheet>& dataset)
 {
     dataset->initialize();
-    Common::activateAllDatasetColumns(dataset);
+    Common::activateAllDatasetColumns(*dataset);
     dataset->loadData();
 }
