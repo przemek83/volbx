@@ -15,8 +15,11 @@ class SpreadsheetsTest : public QObject
 private slots:
     void initTestCase();
 
-    void testFiles_data();
-    void testFiles();
+    void testDefinition_data();
+    void testDefinition();
+
+    void testData_data();
+    void testData();
 
     void testDamagedFiles_data();
     void testDamagedFiles();

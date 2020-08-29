@@ -33,12 +33,12 @@ void SpreadsheetsTest::initTestCase()
     // generateExpectedData();
 }
 
-void SpreadsheetsTest::testFiles_data()
+void SpreadsheetsTest::testDefinition_data()
 {
     addTestCasesForFileNames(testFileNames_);
 }
 
-void SpreadsheetsTest::testFiles()
+void SpreadsheetsTest::testDefinition()
 {
     QFETCH(QString, fileName);
 
@@ -50,6 +50,20 @@ void SpreadsheetsTest::testFiles()
                                              fileName +
                                              Common::getDefinitionDumpSuffix()};
     checkDatasetDefinition(dataset, expectedDefinitionFileName);
+}
+
+void SpreadsheetsTest::testData_data()
+{
+    addTestCasesForFileNames(testFileNames_);
+}
+
+void SpreadsheetsTest::testData()
+{
+    QFETCH(QString, fileName);
+
+    std::unique_ptr<DatasetSpreadsheet> dataset{
+        Common::createDataset(Common::getSpreadsheetsDir() + fileName)};
+    dataset->initialize();
 
     Common::activateAllDatasetColumns(*dataset);
     QVERIFY(dataset->loadData());
