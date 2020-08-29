@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <QObject>
 
 class DatasetInner;
@@ -24,20 +26,12 @@ private slots:
 private:
     void generateDumpData();
 
-    void checkDatasetDefinition(const QString& fileName,
-                                DatasetInner* dataset) const;
+    void checkDatasetDefinition(
+        const QString& fileName,
+        const std::unique_ptr<DatasetInner>& dataset) const;
 
     void checkDatasetData(const QString& fileName,
                           const QTableView& view) const;
-
-    /**
-     * @brief check import of given inner dataset.
-     * @param fileName dataset name used as file name.
-     * @param definition dataset definition.
-     * @param view view from which data will be extracted.
-     */
-    void checkImport(const QString& fileName, DatasetInner* dataset,
-                     const QTableView& view);
 
     /**
      * @brief check export for given dataset name.

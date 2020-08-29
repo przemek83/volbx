@@ -29,25 +29,24 @@ void InnerTests::testDatasets()
 {
     QFETCH(QString, datasetName);
 
-    DatasetInner* dataset = new DatasetInner(datasetName);
-    QVERIFY(true == dataset->initialize());
-    QVERIFY(true == dataset->isValid());
+    auto dataset{std::make_unique<DatasetInner>(datasetName)};
+    QVERIFY(dataset->initialize());
+    QVERIFY(dataset->isValid());
 
-    QVector<bool> activeColumns(dataset->columnCount(), true);
-    dataset->setActiveColumns(activeColumns);
-
+    Common::activateAllDatasetColumns(*dataset);
     dataset->loadData();
+    QVERIFY(dataset->isValid());
 
-    QVERIFY(true == dataset->isValid());
+    checkDatasetDefinition(datasetName, dataset);
 
-    TableModel model((std::unique_ptr<Dataset>(dataset)));
+    TableModel model(std::move(dataset));
     FilteringProxyModel proxyModel;
     proxyModel.setSourceModel(&model);
 
     QTableView view;
     view.setModel(&proxyModel);
 
-    checkImport(datasetName, dataset, view);
+    checkDatasetData(datasetName, view);
 
     QString filePath{DatasetUtilities::getDatasetsDir() + tempFilename_ +
                      DatasetUtilities::getDatasetExtension()};
@@ -97,8 +96,8 @@ void InnerTests::generateDumpData()
     }
 }
 
-void InnerTests::checkDatasetDefinition(const QString& fileName,
-                                        DatasetInner* dataset) const
+void InnerTests::checkDatasetDefinition(
+    const QString& fileName, const std::unique_ptr<DatasetInner>& dataset) const
 {
     QString datasetFilePath(DatasetUtilities::getDatasetsDir() + fileName);
     const QString dumpFileName{datasetFilePath +
@@ -120,13 +119,6 @@ void InnerTests::checkDatasetData(const QString& fileName,
                               .second;
 
     QCOMPARE(actualData.split('\n'), compareData.split('\n'));
-}
-
-void InnerTests::checkImport(const QString& fileName, DatasetInner* dataset,
-                             const QTableView& view)
-{
-    checkDatasetDefinition(fileName, dataset);
-    checkDatasetData(fileName, view);
 }
 
 void InnerTests::checkExport(QString fileName)
