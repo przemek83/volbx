@@ -15,9 +15,47 @@
 #include "Common.h"
 #include "DatasetUtilities.h"
 
+const QVector<QString> InnerTests::testFileNames_{
+    "ExampleData", "po0_dmg", "po0_dmg2_bez_dat", "po0", "po1", "pustePola"};
+
 void InnerTests::initTestCase()
 {
     // generateDumpData();
+}
+
+void InnerTests::testDatasets_data() { addTestCases("Compare inner datasets"); }
+
+void InnerTests::testDatasets()
+{
+    QFETCH(QString, datasetName);
+
+    DatasetInner* dataset = new DatasetInner(datasetName);
+    QVERIFY(true == dataset->initialize());
+    QVERIFY(true == dataset->isValid());
+
+    QVector<bool> activeColumns(dataset->columnCount(), true);
+    dataset->setActiveColumns(activeColumns);
+
+    dataset->loadData();
+
+    QVERIFY(true == dataset->isValid());
+
+    TableModel model((std::unique_ptr<Dataset>(dataset)));
+    FilteringProxyModel proxyModel;
+    proxyModel.setSourceModel(&model);
+
+    QTableView view;
+    view.setModel(&proxyModel);
+
+    checkImport(datasetName, dataset, view);
+
+    QString filePath{DatasetUtilities::getDatasetsDir() + tempFilename_ +
+                     DatasetUtilities::getDatasetExtension()};
+    QFile file(filePath);
+    ExportVbx exportVbx;
+    exportVbx.generateVbx(view, file);
+
+    checkExport(datasetName);
 }
 
 void InnerTests::generateDumpData()
@@ -56,41 +94,6 @@ void InnerTests::generateDumpData()
                                  Common::getDataTsvDumpSuffix(),
                              tsvData);
         }
-    }
-}
-
-void InnerTests::testDatasets()
-{
-    QStringList datasets = DatasetUtilities::getListOfAvailableDatasets();
-    foreach (QString datasetName, datasets)
-    {
-        DatasetInner* dataset = new DatasetInner(datasetName);
-        QVERIFY(true == dataset->initialize());
-        QVERIFY(true == dataset->isValid());
-
-        QVector<bool> activeColumns(dataset->columnCount(), true);
-        dataset->setActiveColumns(activeColumns);
-
-        dataset->loadData();
-
-        QVERIFY(true == dataset->isValid());
-
-        TableModel model((std::unique_ptr<Dataset>(dataset)));
-        FilteringProxyModel proxyModel;
-        proxyModel.setSourceModel(&model);
-
-        QTableView view;
-        view.setModel(&proxyModel);
-
-        checkImport(datasetName, dataset, view);
-
-        QString filePath{DatasetUtilities::getDatasetsDir() + tempFilename_ +
-                         DatasetUtilities::getDatasetExtension()};
-        QFile file(filePath);
-        ExportVbx exportVbx;
-        exportVbx.generateVbx(view, file);
-
-        checkExport(datasetName);
     }
 }
 
@@ -263,4 +266,15 @@ void InnerTests::cleanupTestCase()
 {
     QFile::remove(DatasetUtilities::getDatasetsDir() + tempFilename_ +
                   DatasetUtilities::getDatasetExtension());
+}
+
+void InnerTests::addTestCases(const QString& testNamePrefix)
+{
+    QTest::addColumn<QString>("datasetName");
+
+    for (const auto& fileName : testFileNames_)
+    {
+        QString testName{testNamePrefix + " for " + fileName};
+        QTest::newRow(testName.toStdString().c_str()) << fileName;
+    }
 }

@@ -14,6 +14,7 @@ class InnerTests : public QObject
 private slots:
     void initTestCase();
 
+    void testDatasets_data();
     void testDatasets();
 
     void testPartialData();
@@ -51,5 +52,9 @@ private:
      */
     void compareDefinitionFiles(QByteArray& original, QByteArray& generated);
 
+    void addTestCases(const QString& testNamePrefix);
+
     const QString tempFilename_{"temp"};
+
+    static const QVector<QString> testFileNames_;
 };
