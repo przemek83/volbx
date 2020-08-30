@@ -156,40 +156,34 @@ void InnerTests::checkExport(const QString& datasetName,
 
 void InnerTests::testPartialData()
 {
-    //    DatasetDefinitionInner* definition =
-    //        new DatasetDefinitionInner("test");
+    std::unique_ptr<Dataset> dataset{DatasetCommon::createDataset(
+        "ExampleData", DatasetUtilities::getDatasetsDir())};
 
-    //    QVERIFY(true == definition->isValid());
+    QVERIFY(dataset->initialize());
+    QVERIFY(dataset->isValid());
 
-    //    QVector<bool> activeColumns(definition->columnCount(), false);
-    //    activeColumns[0] = true;
-    //    activeColumns[1] = true;
-    //    activeColumns[4] = true;
-    //    activeColumns[5] = true;
-    //    activeColumns[8] = true;
-    //    activeColumns[13] = true;
-    //    definition->setActiveColumns(activeColumns);
+    QVector<bool> activeColumns(dataset->columnCount(), false);
+    activeColumns[1] = true;
+    activeColumns[2] = true;
+    activeColumns[5] = true;
+    activeColumns[6] = true;
+    dataset->setActiveColumns(activeColumns);
+    dataset->loadData();
 
-    //    DatasetInner* dataset = new DatasetInner(definition);
-    //    dataset->init();
+    TableModel model(std::move(dataset));
+    FilteringProxyModel proxyModel;
+    proxyModel.setSourceModel(&model);
 
-    //    QVERIFY(true == dataset->isValid());
+    QTableView view;
+    view.setModel(&proxyModel);
 
-    //    TableModel model(dataset);
-    //    FilteringProxyModel proxyModel;
-    //    proxyModel.setSourceModel(&model);
+    QByteArray exportedByteArray;
+    QBuffer exportedBuffer(&exportedByteArray);
+    exportedBuffer.open(QIODevice::WriteOnly);
+    ExportVbx exportVbx;
+    exportVbx.generateVbx(view, exportedBuffer);
 
-    //    QTableView view;
-    //    view.setModel(&proxyModel);
-    //    view.setSelectionMode(QAbstractItemView::MultiSelection);
-    //    view.setSelectionBehavior(QAbstractItemView::SelectRows);
-    //    view.selectAll();
-    //    QItemSelectionModel* selectionModel = view.selectionModel();
-    //    selectionModel->setCurrentIndex(model.index(1, 0),
-    //                                    QItemSelectionModel::Deselect);
-    //    ExportData::saveDataset(tempFilename_, &view);
-
-    //    checkExport("partialTest");
+    checkExport("ExampleDataPartial", exportedBuffer);
 }
 
 void InnerTests::addTestCases(const QString& testNamePrefix)
