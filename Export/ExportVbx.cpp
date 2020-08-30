@@ -15,7 +15,7 @@ ExportVbx::ExportVbx(QObject* parent) : ExportData(parent) {}
 bool ExportVbx::generateVbx(const QAbstractItemView& view, QIODevice& ioDevice)
 {
     return exportView(view, ioDevice) && exportStrings(ioDevice) &&
-           exportDefinition(ioDevice, view);
+           exportDefinition(view, ioDevice);
 }
 
 bool ExportVbx::writeContent(const QByteArray& content, QIODevice& ioDevice)
@@ -60,8 +60,8 @@ bool ExportVbx::exportStrings(QIODevice& ioDevice)
                  stringsContent_, QuaZip::mdAdd);
 }
 
-bool ExportVbx::exportDefinition(QIODevice& ioDevice,
-                                 const QAbstractItemView& view)
+bool ExportVbx::exportDefinition(const QAbstractItemView& view,
+                                 QIODevice& ioDevice)
 {
     const TableModel* parentModel =
         (qobject_cast<FilteringProxyModel*>(view.model()))->getParentModel();
