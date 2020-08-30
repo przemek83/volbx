@@ -123,18 +123,6 @@ void InnerTests::generateDumpData()
     }
 }
 
-void InnerTests::checkDatasetDefinition(
-    const QString& fileName, const std::unique_ptr<Dataset>& dataset) const
-{
-    QString datasetFilePath(DatasetUtilities::getDatasetsDir() + fileName);
-    const QString dumpFileName{datasetFilePath +
-                               Common::getDefinitionDumpSuffix()};
-    QByteArray dumpFromFile{
-        FileUtilities::loadFile(dumpFileName).second.toUtf8()};
-    QByteArray dumpFromDataset{dataset->definitionToXml(dataset->rowCount())};
-    QVERIFY(Common::xmlsAreEqual(dumpFromFile, dumpFromDataset));
-}
-
 void InnerTests::checkDatasetData(const QString& fileName,
                                   const QTableView& view) const
 {
