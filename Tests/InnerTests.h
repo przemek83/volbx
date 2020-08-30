@@ -33,8 +33,9 @@ private:
     void generateDumpData();
 
     /**
-     * @brief check export for given dataset name.
-     * @param fileName name of dataset.
+     * @brief Check export for given dataset name.
+     * @param fileName Name of dataset.
+     * @param exportedBuffer Exported zip.
      */
     void checkExport(const QString& datasetName, QBuffer& exportedBuffer);
 
@@ -46,6 +47,9 @@ private:
                            QuaZip& zipGenerated);
 
     void checkExportedDefinitions(QuaZip& zipOriginal, QuaZip& zipGenerated);
+
+    void generateVbxFile(const QString& datasetName, QBuffer& buffer,
+                         QVector<bool> activeColumns);
 
     static const QVector<QString> testFileNames_;
 };

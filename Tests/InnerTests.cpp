@@ -48,24 +48,10 @@ void InnerTests::testExport()
 {
     QFETCH(QString, datasetName);
 
-    std::unique_ptr<Dataset> dataset{DatasetCommon::createDataset(
-        datasetName, DatasetUtilities::getDatasetsDir())};
-    dataset->initialize();
-    DatasetCommon::activateAllDatasetColumns(*dataset);
-    dataset->loadData();
-
-    TableModel model(std::move(dataset));
-    FilteringProxyModel proxyModel;
-    proxyModel.setSourceModel(&model);
-
-    QTableView view;
-    view.setModel(&proxyModel);
-
     QByteArray exportedByteArray;
     QBuffer exportedBuffer(&exportedByteArray);
     exportedBuffer.open(QIODevice::WriteOnly);
-    ExportVbx exportVbx;
-    exportVbx.generateVbx(view, exportedBuffer);
+    generateVbxFile(datasetName, exportedBuffer, {});
 
     checkExport(datasetName, exportedBuffer);
 }
@@ -135,6 +121,29 @@ void InnerTests::checkExportedDefinitions(QuaZip& zipOriginal,
     DatasetCommon::xmlsAreEqual(generatedData, originalData);
 }
 
+void InnerTests::generateVbxFile(const QString& datasetName, QBuffer& buffer,
+                                 QVector<bool> activeColumns)
+{
+    std::unique_ptr<Dataset> dataset{DatasetCommon::createDataset(
+        datasetName, DatasetUtilities::getDatasetsDir())};
+    dataset->initialize();
+    if (activeColumns.empty())
+        DatasetCommon::activateAllDatasetColumns(*dataset);
+    else
+        dataset->setActiveColumns(activeColumns);
+    dataset->loadData();
+
+    TableModel model(std::move(dataset));
+    FilteringProxyModel proxyModel;
+    proxyModel.setSourceModel(&model);
+
+    QTableView view;
+    view.setModel(&proxyModel);
+
+    ExportVbx exportVbx;
+    exportVbx.generateVbx(view, buffer);
+}
+
 void InnerTests::checkExport(const QString& datasetName,
                              QBuffer& exportedBuffer)
 {
@@ -156,32 +165,15 @@ void InnerTests::checkExport(const QString& datasetName,
 
 void InnerTests::testPartialData()
 {
-    std::unique_ptr<Dataset> dataset{DatasetCommon::createDataset(
-        "ExampleData", DatasetUtilities::getDatasetsDir())};
-
-    QVERIFY(dataset->initialize());
-    QVERIFY(dataset->isValid());
-
-    QVector<bool> activeColumns(dataset->columnCount(), false);
+    QByteArray exportedByteArray;
+    QBuffer exportedBuffer(&exportedByteArray);
+    exportedBuffer.open(QIODevice::WriteOnly);
+    QVector<bool> activeColumns(7, false);
     activeColumns[1] = true;
     activeColumns[2] = true;
     activeColumns[5] = true;
     activeColumns[6] = true;
-    dataset->setActiveColumns(activeColumns);
-    dataset->loadData();
-
-    TableModel model(std::move(dataset));
-    FilteringProxyModel proxyModel;
-    proxyModel.setSourceModel(&model);
-
-    QTableView view;
-    view.setModel(&proxyModel);
-
-    QByteArray exportedByteArray;
-    QBuffer exportedBuffer(&exportedByteArray);
-    exportedBuffer.open(QIODevice::WriteOnly);
-    ExportVbx exportVbx;
-    exportVbx.generateVbx(view, exportedBuffer);
+    generateVbxFile("ExampleData", exportedBuffer, std::move(activeColumns));
 
     checkExport("ExampleDataPartial", exportedBuffer);
 }
