@@ -205,13 +205,15 @@ void checkData(const QString& fileName, const QString& dir)
     compareExportDataWithDump(std::move(dataset), filePath);
 }
 
-void generateExpectedDataForFile(const QString& fileName, const QString& dir)
+void generateExpectedDataForFile(const QString& fileName,
+                                 const QString& sourceDir,
+                                 const QString& destinationDir)
 {
-    std::unique_ptr<Dataset> dataset{DatasetCommon::createDataset(
-        fileName, Common::getSpreadsheetsDir() + fileName)};
+    std::unique_ptr<Dataset> dataset{
+        DatasetCommon::createDataset(fileName, sourceDir + fileName)};
     dataset->initialize();
 
-    QString filePath{dir + fileName};
+    QString filePath{destinationDir + fileName};
     saveExpectedDefinition(dataset, filePath);
 
     DatasetCommon::activateAllDatasetColumns(*dataset);

@@ -58,41 +58,12 @@ void InnerTests::testExport()
 
 void InnerTests::generateDumpData()
 {
-    QDirIterator dirIt(DatasetUtilities::getDatasetsDir(),
-                       QDirIterator::Subdirectories);
-    while (dirIt.hasNext())
-    {
-        dirIt.next();
-        QFileInfo fileInfo(dirIt.filePath());
-        if (fileInfo.isFile() && (fileInfo.suffix() == "vbx"))
-        {
-            DatasetInner* dataset = new DatasetInner(fileInfo.baseName());
-            dataset->initialize();
-            QByteArray definitionDump =
-                dataset->definitionToXml(dataset->rowCount());
-            Common::saveFile(DatasetUtilities::getDatasetsDir() +
-                                 fileInfo.baseName() +
-                                 Common::getDefinitionDumpSuffix(),
-                             definitionDump);
-
-            QVector<bool> activeColumns(dataset->columnCount(), true);
-            dataset->setActiveColumns(activeColumns);
-            dataset->loadData();
-
-            TableModel model((std::unique_ptr<Dataset>(dataset)));
-            FilteringProxyModel proxyModel;
-            proxyModel.setSourceModel(&model);
-
-            QTableView view;
-            view.setModel(&proxyModel);
-
-            QString tsvData{DatasetCommon::getExportedTsv(view)};
-            Common::saveFile(DatasetUtilities::getDatasetsDir() +
-                                 fileInfo.baseName() +
-                                 Common::getDataTsvDumpSuffix(),
-                             tsvData);
-        }
-    }
+    QString generatedFilesDir{QApplication::applicationDirPath() +
+                              "/generatedVbxTestData/"};
+    QDir().mkdir(generatedFilesDir);
+    for (const auto& datasetName : testFileNames_)
+        DatasetCommon::generateExpectedDataForFile(
+            datasetName, DatasetUtilities::getDatasetsDir(), generatedFilesDir);
 }
 
 QByteArray InnerTests::loadDataFromZip(QuaZip& zip, const QString& fileName)

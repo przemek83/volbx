@@ -151,8 +151,9 @@ void SpreadsheetsTest::generateExpectedData()
     for (const auto& fileName : testFileNames_)
     {
         DatasetCommon::generateExpectedDataForFile(fileName + ".xlsx",
+                                                   Common::getSpreadsheetsDir(),
                                                    generatedFilesDir);
-        DatasetCommon::generateExpectedDataForFile(fileName + ".ods",
-                                                   generatedFilesDir);
+        DatasetCommon::generateExpectedDataForFile(
+            fileName + ".ods", Common::getSpreadsheetsDir(), generatedFilesDir);
     }
 }
