@@ -109,38 +109,29 @@ void InnerTests::generateDumpData()
     }
 }
 
+QByteArray InnerTests::loadDataFromZip(QuaZip& zip, const QString& fileName)
+{
+    QuaZipFile zipFileOriginal(&zip);
+    zip.setCurrentFile(fileName);
+    zipFileOriginal.open(QIODevice::ReadOnly);
+    return zipFileOriginal.readAll();
+}
+
 void InnerTests::checkExportedData(const QString& fileName, QuaZip& zipOriginal,
                                    QuaZip& zipGenerated)
 {
-    QuaZipFile zipFileOriginal(&zipOriginal);
-    zipOriginal.setCurrentFile(fileName);
-    QVERIFY(zipFileOriginal.open(QIODevice::ReadOnly));
-    QByteArray originalData = zipFileOriginal.readAll();
-
-    QuaZipFile zipFileGenerated(&zipGenerated);
-    zipGenerated.setCurrentFile(fileName);
-    QVERIFY(zipFileGenerated.open(QIODevice::ReadOnly));
-    QByteArray generatedData = zipFileGenerated.readAll();
-
+    const QByteArray originalData{loadDataFromZip(zipOriginal, fileName)};
+    const QByteArray generatedData{loadDataFromZip(zipGenerated, fileName)};
     QCOMPARE(generatedData, originalData);
 }
 
 void InnerTests::checkExportedDefinitions(QuaZip& zipOriginal,
                                           QuaZip& zipGenerated)
 {
-    QuaZipFile zipFileOriginal(&zipOriginal);
-    zipOriginal.setCurrentFile(
-        DatasetUtilities::getDatasetDefinitionFilename());
-    QVERIFY(zipFileOriginal.open(QIODevice::ReadOnly));
-    QByteArray originalData = zipFileOriginal.readAll();
-    zipFileOriginal.close();
-
-    QuaZipFile zipFileGenerated(&zipGenerated);
-    zipGenerated.setCurrentFile(
-        DatasetUtilities::getDatasetDefinitionFilename());
-    QVERIFY(zipFileGenerated.open(QIODevice::ReadOnly));
-    QByteArray generatedData = zipFileGenerated.readAll();
-    zipFileGenerated.close();
+    const QByteArray originalData{loadDataFromZip(
+        zipOriginal, DatasetUtilities::getDatasetDefinitionFilename())};
+    const QByteArray generatedData{loadDataFromZip(
+        zipGenerated, DatasetUtilities::getDatasetDefinitionFilename())};
     DatasetCommon::xmlsAreEqual(generatedData, originalData);
 }
 

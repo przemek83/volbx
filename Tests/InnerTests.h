@@ -40,6 +40,8 @@ private:
 
     void addTestCases(const QString& testNamePrefix);
 
+    QByteArray loadDataFromZip(QuaZip& zip, const QString& fileName);
+
     void checkExportedData(const QString& fileName, QuaZip& zipOriginal,
                            QuaZip& zipGenerated);
 
