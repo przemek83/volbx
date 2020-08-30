@@ -32,9 +32,6 @@ private slots:
 private:
     void generateDumpData();
 
-    void checkDatasetData(const QString& fileName,
-                          const QTableView& view) const;
-
     /**
      * @brief check export for given dataset name.
      * @param fileName name of dataset.

@@ -108,19 +108,6 @@ void InnerTests::generateDumpData()
     }
 }
 
-void InnerTests::checkDatasetData(const QString& fileName,
-                                  const QTableView& view) const
-{
-    QString actualData{DatasetCommon::getExportedTsv(view)};
-
-    QString datasetFilePath(DatasetUtilities::getDatasetsDir() + fileName);
-    QString compareData = FileUtilities::loadFile(
-                              datasetFilePath + Common::getDataTsvDumpSuffix())
-                              .second;
-
-    QCOMPARE(actualData.split('\n'), compareData.split('\n'));
-}
-
 void InnerTests::checkExport(QString fileName)
 {
     // Open original archive.
