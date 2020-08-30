@@ -1,6 +1,7 @@
 #include "InnerTests.h"
 
 #include <Qt5Quazip/quazipfile.h>
+#include <QBuffer>
 #include <QDirIterator>
 #include <QDomDocument>
 #include <QTableView>
@@ -60,13 +61,13 @@ void InnerTests::testExport()
     QTableView view;
     view.setModel(&proxyModel);
 
-    QString filePath{DatasetUtilities::getDatasetsDir() + tempFilename_ +
-                     DatasetUtilities::getDatasetExtension()};
-    QFile file(filePath);
+    QByteArray exportedByteArray;
+    QBuffer exportedBuffer(&exportedByteArray);
+    exportedBuffer.open(QIODevice::WriteOnly);
     ExportVbx exportVbx;
-    exportVbx.generateVbx(view, file);
+    exportVbx.generateVbx(view, exportedBuffer);
 
-    checkExport(datasetName);
+    checkExport(datasetName, exportedBuffer);
 }
 
 void InnerTests::generateDumpData()
@@ -108,40 +109,40 @@ void InnerTests::generateDumpData()
     }
 }
 
-void InnerTests::checkExport(QString fileName)
+void InnerTests::checkExport(const QString& datasetName,
+                             QBuffer& exportedBuffer)
 {
     // Open original archive.
-    QuaZip zipOriginal(DatasetUtilities::getDatasetsDir() + fileName +
+    QuaZip zipOriginal(DatasetUtilities::getDatasetsDir() + datasetName +
                        DatasetUtilities::getDatasetExtension());
-    QVERIFY(true == zipOriginal.open(QuaZip::mdUnzip));
+    QVERIFY(zipOriginal.open(QuaZip::mdUnzip));
 
     // Open generated archive.
-    QuaZip zipGenerated(DatasetUtilities::getDatasetsDir() + tempFilename_ +
-                        DatasetUtilities::getDatasetExtension());
-    QVERIFY(true == zipGenerated.open(QuaZip::mdUnzip));
+    QuaZip zipGenerated(&exportedBuffer);
+    QVERIFY(zipGenerated.open(QuaZip::mdUnzip));
 
     // Open data files in archives and compare it.
     QuaZipFile zipFileOriginal(&zipOriginal);
     zipOriginal.setCurrentFile(DatasetUtilities::getDatasetDataFilename());
-    QVERIFY(true == zipFileOriginal.open(QIODevice::ReadOnly));
+    QVERIFY(zipFileOriginal.open(QIODevice::ReadOnly));
     QByteArray originalData = zipFileOriginal.readAll();
     zipFileOriginal.close();
 
     QuaZipFile zipFileGenerated(&zipGenerated);
     zipGenerated.setCurrentFile(DatasetUtilities::getDatasetDataFilename());
-    QVERIFY(true == zipFileGenerated.open(QIODevice::ReadOnly));
+    QVERIFY(zipFileGenerated.open(QIODevice::ReadOnly));
     QByteArray generatedData = zipFileGenerated.readAll();
     zipFileGenerated.close();
     QCOMPARE(generatedData, originalData);
 
     // Open strings files in archives and compare it.
     zipOriginal.setCurrentFile(DatasetUtilities::getDatasetStringsFilename());
-    QVERIFY(true == zipFileOriginal.open(QIODevice::ReadOnly));
+    QVERIFY(zipFileOriginal.open(QIODevice::ReadOnly));
     originalData = zipFileOriginal.readAll();
     zipFileOriginal.close();
 
     zipGenerated.setCurrentFile(DatasetUtilities::getDatasetStringsFilename());
-    QVERIFY(true == zipFileGenerated.open(QIODevice::ReadOnly));
+    QVERIFY(zipFileGenerated.open(QIODevice::ReadOnly));
     generatedData = zipFileGenerated.readAll();
     zipFileGenerated.close();
     QCOMPARE(generatedData, originalData);
@@ -149,13 +150,13 @@ void InnerTests::checkExport(QString fileName)
     // Open definitions files.
     zipOriginal.setCurrentFile(
         DatasetUtilities::getDatasetDefinitionFilename());
-    QVERIFY(true == zipFileOriginal.open(QIODevice::ReadOnly));
+    QVERIFY(zipFileOriginal.open(QIODevice::ReadOnly));
     originalData = zipFileOriginal.readAll();
     zipFileOriginal.close();
 
     zipGenerated.setCurrentFile(
         DatasetUtilities::getDatasetDefinitionFilename());
-    QVERIFY(true == zipFileGenerated.open(QIODevice::ReadOnly));
+    QVERIFY(zipFileGenerated.open(QIODevice::ReadOnly));
     generatedData = zipFileGenerated.readAll();
     zipFileGenerated.close();
     DatasetCommon::xmlsAreEqual(generatedData, originalData);
@@ -197,12 +198,6 @@ void InnerTests::testPartialData()
     //    ExportData::saveDataset(tempFilename_, &view);
 
     //    checkExport("partialTest");
-}
-
-void InnerTests::cleanupTestCase()
-{
-    QFile::remove(DatasetUtilities::getDatasetsDir() + tempFilename_ +
-                  DatasetUtilities::getDatasetExtension());
 }
 
 void InnerTests::addTestCases(const QString& testNamePrefix)

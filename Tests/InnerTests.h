@@ -6,6 +6,7 @@
 
 class Dataset;
 class QTableView;
+class QBuffer;
 
 /**
  * @brief Test for inner format functionalities.
@@ -27,8 +28,6 @@ private slots:
 
     void testPartialData();
 
-    void cleanupTestCase();
-
 private:
     void generateDumpData();
 
@@ -36,7 +35,7 @@ private:
      * @brief check export for given dataset name.
      * @param fileName name of dataset.
      */
-    void checkExport(QString fileName);
+    void checkExport(const QString& datasetName, QBuffer& exportedBuffer);
 
     void addTestCases(const QString& testNamePrefix);
 
