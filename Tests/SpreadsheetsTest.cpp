@@ -53,16 +53,7 @@ void SpreadsheetsTest::testData_data()
 void SpreadsheetsTest::testData()
 {
     QFETCH(QString, fileName);
-
-    QString filePath(Common::getSpreadsheetsDir() + fileName);
-    std::unique_ptr<Dataset> dataset{Common::createDataset(fileName, filePath)};
-    dataset->initialize();
-
-    Common::activateAllDatasetColumns(*dataset);
-    QVERIFY(dataset->loadData());
-    QVERIFY(dataset->isValid());
-
-    Common::compareExportDataWithDump(std::move(dataset), filePath);
+    DatasetCommon::checkData(fileName, Common::getSpreadsheetsDir());
 }
 
 void SpreadsheetsTest::testDamagedFiles_data()

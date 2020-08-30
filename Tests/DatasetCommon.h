@@ -8,4 +8,6 @@ class QString;
 namespace DatasetCommon
 {
 void checkDefinition(const QString& fileName, const QString& filePath);
-};
+
+void checkData(const QString& fileName, const QString& dir);
+};  // namespace DatasetCommon

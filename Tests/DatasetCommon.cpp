@@ -31,4 +31,17 @@ void checkDefinition(const QString& fileName, const QString& dir)
     checkDatasetDefinition(dataset,
                            filePath + Common::getDefinitionDumpSuffix());
 }
+
+void checkData(const QString& fileName, const QString& dir)
+{
+    const QString filePath(dir + fileName);
+    std::unique_ptr<Dataset> dataset{Common::createDataset(fileName, filePath)};
+    dataset->initialize();
+
+    Common::activateAllDatasetColumns(*dataset);
+    QVERIFY(dataset->loadData());
+    QVERIFY(dataset->isValid());
+
+    Common::compareExportDataWithDump(std::move(dataset), filePath);
+}
 };  // namespace DatasetCommon
