@@ -39,7 +39,5 @@ private:
 
     void addTestCases(const QString& testNamePrefix);
 
-    const QString tempFilename_{"temp"};
-
     static const QVector<QString> testFileNames_;
 };
