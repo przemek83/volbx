@@ -82,6 +82,20 @@ bool domElementsEqual(QDomElement& left, QDomElement& right)
     return domNodeListsEqual(leftNodes, rightNodes) &&
            domNodeListsEqual(rightNodes, leftNodes);
 }
+
+void saveExpectedDefinition(const std::unique_ptr<Dataset>& dataset,
+                            const QString& filePath)
+{
+    QByteArray dumpedDefinition{dataset->definitionToXml(dataset->rowCount())};
+    Common::saveFile(filePath + Common::getDefinitionDumpSuffix(),
+                     dumpedDefinition);
+}
+
+void saveExpectedTsv(const QTableView& view, const QString& filePath)
+{
+    QString tsvData{DatasetCommon::getExportedTsv(view)};
+    Common::saveFile(filePath + Common::getDataTsvDumpSuffix(), tsvData);
+}
 };  // namespace
 
 namespace DatasetCommon
@@ -189,5 +203,26 @@ void checkData(const QString& fileName, const QString& dir)
     QVERIFY(dataset->isValid());
 
     compareExportDataWithDump(std::move(dataset), filePath);
+}
+
+void generateExpectedDataForFile(const QString& fileName, const QString& dir)
+{
+    std::unique_ptr<Dataset> dataset{DatasetCommon::createDataset(
+        fileName, Common::getSpreadsheetsDir() + fileName)};
+    dataset->initialize();
+
+    QString filePath{dir + fileName};
+    saveExpectedDefinition(dataset, filePath);
+
+    DatasetCommon::activateAllDatasetColumns(*dataset);
+    dataset->loadData();
+
+    TableModel model(std::move(dataset));
+    FilteringProxyModel proxyModel;
+    proxyModel.setSourceModel(&model);
+    QTableView view;
+    view.setModel(&proxyModel);
+
+    saveExpectedTsv(view, filePath);
 }
 };  // namespace DatasetCommon

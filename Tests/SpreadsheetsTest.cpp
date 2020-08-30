@@ -150,44 +150,9 @@ void SpreadsheetsTest::generateExpectedData()
     QDir().mkdir(generatedFilesDir);
     for (const auto& fileName : testFileNames_)
     {
-        generateExpectedDataForFile(fileName + ".xlsx", generatedFilesDir);
-        generateExpectedDataForFile(fileName + ".ods", generatedFilesDir);
+        DatasetCommon::generateExpectedDataForFile(fileName + ".xlsx",
+                                                   generatedFilesDir);
+        DatasetCommon::generateExpectedDataForFile(fileName + ".ods",
+                                                   generatedFilesDir);
     }
-}
-
-void SpreadsheetsTest::saveExpectedDefinition(
-    const std::unique_ptr<Dataset>& dataset, const QString& filePath)
-{
-    QByteArray dumpedDefinition{dataset->definitionToXml(dataset->rowCount())};
-    Common::saveFile(filePath + Common::getDefinitionDumpSuffix(),
-                     dumpedDefinition);
-}
-
-void SpreadsheetsTest::saveExpectedTsv(const QTableView& view,
-                                       const QString& filePath)
-{
-    QString tsvData{DatasetCommon::getExportedTsv(view)};
-    Common::saveFile(filePath + Common::getDataTsvDumpSuffix(), tsvData);
-}
-
-void SpreadsheetsTest::generateExpectedDataForFile(const QString& fileName,
-                                                   const QString& dir)
-{
-    std::unique_ptr<Dataset> dataset{DatasetCommon::createDataset(
-        fileName, Common::getSpreadsheetsDir() + fileName)};
-    dataset->initialize();
-
-    QString filePath{dir + fileName};
-    saveExpectedDefinition(dataset, filePath);
-
-    DatasetCommon::activateAllDatasetColumns(*dataset);
-    dataset->loadData();
-
-    TableModel model(std::move(dataset));
-    FilteringProxyModel proxyModel;
-    proxyModel.setSourceModel(&model);
-    QTableView view;
-    view.setModel(&proxyModel);
-
-    saveExpectedTsv(view, filePath);
 }

@@ -38,15 +38,7 @@ private:
     void activateAllDatasetColumns(
         const std::unique_ptr<DatasetSpreadsheet>& dataset);
 
-    void generateExpectedDataForFile(const QString& fileName,
-                                     const QString& dir);
-
     void generateExpectedData();
-
-    void saveExpectedDefinition(const std::unique_ptr<Dataset>& dataset,
-                                const QString& filePath);
-
-    void saveExpectedTsv(const QTableView& view, const QString& filePath);
 
     void addTestCasesForFileNames(const QVector<QString>& fileNames);
 

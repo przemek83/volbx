@@ -24,4 +24,6 @@ void activateAllDatasetColumns(Dataset& dataset);
 void checkDefinition(const QString& fileName, const QString& filePath);
 
 void checkData(const QString& fileName, const QString& dir);
+
+void generateExpectedDataForFile(const QString& fileName, const QString& dir);
 };  // namespace DatasetCommon
