@@ -47,10 +47,10 @@ void InnerTests::testExport()
 {
     QFETCH(QString, datasetName);
 
-    std::unique_ptr<Dataset> dataset{
-        Common::createDataset(datasetName, DatasetUtilities::getDatasetsDir())};
+    std::unique_ptr<Dataset> dataset{DatasetCommon::createDataset(
+        datasetName, DatasetUtilities::getDatasetsDir())};
     dataset->initialize();
-    Common::activateAllDatasetColumns(*dataset);
+    DatasetCommon::activateAllDatasetColumns(*dataset);
     dataset->loadData();
 
     TableModel model(std::move(dataset));
@@ -99,7 +99,7 @@ void InnerTests::generateDumpData()
             QTableView view;
             view.setModel(&proxyModel);
 
-            QString tsvData{Common::getExportedTsv(view)};
+            QString tsvData{DatasetCommon::getExportedTsv(view)};
             Common::saveFile(DatasetUtilities::getDatasetsDir() +
                                  fileInfo.baseName() +
                                  Common::getDataTsvDumpSuffix(),
@@ -111,7 +111,7 @@ void InnerTests::generateDumpData()
 void InnerTests::checkDatasetData(const QString& fileName,
                                   const QTableView& view) const
 {
-    QString actualData{Common::getExportedTsv(view)};
+    QString actualData{DatasetCommon::getExportedTsv(view)};
 
     QString datasetFilePath(DatasetUtilities::getDatasetsDir() + fileName);
     QString compareData = FileUtilities::loadFile(

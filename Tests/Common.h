@@ -1,12 +1,6 @@
 #pragma once
 
-#include <memory>
-
-#include <QString>
-
-class QAbstractItemView;
-class Dataset;
-class DatasetSpreadsheet;
+class QString;
 
 /**
  * @brief Common functions for unit tests.
@@ -21,17 +15,5 @@ QString getDefinitionRefSuffix();
 
 QString getDataTsvDumpSuffix();
 
-QString getExportedTsv(const QAbstractItemView& view);
-
-bool xmlsAreEqual(const QByteArray& left, const QByteArray& right);
-
-void compareExportDataWithDump(std::unique_ptr<Dataset> dataset,
-                               const QString& filePath);
-
-std::unique_ptr<Dataset> createDataset(const QString& fileName,
-                                       const QString& filePath);
-
 QString getSpreadsheetsDir();
-
-void activateAllDatasetColumns(Dataset& dataset);
 };  // namespace Common

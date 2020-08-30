@@ -65,7 +65,7 @@ void SpreadsheetsTest::testDamagedFiles()
 {
     QFETCH(QString, fileName);
 
-    std::unique_ptr<Dataset> dataset{Common::createDataset(
+    std::unique_ptr<Dataset> dataset{DatasetCommon::createDataset(
         fileName, Common::getSpreadsheetsDir() + fileName)};
     QVERIFY(!dataset->initialize());
 }
@@ -166,21 +166,21 @@ void SpreadsheetsTest::saveExpectedDefinition(
 void SpreadsheetsTest::saveExpectedTsv(const QTableView& view,
                                        const QString& filePath)
 {
-    QString tsvData{Common::getExportedTsv(view)};
+    QString tsvData{DatasetCommon::getExportedTsv(view)};
     Common::saveFile(filePath + Common::getDataTsvDumpSuffix(), tsvData);
 }
 
 void SpreadsheetsTest::generateExpectedDataForFile(const QString& fileName,
                                                    const QString& dir)
 {
-    std::unique_ptr<Dataset> dataset{Common::createDataset(
+    std::unique_ptr<Dataset> dataset{DatasetCommon::createDataset(
         fileName, Common::getSpreadsheetsDir() + fileName)};
     dataset->initialize();
 
     QString filePath{dir + fileName};
     saveExpectedDefinition(dataset, filePath);
 
-    Common::activateAllDatasetColumns(*dataset);
+    DatasetCommon::activateAllDatasetColumns(*dataset);
     dataset->loadData();
 
     TableModel model(std::move(dataset));
