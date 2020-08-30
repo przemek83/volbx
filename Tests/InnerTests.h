@@ -7,6 +7,7 @@
 class Dataset;
 class QTableView;
 class QBuffer;
+class QuaZip;
 
 /**
  * @brief Test for inner format functionalities.
@@ -38,6 +39,11 @@ private:
     void checkExport(const QString& datasetName, QBuffer& exportedBuffer);
 
     void addTestCases(const QString& testNamePrefix);
+
+    void checkExportedData(const QString& fileName, QuaZip& zipOriginal,
+                           QuaZip& zipGenerated);
+
+    void checkExportedDefinitions(QuaZip& zipOriginal, QuaZip& zipGenerated);
 
     static const QVector<QString> testFileNames_;
 };
