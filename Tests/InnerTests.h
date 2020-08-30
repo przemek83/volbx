@@ -38,13 +38,6 @@ private:
      */
     void checkExport(QString fileName);
 
-    /**
-     * @brief compare definition files
-     * @param original original definition file.
-     * @param generated generated definition file.
-     */
-    void compareDefinitionFiles(QByteArray& original, QByteArray& generated);
-
     void addTestCases(const QString& testNamePrefix);
 
     const QString tempFilename_{"temp"};

@@ -82,7 +82,10 @@ bool domElementsEqual(QDomElement& left, QDomElement& right)
     return domNodeListsEqual(leftNodes, rightNodes) &&
            domNodeListsEqual(rightNodes, leftNodes);
 }
+};  // namespace
 
+namespace DatasetCommon
+{
 bool xmlsAreEqual(const QByteArray& left, const QByteArray& right)
 {
     QDomDocument leftDom;
@@ -104,10 +107,6 @@ void checkDatasetDefinition(const std::unique_ptr<Dataset>& dataset,
     QVERIFY(xmlsAreEqual(dumpFromFile, dumpFromDataset));
 }
 
-};  // namespace
-
-namespace DatasetCommon
-{
 QString getExportedTsv(const QAbstractItemView& view)
 {
     QByteArray exportedByteArray;

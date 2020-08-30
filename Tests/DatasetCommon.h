@@ -5,9 +5,12 @@
 class Dataset;
 class QString;
 class QAbstractItemView;
+class QByteArray;
 
 namespace DatasetCommon
 {
+bool xmlsAreEqual(const QByteArray& left, const QByteArray& right);
+
 QString getExportedTsv(const QAbstractItemView& view);
 
 void compareExportDataWithDump(std::unique_ptr<Dataset> dataset,

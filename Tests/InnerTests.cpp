@@ -158,49 +158,7 @@ void InnerTests::checkExport(QString fileName)
     QVERIFY(true == zipFileGenerated.open(QIODevice::ReadOnly));
     generatedData = zipFileGenerated.readAll();
     zipFileGenerated.close();
-    compareDefinitionFiles(generatedData, originalData);
-}
-
-void InnerTests::compareDefinitionFiles(QByteArray& original,
-                                        QByteArray& generated)
-{
-    QDomDocument xmlDocumentOryginal(__FUNCTION__);
-    QDomDocument xmlDocumentGenerated(__FUNCTION__);
-    QVERIFY(true == xmlDocumentOryginal.setContent(original));
-    QVERIFY(true == xmlDocumentGenerated.setContent(generated));
-
-    QDomElement rootOriginal = xmlDocumentOryginal.documentElement();
-    QDomElement rootGenerated = xmlDocumentGenerated.documentElement();
-
-    QDomNodeList columnsOriginal =
-        rootOriginal.firstChildElement("COLUMNS").childNodes();
-
-    QDomNodeList columnsGenerated =
-        rootGenerated.firstChildElement("COLUMNS").childNodes();
-
-    int columnsNumber = columnsOriginal.size();
-    QCOMPARE(columnsNumber, columnsGenerated.size());
-    for (int i = 0; i < columnsNumber; ++i)
-    {
-        QDomElement originalElement = columnsOriginal.at(i).toElement();
-        QDomElement generatedElement = columnsGenerated.at(i).toElement();
-
-        QCOMPARE(originalElement.attribute("NAME"),
-                 generatedElement.attribute("NAME"));
-        QCOMPARE(originalElement.attribute("FORMAT"),
-                 generatedElement.attribute("FORMAT"));
-        QCOMPARE(originalElement.attribute("SPECIAL_TAG"),
-                 generatedElement.attribute("SPECIAL_TAG"));
-    }
-
-    int originalRowCount = rootOriginal.firstChildElement("ROW_COUNT")
-                               .attribute("ROW_COUNT")
-                               .toInt();
-    int generatredRowCount = rootGenerated.firstChildElement("ROW_COUNT")
-                                 .attribute("ROW_COUNT")
-                                 .toInt();
-
-    QCOMPARE(originalRowCount, generatredRowCount);
+    DatasetCommon::xmlsAreEqual(generatedData, originalData);
 }
 
 void InnerTests::testPartialData()
