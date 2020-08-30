@@ -38,22 +38,7 @@ void InnerTests::testData_data() { addTestCases("Test data"); }
 void InnerTests::testData()
 {
     QFETCH(QString, datasetName);
-
-    std::unique_ptr<Dataset> dataset{
-        Common::createDataset(datasetName, DatasetUtilities::getDatasetsDir())};
-    dataset->initialize();
-    Common::activateAllDatasetColumns(*dataset);
-    dataset->loadData();
-    QVERIFY(dataset->isValid());
-
-    TableModel model(std::move(dataset));
-    FilteringProxyModel proxyModel;
-    proxyModel.setSourceModel(&model);
-
-    QTableView view;
-    view.setModel(&proxyModel);
-
-    checkDatasetData(datasetName, view);
+    DatasetCommon::checkData(datasetName, DatasetUtilities::getDatasetsDir());
 }
 
 void InnerTests::testExport_data() { addTestCases("Test export"); }
