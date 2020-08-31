@@ -79,7 +79,17 @@ void InnerTests::checkExportedData(const QString& fileName, QuaZip& zipOriginal,
 {
     const QByteArray originalData{loadDataFromZip(zipOriginal, fileName)};
     const QByteArray generatedData{loadDataFromZip(zipGenerated, fileName)};
-    QCOMPARE(generatedData, originalData);
+    QList<QByteArray> actualDataLines{generatedData.split('\n')};
+    QList<QByteArray> expectedDataLines{originalData.split('\n')};
+    QCOMPARE(actualDataLines.size(), expectedDataLines.size());
+    for (int i = 0; i < actualDataLines.size(); ++i)
+        if (actualDataLines[i] != expectedDataLines[i])
+        {
+            QString msg{"Difference in line " + QString::number(i + 1) +
+                        "\nActual:  " + actualDataLines[i] +
+                        "\nExpected: " + expectedDataLines[i]};
+            QFAIL(msg.toStdString().c_str());
+        }
 }
 
 void InnerTests::checkExportedDefinitions(QuaZip& zipOriginal,
