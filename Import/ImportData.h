@@ -7,7 +7,6 @@
 
 class DatasetsListBrowser;
 class DatasetDefinitionVisualization;
-class ColumnsPreview;
 class QDialogButtonBox;
 class Dataset;
 
