@@ -14,24 +14,24 @@
 DatasetImportTab::DatasetImportTab(QWidget* parent) : ImportTab(parent)
 {
     // Create vertical and horizontal splitters and insert widgets into it.
-    auto datasetsListBrowser = new DatasetsListBrowser(this);
-    auto visualization = new DatasetDefinitionVisualization(this);
+    auto datasetsListBrowser{new DatasetsListBrowser(this)};
+    auto visualization{new DatasetDefinitionVisualization(this)};
 
-    auto splitter = new QSplitter(Qt::Horizontal, this);
+    auto splitter{new QSplitter(Qt::Horizontal, this)};
     splitter->addWidget(datasetsListBrowser);
     splitter->addWidget(visualization);
 
-    auto splitter2 = new QSplitter(Qt::Vertical, this);
+    auto splitter2{new QSplitter(Qt::Vertical, this)};
     splitter2->addWidget(splitter);
     auto columnsPreview = new ColumnsPreview(this);
     splitter2->addWidget(columnsPreview);
 
-    auto layout = new QVBoxLayout(this);
+    auto layout{new QVBoxLayout(this)};
     layout->setContentsMargins(2, 2, 2, 2);
     layout->addWidget(splitter2);
     setLayout(layout);
 
-    const int rowHeight = static_cast<int>(fontMetrics().height() * 1.5);
+    const int rowHeight{static_cast<int>(fontMetrics().height() * 1.5)};
     columnsPreview->verticalHeader()->setDefaultSectionSize(rowHeight);
 
     visualization->setEnabled(false);
@@ -51,21 +51,19 @@ DatasetImportTab::DatasetImportTab(QWidget* parent) : ImportTab(parent)
 
 std::unique_ptr<Dataset> DatasetImportTab::getDataset()
 {
-    auto definition = findChild<DatasetDefinitionVisualization*>();
+    auto definition{findChild<DatasetDefinitionVisualization*>()};
     return definition->retrieveDataset();
 }
 
 void DatasetImportTab::selectedDatasetChanged(const QString& current)
 {
-    auto visualization = findChild<DatasetDefinitionVisualization*>();
-    auto columnsPreview = findChild<ColumnsPreview*>();
-    auto datasetsListBrowser = findChild<DatasetsListBrowser*>();
+    auto visualization{findChild<DatasetDefinitionVisualization*>()};
+    auto columnsPreview{findChild<ColumnsPreview*>()};
+    auto datasetsListBrowser{findChild<DatasetsListBrowser*>()};
 
-    if (nullptr == datasetsListBrowser || nullptr == visualization ||
-        nullptr == columnsPreview)
-    {
+    if (datasetsListBrowser == nullptr || visualization == nullptr ||
+        columnsPreview == nullptr)
         return;
-    }
 
     if (current.isEmpty())
     {
@@ -77,8 +75,8 @@ void DatasetImportTab::selectedDatasetChanged(const QString& current)
     }
     else
     {
-        std::unique_ptr<Dataset> dataset =
-            std::make_unique<DatasetInner>(current);
+        std::unique_ptr<Dataset> dataset{
+            std::make_unique<DatasetInner>(current)};
 
         // If definition is valid, than fill details.
         if (dataset->initialize() && dataset->isValid())
@@ -107,11 +105,9 @@ void DatasetImportTab::selectedDatasetChanged(const QString& current)
 
 bool DatasetImportTab::datasetsAreAvailable()
 {
-    auto datasetsListBrowser = findChild<DatasetsListBrowser*>();
-    if (nullptr == datasetsListBrowser)
-    {
+    auto datasetsListBrowser{findChild<DatasetsListBrowser*>()};
+    if (datasetsListBrowser == nullptr)
         return false;
-    }
 
     return (!datasetsListBrowser->isDatasetsListEmpty());
 }
