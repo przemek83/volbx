@@ -1,6 +1,5 @@
 #include "DatasetImportTab.h"
 
-#include <Dataset.h>
 #include <DatasetInner.h>
 #include <QHeaderView>
 #include <QMessageBox>

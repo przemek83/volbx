@@ -1,11 +1,7 @@
 #include "DatasetDefinitionVisualization.h"
 
-#include <Dataset.h>
-#include <QDebug>
-#include <QTreeWidgetItem>
-#include <QTreeWidgetItemIterator>
-
-#include "Common/Constants.h"
+#include <Common/Constants.h>
+#include <Datasets/Dataset.h>
 
 #include "ui_DatasetDefinitionVisualization.h"
 

@@ -3,7 +3,6 @@
 #include <memory>
 
 #include <QDialog>
-#include <QMap>
 
 class DatasetsListBrowser;
 class DatasetDefinitionVisualization;

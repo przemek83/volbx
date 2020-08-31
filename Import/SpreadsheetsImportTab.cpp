@@ -9,19 +9,18 @@
 #include <QHeaderView>
 #include <QMessageBox>
 #include <QSplitter>
-#include <QVBoxLayout>
 
-#include "Common/Configuration.h"
-#include "Common/Constants.h"
-#include "Common/DatasetUtilities.h"
-#include "Datasets/DatasetOds.h"
-#include "Datasets/DatasetSpreadsheet.h"
-#include "Datasets/DatasetXlsx.h"
-#include "Shared/Logger.h"
+#include <Common/Configuration.h>
+#include <Common/Constants.h>
+#include <Common/DatasetUtilities.h>
+#include <Datasets/Dataset.h>
+#include <Datasets/DatasetOds.h>
+#include <Datasets/DatasetSpreadsheet.h>
+#include <Datasets/DatasetXlsx.h>
+#include <Shared/Logger.h>
 
 #include "ColumnsPreview.h"
 #include "DatasetDefinitionVisualization.h"
-#include "DatasetsListBrowser.h"
 #include "ui_SpreadsheetsImportTab.h"
 
 SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent)
@@ -32,16 +31,16 @@ SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent)
     connect(ui->openFileButton, &QPushButton::clicked, this,
             &SpreadsheetsImportTab::openFileButtonClicked);
 
-    auto visualization = new DatasetDefinitionVisualization(this);
+    auto visualization{new DatasetDefinitionVisualization(this)};
 
-    auto splitter2 = new QSplitter(Qt::Vertical, this);
+    auto splitter2{new QSplitter(Qt::Vertical, this)};
     splitter2->addWidget(visualization);
-    auto columnsPreview = new ColumnsPreview(this);
+    auto columnsPreview{new ColumnsPreview(this)};
     splitter2->addWidget(columnsPreview);
 
     ui->verticalLayout->addWidget(splitter2);
 
-    const int rowHeight = lround(fontMetrics().height() * 1.5);
+    const long rowHeight{lround(fontMetrics().height() * 1.5)};
     columnsPreview->verticalHeader()->setDefaultSectionSize(rowHeight);
 
     visualization->setEnabled(false);
@@ -63,8 +62,8 @@ SpreadsheetsImportTab::~SpreadsheetsImportTab() { delete ui; }
 void SpreadsheetsImportTab::analyzeFile(
     std::unique_ptr<DatasetSpreadsheet>& dataset)
 {
-    const QString barTitle =
-        Constants::getProgressBarTitle(Constants::BarTitle::ANALYSING);
+    const QString barTitle{
+        Constants::getProgressBarTitle(Constants::BarTitle::ANALYSING)};
     ProgressBarInfinite bar(barTitle, nullptr);
     bar.showDetached();
     bar.start();
@@ -74,7 +73,7 @@ void SpreadsheetsImportTab::analyzeFile(
 
     bool success{false};
     // TODO get rid of get() on smart pointer.
-    auto futureInit = std::async(&Dataset::initialize, dataset.get());
+    auto futureInit{std::async(&Dataset::initialize, dataset.get())};
     const std::chrono::milliseconds span(1);
     while (futureInit.wait_for(span) == std::future_status::timeout)
         QCoreApplication::processEvents();
@@ -99,9 +98,7 @@ void SpreadsheetsImportTab::openFileButtonClicked()
         tr("Spreadsheets (*.xlsx *.ods )"));
 
     if (fileName.isEmpty())
-    {
         return;
-    }
 
     QFileInfo fileInfo(fileName);
     if (!fileInfo.exists() || !fileInfo.isReadable())
@@ -118,26 +115,20 @@ void SpreadsheetsImportTab::openFileButtonClicked()
     std::unique_ptr<DatasetSpreadsheet> dataset{nullptr};
 
     // Remove all not allowed characters from file name.
-    QString regexpString = DatasetUtilities::getDatasetNameRegExp().replace(
-        QLatin1String("["), QLatin1String("[^"));
-    QString datasetName =
-        fileInfo.completeBaseName().remove(QRegExp(regexpString));
+    QString regexpString{DatasetUtilities::getDatasetNameRegExp().replace(
+        QLatin1String("["), QLatin1String("[^"))};
+    QString datasetName{
+        fileInfo.completeBaseName().remove(QRegExp(regexpString))};
 
     if (datasetName.isEmpty())
-    {
         datasetName = tr("Dataset");
-    }
 
-    if (0 == fileInfo.suffix().toLower().compare(QLatin1String("ods")))
-    {
+    if (fileInfo.suffix().toLower().compare(QLatin1String("ods")) == 0)
         dataset = std::make_unique<DatasetOds>(datasetName, fileName);
-    }
     else
     {
-        if (0 == fileInfo.suffix().toLower().compare(QLatin1String("xlsx")))
-        {
+        if (fileInfo.suffix().toLower().compare(QLatin1String("xlsx")) == 0)
             dataset = std::make_unique<DatasetXlsx>(datasetName, fileName);
-        }
         else
         {
             QMessageBox::information(this, tr("Wrong file"),
@@ -149,17 +140,13 @@ void SpreadsheetsImportTab::openFileButtonClicked()
 
     analyzeFile(dataset);
 
-    auto visualization = findChild<DatasetDefinitionVisualization*>();
-    if (nullptr == visualization)
-    {
+    auto visualization{findChild<DatasetDefinitionVisualization*>()};
+    if (visualization == nullptr)
         return;
-    }
 
-    auto columnsPreview = findChild<ColumnsPreview*>();
-    if (nullptr == columnsPreview)
-    {
+    auto columnsPreview{findChild<ColumnsPreview*>()};
+    if (columnsPreview == nullptr)
         return;
-    }
 
     columnsPreview->setDatasetSampleInfo(*dataset);
     columnsPreview->setEnabled(true);
@@ -172,6 +159,6 @@ void SpreadsheetsImportTab::openFileButtonClicked()
 
 std::unique_ptr<Dataset> SpreadsheetsImportTab::getDataset()
 {
-    auto definition = findChild<DatasetDefinitionVisualization*>();
+    auto definition{findChild<DatasetDefinitionVisualization*>()};
     return definition->retrieveDataset();
 }

@@ -3,8 +3,7 @@
 #include <QMenu>
 #include <QMessageBox>
 
-#include "Common/DatasetUtilities.h"
-#include "Datasets/DatasetInner.h"
+#include <Common/DatasetUtilities.h>
 
 #include "ui_DatasetsListBrowser.h"
 
