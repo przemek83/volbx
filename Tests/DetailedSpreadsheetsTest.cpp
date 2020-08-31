@@ -57,7 +57,7 @@ void DetailedSpreadsheetsTest::testBasics_data()
     QTest::addColumn<unsigned int>("rowCount");
     QTest::addColumn<unsigned int>("columnCount");
 
-    const QVector<unsigned int> expectedRowCounts{4000, 4, 30};
+    const QVector<unsigned int> expectedRowCounts{49, 4, 30};
     const QVector<unsigned int> expectedColumnCounts{7, 5, 12};
 
     for (int i = 0; i < fileNames_.size(); ++i)
@@ -170,7 +170,7 @@ void DetailedSpreadsheetsTest::testNumericColumnRanges_data()
     QTest::addColumn<QVector<NumericCheckData>>("expectedRanges");
 
     const QVector<QVector<NumericCheckData>> expectedRanges{
-        {{3, 14.91, 126.69}, {5, 803.25, 39999.98}},
+        {{3, 19.23, 94.68}, {5, 3376.03, 23223.09}},
         {{0, 200000, 200003}, {1, 51, 54}},
         {{2, 0, 74.46}, {3, 0, 1.83}}};
 
@@ -214,7 +214,7 @@ void DetailedSpreadsheetsTest::testDateColumnRanges_data()
     QTest::addColumn<DateCheckData>("expectedRanges");
 
     const QVector<DateCheckData> expectedRanges{
-        {2, QDate(2010, 1, 1), QDate(2011, 8, 31), false},
+        {2, QDate(2010, 1, 7), QDate(2010, 2, 27), false},
         {3, QDate(2012, 2, 2), QDate(2012, 2, 5), true},
         {1, QDate(1970, 1, 1), QDate(1970, 1, 30), false}};
 
@@ -251,8 +251,7 @@ void DetailedSpreadsheetsTest::testStringColumnRanges_data()
 
     const QVector<unsigned int> columnIndexes{6, 4, 0};
     const QVector<QStringList> expectedStrings{
-        {"brown", "red", "yellow", "black", "blue", "pink", "white",
-         "dark blue", "orange"},
+        {"brown", "red", "yellow", "black", "blue", "pink", "white"},
         {"a", "b", "c"},
         {}};
 
@@ -305,14 +304,14 @@ void DetailedSpreadsheetsTest::testDataFile01SomeColumnsActive()
     dataset->setActiveColumns(activeColumns);
     dataset->loadData();
 
-    checkNumericColumnRange(dataset, 1, {14.91, 126.69});
-    checkNumericColumnRange(dataset, 2, {803.25, 39999.98});
+    checkNumericColumnRange(dataset, 1, {19.23, 94.68});
+    checkNumericColumnRange(dataset, 2, {3376.03, 23223.09});
 
-    checkDateColumnRange(dataset, 0, {QDate(2010, 1, 1), QDate(2011, 8, 31)},
+    checkDateColumnRange(dataset, 0, {QDate(2010, 1, 7), QDate(2010, 2, 27)},
                          false);
 
-    QStringList compareList = {"brown", "red",   "yellow",    "black", "blue",
-                               "pink",  "white", "dark blue", "orange"};
+    QStringList compareList = {"brown", "red",  "yellow", "black",
+                               "blue",  "pink", "white"};
     checkStringColumnRange(dataset, 3, compareList);
 
     DatasetCommon::compareExportDataWithDump(std::move(dataset), filePath);

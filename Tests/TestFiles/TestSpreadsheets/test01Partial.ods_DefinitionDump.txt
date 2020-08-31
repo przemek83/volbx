@@ -8,5 +8,5 @@
   <COLUMN FORMAT="1" NAME="Price per unit"/>
   <COLUMN FORMAT="0" NAME="Another trait"/>
  </COLUMNS>
- <ROW_COUNT ROW_COUNT="4000"/>
+ <ROW_COUNT ROW_COUNT="49"/>
 </DATASET>
