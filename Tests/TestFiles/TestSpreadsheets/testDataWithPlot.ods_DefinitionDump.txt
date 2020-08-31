@@ -1,12 +1,12 @@
 <DATASET>
  <COLUMNS>
-  <COLUMN FORMAT="0" NAME="Trait #1"/>
-  <COLUMN FORMAT="1" NAME="Value #1"/>
-  <COLUMN FORMAT="2" NAME="Transaction date"/>
-  <COLUMN FORMAT="1" NAME="Units"/>
-  <COLUMN FORMAT="1" NAME="Price"/>
-  <COLUMN FORMAT="1" NAME="Price per unit"/>
-  <COLUMN FORMAT="0" NAME="Another trait"/>
+  <COLUMN NAME="Trait #1" FORMAT="0"/>
+  <COLUMN NAME="Value #1" FORMAT="1"/>
+  <COLUMN NAME="Transaction date" FORMAT="2"/>
+  <COLUMN NAME="Units" FORMAT="1"/>
+  <COLUMN NAME="Price" FORMAT="1"/>
+  <COLUMN NAME="Price per unit" FORMAT="1"/>
+  <COLUMN NAME="Another trait" FORMAT="0"/>
  </COLUMNS>
- <ROW_COUNT ROW_COUNT="3989"/>
+ <ROW_COUNT ROW_COUNT="60"/>
 </DATASET>
