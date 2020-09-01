@@ -5,6 +5,8 @@
 #include <QDialog>
 
 class Dataset;
+class QDialogButtonBox;
+class QTabWidget;
 
 /**
  * @brief Main dialog for loading data into application.
@@ -19,4 +21,12 @@ public:
     std::unique_ptr<Dataset> getSelectedDataset();
 
     QString getZipFileName() const;
+
+private:
+    QDialogButtonBox* createButtonBox();
+
+    void setupLayout();
+
+    QTabWidget* createTabWidgetWithContent(
+        std::function<void(bool)> enableOpenButton);
 };
