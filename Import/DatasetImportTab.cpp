@@ -12,38 +12,25 @@
 
 DatasetImportTab::DatasetImportTab(QWidget* parent) : ImportTab(parent)
 {
-    // Create vertical and horizontal splitters and insert widgets into it.
-    auto datasetsListBrowser{new DatasetsListBrowser(this)};
-    auto visualization{new DatasetVisualization(this)};
+    auto [visualization, columnsPreview] =
+        createVisualizationAndColumnPreview();
+    auto listBrowser{new DatasetsListBrowser(this)};
 
-    auto splitter{new QSplitter(Qt::Horizontal, this)};
-    splitter->addWidget(datasetsListBrowser);
-    splitter->addWidget(visualization);
+    auto upperSplitter{new QSplitter(Qt::Horizontal, this)};
+    upperSplitter->addWidget(listBrowser);
+    upperSplitter->addWidget(visualization);
 
-    auto splitter2{new QSplitter(Qt::Vertical, this)};
-    splitter2->addWidget(splitter);
-    auto columnsPreview = new ColumnsPreview(this);
-    splitter2->addWidget(columnsPreview);
+    auto centralSplitter{new QSplitter(Qt::Vertical, this)};
+    centralSplitter->addWidget(upperSplitter);
+    centralSplitter->addWidget(columnsPreview);
 
     auto layout{new QVBoxLayout(this)};
     layout->setContentsMargins(2, 2, 2, 2);
-    layout->addWidget(splitter2);
+    layout->addWidget(centralSplitter);
     setLayout(layout);
 
-    const int rowHeight{static_cast<int>(fontMetrics().height() * 1.5)};
-    columnsPreview->verticalHeader()->setDefaultSectionSize(rowHeight);
-
-    visualization->setEnabled(false);
-    columnsPreview->setEnabled(false);
-
-    connect(datasetsListBrowser, &DatasetsListBrowser::currentDatasetChanged,
-            this, &DatasetImportTab::selectedDatasetChanged);
-
-    connect(visualization, &DatasetVisualization::currentColumnNeedSync,
-            columnsPreview, &ColumnsPreview::selectCurrentColumn);
-
-    connect(columnsPreview, &ColumnsPreview::currentColumnNeedSync,
-            visualization, &DatasetVisualization::selectCurrentColumn);
+    connect(listBrowser, &DatasetsListBrowser::currentDatasetChanged, this,
+            &DatasetImportTab::selectedDatasetChanged);
 }
 
 std::unique_ptr<Dataset> DatasetImportTab::getDataset()

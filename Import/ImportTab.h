@@ -5,6 +5,8 @@
 #include <QWidget>
 
 class Dataset;
+class ColumnsPreview;
+class DatasetVisualization;
 
 /**
  * @brief Import tabs base class.
@@ -18,6 +20,10 @@ public:
     ~ImportTab() override = default;
 
     virtual std::unique_ptr<Dataset> getDataset() = 0;
+
+protected:
+    std::pair<DatasetVisualization*, ColumnsPreview*>
+    createVisualizationAndColumnPreview();
 
 Q_SIGNALS:
     void definitionIsReady(bool);

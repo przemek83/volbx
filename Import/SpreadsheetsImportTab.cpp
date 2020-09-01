@@ -31,26 +31,14 @@ SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent)
     connect(ui->openFileButton, &QPushButton::clicked, this,
             &SpreadsheetsImportTab::openFileButtonClicked);
 
-    auto visualization{new DatasetVisualization(this)};
+    auto [visualization, columnsPreview] =
+        createVisualizationAndColumnPreview();
 
-    auto splitter2{new QSplitter(Qt::Vertical, this)};
-    splitter2->addWidget(visualization);
-    auto columnsPreview{new ColumnsPreview(this)};
-    splitter2->addWidget(columnsPreview);
+    auto centralSplitter{new QSplitter(Qt::Vertical, this)};
+    centralSplitter->addWidget(visualization);
+    centralSplitter->addWidget(columnsPreview);
 
-    ui->verticalLayout->addWidget(splitter2);
-
-    const long rowHeight{lround(fontMetrics().height() * 1.5)};
-    columnsPreview->verticalHeader()->setDefaultSectionSize(rowHeight);
-
-    visualization->setEnabled(false);
-    columnsPreview->setEnabled(false);
-
-    connect(visualization, &DatasetVisualization::currentColumnNeedSync,
-            columnsPreview, &ColumnsPreview::selectCurrentColumn);
-
-    connect(columnsPreview, &ColumnsPreview::currentColumnNeedSync,
-            visualization, &DatasetVisualization::selectCurrentColumn);
+    ui->verticalLayout->addWidget(centralSplitter);
 
     ui->sheetCombo->hide();
 }
