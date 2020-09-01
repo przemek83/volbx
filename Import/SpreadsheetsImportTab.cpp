@@ -20,7 +20,7 @@
 #include <Shared/Logger.h>
 
 #include "ColumnsPreview.h"
-#include "DatasetDefinitionVisualization.h"
+#include "DatasetVisualization.h"
 #include "ui_SpreadsheetsImportTab.h"
 
 SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent)
@@ -31,7 +31,7 @@ SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent)
     connect(ui->openFileButton, &QPushButton::clicked, this,
             &SpreadsheetsImportTab::openFileButtonClicked);
 
-    auto visualization{new DatasetDefinitionVisualization(this)};
+    auto visualization{new DatasetVisualization(this)};
 
     auto splitter2{new QSplitter(Qt::Vertical, this)};
     splitter2->addWidget(visualization);
@@ -46,13 +46,11 @@ SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent)
     visualization->setEnabled(false);
     columnsPreview->setEnabled(false);
 
-    connect(visualization,
-            &DatasetDefinitionVisualization::currentColumnNeedSync,
+    connect(visualization, &DatasetVisualization::currentColumnNeedSync,
             columnsPreview, &ColumnsPreview::selectCurrentColumn);
 
     connect(columnsPreview, &ColumnsPreview::currentColumnNeedSync,
-            visualization,
-            &DatasetDefinitionVisualization::selectCurrentColumn);
+            visualization, &DatasetVisualization::selectCurrentColumn);
 
     ui->sheetCombo->hide();
 }
@@ -140,7 +138,7 @@ void SpreadsheetsImportTab::openFileButtonClicked()
 
     analyzeFile(dataset);
 
-    auto visualization{findChild<DatasetDefinitionVisualization*>()};
+    auto visualization{findChild<DatasetVisualization*>()};
     if (visualization == nullptr)
         return;
 
@@ -159,6 +157,6 @@ void SpreadsheetsImportTab::openFileButtonClicked()
 
 std::unique_ptr<Dataset> SpreadsheetsImportTab::getDataset()
 {
-    auto definition{findChild<DatasetDefinitionVisualization*>()};
+    auto definition{findChild<DatasetVisualization*>()};
     return definition->retrieveDataset();
 }

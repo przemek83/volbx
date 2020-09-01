@@ -9,19 +9,19 @@ class Dataset;
 
 namespace Ui
 {
-class DatasetDefinitionVisualization;
+class DatasetVisualization;
 }  // namespace Ui
 
 /**
  * @brief Widget for visualization of dataset definition.
  */
-class DatasetDefinitionVisualization : public QWidget
+class DatasetVisualization : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DatasetDefinitionVisualization(QWidget* parent = nullptr);
+    explicit DatasetVisualization(QWidget* parent = nullptr);
 
-    ~DatasetDefinitionVisualization() override;
+    ~DatasetVisualization() override;
 
     void setDataset(std::unique_ptr<Dataset> dataset);
 
@@ -38,7 +38,7 @@ public Q_SLOTS:
     void selectCurrentColumn(int column);
 
 private:
-    Ui::DatasetDefinitionVisualization* ui;
+    Ui::DatasetVisualization* ui;
 
     const QString typeNameString_;
 

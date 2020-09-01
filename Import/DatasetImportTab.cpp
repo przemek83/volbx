@@ -7,14 +7,14 @@
 #include <QVBoxLayout>
 
 #include "ColumnsPreview.h"
-#include "DatasetDefinitionVisualization.h"
+#include "DatasetVisualization.h"
 #include "DatasetsListBrowser.h"
 
 DatasetImportTab::DatasetImportTab(QWidget* parent) : ImportTab(parent)
 {
     // Create vertical and horizontal splitters and insert widgets into it.
     auto datasetsListBrowser{new DatasetsListBrowser(this)};
-    auto visualization{new DatasetDefinitionVisualization(this)};
+    auto visualization{new DatasetVisualization(this)};
 
     auto splitter{new QSplitter(Qt::Horizontal, this)};
     splitter->addWidget(datasetsListBrowser);
@@ -39,24 +39,22 @@ DatasetImportTab::DatasetImportTab(QWidget* parent) : ImportTab(parent)
     connect(datasetsListBrowser, &DatasetsListBrowser::currentDatasetChanged,
             this, &DatasetImportTab::selectedDatasetChanged);
 
-    connect(visualization,
-            &DatasetDefinitionVisualization::currentColumnNeedSync,
+    connect(visualization, &DatasetVisualization::currentColumnNeedSync,
             columnsPreview, &ColumnsPreview::selectCurrentColumn);
 
     connect(columnsPreview, &ColumnsPreview::currentColumnNeedSync,
-            visualization,
-            &DatasetDefinitionVisualization::selectCurrentColumn);
+            visualization, &DatasetVisualization::selectCurrentColumn);
 }
 
 std::unique_ptr<Dataset> DatasetImportTab::getDataset()
 {
-    auto definition{findChild<DatasetDefinitionVisualization*>()};
+    auto definition{findChild<DatasetVisualization*>()};
     return definition->retrieveDataset();
 }
 
 void DatasetImportTab::selectedDatasetChanged(const QString& current)
 {
-    auto visualization{findChild<DatasetDefinitionVisualization*>()};
+    auto visualization{findChild<DatasetVisualization*>()};
     auto columnsPreview{findChild<ColumnsPreview*>()};
     auto datasetsListBrowser{findChild<DatasetsListBrowser*>()};
 
@@ -104,7 +102,7 @@ void DatasetImportTab::selectedDatasetChanged(const QString& current)
 
 bool DatasetImportTab::datasetsAreAvailable()
 {
-    auto datasetsListBrowser{findChild<DatasetsListBrowser*>()};
+    const auto datasetsListBrowser{findChild<DatasetsListBrowser*>()};
     if (datasetsListBrowser == nullptr)
         return false;
 

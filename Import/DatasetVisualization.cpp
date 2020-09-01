@@ -1,13 +1,13 @@
-#include "DatasetDefinitionVisualization.h"
+#include "DatasetVisualization.h"
 
 #include <Common/Constants.h>
 #include <Datasets/Dataset.h>
 
-#include "ui_DatasetDefinitionVisualization.h"
+#include "ui_DatasetVisualization.h"
 
-DatasetDefinitionVisualization::DatasetDefinitionVisualization(QWidget* parent)
+DatasetVisualization::DatasetVisualization(QWidget* parent)
     : QWidget(parent),
-      ui(new Ui::DatasetDefinitionVisualization),
+      ui(new Ui::DatasetVisualization),
       typeNameString_(tr("Name")),
       typeNameFloat_(tr("Number")),
       typeNameDate_(tr("Date"))
@@ -17,29 +17,28 @@ DatasetDefinitionVisualization::DatasetDefinitionVisualization(QWidget* parent)
     ui->columnsList->header()->setSectionsMovable(false);
 
     connect(ui->searchLineEdit, &QLineEdit::textChanged, this,
-            &DatasetDefinitionVisualization::searchTextChanged);
+            &DatasetVisualization::searchTextChanged);
 
     connect(ui->columnsList, &QTreeWidget::currentItemChanged, this,
-            &DatasetDefinitionVisualization::currentColumnOnTreeChanged);
+            &DatasetVisualization::currentColumnOnTreeChanged);
 
     connect(ui->dateCombo, qOverload<int>(&QComboBox::currentIndexChanged),
-            this, &DatasetDefinitionVisualization::taggedColumnChanged);
+            this, &DatasetVisualization::taggedColumnChanged);
 
     connect(ui->pricePerUnitCombo,
             qOverload<int>(&QComboBox::currentIndexChanged), this,
-            &DatasetDefinitionVisualization::taggedColumnChanged);
+            &DatasetVisualization::taggedColumnChanged);
 
     connect(ui->SelectAll, &QPushButton::clicked, this,
-            &DatasetDefinitionVisualization::selectAllClicked);
+            &DatasetVisualization::selectAllClicked);
 
     connect(ui->UnselectAll, &QPushButton::clicked, this,
-            &DatasetDefinitionVisualization::unselectAllClicked);
+            &DatasetVisualization::unselectAllClicked);
 }
 
-DatasetDefinitionVisualization::~DatasetDefinitionVisualization() { delete ui; }
+DatasetVisualization::~DatasetVisualization() { delete ui; }
 
-void DatasetDefinitionVisualization::setDataset(
-    std::unique_ptr<Dataset> dataset)
+void DatasetVisualization::setDataset(std::unique_ptr<Dataset> dataset)
 {
     clear();
 
@@ -141,7 +140,7 @@ void DatasetDefinitionVisualization::setDataset(
     taggedColumnChanged(0);
 }
 
-void DatasetDefinitionVisualization::clear()
+void DatasetVisualization::clear()
 {
     ui->pricePerUnitCombo->clear();
     ui->dateCombo->clear();
@@ -155,7 +154,7 @@ void DatasetDefinitionVisualization::clear()
     dataset_ = nullptr;
 }
 
-void DatasetDefinitionVisualization::searchTextChanged(const QString& newText)
+void DatasetVisualization::searchTextChanged(const QString& newText)
 {
     QTreeWidgetItemIterator it(ui->columnsList);
     while (*it != nullptr)
@@ -166,7 +165,7 @@ void DatasetDefinitionVisualization::searchTextChanged(const QString& newText)
     }
 }
 
-std::unique_ptr<Dataset> DatasetDefinitionVisualization::retrieveDataset()
+std::unique_ptr<Dataset> DatasetVisualization::retrieveDataset()
 {
     if (dataset_ == nullptr)
         return nullptr;
@@ -209,7 +208,7 @@ std::unique_ptr<Dataset> DatasetDefinitionVisualization::retrieveDataset()
     return std::move(dataset_);
 }
 
-void DatasetDefinitionVisualization::currentColumnOnTreeChanged(
+void DatasetVisualization::currentColumnOnTreeChanged(
     QTreeWidgetItem* current, QTreeWidgetItem* /*previous*/)
 {
     if (current == nullptr)
@@ -218,7 +217,7 @@ void DatasetDefinitionVisualization::currentColumnOnTreeChanged(
     Q_EMIT currentColumnNeedSync(current->data(0, Qt::UserRole).toInt());
 }
 
-void DatasetDefinitionVisualization::selectCurrentColumn(int column)
+void DatasetVisualization::selectCurrentColumn(int column)
 {
     QList<QTreeWidgetItem*> selectedItemsList{ui->columnsList->selectedItems()};
     if (0 != selectedItemsList.count() &&
@@ -238,7 +237,7 @@ void DatasetDefinitionVisualization::selectCurrentColumn(int column)
     }
 }
 
-void DatasetDefinitionVisualization::selectAllClicked()
+void DatasetVisualization::selectAllClicked()
 {
     int topLevelItemsCount{ui->columnsList->topLevelItemCount()};
 
@@ -250,7 +249,7 @@ void DatasetDefinitionVisualization::selectAllClicked()
     }
 }
 
-void DatasetDefinitionVisualization::unselectAllClicked()
+void DatasetVisualization::unselectAllClicked()
 {
     const int topLevelItemsCount{ui->columnsList->topLevelItemCount()};
 
@@ -262,7 +261,7 @@ void DatasetDefinitionVisualization::unselectAllClicked()
     }
 }
 
-void DatasetDefinitionVisualization::taggedColumnChanged(int /*newIndex*/)
+void DatasetVisualization::taggedColumnChanged(int /*newIndex*/)
 {
     int dateColumn{Constants::NOT_SET_COLUMN};
     if (ui->dateCombo->currentIndex() != -1)

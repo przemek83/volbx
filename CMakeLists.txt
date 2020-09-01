@@ -125,9 +125,9 @@ set(${PROJECT_NAME}_SOURCES
     GUI/VolbxMain.ui
     Import/ColumnsPreview.cpp
     Import/ColumnsPreview.h
-    Import/DatasetDefinitionVisualization.cpp
-    Import/DatasetDefinitionVisualization.h
-    Import/DatasetDefinitionVisualization.ui
+    Import/DatasetVisualization.cpp
+    Import/DatasetVisualization.h
+    Import/DatasetVisualization.ui
     Import/DatasetImportTab.cpp
     Import/DatasetImportTab.h
     Import/DatasetsListBrowser.cpp
