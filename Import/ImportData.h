@@ -4,15 +4,7 @@
 
 #include <QDialog>
 
-class DatasetsListBrowser;
-class DatasetDefinitionVisualization;
-class QDialogButtonBox;
 class Dataset;
-
-namespace Ui
-{
-class ImportData;
-}  // namespace Ui
 
 /**
  * @brief Main dialog for loading data into application.
@@ -24,12 +16,7 @@ class ImportData : public QDialog
 public:
     explicit ImportData(QWidget* parent = nullptr);
 
-    ~ImportData() override;
-
     std::unique_ptr<Dataset> getSelectedDataset();
 
     QString getZipFileName() const;
-
-private:
-    Ui::ImportData* ui;
 };

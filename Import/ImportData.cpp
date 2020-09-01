@@ -2,17 +2,21 @@
 
 #include <QDialogButtonBox>
 #include <QPushButton>
+#include <QTableWidget>
+#include <QVBoxLayout>
 
 #include <Datasets/Dataset.h>
 
 #include "DatasetImportTab.h"
 #include "SpreadsheetsImportTab.h"
-#include "ui_ImportData.h"
 
-ImportData::ImportData(QWidget* parent)
-    : QDialog(parent), ui(new Ui::ImportData)
+ImportData::ImportData(QWidget* parent) : QDialog(parent)
 {
-    ui->setupUi(this);
+    auto verticalLayout = new QVBoxLayout(this);
+    verticalLayout->setSpacing(2);
+    verticalLayout->setContentsMargins(2, 2, 2, 2);
+    auto tabWidget = new QTabWidget(this);
+    verticalLayout->addWidget(tabWidget);
 
     auto buttonBox{
         new QDialogButtonBox(QDialogButtonBox::Open | QDialogButtonBox::Cancel,
@@ -23,34 +27,33 @@ ImportData::ImportData(QWidget* parent)
     };
 
     // Create tabs.
-    auto datasetsTab{new DatasetImportTab(ui->tabWidget)};
+    auto datasetsTab{new DatasetImportTab(tabWidget)};
     connect(datasetsTab, &ImportTab::definitionIsReady, enableOpenButton);
-    ui->tabWidget->addTab(datasetsTab, tr("Datasets"));
+    tabWidget->addTab(datasetsTab, tr("Datasets"));
 
-    auto spreadsheetsTab{new SpreadsheetsImportTab(ui->tabWidget)};
+    auto spreadsheetsTab{new SpreadsheetsImportTab(tabWidget)};
     connect(spreadsheetsTab, &ImportTab::definitionIsReady, enableOpenButton);
-    ui->tabWidget->addTab(spreadsheetsTab, tr("Spreadsheets"));
+    tabWidget->addTab(spreadsheetsTab, tr("Spreadsheets"));
 
     // If no datasets, than switch to spreadsheets tab.
     if (datasetsTab->datasetsAreAvailable())
-        ui->tabWidget->setCurrentWidget(datasetsTab);
+        tabWidget->setCurrentWidget(datasetsTab);
     else
-        ui->tabWidget->setCurrentWidget(spreadsheetsTab);
+        tabWidget->setCurrentWidget(spreadsheetsTab);
 
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
-    ui->verticalLayout->addWidget(buttonBox);
+    verticalLayout->addWidget(buttonBox);
 
     buttonBox->button(QDialogButtonBox::Open)->setEnabled(false);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
-ImportData::~ImportData() { delete ui; }
-
 std::unique_ptr<Dataset> ImportData::getSelectedDataset()
 {
-    auto tab{dynamic_cast<ImportTab*>(ui->tabWidget->currentWidget())};
+    auto tabWidget{findChild<QTabWidget*>()};
+    auto tab{dynamic_cast<ImportTab*>(tabWidget->currentWidget())};
     return tab->getDataset();
 }

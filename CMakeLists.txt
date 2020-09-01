@@ -135,25 +135,6 @@ set(${PROJECT_NAME}_SOURCES
     Import/DatasetsListBrowser.ui
     Import/ImportData.cpp
     Import/ImportData.h
-    Import/ImportData.ui
-    Import/ImportTab.cpp
-    Import/ImportTab.h
-    Import/SpreadsheetsImportTab.cpp
-    Import/SpreadsheetsImportTab.h
-    Import/SpreadsheetsImportTab.ui
-    Import/ColumnsPreview.cpp
-    Import/ColumnsPreview.h
-    Import/DatasetDefinitionVisualization.cpp
-    Import/DatasetDefinitionVisualization.h
-    Import/DatasetDefinitionVisualization.ui
-    Import/DatasetImportTab.cpp
-    Import/DatasetImportTab.h
-    Import/DatasetsListBrowser.cpp
-    Import/DatasetsListBrowser.h
-    Import/DatasetsListBrowser.ui
-    Import/ImportData.cpp
-    Import/ImportData.h
-    Import/ImportData.ui
     Import/ImportTab.cpp
     Import/ImportTab.h
     Import/SpreadsheetsImportTab.cpp
