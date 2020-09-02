@@ -236,6 +236,14 @@ void DatasetVisualization::setAllItemsInColumnsListToState(Qt::CheckState state)
     }
 }
 
+int DatasetVisualization::getCurrentValueFromCombo(QComboBox* combo) const
+{
+    int column{Constants::NOT_SET_COLUMN};
+    if (combo->currentIndex() != -1)
+        column = combo->itemData(combo->currentIndex()).toInt();
+    return column;
+}
+
 void DatasetVisualization::selectAllClicked()
 {
     setAllItemsInColumnsListToState(Qt::Checked);
@@ -248,35 +256,24 @@ void DatasetVisualization::unselectAllClicked()
 
 void DatasetVisualization::refreshColumnList([[maybe_unused]] int newIndex)
 {
-    int dateColumn{Constants::NOT_SET_COLUMN};
-    if (ui->dateCombo->currentIndex() != -1)
-        dateColumn =
-            ui->dateCombo->itemData(ui->dateCombo->currentIndex()).toInt();
-
-    int priceColumn{Constants::NOT_SET_COLUMN};
-    if (ui->pricePerUnitCombo->currentIndex() != -1)
-    {
-        int index = ui->pricePerUnitCombo->currentIndex();
-        priceColumn = ui->pricePerUnitCombo->itemData(index).toInt();
-    }
+    const int dateColumn{getCurrentValueFromCombo(ui->dateCombo)};
+    const int priceColumn{getCurrentValueFromCombo(ui->pricePerUnitCombo)};
 
     int topLevelItemsCount{ui->columnsList->topLevelItemCount()};
-
     for (int i = 0; i < topLevelItemsCount; ++i)
     {
-        QTreeWidgetItem* currentLoopItem{ui->columnsList->topLevelItem(i)};
-        int itemColumn{currentLoopItem->data(0, Qt::UserRole).toInt()};
+        QTreeWidgetItem* currentItem{ui->columnsList->topLevelItem(i)};
+        int itemColumn{currentItem->data(0, Qt::UserRole).toInt()};
         if (priceColumn == itemColumn || dateColumn == itemColumn)
         {
-            currentLoopItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-            currentLoopItem->setData(0, Qt::CheckStateRole, QVariant());
+            currentItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+            currentItem->setData(0, Qt::CheckStateRole, QVariant());
         }
         else
         {
-            currentLoopItem->setFlags(Qt::ItemIsSelectable |
-                                      Qt::ItemIsUserCheckable |
-                                      Qt::ItemIsEnabled);
-            currentLoopItem->setCheckState(0, Qt::Checked);
+            currentItem->setFlags(Qt::ItemIsSelectable |
+                                  Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
+            currentItem->setCheckState(0, Qt::Checked);
         }
     }
 }

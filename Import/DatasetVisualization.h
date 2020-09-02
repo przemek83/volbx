@@ -34,9 +34,9 @@ public:
 
 public Q_SLOTS:
     /**
-     * Triggered when currently selected column in coupled widget changed.
+     * Triggered when currently selected column in linked widget changed.
      * Used to sync widgets displaying columns.
-     * @param column currently selected column.
+     * @param column Currently selected column.
      */
     void selectCurrentColumn(int column);
 
@@ -56,6 +56,8 @@ private:
     void fillTaggedColumnCombos();
 
     void setAllItemsInColumnsListToState(Qt::CheckState state);
+
+    int getCurrentValueFromCombo(QComboBox* combo) const;
 
     Ui::DatasetVisualization* ui;
 
@@ -79,9 +81,8 @@ private Q_SLOTS:
 
 Q_SIGNALS:
     /**
-     * Emit signal when selected column was changed to sync widgets
-     * displaying columns.
-     * @param currentColumn currently selected column.
+     * Emit when selected column was changed to sync linked widgets.
+     * @param currentColumn Currently selected column.
      */
     void currentColumnNeedSync(int currentColumn);
 };
