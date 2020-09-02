@@ -41,6 +41,10 @@ public Q_SLOTS:
 private:
     void setCurrentIndexUsingColumn(QComboBox* combo, unsigned int column);
 
+    void setupColumnsListWidget();
+
+    void setTaggedColumns();
+
     Ui::DatasetVisualization* ui;
 
     const QString typeNameString_{tr("Name")};
@@ -59,7 +63,7 @@ private Q_SLOTS:
 
     void unselectAllClicked();
 
-    void taggedColumnChanged(int newIndex);
+    void refreshColumnList(int newIndex);
 
 Q_SIGNALS:
     /**
