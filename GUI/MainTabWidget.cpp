@@ -29,10 +29,8 @@ FilteringProxyModel* MainTabWidget::getCurrentProxyModel()
 {
     auto currentTab = dynamic_cast<MainTab*>(currentWidget());
     Q_ASSERT(nullptr != currentTab);
-    if (nullptr == currentTab)
-    {
+    if (currentTab == nullptr)
         return nullptr;
-    }
     return currentTab->getCurrentProxyModel();
 }
 
@@ -40,10 +38,8 @@ TableModel* MainTabWidget::getCurrentDataModel()
 {
     auto currentTab = dynamic_cast<MainTab*>(currentWidget());
     Q_ASSERT(nullptr != currentTab);
-    if (nullptr == currentTab)
-    {
+    if (currentTab == nullptr)
         return nullptr;
-    }
     return currentTab->getCurrentDataModel();
 }
 
@@ -51,10 +47,8 @@ DataView* MainTabWidget::getCurrentDataView()
 {
     auto currentTab = dynamic_cast<MainTab*>(currentWidget());
     Q_ASSERT(nullptr != currentTab);
-    if (nullptr == currentTab)
-    {
+    if (currentTab == nullptr)
         return nullptr;
-    }
     return currentTab->getCurrentDataView();
 }
 
@@ -86,10 +80,8 @@ ViewDockWidget* MainTabWidget::getCurrentDataViewDock()
 {
     DataView* dataView = getCurrentDataView();
     Q_ASSERT(nullptr != dataView);
-    if (nullptr == dataView)
-    {
+    if (dataView == nullptr)
         return nullptr;
-    }
     return qobject_cast<ViewDockWidget*>(dataView->parent());
 }
 
@@ -98,10 +90,8 @@ void MainTabWidget::setTextFilterInProxy(int column,
 {
     DataView* view = getCurrentDataView();
     FilteringProxyModel* model = getCurrentProxyModel();
-    if (nullptr == view || nullptr == model)
-    {
+    if (view == nullptr || model == nullptr)
         return;
-    }
 
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
@@ -123,7 +113,7 @@ void MainTabWidget::setDateFilterInProxy(int column, QDate from, QDate to,
 {
     DataView* view = getCurrentDataView();
     FilteringProxyModel* model = getCurrentProxyModel();
-    if (nullptr == view || nullptr == model)
+    if (view == nullptr || model == nullptr)
         return;
 
     TimeLogger timeLogger(LogTypes::CALC, "Filtration changed");
@@ -143,7 +133,7 @@ void MainTabWidget::setNumericFilterInProxy(int column, double from, double to)
 {
     DataView* view = getCurrentDataView();
     FilteringProxyModel* model = getCurrentProxyModel();
-    if (nullptr == view || nullptr == model)
+    if (view == nullptr || model == nullptr)
         return;
 
     TimeLogger timeLogger(LogTypes::CALC, "Filtration changed");

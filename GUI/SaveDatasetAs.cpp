@@ -38,16 +38,9 @@ QString SaveDatasetAs::getChosenDatasetName()
 
 void SaveDatasetAs::nameLineEditTextChanged(const QString& actualText)
 {
-    if (actualText.isEmpty())
-    {
-        ui->save->setEnabled(false);
-    }
-    else
-    {
-        ui->save->setEnabled(true);
-    }
+    ui->save->setDisabled(actualText.isEmpty());
 
-    QPalette palette = ui->nameLineEdit->palette();
+    QPalette palette{ui->nameLineEdit->palette()};
     if (alreadyUsedNames_.contains(actualText, Qt::CaseInsensitive))
     {
         if (QColor(Qt::red) !=
@@ -81,13 +74,9 @@ void SaveDatasetAs::saveClicked()
             QMessageBox::question(this, QObject::tr("Overwrite dataset?"), msg,
                                   QMessageBox::Yes | QMessageBox::No);
         if (decision == QMessageBox::Yes)
-        {
             accept();
-        }
         else
-        {
             return;
-        }
     }
     accept();
 }

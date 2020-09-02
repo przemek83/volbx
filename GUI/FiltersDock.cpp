@@ -24,9 +24,8 @@ FiltersDock::~FiltersDock() { delete ui; }
 void FiltersDock::addModel(const FilteringProxyModel* model)
 {
     if (model == nullptr)
-    {
         return;
-    }
+
     auto mainWidget = new QWidget();
     modelsMap_[mainWidget] = model;
 
@@ -174,9 +173,7 @@ void FiltersDock::removeModel(const FilteringProxyModel* model)
 void FiltersDock::activateFiltersForModel(const FilteringProxyModel* model)
 {
     if (model != nullptr)
-    {
         ui->stackedWidget->setCurrentWidget(modelsMap_.key(model));
-    }
 }
 
 void FiltersDock::searchTextChanged(const QString& arg1)
@@ -194,13 +191,9 @@ void FiltersDock::searchTextChanged(const QString& arg1)
     for (Filter* current : widgets)
     {
         if (current != nullptr)
-        {
             current->setVisible(
                 current->title().contains(arg1, Qt::CaseInsensitive));
-        }
         else
-        {
             Q_ASSERT(false);
-        }
     }
 }

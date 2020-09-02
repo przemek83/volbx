@@ -33,9 +33,7 @@ void PlotDockWidget::resetPlot()
     QList<PlotBase*> plots = findChildren<PlotBase*>();
 
     for (PlotBase* plot : plots)
-    {
         plot->resetPlot();
-    }
 }
 
 QList<PlotBase*> PlotDockWidget::exportContent()
