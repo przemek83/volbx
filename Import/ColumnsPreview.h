@@ -20,7 +20,7 @@ public:
 
     void setDatasetSampleInfo(const std::unique_ptr<Dataset>& dataset);
 
-    void clearDataAndDisable();
+    void clear();
 
 public Q_SLOTS:
     /**

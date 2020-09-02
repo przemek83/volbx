@@ -16,8 +16,6 @@ void ColumnsPreview::setDatasetSampleInfo(
     const std::unique_ptr<Dataset>& dataset)
 {
     clear();
-    setColumnCount(0);
-    setRowCount(0);
 
     const unsigned int columns{dataset->columnCount()};
     setColumnCount(columns);
@@ -50,10 +48,9 @@ void ColumnsPreview::setDatasetSampleInfo(
     }
 }
 
-void ColumnsPreview::clearDataAndDisable()
+void ColumnsPreview::clear()
 {
-    setEnabled(false);
-    clear();
+    QTableWidget::clear();
     setColumnCount(0);
     setRowCount(0);
 }

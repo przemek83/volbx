@@ -50,7 +50,8 @@ bool DatasetImportTab::datasetsAreAvailable()
 void DatasetImportTab::clear()
 {
     auto columnsPreview{findChild<ColumnsPreview*>()};
-    columnsPreview->clearDataAndDisable();
+    columnsPreview->clear();
+    columnsPreview->setEnabled(false);
     auto listBrowser{findChild<DatasetsListBrowser*>()};
     listBrowser->clearSelection();
     auto visualization{findChild<DatasetVisualization*>()};
