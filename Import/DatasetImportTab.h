@@ -24,8 +24,6 @@ private:
 
     void createDataset(const QString& datasetName);
 
-    void setDataset(std::unique_ptr<Dataset> dataset);
-
 private Q_SLOTS:
     void selectedDatasetChanged(const QString& current);
 };

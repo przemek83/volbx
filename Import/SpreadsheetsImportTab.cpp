@@ -126,19 +126,5 @@ void SpreadsheetsImportTab::openFileButtonClicked()
 
     analyzeFile(dataset);
 
-    auto visualization{findChild<DatasetVisualization*>()};
-    if (visualization == nullptr)
-        return;
-
-    auto columnsPreview{findChild<ColumnsPreview*>()};
-    if (columnsPreview == nullptr)
-        return;
-
-    columnsPreview->setDatasetSampleInfo(*dataset);
-    columnsPreview->setEnabled(true);
-
-    visualization->setDataset(std::move(dataset));
-    visualization->setEnabled(true);
-
-    Q_EMIT datasetIsReady(true);
+    setDataset(std::move(dataset));
 }

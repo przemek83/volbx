@@ -77,15 +77,3 @@ void DatasetImportTab::createDataset(const QString& datasetName)
             tr("Dataset ") + datasetName + tr(" is damaged."));
     }
 }
-
-void DatasetImportTab::setDataset(std::unique_ptr<Dataset> dataset)
-{
-    auto columnsPreview{findChild<ColumnsPreview*>()};
-    columnsPreview->setDatasetSampleInfo(*dataset);
-    columnsPreview->setEnabled(true);
-    auto visualization{findChild<DatasetVisualization*>()};
-    visualization->setDataset(std::move(dataset));
-    visualization->setEnabled(true);
-
-    Q_EMIT datasetIsReady(true);
-}

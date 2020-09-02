@@ -35,3 +35,15 @@ std::unique_ptr<Dataset> ImportTab::getDataset()
     auto definition{findChild<DatasetVisualization*>()};
     return definition->retrieveDataset();
 }
+
+void ImportTab::setDataset(std::unique_ptr<Dataset> dataset)
+{
+    auto columnsPreview{findChild<ColumnsPreview*>()};
+    columnsPreview->setDatasetSampleInfo(*dataset);
+    columnsPreview->setEnabled(true);
+    auto visualization{findChild<DatasetVisualization*>()};
+    visualization->setDataset(std::move(dataset));
+    visualization->setEnabled(true);
+
+    Q_EMIT datasetIsReady(true);
+}

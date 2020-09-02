@@ -25,6 +25,8 @@ protected:
     std::pair<DatasetVisualization*, ColumnsPreview*>
     createVisualizationAndColumnPreview();
 
+    void setDataset(std::unique_ptr<Dataset> dataset);
+
 Q_SIGNALS:
     void datasetIsReady(bool);
 };
