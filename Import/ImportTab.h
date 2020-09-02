@@ -19,7 +19,7 @@ public:
 
     ~ImportTab() override = default;
 
-    virtual std::unique_ptr<Dataset> getDataset() = 0;
+    std::unique_ptr<Dataset> getDataset();
 
 protected:
     std::pair<DatasetVisualization*, ColumnsPreview*>

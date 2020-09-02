@@ -2,6 +2,8 @@
 
 #include <QHeaderView>
 
+#include <Datasets/Dataset.h>
+
 #include "ColumnsPreview.h"
 #include "DatasetVisualization.h"
 
@@ -26,4 +28,10 @@ ImportTab::createVisualizationAndColumnPreview()
             visualization, &DatasetVisualization::selectCurrentColumn);
 
     return {visualization, columnsPreview};
+}
+
+std::unique_ptr<Dataset> ImportTab::getDataset()
+{
+    auto definition{findChild<DatasetVisualization*>()};
+    return definition->retrieveDataset();
 }

@@ -17,8 +17,6 @@ public:
 
     ~SpreadsheetsImportTab() override;
 
-    std::unique_ptr<Dataset> getDataset() override;
-
 private Q_SLOTS:
     void openFileButtonClicked();
 

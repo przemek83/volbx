@@ -33,12 +33,6 @@ DatasetImportTab::DatasetImportTab(QWidget* parent) : ImportTab(parent)
             &DatasetImportTab::selectedDatasetChanged);
 }
 
-std::unique_ptr<Dataset> DatasetImportTab::getDataset()
-{
-    auto definition{findChild<DatasetVisualization*>()};
-    return definition->retrieveDataset();
-}
-
 void DatasetImportTab::selectedDatasetChanged(const QString& current)
 {
     if (current.isEmpty())

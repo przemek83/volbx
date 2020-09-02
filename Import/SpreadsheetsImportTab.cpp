@@ -142,9 +142,3 @@ void SpreadsheetsImportTab::openFileButtonClicked()
 
     Q_EMIT datasetIsReady(true);
 }
-
-std::unique_ptr<Dataset> SpreadsheetsImportTab::getDataset()
-{
-    auto definition{findChild<DatasetVisualization*>()};
-    return definition->retrieveDataset();
-}

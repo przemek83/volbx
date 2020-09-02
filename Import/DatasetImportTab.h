@@ -17,8 +17,6 @@ public:
 
     ~DatasetImportTab() override = default;
 
-    std::unique_ptr<Dataset> getDataset() override;
-
     bool datasetsAreAvailable();
 
 private:
