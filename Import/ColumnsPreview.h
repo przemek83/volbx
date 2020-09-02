@@ -7,8 +7,9 @@
 class Dataset;
 
 /**
- * Columns preview widget. When set DatasetDefinition it displays
- * first 10 (or less if dataset has less than 10) rows of data.
+ * @brief Columns preview widget.
+ * When set DatasetDefinition it displays first 10 (or less if dataset has less
+ * than 10) rows of data.
  */
 class ColumnsPreview : public QTableWidget
 {
@@ -24,11 +25,16 @@ public:
 
 public Q_SLOTS:
     /**
-     * Triggered when currently selected column in coupled widget changed.
+     * Triggered when currently selected column in related widget changed.
      * Used to sync widgets displaying columns.
-     * @param column currently selected column.
+     * @param column Currently selected column.
      */
     void selectCurrentColumn(int column);
+
+private:
+    QTableWidgetItem* createItem(const QString& name);
+
+    void setLabels(const std::unique_ptr<Dataset>& dataset);
 
 private Q_SLOTS:
     /**
@@ -38,9 +44,8 @@ private Q_SLOTS:
 
 Q_SIGNALS:
     /**
-     * Emit signal when selected column was changed to sync widgets
-     * displaying columns.
-     * @param currentColumn currently selected column.
+     * Emit when selected column was changed to sync widgets displaying columns.
+     * @param currentColumn Currently selected column.
      */
     void currentColumnNeedSync(int currentColumn);
 };

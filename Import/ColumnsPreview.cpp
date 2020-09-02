@@ -20,32 +20,14 @@ void ColumnsPreview::setDatasetSampleInfo(
     const unsigned int columns{dataset->columnCount()};
     setColumnCount(columns);
 
-    QStringList labels;
-    labels.reserve(columns);
-    for (unsigned int i = 0; i < columns; ++i)
-        labels.append(dataset->getHeaderName(i));
+    setLabels(dataset);
 
-    setHorizontalHeaderLabels(labels);
-
-    QVector<QVector<QVariant> > sampleData{dataset->retrieveSampleData()};
-
+    QVector<QVector<QVariant>> sampleData{dataset->retrieveSampleData()};
     const int rows{sampleData.size()};
     setRowCount(rows);
-
-    Q_ASSERT(sampleData.isEmpty() ? true
-                                  : columns == static_cast<unsigned int>(
-                                                   sampleData.at(0).size()));
-
     for (int i = 0; i < rows; ++i)
-    {
         for (unsigned int j = 0; j < columns; ++j)
-        {
-            QTableWidgetItem* item =
-                new QTableWidgetItem(sampleData.at(i).at(j).toString());
-            item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-            setItem(i, j, item);
-        }
-    }
+            setItem(i, j, createItem(sampleData.at(i).at(j).toString()));
 }
 
 void ColumnsPreview::clear()
@@ -53,6 +35,24 @@ void ColumnsPreview::clear()
     QTableWidget::clear();
     setColumnCount(0);
     setRowCount(0);
+}
+
+QTableWidgetItem* ColumnsPreview::createItem(const QString& name)
+{
+    QTableWidgetItem* item{new QTableWidgetItem(name)};
+    item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+    return item;
+}
+
+void ColumnsPreview::setLabels(const std::unique_ptr<Dataset>& dataset)
+{
+    const unsigned int columns{dataset->columnCount()};
+    QStringList labels;
+    labels.reserve(columns);
+    for (unsigned int i = 0; i < columns; ++i)
+        labels.append(dataset->getHeaderName(i));
+
+    setHorizontalHeaderLabels(labels);
 }
 
 void ColumnsPreview::selectCurrentColumn(int column)
@@ -65,10 +65,6 @@ void ColumnsPreview::selectCurrentColumn(int column)
 void ColumnsPreview::onItemSelectionChanged()
 {
     const QList<QTableWidgetItem*> selectedItemsList{selectedItems()};
-    if (selectedItemsList.isEmpty())
-        return;
-
-    const QTableWidgetItem* selectedItem{selectedItems().first()};
-    if (selectedItem != nullptr)
-        Q_EMIT currentColumnNeedSync(selectedItem->column());
+    if (!selectedItemsList.isEmpty())
+        Q_EMIT currentColumnNeedSync(selectedItemsList.first()->column());
 }
