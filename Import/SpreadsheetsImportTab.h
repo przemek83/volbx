@@ -10,6 +10,9 @@ class SpreadsheetsImportTab;
 class DatasetSpreadsheet;
 class QFileInfo;
 
+/**
+ * @brief Ui class for importing spreadsheets.
+ */
 class SpreadsheetsImportTab : public ImportTab
 {
     Q_OBJECT
