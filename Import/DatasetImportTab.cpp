@@ -36,7 +36,11 @@ DatasetImportTab::DatasetImportTab(QWidget* parent) : ImportTab(parent)
 void DatasetImportTab::selectedDatasetChanged(const QString& current)
 {
     if (current.isEmpty())
+    {
         clear();
+        auto listBrowser{findChild<DatasetsListBrowser*>()};
+        listBrowser->clearSelection();
+    }
     else
         createDataset(current);
 }
@@ -52,8 +56,6 @@ void DatasetImportTab::clear()
     auto columnsPreview{findChild<ColumnsPreview*>()};
     columnsPreview->clear();
     columnsPreview->setEnabled(false);
-    auto listBrowser{findChild<DatasetsListBrowser*>()};
-    listBrowser->clearSelection();
     auto visualization{findChild<DatasetVisualization*>()};
     visualization->clear();
     visualization->setEnabled(false);
