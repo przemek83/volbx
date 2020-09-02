@@ -7,7 +7,7 @@
 class Dataset;
 
 /**
- *@brief Inner dataset type import tab.
+ *@brief Import tab for inner datasets.
  */
 class DatasetImportTab : public ImportTab
 {
