@@ -45,8 +45,7 @@ SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent)
 
 SpreadsheetsImportTab::~SpreadsheetsImportTab() { delete ui; }
 
-void SpreadsheetsImportTab::analyzeFile(
-    std::unique_ptr<DatasetSpreadsheet>& dataset)
+void SpreadsheetsImportTab::analyzeFile(std::unique_ptr<Dataset>& dataset)
 {
     const QString barTitle{
         Constants::getProgressBarTitle(Constants::BarTitle::ANALYSING)};
@@ -55,18 +54,16 @@ void SpreadsheetsImportTab::analyzeFile(
     bar.start();
     QTime performanceTimer;
     performanceTimer.start();
-    QApplication::processEvents();
 
-    bool success{false};
-    // TODO get rid of get() on smart pointer.
+    QCoreApplication::processEvents();
+
     auto futureInit{std::async(&Dataset::initialize, dataset.get())};
     const std::chrono::milliseconds span(1);
     while (futureInit.wait_for(span) == std::future_status::timeout)
         QCoreApplication::processEvents();
-    success = futureInit.get();
-    if (!success)
+    if (!futureInit.get())
     {
-        LOG(LogTypes::IMPORT_EXPORT, dataset->getLastError());
+        LOG(LogTypes::IMPORT_EXPORT, "Last error: " + dataset->getLastError());
         return;
     }
 
@@ -77,30 +74,29 @@ void SpreadsheetsImportTab::analyzeFile(
             " seconds.");
 }
 
-void SpreadsheetsImportTab::openFileButtonClicked()
+std::unique_ptr<Dataset> SpreadsheetsImportTab::createDataset(
+    const QFileInfo& fileInfo)
 {
-    QString fileName = QFileDialog::getOpenFileName(
-        this, tr("Open file"), Configuration::getInstance().getImportFilePath(),
-        tr("Spreadsheets (*.xlsx *.ods )"));
-
-    if (fileName.isEmpty())
-        return;
-
-    QFileInfo fileInfo(fileName);
-    if (!fileInfo.exists() || !fileInfo.isReadable())
-    {
-        QMessageBox::information(this, tr("Access error"),
-                                 tr("Can not access file."));
-        return;
-    }
-
-    Configuration::getInstance().setImportFilePath(fileInfo.absolutePath());
-
-    ui->fileNameLineEdit->setText(fileName);
+    QString datasetName{getValidDatasetName(fileInfo)};
+    QString datasetFilePath{fileInfo.canonicalFilePath()};
 
     std::unique_ptr<DatasetSpreadsheet> dataset{nullptr};
+    if (fileInfo.suffix().toLower().compare(QLatin1String("ods")) == 0)
+        dataset = std::make_unique<DatasetOds>(datasetName, datasetFilePath);
 
-    // Remove all not allowed characters from file name.
+    if (fileInfo.suffix().toLower().compare(QLatin1String("xlsx")) == 0)
+        dataset = std::make_unique<DatasetXlsx>(datasetName, datasetFilePath);
+
+    return dataset;
+}
+
+bool SpreadsheetsImportTab::fileIsOk(const QFileInfo& fileInfo)
+{
+    return fileInfo.exists() && fileInfo.isReadable();
+}
+
+QString SpreadsheetsImportTab::getValidDatasetName(const QFileInfo& fileInfo)
+{
     QString regexpString{DatasetUtilities::getDatasetNameRegExp().replace(
         QLatin1String("["), QLatin1String("[^"))};
     QString datasetName{
@@ -109,22 +105,43 @@ void SpreadsheetsImportTab::openFileButtonClicked()
     if (datasetName.isEmpty())
         datasetName = tr("Dataset");
 
-    if (fileInfo.suffix().toLower().compare(QLatin1String("ods")) == 0)
-        dataset = std::make_unique<DatasetOds>(datasetName, fileName);
-    else
+    return datasetName;
+}
+
+bool SpreadsheetsImportTab::getFileInfo(QFileInfo& fileInfo)
+{
+    const QString filePath = QFileDialog::getOpenFileName(
+        this, tr("Open file"), Configuration::getInstance().getImportFilePath(),
+        tr("Spreadsheets (*.xlsx *.ods )"));
+
+    fileInfo.setFile(filePath);
+    if (!fileIsOk(fileInfo))
     {
-        if (fileInfo.suffix().toLower().compare(QLatin1String("xlsx")) == 0)
-            dataset = std::make_unique<DatasetXlsx>(datasetName, fileName);
-        else
-        {
-            QMessageBox::information(this, tr("Wrong file"),
-                                     tr("File type is not supported."));
-            Q_EMIT datasetIsReady(false);
-            return;
-        }
+        QMessageBox::information(this, tr("Access error"),
+                                 tr("Can not access file."));
+        return false;
+    }
+    return true;
+}
+
+void SpreadsheetsImportTab::openFileButtonClicked()
+{
+    QFileInfo fileInfo;
+    if (!getFileInfo(fileInfo))
+        return;
+
+    Configuration::getInstance().setImportFilePath(fileInfo.canonicalPath());
+    ui->fileNameLineEdit->setText(fileInfo.filePath());
+
+    std::unique_ptr<Dataset> dataset{createDataset(fileInfo)};
+    if (dataset == nullptr)
+    {
+        QMessageBox::information(this, tr("Wrong file"),
+                                 tr("File type is not supported."));
+        Q_EMIT datasetIsReady(false);
+        return;
     }
 
     analyzeFile(dataset);
-
     setDataset(std::move(dataset));
 }

@@ -8,6 +8,7 @@ class SpreadsheetsImportTab;
 }  // namespace Ui
 
 class DatasetSpreadsheet;
+class QFileInfo;
 
 class SpreadsheetsImportTab : public ImportTab
 {
@@ -17,11 +18,19 @@ public:
 
     ~SpreadsheetsImportTab() override;
 
-private Q_SLOTS:
-    void openFileButtonClicked();
-
 private:
-    void analyzeFile(std::unique_ptr<DatasetSpreadsheet>& dataset);
+    void analyzeFile(std::unique_ptr<Dataset>& dataset);
+
+    std::unique_ptr<Dataset> createDataset(const QFileInfo& fileInfo);
+
+    bool fileIsOk(const QFileInfo& fileInfo);
+
+    QString getValidDatasetName(const QFileInfo& fileInfo);
+
+    bool getFileInfo(QFileInfo& fileInfo);
 
     Ui::SpreadsheetsImportTab* ui;
+
+private Q_SLOTS:
+    void openFileButtonClicked();
 };
