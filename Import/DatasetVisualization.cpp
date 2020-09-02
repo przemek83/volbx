@@ -6,11 +6,7 @@
 #include "ui_DatasetVisualization.h"
 
 DatasetVisualization::DatasetVisualization(QWidget* parent)
-    : QWidget(parent),
-      ui(new Ui::DatasetVisualization),
-      typeNameString_(tr("Name")),
-      typeNameFloat_(tr("Number")),
-      typeNameDate_(tr("Date"))
+    : QWidget(parent), ui(new Ui::DatasetVisualization)
 {
     ui->setupUi(this);
 
@@ -94,7 +90,7 @@ void DatasetVisualization::setDataset(std::unique_ptr<Dataset> dataset)
 
         list << typeName;
 
-        auto item = new QTreeWidgetItem(list);
+        auto item{new QTreeWidgetItem(list)};
         item->setData(0, Qt::UserRole, QVariant(i));
         ui->columnsList->addTopLevelItem(item);
     }
@@ -104,30 +100,11 @@ void DatasetVisualization::setDataset(std::unique_ptr<Dataset> dataset)
     ui->columnsList->setSortingEnabled(true);
     ui->columnsList->sortByColumn(Constants::NOT_SET_COLUMN);
 
-    // Set proper tagged columns.
     if (dateOfTransactionPointed)
-    {
-        for (int i = 0; i < ui->dateCombo->count(); ++i)
-        {
-            if (dateColumn == ui->dateCombo->itemData(i).toUInt())
-            {
-                ui->dateCombo->setCurrentIndex(i);
-                break;
-            }
-        }
-    }
+        setCurrentIndexUsingColumn(ui->dateCombo, dateColumn);
 
     if (pricePerUnitPointed)
-    {
-        for (int i = 0; i < ui->pricePerUnitCombo->count(); ++i)
-        {
-            if (valueColumn == ui->pricePerUnitCombo->itemData(i).toUInt())
-            {
-                ui->pricePerUnitCombo->setCurrentIndex(i);
-                break;
-            }
-        }
-    }
+        setCurrentIndexUsingColumn(ui->pricePerUnitCombo, valueColumn);
 
     ui->columnsList->setEnabled(true);
 
@@ -144,13 +121,9 @@ void DatasetVisualization::clear()
 {
     ui->pricePerUnitCombo->clear();
     ui->dateCombo->clear();
-
     ui->columnsList->clear();
-
     ui->columnsList->setEnabled(false);
-
     ui->taggedColumnsWidget->setEnabled(false);
-
     dataset_ = nullptr;
 }
 
@@ -232,6 +205,19 @@ void DatasetVisualization::selectCurrentColumn(int column)
         if (column == currentLoopItem->data(0, Qt::UserRole).toInt())
         {
             ui->columnsList->setCurrentItem(currentLoopItem);
+            break;
+        }
+    }
+}
+
+void DatasetVisualization::setCurrentIndexUsingColumn(QComboBox* combo,
+                                                      unsigned int column)
+{
+    for (int i = 0; i < combo->count(); ++i)
+    {
+        if (combo->itemData(i).toUInt() == column)
+        {
+            combo->setCurrentIndex(i);
             break;
         }
     }

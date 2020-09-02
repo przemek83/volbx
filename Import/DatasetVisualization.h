@@ -6,6 +6,7 @@
 
 class QTreeWidgetItem;
 class Dataset;
+class QComboBox;
 
 namespace Ui
 {
@@ -13,7 +14,7 @@ class DatasetVisualization;
 }  // namespace Ui
 
 /**
- * @brief Widget for visualization of dataset definition.
+ * @brief Widget for visualization of dataset.
  */
 class DatasetVisualization : public QWidget
 {
@@ -38,13 +39,13 @@ public Q_SLOTS:
     void selectCurrentColumn(int column);
 
 private:
+    void setCurrentIndexUsingColumn(QComboBox* combo, unsigned int column);
+
     Ui::DatasetVisualization* ui;
 
-    const QString typeNameString_;
-
-    const QString typeNameFloat_;
-
-    const QString typeNameDate_;
+    const QString typeNameString_{tr("Name")};
+    const QString typeNameFloat_{tr("Number")};
+    const QString typeNameDate_{tr("Date")};
 
     std::unique_ptr<Dataset> dataset_{nullptr};
 
