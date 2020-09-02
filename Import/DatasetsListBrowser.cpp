@@ -54,14 +54,13 @@ void DatasetsListBrowser::setupDatasetsList()
             &DatasetsListBrowser::datasetsListItemSelectionChanged);
 }
 
-void DatasetsListBrowser::showContextMenu(QPoint pos)
+bool DatasetsListBrowser::doesUserChooseToDeleteSelectedDataset(QPoint pos)
 {
-    // Create delete context menu.
     QPoint globalPos{ui->datasetsList->viewport()->mapToGlobal(pos)};
 
     if (ui->datasetsList->selectedItems().isEmpty() ||
         ui->datasetsList->itemAt(pos) == nullptr)
-        return;
+        return false;
 
     const QIcon deleteIcon{
         QApplication::style()->standardIcon(QStyle::SP_DialogCloseButton)};
@@ -71,25 +70,41 @@ void DatasetsListBrowser::showContextMenu(QPoint pos)
 
     QAction* selectedItem{myMenu.exec(globalPos)};
 
-    // Delete dataset.
-    if (selectedItem != nullptr)
-    {
-        QString datasetName{ui->datasetsList->selectedItems().first()->text()};
-        QMessageBox::StandardButton answer{QMessageBox::question(
-            this, tr("Delete?"), tr("Delete dataset ") + datasetName + "?",
-            QMessageBox::Yes | QMessageBox::No)};
+    return selectedItem != nullptr;
+}
 
-        if (QMessageBox::Yes == answer)
-        {
-            if (!DatasetUtilities::removeDataset(datasetName))
-                QMessageBox::warning(this, tr("Error"),
-                                     tr("Can not delete ") + datasetName + ".");
+bool DatasetsListBrowser::doesUserConfirmedDeleting(
+    const QString& datasetToDelete)
+{
+    QMessageBox::StandardButton answer{QMessageBox::question(
+        this, tr("Delete?"), tr("Delete dataset ") + datasetToDelete + "?",
+        QMessageBox::Yes | QMessageBox::No)};
 
-            ui->datasetsList->clear();
-            ui->datasetsList->insertItems(
-                0, DatasetUtilities::getListOfAvailableDatasets());
-        }
-    }
+    return QMessageBox::Yes == answer;
+}
+
+void DatasetsListBrowser::deleteSelectedDataset(const QString& datasetToDelete)
+{
+    if (!DatasetUtilities::removeDataset(datasetToDelete))
+        QMessageBox::warning(this, tr("Error"),
+                             tr("Can not delete ") + datasetToDelete + ".");
+
+    ui->datasetsList->clear();
+    ui->datasetsList->insertItems(
+        0, DatasetUtilities::getListOfAvailableDatasets());
+}
+
+void DatasetsListBrowser::showContextMenu(QPoint pos)
+{
+    if (ui->datasetsList->selectedItems().isEmpty())
+        return;
+
+    const QString datasetToDelete{
+        ui->datasetsList->selectedItems().first()->text()};
+
+    if (doesUserChooseToDeleteSelectedDataset(pos) &&
+        doesUserConfirmedDeleting(datasetToDelete))
+        deleteSelectedDataset(datasetToDelete);
 }
 
 void DatasetsListBrowser::datasetsListItemSelectionChanged()
@@ -97,7 +112,7 @@ void DatasetsListBrowser::datasetsListItemSelectionChanged()
     QString newCurrent{QLatin1String("")};
     QList<QListWidgetItem*> selectedItems{ui->datasetsList->selectedItems()};
     if (!selectedItems.isEmpty())
-        newCurrent = selectedItems.at(0)->text();
+        newCurrent = selectedItems.front()->text();
 
     Q_EMIT currentDatasetChanged(newCurrent);
 }

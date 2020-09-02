@@ -10,7 +10,7 @@ class DatasetsListBrowser;
 }  // namespace Ui
 
 /**
- * @brief Widget for browsing actual datasets list.
+ * @brief Widget for browsing list of actual datasets.
  */
 class DatasetsListBrowser : public QWidget
 {
@@ -26,6 +26,12 @@ public:
 
 private:
     void setupDatasetsList();
+
+    bool doesUserChooseToDeleteSelectedDataset(QPoint pos);
+
+    bool doesUserConfirmedDeleting(const QString& datasetToDelete);
+
+    void deleteSelectedDataset(const QString& datasetToDelete);
 
     Ui::DatasetsListBrowser* ui;
 
