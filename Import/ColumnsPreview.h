@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <QTableWidget>
 
 class Dataset;
@@ -16,7 +18,7 @@ public:
 
     ~ColumnsPreview() override = default;
 
-    void setDatasetSampleInfo(const Dataset& dataset);
+    void setDatasetSampleInfo(const std::unique_ptr<Dataset>& dataset);
 
     void clearDataAndDisable();
 

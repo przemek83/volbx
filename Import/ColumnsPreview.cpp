@@ -12,23 +12,24 @@ ColumnsPreview::ColumnsPreview(QWidget* parent) : QTableWidget(parent)
             &ColumnsPreview::onItemSelectionChanged);
 }
 
-void ColumnsPreview::setDatasetSampleInfo(const Dataset& dataset)
+void ColumnsPreview::setDatasetSampleInfo(
+    const std::unique_ptr<Dataset>& dataset)
 {
     clear();
     setColumnCount(0);
     setRowCount(0);
 
-    const unsigned int columns{dataset.columnCount()};
+    const unsigned int columns{dataset->columnCount()};
     setColumnCount(columns);
 
     QStringList labels;
     labels.reserve(columns);
     for (unsigned int i = 0; i < columns; ++i)
-        labels.append(dataset.getHeaderName(i));
+        labels.append(dataset->getHeaderName(i));
 
     setHorizontalHeaderLabels(labels);
 
-    QVector<QVector<QVariant> > sampleData{dataset.retrieveSampleData()};
+    QVector<QVector<QVariant> > sampleData{dataset->retrieveSampleData()};
 
     const int rows{sampleData.size()};
     setRowCount(rows);

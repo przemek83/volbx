@@ -39,7 +39,7 @@ std::unique_ptr<Dataset> ImportTab::getDataset()
 void ImportTab::setDataset(std::unique_ptr<Dataset> dataset)
 {
     auto columnsPreview{findChild<ColumnsPreview*>()};
-    columnsPreview->setDatasetSampleInfo(*dataset);
+    columnsPreview->setDatasetSampleInfo(dataset);
     columnsPreview->setEnabled(true);
     auto visualization{findChild<DatasetVisualization*>()};
     visualization->setDataset(std::move(dataset));
