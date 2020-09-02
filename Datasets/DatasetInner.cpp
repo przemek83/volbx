@@ -106,13 +106,13 @@ bool DatasetInner::openQuaZipFile(QuaZipFile& zipFile)
     if (!zipFile.open(QIODevice::ReadOnly))
     {
         LOG(LogTypes::IMPORT_EXPORT,
-            "Can not open xml file " + zipFile.getZip()->getCurrentFileName() +
+            "Can not open file " + zipFile.getZip()->getCurrentFileName() +
                 ".");
         return false;
     }
 
     LOG(LogTypes::IMPORT_EXPORT,
-        "Xml file " + zipFile.getZip()->getCurrentFileName() + " opened.");
+        "File " + zipFile.getZip()->getCurrentFileName() + " opened.");
 
     return true;
 }
