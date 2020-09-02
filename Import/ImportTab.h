@@ -26,5 +26,5 @@ protected:
     createVisualizationAndColumnPreview();
 
 Q_SIGNALS:
-    void definitionIsReady(bool);
+    void datasetIsReady(bool);
 };

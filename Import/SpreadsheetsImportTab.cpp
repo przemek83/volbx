@@ -119,7 +119,7 @@ void SpreadsheetsImportTab::openFileButtonClicked()
         {
             QMessageBox::information(this, tr("Wrong file"),
                                      tr("File type is not supported."));
-            Q_EMIT definitionIsReady(false);
+            Q_EMIT datasetIsReady(false);
             return;
         }
     }
@@ -140,7 +140,7 @@ void SpreadsheetsImportTab::openFileButtonClicked()
     visualization->setDataset(std::move(dataset));
     visualization->setEnabled(true);
 
-    Q_EMIT definitionIsReady(true);
+    Q_EMIT datasetIsReady(true);
 }
 
 std::unique_ptr<Dataset> SpreadsheetsImportTab::getDataset()

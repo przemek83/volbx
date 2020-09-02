@@ -58,11 +58,11 @@ QTabWidget* ImportData::createTabWidgetWithContent(
     auto tabWidget{new QTabWidget(this)};
 
     auto datasetsTab{new DatasetImportTab(tabWidget)};
-    connect(datasetsTab, &ImportTab::definitionIsReady, enableOpenButton);
+    connect(datasetsTab, &ImportTab::datasetIsReady, enableOpenButton);
     tabWidget->addTab(datasetsTab, tr("Datasets"));
 
     auto spreadsheetsTab{new SpreadsheetsImportTab(tabWidget)};
-    connect(spreadsheetsTab, &ImportTab::definitionIsReady, enableOpenButton);
+    connect(spreadsheetsTab, &ImportTab::datasetIsReady, enableOpenButton);
     tabWidget->addTab(spreadsheetsTab, tr("Spreadsheets"));
 
     // If no datasets, than switch to spreadsheets tab.

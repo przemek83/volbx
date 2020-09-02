@@ -63,7 +63,7 @@ void DatasetImportTab::clear()
     visualization->clear();
     visualization->setEnabled(false);
 
-    Q_EMIT definitionIsReady(false);
+    Q_EMIT datasetIsReady(false);
 }
 
 void DatasetImportTab::createDataset(const QString& datasetName)
@@ -80,7 +80,7 @@ void DatasetImportTab::createDataset(const QString& datasetName)
         visualization->setDataset(std::move(dataset));
         visualization->setEnabled(true);
 
-        Q_EMIT definitionIsReady(true);
+        Q_EMIT datasetIsReady(true);
     }
     else
     {
