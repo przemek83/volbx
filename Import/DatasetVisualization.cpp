@@ -42,6 +42,8 @@ void DatasetVisualization::setDataset(std::unique_ptr<Dataset> dataset)
 
     setupColumnsListWidget();
 
+    fillTaggedColumnCombos();
+
     setTaggedColumns();
 
     ui->taggedColumnsWidget->setEnabled(true);
@@ -64,8 +66,9 @@ void DatasetVisualization::searchTextChanged(const QString& newText)
     QTreeWidgetItemIterator it(ui->columnsList);
     while (*it != nullptr)
     {
+        const QString& currentItemText{(*it)->text(0)};
         (*it)->setHidden(
-            !(*it)->text(0).contains(newText, Qt::CaseInsensitive));
+            !currentItemText.contains(newText, Qt::CaseInsensitive));
         ++it;
     }
 }
@@ -75,46 +78,16 @@ std::unique_ptr<Dataset> DatasetVisualization::retrieveDataset()
     if (dataset_ == nullptr)
         return nullptr;
 
-    QVector<bool> activeColumns;
+    dataset_->setActiveColumns(getActiveColumns());
 
-    int topLevelItemsCount{ui->columnsList->topLevelItemCount()};
-    activeColumns.resize(topLevelItemsCount);
-
-    for (int i = 0; i < topLevelItemsCount; ++i)
-    {
-        QTreeWidgetItem* currentLoopItem{ui->columnsList->topLevelItem(i)};
-
-        bool active{false};
-
-        if (currentLoopItem->flags().testFlag(Qt::ItemIsUserCheckable))
-            active = (currentLoopItem->checkState(0) == Qt::Checked);
-        else
-            active = true;
-
-        activeColumns[currentLoopItem->data(0, Qt::UserRole).toInt()] = active;
-    }
-
-    dataset_->setActiveColumns(activeColumns);
-
-    if (ui->dateCombo->currentIndex() != -1)
-    {
-        int column{
-            ui->dateCombo->itemData(ui->dateCombo->currentIndex()).toInt()};
-        dataset_->setTaggedColumn(ColumnTag::DATE, column);
-    }
-
-    if (ui->pricePerUnitCombo->currentIndex() != -1)
-    {
-        int index{ui->pricePerUnitCombo->currentIndex()};
-        int column{ui->pricePerUnitCombo->itemData(index).toInt()};
-        dataset_->setTaggedColumn(ColumnTag::VALUE, column);
-    }
+    setTaggedColumnInDataset(ColumnTag::DATE, ui->dateCombo);
+    setTaggedColumnInDataset(ColumnTag::VALUE, ui->pricePerUnitCombo);
 
     return std::move(dataset_);
 }
 
 void DatasetVisualization::currentColumnOnTreeChanged(
-    QTreeWidgetItem* current, QTreeWidgetItem* /*previous*/)
+    QTreeWidgetItem* current, [[maybe_unused]] QTreeWidgetItem* previous)
 {
     if (current == nullptr)
         return;
@@ -124,19 +97,18 @@ void DatasetVisualization::currentColumnOnTreeChanged(
 
 void DatasetVisualization::selectCurrentColumn(int column)
 {
-    QList<QTreeWidgetItem*> selectedItemsList{ui->columnsList->selectedItems()};
-    if (0 != selectedItemsList.count() &&
-        column == selectedItemsList.first()->data(0, Qt::UserRole).toInt())
+    const QList<QTreeWidgetItem*> selectedItemsList{
+        ui->columnsList->selectedItems()};
+    if (selectedItemsList.count() != 0 &&
+        selectedItemsList.first()->data(0, Qt::UserRole).toInt() == column)
         return;
 
-    int topLevelItemsCount{ui->columnsList->topLevelItemCount()};
-
-    for (int i = 0; i < topLevelItemsCount; ++i)
+    for (int i = 0; i < ui->columnsList->topLevelItemCount(); ++i)
     {
-        QTreeWidgetItem* currentLoopItem{ui->columnsList->topLevelItem(i)};
-        if (column == currentLoopItem->data(0, Qt::UserRole).toInt())
+        QTreeWidgetItem* currentItem{ui->columnsList->topLevelItem(i)};
+        if (currentItem->data(0, Qt::UserRole).toInt() == column)
         {
-            ui->columnsList->setCurrentItem(currentLoopItem);
+            ui->columnsList->setCurrentItem(currentItem);
             break;
         }
     }
@@ -160,46 +132,12 @@ void DatasetVisualization::setupColumnsListWidget()
     ui->columnsList->sortByColumn(Constants::NOT_SET_COLUMN);
     ui->columnsList->setSortingEnabled(false);
 
-    // Column list.
-    for (unsigned int i = 0; i < dataset_->columnCount(); ++i)
+    for (unsigned int column = 0; column < dataset_->columnCount(); ++column)
     {
-        QStringList list;
-        list << dataset_->getHeaderName(i);
-        QString typeName{QLatin1String("")};
-        switch (dataset_->getColumnFormat(i))
-        {
-            case ColumnType::STRING:
-            {
-                typeName = QString(typeNameString_);
-                break;
-            }
-
-            case ColumnType::NUMBER:
-            {
-                typeName = QString(typeNameFloat_);
-                ui->pricePerUnitCombo->addItem(dataset_->getHeaderName(i),
-                                               QVariant(i));
-                break;
-            }
-
-            case ColumnType::DATE:
-            {
-                typeName = QString(typeNameDate_);
-                ui->dateCombo->addItem(dataset_->getHeaderName(i), QVariant(i));
-                break;
-            }
-
-            case ColumnType::UNKNOWN:
-            {
-                Q_ASSERT(false);
-                break;
-            }
-        }
-
-        list << typeName;
-
+        const QStringList list{dataset_->getHeaderName(column),
+                               getTypeDisplayNameForGivenColumn(column)};
         auto item{new QTreeWidgetItem(list)};
-        item->setData(0, Qt::UserRole, QVariant(i));
+        item->setData(0, Qt::UserRole, QVariant(column));
         ui->columnsList->addTopLevelItem(item);
     }
 
@@ -230,27 +168,82 @@ void DatasetVisualization::setTaggedColumns()
     ui->pricePerUnitCombo->blockSignals(false);
 }
 
-void DatasetVisualization::selectAllClicked()
+QVector<bool> DatasetVisualization::getActiveColumns() const
 {
     int topLevelItemsCount{ui->columnsList->topLevelItemCount()};
-
+    QVector<bool> activeColumns;
+    activeColumns.resize(topLevelItemsCount);
     for (int i = 0; i < topLevelItemsCount; ++i)
     {
-        QTreeWidgetItem* currentLoopItem{ui->columnsList->topLevelItem(i)};
-        if (currentLoopItem->flags().testFlag(Qt::ItemIsUserCheckable))
-            currentLoopItem->setCheckState(0, Qt::Checked);
+        QTreeWidgetItem* currentItem{ui->columnsList->topLevelItem(i)};
+        bool active{false};
+        if (currentItem->flags().testFlag(Qt::ItemIsUserCheckable))
+            active = (currentItem->checkState(0) == Qt::Checked);
+        else
+            active = true;
+        activeColumns[currentItem->data(0, Qt::UserRole).toInt()] = active;
+    }
+
+    return activeColumns;
+}
+
+void DatasetVisualization::setTaggedColumnInDataset(ColumnTag tag,
+                                                    QComboBox* combo)
+{
+    if (combo->currentIndex() == -1)
+        return;
+
+    const int column{combo->itemData(combo->currentIndex()).toInt()};
+    dataset_->setTaggedColumn(tag, column);
+}
+
+QString DatasetVisualization::getTypeDisplayNameForGivenColumn(
+    unsigned int column) const
+{
+    ColumnType columnType{dataset_->getColumnFormat(column)};
+    if (columnType == ColumnType::STRING)
+        return typeNameString_;
+    if (columnType == ColumnType::NUMBER)
+        return typeNameFloat_;
+    if (columnType == ColumnType::DATE)
+        return typeNameDate_;
+
+    Q_ASSERT(false);
+}
+
+void DatasetVisualization::fillTaggedColumnCombos()
+{
+    for (unsigned int column = 0; column < dataset_->columnCount(); ++column)
+    {
+        ColumnType columnType{dataset_->getColumnFormat(column)};
+        if (columnType == ColumnType::NUMBER)
+            ui->pricePerUnitCombo->addItem(dataset_->getHeaderName(column),
+                                           QVariant(column));
+        if (columnType == ColumnType::DATE)
+            ui->dateCombo->addItem(dataset_->getHeaderName(column),
+                                   QVariant(column));
+    }
+}
+
+void DatasetVisualization::selectAllClicked()
+{
+    const int topLevelItemsCount{ui->columnsList->topLevelItemCount()};
+    for (int i = 0; i < topLevelItemsCount; ++i)
+    {
+        QTreeWidgetItem* currentItem{ui->columnsList->topLevelItem(i)};
+        if (currentItem->flags().testFlag(Qt::ItemIsUserCheckable))
+            currentItem->setCheckState(0, Qt::Checked);
     }
 }
 
 void DatasetVisualization::unselectAllClicked()
 {
     const int topLevelItemsCount{ui->columnsList->topLevelItemCount()};
-
     for (int i = 0; i < topLevelItemsCount; ++i)
     {
-        QTreeWidgetItem* currentLoopItem{ui->columnsList->topLevelItem(i)};
-        if (currentLoopItem->flags().testFlag(Qt::ItemIsUserCheckable))
-            currentLoopItem->setCheckState(0, Qt::Unchecked);
+        QTreeWidgetItem* currentItem{ui->columnsList->topLevelItem(i)};
+        if (currentItem->flags().testFlag(Qt::ItemIsUserCheckable))
+            currentItem->setCheckState(0, Qt::Unchecked);
     }
 }
 

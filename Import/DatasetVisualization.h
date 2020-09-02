@@ -4,6 +4,8 @@
 
 #include <QWidget>
 
+#include <ColumnTag.h>
+
 class QTreeWidgetItem;
 class Dataset;
 class QComboBox;
@@ -44,6 +46,14 @@ private:
     void setupColumnsListWidget();
 
     void setTaggedColumns();
+
+    QVector<bool> getActiveColumns() const;
+
+    void setTaggedColumnInDataset(ColumnTag tag, QComboBox* combo);
+
+    QString getTypeDisplayNameForGivenColumn(unsigned int column) const;
+
+    void fillTaggedColumnCombos();
 
     Ui::DatasetVisualization* ui;
 
