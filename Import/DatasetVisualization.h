@@ -55,6 +55,8 @@ private:
 
     void fillTaggedColumnCombos();
 
+    void setAllItemsInColumnsListToState(Qt::CheckState state);
+
     Ui::DatasetVisualization* ui;
 
     const QString typeNameString_{tr("Name")};

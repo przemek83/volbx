@@ -225,29 +225,28 @@ void DatasetVisualization::fillTaggedColumnCombos()
     }
 }
 
-void DatasetVisualization::selectAllClicked()
+void DatasetVisualization::setAllItemsInColumnsListToState(Qt::CheckState state)
 {
     const int topLevelItemsCount{ui->columnsList->topLevelItemCount()};
     for (int i = 0; i < topLevelItemsCount; ++i)
     {
         QTreeWidgetItem* currentItem{ui->columnsList->topLevelItem(i)};
         if (currentItem->flags().testFlag(Qt::ItemIsUserCheckable))
-            currentItem->setCheckState(0, Qt::Checked);
+            currentItem->setCheckState(0, state);
     }
+}
+
+void DatasetVisualization::selectAllClicked()
+{
+    setAllItemsInColumnsListToState(Qt::Checked);
 }
 
 void DatasetVisualization::unselectAllClicked()
 {
-    const int topLevelItemsCount{ui->columnsList->topLevelItemCount()};
-    for (int i = 0; i < topLevelItemsCount; ++i)
-    {
-        QTreeWidgetItem* currentItem{ui->columnsList->topLevelItem(i)};
-        if (currentItem->flags().testFlag(Qt::ItemIsUserCheckable))
-            currentItem->setCheckState(0, Qt::Unchecked);
-    }
+    setAllItemsInColumnsListToState(Qt::Unchecked);
 }
 
-void DatasetVisualization::refreshColumnList(int /*newIndex*/)
+void DatasetVisualization::refreshColumnList([[maybe_unused]] int newIndex)
 {
     int dateColumn{Constants::NOT_SET_COLUMN};
     if (ui->dateCombo->currentIndex() != -1)
