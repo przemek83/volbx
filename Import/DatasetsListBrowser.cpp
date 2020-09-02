@@ -15,35 +15,18 @@ DatasetsListBrowser::DatasetsListBrowser(QWidget* parent)
     connect(ui->searchLineEdit, &QLineEdit::textChanged, this,
             &DatasetsListBrowser::searchTextChanged);
 
-    ui->datasetsList->insertItems(
-        0, DatasetUtilities::getListOfAvailableDatasets());
-
-    ui->datasetsList->setContextMenuPolicy(Qt::CustomContextMenu);
-
-    connect(ui->datasetsList, &QListWidget::customContextMenuRequested, this,
-            &DatasetsListBrowser::showContextMenu);
-
-    connect(ui->datasetsList, &QListWidget::itemSelectionChanged, this,
-            &DatasetsListBrowser::datasetsListItemSelectionChanged);
+    setupDatasetsList();
 }
 
 DatasetsListBrowser::~DatasetsListBrowser() { delete ui; }
-
-QString DatasetsListBrowser::getSelectedDataset() const
-{
-    const QListWidgetItem* item{ui->datasetsList->currentItem()};
-    if (item != nullptr)
-        return item->text();
-
-    return QString();
-}
 
 void DatasetsListBrowser::searchTextChanged(const QString& arg1)
 {
     for (int i = 0; i < ui->datasetsList->count(); ++i)
     {
         QListWidgetItem* item{ui->datasetsList->item(i)};
-        item->setHidden(!item->text().contains(arg1, Qt::CaseInsensitive));
+        const bool hide{!item->text().contains(arg1, Qt::CaseInsensitive)};
+        item->setHidden(hide);
     }
 }
 
@@ -55,6 +38,20 @@ void DatasetsListBrowser::clearSelection()
 bool DatasetsListBrowser::isDatasetsListEmpty()
 {
     return (ui->datasetsList->count() == 0);
+}
+
+void DatasetsListBrowser::setupDatasetsList()
+{
+    ui->datasetsList->insertItems(
+        0, DatasetUtilities::getListOfAvailableDatasets());
+
+    ui->datasetsList->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    connect(ui->datasetsList, &QListWidget::customContextMenuRequested, this,
+            &DatasetsListBrowser::showContextMenu);
+
+    connect(ui->datasetsList, &QListWidget::itemSelectionChanged, this,
+            &DatasetsListBrowser::datasetsListItemSelectionChanged);
 }
 
 void DatasetsListBrowser::showContextMenu(QPoint pos)

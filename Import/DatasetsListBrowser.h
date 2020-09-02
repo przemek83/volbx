@@ -20,13 +20,13 @@ public:
 
     ~DatasetsListBrowser() override;
 
-    QString getSelectedDataset() const;
-
     void clearSelection();
 
     bool isDatasetsListEmpty();
 
 private:
+    void setupDatasetsList();
+
     Ui::DatasetsListBrowser* ui;
 
 private Q_SLOTS:
