@@ -41,57 +41,52 @@ std::unique_ptr<Dataset> DatasetImportTab::getDataset()
 
 void DatasetImportTab::selectedDatasetChanged(const QString& current)
 {
-    auto visualization{findChild<DatasetVisualization*>()};
-    auto columnsPreview{findChild<ColumnsPreview*>()};
-    auto datasetsListBrowser{findChild<DatasetsListBrowser*>()};
-
-    if (datasetsListBrowser == nullptr || visualization == nullptr ||
-        columnsPreview == nullptr)
-        return;
-
     if (current.isEmpty())
-    {
-        columnsPreview->clearDataAndDisable();
-        datasetsListBrowser->clearSelection();
-        visualization->clear();
-        visualization->setEnabled(false);
-        Q_EMIT definitionIsReady(false);
-    }
+        clear();
     else
-    {
-        std::unique_ptr<Dataset> dataset{
-            std::make_unique<DatasetInner>(current)};
-
-        // If definition is valid, than fill details.
-        if (dataset->initialize() && dataset->isValid())
-        {
-            columnsPreview->setDatasetSampleInfo(*dataset);
-            columnsPreview->setEnabled(true);
-
-            visualization->setDataset(std::move(dataset));
-            visualization->setEnabled(true);
-
-            Q_EMIT definitionIsReady(true);
-        }
-        else
-        {
-            columnsPreview->clearDataAndDisable();
-            visualization->clear();
-            visualization->setEnabled(false);
-            Q_EMIT definitionIsReady(false);
-
-            QMessageBox::information(
-                this, tr("Damaged dataset"),
-                tr("Dataset ") + current + tr(" is damaged."));
-        }
-    }
+        createDataset(current);
 }
 
 bool DatasetImportTab::datasetsAreAvailable()
 {
     const auto datasetsListBrowser{findChild<DatasetsListBrowser*>()};
-    if (datasetsListBrowser == nullptr)
-        return false;
-
     return (!datasetsListBrowser->isDatasetsListEmpty());
+}
+
+void DatasetImportTab::clear()
+{
+    auto columnsPreview{findChild<ColumnsPreview*>()};
+    columnsPreview->clearDataAndDisable();
+    auto listBrowser{findChild<DatasetsListBrowser*>()};
+    listBrowser->clearSelection();
+    auto visualization{findChild<DatasetVisualization*>()};
+    visualization->clear();
+    visualization->setEnabled(false);
+
+    Q_EMIT definitionIsReady(false);
+}
+
+void DatasetImportTab::createDataset(const QString& datasetName)
+{
+    std::unique_ptr<Dataset> dataset{
+        std::make_unique<DatasetInner>(datasetName)};
+
+    if (dataset->initialize() && dataset->isValid())
+    {
+        auto columnsPreview{findChild<ColumnsPreview*>()};
+        columnsPreview->setDatasetSampleInfo(*dataset);
+        columnsPreview->setEnabled(true);
+        auto visualization{findChild<DatasetVisualization*>()};
+        visualization->setDataset(std::move(dataset));
+        visualization->setEnabled(true);
+
+        Q_EMIT definitionIsReady(true);
+    }
+    else
+    {
+        clear();
+        QMessageBox::information(
+            this, tr("Damaged dataset"),
+            tr("Dataset ") + datasetName + tr(" is damaged."));
+    }
 }

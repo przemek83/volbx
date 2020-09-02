@@ -21,6 +21,11 @@ public:
 
     bool datasetsAreAvailable();
 
+private:
+    void clear();
+
+    void createDataset(const QString& datasetName);
+
 private Q_SLOTS:
     void selectedDatasetChanged(const QString& current);
 };
