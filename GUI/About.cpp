@@ -1,7 +1,5 @@
 #include "About.h"
 
-#include "Common/Constants.h"
-
 #include "ui_About.h"
 
 About::About(QWidget* parent) : QDialog(parent), ui(new Ui::About)

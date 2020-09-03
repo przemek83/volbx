@@ -265,14 +265,13 @@ void VolbxMain::closeEvent(QCloseEvent* event)
 void VolbxMain::actionAboutTriggered()
 {
     About about(this);
-
     about.exec();
 }
 
 void VolbxMain::closeTab(int tab)
 {
-    QWidget* tabToDelete = tabWidget_->widget(tab);
-    const FilteringProxyModel* model = tabWidget_->getCurrentProxyModel();
+    QWidget* tabToDelete{tabWidget_->widget(tab)};
+    const FilteringProxyModel* model{tabWidget_->getCurrentProxyModel()};
     filters_->removeModel(model);
     tabWidget_->removeTab(tab);
     delete tabToDelete;
