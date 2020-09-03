@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CheckUpdatesDialog</class>
- <widget class="QDialog" name="CheckUpdatesDialog">
+ <class>CheckUpdates</class>
+ <widget class="QDialog" name="CheckUpdates">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -100,7 +100,7 @@
   <connection>
    <sender>questionButtonBox</sender>
    <signal>accepted()</signal>
-   <receiver>CheckUpdatesDialog</receiver>
+   <receiver>CheckUpdates</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -116,7 +116,7 @@
   <connection>
    <sender>questionButtonBox</sender>
    <signal>rejected()</signal>
-   <receiver>CheckUpdatesDialog</receiver>
+   <receiver>CheckUpdates</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

@@ -93,9 +93,9 @@ set(${PROJECT_NAME}_SOURCES
     GUI/About.cpp
     GUI/About.h
     GUI/About.ui
-    GUI/CheckUpdatesDialog.cpp
-    GUI/CheckUpdatesDialog.h
-    GUI/CheckUpdatesDialog.ui
+    GUI/CheckUpdates.cpp
+    GUI/CheckUpdates.h
+    GUI/CheckUpdates.ui
     GUI/DockTitleBar.cpp
     GUI/DockTitleBar.h
     GUI/DockTitleBar.ui

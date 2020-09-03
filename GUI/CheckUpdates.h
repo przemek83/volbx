@@ -4,22 +4,22 @@
 
 namespace Ui
 {
-class CheckUpdatesDialog;
+class CheckUpdates;
 }  // namespace Ui
 
 /**
  * @brief Dialog class with question about auto updating.
  */
-class CheckUpdatesDialog : public QDialog
+class CheckUpdates : public QDialog
 {
     Q_OBJECT
 public:
-    explicit CheckUpdatesDialog(QWidget* parent = nullptr);
+    explicit CheckUpdates(QWidget* parent = nullptr);
 
-    ~CheckUpdatesDialog() override;
+    ~CheckUpdates() override;
 
     bool isSaveFlagSet();
 
 private:
-    Ui::CheckUpdatesDialog* ui;
+    Ui::CheckUpdates* ui;
 };

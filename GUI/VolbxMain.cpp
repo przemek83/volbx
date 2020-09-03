@@ -30,7 +30,7 @@
 #include "Shared/Networking.h"
 
 #include "About.h"
-#include "CheckUpdatesDialog.h"
+#include "CheckUpdates.h"
 #include "Export.h"
 #include "MainTab.h"
 #include "MainTabWidget.h"
@@ -203,7 +203,7 @@ void VolbxMain::checkForUpdates()
     bool checkForUpdates{false};
     if (!Configuration::getInstance().isUpdatePolicyPicked())
     {
-        CheckUpdatesDialog dialog(this);
+        CheckUpdates dialog(this);
         int reply{dialog.exec()};
         if (reply == QDialog::Accepted)
             checkForUpdates = true;

@@ -1,12 +1,12 @@
-#include "CheckUpdatesDialog.h"
+#include "CheckUpdates.h"
 
 #include <QStyle>
 
-#include "ui_CheckUpdatesDialog.h"
+#include "ui_CheckUpdates.h"
 
-CheckUpdatesDialog::CheckUpdatesDialog(QWidget* parent)
+CheckUpdates::CheckUpdates(QWidget* parent)
     : QDialog(parent, Qt::CustomizeWindowHint | Qt::WindowTitleHint),
-      ui(new Ui::CheckUpdatesDialog)
+      ui(new Ui::CheckUpdates)
 {
     ui->setupUi(this);
 
@@ -14,9 +14,9 @@ CheckUpdatesDialog::CheckUpdatesDialog(QWidget* parent)
     setWindowIcon(style->standardIcon(QStyle::QStyle::SP_MessageBoxQuestion));
 }
 
-CheckUpdatesDialog::~CheckUpdatesDialog() { delete ui; }
+CheckUpdates::~CheckUpdates() { delete ui; }
 
-bool CheckUpdatesDialog::isSaveFlagSet()
+bool CheckUpdates::isSaveFlagSet()
 {
     return ui->saveCheckBox->isChecked();
 }
