@@ -18,7 +18,7 @@ public:
 
     ~CheckUpdatesDialog() override;
 
-    bool saveFlagSet();
+    bool isSaveFlagSet();
 
 private:
     Ui::CheckUpdatesDialog* ui;

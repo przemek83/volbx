@@ -1,5 +1,7 @@
 #include "CheckUpdatesDialog.h"
 
+#include <QStyle>
+
 #include "ui_CheckUpdatesDialog.h"
 
 CheckUpdatesDialog::CheckUpdatesDialog(QWidget* parent)
@@ -7,8 +9,14 @@ CheckUpdatesDialog::CheckUpdatesDialog(QWidget* parent)
       ui(new Ui::CheckUpdatesDialog)
 {
     ui->setupUi(this);
+
+    const QStyle* style = QApplication::style();
+    setWindowIcon(style->standardIcon(QStyle::QStyle::SP_MessageBoxQuestion));
 }
 
 CheckUpdatesDialog::~CheckUpdatesDialog() { delete ui; }
 
-bool CheckUpdatesDialog::saveFlagSet() { return ui->saveCheckBox->isChecked(); }
+bool CheckUpdatesDialog::isSaveFlagSet()
+{
+    return ui->saveCheckBox->isChecked();
+}

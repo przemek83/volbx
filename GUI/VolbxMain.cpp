@@ -200,19 +200,16 @@ void VolbxMain::createOptionsMenu()
 
 void VolbxMain::checkForUpdates()
 {
-    bool checkForUpdates = false;
-
+    bool checkForUpdates{false};
     if (!Configuration::getInstance().isUpdatePolicyPicked())
     {
         CheckUpdatesDialog dialog(this);
-
-        int reply = dialog.exec();
-
-        if (QDialog::Accepted == reply)
+        int reply{dialog.exec()};
+        if (reply == QDialog::Accepted)
             checkForUpdates = true;
 
         // Remember if choice was checked.
-        if (dialog.saveFlagSet())
+        if (dialog.isSaveFlagSet())
             Configuration::getInstance().setUpdatePolicy(checkForUpdates);
     }
     else

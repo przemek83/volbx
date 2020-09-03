@@ -31,10 +31,6 @@
   <property name="windowTitle">
    <string>Updates</string>
   </property>
-  <property name="windowIcon">
-   <iconset resource="Grafika.qrc">
-    <normaloff>:/ikony/Grafika/o_programie.png</normaloff>:/ikony/Grafika/o_programie.png</iconset>
-  </property>
   <property name="modal">
    <bool>true</bool>
   </property>
@@ -99,9 +95,7 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="Grafika.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>questionButtonBox</sender>
