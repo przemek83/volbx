@@ -41,10 +41,7 @@ Export::~Export() { delete ui; }
 
 void Export::saveClicked()
 {
-    QDir dir(ui->locationLineEdit->text());
-
-    if (ui->locationLineEdit->text().isEmpty() || !dir.exists() ||
-        !QFile::permissions(dir.path()).testFlag(QFile::WriteUser))
+    if (!locationIsValid(ui->locationLineEdit->text()))
     {
         QMessageBox::warning(
             this, QObject::tr("Error"),
@@ -64,6 +61,7 @@ void Export::locationSearchClicked()
     dialog.setFileMode(QFileDialog::Directory);
     dialog.setOption(QFileDialog::ShowDirsOnly, true);
     dialog.exec();
+
     ui->locationLineEdit->setText(dialog.directory().absolutePath());
 }
 
@@ -76,7 +74,7 @@ void Export::saveOnDisk()
         QDate::currentDate().toString(exportFilesDateFormat_));
     const QString fileName(ui->locationLineEdit->text() + "/" +
                            ui->prefix->text() + "_" + dateString);
-    QList<PlotDock*> docks = tab_->findChildren<PlotDock*>();
+    QList<PlotDock*> docks{tab_->findChildren<PlotDock*>()};
     for (PlotDock* dock : docks)
     {
         QList<PlotBase*> list{dock->exportContent()};
@@ -129,4 +127,11 @@ void Export::saveOnDisk()
         LOG(LogTypes::IMPORT_EXPORT, "Data exporting failed.");
 
     QApplication::restoreOverrideCursor();
+}
+
+bool Export::locationIsValid(const QString& location) const
+{
+    QDir dir(location);
+    return !ui->locationLineEdit->text().isEmpty() & dir.exists() &&
+           QFile::permissions(dir.path()).testFlag(QFile::WriteUser);
 }

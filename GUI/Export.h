@@ -28,6 +28,8 @@ private Q_SLOTS:
 private:
     void saveOnDisk();
 
+    bool locationIsValid(const QString& location) const;
+
     Ui::Export* ui;
 
     QMainWindow* tab_;
