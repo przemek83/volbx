@@ -111,8 +111,8 @@ set(${PROJECT_NAME}_SOURCES
     GUI/MainTab.h
     GUI/MainTabWidget.cpp
     GUI/MainTabWidget.h
-    GUI/PlotDockWidget.cpp
-    GUI/PlotDockWidget.h
+    GUI/PlotDock.cpp
+    GUI/PlotDock.h
     GUI/SaveDatasetAs.cpp
     GUI/SaveDatasetAs.h
     GUI/SaveDatasetAs.ui

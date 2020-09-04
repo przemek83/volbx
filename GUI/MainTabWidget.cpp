@@ -14,7 +14,7 @@
 #include "Shared/Logger.h"
 
 #include "MainTab.h"
-#include "PlotDockWidget.h"
+#include "PlotDock.h"
 #include "TabBar.h"
 #include "ViewDockWidget.h"
 
@@ -163,7 +163,7 @@ void MainTabWidget::addPlot(const QString& title,
     // If plot already created than just show it and return.
     if (auto plotUI = mainTab->findChild<T*>(); plotUI != nullptr)
     {
-        auto dock{qobject_cast<PlotDockWidget*>(plotUI->parent())};
+        auto dock{qobject_cast<PlotDock*>(plotUI->parent())};
         dock->setVisible(true);
         dock->raise();
         return;
@@ -172,8 +172,8 @@ void MainTabWidget::addPlot(const QString& title,
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
 
-    auto tabifyOn = mainTab->findChild<PlotDockWidget*>();
-    auto dock = new PlotDockWidget(title, mainTab);
+    auto tabifyOn = mainTab->findChild<PlotDock*>();
+    auto dock = new PlotDock(title, mainTab);
     dock->setWidget(createPlot());
     mainTab->addDockWidget(Qt::RightDockWidgetArea, dock);
 

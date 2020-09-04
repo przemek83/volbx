@@ -1,4 +1,4 @@
-#include "PlotDockWidget.h"
+#include "PlotDock.h"
 
 #include <PlotBase.h>
 #include <QDebug>
@@ -10,25 +10,24 @@
 
 #include "DockTitleBar.h"
 
-PlotDockWidget::PlotDockWidget(const QString& title, QWidget* parent,
-                               Qt::WindowFlags flags)
+PlotDock::PlotDock(const QString& title, QWidget* parent, Qt::WindowFlags flags)
     : Dock(title, parent, flags)
 {
     titleBarWidget_.setButtonVisible(DockTitleBar::Button::EXPORT, true);
     titleBarWidget_.setButtonVisible(DockTitleBar::Button::RESET, true);
 
     connect(&titleBarWidget_, &DockTitleBar::exportClicked, this,
-            &PlotDockWidget::quickExportData);
+            &PlotDock::quickExportData);
     connect(&titleBarWidget_, &DockTitleBar::resetClicked, this,
-            &PlotDockWidget::resetPlot);
+            &PlotDock::resetPlot);
 }
 
-void PlotDockWidget::quickExportData()
+void PlotDock::quickExportData()
 {
     ExportImage::quickExportAsImage(exportContent());
 }
 
-void PlotDockWidget::resetPlot()
+void PlotDock::resetPlot()
 {
     QList<PlotBase*> plots = findChildren<PlotBase*>();
 
@@ -36,7 +35,4 @@ void PlotDockWidget::resetPlot()
         plot->resetPlot();
 }
 
-QList<PlotBase*> PlotDockWidget::exportContent()
-{
-    return findChildren<PlotBase*>();
-}
+QList<PlotBase*> PlotDock::exportContent() { return findChildren<PlotBase*>(); }

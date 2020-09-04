@@ -18,7 +18,7 @@
 #include "Shared/Logger.h"
 
 #include "Dock.h"
-#include "PlotDockWidget.h"
+#include "PlotDock.h"
 #include "ui_Export.h"
 
 Export::Export(QMainWindow* tab, QWidget* parent)
@@ -79,8 +79,8 @@ void Export::saveOnDisk()
         QDate::currentDate().toString(exportFilesDateFormat_));
     const QString fileName(ui->locationLineEdit->text() + "/" +
                            ui->prefix->text() + "_" + dateString);
-    QList<PlotDockWidget*> docks = tab_->findChildren<PlotDockWidget*>();
-    for (PlotDockWidget* dock : docks)
+    QList<PlotDock*> docks = tab_->findChildren<PlotDock*>();
+    for (PlotDock* dock : docks)
     {
         QList<PlotBase*> list = dock->exportContent();
         for (PlotBase* plot : list)
