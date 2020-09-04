@@ -2,10 +2,8 @@
 
 #include "Dock.h"
 
-class QPushButton;
-
 /**
- * @brief dock widget for data view.
+ * @brief Dock for data view.
  */
 class DataViewDock : public Dock
 {

@@ -4,14 +4,14 @@ Dock::Dock(const QString& titleText, QWidget* parent,
                        Qt::WindowFlags flags)
     : QDockWidget(titleText, parent, flags)
 {
-    titleBarWidget_.setTitle(titleText);
+    titleBar_.setTitle(titleText);
 
-    connect(&titleBarWidget_, &DockTitleBar::closeClicked, this,
+    connect(&titleBar_, &DockTitleBar::closeClicked, this,
             &Dock::close);
-    connect(&titleBarWidget_, &DockTitleBar::floatingClicked, this,
+    connect(&titleBar_, &DockTitleBar::floatingClicked, this,
             &Dock::toggleFloating);
 
-    setTitleBarWidget(&titleBarWidget_);
+    setTitleBarWidget(&titleBar_);
 }
 
 void Dock::setNewToolTip(const QString& text) { setToolTip(text); }

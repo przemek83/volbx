@@ -20,7 +20,7 @@ public Q_SLOTS:
     void setNewToolTip(const QString& text);
 
 protected:
-    DockTitleBar titleBarWidget_;
+    DockTitleBar titleBar_;
 
 private Q_SLOTS:
     void toggleFloating();
