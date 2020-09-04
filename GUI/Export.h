@@ -10,7 +10,7 @@ class Export;
 }  // namespace Ui
 
 /**
- * @brief Export window. Exports data of active tab and all plots (if opened)
+ * @brief Exports data of active tab and all plots.
  */
 class Export : public QDialog
 {
@@ -26,11 +26,11 @@ private Q_SLOTS:
     void locationSearchClicked();
 
 private:
+    void saveOnDisk();
+
     Ui::Export* ui;
 
     QMainWindow* tab_;
-
-    void saveOnDisk();
 
     const QString exportFilesDateFormat_{QStringLiteral("yyyyMMdd")};
 };

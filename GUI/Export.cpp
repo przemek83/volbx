@@ -4,8 +4,6 @@
 #include <ExportXlsx.h>
 #include <PlotBase.h>
 #include <ProgressBarCounter.h>
-#include <QDate>
-#include <QDebug>
 #include <QDir>
 #include <QFileDialog>
 #include <QMainWindow>
@@ -17,7 +15,6 @@
 #include "ModelsAndViews/DataView.h"
 #include "Shared/Logger.h"
 
-#include "Dock.h"
 #include "PlotDock.h"
 #include "ui_Export.h"
 
@@ -82,18 +79,18 @@ void Export::saveOnDisk()
     QList<PlotDock*> docks = tab_->findChildren<PlotDock*>();
     for (PlotDock* dock : docks)
     {
-        QList<PlotBase*> list = dock->exportContent();
+        QList<PlotBase*> list{dock->exportContent()};
         for (PlotBase* plot : list)
         {
             QString name(fileName + "_" + plot->windowTitle() + ".png");
             ExportImage::exportAsImage(plot, name);
         }
     }
-    auto view = tab_->findChild<DataView*>();
+    auto view{tab_->findChild<DataView*>()};
     Q_ASSERT(view != nullptr);
 
-    const QString barTitle =
-        Constants::getProgressBarTitle(Constants::BarTitle::SAVING);
+    const QString barTitle{
+        Constants::getProgressBarTitle(Constants::BarTitle::SAVING)};
     ProgressBarCounter bar(barTitle, 100, nullptr);
     bar.showDetached();
 
