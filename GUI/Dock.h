@@ -7,14 +7,14 @@
 /**
  * @brief Base class used by filters, data and plot docks.
  */
-class DockWidget : public QDockWidget
+class Dock : public QDockWidget
 {
     Q_OBJECT
 public:
-    explicit DockWidget(const QString& titleText, QWidget* parent = nullptr,
-                        Qt::WindowFlags flags = Qt::Widget);
+    explicit Dock(const QString& titleText, QWidget* parent = nullptr,
+                  Qt::WindowFlags flags = Qt::Widget);
 
-    ~DockWidget() override = default;
+    ~Dock() override = default;
 
 public Q_SLOTS:
     void setNewToolTip(const QString& text);

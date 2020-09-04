@@ -1,13 +1,13 @@
 #pragma once
 
-#include "DockWidget.h"
+#include "Dock.h"
 
 class PlotBase;
 
 /**
  * @brief Dock widget for plots.
  */
-class PlotDockWidget : public DockWidget
+class PlotDockWidget : public Dock
 {
     Q_OBJECT
 public:

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "DockWidget.h"
+#include "Dock.h"
 
 class QPushButton;
 
 /**
  * @brief dock widget for data view.
  */
-class ViewDockWidget : public DockWidget
+class ViewDockWidget : public Dock
 {
     Q_OBJECT
 public:

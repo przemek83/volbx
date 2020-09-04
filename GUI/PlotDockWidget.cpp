@@ -12,7 +12,7 @@
 
 PlotDockWidget::PlotDockWidget(const QString& title, QWidget* parent,
                                Qt::WindowFlags flags)
-    : DockWidget(title, parent, flags)
+    : Dock(title, parent, flags)
 {
     titleBarWidget_.setButtonVisible(DockTitleBar::Button::EXPORT, true);
     titleBarWidget_.setButtonVisible(DockTitleBar::Button::RESET, true);

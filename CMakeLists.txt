@@ -99,8 +99,8 @@ set(${PROJECT_NAME}_SOURCES
     GUI/DockTitleBar.cpp
     GUI/DockTitleBar.h
     GUI/DockTitleBar.ui
-    GUI/DockWidget.cpp
-    GUI/DockWidget.h
+    GUI/Dock.cpp
+    GUI/Dock.h
     GUI/Export.cpp
     GUI/Export.h
     GUI/Export.ui

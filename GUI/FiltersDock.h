@@ -3,7 +3,7 @@
 #include <QDate>
 #include <QMap>
 
-#include "GUI/DockWidget.h"
+#include "GUI/Dock.h"
 
 class FilteringProxyModel;
 class FilterStrings;
@@ -21,7 +21,7 @@ class FiltersDock;
  * @brief Filters dock used as parent for filters widget created for each
  * dataset.
  */
-class FiltersDock : public DockWidget
+class FiltersDock : public Dock
 {
     Q_OBJECT
 public:

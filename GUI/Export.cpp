@@ -17,7 +17,7 @@
 #include "ModelsAndViews/DataView.h"
 #include "Shared/Logger.h"
 
-#include "DockWidget.h"
+#include "Dock.h"
 #include "PlotDockWidget.h"
 #include "ui_Export.h"
 

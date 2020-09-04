@@ -14,7 +14,7 @@
 #include "ui_FiltersDock.h"
 
 FiltersDock::FiltersDock(QWidget* parent)
-    : DockWidget(QObject::tr("Filters"), parent), ui(new Ui::FiltersDock)
+    : Dock(QObject::tr("Filters"), parent), ui(new Ui::FiltersDock)
 {
     ui->setupUi(this);
 }
