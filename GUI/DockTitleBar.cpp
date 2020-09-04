@@ -13,7 +13,6 @@ DockTitleBar::DockTitleBar(QWidget* parent)
     ui->selectAll->setVisible(false);
     ui->unselectAll->setVisible(false);
     ui->exportAll->setVisible(false);
-    ui->floating->setVisible(true);
 
     ui->close->setIcon(
         QApplication::style()->standardIcon(QStyle::SP_DialogCloseButton));

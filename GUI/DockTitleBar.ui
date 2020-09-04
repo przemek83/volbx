@@ -20,7 +20,16 @@
    <property name="spacing">
     <number>1</number>
    </property>
-   <property name="margin">
+   <property name="leftMargin">
+    <number>1</number>
+   </property>
+   <property name="topMargin">
+    <number>1</number>
+   </property>
+   <property name="rightMargin">
+    <number>1</number>
+   </property>
+   <property name="bottomMargin">
     <number>1</number>
    </property>
    <item>
@@ -94,7 +103,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../Resources/Resources.qrc">
+      <iconset resource="../Resources/Resources.qrc">
        <normaloff>:/Icons/Images/copy.png</normaloff>:/Icons/Images/copy.png</iconset>
      </property>
      <property name="iconSize">
@@ -120,7 +129,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../Resources/Resources.qrc">
+      <iconset resource="../Resources/Resources.qrc">
        <normaloff>:/Icons/Images/unselectAll.png</normaloff>:/Icons/Images/unselectAll.png</iconset>
      </property>
      <property name="iconSize">
@@ -146,7 +155,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../Resources/Resources.qrc">
+      <iconset resource="../Resources/Resources.qrc">
        <normaloff>:/Icons/Images/selectAll.png</normaloff>:/Icons/Images/selectAll.png</iconset>
      </property>
      <property name="iconSize">
@@ -162,9 +171,6 @@
    </item>
    <item>
     <widget class="QPushButton" name="floating">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
      <property name="toolTip">
       <string>dock/undock</string>
      </property>
@@ -172,7 +178,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../Resources/Resources.qrc">
+      <iconset resource="../Resources/Resources.qrc">
        <normaloff>:/Icons/Images/float.png</normaloff>:/Icons/Images/float.png</iconset>
      </property>
      <property name="iconSize">
@@ -208,7 +214,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../Resources/Resources.qrc"/>
+  <include location="../Resources/Resources.qrc"/>
  </resources>
  <connections/>
 </ui>
