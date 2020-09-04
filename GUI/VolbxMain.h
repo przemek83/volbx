@@ -14,7 +14,7 @@ class VolbxMain;
 
 class FiltersDock;
 class DataView;
-class ViewDockWidget;
+class DataViewDock;
 class TableModel;
 class Dataset;
 class QNetworkReply;

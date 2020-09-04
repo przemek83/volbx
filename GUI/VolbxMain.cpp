@@ -35,7 +35,7 @@
 #include "MainTab.h"
 #include "MainTabWidget.h"
 #include "SaveDatasetAs.h"
-#include "ViewDockWidget.h"
+#include "DataViewDock.h"
 #include "ui_VolbxMain.h"
 
 VolbxMain::VolbxMain(QWidget* parent)

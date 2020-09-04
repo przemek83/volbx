@@ -118,8 +118,8 @@ set(${PROJECT_NAME}_SOURCES
     GUI/SaveDatasetAs.ui
     GUI/TabBar.cpp
     GUI/TabBar.h
-    GUI/ViewDockWidget.cpp
-    GUI/ViewDockWidget.h
+    GUI/DataViewDock.cpp
+    GUI/DataViewDock.h
     GUI/VolbxMain.cpp
     GUI/VolbxMain.h
     GUI/VolbxMain.ui

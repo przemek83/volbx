@@ -7,14 +7,14 @@ class QPushButton;
 /**
  * @brief dock widget for data view.
  */
-class ViewDockWidget : public Dock
+class DataViewDock : public Dock
 {
     Q_OBJECT
 public:
-    explicit ViewDockWidget(const QString& title, QWidget* parent = nullptr,
-                            Qt::WindowFlags flags = Qt::Widget);
+    explicit DataViewDock(const QString& title, QWidget* parent = nullptr,
+                          Qt::WindowFlags flags = Qt::Widget);
 
-    ~ViewDockWidget() override = default;
+    ~DataViewDock() override = default;
 
     void activateSelectButtons();
 

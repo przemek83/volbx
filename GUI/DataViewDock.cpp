@@ -1,4 +1,4 @@
-#include "ViewDockWidget.h"
+#include "DataViewDock.h"
 
 #include <ExportDsv.h>
 #include <QApplication>
@@ -12,8 +12,8 @@
 
 #include "DockTitleBar.h"
 
-ViewDockWidget::ViewDockWidget(const QString& title, QWidget* parent,
-                               Qt::WindowFlags flags)
+DataViewDock::DataViewDock(const QString& title, QWidget* parent,
+                           Qt::WindowFlags flags)
     : Dock(title, parent, flags)
 {
     titleBarWidget_.setButtonVisible(DockTitleBar::Button::EXPORT, true);
@@ -21,16 +21,16 @@ ViewDockWidget::ViewDockWidget(const QString& title, QWidget* parent,
     titleBarWidget_.setButtonVisible(DockTitleBar::Button::UNSELECT_ALL, true);
 
     connect(&titleBarWidget_, &DockTitleBar::exportClicked, this,
-            &ViewDockWidget::quickExportData);
+            &DataViewDock::quickExportData);
 
     connect(&titleBarWidget_, &DockTitleBar::selectAllClicked, this,
-            &ViewDockWidget::selectAll);
+            &DataViewDock::selectAll);
 
     connect(&titleBarWidget_, &DockTitleBar::unselectAllClicked, this,
-            &ViewDockWidget::unselectAll);
+            &DataViewDock::unselectAll);
 }
 
-void ViewDockWidget::quickExportData()
+void DataViewDock::quickExportData()
 {
     auto view = findChild<DataView*>();
     Q_ASSERT(view != nullptr);
@@ -45,7 +45,7 @@ void ViewDockWidget::quickExportData()
     QApplication::clipboard()->setText(QString::fromUtf8(exportedByteArray));
 }
 
-void ViewDockWidget::selectAll()
+void DataViewDock::selectAll()
 {
     auto view = findChild<DataView*>();
 
@@ -56,7 +56,7 @@ void ViewDockWidget::selectAll()
     view->recomputeAllData();
 }
 
-void ViewDockWidget::unselectAll()
+void DataViewDock::unselectAll()
 {
     auto view = findChild<DataView*>();
 
@@ -67,13 +67,13 @@ void ViewDockWidget::unselectAll()
     view->recomputeAllData();
 }
 
-void ViewDockWidget::activateSelectButtons()
+void DataViewDock::activateSelectButtons()
 {
     titleBarWidget_.setButtonEnabled(DockTitleBar::Button::SELECT_ALL, true);
     titleBarWidget_.setButtonEnabled(DockTitleBar::Button::UNSELECT_ALL, true);
 }
 
-void ViewDockWidget::deactivateSelectButtons()
+void DataViewDock::deactivateSelectButtons()
 {
     titleBarWidget_.setButtonEnabled(DockTitleBar::Button::SELECT_ALL, false);
     titleBarWidget_.setButtonEnabled(DockTitleBar::Button::UNSELECT_ALL, false);

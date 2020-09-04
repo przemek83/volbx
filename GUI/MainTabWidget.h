@@ -9,7 +9,7 @@ class TableModel;
 class DataView;
 class FilteringProxyModel;
 class MainTab;
-class ViewDockWidget;
+class DataViewDock;
 
 /**
  * @brief TabWidget. Each tab contains data and plots.
@@ -48,7 +48,7 @@ private:
 
     void activateDataSelection(DataView* view);
 
-    ViewDockWidget* getCurrentDataViewDock();
+    DataViewDock* getCurrentDataViewDock();
 
     MainTab* getCurrentMainTab();
 

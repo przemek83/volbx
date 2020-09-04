@@ -5,7 +5,7 @@
 #include "ModelsAndViews/FilteringProxyModel.h"
 #include "ModelsAndViews/TableModel.h"
 
-#include "ViewDockWidget.h"
+#include "DataViewDock.h"
 
 MainTab::MainTab(std::unique_ptr<Dataset> dataset, QWidget* parent)
     : QMainWindow(parent)
@@ -19,7 +19,7 @@ MainTab::MainTab(std::unique_ptr<Dataset> dataset, QWidget* parent)
     auto proxyModel = new FilteringProxyModel(this);
     proxyModel->setSourceModel(model);
 
-    ViewDockWidget* dock = new ViewDockWidget(tr("Data"), this);
+    DataViewDock* dock = new DataViewDock(tr("Data"), this);
     auto view = new DataView(dock);
     view->setModel(proxyModel);
     dock->setWidget(view);

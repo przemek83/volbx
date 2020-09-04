@@ -13,10 +13,10 @@
 #include "ModelsAndViews/TableModel.h"
 #include "Shared/Logger.h"
 
+#include "DataViewDock.h"
 #include "MainTab.h"
 #include "PlotDock.h"
 #include "TabBar.h"
-#include "ViewDockWidget.h"
 
 MainTabWidget::MainTabWidget(QWidget* parent) : QTabWidget(parent)
 {
@@ -76,13 +76,13 @@ QVector<std::pair<QString, int>> MainTabWidget::getStringColumnsWithIndexes(
     return stringColumns;
 }
 
-ViewDockWidget* MainTabWidget::getCurrentDataViewDock()
+DataViewDock* MainTabWidget::getCurrentDataViewDock()
 {
     DataView* dataView = getCurrentDataView();
     Q_ASSERT(nullptr != dataView);
     if (dataView == nullptr)
         return nullptr;
-    return qobject_cast<ViewDockWidget*>(dataView->parent());
+    return qobject_cast<DataViewDock*>(dataView->parent());
 }
 
 void MainTabWidget::setTextFilterInProxy(int column,
@@ -237,7 +237,7 @@ void MainTabWidget::addGroupingPlot()
 void MainTabWidget::activateDataSelection(DataView* view)
 {
     // Activate select all and unselect all buttons on data view dock.
-    ViewDockWidget* viewDock = getCurrentDataViewDock();
+    DataViewDock* viewDock = getCurrentDataViewDock();
     if (viewDock == nullptr)
         return;
 
