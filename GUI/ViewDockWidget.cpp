@@ -16,17 +16,17 @@ ViewDockWidget::ViewDockWidget(const QString& title, QWidget* parent,
                                Qt::WindowFlags flags)
     : DockWidget(title, parent, flags)
 {
-    titleBarWidget_.getExportButton()->setVisible(true);
-    titleBarWidget_.getSelectAllButton()->setVisible(true);
-    titleBarWidget_.getUnselectAllButton()->setVisible(true);
+    titleBarWidget_.setButtonVisible(DockTitleBar::Button::EXPORT, true);
+    titleBarWidget_.setButtonVisible(DockTitleBar::Button::SELECT_ALL, true);
+    titleBarWidget_.setButtonVisible(DockTitleBar::Button::UNSELECT_ALL, true);
 
-    connect(titleBarWidget_.getExportButton(), &QPushButton::clicked, this,
+    connect(&titleBarWidget_, &DockTitleBar::exportClicked, this,
             &ViewDockWidget::quickExportData);
 
-    connect(titleBarWidget_.getSelectAllButton(), &QPushButton::clicked, this,
+    connect(&titleBarWidget_, &DockTitleBar::selectAllClicked, this,
             &ViewDockWidget::selectAll);
 
-    connect(titleBarWidget_.getUnselectAllButton(), &QPushButton::clicked, this,
+    connect(&titleBarWidget_, &DockTitleBar::unselectAllClicked, this,
             &ViewDockWidget::unselectAll);
 }
 
@@ -69,12 +69,12 @@ void ViewDockWidget::unselectAll()
 
 void ViewDockWidget::activateSelectButtons()
 {
-    titleBarWidget_.getSelectAllButton()->setDisabled(false);
-    titleBarWidget_.getUnselectAllButton()->setDisabled(false);
+    titleBarWidget_.setButtonEnabled(DockTitleBar::Button::SELECT_ALL, true);
+    titleBarWidget_.setButtonEnabled(DockTitleBar::Button::UNSELECT_ALL, true);
 }
 
 void ViewDockWidget::deactivateSelectButtons()
 {
-    titleBarWidget_.getSelectAllButton()->setDisabled(true);
-    titleBarWidget_.getUnselectAllButton()->setDisabled(true);
+    titleBarWidget_.setButtonEnabled(DockTitleBar::Button::SELECT_ALL, false);
+    titleBarWidget_.setButtonEnabled(DockTitleBar::Button::UNSELECT_ALL, false);
 }

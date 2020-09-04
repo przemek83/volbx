@@ -14,12 +14,12 @@ PlotDockWidget::PlotDockWidget(const QString& title, QWidget* parent,
                                Qt::WindowFlags flags)
     : DockWidget(title, parent, flags)
 {
-    titleBarWidget_.getExportButton()->setVisible(true);
-    titleBarWidget_.getResetButton()->setVisible(true);
+    titleBarWidget_.setButtonVisible(DockTitleBar::Button::EXPORT, true);
+    titleBarWidget_.setButtonVisible(DockTitleBar::Button::RESET, true);
 
-    connect(titleBarWidget_.getExportButton(), &QPushButton::clicked, this,
+    connect(&titleBarWidget_, &DockTitleBar::exportClicked, this,
             &PlotDockWidget::quickExportData);
-    connect(titleBarWidget_.getResetButton(), &QPushButton::clicked, this,
+    connect(&titleBarWidget_, &DockTitleBar::resetClicked, this,
             &PlotDockWidget::resetPlot);
 }
 

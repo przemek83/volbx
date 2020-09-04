@@ -10,7 +10,7 @@ class DockTitleBar;
 }  // namespace Ui
 
 /**
- * @brief Title bar for dockwidgets with some buttons.
+ * @brief Title bar with buttons used in dock windows.
  */
 class DockTitleBar : public QWidget
 {
@@ -20,23 +20,39 @@ public:
 
     ~DockTitleBar() override;
 
-    QPushButton* getCloseButton();
-
-    QPushButton* getFloatingButton();
-
-    QPushButton* getSelectAllButton();
-
-    QPushButton* getUnselectAllButton();
-
-    QPushButton* getExportButton();
-
-    QPushButton* getResetButton();
-
     void setTitle(const QString& titleText);
+
+    enum class Button : char
+    {
+        CLOSE,
+        FLOATING,
+        SELECT_ALL,
+        UNSELECT_ALL,
+        EXPORT,
+        RESET
+    };
+
+    void setButtonVisible(Button button, bool visible);
+
+    void setButtonEnabled(Button button, bool enabled);
+
+signals:
+    void closeClicked();
+    void floatingClicked();
+    void selectAllClicked();
+    void unselectAllClicked();
+    void exportClicked();
+    void resetClicked();
 
 protected:
     void paintEvent(QPaintEvent* event) override;
 
 private:
+    void connectButtons();
+
+    void drawBorder();
+
+    QPushButton* getButton(Button button) const;
+
     Ui::DockTitleBar* ui;
 };
