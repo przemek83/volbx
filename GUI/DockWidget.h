@@ -23,5 +23,5 @@ protected:
     DockTitleBar titleBarWidget_;
 
 private Q_SLOTS:
-    void manageFloating();
+    void toggleFloating();
 };

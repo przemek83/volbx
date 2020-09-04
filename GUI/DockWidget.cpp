@@ -1,12 +1,5 @@
 ﻿#include "DockWidget.h"
 
-#include <QDebug>
-#include <QHBoxLayout>
-#include <QPushButton>
-
-#include "Common/Constants.h"
-#include "ModelsAndViews/DataView.h"
-
 DockWidget::DockWidget(const QString& titleText, QWidget* parent,
                        Qt::WindowFlags flags)
     : QDockWidget(titleText, parent, flags)
@@ -16,11 +9,11 @@ DockWidget::DockWidget(const QString& titleText, QWidget* parent,
     connect(&titleBarWidget_, &DockTitleBar::closeClicked, this,
             &DockWidget::close);
     connect(&titleBarWidget_, &DockTitleBar::floatingClicked, this,
-            &DockWidget::manageFloating);
+            &DockWidget::toggleFloating);
 
     setTitleBarWidget(&titleBarWidget_);
 }
 
 void DockWidget::setNewToolTip(const QString& text) { setToolTip(text); }
 
-void DockWidget::manageFloating() { setFloating(!isFloating()); }
+void DockWidget::toggleFloating() { setFloating(!isFloating()); }
