@@ -89,14 +89,14 @@ void Export::saveOnDisk()
 
 bool Export::locationIsValid(const QString& location) const
 {
-    QDir dir(location);
+    const QDir dir(location);
     return !ui->locationLineEdit->text().isEmpty() & dir.exists() &&
            QFile::permissions(dir.path()).testFlag(QFile::WriteUser);
 }
 
 bool Export::exportData(const QString& fileName)
 {
-    auto view{tab_->findChild<DataView*>()};
+    const auto view{tab_->findChild<DataView*>()};
     Q_ASSERT(view != nullptr);
 
     const QString barTitle{
@@ -139,13 +139,13 @@ bool Export::exportToCsv(const QString& fileName, DataView* view,
 
 void Export::exportPlots(const QString& fileName)
 {
-    QList<PlotDock*> docks{tab_->findChildren<PlotDock*>()};
-    for (PlotDock* dock : docks)
+    const QList<PlotDock*> plotDocks{tab_->findChildren<PlotDock*>()};
+    for (const auto plotDock : plotDocks)
     {
-        QList<PlotBase*> list{dock->exportContent()};
-        for (PlotBase* plot : list)
+        const QList<PlotBase*> plots{plotDock->exportContent()};
+        for (const auto plot : plots)
         {
-            QString name(fileName + "_" + plot->windowTitle() + ".png");
+            const QString name(fileName + "_" + plot->windowTitle() + ".png");
             ExportImage::exportAsImage(plot, name);
         }
     }
@@ -157,6 +157,5 @@ QString Export::getFileName()
         QDate::currentDate().toString(exportFilesDateFormat_));
     const QString fileName(ui->locationLineEdit->text() + "/" +
                            ui->prefix->text() + "_" + dateString);
-
     return fileName;
 }
