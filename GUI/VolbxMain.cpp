@@ -31,28 +31,24 @@
 
 #include "About.h"
 #include "CheckUpdates.h"
+#include "DataViewDock.h"
 #include "Export.h"
 #include "MainTab.h"
 #include "MainTabWidget.h"
 #include "SaveDatasetAs.h"
-#include "DataViewDock.h"
 #include "ui_VolbxMain.h"
 
 VolbxMain::VolbxMain(QWidget* parent)
     : QMainWindow(parent),
-      filters_(nullptr),
+      filters_(new FiltersDock(this)),
       ui(new Ui::VolbxMain),
-      tabWidget_(nullptr)
+      tabWidget_(new MainTabWidget(this))
 {
     ui->setupUi(this);
 
     setStandardIcons();
 
     setupStatusBar();
-
-    filters_ = new FiltersDock(this);
-
-    tabWidget_ = new MainTabWidget(this);
 
     connect(filters_, &FiltersDock::newNamesFiltering, tabWidget_,
             &MainTabWidget::setTextFilterInProxy);
@@ -236,10 +232,6 @@ void VolbxMain::tabWasChanged(int index)
     if (-1 != index)
     {
         const FilteringProxyModel* model = tabWidget_->getCurrentProxyModel();
-        if (nullptr == model)
-        {
-            return;
-        }
         filters_->activateFiltersForModel(model);
         manageActions(true);
     }

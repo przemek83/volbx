@@ -12,7 +12,6 @@ class FilterDates;
 class FilterNumbers;
 class TableModel;
 class QVBoxLayout;
-class QStackedWidget;
 
 /**
  * @brief Filters dock used as parent for filters widget created for each

@@ -6,10 +6,8 @@
 #include <FilterStrings.h>
 #include <QLineEdit>
 #include <QScrollArea>
-#include <QStackedWidget>
 #include <QVBoxLayout>
 
-#include "Common/Constants.h"
 #include "ModelsAndViews/FilteringProxyModel.h"
 #include "ModelsAndViews/TableModel.h"
 
@@ -158,14 +156,12 @@ FilterNumbers* FiltersDock::createNewNumbersFilter(
 void FiltersDock::removeModel(const FilteringProxyModel* model)
 {
     if (model == nullptr)
-    {
         return;
-    }
 
-    QWidget* widgetWithFiltersToDelete = modelsMap_.key(model);
-    modelsMap_.remove(widgetWithFiltersToDelete);
-    stackedWidget_.removeWidget(widgetWithFiltersToDelete);
-    delete widgetWithFiltersToDelete;
+    QWidget* widgetToDelete{modelsMap_.key(model)};
+    modelsMap_.remove(widgetToDelete);
+    stackedWidget_.removeWidget(widgetToDelete);
+    delete widgetToDelete;
 }
 
 void FiltersDock::activateFiltersForModel(const FilteringProxyModel* model)
@@ -176,22 +172,7 @@ void FiltersDock::activateFiltersForModel(const FilteringProxyModel* model)
 
 void FiltersDock::searchTextChanged(const QString& arg1)
 {
-    QWidget* currentWidget = stackedWidget_.currentWidget();
-
-    if (currentWidget == nullptr)
-    {
-        Q_ASSERT(false);
-        return;
-    }
-
-    QList<Filter*> widgets = currentWidget->findChildren<Filter*>();
-
-    for (Filter* current : widgets)
-    {
-        if (current != nullptr)
-            current->setVisible(
-                current->title().contains(arg1, Qt::CaseInsensitive));
-        else
-            Q_ASSERT(false);
-    }
+    QWidget* currentWidget{stackedWidget_.currentWidget()};
+    for (auto filter : currentWidget->findChildren<Filter*>())
+        filter->setVisible(filter->title().contains(arg1, Qt::CaseInsensitive));
 }
