@@ -3,6 +3,8 @@
 #include <QDialog>
 
 class QMainWindow;
+class DataView;
+class ProgressBarCounter;
 
 namespace Ui
 {
@@ -10,7 +12,7 @@ class Export;
 }  // namespace Ui
 
 /**
- * @brief Exports data of active tab and all plots.
+ * @brief Exports data in active tab and all related plots.
  */
 class Export : public QDialog
 {
@@ -20,19 +22,31 @@ public:
 
     ~Export() override;
 
-private Q_SLOTS:
-    void saveClicked();
-
-    void locationSearchClicked();
-
 private:
     void saveOnDisk();
 
     bool locationIsValid(const QString& location) const;
+
+    bool exportData(const QString& fileName);
+
+    bool exportToXlsx(const QString& fileName, DataView* view,
+                      ProgressBarCounter& bar);
+
+    bool exportToCsv(const QString& fileName, DataView* view,
+                     ProgressBarCounter& bar);
+
+    void exportPlots(const QString& fileName);
+
+    QString getFileName();
 
     Ui::Export* ui;
 
     QMainWindow* tab_;
 
     const QString exportFilesDateFormat_{QStringLiteral("yyyyMMdd")};
+
+private Q_SLOTS:
+    void saveClicked();
+
+    void locationSearchClicked();
 };

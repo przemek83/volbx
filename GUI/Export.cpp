@@ -70,10 +70,75 @@ void Export::saveOnDisk()
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
 
-    const QString dateString(
-        QDate::currentDate().toString(exportFilesDateFormat_));
-    const QString fileName(ui->locationLineEdit->text() + "/" +
-                           ui->prefix->text() + "_" + dateString);
+    const QString fileName{getFileName()};
+    exportPlots(fileName);
+
+    QTime performanceTimer;
+    performanceTimer.start();
+
+    if (exportData(fileName))
+        LOG(LogTypes::IMPORT_EXPORT,
+            "Data exported in " +
+                QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
+                " seconds.");
+    else
+        LOG(LogTypes::IMPORT_EXPORT, "Exporting data failed.");
+
+    QApplication::restoreOverrideCursor();
+}
+
+bool Export::locationIsValid(const QString& location) const
+{
+    QDir dir(location);
+    return !ui->locationLineEdit->text().isEmpty() & dir.exists() &&
+           QFile::permissions(dir.path()).testFlag(QFile::WriteUser);
+}
+
+bool Export::exportData(const QString& fileName)
+{
+    auto view{tab_->findChild<DataView*>()};
+    Q_ASSERT(view != nullptr);
+
+    const QString barTitle{
+        Constants::getProgressBarTitle(Constants::BarTitle::SAVING)};
+    ProgressBarCounter bar(barTitle, 100, nullptr);
+    bar.showDetached();
+
+    bool exportSucceed{false};
+    if (ui->xlsx->isChecked())
+        exportSucceed = exportToXlsx(fileName, view, bar);
+    else
+        exportSucceed = exportToCsv(fileName, view, bar);
+    return exportSucceed;
+}
+
+bool Export::exportToXlsx(const QString& fileName, DataView* view,
+                          ProgressBarCounter& bar)
+{
+    QFile file(fileName + "_" + tr("data") + ".xlsx");
+    ExportXlsx exportXlsx;
+    connect(&exportXlsx, &ExportData::progressPercentChanged, &bar,
+            &ProgressBarCounter::updateProgress);
+    return exportXlsx.exportView(*view, file);
+}
+
+bool Export::exportToCsv(const QString& fileName, DataView* view,
+                         ProgressBarCounter& bar)
+{
+    QFile file(fileName + "_" + tr("data") + ".csv");
+    file.open(QIODevice::WriteOnly);
+    ExportDsv exportDsv(',');
+    connect(&exportDsv, &ExportData::progressPercentChanged, &bar,
+            &ProgressBarCounter::updateProgress);
+    QLocale locale;
+    locale.setNumberOptions(locale.numberOptions() |
+                            QLocale::OmitGroupSeparator);
+    exportDsv.setNumbersLocale(locale);
+    return exportDsv.exportView(*view, file);
+}
+
+void Export::exportPlots(const QString& fileName)
+{
     QList<PlotDock*> docks{tab_->findChildren<PlotDock*>()};
     for (PlotDock* dock : docks)
     {
@@ -84,54 +149,14 @@ void Export::saveOnDisk()
             ExportImage::exportAsImage(plot, name);
         }
     }
-    auto view{tab_->findChild<DataView*>()};
-    Q_ASSERT(view != nullptr);
-
-    const QString barTitle{
-        Constants::getProgressBarTitle(Constants::BarTitle::SAVING)};
-    ProgressBarCounter bar(barTitle, 100, nullptr);
-    bar.showDetached();
-
-    QTime performanceTimer;
-    performanceTimer.start();
-
-    bool exportSucceed{false};
-    if (ui->xlsx->isChecked())
-    {
-        QFile file(fileName + "_" + tr("data") + ".xlsx");
-        ExportXlsx exportXlsx;
-        connect(&exportXlsx, &ExportData::progressPercentChanged, &bar,
-                &ProgressBarCounter::updateProgress);
-        exportSucceed = exportXlsx.exportView(*view, file);
-    }
-    else
-    {
-        QFile file(fileName + "_" + tr("data") + ".csv");
-        file.open(QIODevice::WriteOnly);
-        ExportDsv exportDsv(',');
-        connect(&exportDsv, &ExportData::progressPercentChanged, &bar,
-                &ProgressBarCounter::updateProgress);
-        QLocale locale;
-        locale.setNumberOptions(locale.numberOptions() |
-                                QLocale::OmitGroupSeparator);
-        exportDsv.setNumbersLocale(locale);
-        exportSucceed = exportDsv.exportView(*view, file);
-    }
-
-    if (exportSucceed)
-        LOG(LogTypes::IMPORT_EXPORT,
-            "Data exported in " +
-                QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
-                " seconds.");
-    else
-        LOG(LogTypes::IMPORT_EXPORT, "Data exporting failed.");
-
-    QApplication::restoreOverrideCursor();
 }
 
-bool Export::locationIsValid(const QString& location) const
+QString Export::getFileName()
 {
-    QDir dir(location);
-    return !ui->locationLineEdit->text().isEmpty() & dir.exists() &&
-           QFile::permissions(dir.path()).testFlag(QFile::WriteUser);
+    const QString dateString(
+        QDate::currentDate().toString(exportFilesDateFormat_));
+    const QString fileName(ui->locationLineEdit->text() + "/" +
+                           ui->prefix->text() + "_" + dateString);
+
+    return fileName;
 }
