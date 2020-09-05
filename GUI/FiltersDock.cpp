@@ -6,20 +6,18 @@
 #include <FilterStrings.h>
 #include <QLineEdit>
 #include <QScrollArea>
+#include <QStackedWidget>
+#include <QVBoxLayout>
 
 #include "Common/Constants.h"
 #include "ModelsAndViews/FilteringProxyModel.h"
 #include "ModelsAndViews/TableModel.h"
 
-#include "ui_FiltersDock.h"
-
 FiltersDock::FiltersDock(QWidget* parent)
-    : Dock(QObject::tr("Filters"), parent), ui(new Ui::FiltersDock)
+    : Dock(QObject::tr("Filters"), parent), stackedWidget_(this)
 {
-    ui->setupUi(this);
+    setWidget(&stackedWidget_);
 }
-
-FiltersDock::~FiltersDock() { delete ui; }
 
 void FiltersDock::addModel(const FilteringProxyModel* model)
 {
@@ -63,7 +61,7 @@ void FiltersDock::addModel(const FilteringProxyModel* model)
     // Add scroll area to main layout.
     mainLayout->addWidget(scrollArea);
 
-    ui->stackedWidget->addWidget(mainWidget);
+    stackedWidget_.addWidget(mainWidget);
     activateFiltersForModel(model);
 }
 
@@ -166,19 +164,19 @@ void FiltersDock::removeModel(const FilteringProxyModel* model)
 
     QWidget* widgetWithFiltersToDelete = modelsMap_.key(model);
     modelsMap_.remove(widgetWithFiltersToDelete);
-    ui->stackedWidget->removeWidget(widgetWithFiltersToDelete);
+    stackedWidget_.removeWidget(widgetWithFiltersToDelete);
     delete widgetWithFiltersToDelete;
 }
 
 void FiltersDock::activateFiltersForModel(const FilteringProxyModel* model)
 {
     if (model != nullptr)
-        ui->stackedWidget->setCurrentWidget(modelsMap_.key(model));
+        stackedWidget_.setCurrentWidget(modelsMap_.key(model));
 }
 
 void FiltersDock::searchTextChanged(const QString& arg1)
 {
-    QWidget* currentWidget = ui->stackedWidget->currentWidget();
+    QWidget* currentWidget = stackedWidget_.currentWidget();
 
     if (currentWidget == nullptr)
     {

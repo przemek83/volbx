@@ -106,7 +106,6 @@ set(${PROJECT_NAME}_SOURCES
     GUI/Export.ui
     GUI/FiltersDock.cpp
     GUI/FiltersDock.h
-    GUI/FiltersDock.ui
     GUI/MainTab.cpp
     GUI/MainTab.h
     GUI/MainTabWidget.cpp

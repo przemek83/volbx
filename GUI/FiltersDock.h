@@ -2,6 +2,7 @@
 
 #include <QDate>
 #include <QMap>
+#include <QStackedWidget>
 
 #include "GUI/Dock.h"
 
@@ -11,11 +12,7 @@ class FilterDates;
 class FilterNumbers;
 class TableModel;
 class QVBoxLayout;
-
-namespace Ui
-{
-class FiltersDock;
-}  // namespace Ui
+class QStackedWidget;
 
 /**
  * @brief Filters dock used as parent for filters widget created for each
@@ -27,7 +24,7 @@ class FiltersDock : public Dock
 public:
     explicit FiltersDock(QWidget* parent = nullptr);
 
-    ~FiltersDock() override;
+    ~FiltersDock() override = default;
 
     /// Adds new widget with filters for given model.
     void addModel(const FilteringProxyModel* model);
@@ -38,15 +35,7 @@ public:
     /// Shows widget with filters related with given model.
     void activateFiltersForModel(const FilteringProxyModel* model);
 
-private Q_SLOTS:
-    void searchTextChanged(const QString& arg1);
-
 private:
-    Ui::FiltersDock* ui;
-
-    /// Used to find widget related with model.
-    QMap<QWidget*, const FilteringProxyModel*> modelsMap_;
-
     /// Create names filter for given model column and return it.
     FilterStrings* createNewStringsFilter(const TableModel* parentModel,
                                           int index, QWidget* filterListWidget);
@@ -61,6 +50,14 @@ private:
 
     void createFiltersWidgets(const TableModel* model,
                               QWidget* filterListWidget, QVBoxLayout* layout);
+
+    /// Used to find widget related with model.
+    QMap<QWidget*, const FilteringProxyModel*> modelsMap_;
+
+    QStackedWidget stackedWidget_;
+
+private Q_SLOTS:
+    void searchTextChanged(const QString& arg1);
 
 Q_SIGNALS:
     void newNumbersFiltering(int column, double from, double to);
