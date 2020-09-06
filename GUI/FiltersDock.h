@@ -6,6 +6,7 @@
 
 #include "GUI/Dock.h"
 
+class QScrollArea;
 class QLineEdit;
 class FilteringProxyModel;
 class FilterStrings;
@@ -52,7 +53,10 @@ private:
 
     QString getColumnName(const TableModel* parentModel, int index) const;
 
-    QLineEdit* createSearchLineEdit();
+    QLineEdit* createSearchLineEdit(QWidget* parent);
+
+    QScrollArea* createScrollAreaWithFilters(const FilteringProxyModel* model,
+                                             QWidget* parent);
 
     /// Used to find widget related with model.
     QMap<QWidget*, const FilteringProxyModel*> modelsMap_;

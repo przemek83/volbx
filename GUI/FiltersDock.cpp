@@ -27,22 +27,8 @@ void FiltersDock::addModel(const FilteringProxyModel* model)
 
     auto mainLayout{new QVBoxLayout(mainWidget)};
     mainLayout->setContentsMargins(0, 0, 0, 0);
-
-    auto searchLineEdit{createSearchLineEdit()};
-    searchLineEdit->setParent(mainWidget);
-    mainLayout->addWidget(searchLineEdit);
-
-    QWidget* filterListWidget{createFiltersWidgets(model)};
-
-    // Add scroll area for filterListWidget.
-    auto scrollArea{new QScrollArea()};
-    scrollArea->setSizePolicy(
-        QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred));
-    scrollArea->setWidget(filterListWidget);
-    scrollArea->setWidgetResizable(true);
-
-    // Add scroll area to main layout.
-    mainLayout->addWidget(scrollArea);
+    mainLayout->addWidget(createSearchLineEdit(mainWidget));
+    mainLayout->addWidget(createScrollAreaWithFilters(model, mainWidget));
 
     stackedWidget_.addWidget(mainWidget);
     activateFiltersForModel(model);
@@ -98,14 +84,28 @@ QString FiltersDock::getColumnName(const TableModel* parentModel,
     return parentModel->headerData(index, Qt::Horizontal).toString();
 }
 
-QLineEdit* FiltersDock::createSearchLineEdit()
+QLineEdit* FiltersDock::createSearchLineEdit(QWidget* parent)
 {
-    auto lineEdit{new QLineEdit()};
+    auto lineEdit{new QLineEdit(parent)};
     lineEdit->setPlaceholderText(tr("Search..."));
     lineEdit->setClearButtonEnabled(true);
     connect(lineEdit, &QLineEdit::textChanged, this,
             &FiltersDock::searchTextChanged);
     return lineEdit;
+}
+
+QScrollArea* FiltersDock::createScrollAreaWithFilters(
+    const FilteringProxyModel* model, QWidget* parent)
+{
+    QWidget* filterListWidget{createFiltersWidgets(model)};
+
+    auto scrollArea{new QScrollArea(parent)};
+    scrollArea->setSizePolicy(
+        QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred));
+    scrollArea->setWidget(filterListWidget);
+    scrollArea->setWidgetResizable(true);
+
+    return scrollArea;
 }
 
 FilterStrings* FiltersDock::createNewStringsFilter(
