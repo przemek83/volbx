@@ -47,25 +47,28 @@ bool SaveDatasetAs::nameIsUsed(const QString& name)
     return usedNames_.contains(name, Qt::CaseInsensitive);
 }
 
-void SaveDatasetAs::nameChanged(const QString& actualText)
+void SaveDatasetAs::adjustWidgetBackgroundColor(QWidget* widget, bool nameUsed)
 {
-    ui->save->setDisabled(actualText.isEmpty());
-
-    QPalette palette{ui->name->palette()};
-    const bool nameUsed{nameIsUsed(actualText)};
-    const QPalette::ColorRole colorRole{ui->name->backgroundRole()};
+    QPalette palette{widget->palette()};
+    const QPalette::ColorRole colorRole{widget->backgroundRole()};
 
     if (!nameUsed && palette.color(colorRole) == QColor(Qt::red))
     {
         palette.setColor(colorRole, Qt::white);
-        ui->name->setPalette(palette);
+        widget->setPalette(palette);
     }
 
     if (nameUsed && palette.color(colorRole) != QColor(Qt::red))
     {
         palette.setColor(colorRole, Qt::red);
-        ui->name->setPalette(palette);
+        widget->setPalette(palette);
     }
+}
+
+void SaveDatasetAs::nameChanged(const QString& actualText)
+{
+    ui->save->setDisabled(actualText.isEmpty());
+    adjustWidgetBackgroundColor(ui->name, nameIsUsed(actualText));
 }
 
 void SaveDatasetAs::saveClicked()

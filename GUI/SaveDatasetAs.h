@@ -25,6 +25,8 @@ private:
 
     bool nameIsUsed(const QString& name);
 
+    void adjustWidgetBackgroundColor(QWidget* widget, bool nameUsed);
+
     Ui::SaveDatasetAs* ui;
 
     QStringList usedNames_;
