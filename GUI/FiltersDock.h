@@ -50,6 +50,8 @@ private:
     void createFiltersWidgets(const TableModel* model,
                               QWidget* filterListWidget, QVBoxLayout* layout);
 
+    QString getColumnName(const TableModel* parentModel, int index) const;
+
     /// Used to find widget related with model.
     QMap<QWidget*, const FilteringProxyModel*> modelsMap_;
 

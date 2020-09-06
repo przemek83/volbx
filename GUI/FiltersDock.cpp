@@ -22,35 +22,35 @@ void FiltersDock::addModel(const FilteringProxyModel* model)
     if (model == nullptr)
         return;
 
-    auto mainWidget = new QWidget();
+    auto mainWidget{new QWidget()};
     modelsMap_[mainWidget] = model;
 
-    auto mainLayout = new QVBoxLayout(mainWidget);
+    auto mainLayout{new QVBoxLayout(mainWidget)};
     mainLayout->setContentsMargins(0, 0, 0, 0);
 
     // Search line edit.
-    auto lineEdit = new QLineEdit(mainWidget);
+    auto lineEdit{new QLineEdit(mainWidget)};
     lineEdit->setPlaceholderText(tr("Search..."));
     lineEdit->setClearButtonEnabled(true);
     connect(lineEdit, &QLineEdit::textChanged, this,
             &FiltersDock::searchTextChanged);
     mainLayout->addWidget(lineEdit);
 
-    auto filterListWidget = new QWidget();
+    auto filterListWidget{new QWidget()};
 
     // Create layout.
-    auto filterListLayout = new QVBoxLayout(filterListWidget);
+    auto filterListLayout{new QVBoxLayout(filterListWidget)};
     filterListLayout->setContentsMargins(0, 0, 0, 0);
     filterListLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
     filterListWidget->setLayout(filterListLayout);
     filterListLayout->addStretch();
 
     // Add filter widgets for each column.
-    const TableModel* parentModel = model->getParentModel();
+    const TableModel* parentModel{model->getParentModel()};
     createFiltersWidgets(parentModel, filterListWidget, filterListLayout);
 
     // Add scroll area for filterListWidget.
-    auto scrollArea = new QScrollArea();
+    auto scrollArea{new QScrollArea()};
     scrollArea->setSizePolicy(
         QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred));
     scrollArea->setWidget(filterListWidget);
@@ -96,16 +96,21 @@ void FiltersDock::createFiltersWidgets(const TableModel* model,
     }
 }
 
+QString FiltersDock::getColumnName(const TableModel* parentModel,
+                                   int index) const
+{
+    return parentModel->headerData(index, Qt::Horizontal).toString();
+}
+
 FilterStrings* FiltersDock::createNewStringsFilter(
     const TableModel* parentModel, int index, QWidget* filterListWidget)
 {
-    QString columnName{
-        parentModel->headerData(index, Qt::Horizontal).toString()};
+    const QString columnName{getColumnName(parentModel, index)};
     QStringList list{parentModel->getStringList(index)};
     const int itemCount{list.size()};
     list.sort();
-    auto filter =
-        new FilterStrings(columnName, std::move(list), filterListWidget);
+    auto filter{
+        new FilterStrings(columnName, std::move(list), filterListWidget)};
     auto emitChangeForColumn = [=](QStringList bannedList) {
         Q_EMIT newNamesFiltering(index, std::move(bannedList));
     };
@@ -122,12 +127,11 @@ FilterDates* FiltersDock::createNewDatesFilter(const TableModel* parentModel,
                                                int index,
                                                QWidget* filterListWidget)
 {
-    QString columnName{
-        parentModel->headerData(index, Qt::Horizontal).toString()};
+    const QString columnName{getColumnName(parentModel, index)};
     const auto [minDate, maxDate,
                 haveEmptyDates]{parentModel->getDateRange(index)};
-    auto filter = new FilterDates(columnName, minDate, maxDate, haveEmptyDates,
-                                  filterListWidget);
+    auto filter{new FilterDates(columnName, minDate, maxDate, haveEmptyDates,
+                                filterListWidget)};
     auto emitChangeForColumn = [=](QDate from, QDate to,
                                    bool filterEmptyDates) {
         Q_EMIT newDateFiltering(index, from, to, filterEmptyDates);
@@ -140,10 +144,9 @@ FilterDates* FiltersDock::createNewDatesFilter(const TableModel* parentModel,
 FilterNumbers* FiltersDock::createNewNumbersFilter(
     const TableModel* parentModel, int index, QWidget* filterListWidget)
 {
-    QString columnName{
-        parentModel->headerData(index, Qt::Horizontal).toString()};
+    const QString columnName{getColumnName(parentModel, index)};
     const auto [min, max]{parentModel->getNumericRange(index)};
-    auto filter = new FilterDoubles(columnName, min, max, filterListWidget);
+    auto filter{new FilterDoubles(columnName, min, max, filterListWidget)};
     auto emitChangeForColumn = [=](double from, double to) {
         Q_EMIT newNumbersFiltering(index, from, to);
     };
