@@ -8,7 +8,7 @@
 class TableModel;
 class DataView;
 class FilteringProxyModel;
-class MainTab;
+class Tab;
 class DataViewDock;
 
 /**
@@ -50,7 +50,7 @@ private:
 
     DataViewDock* getCurrentDataViewDock();
 
-    MainTab* getCurrentMainTab();
+    Tab* getCurrentMainTab();
 
     QVector<std::pair<QString, int>> getStringColumnsWithIndexes(
         TableModel* model) const;

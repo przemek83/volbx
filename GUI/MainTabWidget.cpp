@@ -14,8 +14,8 @@
 #include "Shared/Logger.h"
 
 #include "DataViewDock.h"
-#include "MainTab.h"
 #include "PlotDock.h"
+#include "Tab.h"
 #include "TabBar.h"
 
 MainTabWidget::MainTabWidget(QWidget* parent) : QTabWidget(parent)
@@ -27,7 +27,7 @@ MainTabWidget::MainTabWidget(QWidget* parent) : QTabWidget(parent)
 
 FilteringProxyModel* MainTabWidget::getCurrentProxyModel()
 {
-    auto currentTab = dynamic_cast<MainTab*>(currentWidget());
+    auto currentTab = dynamic_cast<Tab*>(currentWidget());
     Q_ASSERT(nullptr != currentTab);
     if (currentTab == nullptr)
         return nullptr;
@@ -36,7 +36,7 @@ FilteringProxyModel* MainTabWidget::getCurrentProxyModel()
 
 TableModel* MainTabWidget::getCurrentDataModel()
 {
-    auto currentTab = dynamic_cast<MainTab*>(currentWidget());
+    auto currentTab = dynamic_cast<Tab*>(currentWidget());
     Q_ASSERT(nullptr != currentTab);
     if (currentTab == nullptr)
         return nullptr;
@@ -45,16 +45,16 @@ TableModel* MainTabWidget::getCurrentDataModel()
 
 DataView* MainTabWidget::getCurrentDataView()
 {
-    auto currentTab = dynamic_cast<MainTab*>(currentWidget());
+    auto currentTab = dynamic_cast<Tab*>(currentWidget());
     Q_ASSERT(nullptr != currentTab);
     if (currentTab == nullptr)
         return nullptr;
     return currentTab->getCurrentDataView();
 }
 
-MainTab* MainTabWidget::getCurrentMainTab()
+Tab* MainTabWidget::getCurrentMainTab()
 {
-    auto currentTab = dynamic_cast<MainTab*>(currentWidget());
+    auto currentTab = dynamic_cast<Tab*>(currentWidget());
     Q_ASSERT(nullptr != currentTab);
     return currentTab;
 }
@@ -155,7 +155,7 @@ void MainTabWidget::addPlot(const QString& title,
                             const std::function<T*()>& createPlot)
 {
     DataView* view = getCurrentDataView();
-    MainTab* mainTab = getCurrentMainTab();
+    Tab* mainTab = getCurrentMainTab();
     TableModel* model = getCurrentDataModel();
     if (view == nullptr || model == nullptr || mainTab == nullptr)
         return;

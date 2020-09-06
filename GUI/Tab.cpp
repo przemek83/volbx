@@ -1,4 +1,4 @@
-#include "MainTab.h"
+#include "Tab.h"
 
 #include <Datasets/Dataset.h>
 #include <ModelsAndViews/DataView.h>
@@ -7,7 +7,7 @@
 
 #include "DataViewDock.h"
 
-MainTab::MainTab(std::unique_ptr<Dataset> dataset, QWidget* parent)
+Tab::Tab(std::unique_ptr<Dataset> dataset, QWidget* parent)
     : QMainWindow(parent)
 {
     setWindowTitle(dataset->getName());
@@ -21,16 +21,16 @@ MainTab::MainTab(std::unique_ptr<Dataset> dataset, QWidget* parent)
     addDockWidget(Qt::LeftDockWidgetArea, createDataViewDock(proxyModel));
 }
 
-FilteringProxyModel* MainTab::getCurrentProxyModel()
+FilteringProxyModel* Tab::getCurrentProxyModel()
 {
     return findChild<FilteringProxyModel*>();
 }
 
-TableModel* MainTab::getCurrentTableModel() { return findChild<TableModel*>(); }
+TableModel* Tab::getCurrentTableModel() { return findChild<TableModel*>(); }
 
-DataView* MainTab::getCurrentDataView() { return findChild<DataView*>(); }
+DataView* Tab::getCurrentDataView() { return findChild<DataView*>(); }
 
-DataViewDock* MainTab::createDataViewDock(FilteringProxyModel* proxyModel)
+DataViewDock* Tab::createDataViewDock(FilteringProxyModel* proxyModel)
 {
     auto dock{new DataViewDock(tr("Data"), this)};
     auto view{new DataView(dock)};

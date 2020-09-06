@@ -33,9 +33,9 @@
 #include "CheckUpdates.h"
 #include "DataViewDock.h"
 #include "Export.h"
-#include "MainTab.h"
 #include "MainTabWidget.h"
 #include "SaveDatasetAs.h"
+#include "Tab.h"
 #include "ui_VolbxMain.h"
 
 VolbxMain::VolbxMain(QWidget* parent)
@@ -433,7 +433,7 @@ void VolbxMain::addMainTabForDataset(std::unique_ptr<Dataset> dataset)
         nameForTabBar.append(" (" + dataset->getHeaderName(column) + ")");
 
     QString datasetName{dataset->getName()};
-    auto mainTab = new MainTab(std::move(dataset), tabWidget_);
+    auto mainTab = new Tab(std::move(dataset), tabWidget_);
     const FilteringProxyModel* proxyModel = mainTab->getCurrentProxyModel();
     if (nullptr != proxyModel)
     {

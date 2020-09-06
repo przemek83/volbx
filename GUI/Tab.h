@@ -13,14 +13,13 @@ class DataViewDock;
 /**
  * @brief Tab containing models, view, dock widgets with data and plot.
  */
-class MainTab : public QMainWindow
+class Tab : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit MainTab(std::unique_ptr<Dataset> dataset,
-                     QWidget* parent = nullptr);
+    explicit Tab(std::unique_ptr<Dataset> dataset, QWidget* parent = nullptr);
 
-    ~MainTab() override = default;
+    ~Tab() override = default;
 
     FilteringProxyModel* getCurrentProxyModel();
 
