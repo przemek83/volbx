@@ -8,27 +8,23 @@ class SaveDatasetAs;
 }  // namespace Ui
 
 /**
- * @brief Window in which user can enter name of dataset to save.
+ * @brief Window for saving datasets.
  */
 class SaveDatasetAs : public QDialog
 {
     Q_OBJECT
 public:
-    /**
-     * Constructor.
-     * @param alreadyUsedNames names of existing datasets.
-     * @param parent pointer to parent.
-     */
     explicit SaveDatasetAs(QStringList alreadyUsedNames,
                            QWidget* parent = nullptr);
 
     ~SaveDatasetAs() override;
 
-    /**
-     * @brief access to entered by user name of dataset.
-     * @return name.
-     */
     QString getChosenDatasetName();
+
+private:
+    Ui::SaveDatasetAs* ui;
+
+    QStringList alreadyUsedNames_;
 
 private Q_SLOTS:
     /**
@@ -40,10 +36,4 @@ private Q_SLOTS:
     void saveClicked();
 
     void cancelClicked();
-
-private:
-    Ui::SaveDatasetAs* ui;
-
-    /// Existing datasets names.
-    QStringList alreadyUsedNames_;
 };
