@@ -14,8 +14,7 @@ class SaveDatasetAs : public QDialog
 {
     Q_OBJECT
 public:
-    explicit SaveDatasetAs(QStringList alreadyUsedNames,
-                           QWidget* parent = nullptr);
+    explicit SaveDatasetAs(QStringList usedNames, QWidget* parent = nullptr);
 
     ~SaveDatasetAs() override;
 
@@ -24,7 +23,7 @@ public:
 private:
     Ui::SaveDatasetAs* ui;
 
-    QStringList alreadyUsedNames_;
+    QStringList usedNames_;
 
 private Q_SLOTS:
     /**
