@@ -8,10 +8,10 @@ class Dataset;
 class TableModel;
 class DataView;
 class FilteringProxyModel;
+class DataViewDock;
 
 /**
- * @brief Main window added to main tabWidget.
- * It is parent for data dock, plot docks, related model and views.
+ * @brief Tab containing models, view, dock widgets with data and plot.
  */
 class MainTab : public QMainWindow
 {
@@ -24,7 +24,10 @@ public:
 
     FilteringProxyModel* getCurrentProxyModel();
 
-    TableModel* getCurrentDataModel();
+    TableModel* getCurrentTableModel();
 
     DataView* getCurrentDataView();
+
+private:
+    DataViewDock* createDataViewDock(FilteringProxyModel* proxyModel);
 };

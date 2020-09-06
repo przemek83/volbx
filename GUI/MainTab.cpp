@@ -1,9 +1,9 @@
 #include "MainTab.h"
 
-#include "Datasets/Dataset.h"
-#include "ModelsAndViews/DataView.h"
-#include "ModelsAndViews/FilteringProxyModel.h"
-#include "ModelsAndViews/TableModel.h"
+#include <Datasets/Dataset.h>
+#include <ModelsAndViews/DataView.h>
+#include <ModelsAndViews/FilteringProxyModel.h>
+#include <ModelsAndViews/TableModel.h>
 
 #include "DataViewDock.h"
 
@@ -12,37 +12,29 @@ MainTab::MainTab(std::unique_ptr<Dataset> dataset, QWidget* parent)
 {
     setWindowTitle(dataset->getName());
 
-    auto model = new TableModel(std::move(dataset), this);
-
     setDockNestingEnabled(true);
 
-    auto proxyModel = new FilteringProxyModel(this);
+    auto proxyModel{new FilteringProxyModel(this)};
+    auto model{new TableModel(std::move(dataset), this)};
     proxyModel->setSourceModel(model);
 
-    DataViewDock* dock = new DataViewDock(tr("Data"), this);
-    auto view = new DataView(dock);
-    view->setModel(proxyModel);
-    dock->setWidget(view);
-    addDockWidget(Qt::LeftDockWidgetArea, dock);
+    addDockWidget(Qt::LeftDockWidgetArea, createDataViewDock(proxyModel));
 }
 
 FilteringProxyModel* MainTab::getCurrentProxyModel()
 {
-    auto proxyModel = findChild<FilteringProxyModel*>();
-    Q_ASSERT(nullptr != proxyModel);
-    return proxyModel;
+    return findChild<FilteringProxyModel*>();
 }
 
-TableModel* MainTab::getCurrentDataModel()
-{
-    auto dataModel = findChild<TableModel*>();
-    Q_ASSERT(nullptr != dataModel);
-    return dataModel;
-}
+TableModel* MainTab::getCurrentTableModel() { return findChild<TableModel*>(); }
 
-DataView* MainTab::getCurrentDataView()
+DataView* MainTab::getCurrentDataView() { return findChild<DataView*>(); }
+
+DataViewDock* MainTab::createDataViewDock(FilteringProxyModel* proxyModel)
 {
-    auto dataView = findChild<DataView*>();
-    Q_ASSERT(nullptr != dataView);
-    return dataView;
+    auto dock{new DataViewDock(tr("Data"), this)};
+    auto view{new DataView(dock)};
+    view->setModel(proxyModel);
+    dock->setWidget(view);
+    return dock;
 }

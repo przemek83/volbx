@@ -40,7 +40,7 @@ TableModel* MainTabWidget::getCurrentDataModel()
     Q_ASSERT(nullptr != currentTab);
     if (currentTab == nullptr)
         return nullptr;
-    return currentTab->getCurrentDataModel();
+    return currentTab->getCurrentTableModel();
 }
 
 DataView* MainTabWidget::getCurrentDataView()
