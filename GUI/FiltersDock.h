@@ -6,6 +6,7 @@
 
 #include "GUI/Dock.h"
 
+class QLineEdit;
 class FilteringProxyModel;
 class FilterStrings;
 class FilterDates;
@@ -47,10 +48,11 @@ private:
     FilterNumbers* createNewNumbersFilter(const TableModel* parentModel,
                                           int index, QWidget* filterListWidget);
 
-    void createFiltersWidgets(const TableModel* model,
-                              QWidget* filterListWidget, QVBoxLayout* layout);
+    QWidget* createFiltersWidgets(const FilteringProxyModel* model);
 
     QString getColumnName(const TableModel* parentModel, int index) const;
+
+    QLineEdit* createSearchLineEdit();
 
     /// Used to find widget related with model.
     QMap<QWidget*, const FilteringProxyModel*> modelsMap_;
