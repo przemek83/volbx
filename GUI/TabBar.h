@@ -4,7 +4,7 @@
 #include <QTabBar>
 
 /**
- * @brief Custom tab bar for tab widget.
+ * @brief Tab bar for tab widget.
  */
 class TabBar : public QTabBar
 {
