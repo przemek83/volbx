@@ -142,7 +142,7 @@ void Export::exportPlots(const QString& fileName)
     const QList<PlotDock*> plotDocks{tab_->findChildren<PlotDock*>()};
     for (const auto plotDock : plotDocks)
     {
-        const QList<PlotBase*> plots{plotDock->exportContent()};
+        const QList<PlotBase*> plots{plotDock->getPlots()};
         for (const auto plot : plots)
         {
             const QString name(fileName + "_" + plot->windowTitle() + ".png");

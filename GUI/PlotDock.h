@@ -5,18 +5,18 @@
 class PlotBase;
 
 /**
- * @brief Dock widget for plots.
+ * @brief Dock widget with plots.
  */
 class PlotDock : public Dock
 {
     Q_OBJECT
 public:
     explicit PlotDock(const QString& title, QWidget* parent = nullptr,
-                            Qt::WindowFlags flags = Qt::Widget);
+                      Qt::WindowFlags flags = Qt::Widget);
 
     ~PlotDock() override = default;
 
-    QList<PlotBase*> exportContent();
+    QList<PlotBase*> getPlots();
 
 private Q_SLOTS:
     void quickExportData();

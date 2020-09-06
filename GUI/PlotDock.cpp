@@ -1,14 +1,8 @@
 #include "PlotDock.h"
 
 #include <PlotBase.h>
-#include <QDebug>
-#include <QPainter>
-#include <QPushButton>
 
-#include "Common/Constants.h"
-#include "Export/ExportImage.h"
-
-#include "DockTitleBar.h"
+#include <Export/ExportImage.h>
 
 PlotDock::PlotDock(const QString& title, QWidget* parent, Qt::WindowFlags flags)
     : Dock(title, parent, flags)
@@ -24,15 +18,14 @@ PlotDock::PlotDock(const QString& title, QWidget* parent, Qt::WindowFlags flags)
 
 void PlotDock::quickExportData()
 {
-    ExportImage::quickExportAsImage(exportContent());
+    ExportImage::quickExportAsImage(getPlots());
 }
 
 void PlotDock::resetPlot()
 {
-    QList<PlotBase*> plots = findChildren<PlotBase*>();
-
+    QList<PlotBase*> plots{findChildren<PlotBase*>()};
     for (PlotBase* plot : plots)
         plot->resetPlot();
 }
 
-QList<PlotBase*> PlotDock::exportContent() { return findChildren<PlotBase*>(); }
+QList<PlotBase*> PlotDock::getPlots() { return findChildren<PlotBase*>(); }
