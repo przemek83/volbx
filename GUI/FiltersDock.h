@@ -39,15 +39,14 @@ public:
 private:
     /// Create names filter for given model column and return it.
     FilterStrings* createNewStringsFilter(const TableModel* parentModel,
-                                          int index, QWidget* filterListWidget);
+                                          int index);
 
     /// Create dates filter for given model column and return it.
-    FilterDates* createNewDatesFilter(const TableModel* parentModel, int index,
-                                      QWidget* filterListWidget);
+    FilterDates* createNewDatesFilter(const TableModel* parentModel, int index);
 
     /// Create numbers filter for given model column and return it.
     FilterNumbers* createNewNumbersFilter(const TableModel* parentModel,
-                                          int index, QWidget* filterListWidget);
+                                          int index);
 
     QWidget* createFiltersWidgets(const FilteringProxyModel* model);
 
@@ -57,6 +56,9 @@ private:
 
     QScrollArea* createScrollAreaWithFilters(const FilteringProxyModel* model,
                                              QWidget* parent);
+
+    void fillLayoutWithFilterWidgets(QVBoxLayout* layout,
+                                     const FilteringProxyModel* model);
 
     /// Used to find widget related with model.
     QMap<QWidget*, const FilteringProxyModel*> modelsMap_;
