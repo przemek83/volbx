@@ -41,9 +41,10 @@ QWidget* FiltersDock::createFiltersWidgets(const FilteringProxyModel* model)
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSizeConstraint(QLayout::SetDefaultConstraint);
     filterListWidget->setLayout(layout);
-    layout->addStretch();
 
     fillLayoutWithFilterWidgets(layout, model);
+
+    layout->addStretch();
 
     return filterListWidget;
 }
