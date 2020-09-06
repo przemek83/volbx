@@ -340,7 +340,7 @@ void VolbxMain::actionSaveDatasetAsTriggered()
         ProgressBarCounter bar(barTitle, 100, nullptr);
         bar.showDetached();
 
-        QString name{save.getChosenDatasetName()};
+        QString name{save.getDatasetName()};
         LOG(LogTypes::IMPORT_EXPORT, "Saving dataset " + name);
         QString filePath{DatasetUtilities::getDatasetsDir() + name +
                          DatasetUtilities::getDatasetExtension()};

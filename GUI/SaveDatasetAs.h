@@ -19,7 +19,7 @@ public:
 
     ~SaveDatasetAs() override;
 
-    QString getChosenDatasetName();
+    QString getDatasetName();
 
 private:
     Ui::SaveDatasetAs* ui;
@@ -31,7 +31,7 @@ private Q_SLOTS:
      * @brief action on string/name change.
      * @param actualText actual string.
      */
-    void nameLineEditTextChanged(const QString& actualText);
+    void nameChanged(const QString& actualText);
 
     void saveClicked();
 

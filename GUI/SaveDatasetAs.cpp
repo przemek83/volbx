@@ -14,47 +14,43 @@ SaveDatasetAs::SaveDatasetAs(QStringList alreadyUsedNames, QWidget* parent)
 {
     ui->setupUi(this);
 
-    connect(ui->nameLineEdit, &QLineEdit::textChanged, this,
-            &SaveDatasetAs::nameLineEditTextChanged);
+    connect(ui->name, &QLineEdit::textChanged, this,
+            &SaveDatasetAs::nameChanged);
+    const QRegExp datasetNameRegExp(DatasetUtilities::getDatasetNameRegExp());
+    ui->name->setValidator(new QRegExpValidator(datasetNameRegExp, this));
+
     connect(ui->save, &QPushButton::clicked, this, &SaveDatasetAs::saveClicked);
+    ui->save->setEnabled(false);
+
     connect(ui->cancel, &QPushButton::clicked, this,
             &SaveDatasetAs::cancelClicked);
-
-    ui->nameLineEdit->setValidator(new QRegExpValidator(
-        QRegExp(DatasetUtilities::getDatasetNameRegExp()), this));
-    ui->save->setEnabled(false);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
 SaveDatasetAs::~SaveDatasetAs() { delete ui; }
 
-QString SaveDatasetAs::getChosenDatasetName()
-{
-    return ui->nameLineEdit->text();
-}
+QString SaveDatasetAs::getDatasetName() { return ui->name->text(); }
 
-void SaveDatasetAs::nameLineEditTextChanged(const QString& actualText)
+void SaveDatasetAs::nameChanged(const QString& actualText)
 {
     ui->save->setDisabled(actualText.isEmpty());
 
-    QPalette palette{ui->nameLineEdit->palette()};
+    QPalette palette{ui->name->palette()};
     if (alreadyUsedNames_.contains(actualText, Qt::CaseInsensitive))
     {
-        if (QColor(Qt::red) !=
-            palette.color(ui->nameLineEdit->backgroundRole()))
+        if (QColor(Qt::red) != palette.color(ui->name->backgroundRole()))
         {
-            palette.setColor(ui->nameLineEdit->backgroundRole(), Qt::red);
-            ui->nameLineEdit->setPalette(palette);
+            palette.setColor(ui->name->backgroundRole(), Qt::red);
+            ui->name->setPalette(palette);
         }
     }
     else
     {
-        if (QColor(Qt::red) ==
-            palette.color(ui->nameLineEdit->backgroundRole()))
+        if (QColor(Qt::red) == palette.color(ui->name->backgroundRole()))
         {
-            palette.setColor(ui->nameLineEdit->backgroundRole(), Qt::white);
-            ui->nameLineEdit->setPalette(palette);
+            palette.setColor(ui->name->backgroundRole(), Qt::white);
+            ui->name->setPalette(palette);
         }
     }
 }
@@ -62,11 +58,11 @@ void SaveDatasetAs::nameLineEditTextChanged(const QString& actualText)
 void SaveDatasetAs::saveClicked()
 {
     if (QColor(Qt::red) ==
-        ui->nameLineEdit->palette().color(ui->nameLineEdit->backgroundRole()))
+        ui->name->palette().color(ui->name->backgroundRole()))
     {
         QMessageBox::StandardButton decision;
         QString msg(QObject::tr("Dataset named "));
-        msg.append(ui->nameLineEdit->text());
+        msg.append(ui->name->text());
         msg.append(QObject::tr(" exist. Overwrite?"));
         decision =
             QMessageBox::question(this, QObject::tr("Overwrite dataset?"), msg,

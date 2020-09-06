@@ -47,7 +47,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="nameLineEdit">
+        <widget class="QLineEdit" name="name">
          <property name="acceptDrops">
           <bool>false</bool>
          </property>
