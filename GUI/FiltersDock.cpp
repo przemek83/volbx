@@ -17,7 +17,7 @@ FiltersDock::FiltersDock(QWidget* parent)
     setWidget(&stackedWidget_);
 }
 
-void FiltersDock::addModel(const FilteringProxyModel* model)
+void FiltersDock::addFiltersForModel(const FilteringProxyModel* model)
 {
     if (model == nullptr)
         return;
@@ -31,7 +31,7 @@ void FiltersDock::addModel(const FilteringProxyModel* model)
     mainLayout->addWidget(createScrollAreaWithFilters(model, mainWidget));
 
     stackedWidget_.addWidget(mainWidget);
-    activateFiltersForModel(model);
+    showFiltersForModel(model);
 }
 
 QWidget* FiltersDock::createFiltersWidgets(const FilteringProxyModel* model)
@@ -90,17 +90,17 @@ void FiltersDock::fillLayoutWithFilterWidgets(QVBoxLayout* layout,
         {
             case ColumnType::STRING:
             {
-                filter = createNewStringsFilter(parentModel, i);
+                filter = createStringsFilter(parentModel, i);
                 break;
             }
             case ColumnType::DATE:
             {
-                filter = createNewDatesFilter(parentModel, i);
+                filter = createDatesFilter(parentModel, i);
                 break;
             }
             case ColumnType::NUMBER:
             {
-                filter = createNewNumbersFilter(parentModel, i);
+                filter = createNumbersFilter(parentModel, i);
                 break;
             }
             case ColumnType::UNKNOWN:
@@ -112,8 +112,8 @@ void FiltersDock::fillLayoutWithFilterWidgets(QVBoxLayout* layout,
     }
 }
 
-FilterStrings* FiltersDock::createNewStringsFilter(
-    const TableModel* parentModel, int index)
+FilterStrings* FiltersDock::createStringsFilter(const TableModel* parentModel,
+                                                int index)
 {
     const QString columnName{getColumnName(parentModel, index)};
     QStringList list{parentModel->getStringList(index)};
@@ -121,7 +121,7 @@ FilterStrings* FiltersDock::createNewStringsFilter(
     list.sort();
     auto filter{new FilterStrings(columnName, std::move(list))};
     auto emitChangeForColumn{[=](QStringList bannedList) {
-        Q_EMIT newNamesFiltering(index, std::move(bannedList));
+        Q_EMIT filterNames(index, std::move(bannedList));
     }};
     connect(filter, &FilterStrings::newStringFilter, this, emitChangeForColumn);
 
@@ -132,37 +132,36 @@ FilterStrings* FiltersDock::createNewStringsFilter(
     return filter;
 }
 
-FilterDates* FiltersDock::createNewDatesFilter(const TableModel* parentModel,
-                                               int index)
+FilterDates* FiltersDock::createDatesFilter(const TableModel* parentModel,
+                                            int index)
 {
     const QString columnName{getColumnName(parentModel, index)};
     const auto [minDate, maxDate,
                 haveEmptyDates]{parentModel->getDateRange(index)};
     auto filter{new FilterDates(columnName, minDate, maxDate, haveEmptyDates)};
     auto emitChangeForColumn{[=](QDate from, QDate to, bool filterEmptyDates) {
-        Q_EMIT newDateFiltering(index, from, to, filterEmptyDates);
+        Q_EMIT filterDates(index, from, to, filterEmptyDates);
     }};
     connect(filter, &FilterDates::newDateFilter, this, emitChangeForColumn);
     filter->setCheckable(true);
     return filter;
 }
 
-FilterNumbers* FiltersDock::createNewNumbersFilter(
-    const TableModel* parentModel, int index)
+FilterNumbers* FiltersDock::createNumbersFilter(const TableModel* parentModel,
+                                                int index)
 {
     const QString columnName{getColumnName(parentModel, index)};
     const auto [min, max]{parentModel->getNumericRange(index)};
     auto filter{new FilterDoubles(columnName, min, max)};
-    auto emitChangeForColumn{[=](double from, double to) {
-        Q_EMIT newNumbersFiltering(index, from, to);
-    }};
+    auto emitChangeForColumn{
+        [=](double from, double to) { Q_EMIT filterNumbers(index, from, to); }};
     connect(filter, &FilterDoubles::newNumericFilter, this,
             emitChangeForColumn);
     filter->setCheckable(true);
     return filter;
 }
 
-void FiltersDock::removeModel(const FilteringProxyModel* model)
+void FiltersDock::removeFiltersForModel(const FilteringProxyModel* model)
 {
     if (model == nullptr)
         return;
@@ -173,7 +172,7 @@ void FiltersDock::removeModel(const FilteringProxyModel* model)
     delete widgetToDelete;
 }
 
-void FiltersDock::activateFiltersForModel(const FilteringProxyModel* model)
+void FiltersDock::showFiltersForModel(const FilteringProxyModel* model)
 {
     if (model != nullptr)
         stackedWidget_.setCurrentWidget(modelsMap_.key(model));

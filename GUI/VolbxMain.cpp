@@ -50,11 +50,11 @@ VolbxMain::VolbxMain(QWidget* parent)
 
     setupStatusBar();
 
-    connect(filters_, &FiltersDock::newNamesFiltering, tabWidget_,
+    connect(filters_, &FiltersDock::filterNames, tabWidget_,
             &MainTabWidget::setTextFilterInProxy);
-    connect(filters_, &FiltersDock::newDateFiltering, tabWidget_,
+    connect(filters_, &FiltersDock::filterDates, tabWidget_,
             &MainTabWidget::setDateFilterInProxy);
-    connect(filters_, &FiltersDock::newNumbersFiltering, tabWidget_,
+    connect(filters_, &FiltersDock::filterNumbers, tabWidget_,
             &MainTabWidget::setNumericFilterInProxy);
 
     connect(ui->actionBasic_plot, &QAction::triggered, tabWidget_,
@@ -232,7 +232,7 @@ void VolbxMain::tabWasChanged(int index)
     if (-1 != index)
     {
         const FilteringProxyModel* model = tabWidget_->getCurrentProxyModel();
-        filters_->activateFiltersForModel(model);
+        filters_->showFiltersForModel(model);
         manageActions(true);
     }
     else
@@ -261,7 +261,7 @@ void VolbxMain::closeTab(int tab)
 {
     QWidget* tabToDelete{tabWidget_->widget(tab)};
     const FilteringProxyModel* model{tabWidget_->getCurrentProxyModel()};
-    filters_->removeModel(model);
+    filters_->removeFiltersForModel(model);
     tabWidget_->removeTab(tab);
     delete tabToDelete;
 
@@ -437,7 +437,7 @@ void VolbxMain::addMainTabForDataset(std::unique_ptr<Dataset> dataset)
     const FilteringProxyModel* proxyModel = mainTab->getCurrentProxyModel();
     if (nullptr != proxyModel)
     {
-        filters_->addModel(proxyModel);
+        filters_->addFiltersForModel(proxyModel);
     }
 
     int newTabIndex = tabWidget_->addTab(mainTab, nameForTabBar);

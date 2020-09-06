@@ -16,8 +16,7 @@ class TableModel;
 class QVBoxLayout;
 
 /**
- * @brief Filters dock used as parent for filters widget created for each
- * dataset.
+ * @brief Dock widget with filters for each opened dataset.
  */
 class FiltersDock : public Dock
 {
@@ -27,26 +26,20 @@ public:
 
     ~FiltersDock() override = default;
 
-    /// Adds new widget with filters for given model.
-    void addModel(const FilteringProxyModel* model);
+    void addFiltersForModel(const FilteringProxyModel* model);
 
-    /// Removes widget related to given model.
-    void removeModel(const FilteringProxyModel* model);
+    void removeFiltersForModel(const FilteringProxyModel* model);
 
-    /// Shows widget with filters related with given model.
-    void activateFiltersForModel(const FilteringProxyModel* model);
+    void showFiltersForModel(const FilteringProxyModel* model);
 
 private:
-    /// Create names filter for given model column and return it.
-    FilterStrings* createNewStringsFilter(const TableModel* parentModel,
-                                          int index);
+    FilterStrings* createStringsFilter(const TableModel* parentModel,
+                                       int index);
 
-    /// Create dates filter for given model column and return it.
-    FilterDates* createNewDatesFilter(const TableModel* parentModel, int index);
+    FilterDates* createDatesFilter(const TableModel* parentModel, int index);
 
-    /// Create numbers filter for given model column and return it.
-    FilterNumbers* createNewNumbersFilter(const TableModel* parentModel,
-                                          int index);
+    FilterNumbers* createNumbersFilter(const TableModel* parentModel,
+                                       int index);
 
     QWidget* createFiltersWidgets(const FilteringProxyModel* model);
 
@@ -60,7 +53,6 @@ private:
     void fillLayoutWithFilterWidgets(QVBoxLayout* layout,
                                      const FilteringProxyModel* model);
 
-    /// Used to find widget related with model.
     QMap<QWidget*, const FilteringProxyModel*> modelsMap_;
 
     QStackedWidget stackedWidget_;
@@ -69,10 +61,9 @@ private Q_SLOTS:
     void searchTextChanged(const QString& arg1);
 
 Q_SIGNALS:
-    void newNumbersFiltering(int column, double from, double to);
+    void filterNumbers(int column, double from, double to);
 
-    void newNamesFiltering(int column, QStringList exclusionList);
+    void filterNames(int column, QStringList exclusionList);
 
-    void newDateFiltering(int column, QDate from, QDate to,
-                          bool filterEmptyDates);
+    void filterDates(int column, QDate from, QDate to, bool filterEmptyDates);
 };
