@@ -108,8 +108,8 @@ set(${PROJECT_NAME}_SOURCES
     GUI/FiltersDock.h
     GUI/Tab.cpp
     GUI/Tab.h
-    GUI/MainTabWidget.cpp
-    GUI/MainTabWidget.h
+    GUI/TabWidget.cpp
+    GUI/TabWidget.h
     GUI/PlotDock.cpp
     GUI/PlotDock.h
     GUI/SaveDatasetAs.cpp

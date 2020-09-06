@@ -33,16 +33,16 @@
 #include "CheckUpdates.h"
 #include "DataViewDock.h"
 #include "Export.h"
-#include "MainTabWidget.h"
 #include "SaveDatasetAs.h"
 #include "Tab.h"
+#include "TabWidget.h"
 #include "ui_VolbxMain.h"
 
 VolbxMain::VolbxMain(QWidget* parent)
     : QMainWindow(parent),
       filters_(new FiltersDock(this)),
       ui(new Ui::VolbxMain),
-      tabWidget_(new MainTabWidget(this))
+      tabWidget_(new TabWidget(this))
 {
     ui->setupUi(this);
 
@@ -51,18 +51,18 @@ VolbxMain::VolbxMain(QWidget* parent)
     setupStatusBar();
 
     connect(filters_, &FiltersDock::filterNames, tabWidget_,
-            &MainTabWidget::setTextFilterInProxy);
+            &TabWidget::setTextFilterInProxy);
     connect(filters_, &FiltersDock::filterDates, tabWidget_,
-            &MainTabWidget::setDateFilterInProxy);
+            &TabWidget::setDateFilterInProxy);
     connect(filters_, &FiltersDock::filterNumbers, tabWidget_,
-            &MainTabWidget::setNumericFilterInProxy);
+            &TabWidget::setNumericFilterInProxy);
 
     connect(ui->actionBasic_plot, &QAction::triggered, tabWidget_,
-            &MainTabWidget::addBasicPlot);
+            &TabWidget::addBasicPlot);
     connect(ui->actionHistogram, &QAction::triggered, tabWidget_,
-            &MainTabWidget::addHistogramPlot);
+            &TabWidget::addHistogramPlot);
     connect(ui->actionGroup_plot, &QAction::triggered, tabWidget_,
-            &MainTabWidget::addGroupingPlot);
+            &TabWidget::addGroupingPlot);
 
     ui->verticalLayout->addWidget(tabWidget_);
 
@@ -71,9 +71,9 @@ VolbxMain::VolbxMain(QWidget* parent)
     filters_->titleBarWidget()->resize(defaultFilterWidth,
                                        filters_->titleBarWidget()->height());
 
-    connect(tabWidget_, &MainTabWidget::currentChanged, this,
+    connect(tabWidget_, &TabWidget::currentChanged, this,
             &VolbxMain::tabWasChanged);
-    connect(tabWidget_, &MainTabWidget::tabCloseRequested, this,
+    connect(tabWidget_, &TabWidget::tabCloseRequested, this,
             &VolbxMain::closeTab);
 
     ui->actionLogs->setVisible(true);

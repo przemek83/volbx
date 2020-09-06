@@ -14,13 +14,13 @@ class DataViewDock;
 /**
  * @brief TabWidget. Each tab contains data and plots.
  */
-class MainTabWidget : public QTabWidget
+class TabWidget : public QTabWidget
 {
     Q_OBJECT
 public:
-    explicit MainTabWidget(QWidget* parent = nullptr);
+    explicit TabWidget(QWidget* parent = nullptr);
 
-    ~MainTabWidget() override = default;
+    ~TabWidget() override = default;
 
     FilteringProxyModel* getCurrentProxyModel();
 

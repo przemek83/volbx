@@ -1,4 +1,4 @@
-#include "MainTabWidget.h"
+#include "TabWidget.h"
 
 #include <BasicDataPlot.h>
 #include <GroupPlotUI.h>
@@ -18,14 +18,14 @@
 #include "Tab.h"
 #include "TabBar.h"
 
-MainTabWidget::MainTabWidget(QWidget* parent) : QTabWidget(parent)
+TabWidget::TabWidget(QWidget* parent) : QTabWidget(parent)
 {
     setTabBar(new TabBar(this));
     setTabsClosable(true);
     setMovable(true);
 }
 
-FilteringProxyModel* MainTabWidget::getCurrentProxyModel()
+FilteringProxyModel* TabWidget::getCurrentProxyModel()
 {
     auto currentTab = dynamic_cast<Tab*>(currentWidget());
     Q_ASSERT(nullptr != currentTab);
@@ -34,7 +34,7 @@ FilteringProxyModel* MainTabWidget::getCurrentProxyModel()
     return currentTab->getCurrentProxyModel();
 }
 
-TableModel* MainTabWidget::getCurrentDataModel()
+TableModel* TabWidget::getCurrentDataModel()
 {
     auto currentTab = dynamic_cast<Tab*>(currentWidget());
     Q_ASSERT(nullptr != currentTab);
@@ -43,7 +43,7 @@ TableModel* MainTabWidget::getCurrentDataModel()
     return currentTab->getCurrentTableModel();
 }
 
-DataView* MainTabWidget::getCurrentDataView()
+DataView* TabWidget::getCurrentDataView()
 {
     auto currentTab = dynamic_cast<Tab*>(currentWidget());
     Q_ASSERT(nullptr != currentTab);
@@ -52,14 +52,14 @@ DataView* MainTabWidget::getCurrentDataView()
     return currentTab->getCurrentDataView();
 }
 
-Tab* MainTabWidget::getCurrentMainTab()
+Tab* TabWidget::getCurrentMainTab()
 {
     auto currentTab = dynamic_cast<Tab*>(currentWidget());
     Q_ASSERT(nullptr != currentTab);
     return currentTab;
 }
 
-QVector<std::pair<QString, int>> MainTabWidget::getStringColumnsWithIndexes(
+QVector<std::pair<QString, int>> TabWidget::getStringColumnsWithIndexes(
     TableModel* model) const
 {
     QVector<std::pair<QString, int>> stringColumns;
@@ -76,7 +76,7 @@ QVector<std::pair<QString, int>> MainTabWidget::getStringColumnsWithIndexes(
     return stringColumns;
 }
 
-DataViewDock* MainTabWidget::getCurrentDataViewDock()
+DataViewDock* TabWidget::getCurrentDataViewDock()
 {
     DataView* dataView = getCurrentDataView();
     Q_ASSERT(nullptr != dataView);
@@ -85,7 +85,7 @@ DataViewDock* MainTabWidget::getCurrentDataViewDock()
     return qobject_cast<DataViewDock*>(dataView->parent());
 }
 
-void MainTabWidget::setTextFilterInProxy(int column,
+void TabWidget::setTextFilterInProxy(int column,
                                          const QStringList& bannedStrings)
 {
     DataView* view = getCurrentDataView();
@@ -108,7 +108,7 @@ void MainTabWidget::setTextFilterInProxy(int column,
     QApplication::restoreOverrideCursor();
 }
 
-void MainTabWidget::setDateFilterInProxy(int column, QDate from, QDate to,
+void TabWidget::setDateFilterInProxy(int column, QDate from, QDate to,
                                          bool filterEmptyDates)
 {
     DataView* view = getCurrentDataView();
@@ -129,7 +129,7 @@ void MainTabWidget::setDateFilterInProxy(int column, QDate from, QDate to,
     QApplication::restoreOverrideCursor();
 }
 
-void MainTabWidget::setNumericFilterInProxy(int column, double from, double to)
+void TabWidget::setNumericFilterInProxy(int column, double from, double to)
 {
     DataView* view = getCurrentDataView();
     FilteringProxyModel* model = getCurrentProxyModel();
@@ -151,7 +151,7 @@ void MainTabWidget::setNumericFilterInProxy(int column, double from, double to)
 }
 
 template <class T>
-void MainTabWidget::addPlot(const QString& title,
+void TabWidget::addPlot(const QString& title,
                             const std::function<T*()>& createPlot)
 {
     DataView* view = getCurrentDataView();
@@ -189,7 +189,7 @@ void MainTabWidget::addPlot(const QString& title,
     QApplication::restoreOverrideCursor();
 }
 
-void MainTabWidget::addBasicPlot()
+void TabWidget::addBasicPlot()
 {
     const auto createBasicPlot = [=]() -> BasicDataPlot* {
         DataView* view = getCurrentDataView();
@@ -203,7 +203,7 @@ void MainTabWidget::addBasicPlot()
     addPlot<BasicDataPlot>(tr("Quantiles"), createBasicPlot);
 }
 
-void MainTabWidget::addHistogramPlot()
+void TabWidget::addHistogramPlot()
 {
     const auto createHistogramPlot = [=]() -> HistogramPlotUI* {
         DataView* view = getCurrentDataView();
@@ -217,7 +217,7 @@ void MainTabWidget::addHistogramPlot()
     addPlot<HistogramPlotUI>(tr("Histogram"), createHistogramPlot);
 }
 
-void MainTabWidget::addGroupingPlot()
+void TabWidget::addGroupingPlot()
 {
     const auto createGroupingPlot = [=]() -> GroupPlotUI* {
         DataView* view = getCurrentDataView();
@@ -234,7 +234,7 @@ void MainTabWidget::addGroupingPlot()
     addPlot<GroupPlotUI>(tr("Grouping"), createGroupingPlot);
 }
 
-void MainTabWidget::activateDataSelection(DataView* view)
+void TabWidget::activateDataSelection(DataView* view)
 {
     // Activate select all and unselect all buttons on data view dock.
     DataViewDock* viewDock = getCurrentDataViewDock();

@@ -19,7 +19,7 @@ class TableModel;
 class Dataset;
 class QNetworkReply;
 class FilteringProxyModel;
-class MainTabWidget;
+class TabWidget;
 
 /**
  * @brief Volbx main window.
@@ -54,7 +54,7 @@ private:
     void setupStatusBar();
 
     /// Main tab widget/center widget.
-    MainTabWidget* tabWidget_{nullptr};
+    TabWidget* tabWidget_{nullptr};
 
     /// Network manager used to retrieve current version available.
     QNetworkAccessManager networkManager_;
