@@ -32,21 +32,36 @@ SaveDatasetAs::~SaveDatasetAs() { delete ui; }
 
 QString SaveDatasetAs::getDatasetName() { return ui->name->text(); }
 
+bool SaveDatasetAs::overwriteDataset(const QString& name)
+{
+    const QString title{QObject::tr("Overwrite dataset?")};
+    const QString msg(QObject::tr("Dataset named ") + name +
+                      QObject::tr(" exist. Overwrite?"));
+    QMessageBox::StandardButton decision{QMessageBox::question(
+        this, title, msg, QMessageBox::Yes | QMessageBox::No)};
+    return decision == QMessageBox::Yes;
+}
+
+bool SaveDatasetAs::nameIsUsed(const QString& name)
+{
+    return usedNames_.contains(name, Qt::CaseInsensitive);
+}
+
 void SaveDatasetAs::nameChanged(const QString& actualText)
 {
     ui->save->setDisabled(actualText.isEmpty());
 
     QPalette palette{ui->name->palette()};
-    const bool validName{!usedNames_.contains(actualText, Qt::CaseInsensitive)};
+    const bool nameUsed{nameIsUsed(actualText)};
     const QPalette::ColorRole colorRole{ui->name->backgroundRole()};
 
-    if (validName && palette.color(colorRole) == QColor(Qt::red))
+    if (!nameUsed && palette.color(colorRole) == QColor(Qt::red))
     {
         palette.setColor(colorRole, Qt::white);
         ui->name->setPalette(palette);
     }
 
-    if (!validName && palette.color(colorRole) != QColor(Qt::red))
+    if (nameUsed && palette.color(colorRole) != QColor(Qt::red))
     {
         palette.setColor(colorRole, Qt::red);
         ui->name->setPalette(palette);
@@ -56,18 +71,8 @@ void SaveDatasetAs::nameChanged(const QString& actualText)
 void SaveDatasetAs::saveClicked()
 {
     const QString name{ui->name->text()};
-    if (usedNames_.contains(name, Qt::CaseInsensitive))
-    {
-        const QString title{QObject::tr("Overwrite dataset?")};
-        const QString msg(QObject::tr("Dataset named ") + name +
-                          QObject::tr(" exist. Overwrite?"));
-        QMessageBox::StandardButton decision{QMessageBox::question(
-            this, title, msg, QMessageBox::Yes | QMessageBox::No)};
-        if (decision == QMessageBox::Yes)
-            accept();
-        else
-            return;
-    }
+    if (nameIsUsed(name) && !overwriteDataset(name))
+        return;
     accept();
 }
 

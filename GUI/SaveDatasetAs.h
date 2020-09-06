@@ -21,6 +21,10 @@ public:
     QString getDatasetName();
 
 private:
+    bool overwriteDataset(const QString& name);
+
+    bool nameIsUsed(const QString& name);
+
     Ui::SaveDatasetAs* ui;
 
     QStringList usedNames_;
