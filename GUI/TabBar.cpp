@@ -7,23 +7,14 @@
 
 #include <Common/DatasetUtilities.h>
 
-TabBar::TabBar(QWidget* parent) : QTabBar(parent)
+TabBar::TabBar(QWidget* parent) : QTabBar(parent), lineEdit_(this)
 {
-    lineEdit_.setParent(this);
-    lineEdit_.setValidator(new QRegExpValidator(
-        QRegExp(DatasetUtilities::getDatasetNameRegExp()), this));
-    lineEdit_.hide();
-
-    connect(&lineEdit_, &QLineEdit::editingFinished, this,
-            &TabBar::editingOfnameFinished);
-
-    lineEdit_.installEventFilter(this);
+    setupLineEdit();
 }
 
 void TabBar::mouseDoubleClickEvent(QMouseEvent* event)
 {
-    const int index{currentIndex()};
-    const QRect tabRectangle{tabRect(index)};
+    const QRect tabRectangle{tabRect(currentIndex())};
     lineEdit_.move(tabRectangle.x(), tabRectangle.y());
     lineEdit_.resize(tabRectangle.size());
 
@@ -66,4 +57,16 @@ bool TabBar::eventFilter(QObject* obj, QEvent* event)
     }
 
     return QObject::eventFilter(obj, event);
+}
+
+void TabBar::setupLineEdit()
+{
+    lineEdit_.setValidator(new QRegExpValidator(
+        QRegExp(DatasetUtilities::getDatasetNameRegExp()), this));
+    lineEdit_.hide();
+
+    connect(&lineEdit_, &QLineEdit::editingFinished, this,
+            &TabBar::editingOfnameFinished);
+
+    lineEdit_.installEventFilter(this);
 }

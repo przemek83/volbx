@@ -20,6 +20,8 @@ protected:
     bool eventFilter(QObject* obj, QEvent* event) override;
 
 private:
+    void setupLineEdit();
+
     /// Line edit for changing tab name.
     QLineEdit lineEdit_;
 
