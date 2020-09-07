@@ -45,6 +45,10 @@ private:
     template <class T>
     void addPlot(const QString& title, const std::function<T*()>& createPlot);
 
+    void changingFilterPreActions();
+
+    void changingFilterPostActions();
+
     void activateDataSelection(DataView* view);
 
     DataViewDock* getCurrentDataViewDock();

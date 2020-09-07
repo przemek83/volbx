@@ -65,62 +65,47 @@ DataViewDock* TabWidget::getCurrentDataViewDock()
     return qobject_cast<DataViewDock*>(dataView->parent());
 }
 
-void TabWidget::setTextFilter(int column, const QStringList& bannedStrings)
+void TabWidget::changingFilterPreActions()
 {
-    DataView* view{getCurrentDataView()};
-    FilteringProxyModel* model{getCurrentProxyModel()};
-
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
+    getCurrentDataView()->clearSelection();
+}
 
-    TimeLogger timeLogger(LogTypes::CALC, "Filtration changed");
-
-    view->clearSelection();
-    model->setStringFilter(column, bannedStrings);
-
+void TabWidget::changingFilterPostActions()
+{
+    DataView* view{getCurrentDataView()};
     view->selectAll();
     view->recomputeAllData();
-
     QApplication::restoreOverrideCursor();
+}
+
+void TabWidget::setTextFilter(int column, const QStringList& bannedStrings)
+{
+    TimeLogger timeLogger(LogTypes::CALC, "Filtration changed");
+
+    changingFilterPreActions();
+    getCurrentProxyModel()->setStringFilter(column, bannedStrings);
+    changingFilterPostActions();
 }
 
 void TabWidget::setDateFilter(int column, QDate from, QDate to,
                               bool filterEmptyDates)
 {
-    DataView* view{getCurrentDataView()};
-    FilteringProxyModel* model{getCurrentProxyModel()};
-
     TimeLogger timeLogger(LogTypes::CALC, "Filtration changed");
 
-    QApplication::setOverrideCursor(Qt::WaitCursor);
-    QApplication::processEvents();
-
-    view->clearSelection();
-    model->setDateFilter(column, from, to, filterEmptyDates);
-
-    view->selectAll();
-    view->recomputeAllData();
-
-    QApplication::restoreOverrideCursor();
+    changingFilterPreActions();
+    getCurrentProxyModel()->setDateFilter(column, from, to, filterEmptyDates);
+    changingFilterPostActions();
 }
 
 void TabWidget::setNumericFilter(int column, double from, double to)
 {
-    DataView* view{getCurrentDataView()};
-    FilteringProxyModel* model{getCurrentProxyModel()};
-
     TimeLogger timeLogger(LogTypes::CALC, "Filtration changed");
 
-    QApplication::setOverrideCursor(Qt::WaitCursor);
-    QApplication::processEvents();
-
-    view->clearSelection();
-    model->setNumericFilter(column, from, to);
-
-    view->selectAll();
-    view->recomputeAllData();
-
-    QApplication::restoreOverrideCursor();
+    changingFilterPreActions();
+    getCurrentProxyModel()->setNumericFilter(column, from, to);
+    changingFilterPostActions();
 }
 
 template <class T>
