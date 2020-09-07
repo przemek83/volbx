@@ -135,6 +135,16 @@ void VolbxMain::setupNetworkManager()
             &VolbxMain::updateCheckReplyFinished);
 }
 
+void VolbxMain::addStyleToMenu(const QString& name, QActionGroup* actionsGroup)
+{
+    QString activeStyle{Configuration::getInstance().getStyleName()};
+    auto action{new QAction(name, actionsGroup)};
+    action->setCheckable(true);
+    if (activeStyle == name)
+        action->setChecked(true);
+    connect(action, &QAction::triggered, this, &VolbxMain::styleChanged);
+}
+
 void VolbxMain::createOptionsMenu()
 {
     ui->menuOptions->addSection(tr("Updates"));
@@ -143,59 +153,24 @@ void VolbxMain::createOptionsMenu()
 
     ui->menuOptions->addSection(tr("Styles"));
 
-    QString activeStyl = Configuration::getInstance().getStyleName();
+    QString activeStyle{Configuration::getInstance().getStyleName()};
 
-    auto actionsGroup = new QActionGroup(this);
+    auto actionsGroup{new QActionGroup(this)};
 
-    // Add orange style.
-    QString styleName(QStringLiteral("Dark Orange"));
-    auto action = new QAction(styleName, actionsGroup);
-    action->setCheckable(true);
-    if (activeStyl == styleName)
-    {
-        action->setChecked(true);
-    }
-    connect(action, &QAction::triggered, this, &VolbxMain::customStylePicked);
-
-    // Add blue style.
-    styleName = QStringLiteral("Rounded Blue");
-    action = new QAction(styleName, actionsGroup);
-    action->setCheckable(true);
-    if (activeStyl == styleName)
-    {
-        action->setChecked(true);
-    }
-    connect(action, &QAction::triggered, this, &VolbxMain::customStylePicked);
+    addStyleToMenu(QStringLiteral("Dark Orange"), actionsGroup);
+    addStyleToMenu(QStringLiteral("Rounded Blue"), actionsGroup);
 
     // Add styles found in app dir.
     QStringList nameFilter(QStringLiteral("*.css"));
     QDir directory(QCoreApplication::applicationDirPath());
-    QFileInfoList styleFiles = directory.entryInfoList(nameFilter);
-
+    QFileInfoList styleFiles{directory.entryInfoList(nameFilter)};
     for (const QFileInfo& styleFile : styleFiles)
-    {
-        action = new QAction(styleFile.baseName(), actionsGroup);
-        action->setCheckable(true);
-        if (activeStyl == styleFile.baseName())
-        {
-            action->setChecked(true);
-        }
-        connect(action, &QAction::triggered, this,
-                &VolbxMain::customStylePicked);
-    }
+        addStyleToMenu(styleFile.baseName(), actionsGroup);
 
     // Add qt available styles.
-    QStringList qtStylesList = QStyleFactory::keys();
+    QStringList qtStylesList{QStyleFactory::keys()};
     for (const QString& style : qtStylesList)
-    {
-        action = new QAction(style, actionsGroup);
-        action->setCheckable(true);
-        if (activeStyl == style)
-        {
-            action->setChecked(true);
-        }
-        connect(action, &QAction::triggered, this, &VolbxMain::qtStylePicked);
-    }
+        addStyleToMenu(style, actionsGroup);
 
     ui->menuOptions->addActions(actionsGroup->actions());
 }
@@ -522,24 +497,13 @@ void VolbxMain::actionUpdateAutoToggled(bool alwaysCheck)
     Configuration::getInstance().setUpdatePolicy(alwaysCheck);
 }
 
-void VolbxMain::qtStylePicked()
+void VolbxMain::styleChanged()
 {
-    auto action = qobject_cast<QAction*>(sender());
-    if (nullptr != action)
-    {
-        QString style = action->text();
+    auto action{qobject_cast<QAction*>(sender())};
+    QString style{action->text()};
+    if (QStyleFactory::keys().contains(style))
         Application::setQtStyle(style);
-        Configuration::getInstance().setStyleName(style);
-    }
-}
-
-void VolbxMain::customStylePicked()
-{
-    auto action = qobject_cast<QAction*>(sender());
-    if (nullptr != action)
-    {
-        QString styleName = action->text();
-        Application::setCssStyle(styleName);
-        Configuration::getInstance().setStyleName(styleName);
-    }
+    else
+        Application::setCssStyle(style);
+    Configuration::getInstance().setStyleName(style);
 }

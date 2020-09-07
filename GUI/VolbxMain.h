@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QNetworkAccessManager>
 
+class QActionGroup;
 namespace Ui
 {
 class VolbxMain;
@@ -42,6 +43,8 @@ private:
     void setupFilters();
 
     void setupNetworkManager();
+
+    void addStyleToMenu(const QString& name, QActionGroup* actionsGroup);
 
     /**
      * @brief add new tab for given dataset.
@@ -91,13 +94,5 @@ private Q_SLOTS:
 
     void actionUpdateAutoToggled(bool alwaysCheck);
 
-    /**
-     * @brief picked qt built in style.
-     */
-    void qtStylePicked();
-
-    /**
-     * @brief picked custom style (found in resoures or application dir).
-     */
-    void customStylePicked();
+    void styleChanged();
 };
