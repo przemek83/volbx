@@ -7,7 +7,7 @@
 
 #include <Common/DatasetUtilities.h>
 
-TabBar::TabBar(QWidget* parent) : QTabBar(parent), lineEdit_(this)
+TabBar::TabBar(QWidget* parent) : QTabBar(parent), nameEdit_(this)
 {
     setupLineEdit();
 }
@@ -15,43 +15,41 @@ TabBar::TabBar(QWidget* parent) : QTabBar(parent), lineEdit_(this)
 void TabBar::mouseDoubleClickEvent(QMouseEvent* event)
 {
     const QRect tabRectangle{tabRect(currentIndex())};
-    lineEdit_.move(tabRectangle.x(), tabRectangle.y());
-    lineEdit_.resize(tabRectangle.size());
+    nameEdit_.move(tabRectangle.topLeft());
+    nameEdit_.resize(tabRectangle.size());
 
-    auto tabWidget{dynamic_cast<QTabWidget*>(parentWidget())};
-    auto mainWindow{dynamic_cast<QMainWindow*>(tabWidget->currentWidget())};
-    lineEdit_.setText(mainWindow->windowTitle());
-    lineEdit_.show();
-    lineEdit_.setFocus();
+    const QMainWindow* mainWindow{getCurrentTabWidget()};
+    nameEdit_.setText(mainWindow->windowTitle());
+    nameEdit_.show();
+    nameEdit_.setFocus();
 
     QTabBar::mouseDoubleClickEvent(event);
 }
 
-void TabBar::editingOfnameFinished()
+void TabBar::editingNameFinished()
 {
-    if (!lineEdit_.isVisible())
+    if (!nameEdit_.isVisible())
         return;
 
     const int index{currentIndex()};
-    lineEdit_.hide();
+    nameEdit_.hide();
     QString currentTabText{tabText(index)};
 
-    const auto tabWidget{dynamic_cast<QTabWidget*>(parentWidget())};
-    auto mainWindow{dynamic_cast<QMainWindow*>(tabWidget->currentWidget())};
+    QMainWindow* mainWindow{getCurrentTabWidget()};
     const QString suffix{
         currentTabText.remove(0, mainWindow->windowTitle().length())};
-    setTabText(index, lineEdit_.text() + suffix);
-    mainWindow->setWindowTitle(lineEdit_.text());
+    setTabText(index, nameEdit_.text() + suffix);
+    mainWindow->setWindowTitle(nameEdit_.text());
 }
 
 bool TabBar::eventFilter(QObject* obj, QEvent* event)
 {
     if (event->type() == QEvent::KeyPress)
     {
-        auto keyEvent{dynamic_cast<QKeyEvent*>(event)};
+        const auto keyEvent{dynamic_cast<QKeyEvent*>(event)};
         if (keyEvent != nullptr && keyEvent->key() == Qt::Key_Escape)
         {
-            lineEdit_.hide();
+            nameEdit_.hide();
             return true;
         }
     }
@@ -61,12 +59,18 @@ bool TabBar::eventFilter(QObject* obj, QEvent* event)
 
 void TabBar::setupLineEdit()
 {
-    lineEdit_.setValidator(new QRegExpValidator(
+    nameEdit_.setValidator(new QRegExpValidator(
         QRegExp(DatasetUtilities::getDatasetNameRegExp()), this));
-    lineEdit_.hide();
+    nameEdit_.hide();
+    connect(&nameEdit_, &QLineEdit::editingFinished, this,
+            &TabBar::editingNameFinished);
+    nameEdit_.installEventFilter(this);
+}
 
-    connect(&lineEdit_, &QLineEdit::editingFinished, this,
-            &TabBar::editingOfnameFinished);
-
-    lineEdit_.installEventFilter(this);
+QMainWindow* TabBar::getCurrentTabWidget() const
+{
+    const auto tabWidget{dynamic_cast<QTabWidget*>(parentWidget())};
+    const auto mainWindow{
+        dynamic_cast<QMainWindow*>(tabWidget->currentWidget())};
+    return mainWindow;
 }

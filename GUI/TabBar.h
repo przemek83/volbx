@@ -3,6 +3,7 @@
 #include <QLineEdit>
 #include <QTabBar>
 
+class QMainWindow;
 /**
  * @brief Tab bar for tab widget.
  */
@@ -22,9 +23,10 @@ protected:
 private:
     void setupLineEdit();
 
-    /// Line edit for changing tab name.
-    QLineEdit lineEdit_;
+    QMainWindow* getCurrentTabWidget() const;
+
+    QLineEdit nameEdit_;
 
 private Q_SLOTS:
-    void editingOfnameFinished();
+    void editingNameFinished();
 };
