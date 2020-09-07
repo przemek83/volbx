@@ -10,6 +10,7 @@ class DataView;
 class FilteringProxyModel;
 class Tab;
 class DataViewDock;
+class PlotDock;
 
 /**
  * @brief TabWidget. Each tab contains data and plots.
@@ -45,6 +46,9 @@ private:
     template <class T>
     void addPlot(const QString& title, const std::function<T*()>& createPlot);
 
+    template <class T>
+    bool plotExist();
+
     void changingFilterPreActions();
 
     void changingFilterPostActions();
@@ -57,4 +61,7 @@ private:
 
     QVector<std::pair<QString, int>> getStringColumnsWithIndexes(
         TableModel* model) const;
+
+    template <class T>
+    void showPlot();
 };

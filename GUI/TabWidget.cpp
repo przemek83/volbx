@@ -109,46 +109,57 @@ void TabWidget::setNumericFilter(int column, double from, double to)
 }
 
 template <class T>
+void TabWidget::showPlot()
+{
+    Tab* mainTab{getCurrentMainTab()};
+    auto plotUI{mainTab->findChild<T*>()};
+    auto dock{qobject_cast<PlotDock*>(plotUI->parent())};
+    dock->setVisible(true);
+    dock->raise();
+}
+
+template <class T>
+bool TabWidget::plotExist()
+{
+    Tab* mainTab{getCurrentMainTab()};
+    const auto plotUI{mainTab->findChild<T*>()};
+    return plotUI != nullptr;
+}
+
+template <class T>
 void TabWidget::addPlot(const QString& title,
                         const std::function<T*()>& createPlot)
 {
-    DataView* view{getCurrentDataView()};
-    Tab* mainTab{getCurrentMainTab()};
-    TableModel* model{getCurrentDataModel()};
-    if (view == nullptr || model == nullptr || mainTab == nullptr)
-        return;
-
-    // If plot already created than just show it and return.
-    if (auto plotUI{mainTab->findChild<T*>()}; plotUI != nullptr)
-    {
-        auto dock{qobject_cast<PlotDock*>(plotUI->parent())};
-        dock->setVisible(true);
-        dock->raise();
-        return;
-    }
-
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
 
+    Tab* mainTab{getCurrentMainTab()};
     auto tabifyOn{mainTab->findChild<PlotDock*>()};
     auto dock{new PlotDock(title, mainTab)};
     dock->setWidget(createPlot());
     mainTab->addDockWidget(Qt::RightDockWidgetArea, dock);
 
+    DataView* view{getCurrentDataView()};
     if (tabifyOn != nullptr)
         mainTab->tabifyDockWidget(tabifyOn, dock);
     else
         activateDataSelection(view);
 
-    dock->setVisible(true);
-    dock->raise();
+    showPlot<T>();
 
     view->recomputeAllData();
+
     QApplication::restoreOverrideCursor();
 }
 
 void TabWidget::addBasicPlot()
 {
+    if (plotExist<BasicDataPlot>())
+    {
+        showPlot<BasicDataPlot>();
+        return;
+    }
+
     const auto createBasicPlot{[=]() -> BasicDataPlot* {
         DataView* view{getCurrentDataView()};
         auto basicPlot{new BasicDataPlot()};
@@ -163,6 +174,12 @@ void TabWidget::addBasicPlot()
 
 void TabWidget::addHistogramPlot()
 {
+    if (plotExist<HistogramPlotUI>())
+    {
+        showPlot<HistogramPlotUI>();
+        return;
+    }
+
     const auto createHistogramPlot{[=]() -> HistogramPlotUI* {
         DataView* view{getCurrentDataView()};
         auto histogramPlot{new HistogramPlotUI()};
@@ -177,6 +194,12 @@ void TabWidget::addHistogramPlot()
 
 void TabWidget::addGroupingPlot()
 {
+    if (plotExist<GroupPlotUI>())
+    {
+        showPlot<GroupPlotUI>();
+        return;
+    }
+
     const auto createGroupingPlot{[=]() -> GroupPlotUI* {
         DataView* view{getCurrentDataView()};
         TableModel* model{getCurrentDataModel()};
