@@ -13,7 +13,7 @@ class DataViewDock;
 class PlotDock;
 
 /**
- * @brief TabWidget. Each tab contains data and plots.
+ * @brief Central widget with tabs. Each tab contains data and plots.
  */
 class TabWidget : public QTabWidget
 {
@@ -23,11 +23,11 @@ public:
 
     ~TabWidget() override = default;
 
-    FilteringProxyModel* getCurrentProxyModel();
+    FilteringProxyModel* getCurrentProxyModel() const;
 
-    TableModel* getCurrentDataModel();
+    TableModel* getCurrentDataModel() const;
 
-    DataView* getCurrentDataView();
+    DataView* getCurrentDataView() const;
 
 public Q_SLOTS:
     void setTextFilter(int column, const QStringList& bannedStrings);
@@ -47,7 +47,7 @@ private:
     void addPlot(const QString& title, const std::function<T*()>& createPlot);
 
     template <class T>
-    bool plotExist();
+    bool plotExist() const;
 
     void changingFilterPreActions();
 
@@ -55,9 +55,9 @@ private:
 
     void activateDataSelection(DataView* view);
 
-    DataViewDock* getCurrentDataViewDock();
+    DataViewDock* getCurrentDataViewDock() const;
 
-    Tab* getCurrentMainTab();
+    Tab* getCurrentMainTab() const;
 
     QVector<std::pair<QString, int>> getStringColumnsWithIndexes(
         TableModel* model) const;

@@ -22,22 +22,22 @@ TabWidget::TabWidget(QWidget* parent) : QTabWidget(parent)
     setMovable(true);
 }
 
-FilteringProxyModel* TabWidget::getCurrentProxyModel()
+FilteringProxyModel* TabWidget::getCurrentProxyModel() const
 {
     return getCurrentMainTab()->getCurrentProxyModel();
 }
 
-TableModel* TabWidget::getCurrentDataModel()
+TableModel* TabWidget::getCurrentDataModel() const
 {
     return getCurrentMainTab()->getCurrentTableModel();
 }
 
-DataView* TabWidget::getCurrentDataView()
+DataView* TabWidget::getCurrentDataView() const
 {
     return getCurrentMainTab()->getCurrentDataView();
 }
 
-Tab* TabWidget::getCurrentMainTab()
+Tab* TabWidget::getCurrentMainTab() const
 {
     auto currentTab{dynamic_cast<Tab*>(currentWidget())};
     return currentTab;
@@ -59,7 +59,7 @@ QVector<std::pair<QString, int>> TabWidget::getStringColumnsWithIndexes(
     return stringColumns;
 }
 
-DataViewDock* TabWidget::getCurrentDataViewDock()
+DataViewDock* TabWidget::getCurrentDataViewDock() const
 {
     DataView* dataView{getCurrentDataView()};
     return qobject_cast<DataViewDock*>(dataView->parent());
@@ -119,7 +119,7 @@ void TabWidget::showPlot()
 }
 
 template <class T>
-bool TabWidget::plotExist()
+bool TabWidget::plotExist() const
 {
     Tab* mainTab{getCurrentMainTab()};
     const auto plotUI{mainTab->findChild<T*>()};
