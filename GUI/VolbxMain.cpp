@@ -37,44 +37,60 @@ VolbxMain::VolbxMain(QWidget* parent)
     ui->setupUi(this);
 
     setStandardIcons();
-
     setupStatusBar();
+    connectFilter();
+    connectPlots();
+    setupFilters();
+    setupTabWidget();
+    setupNetworkManager();
+    connectActions();
+    createOptionsMenu();
+}
 
+VolbxMain::~VolbxMain()
+{
+    delete ui;
+    delete filters_;
+}
+
+void VolbxMain::setStandardIcons()
+{
+    QStyle* style{QApplication::style()};
+    ui->actionImportData->setIcon(
+        style->standardIcon(QStyle::SP_DialogOpenButton));
+    ui->actionSaveDatasetAs->setIcon(
+        style->standardIcon(QStyle::SP_DialogSaveButton));
+    ui->actionExit->setIcon(style->standardIcon(QStyle::SP_DialogCloseButton));
+    ui->actionLogs->setIcon(
+        style->standardIcon(QStyle::SP_FileDialogContentsView));
+    ui->actionCheckForNewVersion->setIcon(
+        style->standardIcon(QStyle::SP_BrowserReload));
+    ui->actionAbout->setIcon(
+        style->standardIcon(QStyle::QStyle::SP_FileDialogInfoView));
+}
+
+void VolbxMain::connectFilter()
+{
     connect(filters_, &FiltersDock::filterNames, tabWidget_,
             &TabWidget::setTextFilter);
     connect(filters_, &FiltersDock::filterDates, tabWidget_,
             &TabWidget::setDateFilter);
     connect(filters_, &FiltersDock::filterNumbers, tabWidget_,
             &TabWidget::setNumericFilter);
+}
 
+void VolbxMain::connectPlots()
+{
     connect(ui->actionBasic_plot, &QAction::triggered, tabWidget_,
             &TabWidget::addBasicPlot);
     connect(ui->actionHistogram, &QAction::triggered, tabWidget_,
             &TabWidget::addHistogramPlot);
     connect(ui->actionGroup_plot, &QAction::triggered, tabWidget_,
             &TabWidget::addGroupingPlot);
+}
 
-    ui->verticalLayout->addWidget(tabWidget_);
-
-    addDockWidget(Qt::LeftDockWidgetArea, filters_);
-    const int defaultFilterWidth{200};
-    filters_->titleBarWidget()->resize(defaultFilterWidth,
-                                       filters_->titleBarWidget()->height());
-
-    connect(tabWidget_, &TabWidget::currentChanged, this,
-            &VolbxMain::tabWasChanged);
-    connect(tabWidget_, &TabWidget::tabCloseRequested, this,
-            &VolbxMain::closeTab);
-
-    ui->actionLogs->setVisible(true);
-
-    ui->actionBugReport->setVisible(false);
-    ui->actionSendErrorOrIdea->setVisible(false);
-    ui->actionTutorials->setVisible(false);
-
-    connect(&networkManager_, &QNetworkAccessManager::finished, this,
-            &VolbxMain::updateCheckReplyFinished);
-
+void VolbxMain::connectActions()
+{
     connect(ui->actionExit, &QAction::triggered, this,
             &VolbxMain::actionExitTriggered);
     connect(ui->actionFilters, &QAction::triggered, this,
@@ -93,30 +109,30 @@ VolbxMain::VolbxMain(QWidget* parent)
             &VolbxMain::actionCheckForNewVersionTriggered);
     connect(ui->actionUpdateAuto, &QAction::triggered, this,
             &VolbxMain::actionUpdateAutoToggled);
-
-    createOptionsMenu();
 }
 
-VolbxMain::~VolbxMain()
+void VolbxMain::setupTabWidget()
 {
-    delete ui;
-    delete filters_;
+    ui->verticalLayout->addWidget(tabWidget_);
+
+    connect(tabWidget_, &TabWidget::currentChanged, this,
+            &VolbxMain::tabWasChanged);
+    connect(tabWidget_, &TabWidget::tabCloseRequested, this,
+            &VolbxMain::closeTab);
 }
 
-void VolbxMain::setStandardIcons()
+void VolbxMain::setupFilters()
 {
-    QStyle* style = QApplication::style();
-    ui->actionImportData->setIcon(
-        style->standardIcon(QStyle::SP_DialogOpenButton));
-    ui->actionSaveDatasetAs->setIcon(
-        style->standardIcon(QStyle::SP_DialogSaveButton));
-    ui->actionExit->setIcon(style->standardIcon(QStyle::SP_DialogCloseButton));
-    ui->actionLogs->setIcon(
-        style->standardIcon(QStyle::SP_FileDialogContentsView));
-    ui->actionCheckForNewVersion->setIcon(
-        style->standardIcon(QStyle::SP_BrowserReload));
-    ui->actionAbout->setIcon(
-        style->standardIcon(QStyle::QStyle::SP_FileDialogInfoView));
+    addDockWidget(Qt::LeftDockWidgetArea, filters_);
+    const int defaultFilterWidth{200};
+    filters_->titleBarWidget()->resize(defaultFilterWidth,
+                                       filters_->titleBarWidget()->height());
+}
+
+void VolbxMain::setupNetworkManager()
+{
+    connect(&networkManager_, &QNetworkAccessManager::finished, this,
+            &VolbxMain::updateCheckReplyFinished);
 }
 
 void VolbxMain::createOptionsMenu()

@@ -49,7 +49,6 @@
     <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="actionTutorials"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
@@ -149,24 +148,9 @@
     <string>Save data</string>
    </property>
   </action>
-  <action name="actionSendErrorOrIdea">
-   <property name="text">
-    <string>Submit bug or idea</string>
-   </property>
-  </action>
-  <action name="actionBugReport">
-   <property name="text">
-    <string>Check submission status</string>
-   </property>
-  </action>
   <action name="actionImportData">
    <property name="text">
     <string>Import</string>
-   </property>
-  </action>
-  <action name="actionTutorials">
-   <property name="text">
-    <string>Tutorials</string>
    </property>
   </action>
   <action name="actionCheckForNewVersion">

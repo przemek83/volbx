@@ -31,6 +31,18 @@ protected:
     void closeEvent(QCloseEvent* event) override;
 
 private:
+    void connectFilter();
+
+    void connectPlots();
+
+    void connectActions();
+
+    void setupTabWidget();
+
+    void setupFilters();
+
+    void setupNetworkManager();
+
     /**
      * @brief add new tab for given dataset.
      * @param dataset dataset.
