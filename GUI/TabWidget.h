@@ -29,12 +29,11 @@ public:
     DataView* getCurrentDataView();
 
 public Q_SLOTS:
-    void setTextFilterInProxy(int column, const QStringList& bannedStrings);
+    void setTextFilter(int column, const QStringList& bannedStrings);
 
-    void setDateFilterInProxy(int column, QDate from, QDate to,
-                              bool filterEmptyDates);
+    void setDateFilter(int column, QDate from, QDate to, bool filterEmptyDates);
 
-    void setNumericFilterInProxy(int column, double from, double to);
+    void setNumericFilter(int column, double from, double to);
 
     void addBasicPlot();
 

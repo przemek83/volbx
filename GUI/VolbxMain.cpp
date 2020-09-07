@@ -51,11 +51,11 @@ VolbxMain::VolbxMain(QWidget* parent)
     setupStatusBar();
 
     connect(filters_, &FiltersDock::filterNames, tabWidget_,
-            &TabWidget::setTextFilterInProxy);
+            &TabWidget::setTextFilter);
     connect(filters_, &FiltersDock::filterDates, tabWidget_,
-            &TabWidget::setDateFilterInProxy);
+            &TabWidget::setDateFilter);
     connect(filters_, &FiltersDock::filterNumbers, tabWidget_,
-            &TabWidget::setNumericFilterInProxy);
+            &TabWidget::setNumericFilter);
 
     connect(ui->actionBasic_plot, &QAction::triggered, tabWidget_,
             &TabWidget::addBasicPlot);
