@@ -21,14 +21,17 @@ Tab::Tab(std::unique_ptr<Dataset> dataset, QWidget* parent)
     addDockWidget(Qt::LeftDockWidgetArea, createDataViewDock(proxyModel));
 }
 
-FilteringProxyModel* Tab::getCurrentProxyModel()
+FilteringProxyModel* Tab::getCurrentProxyModel() const
 {
     return findChild<FilteringProxyModel*>();
 }
 
-TableModel* Tab::getCurrentTableModel() { return findChild<TableModel*>(); }
+TableModel* Tab::getCurrentTableModel() const
+{
+    return findChild<TableModel*>();
+}
 
-DataView* Tab::getCurrentDataView() { return findChild<DataView*>(); }
+DataView* Tab::getCurrentDataView() const { return findChild<DataView*>(); }
 
 DataViewDock* Tab::createDataViewDock(FilteringProxyModel* proxyModel)
 {

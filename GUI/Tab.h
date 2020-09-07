@@ -21,11 +21,11 @@ public:
 
     ~Tab() override = default;
 
-    FilteringProxyModel* getCurrentProxyModel();
+    FilteringProxyModel* getCurrentProxyModel() const;
 
-    TableModel* getCurrentTableModel();
+    TableModel* getCurrentTableModel() const;
 
-    DataView* getCurrentDataView();
+    DataView* getCurrentDataView() const;
 
 private:
     DataViewDock* createDataViewDock(FilteringProxyModel* proxyModel);
