@@ -1,38 +1,28 @@
 #include "VolbxMain.h"
 
 #include <ProgressBarCounter.h>
-#include <QDebug>
-#include <QDesktopServices>
 #include <QDir>
-#include <QLabel>
 #include <QMessageBox>
 #include <QNetworkReply>
-#include <QNetworkRequest>
 #include <QProcess>
+#include <QStyle>
 #include <QStyleFactory>
-#include <QUrl>
-#include <QVariant>
 
-#include "Common/Configuration.h"
-#include "Common/DatasetUtilities.h"
-#include "Common/TimeLogger.h"
-#include "Datasets/Dataset.h"
-#include "Datasets/DatasetInner.h"
-#include "Datasets/DatasetSpreadsheet.h"
-#include "Export/ExportVbx.h"
-#include "FiltersDock.h"
-#include "Import/ImportData.h"
-#include "ModelsAndViews/DataView.h"
-#include "ModelsAndViews/FilteringProxyModel.h"
-#include "ModelsAndViews/TableModel.h"
-#include "Shared/Application.h"
-#include "Shared/Logger.h"
-#include "Shared/Networking.h"
+#include <Common/Configuration.h>
+#include <Common/Constants.h>
+#include <Common/DatasetUtilities.h>
+#include <Export/ExportVbx.h>
+#include <Import/ImportData.h>
+#include <ModelsAndViews/TableModel.h>
+#include <Shared/Application.h>
+#include <Shared/Logger.h>
+#include <Shared/Networking.h>
 
 #include "About.h"
 #include "CheckUpdates.h"
-#include "DataViewDock.h"
+#include "DataView.h"
 #include "Export.h"
+#include "FiltersDock.h"
 #include "SaveDatasetAs.h"
 #include "Tab.h"
 #include "TabWidget.h"
@@ -40,8 +30,8 @@
 
 VolbxMain::VolbxMain(QWidget* parent)
     : QMainWindow(parent),
-      filters_(new FiltersDock(this)),
       ui(new Ui::VolbxMain),
+      filters_(new FiltersDock(this)),
       tabWidget_(new TabWidget(this))
 {
     ui->setupUi(this);
