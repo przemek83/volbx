@@ -1,17 +1,13 @@
 #include "Update.h"
 
-#include <QDebug>
 #include <QFile>
 #include <QMessageBox>
 #include <QNetworkReply>
-#include <QNetworkRequest>
 
-#include "Shared/Logger.h"
-#include "Shared/Networking.h"
+#include <Shared/Logger.h>
+#include <Shared/Networking.h>
 
 #include "ui_Update.h"
-
-const char* Update::tmpPrefix_ = ".tmp";
 
 Update::Update(QWidget* parent) : QWidget(parent), ui(new Ui::Update)
 {
@@ -107,7 +103,7 @@ void Update::initialInfoNetworkReplyFinished(QNetworkReply* reply)
 void Update::fillFilesToUpdateLists(QStringList& serverInfoList)
 {
     // First line/element is correctness checker, second version.
-    int filesCount = serverInfoList.size() - 2;
+    const int filesCount{serverInfoList.size() - 2};
 
     insertNewSectionIntoDetails(
         tr("Found") + QLatin1Char(' ') + QString::number(filesCount) +
@@ -118,9 +114,9 @@ void Update::fillFilesToUpdateLists(QStringList& serverInfoList)
     filesToDownloadSize_.clear();
     for (int i = 0; i < filesCount; ++i)
     {
-        const QString& fileInfoLine = serverInfoList.at(2 + i);
-        const QString fileName = fileInfoLine.section(QLatin1Char(';'), 0, 0);
-        const QString fileSize = fileInfoLine.section(QLatin1Char(';'), 1);
+        const QString& fileInfoLine{serverInfoList.at(2 + i)};
+        const QString fileName{fileInfoLine.section(QLatin1Char(';'), 0, 0)};
+        const QString fileSize{fileInfoLine.section(QLatin1Char(';'), 1)};
         filesToDownload_.push_back(fileName);
         filesToDownloadSize_.push_back(fileSize);
 
@@ -144,8 +140,8 @@ void Update::downloadFile(const QString& fileName)
             QString::number(ui->currentFile->text().toInt() + 1));
     }
 
-    QNetworkReply* reply =
-        downloadManager_.get(Networking::getDownloadFileRequest(fileName));
+    QNetworkReply* reply{
+        downloadManager_.get(Networking::getDownloadFileRequest(fileName))};
 
     LOG(LogTypes::NETWORK, QLatin1String("Sent request for downloading file ") +
                                QString(fileName));
@@ -175,7 +171,7 @@ void Update::downloadFinished(QNetworkReply* reply)
     QString fileName(filesToDownload_.takeFirst());
     QString fileSize(filesToDownloadSize_.takeFirst());
 
-    QByteArray fileDownloadedContent = reply->readAll();
+    QByteArray fileDownloadedContent{reply->readAll()};
 
     LOG(LogTypes::NETWORK, QLatin1String("Expected file size ") +
                                QString::number(fileSize.toInt()) +
@@ -192,9 +188,7 @@ void Update::downloadFinished(QNetworkReply* reply)
     {
         // Do not continue if max tries reached.
         if (!handleVerificationError(fileName, fileSize))
-        {
             return;
-        }
     }
 
     if (filesToDownload_.isEmpty())
@@ -212,7 +206,7 @@ void Update::downloadFinished(QNetworkReply* reply)
 void Update::saveVerfiedFile(QByteArray& fileData, QString& fileName)
 {
     QFile file(QApplication::applicationDirPath() + QLatin1Char('/') +
-               fileName + QLatin1String(tmpPrefix_));
+               fileName + tmpPrefix_);
     insertSuccessInfoIntoDetails(tr("Verified"));
     insertNewLineIntoDetails();
     file.remove();
@@ -220,7 +214,7 @@ void Update::saveVerfiedFile(QByteArray& fileData, QString& fileName)
     file.write(fileData);
 
     LOG(LogTypes::NETWORK,
-        QLatin1String("Saved file: ") + fileName + QLatin1String(tmpPrefix_));
+        QLatin1String("Saved file: ") + fileName + tmpPrefix_);
 
     file.close();
     tempFiles_.push_back(file.fileName());
@@ -256,7 +250,7 @@ void Update::finalizeUpdate()
     for (const QString& tempFileName : tempFiles_)
     {
         QString targetFileName(tempFileName);
-        targetFileName.chop(QLatin1String(tmpPrefix_).size());
+        targetFileName.chop(tmpPrefix_.size());
 
         insertInfoIntoDetails(tempFileName.section(QLatin1Char('/'), -1) +
                               QStringLiteral(" -> ") +
@@ -296,9 +290,7 @@ void Update::buttonQuitClicked() { close(); }
 void Update::showErrorMsg(const QString& error)
 {
     if (!ui->details->isVisible())
-    {
         ui->showDetails->setChecked(true);
-    }
 
     // Do not close app. Allow user to check details.
     QMessageBox::critical(this, tr("Error"), error);
@@ -340,10 +332,10 @@ void Update::insertErrorInfoIntoDetails(const QString& msg)
 
 void Update::showDetailsToggled(bool checked)
 {
-    static int detailsSize = 0;
+    static int detailsSize{0};
     if (checked)
     {
-        int minimumSize = ui->verticalLayout->minimumSize().height();
+        int minimumSize{ui->verticalLayout->minimumSize().height()};
         ui->details->show();
         setMinimumHeight(minimumSize + ui->details->minimumHeight());
         resize(width(), minimumSize + detailsSize);

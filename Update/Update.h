@@ -25,29 +25,7 @@ protected:
     void closeEvent(QCloseEvent* event) override;
 
 private:
-    Ui::Update* ui;
-
-    /// Network manager used for getting initial info.
-    QNetworkAccessManager initialInfoNetworkManager_;
-
-    /// Network manager used for downloading.
-    QNetworkAccessManager downloadManager_;
-
     void downloadFile(const QString& fileName);
-
-    /// List of files to download.
-    QVector<QString> filesToDownload_;
-
-    /// List of sizes of files to download.
-    QVector<QString> filesToDownloadSize_;
-
-    /// List of temporary files.
-    QStringList tempFiles_;
-
-    /// Temporary files prefix.
-    static const char* tmpPrefix_;
-
-    int currentTriesCount_{0};
 
     void showErrorMsg(const QString& error);
 
@@ -80,6 +58,28 @@ private:
     void saveVerfiedFile(QByteArray& fileData, QString& fileName);
 
     bool handleVerificationError(QString& fileName, QString& fileSize);
+
+    Ui::Update* ui;
+
+    /// Network manager used for getting initial info.
+    QNetworkAccessManager initialInfoNetworkManager_;
+
+    /// Network manager used for downloading.
+    QNetworkAccessManager downloadManager_;
+
+    /// List of files to download.
+    QVector<QString> filesToDownload_;
+
+    /// List of sizes of files to download.
+    QVector<QString> filesToDownloadSize_;
+
+    /// List of temporary files.
+    QStringList tempFiles_;
+
+    /// Temporary files prefix.
+    const QString tmpPrefix_{".tmp"};
+
+    int currentTriesCount_{0};
 
 private Q_SLOTS:
     void initialInfoNetworkReplyFinished(QNetworkReply* reply);
