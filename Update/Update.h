@@ -11,7 +11,7 @@ class Update;
 }  // namespace Ui
 
 /**
- * @brief Updater window. Acts as main window for all operations and display.
+ * @brief Updater window used for all operations and display.
  */
 class Update : public QWidget
 {
@@ -36,14 +36,11 @@ private:
     void showErrorMsg(const QString& error);
 
     /**
-     * @brief retrieve info about files to download and sizes.
-     * @param serverInfoList files list.
+     * @brief Retrieve info about files to download and sizes.
+     * @param serverInfoList Files list.
      */
     void fillFilesToUpdateLists(const QStringList& serverInfoList);
 
-    /**
-     * @brief Rename temporary files.
-     */
     void finalizeUpdate();
 
     void insertNewSectionIntoDetails(const QString& msg);
@@ -56,11 +53,6 @@ private:
 
     void insertErrorInfoIntoDetails(const QString& msg);
 
-    /**
-     * @brief save verified file. Verified means same size as expected.
-     * @param fileData file content.
-     * @param fileName file name.
-     */
     void saveVerfiedFile(QByteArray& fileData, QString& fileName);
 
     bool handleVerificationError(QString& fileName, QString& fileSize);
