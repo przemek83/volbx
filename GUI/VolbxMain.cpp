@@ -31,8 +31,8 @@
 VolbxMain::VolbxMain(QWidget* parent)
     : QMainWindow(parent),
       ui(new Ui::VolbxMain),
-      filters_(new FiltersDock(this)),
-      tabWidget_(new TabWidget(this))
+      filters_(this),
+      tabWidget_(this)
 {
     ui->setupUi(this);
 
@@ -47,11 +47,7 @@ VolbxMain::VolbxMain(QWidget* parent)
     createOptionsMenu();
 }
 
-VolbxMain::~VolbxMain()
-{
-    delete ui;
-    delete filters_;
-}
+VolbxMain::~VolbxMain() { delete ui; }
 
 void VolbxMain::setStandardIcons()
 {
@@ -71,21 +67,21 @@ void VolbxMain::setStandardIcons()
 
 void VolbxMain::connectFilter()
 {
-    connect(filters_, &FiltersDock::filterNames, tabWidget_,
+    connect(&filters_, &FiltersDock::filterNames, &tabWidget_,
             &TabWidget::setTextFilter);
-    connect(filters_, &FiltersDock::filterDates, tabWidget_,
+    connect(&filters_, &FiltersDock::filterDates, &tabWidget_,
             &TabWidget::setDateFilter);
-    connect(filters_, &FiltersDock::filterNumbers, tabWidget_,
+    connect(&filters_, &FiltersDock::filterNumbers, &tabWidget_,
             &TabWidget::setNumericFilter);
 }
 
 void VolbxMain::connectPlots()
 {
-    connect(ui->actionBasic_plot, &QAction::triggered, tabWidget_,
+    connect(ui->actionBasic_plot, &QAction::triggered, &tabWidget_,
             &TabWidget::addBasicPlot);
-    connect(ui->actionHistogram, &QAction::triggered, tabWidget_,
+    connect(ui->actionHistogram, &QAction::triggered, &tabWidget_,
             &TabWidget::addHistogramPlot);
-    connect(ui->actionGroup_plot, &QAction::triggered, tabWidget_,
+    connect(ui->actionGroup_plot, &QAction::triggered, &tabWidget_,
             &TabWidget::addGroupingPlot);
 }
 
@@ -93,7 +89,7 @@ void VolbxMain::connectActions()
 {
     connect(ui->actionExit, &QAction::triggered, this, &VolbxMain::close);
     connect(ui->actionFilters, &QAction::triggered,
-            [&]() { filters_->setVisible(!filters_->isVisible()); });
+            [&]() { filters_.setVisible(!filters_.isVisible()); });
     connect(ui->actionLogs, &QAction::triggered, this,
             []() { Logger::getInstance().toggleVisibility(); });
     connect(ui->actionAbout, &QAction::triggered, this,
@@ -112,20 +108,20 @@ void VolbxMain::connectActions()
 
 void VolbxMain::setupTabWidget()
 {
-    ui->verticalLayout->addWidget(tabWidget_);
+    ui->verticalLayout->addWidget(&tabWidget_);
 
-    connect(tabWidget_, &TabWidget::currentChanged, this,
+    connect(&tabWidget_, &TabWidget::currentChanged, this,
             &VolbxMain::tabWasChanged);
-    connect(tabWidget_, &TabWidget::tabCloseRequested, this,
+    connect(&tabWidget_, &TabWidget::tabCloseRequested, this,
             &VolbxMain::closeTab);
 }
 
 void VolbxMain::setupFilters()
 {
-    addDockWidget(Qt::LeftDockWidgetArea, filters_);
+    addDockWidget(Qt::LeftDockWidgetArea, &filters_);
     const int defaultFilterWidth{200};
-    filters_->titleBarWidget()->resize(defaultFilterWidth,
-                                       filters_->titleBarWidget()->height());
+    filters_.titleBarWidget()->resize(defaultFilterWidth,
+                                      filters_.titleBarWidget()->height());
 }
 
 void VolbxMain::setupNetworkManager()
@@ -220,7 +216,7 @@ void VolbxMain::checkForUpdates()
 void VolbxMain::tabWasChanged(int index)
 {
     if (index != -1)
-        filters_->showFiltersForModel(tabWidget_->getCurrentProxyModel());
+        filters_.showFiltersForModel(tabWidget_.getCurrentProxyModel());
     manageActions(index != -1);
 }
 
@@ -241,17 +237,17 @@ void VolbxMain::actionAboutTriggered()
 
 void VolbxMain::closeTab(int tab)
 {
-    QWidget* tabToDelete{tabWidget_->widget(tab)};
-    filters_->removeFiltersForModel(tabWidget_->getCurrentProxyModel());
-    tabWidget_->removeTab(tab);
+    QWidget* tabToDelete{tabWidget_.widget(tab)};
+    filters_.removeFiltersForModel(tabWidget_.getCurrentProxyModel());
+    tabWidget_.removeTab(tab);
     delete tabToDelete;
 
-    manageActions(tabWidget_->count() != 0);
+    manageActions(tabWidget_.count() != 0);
 }
 
 void VolbxMain::actionExportTriggered()
 {
-    Export exportDialog(tabWidget_->currentWidget(), this);
+    Export exportDialog(tabWidget_.currentWidget(), this);
     exportDialog.exec();
 }
 
@@ -279,7 +275,7 @@ void VolbxMain::manageActions(bool tabExists)
     ui->actionSaveDatasetAs->setEnabled(tabExists);
 
     const bool activateCharts{
-        tabExists && tabWidget_->getCurrentDataModel()->areTaggedColumnsSet()};
+        tabExists && tabWidget_.getCurrentDataModel()->areTaggedColumnsSet()};
     ui->actionBasic_plot->setEnabled(activateCharts);
     ui->actionHistogram->setEnabled(activateCharts);
     ui->actionGroup_plot->setEnabled(activateCharts);
@@ -288,7 +284,7 @@ void VolbxMain::manageActions(bool tabExists)
 
 void VolbxMain::saveDataset(const QString& datasetName)
 {
-    DataView* view{tabWidget_->getCurrentDataView()};
+    DataView* view{tabWidget_.getCurrentDataView()};
     if (view == nullptr)
         return;
 
@@ -400,10 +396,10 @@ void VolbxMain::addMainTabForDataset(std::unique_ptr<Dataset> dataset)
     const QString nameForTabBar{createNameForTab(dataset)};
     const QString datasetName{dataset->getName()};
 
-    auto mainTab{new Tab(std::move(dataset), tabWidget_)};
-    filters_->addFiltersForModel(mainTab->getCurrentProxyModel());
-    const int newTabIndex{tabWidget_->addTab(mainTab, nameForTabBar)};
-    tabWidget_->setCurrentIndex(newTabIndex);
+    auto mainTab{new Tab(std::move(dataset), &tabWidget_)};
+    filters_.addFiltersForModel(mainTab->getCurrentProxyModel());
+    const int newTabIndex{tabWidget_.addTab(mainTab, nameForTabBar)};
+    tabWidget_.setCurrentIndex(newTabIndex);
 
     manageActions(true);
 
@@ -415,57 +411,62 @@ void VolbxMain::setupStatusBar()
     ui->statusBar->showMessage(tr("Ready") + "...");
 }
 
-void VolbxMain::updateCheckReplyFinished(QNetworkReply* reply)
+bool VolbxMain::canUpdate(QNetworkReply* reply)
 {
-    reply->deleteLater();
-
-    // Check errors.
     if (!Networking::replyIsValid(reply))
     {
         ui->statusBar->showMessage(tr("Connection error encountered."));
-        return;
+        return false;
     }
 
     auto [newestVersion, notNeededHereList] =
         Networking::getAvailableVersionAndFiles(reply);
-
     if (newestVersion.isEmpty())
     {
         ui->statusBar->showMessage(tr("Wrong answer received from server."));
-        return;
+        return false;
     }
 
-    if (newestVersion != QApplication::applicationVersion())
+    if (QApplication::applicationVersion() == newestVersion)
     {
-        QMessageBox::StandardButton answer = QMessageBox::question(
-            nullptr, tr("New version"),
-            tr("New version is available. Download and install it now?"));
+        ui->statusBar->showMessage(tr("No updates available"));
+        return false;
+    }
 
-        // When user want to update.
-        if (QMessageBox::Yes == answer)
-        {
-            if (QFile::exists(QCoreApplication::applicationDirPath() + '/' +
-                              Constants::getUpdaterName() +
-                              Constants::getExeFileSuffix()))
-            {
-                QProcess::startDetached(Constants::getUpdaterName());
-                QCoreApplication::quit();
-            }
-            else
-            {
-                QMessageBox::critical(
-                    nullptr, tr("Wrong installation"),
-                    tr("Installation is corrupted. Could not find file ") +
-                        Constants::getUpdaterName() +
-                        Constants::getExeFileSuffix() + ".\n" +
-                        tr("Can not use update functionality."));
-            }
-        }
+    return true;
+}
+
+void VolbxMain::updateApplication()
+{
+    if (QFile::exists(QCoreApplication::applicationDirPath() + '/' +
+                      Constants::getUpdaterName() +
+                      Constants::getExeFileSuffix()))
+    {
+        QProcess::startDetached(Constants::getUpdaterName());
+        QCoreApplication::quit();
     }
     else
     {
-        ui->statusBar->showMessage(tr("No updates available"));
+        QMessageBox::critical(
+            nullptr, tr("Wrong installation"),
+            tr("Installation is corrupted. Could not find file ") +
+                Constants::getUpdaterName() + Constants::getExeFileSuffix() +
+                ".\n" + tr("Can not use update functionality."));
     }
+}
+
+void VolbxMain::updateCheckReplyFinished(QNetworkReply* reply)
+{
+    reply->deleteLater();
+    if (!canUpdate(reply))
+        return;
+
+    QMessageBox::StandardButton answer{QMessageBox::question(
+        nullptr, tr("New version"),
+        tr("New version is available. Download and install it now?"))};
+
+    if (QMessageBox::Yes == answer)
+        updateApplication();
 }
 
 void VolbxMain::actionCheckForNewVersionTriggered()

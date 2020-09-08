@@ -5,15 +5,16 @@
 #include <QMainWindow>
 #include <QNetworkAccessManager>
 
-class QActionGroup;
+#include <FiltersDock.h>
+#include <TabWidget.h>
+
 namespace Ui
 {
 class VolbxMain;
 }  // namespace Ui
 
-class FiltersDock;
+class QActionGroup;
 class Dataset;
-class TabWidget;
 
 /**
  * @brief Volbx main window.
@@ -46,10 +47,6 @@ private:
 
     void addStyleToMenu(const QString& name, QActionGroup* actionsGroup);
 
-    /**
-     * @brief add new tab for given dataset.
-     * @param dataset dataset.
-     */
     void addMainTabForDataset(std::unique_ptr<Dataset> dataset);
 
     void manageActions(bool tabExists);
@@ -78,15 +75,19 @@ private:
 
     QString createNameForTab(const std::unique_ptr<Dataset>& dataset) const;
 
+    bool canUpdate(QNetworkReply* reply);
+
+    void updateApplication();
+
     Ui::VolbxMain* ui;
 
     /// Side dock with filters.
-    FiltersDock* filters_{nullptr};
+    FiltersDock filters_;
 
     /// Main tab widget/center widget.
-    TabWidget* tabWidget_{nullptr};
+    TabWidget tabWidget_;
 
-    /// Network manager used to retrieve current version available.
+    /// Network manager used to retrieve current available version.
     QNetworkAccessManager networkManager_;
 
 private Q_SLOTS:
