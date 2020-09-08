@@ -10,13 +10,10 @@ CheckUpdates::CheckUpdates(QWidget* parent)
 {
     ui->setupUi(this);
 
-    const QStyle* style = QApplication::style();
+    const QStyle* style{QApplication::style()};
     setWindowIcon(style->standardIcon(QStyle::QStyle::SP_MessageBoxQuestion));
 }
 
 CheckUpdates::~CheckUpdates() { delete ui; }
 
-bool CheckUpdates::isSaveFlagSet()
-{
-    return ui->saveCheckBox->isChecked();
-}
+bool CheckUpdates::isSaveFlagSet() { return ui->saveCheckBox->isChecked(); }

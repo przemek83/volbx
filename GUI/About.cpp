@@ -11,7 +11,7 @@ About::About(QWidget* parent) : QDialog(parent), ui(new Ui::About)
     ui->versionNumber->setText(QApplication::applicationVersion());
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    const QStyle* style = QApplication::style();
+    const QStyle* style{QApplication::style()};
     setWindowIcon(style->standardIcon(QStyle::QStyle::SP_FileDialogInfoView));
 }
 
