@@ -5,7 +5,7 @@
 
 namespace FileUtilities
 {
-std::pair<bool, QString> loadFile(QString name)
+std::pair<bool, QString> loadFile(const QString& name)
 {
     QFile file(name);
 

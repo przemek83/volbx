@@ -1,10 +1,9 @@
 #pragma once
 
+#include <ImportSpreadsheet.h>
 #include <QFile>
 
 #include "Dataset.h"
-
-class ImportSpreadsheet;
 
 /**
  * @class DatasetSpreadsheet
@@ -12,11 +11,12 @@ class ImportSpreadsheet;
  */
 class DatasetSpreadsheet : public Dataset
 {
+    Q_OBJECT
 public:
     DatasetSpreadsheet(const QString& name, const QString& zipFileName,
                        QObject* parent = nullptr);
 
-    ~DatasetSpreadsheet() override;
+    ~DatasetSpreadsheet() override = default;
 
 protected:
     bool analyze() override;

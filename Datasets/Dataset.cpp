@@ -10,8 +10,6 @@ Dataset::Dataset(const QString& name, QObject* parent)
 {
 }
 
-Dataset::~Dataset() {}
-
 unsigned int Dataset::rowCount() const { return rowsCount_; }
 
 unsigned int Dataset::columnCount() const { return columnsCount_; }

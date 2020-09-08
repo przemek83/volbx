@@ -69,13 +69,13 @@ private:
 
     QString configDump() const;
 
-    bool loadConfigXml(QDomDocument& configXml) const;
+    static bool loadConfigXml(QDomDocument& configXml);
 
     void parseConfigXml(QDomDocument& configXml);
 
     QString generateConfigXml() const;
 
-    bool saveConfigXml(const QString& configXml) const;
+    static bool saveConfigXml(const QString& configXml);
 
     bool configValid_{false};
 

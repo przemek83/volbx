@@ -10,7 +10,7 @@
 class TimeLogger
 {
 public:
-    TimeLogger(LogTypes logType, const QString& operationName);
+    TimeLogger(LogTypes logType, QString operationName);
 
     ~TimeLogger();
 

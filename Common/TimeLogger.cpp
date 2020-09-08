@@ -2,8 +2,8 @@
 
 #include "Logger.h"
 
-TimeLogger::TimeLogger(LogTypes logType, const QString& operationName)
-    : logType_(logType), operationName_(operationName)
+TimeLogger::TimeLogger(LogTypes logType, QString operationName)
+    : logType_(logType), operationName_(std::move(operationName))
 {
     performanceTimer_.start();
 }

@@ -13,6 +13,7 @@ class QTextStream;
  */
 class DatasetInner : public Dataset
 {
+    Q_OBJECT
 public:
     explicit DatasetInner(const QString& name, QObject* parent = nullptr);
 

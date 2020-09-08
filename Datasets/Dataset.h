@@ -29,7 +29,7 @@ public:
      */
     explicit Dataset(const QString& name, QObject* parent = nullptr);
 
-    virtual ~Dataset();
+    ~Dataset() override = default;
 
     /**
      * @brief Get number of rows in dataset.
@@ -218,7 +218,7 @@ private:
     /// Stores information about columns which are tagged.
     QMap<ColumnTag, unsigned int> taggedColumns_;
 
-signals:
+Q_SIGNALS:
     /**
      * @brief Signal for loading percent changes
      * @param newPercentage New percent.

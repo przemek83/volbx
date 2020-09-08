@@ -1,7 +1,5 @@
 #include "DatasetSpreadsheet.h"
 
-#include <ImportSpreadsheet.h>
-
 #include <Logger.h>
 
 DatasetSpreadsheet::DatasetSpreadsheet(const QString& name,
@@ -10,8 +8,6 @@ DatasetSpreadsheet::DatasetSpreadsheet(const QString& name,
     : Dataset(name, parent), zipFile_(zipFileName)
 {
 }
-
-DatasetSpreadsheet::~DatasetSpreadsheet() {}
 
 bool DatasetSpreadsheet::analyze()
 {

@@ -88,7 +88,7 @@ QString Configuration::configDump() const
     return dump;
 }
 
-bool Configuration::loadConfigXml(QDomDocument& configXml) const
+bool Configuration::loadConfigXml(QDomDocument& configXml)
 {
     const QString filename(QApplication::applicationDirPath() + "/" +
                            Constants::getConfigurationFileName());
@@ -158,7 +158,7 @@ QString Configuration::generateConfigXml() const
     return doc.toString();
 }
 
-bool Configuration::saveConfigXml(const QString& configXml) const
+bool Configuration::saveConfigXml(const QString& configXml)
 {
     QString filename(QApplication::applicationDirPath() + "/" +
                      Constants::getConfigurationFileName());

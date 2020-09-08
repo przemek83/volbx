@@ -155,7 +155,7 @@ QString Export::getFileName()
 {
     const QString dateString(
         QDate::currentDate().toString(exportFilesDateFormat_));
-    const QString fileName(ui->locationLineEdit->text() + "/" +
-                           ui->prefix->text() + "_" + dateString);
+    QString fileName(ui->locationLineEdit->text() + "/" + ui->prefix->text() +
+                     "_" + dateString);
     return fileName;
 }
