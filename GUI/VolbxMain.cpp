@@ -255,30 +255,9 @@ void VolbxMain::actionExportTriggered()
     exportDialog.exec();
 }
 
-void VolbxMain::manageActions(bool tabExists)
+void VolbxMain::setTooltipsForChartsActions(bool chartsActive)
 {
-    ui->actionExport->setEnabled(tabExists);
-    ui->actionSaveDatasetAs->setEnabled(tabExists);
-
-    // Check if plot icons should be enabled.
-    bool activateCharts = tabExists;
-    if (tabExists)
-    {
-        const TableModel* dataModel = tabWidget_->getCurrentDataModel();
-        if (nullptr != dataModel)
-        {
-            activateCharts =
-                (activateCharts && dataModel->areTaggedColumnsSet());
-        }
-    }
-
-    // Enable/disable plot icons.
-    ui->actionBasic_plot->setEnabled(activateCharts);
-    ui->actionHistogram->setEnabled(activateCharts);
-    ui->actionGroup_plot->setEnabled(activateCharts);
-
-    // Set tooltips for plot icons.
-    if (!activateCharts)
+    if (!chartsActive)
     {
         const QString cannotCreateCharts =
             tr("Time and examined variable columns are not specified.");
@@ -294,6 +273,50 @@ void VolbxMain::manageActions(bool tabExists)
     }
 }
 
+void VolbxMain::manageActions(bool tabExists)
+{
+    ui->actionExport->setEnabled(tabExists);
+    ui->actionSaveDatasetAs->setEnabled(tabExists);
+
+    const bool activateCharts{
+        tabExists && tabWidget_->getCurrentDataModel()->areTaggedColumnsSet()};
+    ui->actionBasic_plot->setEnabled(activateCharts);
+    ui->actionHistogram->setEnabled(activateCharts);
+    ui->actionGroup_plot->setEnabled(activateCharts);
+    setTooltipsForChartsActions(activateCharts);
+}
+
+void VolbxMain::saveDataset(const QString& datasetName)
+{
+    DataView* view{tabWidget_->getCurrentDataView()};
+    if (view == nullptr)
+        return;
+
+    QString barTitle{
+        Constants::getProgressBarTitle(Constants::BarTitle::SAVING)};
+    ProgressBarCounter bar(barTitle, 100, nullptr);
+    bar.showDetached();
+
+    LOG(LogTypes::IMPORT_EXPORT, "Saving dataset " + datasetName);
+    QString filePath{DatasetUtilities::getDatasetsDir() + datasetName +
+                     DatasetUtilities::getDatasetExtension()};
+
+    QTime performanceTimer;
+    performanceTimer.start();
+
+    QFile file(filePath);
+    ExportVbx exportVbx;
+    connect(&exportVbx, &ExportData::progressPercentChanged, &bar,
+            &ProgressBarCounter::updateProgress);
+    if (exportVbx.generateVbx(*view, file))
+        LOG(LogTypes::IMPORT_EXPORT,
+            "File saved in " +
+                QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
+                " seconds.");
+    else
+        LOG(LogTypes::IMPORT_EXPORT, "Saving failed.");
+}
+
 void VolbxMain::actionSaveDatasetAsTriggered()
 {
     if (!DatasetUtilities::doesDatasetDirExistAndUserHavePermisions())
@@ -302,43 +325,12 @@ void VolbxMain::actionSaveDatasetAsTriggered()
         msg.append(DatasetUtilities::getDatasetsDir());
         msg.append(tr(" needed for saving dataset."));
         QMessageBox::critical(this, QString(tr("Access denied")), msg);
-
         return;
     }
 
-    SaveDatasetAs save(DatasetUtilities::getListOfAvailableDatasets());
-
-    if (QDialog::Accepted == save.exec())
-    {
-        DataView* view = tabWidget_->getCurrentDataView();
-        if (view == nullptr)
-            return;
-
-        QString barTitle =
-            Constants::getProgressBarTitle(Constants::BarTitle::SAVING);
-        ProgressBarCounter bar(barTitle, 100, nullptr);
-        bar.showDetached();
-
-        QString name{save.getDatasetName()};
-        LOG(LogTypes::IMPORT_EXPORT, "Saving dataset " + name);
-        QString filePath{DatasetUtilities::getDatasetsDir() + name +
-                         DatasetUtilities::getDatasetExtension()};
-
-        QTime performanceTimer;
-        performanceTimer.start();
-
-        QFile file(filePath);
-        ExportVbx exportVbx;
-        connect(&exportVbx, &ExportData::progressPercentChanged, &bar,
-                &ProgressBarCounter::updateProgress);
-        if (!exportVbx.generateVbx(*view, file))
-            LOG(LogTypes::IMPORT_EXPORT, "Saving failed.");
-
-        LOG(LogTypes::IMPORT_EXPORT,
-            "File saved in " +
-                QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
-                " seconds.");
-    }
+    SaveDatasetAs saveAs(DatasetUtilities::getListOfAvailableDatasets());
+    if (saveAs.exec() == QDialog::Accepted)
+        saveDataset(saveAs.getDatasetName());
 }
 
 void VolbxMain::actionImportDataTriggered()

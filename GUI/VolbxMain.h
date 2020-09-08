@@ -70,6 +70,10 @@ private:
 
     bool doesUserWantsToCheckForUpdates();
 
+    void setTooltipsForChartsActions(bool chartsActive);
+
+    void saveDataset(const QString& datasetName);
+
     Ui::VolbxMain* ui;
 
     /// Side dock with filters.
