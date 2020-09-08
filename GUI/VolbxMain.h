@@ -74,6 +74,10 @@ private:
 
     void saveDataset(const QString& datasetName);
 
+    void importDataset(std::unique_ptr<Dataset> dataset);
+
+    QString createNameForTab(const std::unique_ptr<Dataset>& dataset) const;
+
     Ui::VolbxMain* ui;
 
     /// Side dock with filters.

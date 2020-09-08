@@ -333,32 +333,18 @@ void VolbxMain::actionSaveDatasetAsTriggered()
         saveDataset(saveAs.getDatasetName());
 }
 
-void VolbxMain::actionImportDataTriggered()
+void VolbxMain::importDataset(std::unique_ptr<Dataset> dataset)
 {
-    ImportData import(this);
-
-    if (QDialog::Accepted != import.exec())
-        return;
-
-    std::unique_ptr<Dataset> dataset{import.getSelectedDataset()};
-
     if (dataset == nullptr || !dataset->isValid())
     {
         QMessageBox::critical(
             this, tr("Import error"),
-            tr("Import error encountered, can not continue operation."));
+            tr("Import error encountered: ") + dataset->getLastError());
         return;
     }
 
-    if (!dataset)
-    {
-        QMessageBox::critical(this, tr("Import error"),
-                              dataset->getLastError());
-        return;
-    }
-
-    const QString barTitle =
-        Constants::getProgressBarTitle(Constants::BarTitle::LOADING);
+    const QString barTitle{
+        Constants::getProgressBarTitle(Constants::BarTitle::LOADING)};
     ProgressBarCounter bar(barTitle, 100, nullptr);
     QObject::connect(dataset.get(), &Dataset::loadingPercentChanged, &bar,
                      &ProgressBarCounter::updateProgress);
@@ -369,9 +355,6 @@ void VolbxMain::actionImportDataTriggered()
     QTime performanceTimer;
     performanceTimer.start();
 
-    // TODO 26/08/2012 Currently try catches only part of memory problems.
-    // One problem still lies in creating 2d array.
-    // Try to create vector of pointers to 1d arrays.
     try
     {
         dataset->loadData();
@@ -396,22 +379,30 @@ void VolbxMain::actionImportDataTriggered()
     addMainTabForDataset(std::move(dataset));
 }
 
-void VolbxMain::addMainTabForDataset(std::unique_ptr<Dataset> dataset)
+void VolbxMain::actionImportDataTriggered()
+{
+    ImportData import(this);
+    if (import.exec() == QDialog::Accepted)
+        importDataset(import.getSelectedDataset());
+}
+
+QString VolbxMain::createNameForTab(
+    const std::unique_ptr<Dataset>& dataset) const
 {
     QString nameForTabBar{dataset->getName()};
-    auto [exist, column] = dataset->getTaggedColumn(ColumnTag::VALUE);
-    if (exist)
+    if (auto [ok, column] = dataset->getTaggedColumn(ColumnTag::VALUE); ok)
         nameForTabBar.append(" (" + dataset->getHeaderName(column) + ")");
+    return nameForTabBar;
+}
 
-    QString datasetName{dataset->getName()};
-    auto mainTab = new Tab(std::move(dataset), tabWidget_);
-    const FilteringProxyModel* proxyModel = mainTab->getCurrentProxyModel();
-    if (nullptr != proxyModel)
-    {
-        filters_->addFiltersForModel(proxyModel);
-    }
+void VolbxMain::addMainTabForDataset(std::unique_ptr<Dataset> dataset)
+{
+    const QString nameForTabBar{createNameForTab(dataset)};
+    const QString datasetName{dataset->getName()};
 
-    int newTabIndex = tabWidget_->addTab(mainTab, nameForTabBar);
+    auto mainTab{new Tab(std::move(dataset), tabWidget_)};
+    filters_->addFiltersForModel(mainTab->getCurrentProxyModel());
+    const int newTabIndex{tabWidget_->addTab(mainTab, nameForTabBar)};
     tabWidget_->setCurrentIndex(newTabIndex);
 
     manageActions(true);
