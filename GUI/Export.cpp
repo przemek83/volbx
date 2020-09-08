@@ -79,7 +79,7 @@ void Export::saveOnDisk()
     if (exportData(fileName))
         LOG(LogTypes::IMPORT_EXPORT,
             "Data exported in " +
-                QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
+                Constants::timeFromTimeToSeconds(performanceTimer) +
                 " seconds.");
     else
         LOG(LogTypes::IMPORT_EXPORT, "Exporting data failed.");

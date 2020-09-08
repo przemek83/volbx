@@ -1,5 +1,6 @@
 #include "TimeLogger.h"
 
+#include "Constants.h"
 #include "Logger.h"
 
 TimeLogger::TimeLogger(LogTypes logType, QString operationName)
@@ -10,6 +11,6 @@ TimeLogger::TimeLogger(LogTypes logType, QString operationName)
 
 TimeLogger::~TimeLogger()
 {
-    QString seconds{QString::number(performanceTimer_.elapsed() * 1.0 / 1000)};
+    QString seconds{Constants::timeFromTimeToSeconds(performanceTimer_)};
     LOG(logType_, operationName_ + " in " + seconds + " seconds.");
 }

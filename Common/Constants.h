@@ -3,6 +3,8 @@
 #include <QDate>
 #include <QString>
 
+class QTime;
+
 /**
  * Helper functions for constants.
  */
@@ -27,4 +29,6 @@ enum class BarTitle : unsigned char
 QString getProgressBarTitle(BarTitle barTitle);
 
 const int NOT_SET_COLUMN{-1};
+
+QString timeFromTimeToSeconds(QTime time);
 };  // namespace Constants

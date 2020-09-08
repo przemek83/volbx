@@ -307,7 +307,7 @@ void VolbxMain::saveDataset(const QString& datasetName)
     if (exportVbx.generateVbx(*view, file))
         LOG(LogTypes::IMPORT_EXPORT,
             "File saved in " +
-                QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
+                Constants::timeFromTimeToSeconds(performanceTimer) +
                 " seconds.");
     else
         LOG(LogTypes::IMPORT_EXPORT, "Saving failed.");
@@ -369,8 +369,7 @@ void VolbxMain::importDataset(std::unique_ptr<Dataset> dataset)
     LOG(LogTypes::IMPORT_EXPORT,
         "Loaded file having " + QString::number(dataset->rowCount()) +
             " rows in time " +
-            QString::number(performanceTimer.elapsed() * 1.0 / 1000) +
-            " seconds.");
+            Constants::timeFromTimeToSeconds(performanceTimer) + " seconds.");
 
     addMainTabForDataset(std::move(dataset));
 }

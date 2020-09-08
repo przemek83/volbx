@@ -4,6 +4,7 @@
 
 #include <QLocale>
 #include <QSettings>
+#include <QTime>
 #include <QVector>
 
 namespace Constants
@@ -31,6 +32,13 @@ QString getProgressBarTitle(BarTitle barTitle)
 {
     static const QVector<QString> progressTitles{initProgressBarNames()};
     return progressTitles[static_cast<int>(barTitle)];
+}
+
+QString timeFromTimeToSeconds(QTime time)
+{
+    const int milisecondsInSecond{1000};
+    return QString::number(static_cast<double>(time.elapsed()) /
+                           milisecondsInSecond);
 }
 
 }  // namespace Constants
