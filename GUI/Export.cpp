@@ -18,7 +18,7 @@
 #include "PlotDock.h"
 #include "ui_Export.h"
 
-Export::Export(QMainWindow* tab, QWidget* parent)
+Export::Export(QWidget* tab, QWidget* parent)
     : QDialog(parent), ui(new Ui::Export), tab_(tab)
 {
     ui->setupUi(this);

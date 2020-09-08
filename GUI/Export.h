@@ -2,7 +2,6 @@
 
 #include <QDialog>
 
-class QMainWindow;
 class DataView;
 class ProgressBarCounter;
 
@@ -18,7 +17,7 @@ class Export : public QDialog
 {
     Q_OBJECT
 public:
-    explicit Export(QMainWindow* tab, QWidget* parent = nullptr);
+    explicit Export(QWidget* tab, QWidget* parent = nullptr);
 
     ~Export() override;
 
@@ -41,7 +40,7 @@ private:
 
     Ui::Export* ui;
 
-    QMainWindow* tab_;
+    QWidget* tab_;
 
     const QString exportFilesDateFormat_{QStringLiteral("yyyyMMdd")};
 

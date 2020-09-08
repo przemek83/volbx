@@ -68,6 +68,8 @@ private:
 
     void setStandardIcons();
 
+    bool doesUserWantsToCheckForUpdates();
+
     Ui::VolbxMain* ui;
 
     /// Side dock with filters.
@@ -80,10 +82,6 @@ private:
     QNetworkAccessManager networkManager_;
 
 private Q_SLOTS:
-    void actionExitTriggered();
-
-    void actionFiltersTriggered();
-
     void tabWasChanged(int index);
 
     void actionAboutTriggered();

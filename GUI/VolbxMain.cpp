@@ -91,10 +91,9 @@ void VolbxMain::connectPlots()
 
 void VolbxMain::connectActions()
 {
-    connect(ui->actionExit, &QAction::triggered, this,
-            &VolbxMain::actionExitTriggered);
-    connect(ui->actionFilters, &QAction::triggered, this,
-            &VolbxMain::actionFiltersTriggered);
+    connect(ui->actionExit, &QAction::triggered, this, &VolbxMain::close);
+    connect(ui->actionFilters, &QAction::triggered,
+            [&]() { filters_->setVisible(!filters_->isVisible()); });
     connect(ui->actionLogs, &QAction::triggered, this,
             []() { Logger::getInstance().toggleVisibility(); });
     connect(ui->actionAbout, &QAction::triggered, this,
@@ -188,24 +187,28 @@ void VolbxMain::addStandardQtStyles(QActionGroup* actionsGroup)
         addStyleToMenu(style, actionsGroup);
 }
 
+bool VolbxMain::doesUserWantsToCheckForUpdates()
+{
+    bool checkForUpdates{false};
+    CheckUpdates dialog(this);
+    int reply{dialog.exec()};
+    if (reply == QDialog::Accepted)
+        checkForUpdates = true;
+
+    if (dialog.isSaveFlagSet())
+        Configuration::getInstance().setUpdatePolicy(checkForUpdates);
+
+    return checkForUpdates;
+}
+
 void VolbxMain::checkForUpdates()
 {
     bool checkForUpdates{false};
-    if (!Configuration::getInstance().isUpdatePolicyPicked())
-    {
-        CheckUpdates dialog(this);
-        int reply{dialog.exec()};
-        if (reply == QDialog::Accepted)
-            checkForUpdates = true;
-
-        // Remember if choice was checked.
-        if (dialog.isSaveFlagSet())
-            Configuration::getInstance().setUpdatePolicy(checkForUpdates);
-    }
+    if (!Configuration::getInstance().isUpdatePolicyPicked() &&
+        doesUserWantsToCheckForUpdates())
+        checkForUpdates = true;
     else
-    {
         checkForUpdates = Configuration::getInstance().needToCheckForUpdates();
-    }
 
     if (checkForUpdates)
         actionCheckForNewVersionTriggered();
@@ -214,31 +217,16 @@ void VolbxMain::checkForUpdates()
         Configuration::getInstance().needToCheckForUpdates());
 }
 
-void VolbxMain::actionExitTriggered() { close(); }
-
-void VolbxMain::actionFiltersTriggered()
-{
-    filters_->setVisible(!filters_->isVisible());
-}
-
 void VolbxMain::tabWasChanged(int index)
 {
-    if (-1 != index)
-    {
-        const FilteringProxyModel* model = tabWidget_->getCurrentProxyModel();
-        filters_->showFiltersForModel(model);
-        manageActions(true);
-    }
-    else
-    {
-        manageActions(false);
-    }
+    if (index != -1)
+        filters_->showFiltersForModel(tabWidget_->getCurrentProxyModel());
+    manageActions(index != -1);
 }
 
 void VolbxMain::closeEvent(QCloseEvent* event)
 {
     Configuration::getInstance().save();
-
     QMainWindow::closeEvent(event);
 
     // If logger window is shown closing mainWindow do not close app.
@@ -254,19 +242,16 @@ void VolbxMain::actionAboutTriggered()
 void VolbxMain::closeTab(int tab)
 {
     QWidget* tabToDelete{tabWidget_->widget(tab)};
-    const FilteringProxyModel* model{tabWidget_->getCurrentProxyModel()};
-    filters_->removeFiltersForModel(model);
+    filters_->removeFiltersForModel(tabWidget_->getCurrentProxyModel());
     tabWidget_->removeTab(tab);
     delete tabToDelete;
 
-    manageActions(0 != tabWidget_->count());
+    manageActions(tabWidget_->count() != 0);
 }
 
 void VolbxMain::actionExportTriggered()
 {
-    Export exportDialog(dynamic_cast<QMainWindow*>(tabWidget_->currentWidget()),
-                        this);
-
+    Export exportDialog(tabWidget_->currentWidget(), this);
     exportDialog.exec();
 }
 
