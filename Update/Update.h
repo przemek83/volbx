@@ -39,7 +39,7 @@ private:
      * @brief retrieve info about files to download and sizes.
      * @param serverInfoList files list.
      */
-    void fillFilesToUpdateLists(QStringList& serverInfoList);
+    void fillFilesToUpdateLists(const QStringList& serverInfoList);
 
     /**
      * @brief Rename temporary files.
@@ -64,6 +64,15 @@ private:
     void saveVerfiedFile(QByteArray& fileData, QString& fileName);
 
     bool handleVerificationError(QString& fileName, QString& fileSize);
+
+    void startUpdating(const QString& availableVersion,
+                       const QStringList& replyStringList);
+
+    void exitUpdaterAsMostRecentVersionIsInstalled();
+
+    bool isReplyOk(QNetworkReply* reply);
+
+    void renameTempFile(const QString& file);
 
     Ui::Update* ui;
 
