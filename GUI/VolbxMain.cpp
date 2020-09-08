@@ -147,32 +147,45 @@ void VolbxMain::addStyleToMenu(const QString& name, QActionGroup* actionsGroup)
 
 void VolbxMain::createOptionsMenu()
 {
+    addUpdatesSectionToMenu();
+    addStylesSectionToMenu();
+}
+
+void VolbxMain::addUpdatesSectionToMenu()
+{
     ui->menuOptions->addSection(tr("Updates"));
     ui->menuOptions->addAction(ui->actionCheckForNewVersion);
     ui->menuOptions->addAction(ui->actionUpdateAuto);
+}
 
+void VolbxMain::addStylesSectionToMenu()
+{
     ui->menuOptions->addSection(tr("Styles"));
-
-    QString activeStyle{Configuration::getInstance().getStyleName()};
 
     auto actionsGroup{new QActionGroup(this)};
 
     addStyleToMenu(QStringLiteral("Dark Orange"), actionsGroup);
     addStyleToMenu(QStringLiteral("Rounded Blue"), actionsGroup);
+    addStylesFoundInAppDir(actionsGroup);
+    addStandardQtStyles(actionsGroup);
 
-    // Add styles found in app dir.
+    ui->menuOptions->addActions(actionsGroup->actions());
+}
+
+void VolbxMain::addStylesFoundInAppDir(QActionGroup* actionsGroup)
+{
     QStringList nameFilter(QStringLiteral("*.css"));
     QDir directory(QCoreApplication::applicationDirPath());
     QFileInfoList styleFiles{directory.entryInfoList(nameFilter)};
     for (const QFileInfo& styleFile : styleFiles)
         addStyleToMenu(styleFile.baseName(), actionsGroup);
+}
 
-    // Add qt available styles.
+void VolbxMain::addStandardQtStyles(QActionGroup* actionsGroup)
+{
     QStringList qtStylesList{QStyleFactory::keys()};
     for (const QString& style : qtStylesList)
         addStyleToMenu(style, actionsGroup);
-
-    ui->menuOptions->addActions(actionsGroup->actions());
 }
 
 void VolbxMain::checkForUpdates()

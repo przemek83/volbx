@@ -58,6 +58,14 @@ private:
 
     void createOptionsMenu();
 
+    void addUpdatesSectionToMenu();
+
+    void addStylesSectionToMenu();
+
+    void addStylesFoundInAppDir(QActionGroup* actionsGroup);
+
+    void addStandardQtStyles(QActionGroup* actionsGroup);
+
     void setStandardIcons();
 
     Ui::VolbxMain* ui;
