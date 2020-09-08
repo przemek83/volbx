@@ -16,38 +16,48 @@ Update::Update(QWidget* parent) : QWidget(parent), ui(new Ui::Update)
     setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint |
                    Qt::WindowCloseButtonHint);
 
-    ui->valueAvailable->setText(tr("checking..."));
-    ui->valueActual->setText(QApplication::applicationVersion());
+    setupVersions();
+    setupNetworkManagers();
+    connectButtons();
 
+    ui->details->hide();
+}
+
+Update::~Update() { delete ui; }
+
+void Update::setupNetworkManagers()
+{
     connect(&initialInfoNetworkManager_, &QNetworkAccessManager::finished, this,
             &Update::initialInfoNetworkReplyFinished);
 
     connect(&downloadManager_, &QNetworkAccessManager::finished, this,
             &Update::downloadFinished);
 
-    // Get available version and files to update list.
-    initialInfoNetworkManager_.get(Networking::getCurrentVersionRequest());
-
     insertInfoIntoDetails(tr("Connecting to update server") +
                           QStringLiteral("... "));
 
+    // Get available version and files to update list.
+    initialInfoNetworkManager_.get(Networking::getCurrentVersionRequest());
+
     LOG(LogTypes::NETWORK, QLatin1String("Initial network request send."));
+}
 
-    ui->details->hide();
-
-    connect(ui->buttonQuit, &QPushButton::clicked, this,
-            &Update::buttonQuitClicked);
+void Update::connectButtons()
+{
+    connect(ui->buttonQuit, &QPushButton::clicked, this, &Update::close);
     connect(ui->showDetails, &QCheckBox::toggled, this,
             &Update::showDetailsToggled);
 }
 
-Update::~Update() { delete ui; }
+void Update::setupVersions()
+{
+    ui->valueAvailable->setText(tr("checking..."));
+    ui->valueActual->setText(QApplication::applicationVersion());
+}
 
 void Update::initialInfoNetworkReplyFinished(QNetworkReply* reply)
 {
     reply->deleteLater();
-
-    // Check errors.
     if (!Networking::replyIsValid(reply))
     {
         insertNewLineIntoDetails();
@@ -284,8 +294,6 @@ void Update::closeEvent(QCloseEvent* event)
     // If logger window is shown closing mainWindow do not close app.
     QApplication::closeAllWindows();
 }
-
-void Update::buttonQuitClicked() { close(); }
 
 void Update::showErrorMsg(const QString& error)
 {

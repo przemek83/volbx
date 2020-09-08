@@ -25,6 +25,12 @@ protected:
     void closeEvent(QCloseEvent* event) override;
 
 private:
+    void setupNetworkManagers();
+
+    void connectButtons();
+
+    void setupVersions();
+
     void downloadFile(const QString& fileName);
 
     void showErrorMsg(const QString& error);
@@ -87,8 +93,6 @@ private Q_SLOTS:
     void downloadFinished(QNetworkReply* reply);
 
     void updateProgress(qint64 bytesRead, qint64 totalBytes);
-
-    void buttonQuitClicked();
 
     void showDetailsToggled(bool checked);
 };
