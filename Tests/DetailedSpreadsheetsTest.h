@@ -19,7 +19,6 @@ class Dataset;
 class DetailedSpreadsheetsTest : public QObject
 {
     Q_OBJECT
-
 public:
     struct Field
     {
@@ -28,7 +27,7 @@ public:
         unsigned int column{0U};
     };
 
-private slots:
+private Q_SLOTS:
     void testBasics_data();
     void testBasics();
 

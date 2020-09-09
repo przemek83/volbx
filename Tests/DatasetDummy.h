@@ -4,6 +4,7 @@
 
 class DatasetDummy : public Dataset
 {
+    Q_OBJECT
 public:
     DatasetDummy(const QString& name, QObject* parent = nullptr);
 

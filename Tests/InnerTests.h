@@ -16,7 +16,7 @@ class QuaZip;
 class InnerTests : public QObject
 {
     Q_OBJECT
-private slots:
+private Q_SLOTS:
     void initTestCase();
 
     void testDefinition_data();
@@ -35,7 +35,7 @@ private:
 
     /**
      * @brief Check export for given dataset name.
-     * @param fileName Name of dataset.
+     * @param datasetName Name of dataset.
      * @param exportedBuffer Exported zip.
      */
     void checkExport(const QString& datasetName, QBuffer& exportedBuffer);

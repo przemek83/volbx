@@ -12,7 +12,7 @@ class QTableView;
 class SpreadsheetsTest : public QObject
 {
     Q_OBJECT
-private slots:
+private Q_SLOTS:
     void initTestCase();
 
     void testDefinition_data();
@@ -57,5 +57,4 @@ private:
                                           "test01",
                                           "test03",
                                           "test04"};
-    ;
 };

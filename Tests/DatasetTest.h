@@ -5,7 +5,7 @@
 class DatasetTest : public QObject
 {
     Q_OBJECT
-private slots:
+private Q_SLOTS:
     void testGetColumnFormatColumnsSet();
 
     void testGetColumnFormatColumnsNotSet();
