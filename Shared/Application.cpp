@@ -9,12 +9,12 @@
 
 namespace
 {
-const QString cssSuffix{".css"};
+QString getStyleFileExtension() { return QStringLiteral(".css"); }
 
 QString getResStylePath(const QString& styleName)
 {
     const static QLatin1String resPrefix(":/Css/");
-    return resPrefix + styleName + cssSuffix;
+    return resPrefix + styleName + getStyleFileExtension();
 }
 
 QString getLocalStyleFilePath(const QString& styleName)
@@ -23,7 +23,7 @@ QString getLocalStyleFilePath(const QString& styleName)
     stylePath.append(QApplication::applicationDirPath());
     stylePath.append(QLatin1String("/"));
     stylePath.append(styleName);
-    stylePath.append(cssSuffix);
+    stylePath.append(getStyleFileExtension());
     return stylePath;
 }
 

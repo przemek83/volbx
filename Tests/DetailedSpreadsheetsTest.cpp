@@ -10,47 +10,6 @@
 #include "Common.h"
 #include "DatasetCommon.h"
 
-const QVector<QString> DetailedSpreadsheetsTest::fileNames_{
-    "test01.xlsx", "test01.ods",  "test03.xlsx",
-    "test03.ods",  "test04.xlsx", "test04.ods"};
-
-const QVector<QVector<ColumnType>> DetailedSpreadsheetsTest::columnFormats_{
-    {ColumnType::STRING, ColumnType::NUMBER, ColumnType::DATE,
-     ColumnType::NUMBER, ColumnType::NUMBER, ColumnType::NUMBER,
-     ColumnType::STRING},
-    {ColumnType::NUMBER, ColumnType::NUMBER, ColumnType::NUMBER,
-     ColumnType::DATE, ColumnType::STRING},
-    {ColumnType::STRING, ColumnType::DATE, ColumnType::NUMBER,
-     ColumnType::NUMBER, ColumnType::DATE, ColumnType::NUMBER,
-     ColumnType::STRING, ColumnType::STRING, ColumnType::NUMBER,
-     ColumnType::NUMBER, ColumnType::NUMBER, ColumnType::NUMBER}};
-
-const QVector<QVector<QString>> DetailedSpreadsheetsTest::columnNames_{
-    {"Trait #1", "Value #1", "Transaction date", "Units", "Price",
-     "Price per unit", "Another trait"},
-    {"cena nier", "pow", "cena metra", "data transakcji", "text"},
-    {"name", "date", "mass (kg)", "height", "no name", "no name", "no name",
-     "no name", "no name", "no name", "no name", "no name"}};
-
-struct Field
-{
-    QVariant data;
-    unsigned int row;
-    unsigned int column;
-};
-
-Q_DECLARE_METATYPE(Field)
-
-const QVector<QVector<Field>> DetailedSpreadsheetsTest::sampleFields_{
-    {{QVariant(QDate::fromJulianDay(2455207)), 3, 2},
-     {QVariant("black"), 3, 6},
-     {QVariant(12.0), 5, 1},
-     {QVariant(4462.2), 3, 5}},
-    {{QVariant(3703.75925925926), 3, 2},
-     {QVariant(53.0), 2, 1},
-     {QVariant(3773.62264150943), 2, 2}},
-    {{QVariant(1.55), 3, 3}, {QVariant(58.57), 5, 2}}};
-
 void DetailedSpreadsheetsTest::testBasics_data()
 {
     QTest::addColumn<QString>("fileName");
@@ -114,6 +73,8 @@ void DetailedSpreadsheetsTest::testColumns()
     checkColumnFormats(dataset, columnFormats);
     checkColumnNames(dataset, columnNames);
 }
+
+Q_DECLARE_METATYPE(DetailedSpreadsheetsTest::Field)
 
 void DetailedSpreadsheetsTest::testSampleData_data()
 {

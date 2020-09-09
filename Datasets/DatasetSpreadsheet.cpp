@@ -104,7 +104,7 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetSpreadsheet::getDataFromZip(
     {
         QVector<unsigned int> excludedColumns;
         for (unsigned int i = 0; i < columnCount(); ++i)
-            if (!activeColumns_.at(i))
+            if (!activeColumns_.at(static_cast<int>(i)))
                 excludedColumns.append(i);
         std::tie(success, data) =
             importer_->getData(sheetName, excludedColumns);

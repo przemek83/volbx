@@ -17,9 +17,6 @@
 #include "DatasetCommon.h"
 #include "DatasetUtilities.h"
 
-const QVector<QString> InnerTests::testFileNames_{
-    "ExampleData", "po0_dmg", "po0_dmg2_bez_dat", "po0", "po1", "pustePola"};
-
 void InnerTests::initTestCase()
 {
     // generateDumpData();

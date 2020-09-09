@@ -3,6 +3,7 @@
 #include <memory>
 
 #include <QObject>
+#include <QVector>
 
 class Dataset;
 class QTableView;
@@ -51,5 +52,7 @@ private:
     void generateVbxFile(const QString& datasetName, QBuffer& buffer,
                          QVector<bool> activeColumns);
 
-    static const QVector<QString> testFileNames_;
+    const QVector<QString> testFileNames_{
+        "ExampleData", "po0_dmg", "po0_dmg2_bez_dat",
+        "po0",         "po1",     "pustePola"};
 };

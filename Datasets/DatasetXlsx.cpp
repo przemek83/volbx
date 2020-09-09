@@ -12,9 +12,8 @@ DatasetXlsx::DatasetXlsx(const QString& name, const QString& zipFileName,
 
 bool DatasetXlsx::loadSharedStrings()
 {
-    // TODO 17.05.2020 get rid of get() on smart pointer.
-    auto [success, sharedStringsList] =
-        dynamic_cast<ImportXlsx*>(importer_.get())->getSharedStrings();
+    const auto [success, sharedStringsList] =
+        qobject_cast<ImportXlsx*>(importer_.get())->getSharedStrings();
     if (!success)
     {
         LOG(LogTypes::IMPORT_EXPORT, importer_->getLastError());

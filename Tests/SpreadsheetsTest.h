@@ -42,5 +42,20 @@ private:
 
     void addTestCasesForFileNames(const QVector<QString>& fileNames);
 
-    static const QVector<QString> testFileNames_;
+    const QVector<QString> testFileNames_{"excel",
+                                          "HistVsNormal",
+                                          "import1",
+                                          "import2",
+                                          "import3",
+                                          "smallDataSet",
+                                          "test2",
+                                          "testAccounts",
+                                          "testDataWithPlot",
+                                          "testDataWithPlot",
+                                          "test",
+                                          "testFileData",
+                                          "test01",
+                                          "test03",
+                                          "test04"};
+    ;
 };
