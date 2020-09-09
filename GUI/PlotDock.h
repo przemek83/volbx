@@ -16,10 +16,10 @@ public:
 
     ~PlotDock() override = default;
 
-    QList<PlotBase*> getPlots();
+    QList<PlotBase*> getPlots() const;
 
 private Q_SLOTS:
-    void quickExportData();
+    void quickExportData() const;
 
     void resetPlot();
 };

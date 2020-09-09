@@ -29,8 +29,9 @@ Export::Export(QWidget* tab, QWidget* parent)
 
     ui->locationLineEdit->setText(
         Configuration::getInstance().getImportFilePath());
-    ui->prefix->setValidator(
-        new QRegExpValidator(QRegExp(QLatin1String("[\\w]*")), ui->prefix));
+    auto* validator{
+        new QRegExpValidator(QRegExp(QLatin1String("[\\w]*")), ui->prefix)};
+    ui->prefix->setValidator(validator);
     ui->prefix->setText(tab_->windowTitle().replace(
         QRegExp(QLatin1String("[^\\w]")), QLatin1String("")));
 
@@ -90,18 +91,19 @@ void Export::saveOnDisk()
 bool Export::locationIsValid(const QString& location) const
 {
     const QDir dir(location);
-    return !ui->locationLineEdit->text().isEmpty() & dir.exists() &&
+    return !ui->locationLineEdit->text().isEmpty() && dir.exists() &&
            QFile::permissions(dir.path()).testFlag(QFile::WriteUser);
 }
 
 bool Export::exportData(const QString& fileName)
 {
-    const auto view{tab_->findChild<DataView*>()};
+    const auto* view{tab_->findChild<DataView*>()};
     Q_ASSERT(view != nullptr);
 
     const QString barTitle{
         Constants::getProgressBarTitle(Constants::BarTitle::SAVING)};
-    ProgressBarCounter bar(barTitle, 100, nullptr);
+    ProgressBarCounter bar(barTitle, Constants::getProgressBarFullCounter(),
+                           nullptr);
     bar.showDetached();
 
     bool exportSucceed{false};
@@ -112,7 +114,7 @@ bool Export::exportData(const QString& fileName)
     return exportSucceed;
 }
 
-bool Export::exportToXlsx(const QString& fileName, DataView* view,
+bool Export::exportToXlsx(const QString& fileName, const DataView* view,
                           ProgressBarCounter& bar)
 {
     QFile file(fileName + "_" + tr("data") + ".xlsx");
@@ -122,7 +124,7 @@ bool Export::exportToXlsx(const QString& fileName, DataView* view,
     return exportXlsx.exportView(*view, file);
 }
 
-bool Export::exportToCsv(const QString& fileName, DataView* view,
+bool Export::exportToCsv(const QString& fileName, const DataView* view,
                          ProgressBarCounter& bar)
 {
     QFile file(fileName + "_" + tr("data") + ".csv");
@@ -140,10 +142,10 @@ bool Export::exportToCsv(const QString& fileName, DataView* view,
 void Export::exportPlots(const QString& fileName)
 {
     const QList<PlotDock*> plotDocks{tab_->findChildren<PlotDock*>()};
-    for (const auto plotDock : plotDocks)
+    for (const auto* plotDock : plotDocks)
     {
         const QList<PlotBase*> plots{plotDock->getPlots()};
-        for (const auto plot : plots)
+        for (auto* plot : plots)
         {
             const QString name(fileName + "_" + plot->windowTitle() + ".png");
             ExportImage::exportAsImage(plot, name);

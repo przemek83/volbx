@@ -45,7 +45,7 @@ private:
 
     void setupNetworkManager();
 
-    void addStyleToMenu(const QString& name, QActionGroup* actionsGroup);
+    void addStyleToMenu(const QString& name, QActionGroup* actionsGroup) const;
 
     void addMainTabForDataset(std::unique_ptr<Dataset> dataset);
 
@@ -73,11 +73,11 @@ private:
 
     void importDataset(std::unique_ptr<Dataset> dataset);
 
-    QString createNameForTab(const std::unique_ptr<Dataset>& dataset) const;
+    static QString createNameForTab(const std::unique_ptr<Dataset>& dataset);
 
     bool canUpdate(QNetworkReply* reply);
 
-    void updateApplication();
+    static void updateApplication();
 
     Ui::VolbxMain* ui;
 
@@ -107,7 +107,7 @@ private Q_SLOTS:
 
     void actionCheckForNewVersionTriggered();
 
-    void actionUpdateAutoToggled(bool alwaysCheck);
+    static void actionUpdateAutoToggled(bool alwaysCheck);
 
     void styleChanged();
 };

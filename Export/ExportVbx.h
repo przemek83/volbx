@@ -51,8 +51,8 @@ private:
 
     bool exportDefinition(const QAbstractItemView& view, QIODevice& ioDevice);
 
-    bool write(QIODevice& ioDevice, const QString& fileName,
-               const QByteArray& data, QuaZip::Mode mode);
+    static bool write(QIODevice& ioDevice, const QString& fileName,
+                      const QByteArray& data, QuaZip::Mode mode);
 
     static constexpr char separator_{';'};
     QHash<QString, int> stringsMap_;

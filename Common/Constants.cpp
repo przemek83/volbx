@@ -41,4 +41,10 @@ QString timeFromTimeToSeconds(QTime time)
                            milisecondsInSecond);
 }
 
+int getProgressBarFullCounter()
+{
+    const int fullCounter{100};
+    return fullCounter;
+}
+
 }  // namespace Constants

@@ -58,7 +58,7 @@ std::tuple<bool, int> TableModel::getTaggedColumnIfExists(
     return dataset_->getTaggedColumn(columnTag);
 }
 
-QByteArray TableModel::definitionToXml(int rowCount) const
+QByteArray TableModel::definitionToXml(unsigned int rowCount) const
 {
     return dataset_->definitionToXml(rowCount);
 }
@@ -76,9 +76,7 @@ bool TableModel::areTaggedColumnsSet() const
 int TableModel::getDefaultGroupingColumn() const
 {
     int pricePerMeterColumn{Constants::NOT_SET_COLUMN};
-    if (auto [ok, columnId] =
-            getTaggedColumnIfExists(ColumnTag::VALUE);
-        ok)
+    if (auto [ok, columnId] = getTaggedColumnIfExists(ColumnTag::VALUE); ok)
         pricePerMeterColumn = columnId;
 
     for (int column = 0; column < columnCount(); ++column)

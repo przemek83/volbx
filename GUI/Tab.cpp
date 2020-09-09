@@ -14,8 +14,8 @@ Tab::Tab(std::unique_ptr<Dataset> dataset, QWidget* parent)
 
     setDockNestingEnabled(true);
 
-    auto proxyModel{new FilteringProxyModel(this)};
-    auto model{new TableModel(std::move(dataset), this)};
+    auto* proxyModel{new FilteringProxyModel(this)};
+    auto* model{new TableModel(std::move(dataset), this)};
     proxyModel->setSourceModel(model);
 
     addDockWidget(Qt::LeftDockWidgetArea, createDataViewDock(proxyModel));
@@ -35,8 +35,8 @@ DataView* Tab::getCurrentDataView() const { return findChild<DataView*>(); }
 
 DataViewDock* Tab::createDataViewDock(FilteringProxyModel* proxyModel)
 {
-    auto dock{new DataViewDock(tr("Data"), this)};
-    auto view{new DataView(dock)};
+    auto* dock{new DataViewDock(tr("Data"), this)};
+    auto* view{new DataView(dock)};
     view->setModel(proxyModel);
     dock->setWidget(view);
     return dock;

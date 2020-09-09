@@ -59,8 +59,8 @@ private:
 
     Tab* getCurrentMainTab() const;
 
-    QVector<std::pair<QString, int>> getStringColumnsWithIndexes(
-        TableModel* model) const;
+    static QVector<std::pair<QString, int>> getStringColumnsWithIndexes(
+        TableModel* model);
 
     template <class T>
     void showPlot();

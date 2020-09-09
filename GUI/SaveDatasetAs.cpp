@@ -17,7 +17,8 @@ SaveDatasetAs::SaveDatasetAs(QStringList usedNames, QWidget* parent)
     connect(ui->name, &QLineEdit::textChanged, this,
             &SaveDatasetAs::nameChanged);
     const QRegExp datasetNameRegExp(DatasetUtilities::getDatasetNameRegExp());
-    ui->name->setValidator(new QRegExpValidator(datasetNameRegExp, this));
+    auto* validator{new QRegExpValidator(datasetNameRegExp, this)};
+    ui->name->setValidator(validator);
 
     connect(ui->save, &QPushButton::clicked, this, &SaveDatasetAs::saveClicked);
     ui->save->setEnabled(false);

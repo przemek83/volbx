@@ -28,11 +28,11 @@ private:
 
     bool exportData(const QString& fileName);
 
-    bool exportToXlsx(const QString& fileName, DataView* view,
-                      ProgressBarCounter& bar);
+    static bool exportToXlsx(const QString& fileName, const DataView* view,
+                             ProgressBarCounter& bar);
 
-    bool exportToCsv(const QString& fileName, DataView* view,
-                     ProgressBarCounter& bar);
+    static bool exportToCsv(const QString& fileName, const DataView* view,
+                            ProgressBarCounter& bar);
 
     void exportPlots(const QString& fileName);
 

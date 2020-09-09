@@ -16,7 +16,7 @@ PlotDock::PlotDock(const QString& title, QWidget* parent, Qt::WindowFlags flags)
             &PlotDock::resetPlot);
 }
 
-void PlotDock::quickExportData()
+void PlotDock::quickExportData() const
 {
     ExportImage::quickExportAsImage(getPlots());
 }
@@ -28,4 +28,7 @@ void PlotDock::resetPlot()
         plot->resetPlot();
 }
 
-QList<PlotBase*> PlotDock::getPlots() { return findChildren<PlotBase*>(); }
+QList<PlotBase*> PlotDock::getPlots() const
+{
+    return findChildren<PlotBase*>();
+}

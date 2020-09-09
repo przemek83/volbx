@@ -22,10 +22,10 @@ void FiltersDock::addFiltersForModel(const FilteringProxyModel* model)
     if (model == nullptr)
         return;
 
-    auto mainWidget{new QWidget()};
+    auto* mainWidget{new QWidget()};
     modelsMap_[mainWidget] = model;
 
-    auto mainLayout{new QVBoxLayout(mainWidget)};
+    auto* mainLayout{new QVBoxLayout(mainWidget)};
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->addWidget(createSearchLineEdit(mainWidget));
     mainLayout->addWidget(createScrollAreaWithFilters(model, mainWidget));
@@ -36,8 +36,8 @@ void FiltersDock::addFiltersForModel(const FilteringProxyModel* model)
 
 QWidget* FiltersDock::createFiltersWidgets(const FilteringProxyModel* model)
 {
-    auto filterListWidget{new QWidget()};
-    auto layout{new QVBoxLayout(filterListWidget)};
+    auto* filterListWidget{new QWidget()};
+    auto* layout{new QVBoxLayout(filterListWidget)};
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSizeConstraint(QLayout::SetDefaultConstraint);
     filterListWidget->setLayout(layout);
@@ -49,15 +49,14 @@ QWidget* FiltersDock::createFiltersWidgets(const FilteringProxyModel* model)
     return filterListWidget;
 }
 
-QString FiltersDock::getColumnName(const TableModel* parentModel,
-                                   int index) const
+QString FiltersDock::getColumnName(const TableModel* parentModel, int index)
 {
     return parentModel->headerData(index, Qt::Horizontal).toString();
 }
 
 QLineEdit* FiltersDock::createSearchLineEdit(QWidget* parent)
 {
-    auto lineEdit{new QLineEdit(parent)};
+    auto* lineEdit{new QLineEdit(parent)};
     lineEdit->setPlaceholderText(tr("Search..."));
     lineEdit->setClearButtonEnabled(true);
     connect(lineEdit, &QLineEdit::textChanged, this,
@@ -70,7 +69,7 @@ QScrollArea* FiltersDock::createScrollAreaWithFilters(
 {
     QWidget* filterListWidget{createFiltersWidgets(model)};
 
-    auto scrollArea{new QScrollArea(parent)};
+    auto* scrollArea{new QScrollArea(parent)};
     scrollArea->setSizePolicy(
         QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred));
     scrollArea->setWidget(filterListWidget);
@@ -119,7 +118,7 @@ FilterStrings* FiltersDock::createStringsFilter(const TableModel* parentModel,
     QStringList list{parentModel->getStringList(index)};
     const int itemCount{list.size()};
     list.sort();
-    auto filter{new FilterStrings(columnName, std::move(list))};
+    auto* filter{new FilterStrings(columnName, std::move(list))};
     auto emitChangeForColumn{[=](QStringList bannedList) {
         Q_EMIT filterNames(index, std::move(bannedList));
     }};
@@ -138,7 +137,7 @@ FilterDates* FiltersDock::createDatesFilter(const TableModel* parentModel,
     const QString columnName{getColumnName(parentModel, index)};
     const auto [minDate, maxDate,
                 haveEmptyDates]{parentModel->getDateRange(index)};
-    auto filter{new FilterDates(columnName, minDate, maxDate, haveEmptyDates)};
+    auto* filter{new FilterDates(columnName, minDate, maxDate, haveEmptyDates)};
     auto emitChangeForColumn{[=](QDate from, QDate to, bool filterEmptyDates) {
         Q_EMIT filterDates(index, from, to, filterEmptyDates);
     }};
@@ -152,7 +151,7 @@ FilterNumbers* FiltersDock::createNumbersFilter(const TableModel* parentModel,
 {
     const QString columnName{getColumnName(parentModel, index)};
     const auto [min, max]{parentModel->getNumericRange(index)};
-    auto filter{new FilterDoubles(columnName, min, max)};
+    auto* filter{new FilterDoubles(columnName, min, max)};
     auto emitChangeForColumn{
         [=](double from, double to) { Q_EMIT filterNumbers(index, from, to); }};
     connect(filter, &FilterDoubles::newNumericFilter, this,
@@ -181,6 +180,6 @@ void FiltersDock::showFiltersForModel(const FilteringProxyModel* model)
 void FiltersDock::searchTextChanged(const QString& arg1)
 {
     QWidget* currentWidget{stackedWidget_.currentWidget()};
-    for (auto filter : currentWidget->findChildren<Filter*>())
+    for (auto* filter : currentWidget->findChildren<Filter*>())
         filter->setVisible(filter->title().contains(arg1, Qt::CaseInsensitive));
 }

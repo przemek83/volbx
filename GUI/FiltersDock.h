@@ -43,7 +43,7 @@ private:
 
     QWidget* createFiltersWidgets(const FilteringProxyModel* model);
 
-    QString getColumnName(const TableModel* parentModel, int index) const;
+    static QString getColumnName(const TableModel* parentModel, int index);
 
     QLineEdit* createSearchLineEdit(QWidget* parent);
 

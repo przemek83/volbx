@@ -27,7 +27,7 @@ DataViewDock::DataViewDock(const QString& title, QWidget* parent,
 
 void DataViewDock::quickExportData()
 {
-    auto view{findChild<DataView*>()};
+    auto* view{findChild<DataView*>()};
     QByteArray exportedByteArray;
     QBuffer exportedBuffer(&exportedByteArray);
     exportedBuffer.open(QIODevice::WriteOnly);
@@ -40,14 +40,14 @@ void DataViewDock::quickExportData()
 
 void DataViewDock::selectAll()
 {
-    auto view{findChild<DataView*>()};
+    auto* view{findChild<DataView*>()};
     view->selectAll();
     view->recomputeAllData();
 }
 
 void DataViewDock::unselectAll()
 {
-    auto view{findChild<DataView*>()};
+    auto* view{findChild<DataView*>()};
     view->clearSelection();
     view->recomputeAllData();
 }

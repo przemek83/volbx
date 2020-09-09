@@ -90,7 +90,7 @@ public:
      * @brief get dataset used in model.
      * @return dataset definition pointer.
      */
-    QByteArray definitionToXml(int rowCount) const;
+    QByteArray definitionToXml(unsigned int rowCount) const;
 
     bool areTaggedColumnsSet() const;
 

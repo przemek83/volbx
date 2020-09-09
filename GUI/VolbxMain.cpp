@@ -130,10 +130,11 @@ void VolbxMain::setupNetworkManager()
             &VolbxMain::updateCheckReplyFinished);
 }
 
-void VolbxMain::addStyleToMenu(const QString& name, QActionGroup* actionsGroup)
+void VolbxMain::addStyleToMenu(const QString& name,
+                               QActionGroup* actionsGroup) const
 {
     QString activeStyle{Configuration::getInstance().getStyleName()};
-    auto action{new QAction(name, actionsGroup)};
+    auto* action{new QAction(name, actionsGroup)};
     action->setCheckable(true);
     if (activeStyle == name)
         action->setChecked(true);
@@ -157,7 +158,7 @@ void VolbxMain::addStylesSectionToMenu()
 {
     ui->menuOptions->addSection(tr("Styles"));
 
-    auto actionsGroup{new QActionGroup(this)};
+    auto* actionsGroup{new QActionGroup(this)};
 
     addStyleToMenu(QStringLiteral("Dark Orange"), actionsGroup);
     addStyleToMenu(QStringLiteral("Rounded Blue"), actionsGroup);
@@ -290,7 +291,8 @@ void VolbxMain::saveDataset(const QString& datasetName)
 
     QString barTitle{
         Constants::getProgressBarTitle(Constants::BarTitle::SAVING)};
-    ProgressBarCounter bar(barTitle, 100, nullptr);
+    ProgressBarCounter bar(barTitle, Constants::getProgressBarFullCounter(),
+                           nullptr);
     bar.showDetached();
 
     LOG(LogTypes::IMPORT_EXPORT, "Saving dataset " + datasetName);
@@ -341,7 +343,8 @@ void VolbxMain::importDataset(std::unique_ptr<Dataset> dataset)
 
     const QString barTitle{
         Constants::getProgressBarTitle(Constants::BarTitle::LOADING)};
-    ProgressBarCounter bar(barTitle, 100, nullptr);
+    ProgressBarCounter bar(barTitle, Constants::getProgressBarFullCounter(),
+                           nullptr);
     QObject::connect(dataset.get(), &Dataset::loadingPercentChanged, &bar,
                      &ProgressBarCounter::updateProgress);
     bar.showDetached();
@@ -381,8 +384,7 @@ void VolbxMain::actionImportDataTriggered()
         importDataset(import.getSelectedDataset());
 }
 
-QString VolbxMain::createNameForTab(
-    const std::unique_ptr<Dataset>& dataset) const
+QString VolbxMain::createNameForTab(const std::unique_ptr<Dataset>& dataset)
 {
     QString nameForTabBar{dataset->getName()};
     if (auto [ok, column] = dataset->getTaggedColumn(ColumnTag::VALUE); ok)
@@ -480,7 +482,7 @@ void VolbxMain::actionUpdateAutoToggled(bool alwaysCheck)
 
 void VolbxMain::styleChanged()
 {
-    auto action{qobject_cast<QAction*>(sender())};
+    auto* action{qobject_cast<QAction*>(sender())};
     QString style{action->text()};
     if (QStyleFactory::keys().contains(style))
         Application::setQtStyle(style);

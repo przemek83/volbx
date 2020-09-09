@@ -31,4 +31,6 @@ QString getProgressBarTitle(BarTitle barTitle);
 const int NOT_SET_COLUMN{-1};
 
 QString timeFromTimeToSeconds(QTime time);
+
+int getProgressBarFullCounter();
 };  // namespace Constants

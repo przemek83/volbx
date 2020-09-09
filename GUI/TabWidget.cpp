@@ -39,12 +39,12 @@ DataView* TabWidget::getCurrentDataView() const
 
 Tab* TabWidget::getCurrentMainTab() const
 {
-    auto currentTab{dynamic_cast<Tab*>(currentWidget())};
+    auto* currentTab{dynamic_cast<Tab*>(currentWidget())};
     return currentTab;
 }
 
 QVector<std::pair<QString, int>> TabWidget::getStringColumnsWithIndexes(
-    TableModel* model) const
+    TableModel* model)
 {
     QVector<std::pair<QString, int>> stringColumns;
     for (int i = 0; i < model->columnCount(); ++i)
@@ -82,7 +82,7 @@ void TabWidget::changingFilterPostActions()
 
 void TabWidget::setTextFilter(int column, const QStringList& bannedStrings)
 {
-    TimeLogger timeLogger(LogTypes::CALC, "Filtration changed");
+    TimeLogger timeLogger(LogTypes::CALC, QStringLiteral("Filtration changed"));
 
     changingFilterPreActions();
     getCurrentProxyModel()->setStringFilter(column, bannedStrings);
@@ -92,7 +92,7 @@ void TabWidget::setTextFilter(int column, const QStringList& bannedStrings)
 void TabWidget::setDateFilter(int column, QDate from, QDate to,
                               bool filterEmptyDates)
 {
-    TimeLogger timeLogger(LogTypes::CALC, "Filtration changed");
+    TimeLogger timeLogger(LogTypes::CALC, QStringLiteral("Filtration changed"));
 
     changingFilterPreActions();
     getCurrentProxyModel()->setDateFilter(column, from, to, filterEmptyDates);
@@ -101,7 +101,7 @@ void TabWidget::setDateFilter(int column, QDate from, QDate to,
 
 void TabWidget::setNumericFilter(int column, double from, double to)
 {
-    TimeLogger timeLogger(LogTypes::CALC, "Filtration changed");
+    TimeLogger timeLogger(LogTypes::CALC, QStringLiteral("Filtration changed"));
 
     changingFilterPreActions();
     getCurrentProxyModel()->setNumericFilter(column, from, to);
@@ -112,7 +112,7 @@ template <class T>
 void TabWidget::showPlot()
 {
     Tab* mainTab{getCurrentMainTab()};
-    auto plotUI{mainTab->findChild<T*>()};
+    auto* plotUI{mainTab->findChild<T*>()};
     auto dock{qobject_cast<PlotDock*>(plotUI->parent())};
     dock->setVisible(true);
     dock->raise();
@@ -122,7 +122,7 @@ template <class T>
 bool TabWidget::plotExist() const
 {
     Tab* mainTab{getCurrentMainTab()};
-    const auto plotUI{mainTab->findChild<T*>()};
+    const auto* plotUI{mainTab->findChild<T*>()};
     return plotUI != nullptr;
 }
 
@@ -134,8 +134,8 @@ void TabWidget::addPlot(const QString& title,
     QApplication::processEvents();
 
     Tab* mainTab{getCurrentMainTab()};
-    auto tabifyOn{mainTab->findChild<PlotDock*>()};
-    auto dock{new PlotDock(title, mainTab)};
+    auto* tabifyOn{mainTab->findChild<PlotDock*>()};
+    auto* dock{new PlotDock(title, mainTab)};
     dock->setWidget(createPlot());
     mainTab->addDockWidget(Qt::RightDockWidgetArea, dock);
 
@@ -162,7 +162,7 @@ void TabWidget::addBasicPlot()
 
     const auto createBasicPlot{[=]() -> BasicDataPlot* {
         DataView* view{getCurrentDataView()};
-        auto basicPlot{new BasicDataPlot()};
+        auto* basicPlot{new BasicDataPlot()};
         connect(&(view->getPlotDataProvider()),
                 &PlotDataProvider::basicPlotDataChanged, basicPlot,
                 &BasicDataPlot::setNewData);
@@ -182,7 +182,7 @@ void TabWidget::addHistogramPlot()
 
     const auto createHistogramPlot{[=]() -> HistogramPlotUI* {
         DataView* view{getCurrentDataView()};
-        auto histogramPlot{new HistogramPlotUI()};
+        auto* histogramPlot{new HistogramPlotUI()};
         connect(&(view->getPlotDataProvider()),
                 &PlotDataProvider::fundamentalDataChanged, histogramPlot,
                 &HistogramPlotUI::setNewData);
@@ -203,7 +203,7 @@ void TabWidget::addGroupingPlot()
     const auto createGroupingPlot{[=]() -> GroupPlotUI* {
         DataView* view{getCurrentDataView()};
         TableModel* model{getCurrentDataModel()};
-        auto groupPlot{new GroupPlotUI(getStringColumnsWithIndexes(model))};
+        auto* groupPlot{new GroupPlotUI(getStringColumnsWithIndexes(model))};
         connect(&(view->getPlotDataProvider()),
                 &PlotDataProvider::groupingPlotDataChanged, groupPlot,
                 &GroupPlotUI::setNewData);
