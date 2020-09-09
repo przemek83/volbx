@@ -24,7 +24,7 @@ public:
 private:
     static void analyzeFile(std::unique_ptr<Dataset>& dataset);
 
-    std::unique_ptr<Dataset> createDataset(const QFileInfo& fileInfo);
+    static std::unique_ptr<Dataset> createDataset(const QFileInfo& fileInfo);
 
     static bool fileIsOk(const QFileInfo& fileInfo);
 

@@ -46,7 +46,8 @@ void ImportData::setupLayout()
     auto enableOpenButton = [=](bool activate) {
         buttonBox->button(QDialogButtonBox::Open)->setEnabled(activate);
     };
-    QTabWidget* tabWidget{createTabWidgetWithContent(enableOpenButton)};
+    QTabWidget* tabWidget{
+        createTabWidgetWithContent(std::move(enableOpenButton))};
 
     layout->addWidget(tabWidget);
     layout->addWidget(buttonBox);

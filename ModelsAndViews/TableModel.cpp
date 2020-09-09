@@ -9,12 +9,12 @@ TableModel::TableModel(std::unique_ptr<Dataset> dataset, QObject* parent)
 
 int TableModel::rowCount([[maybe_unused]] const QModelIndex& parent) const
 {
-    return dataset_->rowCount();
+    return static_cast<int>(dataset_->rowCount());
 }
 
 int TableModel::columnCount([[maybe_unused]] const QModelIndex& parent) const
 {
-    return dataset_->columnCount();
+    return static_cast<int>(dataset_->columnCount());
 }
 
 QVariant TableModel::data(const QModelIndex& index, int role) const
@@ -75,13 +75,8 @@ bool TableModel::areTaggedColumnsSet() const
 
 int TableModel::getDefaultGroupingColumn() const
 {
-    int pricePerMeterColumn{Constants::NOT_SET_COLUMN};
-    if (auto [ok, columnId] = getTaggedColumnIfExists(ColumnTag::VALUE); ok)
-        pricePerMeterColumn = columnId;
-
     for (int column = 0; column < columnCount(); ++column)
         if (getColumnFormat(column) == ColumnType::STRING)
             return column;
-
     return Constants::NOT_SET_COLUMN;
 }

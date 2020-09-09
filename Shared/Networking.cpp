@@ -8,7 +8,11 @@
 
 namespace Networking
 {
-int getMaxRetries() { return 5; }
+int getMaxRetries()
+{
+    const int maxTries{5};
+    return maxTries;
+}
 
 QNetworkRequest getCurrentVersionRequest()
 {

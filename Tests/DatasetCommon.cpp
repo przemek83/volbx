@@ -29,12 +29,12 @@ QHash<QString, QString> getAttributesMap(const QDomElement& element)
     return attributeMap;
 }
 
-bool atrributesEqual(QDomElement& left, QDomElement& right)
+bool atrributesEqual(const QDomElement& left, const QDomElement& right)
 {
     return getAttributesMap(left) == getAttributesMap(right);
 }
 
-bool domElementsEqual(QDomElement& left, QDomElement& right);
+bool domElementsEqual(const QDomElement& left, const QDomElement& right);
 
 bool domNodeListsEqual(const QDomNodeList& leftNodes,
                        const QDomNodeList& rightNodes)
@@ -69,7 +69,7 @@ bool domNodeListsEqual(const QDomNodeList& leftNodes,
     return equal;
 }
 
-bool domElementsEqual(QDomElement& left, QDomElement& right)
+bool domElementsEqual(const QDomElement& left, const QDomElement& right)
 {
     if (left.childNodes().count() != right.childNodes().count())
         return false;
@@ -112,8 +112,8 @@ bool xmlsAreEqual(const QByteArray& left, const QByteArray& right)
     return domElementsEqual(leftRoot, rightRoot);
 }
 
-void checkDatasetDefinition(const std::unique_ptr<Dataset>& dataset,
-                            const QString& expectedDefinitionFilePath)
+static void checkDatasetDefinition(const std::unique_ptr<Dataset>& dataset,
+                                   const QString& expectedDefinitionFilePath)
 {
     QByteArray dumpFromFile{
         FileUtilities::loadFile(expectedDefinitionFilePath).second.toUtf8()};
@@ -136,7 +136,6 @@ QString getExportedTsv(const QAbstractItemView& view)
 void compareExportDataWithDump(std::unique_ptr<Dataset> dataset,
                                const QString& filePath)
 {
-    QString datasetName{dataset->getName()};
     TableModel model(std::move(dataset));
     FilteringProxyModel proxyModel;
     proxyModel.setSourceModel(&model);
@@ -166,9 +165,9 @@ std::unique_ptr<Dataset> createDataset(const QString& fileName,
                                        const QString& filePath)
 {
     std::unique_ptr<Dataset> dataset{nullptr};
-    if (fileName.endsWith(".xlsx"))
+    if (fileName.endsWith(QStringLiteral(".xlsx")))
         dataset = std::make_unique<DatasetXlsx>(fileName, filePath);
-    else if (fileName.endsWith(".ods"))
+    else if (fileName.endsWith(QStringLiteral(".ods")))
         dataset = std::make_unique<DatasetOds>(fileName, filePath);
     else
         dataset = std::make_unique<DatasetInner>(fileName);
@@ -177,7 +176,7 @@ std::unique_ptr<Dataset> createDataset(const QString& fileName,
 
 void activateAllDatasetColumns(Dataset& dataset)
 {
-    QVector<bool> activeColumns(dataset.columnCount(), true);
+    QVector<bool> activeColumns(static_cast<int>(dataset.columnCount()), true);
     dataset.setActiveColumns(activeColumns);
 }
 

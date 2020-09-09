@@ -17,24 +17,24 @@ void saveFile(const QString& fileName, const QString& data)
 
 QString getDefinitionDumpSuffix()
 {
-    QString definitionDumpSuffix = "_DefinitionDump.txt";
+    QString definitionDumpSuffix{QStringLiteral("_DefinitionDump.txt")};
     return definitionDumpSuffix;
 }
 
 QString getDefinitionRefSuffix()
 {
-    QString definitionDumpSuffix = "_DefinitionRef.txt";
+    QString definitionDumpSuffix{QStringLiteral("_DefinitionRef.txt")};
     return definitionDumpSuffix;
 }
 
 QString getDataTsvDumpSuffix()
 {
-    QString dataTsvDumpSuffix = "_tsvDump.txt";
+    QString dataTsvDumpSuffix{QStringLiteral("_tsvDump.txt")};
     return dataTsvDumpSuffix;
 }
 
 QString getSpreadsheetsDir()
 {
-    return QString(":/TestFiles/TestSpreadsheets/");
+    return QStringLiteral(":/TestFiles/TestSpreadsheets/");
 }
 }  // namespace Common

@@ -18,5 +18,5 @@ private slots:
 private:
     QString configurationFileContent_;
     QString configurationFileName_;
-    const QString defaultStyle_{"Fusion"};
+    const QString defaultStyle_{QStringLiteral("Fusion")};
 };

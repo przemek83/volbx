@@ -21,7 +21,7 @@ std::unique_ptr<Dataset> createDataset(const QString& fileName,
 
 void activateAllDatasetColumns(Dataset& dataset);
 
-void checkDefinition(const QString& fileName, const QString& filePath);
+void checkDefinition(const QString& fileName, const QString& dir);
 
 void checkData(const QString& fileName, const QString& dir);
 
