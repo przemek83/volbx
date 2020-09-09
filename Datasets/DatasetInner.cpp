@@ -68,8 +68,8 @@ void DatasetInner::retrieveColumnsFromXml(const QDomElement& root)
     QDomNodeList columns{root.firstChildElement(XML_COLUMNS).childNodes()};
     LOG(LogTypes::IMPORT_EXPORT,
         "Read column count: " + QString::number(columns.count()));
-    columnsCount_ = columns.size();
-    for (unsigned int i = 0; i < columnsCount_; ++i)
+    columnsCount_ = static_cast<unsigned int>(columns.size());
+    for (int i = 0; i < static_cast<int>(columnsCount_); ++i)
     {
         const QDomElement column{columns.at(i).toElement()};
         headerColumnNames_.push_back(column.attribute(XML_COLUMN_NAME));
@@ -96,7 +96,7 @@ bool DatasetInner::fromXml(QByteArray& definitionContent)
     QDomElement root{xmlDocument.documentElement()};
     retrieveColumnsFromXml(root);
     rowsCount_ =
-        root.firstChildElement(XML_ROW_COUNT).attribute(XML_ROW_COUNT).toInt();
+        root.firstChildElement(XML_ROW_COUNT).attribute(XML_ROW_COUNT).toUInt();
 
     return true;
 }
@@ -160,7 +160,7 @@ void DatasetInner::updateProgress(unsigned int currentRow,
 }
 
 QVariant DatasetInner::getElementAsVariant(ColumnType columnFormat,
-                                           const QString& element) const
+                                           const QString& element)
 {
     QVariant elementAsVariant;
     if (element.isEmpty())
@@ -191,7 +191,7 @@ QVariant DatasetInner::getElementAsVariant(ColumnType columnFormat,
     return elementAsVariant;
 }
 
-QVariant DatasetInner::getDefaultVariantForFormat(const ColumnType format) const
+QVariant DatasetInner::getDefaultVariantForFormat(const ColumnType format)
 {
     switch (format)
     {
@@ -205,19 +205,16 @@ QVariant DatasetInner::getDefaultVariantForFormat(const ColumnType format) const
             return QVariant(QVariant::Date);
 
         case ColumnType::UNKNOWN:
-        default:
-        {
-            Q_ASSERT(false);
             return QVariant(QVariant::String);
-        }
     }
+    return QVariant(QVariant::String);
 }
 
 QVector<QVariant> DatasetInner::fillRow(const QStringList& line,
                                         bool fillSamplesOnly)
 {
     QVector<QVariant> row;
-    for (unsigned int i = 0; i < columnCount(); ++i)
+    for (int i = 0; i < static_cast<int>(columnCount()); ++i)
     {
         if (!fillSamplesOnly && !activeColumns_[i])
             continue;
@@ -242,7 +239,7 @@ QVector<QVector<QVariant>> DatasetInner::parseData(QTextStream& stream,
             break;
 
         QStringList line{stream.readLine().split(';')};
-        data[lineCounter] = fillRow(line, fillSamplesOnly);
+        data[static_cast<int>(lineCounter)] = fillRow(line, fillSamplesOnly);
         lineCounter++;
         if (!fillSamplesOnly)
             updateProgress(lineCounter, rowCount(), lastEmittedPercent);
@@ -270,10 +267,10 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::fillData(
 QVector<QVector<QVariant>> DatasetInner::prepareContainerForAllData() const
 {
     QVector<QVector<QVariant>> data;
-    data.resize(rowCount());
+    data.resize(static_cast<int>(rowCount()));
     const int activeColumnsCount{activeColumns_.size()};
-    for (int i = 0; i < data.size(); ++i)
-        data[i].resize(activeColumnsCount);
+    for (auto& row : data)
+        row.resize(activeColumnsCount);
     return data;
 }
 
@@ -281,9 +278,9 @@ QVector<QVector<QVariant>> DatasetInner::prepareContainerForSampleData() const
 {
     QVector<QVector<QVariant>> data;
     const int rowsCountForSamples =
-        (rowCount() > SAMPLE_SIZE ? SAMPLE_SIZE : rowCount());
+        static_cast<int>((rowCount() > SAMPLE_SIZE ? SAMPLE_SIZE : rowCount()));
     data.resize(rowsCountForSamples);
     for (int i = 0; i < rowsCountForSamples; ++i)
-        data[i].resize(columnsCount_);
+        data[i].resize(static_cast<int>(columnsCount_));
     return data;
 }

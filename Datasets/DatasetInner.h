@@ -31,13 +31,13 @@ protected:
 private:
     bool openZip();
 
-    bool openQuaZipFile(QuaZipFile& zipFile);
+    static bool openQuaZipFile(QuaZipFile& zipFile);
 
     void retrieveColumnsFromXml(const QDomElement& root);
 
     bool fromXml(QByteArray& definitionContent);
 
-    bool loadXmlFile(QByteArray& definitionContent, QuaZip& zip);
+    static bool loadXmlFile(QByteArray& definitionContent, QuaZip& zip);
 
     bool loadStrings(QuaZip& zip);
 
@@ -52,10 +52,10 @@ private:
     void updateProgress(unsigned int currentRow, unsigned int rowCount,
                         unsigned int& lastEmittedPercent);
 
-    QVariant getElementAsVariant(ColumnType columnFormat,
-                                 const QString& element) const;
+    static QVariant getElementAsVariant(ColumnType columnFormat,
+                                        const QString& element);
 
-    QVariant getDefaultVariantForFormat(const ColumnType format) const;
+    static QVariant getDefaultVariantForFormat(const ColumnType format);
 
     QVector<QVector<QVariant>> prepareContainerForAllData() const;
 
