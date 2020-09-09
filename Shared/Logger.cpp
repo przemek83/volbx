@@ -26,7 +26,7 @@ Logger::Logger(QObject* parent) : QObject(parent)
 
 QTextEdit* Logger::createLogsTextEdit()
 {
-    auto textEdit{new QTextEdit(&display_)};
+    auto* textEdit{new QTextEdit(&display_)};
     textEdit->setLineWrapMode(QTextEdit::NoWrap);
     textEdit->setReadOnly(true);
     return textEdit;
@@ -34,9 +34,9 @@ QTextEdit* Logger::createLogsTextEdit()
 
 QHBoxLayout* Logger::createLayout()
 {
-    auto verticalLayout{new QVBoxLayout()};
+    auto* verticalLayout{new QVBoxLayout()};
     verticalLayout->addStretch();
-    auto horizontalLayout{new QHBoxLayout()};
+    auto* horizontalLayout{new QHBoxLayout()};
     horizontalLayout->addLayout(verticalLayout);
     horizontalLayout->addWidget(createLogsTextEdit());
     return horizontalLayout;
@@ -80,7 +80,7 @@ void Logger::log(LogTypes type, const char* file, const char* function,
 
 void Logger::createCheckBoxes()
 {
-    auto verticalLayout{display_.findChild<QVBoxLayout*>()};
+    auto* verticalLayout{display_.findChild<QVBoxLayout*>()};
     if (verticalLayout == nullptr)
         return;
 
@@ -106,7 +106,7 @@ void Logger::moveCursorToTheEnd(QTextEdit* logTextEdit)
 
 void Logger::changeActiveLogs(bool state)
 {
-    auto clickedCheckBox{qobject_cast<LoggerCheckBox*>(sender())};
+    auto* clickedCheckBox{qobject_cast<LoggerCheckBox*>(sender())};
     const LogTypes logType{clickedCheckBox->logType()};
     activeLogs_[logType] = state;
 

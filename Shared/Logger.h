@@ -42,7 +42,7 @@ private:
 
     void createCheckBoxes();
 
-    void moveCursorToTheEnd(QTextEdit* logTextEdit);
+    static void moveCursorToTheEnd(QTextEdit* logTextEdit);
 
     QMap<LogTypes, bool> activeLogs_;
 
@@ -59,11 +59,15 @@ private:
         {LogTypes::APP, "APPLICATION"},
         {LogTypes::IMPORT_EXPORT, "IMPORT_EXPORT"}};
 
-    const QString timeStyleBegin_{"<b><font size=\"3\" color=\"blue\">"};
-    const QString fileStyleBegin_{"<b><font size=\"3\" color=\"black\">"};
-    const QString functionStyleBegin_{"<b><font size=\"3\" color=\"red\">"};
-    const QString lineStyleBegin_{"<b><font size=\"3\" color=\"green\">"};
-    const QString styleEnd_{"</b></font>"};
+    const QString timeStyleBegin_{
+        QStringLiteral("<b><font size=\"3\" color=\"blue\">")};
+    const QString fileStyleBegin_{
+        QStringLiteral("<b><font size=\"3\" color=\"black\">")};
+    const QString functionStyleBegin_{
+        QStringLiteral("<b><font size=\"3\" color=\"red\">")};
+    const QString lineStyleBegin_{
+        QStringLiteral("<b><font size=\"3\" color=\"green\">")};
+    const QString styleEnd_{QStringLiteral("</b></font>")};
 
 private Q_SLOTS:
     void changeActiveLogs(bool state);
