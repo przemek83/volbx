@@ -47,18 +47,19 @@ Q_SIGNALS:
 
 private:
     /**
-     * @brief groups strings and for each group calculate quantiles and names.
-     * @param calcData data used for calculations.
+     * @brief Groups strings and for each group calculate quantiles and names.
+     * @param calcData Data used for calculations.
      */
-    std::tuple<QVector<QString>, QVector<Quantiles>> fillDataForStringGrouping(
-        const QVector<TransactionData>& calcData);
+    static std::tuple<QVector<QString>, QVector<Quantiles>>
+    fillDataForStringGrouping(const QVector<TransactionData>& calcData);
 
     /**
      * @brief compute data used for simple plots (histogram and basic plots).
      */
     std::tuple<QVector<QPointF>, QVector<QPointF>> computePointsAndRegression();
 
-    Quantiles computeQuantiles(const QVector<TransactionData>& transactionData);
+    static Quantiles computeQuantiles(
+        const QVector<TransactionData>& transactionData);
 
     Quantiles quantiles_;
 

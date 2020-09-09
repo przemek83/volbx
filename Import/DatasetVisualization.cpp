@@ -132,11 +132,12 @@ void DatasetVisualization::setupColumnsListWidget()
     ui->columnsList->sortByColumn(Constants::NOT_SET_COLUMN);
     ui->columnsList->setSortingEnabled(false);
 
-    for (unsigned int column = 0; column < dataset_->columnCount(); ++column)
+    for (int column = 0; column < static_cast<int>(dataset_->columnCount());
+         ++column)
     {
         const QStringList list{dataset_->getHeaderName(column),
                                getTypeDisplayNameForGivenColumn(column)};
-        auto item{new QTreeWidgetItem(list)};
+        auto* item{new QTreeWidgetItem(list)};
         item->setData(0, Qt::UserRole, QVariant(column));
         ui->columnsList->addTopLevelItem(item);
     }
@@ -197,8 +198,7 @@ void DatasetVisualization::setTaggedColumnInDataset(ColumnTag tag,
     dataset_->setTaggedColumn(tag, column);
 }
 
-QString DatasetVisualization::getTypeDisplayNameForGivenColumn(
-    unsigned int column) const
+QString DatasetVisualization::getTypeDisplayNameForGivenColumn(int column) const
 {
     ColumnType columnType{dataset_->getColumnFormat(column)};
     if (columnType == ColumnType::STRING)
@@ -213,7 +213,8 @@ QString DatasetVisualization::getTypeDisplayNameForGivenColumn(
 
 void DatasetVisualization::fillTaggedColumnCombos()
 {
-    for (unsigned int column = 0; column < dataset_->columnCount(); ++column)
+    for (int column = 0; column < static_cast<int>(dataset_->columnCount());
+         ++column)
     {
         ColumnType columnType{dataset_->getColumnFormat(column)};
         if (columnType == ColumnType::NUMBER)
@@ -236,7 +237,7 @@ void DatasetVisualization::setAllItemsInColumnsListToState(Qt::CheckState state)
     }
 }
 
-int DatasetVisualization::getCurrentValueFromCombo(QComboBox* combo) const
+int DatasetVisualization::getCurrentValueFromCombo(QComboBox* combo)
 {
     int column{Constants::NOT_SET_COLUMN};
     if (combo->currentIndex() != -1)

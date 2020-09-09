@@ -65,14 +65,14 @@ DataViewDock* TabWidget::getCurrentDataViewDock() const
     return qobject_cast<DataViewDock*>(dataView->parent());
 }
 
-void TabWidget::changingFilterPreActions()
+void TabWidget::changingFilterPreActions() const
 {
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
     getCurrentDataView()->clearSelection();
 }
 
-void TabWidget::changingFilterPostActions()
+void TabWidget::changingFilterPostActions() const
 {
     DataView* view{getCurrentDataView()};
     view->selectAll();

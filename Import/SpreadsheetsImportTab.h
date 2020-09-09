@@ -22,13 +22,13 @@ public:
     ~SpreadsheetsImportTab() override;
 
 private:
-    void analyzeFile(std::unique_ptr<Dataset>& dataset);
+    static void analyzeFile(std::unique_ptr<Dataset>& dataset);
 
     std::unique_ptr<Dataset> createDataset(const QFileInfo& fileInfo);
 
-    bool fileIsOk(const QFileInfo& fileInfo);
+    static bool fileIsOk(const QFileInfo& fileInfo);
 
-    QString getValidDatasetName(const QFileInfo& fileInfo);
+    static QString getValidDatasetName(const QFileInfo& fileInfo);
 
     bool getFileInfo(QFileInfo& fileInfo);
 

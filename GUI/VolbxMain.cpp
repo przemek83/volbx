@@ -388,7 +388,8 @@ QString VolbxMain::createNameForTab(const std::unique_ptr<Dataset>& dataset)
 {
     QString nameForTabBar{dataset->getName()};
     if (auto [ok, column] = dataset->getTaggedColumn(ColumnTag::VALUE); ok)
-        nameForTabBar.append(" (" + dataset->getHeaderName(column) + ")");
+        nameForTabBar.append(
+            " (" + dataset->getHeaderName(static_cast<int>(column)) + ")");
     return nameForTabBar;
 }
 
@@ -397,7 +398,7 @@ void VolbxMain::addMainTabForDataset(std::unique_ptr<Dataset> dataset)
     const QString nameForTabBar{createNameForTab(dataset)};
     const QString datasetName{dataset->getName()};
 
-    auto mainTab{new Tab(std::move(dataset), &tabWidget_)};
+    auto* mainTab{new Tab(std::move(dataset), &tabWidget_)};
     filters_.addFiltersForModel(mainTab->getCurrentProxyModel());
     const int newTabIndex{tabWidget_.addTab(mainTab, nameForTabBar)};
     tabWidget_.setCurrentIndex(newTabIndex);

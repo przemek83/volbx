@@ -32,7 +32,7 @@ public Q_SLOTS:
     void selectCurrentColumn(int column);
 
 private:
-    QTableWidgetItem* createItem(const QString& name);
+    static QTableWidgetItem* createItem(const QString& name);
 
     void setLabels(const std::unique_ptr<Dataset>& dataset);
 

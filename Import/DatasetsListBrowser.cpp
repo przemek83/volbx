@@ -35,7 +35,7 @@ void DatasetsListBrowser::clearSelection()
     ui->datasetsList->clearSelection();
 }
 
-bool DatasetsListBrowser::isDatasetsListEmpty()
+bool DatasetsListBrowser::isDatasetsListEmpty() const
 {
     return (ui->datasetsList->count() == 0);
 }

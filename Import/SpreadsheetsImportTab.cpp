@@ -34,7 +34,7 @@ SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent)
     auto [visualization, columnsPreview] =
         createVisualizationAndColumnPreview();
 
-    auto centralSplitter{new QSplitter(Qt::Vertical, this)};
+    auto* centralSplitter{new QSplitter(Qt::Vertical, this)};
     centralSplitter->addWidget(visualization);
     centralSplitter->addWidget(columnsPreview);
 
@@ -86,7 +86,7 @@ std::unique_ptr<Dataset> SpreadsheetsImportTab::createDataset(
     if (fileInfo.suffix().toLower().compare(QLatin1String("xlsx")) == 0)
         dataset = std::make_unique<DatasetXlsx>(datasetName, datasetFilePath);
 
-    return dataset;
+    return std::move(dataset);
 }
 
 bool SpreadsheetsImportTab::fileIsOk(const QFileInfo& fileInfo)

@@ -41,7 +41,8 @@ public Q_SLOTS:
     void selectCurrentColumn(int column);
 
 private:
-    void setCurrentIndexUsingColumn(QComboBox* combo, unsigned int column);
+    static void setCurrentIndexUsingColumn(QComboBox* combo,
+                                           unsigned int column);
 
     void setupColumnsListWidget();
 
@@ -51,13 +52,13 @@ private:
 
     void setTaggedColumnInDataset(ColumnTag tag, QComboBox* combo);
 
-    QString getTypeDisplayNameForGivenColumn(unsigned int column) const;
+    QString getTypeDisplayNameForGivenColumn(int column) const;
 
     void fillTaggedColumnCombos();
 
     void setAllItemsInColumnsListToState(Qt::CheckState state);
 
-    int getCurrentValueFromCombo(QComboBox* combo) const;
+    static int getCurrentValueFromCombo(QComboBox* combo);
 
     Ui::DatasetVisualization* ui;
 

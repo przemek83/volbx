@@ -61,7 +61,7 @@ bool ExportVbx::exportStrings(QIODevice& ioDevice)
 }
 
 bool ExportVbx::exportDefinition(const QAbstractItemView& view,
-                                 QIODevice& ioDevice)
+                                 QIODevice& ioDevice) const
 {
     const TableModel* parentModel =
         (qobject_cast<FilteringProxyModel*>(view.model()))->getParentModel();

@@ -45,7 +45,7 @@ private:
 
     static QString getColumnName(const TableModel* parentModel, int index);
 
-    QLineEdit* createSearchLineEdit(QWidget* parent);
+    QLineEdit* createSearchLineEdit(QWidget* parent) const;
 
     QScrollArea* createScrollAreaWithFilters(const FilteringProxyModel* model,
                                              QWidget* parent);

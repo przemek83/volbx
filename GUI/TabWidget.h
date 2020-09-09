@@ -49,9 +49,9 @@ private:
     template <class T>
     bool plotExist() const;
 
-    void changingFilterPreActions();
+    void changingFilterPreActions() const;
 
-    void changingFilterPostActions();
+    void changingFilterPostActions() const;
 
     void activateDataSelection(DataView* view);
 

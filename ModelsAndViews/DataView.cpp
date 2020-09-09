@@ -25,7 +25,7 @@ DataView::DataView(QWidget* parent)
 
 void DataView::setModel(QAbstractItemModel* model)
 {
-    const auto proxyModel = qobject_cast<FilteringProxyModel*>(model);
+    const auto* proxyModel = qobject_cast<FilteringProxyModel*>(model);
     const TableModel* parentModel = proxyModel->getParentModel();
 
     for (int column = 0; column < proxyModel->columnCount(); ++column)
@@ -44,19 +44,19 @@ void DataView::groupingColumnChanged(int column)
 }
 
 std::tuple<bool, int, int> DataView::getTaggedColumns(
-    const TableModel* parentModel) const
+    const TableModel* parentModel)
 {
-    int pricePerMeterColumn;
-    if (auto [ok, columnId] = parentModel->getTaggedColumnIfExists(
-            ColumnTag::VALUE);
+    int pricePerMeterColumn{Constants::NOT_SET_COLUMN};
+    if (auto [ok, columnId] =
+            parentModel->getTaggedColumnIfExists(ColumnTag::VALUE);
         ok)
         pricePerMeterColumn = columnId;
     else
         return {false, Constants::NOT_SET_COLUMN, Constants::NOT_SET_COLUMN};
 
-    int transactionDateColumn;
-    if (auto [ok, columnId] = parentModel->getTaggedColumnIfExists(
-            ColumnTag::DATE);
+    int transactionDateColumn{Constants::NOT_SET_COLUMN};
+    if (auto [ok, columnId] =
+            parentModel->getTaggedColumnIfExists(ColumnTag::DATE);
         ok)
         transactionDateColumn = columnId;
     else
@@ -70,13 +70,15 @@ void DataView::setDelegate(int column, const TableModel* parentModel)
     {
         case ColumnType::NUMBER:
         {
-            setItemDelegateForColumn(column, new NumericDelegate(this));
+            auto* delegate{new NumericDelegate(this)};
+            setItemDelegateForColumn(column, delegate);
             break;
         }
 
         case ColumnType::DATE:
         {
-            setItemDelegateForColumn(column, new DateDelegate(this));
+            auto* delegate{new DateDelegate(this)};
+            setItemDelegateForColumn(column, delegate);
             break;
         }
 
@@ -98,7 +100,7 @@ QVector<TransactionData> DataView::fillDataFromSelection(
     if (!success)
         return {};
 
-    TimeLogger timeLogger(LogTypes::CALC, "Data updated");
+    TimeLogger timeLogger(LogTypes::CALC, QStringLiteral("Data updated"));
 
     const QItemSelectionModel* selectionModelOfView{selectionModel()};
     QVector<TransactionData> calcDataContainer;
@@ -144,7 +146,7 @@ void DataView::recomputeAllData()
         columnFormat = parentModel->getColumnFormat(groupByColumn_);
     }
 
-    TimeLogger timeLogger(LogTypes::CALC, "Plots recomputed");
+    TimeLogger timeLogger(LogTypes::CALC, QStringLiteral("Plots recomputed"));
 
     plotDataProvider_.recompute(fillDataFromSelection(groupByColumn_),
                                 columnFormat);

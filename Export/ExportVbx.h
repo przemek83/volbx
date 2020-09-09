@@ -49,7 +49,8 @@ private:
 
     bool exportStrings(QIODevice& ioDevice);
 
-    bool exportDefinition(const QAbstractItemView& view, QIODevice& ioDevice);
+    bool exportDefinition(const QAbstractItemView& view,
+                          QIODevice& ioDevice) const;
 
     static bool write(QIODevice& ioDevice, const QString& fileName,
                       const QByteArray& data, QuaZip::Mode mode);

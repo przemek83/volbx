@@ -54,7 +54,7 @@ QString FiltersDock::getColumnName(const TableModel* parentModel, int index)
     return parentModel->headerData(index, Qt::Horizontal).toString();
 }
 
-QLineEdit* FiltersDock::createSearchLineEdit(QWidget* parent)
+QLineEdit* FiltersDock::createSearchLineEdit(QWidget* parent) const
 {
     auto* lineEdit{new QLineEdit(parent)};
     lineEdit->setPlaceholderText(tr("Search..."));

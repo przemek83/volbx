@@ -14,17 +14,17 @@ DatasetImportTab::DatasetImportTab(QWidget* parent) : ImportTab(parent)
 {
     auto [visualization, columnsPreview] =
         createVisualizationAndColumnPreview();
-    auto listBrowser{new DatasetsListBrowser(this)};
+    auto* listBrowser{new DatasetsListBrowser(this)};
 
-    auto upperSplitter{new QSplitter(Qt::Horizontal, this)};
+    auto* upperSplitter{new QSplitter(Qt::Horizontal, this)};
     upperSplitter->addWidget(listBrowser);
     upperSplitter->addWidget(visualization);
 
-    auto centralSplitter{new QSplitter(Qt::Vertical, this)};
+    auto* centralSplitter{new QSplitter(Qt::Vertical, this)};
     centralSplitter->addWidget(upperSplitter);
     centralSplitter->addWidget(columnsPreview);
 
-    auto layout{new QVBoxLayout(this)};
+    auto* layout{new QVBoxLayout(this)};
     layout->setContentsMargins(2, 2, 2, 2);
     layout->addWidget(centralSplitter);
     setLayout(layout);
@@ -38,7 +38,7 @@ void DatasetImportTab::selectedDatasetChanged(const QString& current)
     if (current.isEmpty())
     {
         clear();
-        auto listBrowser{findChild<DatasetsListBrowser*>()};
+        auto* listBrowser{findChild<DatasetsListBrowser*>()};
         listBrowser->clearSelection();
     }
     else
@@ -47,16 +47,16 @@ void DatasetImportTab::selectedDatasetChanged(const QString& current)
 
 bool DatasetImportTab::datasetsAreAvailable()
 {
-    const auto datasetsListBrowser{findChild<DatasetsListBrowser*>()};
+    const auto* datasetsListBrowser{findChild<DatasetsListBrowser*>()};
     return (!datasetsListBrowser->isDatasetsListEmpty());
 }
 
 void DatasetImportTab::clear()
 {
-    auto columnsPreview{findChild<ColumnsPreview*>()};
+    auto* columnsPreview{findChild<ColumnsPreview*>()};
     columnsPreview->clear();
     columnsPreview->setEnabled(false);
-    auto visualization{findChild<DatasetVisualization*>()};
+    auto* visualization{findChild<DatasetVisualization*>()};
     visualization->clear();
     visualization->setEnabled(false);
 

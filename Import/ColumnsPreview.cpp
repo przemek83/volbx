@@ -17,7 +17,7 @@ void ColumnsPreview::setDatasetSampleInfo(
 {
     clear();
 
-    const unsigned int columns{dataset->columnCount()};
+    const int columns{static_cast<int>(dataset->columnCount())};
     setColumnCount(columns);
 
     setLabels(dataset);
@@ -26,7 +26,7 @@ void ColumnsPreview::setDatasetSampleInfo(
     const int rows{sampleData.size()};
     setRowCount(rows);
     for (int i = 0; i < rows; ++i)
-        for (unsigned int j = 0; j < columns; ++j)
+        for (int j = 0; j < columns; ++j)
             setItem(i, j, createItem(sampleData.at(i).at(j).toString()));
 }
 
@@ -46,10 +46,10 @@ QTableWidgetItem* ColumnsPreview::createItem(const QString& name)
 
 void ColumnsPreview::setLabels(const std::unique_ptr<Dataset>& dataset)
 {
-    const unsigned int columns{dataset->columnCount()};
+    const int columns{static_cast<int>(dataset->columnCount())};
     QStringList labels;
     labels.reserve(columns);
-    for (unsigned int i = 0; i < columns; ++i)
+    for (int i = 0; i < columns; ++i)
         labels.append(dataset->getHeaderName(i));
 
     setHorizontalHeaderLabels(labels);

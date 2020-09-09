@@ -22,7 +22,7 @@ public:
 
     void clearSelection();
 
-    bool isDatasetsListEmpty();
+    bool isDatasetsListEmpty() const;
 
 private:
     void setupDatasetsList();
