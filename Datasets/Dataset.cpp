@@ -5,8 +5,10 @@
 
 #include <Constants.h>
 
-Dataset::Dataset(const QString& name, QObject* parent)
-    : QObject(parent), nullStringVariant_(QVariant::String), name_(name)
+Dataset::Dataset(QString name, QObject* parent)
+    : QObject(parent),
+      nullStringVariant_(QVariant::String),
+      name_(std::move(name))
 {
 }
 
@@ -14,19 +16,19 @@ unsigned int Dataset::rowCount() const { return rowsCount_; }
 
 unsigned int Dataset::columnCount() const { return columnsCount_; }
 
-ColumnType Dataset::getColumnFormat(unsigned int column) const
+ColumnType Dataset::getColumnFormat(int column) const
 {
-    Q_ASSERT(column >= 0 && column < columnCount());
+    Q_ASSERT(column >= 0 && column < static_cast<int>(columnCount()));
     return columnTypes_[column];
 }
 
-std::tuple<double, double> Dataset::getNumericRange(unsigned int column) const
+std::tuple<double, double> Dataset::getNumericRange(int column) const
 {
     Q_ASSERT(ColumnType::NUMBER == getColumnFormat(column));
     double min{0.};
     double max{0.};
     bool first{true};
-    for (unsigned int i = 0; i < rowCount(); ++i)
+    for (int i = 0; i < static_cast<int>(rowCount()); ++i)
     {
         const double value{data_[i][column].toDouble()};
         if (first)
@@ -46,14 +48,14 @@ std::tuple<double, double> Dataset::getNumericRange(unsigned int column) const
     return {min, max};
 }
 
-std::tuple<QDate, QDate, bool> Dataset::getDateRange(unsigned int column) const
+std::tuple<QDate, QDate, bool> Dataset::getDateRange(int column) const
 {
     Q_ASSERT(ColumnType::DATE == getColumnFormat(column));
     QDate minDate;
     QDate maxDate;
     bool emptyDates{false};
     bool first{true};
-    for (unsigned int i = 0; i < rowCount(); ++i)
+    for (int i = 0; i < static_cast<int>(rowCount()); ++i)
     {
         const QVariant& dateVariant{data_[i][column]};
         if (dateVariant.isNull())
@@ -80,11 +82,11 @@ std::tuple<QDate, QDate, bool> Dataset::getDateRange(unsigned int column) const
     return {minDate, maxDate, emptyDates};
 }
 
-QStringList Dataset::getStringList(unsigned int column) const
+QStringList Dataset::getStringList(int column) const
 {
     Q_ASSERT(ColumnType::STRING == getColumnFormat(column));
     QStringList listToFill;
-    listToFill.reserve(rowCount());
+    listToFill.reserve(static_cast<int>(rowCount()));
     for (const auto& row : data_)
     {
         if (row[column].isNull())
@@ -95,7 +97,7 @@ QStringList Dataset::getStringList(unsigned int column) const
             listToFill.append(row[column].toString());
             continue;
         }
-        const uint32_t index{row[column].toUInt()};
+        const int index{row[column].toInt()};
         listToFill.append(sharedStrings_[index].toString());
     }
     listToFill.removeDuplicates();
@@ -110,9 +112,9 @@ std::tuple<bool, unsigned int> Dataset::getTaggedColumn(
     return {false, Constants::NOT_SET_COLUMN};
 }
 
-QString Dataset::getHeaderName(unsigned int column) const
+QString Dataset::getHeaderName(int column) const
 {
-    if (columnsCount_ - 1 >= column)
+    if (static_cast<int>(columnsCount_) >= column + 1)
         return headerColumnNames_[column];
     Q_ASSERT(false);
     return QLatin1String("");
@@ -143,13 +145,13 @@ bool Dataset::loadData()
 QDomElement Dataset::columnsToXml(QDomDocument& xmlDocument) const
 {
     QDomElement columns{xmlDocument.createElement(XML_COLUMNS)};
-    for (unsigned int column = 0; column < columnsCount_; ++column)
+    for (int column = 0; column < static_cast<int>(columnsCount_); ++column)
     {
         QDomElement node{xmlDocument.createElement(XML_COLUMN)};
         node.setAttribute(XML_COLUMN_NAME, headerColumnNames_.at(column));
         node.setAttribute(XML_COLUMN_FORMAT,
                           static_cast<int>(columnTypes_.at(column)));
-        QMapIterator<ColumnTag, unsigned int> it(taggedColumns_);
+        QMapIterator<ColumnTag, int> it(taggedColumns_);
         if (it.findNext(column))
             node.setAttribute(XML_COLUMN_TAG,
                               QString::number(static_cast<int>(it.key())));
@@ -176,7 +178,7 @@ QByteArray Dataset::definitionToXml(unsigned int rowCount) const
     return xmlDocument.toByteArray();
 }
 
-QVector<QVector<QVariant>> Dataset::retrieveSampleData() const
+QVector<QVector<QVariant>> Dataset::retrieveSampleData()
 {
     return std::move(sampleData_);
 }
@@ -186,7 +188,7 @@ void Dataset::setActiveColumns(const QVector<bool>& activeColumns)
     activeColumns_ = activeColumns;
 }
 
-void Dataset::setTaggedColumn(ColumnTag columnTag, unsigned int column)
+void Dataset::setTaggedColumn(ColumnTag columnTag, int column)
 {
     taggedColumns_[columnTag] = column;
 }
@@ -197,15 +199,14 @@ void Dataset::rebuildDefinitonUsingActiveColumnsOnly()
 {
     QVector<ColumnType> rebuiltColumnsFormat;
     QStringList rebuiltHeaderColumnNames;
-    QMap<ColumnTag, unsigned int> rebuiltTaggedColumns;
+    QMap<ColumnTag, int> rebuiltTaggedColumns;
     int activeColumnNumber{0};
     const ColumnTag dateTag{ColumnTag::DATE};
     const ColumnTag priceTag{ColumnTag::VALUE};
     const bool dateColumnTagged{isColumnTagged(dateTag)};
     const bool priceColumnTagged{isColumnTagged(priceTag)};
 
-    for (unsigned int i = 0;
-         i < static_cast<unsigned int>(activeColumns_.count()); ++i)
+    for (int i = 0; i < activeColumns_.count(); ++i)
     {
         if (!activeColumns_.at(i))
             continue;
@@ -222,7 +223,7 @@ void Dataset::rebuildDefinitonUsingActiveColumnsOnly()
     columnTypes_ = rebuiltColumnsFormat;
     headerColumnNames_ = rebuiltHeaderColumnNames;
     taggedColumns_ = rebuiltTaggedColumns;
-    columnsCount_ = activeColumns_.count(true);
+    columnsCount_ = static_cast<unsigned int>(activeColumns_.count(true));
     activeColumns_.clear();
 }
 
@@ -231,7 +232,7 @@ void Dataset::updateSampleDataStrings(QVector<QVector<QVariant>>& data) const
     if (sharedStrings_.isEmpty())
         return;
 
-    for (unsigned int i = 0; i < columnCount(); ++i)
+    for (int i = 0; i < static_cast<int>(columnCount()); ++i)
     {
         if (columnTypes_.at(i) != ColumnType::STRING)
             continue;

@@ -27,7 +27,7 @@ public:
      * @param name Dataset name.
      * @param parent Parent object.
      */
-    explicit Dataset(const QString& name, QObject* parent = nullptr);
+    explicit Dataset(QString name, QObject* parent = nullptr);
 
     ~Dataset() override = default;
 
@@ -56,7 +56,7 @@ public:
             if (data_[row][column].isNull())
                 return &nullStringVariant_;
             if (data_[row][column].type() != QVariant::String)
-                return &sharedStrings_[data_[row][column].toULongLong()];
+                return &sharedStrings_[data_[row][column].toInt()];
         }
         return &data_[row][column];
     }
@@ -66,28 +66,28 @@ public:
      * @param column Column index.
      * @return Type of column.
      */
-    ColumnType getColumnFormat(unsigned int column) const;
+    ColumnType getColumnFormat(int column) const;
 
     /**
      * @brief Get numeric range for given column.
      * @param column Column index.
      * @return Minimum and maximum in given column.
      */
-    std::tuple<double, double> getNumericRange(unsigned int column) const;
+    std::tuple<double, double> getNumericRange(int column) const;
 
     /**
      * @brief Get dates range got given column.
      * @param column Column index.
      * @return Minimum, maximum and flag if there are empty dates for column.
      */
-    std::tuple<QDate, QDate, bool> getDateRange(unsigned int column) const;
+    std::tuple<QDate, QDate, bool> getDateRange(int column) const;
 
     /**
      * @brief Get list of unique strings in given column.
      * @param column Column index.
      * @return String list for given column.
      */
-    QStringList getStringList(unsigned int column) const;
+    QStringList getStringList(int column) const;
 
     /**
      * @brief Get index of tagged column if available.
@@ -101,7 +101,7 @@ public:
      * @param column Column index.
      * @return Column name.
      */
-    QString getHeaderName(unsigned int column) const;
+    QString getHeaderName(int column) const;
 
     /**
      * @brief Check if dataset is valid.
@@ -138,7 +138,7 @@ public:
      * @brief Retrieve sample data (data is moved).
      * @return Sample data.
      */
-    QVector<QVector<QVariant>> retrieveSampleData() const;
+    QVector<QVector<QVariant>> retrieveSampleData();
 
     /**
      * @brief Set active columns in dataset.
@@ -151,7 +151,7 @@ public:
      * @param columnTag Column tag.
      * @param column Column index.
      */
-    void setTaggedColumn(ColumnTag columnTag, unsigned int column);
+    void setTaggedColumn(ColumnTag columnTag, int column);
 
     /**
      * @brief Get last error.
@@ -216,7 +216,7 @@ private:
     QVector<QVector<QVariant>> data_;
 
     /// Stores information about columns which are tagged.
-    QMap<ColumnTag, unsigned int> taggedColumns_;
+    QMap<ColumnTag, int> taggedColumns_;
 
 Q_SIGNALS:
     /**
