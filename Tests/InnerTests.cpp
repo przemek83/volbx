@@ -158,7 +158,7 @@ void InnerTests::testPartialData()
     activeColumns[5] = true;
     activeColumns[6] = true;
     generateVbxFile(QStringLiteral("ExampleData"), exportedBuffer,
-                    std::move(activeColumns));
+                    activeColumns);
 
     checkExport(QStringLiteral("ExampleDataPartial"), exportedBuffer);
 }

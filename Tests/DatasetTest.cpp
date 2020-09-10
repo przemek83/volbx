@@ -11,7 +11,7 @@ void DatasetTest::testGetColumnFormatColumnsSet()
     const unsigned int dateColumnIndex{0};
     const unsigned int valueColumnIndex{1};
 
-    DatasetDummy dataset("a");
+    DatasetDummy dataset(QStringLiteral("a"));
     dataset.setTaggedColumn(ColumnTag::DATE, dateColumnIndex);
     dataset.setTaggedColumn(ColumnTag::VALUE, valueColumnIndex);
 
@@ -23,7 +23,7 @@ void DatasetTest::testGetColumnFormatColumnsSet()
 
 void DatasetTest::testGetColumnFormatColumnsNotSet()
 {
-    DatasetDummy dataset("a");
+    DatasetDummy dataset(QStringLiteral("a"));
 
     auto [ok, column] = dataset.getTaggedColumn(ColumnTag::DATE);
     QVERIFY(!ok);

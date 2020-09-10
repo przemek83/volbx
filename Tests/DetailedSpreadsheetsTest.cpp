@@ -170,7 +170,7 @@ struct DateCheckData
 };
 
 Q_DECLARE_METATYPE(DateCheckData)
-Q_DECLARE_TYPEINFO(DateCheckData, Q_COMPLEX_TYPE);
+Q_DECLARE_TYPEINFO(DateCheckData, Q_MOVABLE_TYPE);
 
 void DetailedSpreadsheetsTest::testDateColumnRanges_data()
 {

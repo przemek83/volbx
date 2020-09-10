@@ -96,7 +96,7 @@ QList<QStandardItem*> FilteringProxyModelTest::getStringItems()
             new QStandardItem(QStringLiteral("c"))};
 }
 
-QStandardItem* FilteringProxyModelTest::createItem(QVariant data)
+QStandardItem* FilteringProxyModelTest::createItem(const QVariant& data)
 {
     auto* dateItem{new QStandardItem()};
     dateItem->setData(data, Qt::DisplayRole);

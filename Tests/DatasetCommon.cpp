@@ -86,7 +86,7 @@ bool domElementsEqual(const QDomElement& left, const QDomElement& right)
 void saveExpectedDefinition(const std::unique_ptr<Dataset>& dataset,
                             const QString& filePath)
 {
-    QByteArray dumpedDefinition{dataset->definitionToXml(dataset->rowCount())};
+    QString dumpedDefinition{dataset->definitionToXml(dataset->rowCount())};
     Common::saveFile(filePath + Common::getDefinitionDumpSuffix(),
                      dumpedDefinition);
 }

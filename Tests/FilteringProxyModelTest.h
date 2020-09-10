@@ -26,8 +26,8 @@ private:
                                       const QList<QStandardItem*>& items);
 
     static QVariant getData(QStandardItem* item);
-    static QStandardItem* createItem(QVariant data);
+    static QStandardItem* createItem(const QVariant& data);
     static QList<QStandardItem*> getStringItems();
-    QList<QStandardItem*> getDateItems();
-    QList<QStandardItem*> getNumberItems();
+    static QList<QStandardItem*> getDateItems();
+    static QList<QStandardItem*> getNumberItems();
 };

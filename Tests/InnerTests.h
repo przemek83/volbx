@@ -44,10 +44,11 @@ private:
 
     static QByteArray loadDataFromZip(QuaZip& zip, const QString& fileName);
 
-    void checkExportedData(const QString& fileName, QuaZip& zipOriginal,
-                           QuaZip& zipGenerated);
+    static void checkExportedData(const QString& fileName, QuaZip& zipOriginal,
+                                  QuaZip& zipGenerated);
 
-    void checkExportedDefinitions(QuaZip& zipOriginal, QuaZip& zipGenerated);
+    static void checkExportedDefinitions(QuaZip& zipOriginal,
+                                         QuaZip& zipGenerated);
 
     static void generateVbxFile(const QString& datasetName, QBuffer& buffer,
                                 const QVector<bool>& activeColumns);
