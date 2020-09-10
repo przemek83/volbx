@@ -28,17 +28,17 @@ private Q_SLOTS:
 private:
     void checkRecomputeGroupingDataForColumnType(ColumnType columnType);
 
-    void checkGroupingDataChangedSignal(
+    static void checkGroupingDataChangedSignal(
         const QSignalSpy& spy, const QVector<QString>& expectedIntervalsNames,
         const QVector<Quantiles>& expectedQuantilesForIntervals,
         const Quantiles& expectedQuantiles);
 
-    void checkBasicDataChangedSignal(
+    static void checkBasicDataChangedSignal(
         const QSignalSpy& spy, const QVector<QPointF>& expectedPoints,
         const Quantiles& expectedQuantiles,
         const QVector<QPointF>& expectedRegression);
 
-    void checkFundamentalDataChangedSignal(
+    static void checkFundamentalDataChangedSignal(
         const QSignalSpy& spy, const QVector<double>& expectedYAxisValues,
         const Quantiles& expectedQuantiles);
 

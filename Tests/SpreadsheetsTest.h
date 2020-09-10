@@ -33,14 +33,14 @@ private Q_SLOTS:
 private:
     void addTestCaseForOdsAndXlsxComparison(const QString& testNamePrefix);
 
-    void compareOdsAndXlsxExpectedData(const QString& fileSuffix);
+    static void compareOdsAndXlsxExpectedData(const QString& fileSuffix);
 
     void activateAllDatasetColumns(
         const std::unique_ptr<DatasetSpreadsheet>& dataset);
 
     void generateExpectedData();
 
-    void addTestCasesForFileNames(const QVector<QString>& fileNames);
+    static void addTestCasesForFileNames(const QVector<QString>& fileNames);
 
     const QVector<QString> testFileNames_{"excel",
                                           "HistVsNormal",

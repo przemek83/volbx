@@ -22,7 +22,10 @@ void InnerTests::initTestCase()
     // generateDumpData();
 }
 
-void InnerTests::testDefinition_data() { addTestCases("Test definition"); }
+void InnerTests::testDefinition_data()
+{
+    addTestCases(QStringLiteral("Test definition"));
+}
 
 void InnerTests::testDefinition()
 {
@@ -31,7 +34,7 @@ void InnerTests::testDefinition()
                                    DatasetUtilities::getDatasetsDir());
 }
 
-void InnerTests::testData_data() { addTestCases("Test data"); }
+void InnerTests::testData_data() { addTestCases(QStringLiteral("Test data")); }
 
 void InnerTests::testData()
 {
@@ -39,7 +42,10 @@ void InnerTests::testData()
     DatasetCommon::checkData(datasetName, DatasetUtilities::getDatasetsDir());
 }
 
-void InnerTests::testExport_data() { addTestCases("Test export"); }
+void InnerTests::testExport_data()
+{
+    addTestCases(QStringLiteral("Test export"));
+}
 
 void InnerTests::testExport()
 {
@@ -100,7 +106,7 @@ void InnerTests::checkExportedDefinitions(QuaZip& zipOriginal,
 }
 
 void InnerTests::generateVbxFile(const QString& datasetName, QBuffer& buffer,
-                                 QVector<bool> activeColumns)
+                                 const QVector<bool>& activeColumns)
 {
     std::unique_ptr<Dataset> dataset{DatasetCommon::createDataset(
         datasetName, DatasetUtilities::getDatasetsDir())};
@@ -151,9 +157,10 @@ void InnerTests::testPartialData()
     activeColumns[2] = true;
     activeColumns[5] = true;
     activeColumns[6] = true;
-    generateVbxFile("ExampleData", exportedBuffer, std::move(activeColumns));
+    generateVbxFile(QStringLiteral("ExampleData"), exportedBuffer,
+                    std::move(activeColumns));
 
-    checkExport("ExampleDataPartial", exportedBuffer);
+    checkExport(QStringLiteral("ExampleDataPartial"), exportedBuffer);
 }
 
 void InnerTests::addTestCases(const QString& testNamePrefix)

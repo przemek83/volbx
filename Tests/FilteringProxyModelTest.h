@@ -22,12 +22,12 @@ private Q_SLOTS:
     void testNumberFilter();
 
 private:
-    void checkProxyHasAllItems(const FilteringProxyModel& proxy,
-                               const QList<QStandardItem*>& items);
+    static void checkProxyHasAllItems(const FilteringProxyModel& proxy,
+                                      const QList<QStandardItem*>& items);
 
-    QVariant getData(QStandardItem* item) const;
-    QStandardItem* createItem(QVariant data) const;
-    QList<QStandardItem*> getStringItems();
+    static QVariant getData(QStandardItem* item);
+    static QStandardItem* createItem(QVariant data);
+    static QList<QStandardItem*> getStringItems();
     QList<QStandardItem*> getDateItems();
     QList<QStandardItem*> getNumberItems();
 };

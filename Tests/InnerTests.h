@@ -42,15 +42,15 @@ private:
 
     void addTestCases(const QString& testNamePrefix);
 
-    QByteArray loadDataFromZip(QuaZip& zip, const QString& fileName);
+    static QByteArray loadDataFromZip(QuaZip& zip, const QString& fileName);
 
     void checkExportedData(const QString& fileName, QuaZip& zipOriginal,
                            QuaZip& zipGenerated);
 
     void checkExportedDefinitions(QuaZip& zipOriginal, QuaZip& zipGenerated);
 
-    void generateVbxFile(const QString& datasetName, QBuffer& buffer,
-                         QVector<bool> activeColumns);
+    static void generateVbxFile(const QString& datasetName, QBuffer& buffer,
+                                const QVector<bool>& activeColumns);
 
     const QVector<QString> testFileNames_{
         "ExampleData", "po0_dmg", "po0_dmg2_bez_dat",

@@ -3,9 +3,10 @@
 #include <QApplication>
 #include <QtTest/QtTest>
 
-#include <DatasetOds.h>
-#include <DatasetXlsx.h>
-#include <FileUtilities.h>
+#include <Common/Constants.h>
+#include <Common/FileUtilities.h>
+#include <Datasets/DatasetOds.h>
+#include <Datasets/DatasetXlsx.h>
 
 #include "Common.h"
 #include "DatasetCommon.h"
@@ -112,15 +113,16 @@ void DetailedSpreadsheetsTest::testSampleData()
     QCOMPARE(sampleData.size(), sampleRowCount);
     QCOMPARE(sampleData.front().size(), sampleColumnCount);
 
-    for (auto [value, row, column] : sampleFields)
-        QCOMPARE(sampleData.at(row)[column], value);
+    for (const auto& [value, row, column] : sampleFields)
+        QCOMPARE(sampleData.at(static_cast<int>(row))[static_cast<int>(column)],
+                 value);
 }
 
 struct NumericCheckData
 {
-    unsigned int columnIndex;
-    double min;
-    double max;
+    int columnIndex{Constants::NOT_SET_COLUMN};
+    double min{0.};
+    double max{0.};
 };
 
 Q_DECLARE_METATYPE(NumericCheckData)
@@ -161,13 +163,14 @@ void DetailedSpreadsheetsTest::testNumericColumnRanges()
 
 struct DateCheckData
 {
-    unsigned int columnIndex;
-    QDate min;
-    QDate max;
-    bool emptyDates;
+    int columnIndex{Constants::NOT_SET_COLUMN};
+    QDate min{};
+    QDate max{};
+    bool emptyDates{false};
 };
 
 Q_DECLARE_METATYPE(DateCheckData)
+Q_DECLARE_TYPEINFO(DateCheckData, Q_COMPLEX_TYPE);
 
 void DetailedSpreadsheetsTest::testDateColumnRanges_data()
 {
@@ -258,7 +261,7 @@ void DetailedSpreadsheetsTest::testDataFile01SomeColumnsActive()
         DatasetCommon::createDataset(fileName, filePath)};
 
     dataset->initialize();
-    QVector<bool> activeColumns(dataset->columnCount(), true);
+    QVector<bool> activeColumns(static_cast<int>(dataset->columnCount()), true);
     activeColumns[0] = false;
     activeColumns[1] = false;
     activeColumns[4] = false;
@@ -282,8 +285,8 @@ void DetailedSpreadsheetsTest::checkColumnFormats(
     const std::unique_ptr<Dataset>& dataset,
     const QVector<ColumnType>& columnFormats)
 {
-    unsigned int column{0};
-    for (auto& expectedColumnType : columnFormats)
+    int column{0};
+    for (const auto& expectedColumnType : columnFormats)
         QCOMPARE(dataset->getColumnFormat(column++), expectedColumnType);
 }
 
@@ -291,8 +294,8 @@ void DetailedSpreadsheetsTest::checkColumnNames(
     const std::unique_ptr<Dataset>& dataset,
     const QVector<QString>& columnNames)
 {
-    unsigned int column{0};
-    for (auto& expectedColumnName : columnNames)
+    int column{0};
+    for (const auto& expectedColumnName : columnNames)
         QCOMPARE(dataset->getHeaderName(column++), expectedColumnName);
 }
 
@@ -319,10 +322,10 @@ void DetailedSpreadsheetsTest::checkDateColumnRange(
 }
 
 void DetailedSpreadsheetsTest::checkStringColumnRange(
-    const std::unique_ptr<Dataset>& dataset, int columnIndex,
+    const std::unique_ptr<Dataset>& dataset, unsigned int columnIndex,
     QStringList& expectedList)
 {
-    QStringList currentList = dataset->getStringList(columnIndex);
+    QStringList currentList{dataset->getStringList(columnIndex)};
     QCOMPARE(currentList, expectedList);
 }
 

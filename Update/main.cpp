@@ -23,8 +23,7 @@ static void showDifferentInstanceRunnningError()
 static bool isUniqueInstance()
 {
     // Only one instance can run. Intentionally leak.
-    QSharedMemory* sharedMemory =
-        new QSharedMemory(QStringLiteral(VER_PRODUCTNAME_STR));
+    auto* sharedMemory{new QSharedMemory(QStringLiteral(VER_PRODUCTNAME_STR))};
 
     LOG(LogTypes::APP, QLatin1String("Setting shared memory key named ") +
                            QApplication::applicationName() + QLatin1Char('.'));

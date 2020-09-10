@@ -87,7 +87,7 @@ public:
      * @param column Column index.
      * @return String list for given column.
      */
-    QStringList getStringList(int column) const;
+    QStringList getStringList(unsigned int column) const;
 
     /**
      * @brief Get index of tagged column if available.

@@ -84,7 +84,7 @@ private:
     QStringList tempFiles_;
 
     /// Temporary files prefix.
-    const QString tmpPrefix_{".tmp"};
+    const QString tmpPrefix_{QStringLiteral(".tmp")};
 
     int currentTriesCount_{0};
 

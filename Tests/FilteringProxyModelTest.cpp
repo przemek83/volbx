@@ -84,20 +84,21 @@ void FilteringProxyModelTest::checkProxyHasAllItems(
         QCOMPARE(proxy.data(proxy.index(i, 0)), items[i]->text());
 }
 
-QVariant FilteringProxyModelTest::getData(QStandardItem* item) const
+QVariant FilteringProxyModelTest::getData(QStandardItem* item)
 {
     return item->data(Qt::DisplayRole);
 }
 
 QList<QStandardItem*> FilteringProxyModelTest::getStringItems()
 {
-    return {new QStandardItem("a"), new QStandardItem("b"),
-            new QStandardItem("c")};
+    return {new QStandardItem(QStringLiteral("a")),
+            new QStandardItem(QStringLiteral("b")),
+            new QStandardItem(QStringLiteral("c"))};
 }
 
-QStandardItem* FilteringProxyModelTest::createItem(QVariant data) const
+QStandardItem* FilteringProxyModelTest::createItem(QVariant data)
 {
-    QStandardItem* dateItem = new QStandardItem();
+    auto* dateItem{new QStandardItem()};
     dateItem->setData(data, Qt::DisplayRole);
     return dateItem;
 }

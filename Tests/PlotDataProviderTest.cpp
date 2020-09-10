@@ -47,7 +47,7 @@ void PlotDataProviderTest::testRecomputeGroupingIvalidFormat()
         checkRecomputeGroupingDataForColumnType(columnType);
 }
 
-bool operator==(const Quantiles& left, const Quantiles& right)
+static bool operator==(const Quantiles& left, const Quantiles& right)
 {
     return left.getValuesAsToolTip() == right.getValuesAsToolTip();
 }
@@ -60,7 +60,7 @@ void PlotDataProviderTest::testRecomputeGroupingData()
 
     // General Quantiles data is empty as recompute() was not called.
     checkGroupingDataChangedSignal(
-        spy, QVector{QString("column1"), QString("column2")},
+        spy, QVector{QStringLiteral("column1"), QStringLiteral("column2")},
         QVector{firstQuantiles_, secondQuantiles_}, Quantiles());
 }
 
@@ -90,7 +90,7 @@ void PlotDataProviderTest::testRecompute_data()
 
     QTest::newRow("Test recompute")
         << calcData_ << mainQuantiles_
-        << QVector{QString("column1"), QString("column2")}
+        << QVector{QStringLiteral("column1"), QStringLiteral("column2")}
         << QVector{firstQuantiles_, secondQuantiles_} << points_ << regression_
         << yAxisValues_;
 }

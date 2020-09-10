@@ -56,7 +56,8 @@ void SpreadsheetsTest::testDamagedFiles()
 
 void SpreadsheetsTest::compareExpectedDefinitionsOfOdsAndXlsx_data()
 {
-    addTestCaseForOdsAndXlsxComparison("Compare definition dumps");
+    addTestCaseForOdsAndXlsxComparison(
+        QStringLiteral("Compare definition dumps"));
 }
 
 void SpreadsheetsTest::compareExpectedDefinitionsOfOdsAndXlsx()
@@ -66,7 +67,7 @@ void SpreadsheetsTest::compareExpectedDefinitionsOfOdsAndXlsx()
 
 void SpreadsheetsTest::compareExpectedTsvDumpsOfOdsAndXlsx_data()
 {
-    addTestCaseForOdsAndXlsxComparison("Compare tsv dumps");
+    addTestCaseForOdsAndXlsxComparison(QStringLiteral("Compare tsv dumps"));
 }
 
 void SpreadsheetsTest::compareExpectedTsvDumpsOfOdsAndXlsx()
