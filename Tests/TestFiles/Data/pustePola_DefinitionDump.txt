@@ -1,7 +1,7 @@
 <DATASET>
  <COLUMNS>
-  <COLUMN FORMAT="2" SPECIAL_TAG="0" NAME="Data transakcji"/>
-  <COLUMN FORMAT="1" SPECIAL_TAG="3" NAME="Cena 1 mkw"/>
+  <COLUMN FORMAT="2" TAG="0" NAME="Data transakcji"/>
+  <COLUMN FORMAT="1" TAG="3" NAME="Cena 1 mkw"/>
   <COLUMN FORMAT="1" NAME="Zaktualizowana cena działek"/>
  </COLUMNS>
  <ROW_COUNT ROW_COUNT="27"/>

@@ -193,7 +193,8 @@ protected:
     const QString XML_COLUMN{QStringLiteral("COLUMN")};
     const QString XML_COLUMN_NAME{QStringLiteral("NAME")};
     const QString XML_COLUMN_FORMAT{QStringLiteral("FORMAT")};
-    const QString XML_COLUMN_TAG{QStringLiteral("SPECIAL_TAG")};
+    const QString XML_COLUMN_TAG{QStringLiteral("TAG")};
+    const QString XML_COLUMN_TAG_DEPRECATED{QStringLiteral("SPECIAL_TAG")};
     const QString XML_ROW_COUNT{QStringLiteral("ROW_COUNT")};
 
 private:

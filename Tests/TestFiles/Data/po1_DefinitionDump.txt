@@ -3,8 +3,8 @@
   <COLUMN FORMAT="1" NAME="Num #0&quot;"/>
   <COLUMN FORMAT="0" NAME="String ; #1"/>
   <COLUMN FORMAT="0" NAME="String &#xa;#2"/>
-  <COLUMN FORMAT="2" SPECIAL_TAG="0" NAME="Data #3"/>
-  <COLUMN FORMAT="1" SPECIAL_TAG="3" NAME="Num #4"/>
+  <COLUMN FORMAT="2" TAG="0" NAME="Data #3"/>
+  <COLUMN FORMAT="1" TAG="3" NAME="Num #4"/>
   <COLUMN FORMAT="2" NAME="Data #5"/>
  </COLUMNS>
  <ROW_COUNT ROW_COUNT="5"/>

@@ -17,10 +17,7 @@
 #include "DatasetCommon.h"
 #include "DatasetUtilities.h"
 
-void InnerTests::initTestCase()
-{
-    // generateDumpData();
-}
+void InnerTests::initTestCase() { generateDumpData(); }
 
 void InnerTests::testDefinition_data()
 {

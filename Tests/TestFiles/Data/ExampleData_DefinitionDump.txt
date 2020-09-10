@@ -2,10 +2,10 @@
  <COLUMNS>
   <COLUMN FORMAT="0" NAME="Trait #1"/>
   <COLUMN FORMAT="1" NAME="Value #1"/>
-  <COLUMN FORMAT="2" SPECIAL_TAG="0" NAME="Transaction date"/>
+  <COLUMN FORMAT="2" TAG="0" NAME="Transaction date"/>
   <COLUMN FORMAT="1" NAME="Units"/>
   <COLUMN FORMAT="1" NAME="Price"/>
-  <COLUMN FORMAT="1" SPECIAL_TAG="3" NAME="Price per unit"/>
+  <COLUMN FORMAT="1" TAG="3" NAME="Price per unit"/>
   <COLUMN FORMAT="0" NAME="Another trait"/>
  </COLUMNS>
  <ROW_COUNT ROW_COUNT="55"/>
