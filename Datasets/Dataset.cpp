@@ -82,7 +82,7 @@ std::tuple<QDate, QDate, bool> Dataset::getDateRange(int column) const
     return {minDate, maxDate, emptyDates};
 }
 
-QStringList Dataset::getStringList(unsigned int column) const
+QStringList Dataset::getStringList(int column) const
 {
     Q_ASSERT(ColumnType::STRING == getColumnFormat(column));
     QStringList listToFill;
