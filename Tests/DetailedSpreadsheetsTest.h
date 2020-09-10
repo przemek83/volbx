@@ -60,7 +60,7 @@ private:
                                      bool expectedEmptyDates);
 
     static void checkStringColumnRange(const std::unique_ptr<Dataset>& dataset,
-                                       unsigned int columnIndex,
+                                       int columnIndex,
                                        QStringList& expectedList);
 
     static void checkColumnFormats(const std::unique_ptr<Dataset>& dataset,

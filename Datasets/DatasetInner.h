@@ -35,7 +35,7 @@ private:
 
     void retrieveColumnsFromXml(const QDomElement& root);
 
-    void checkForTaggedColumn(const QDomElement& columnElement, int column);
+    void checkForTaggedColumn(const QDomElement& columnElement, Column column);
 
     bool fromXml(QByteArray& definitionContent);
 

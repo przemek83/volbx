@@ -41,8 +41,7 @@ public Q_SLOTS:
     void selectCurrentColumn(int column);
 
 private:
-    static void setCurrentIndexUsingColumn(QComboBox* combo,
-                                           unsigned int column);
+    static void setCurrentIndexUsingColumn(QComboBox* combo, int column);
 
     void setupColumnsListWidget();
 

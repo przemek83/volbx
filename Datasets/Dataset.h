@@ -14,6 +14,8 @@ class DatasetDefinition;
 class QDomDocument;
 class QDomElement;
 
+typedef int Column;
+
 /**
  * @class Dataset
  * @brief Representation for set of data.
@@ -49,7 +51,7 @@ public:
      * @param column Column for which data need to be retrieved.
      * @return Pointer to QVariant with data.
      */
-    virtual inline QVariant* getData(int row, int column)
+    virtual inline QVariant* getData(int row, Column column)
     {
         if (getColumnFormat(column) == ColumnType::STRING)
         {
@@ -66,42 +68,42 @@ public:
      * @param column Column index.
      * @return Type of column.
      */
-    ColumnType getColumnFormat(int column) const;
+    ColumnType getColumnFormat(Column column) const;
 
     /**
      * @brief Get numeric range for given column.
      * @param column Column index.
      * @return Minimum and maximum in given column.
      */
-    std::tuple<double, double> getNumericRange(int column) const;
+    std::tuple<double, double> getNumericRange(Column column) const;
 
     /**
      * @brief Get dates range got given column.
      * @param column Column index.
      * @return Minimum, maximum and flag if there are empty dates for column.
      */
-    std::tuple<QDate, QDate, bool> getDateRange(int column) const;
+    std::tuple<QDate, QDate, bool> getDateRange(Column column) const;
 
     /**
      * @brief Get list of unique strings in given column.
      * @param column Column index.
      * @return String list for given column.
      */
-    QStringList getStringList(int column) const;
+    QStringList getStringList(Column column) const;
 
     /**
      * @brief Get index of tagged column if available.
      * @param columnTag Type of tagged column.
      * @return Flag indicating there is tagged column and column index.
      */
-    std::tuple<bool, unsigned int> getTaggedColumn(ColumnTag columnTag) const;
+    std::tuple<bool, Column> getTaggedColumn(ColumnTag columnTag) const;
 
     /**
      * @brief Get header name for given column.
      * @param column Column index.
      * @return Column name.
      */
-    QString getHeaderName(int column) const;
+    QString getHeaderName(Column column) const;
 
     /**
      * @brief Check if dataset is valid.
@@ -151,7 +153,7 @@ public:
      * @param columnTag Column tag.
      * @param column Column index.
      */
-    void setTaggedColumn(ColumnTag columnTag, int column);
+    void setTaggedColumn(ColumnTag columnTag, Column column);
 
     /**
      * @brief Get last error.
@@ -200,7 +202,7 @@ protected:
 private:
     void rebuildDefinitonUsingActiveColumnsOnly();
 
-    bool isColumnTagged(ColumnTag column) const;
+    bool isColumnTagged(ColumnTag tag) const;
 
     QDomElement columnsToXml(QDomDocument& xmlDocument) const;
 
@@ -217,7 +219,7 @@ private:
     QVector<QVector<QVariant>> data_;
 
     /// Stores information about columns which are tagged.
-    QMap<ColumnTag, int> taggedColumns_;
+    QMap<ColumnTag, Column> taggedColumns_;
 
 Q_SIGNALS:
     /**

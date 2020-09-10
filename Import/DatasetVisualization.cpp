@@ -115,11 +115,11 @@ void DatasetVisualization::selectCurrentColumn(int column)
 }
 
 void DatasetVisualization::setCurrentIndexUsingColumn(QComboBox* combo,
-                                                      unsigned int column)
+                                                      int column)
 {
     for (int i = 0; i < combo->count(); ++i)
     {
-        if (combo->itemData(i).toUInt() == column)
+        if (combo->itemData(i).toInt() == column)
         {
             combo->setCurrentIndex(i);
             break;

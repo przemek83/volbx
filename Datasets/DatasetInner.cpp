@@ -80,7 +80,7 @@ void DatasetInner::retrieveColumnsFromXml(const QDomElement& root)
 }
 
 void DatasetInner::checkForTaggedColumn(const QDomElement& columnElement,
-                                        int column)
+                                        Column column)
 {
     const QString columnTag{columnElement.attribute(XML_COLUMN_TAG)};
 
@@ -226,13 +226,13 @@ QVector<QVariant> DatasetInner::fillRow(const QStringList& line,
                                         bool fillSamplesOnly)
 {
     QVector<QVariant> row;
-    for (int i = 0; i < static_cast<int>(columnCount()); ++i)
+    for (Column column = 0; column < static_cast<int>(columnCount()); ++column)
     {
-        if (!fillSamplesOnly && !activeColumns_[i])
+        if (!fillSamplesOnly && !activeColumns_[column])
             continue;
 
-        const QString& element{line.at(i)};
-        row.append(getElementAsVariant(getColumnFormat(i), element));
+        const QString& element{line.at(column)};
+        row.append(getElementAsVariant(getColumnFormat(column), element));
     }
     return row;
 }

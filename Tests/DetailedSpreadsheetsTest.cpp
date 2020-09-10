@@ -210,10 +210,10 @@ void DetailedSpreadsheetsTest::testDateColumnRanges()
 void DetailedSpreadsheetsTest::testStringColumnRanges_data()
 {
     QTest::addColumn<QString>("fileName");
-    QTest::addColumn<unsigned int>("columnIndex");
+    QTest::addColumn<int>("columnIndex");
     QTest::addColumn<QStringList>("expectedStrings");
 
-    const QVector<unsigned int> columnIndexes{6, 4, 0};
+    const QVector<int> columnIndexes{6, 4, 0};
     const QVector<QStringList> expectedStrings{
         {"brown", "red", "yellow", "black", "blue", "pink", "white"},
         {"a", "b", "c"},
@@ -230,7 +230,7 @@ void DetailedSpreadsheetsTest::testStringColumnRanges_data()
 void DetailedSpreadsheetsTest::testStringColumnRanges()
 {
     QFETCH(QString, fileName);
-    QFETCH(unsigned int, columnIndex);
+    QFETCH(int, columnIndex);
     QFETCH(QStringList, expectedStrings);
 
     QString filePath(Common::getSpreadsheetsDir() + fileName);
@@ -322,7 +322,7 @@ void DetailedSpreadsheetsTest::checkDateColumnRange(
 }
 
 void DetailedSpreadsheetsTest::checkStringColumnRange(
-    const std::unique_ptr<Dataset>& dataset, unsigned int columnIndex,
+    const std::unique_ptr<Dataset>& dataset, int columnIndex,
     QStringList& expectedList)
 {
     QStringList currentList{dataset->getStringList(columnIndex)};

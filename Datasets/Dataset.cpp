@@ -16,13 +16,13 @@ unsigned int Dataset::rowCount() const { return rowsCount_; }
 
 unsigned int Dataset::columnCount() const { return columnsCount_; }
 
-ColumnType Dataset::getColumnFormat(int column) const
+ColumnType Dataset::getColumnFormat(Column column) const
 {
     Q_ASSERT(column >= 0 && column < static_cast<int>(columnCount()));
     return columnTypes_[column];
 }
 
-std::tuple<double, double> Dataset::getNumericRange(int column) const
+std::tuple<double, double> Dataset::getNumericRange(Column column) const
 {
     Q_ASSERT(ColumnType::NUMBER == getColumnFormat(column));
     double min{0.};
@@ -48,7 +48,7 @@ std::tuple<double, double> Dataset::getNumericRange(int column) const
     return {min, max};
 }
 
-std::tuple<QDate, QDate, bool> Dataset::getDateRange(int column) const
+std::tuple<QDate, QDate, bool> Dataset::getDateRange(Column column) const
 {
     Q_ASSERT(ColumnType::DATE == getColumnFormat(column));
     QDate minDate;
@@ -82,7 +82,7 @@ std::tuple<QDate, QDate, bool> Dataset::getDateRange(int column) const
     return {minDate, maxDate, emptyDates};
 }
 
-QStringList Dataset::getStringList(int column) const
+QStringList Dataset::getStringList(Column column) const
 {
     Q_ASSERT(ColumnType::STRING == getColumnFormat(column));
     QStringList listToFill;
@@ -104,15 +104,14 @@ QStringList Dataset::getStringList(int column) const
     return listToFill;
 }
 
-std::tuple<bool, unsigned int> Dataset::getTaggedColumn(
-    ColumnTag columnTag) const
+std::tuple<bool, Column> Dataset::getTaggedColumn(ColumnTag columnTag) const
 {
     if (isColumnTagged(columnTag))
         return {true, taggedColumns_[columnTag]};
     return {false, Constants::NOT_SET_COLUMN};
 }
 
-QString Dataset::getHeaderName(int column) const
+QString Dataset::getHeaderName(Column column) const
 {
     if (static_cast<int>(columnsCount_) >= column + 1)
         return headerColumnNames_[column];
@@ -145,13 +144,13 @@ bool Dataset::loadData()
 QDomElement Dataset::columnsToXml(QDomDocument& xmlDocument) const
 {
     QDomElement columns{xmlDocument.createElement(XML_COLUMNS)};
-    for (int column = 0; column < static_cast<int>(columnsCount_); ++column)
+    for (Column column = 0; column < static_cast<int>(columnsCount_); ++column)
     {
         QDomElement node{xmlDocument.createElement(XML_COLUMN)};
         node.setAttribute(XML_COLUMN_NAME, headerColumnNames_.at(column));
         node.setAttribute(XML_COLUMN_FORMAT,
                           static_cast<int>(columnTypes_.at(column)));
-        QMapIterator<ColumnTag, int> it(taggedColumns_);
+        QMapIterator<ColumnTag, Column> it(taggedColumns_);
         if (it.findNext(column))
             node.setAttribute(XML_COLUMN_TAG,
                               QString::number(static_cast<int>(it.key())));
@@ -188,7 +187,7 @@ void Dataset::setActiveColumns(const QVector<bool>& activeColumns)
     activeColumns_ = activeColumns;
 }
 
-void Dataset::setTaggedColumn(ColumnTag columnTag, int column)
+void Dataset::setTaggedColumn(ColumnTag columnTag, Column column)
 {
     taggedColumns_[columnTag] = column;
 }
@@ -249,7 +248,7 @@ void Dataset::updateSampleDataStrings(QVector<QVector<QVariant>>& data) const
     }
 }
 
-bool Dataset::isColumnTagged(ColumnTag column) const
+bool Dataset::isColumnTagged(ColumnTag tag) const
 {
-    return taggedColumns_.contains(column);
+    return taggedColumns_.contains(tag);
 }
