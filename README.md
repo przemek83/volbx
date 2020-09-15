@@ -1,22 +1,32 @@
 ## Example view:
-![](Screenshot1.jpg?raw=true "")
+![](exampleScreen.gif?raw=true "")
 
 ## Description
-Volbx is a graphical tool for data manipulation written in C++/Qt. User can load, filter, select, visualize, export data and more using few clicks. Volbx reads, along with inner application format, xlsx and ods spreadsheet files. User can save data set as csv or xlsx and plots as png files. Dynamic and interactive plots can be zoomed, moved, reset to initial state, quickly exported to clipboard and more. Application calculate dynamically handy values as quantiles, standard deviation, average and more for given data set.
+Volbx is a graphical tool used for data manipulation and written in C++/Qt. User can:
+ * load data - opens xlsx and ods spreadsheet files,
+ * filter data - filters panel can be used to define data range on each column,
+ * select data - user can select rows on main data table, 
+ * visualize data - multiple types of diagrams built in (histogram, grouping, linear regression, quantiles), adjusts dynamically according to filtering and selection,
+ * order data - each column can be ordered ascending and descending, 
+ * export data - selected set of data, together with linked plots, can be exported to xlsx spreadsheet file or CSV,
+ * and more. 
 
-This tool was originally created for real estate appraisal to give possibility, for people working in that area, to estimate past, current and future value of analyzed properties. Project/start-up was dropped and decision about release of less specialized application was made by me. Most advanced and dedicated for real estates functionalities were cut out but still some are quite useful.
+## History
+Tool was originally created for real estate appraisal as it gives possibility, for people working in that area, to estimate past, current and future value of analyzed properties. When project/start-up was dropped, I've decided to release less specialized application as open source project. Most advanced and dedicated for real estates functionalities were cut out, basic and intermediate ones stayed.
 
-## Built using:
-    Qt 5.12
-    QtCreator 4.8.1
-    Qwt 6.1
-    QuaZip 0.7.6
-    MinGW with GCC 7.3.0, 64 bit
-    Windows 10 v1809
-    Cmake 3.12.3
-    Git 2.19.1
-    Svn 1.11.1
-    Zlib 1.2.11
+## Used tools and libs:
+| Tool |  Windows | Lubuntu |
+| --- | --- | --- |
+| OS version | 10 v1909 | 20.04 |
+| GCC | 7.3.0 | 9.3.0 |
+| Cmake | 3.14 | 3.17 |
+| Git | 2.20 | 2.25 |
+| Svn | 1.11.1 | 1.13.0 |
+| Qt | 5.12.6 | 5.12.7 |
+| QtCreator | 4.12.0 | 4.13.0 |
+| Qwt | 6.1.4 | 6.1.4 |
+| QuaZip | 0.9 | 0.9 |
+| Zlib | 1.2.11 | 1.2.11 |
 
 ## Installation/Compilation
 Use Cmake directly or via QtCreator. Cmake **should**:
