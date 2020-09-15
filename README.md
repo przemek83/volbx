@@ -9,7 +9,7 @@
 - [Setup update server](#setup-update-server)
 - [Testing](#testing)
 - [Potential further improvements](#potential-further-improvements)
-- [Some screenshots:](#some-screenshots-)
+- [Screenshots](#screenshots-)
 
 ## Example view
 ![](exampleScreen.gif?raw=true "")
@@ -115,5 +115,15 @@ Tests are done using Qt test framework.
 * Measure and increase test coverage.
 * Setup CI with static analysis (CppCheck, Clang Tidy, Clazy).
 
-## Some screenshots:
-![Alt text](Screenshot2.jpg?raw=true "")![Alt text](Screenshot3.jpg?raw=true "")![Alt text](Screenshot4.jpg?raw=true "")
+## Screenshots
+![Alt text](groupingAndHistogram.gif?raw=true "")
+
+![Alt text](analysing.gif?raw=true "")
+
+![Alt text](exportData.gif?raw=true "")
+
+![Alt text](regression.gif?raw=true "")
+
+![Alt text](groupingPlot.gif?raw=true "")
+
+![Alt text](importWindow.gif?raw=true "")
