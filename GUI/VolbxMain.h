@@ -84,7 +84,7 @@ private:
     /// Side dock with filters.
     FiltersDock filters_;
 
-    /// Main tab widget/center widget.
+    /// Main tab widget/centre widget.
     TabWidget tabWidget_;
 
     /// Network manager used to retrieve current available version.
