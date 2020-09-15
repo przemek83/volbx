@@ -51,15 +51,16 @@ Volbx uses following software and licenses:
 
 ## Updater
 1) Build target `VersionCheck`.
-2) Run `VersionCheck`, following window should be shown:    
-![Alt text](updater.jpg?raw=true "")
+2) Run `VersionCheck`.
+3) Following window should be shown:    
+![Alt text](updateScreen.gif?raw=true "")
 
 ## Setup update server
-1) Get a domain and hosting ;)
-2) Add simple .php file which contains something like this:
+1) Get a domain and hosting :)
+2) Create simple .php file which contains something similar to this:
 ```
 <?
-echo("Volbx-Updade-Info\n");
+echo("Volbx-Update-Info\n");
 
 echo("1.10");
 
@@ -69,10 +70,15 @@ foreach (glob("*") as $filename) {
 }
 ?>
 ```
-3) Create folder `current` in directory where PHP file from point above is located.
-4) Add new/other version of Volbx and/or updater in `current` directory.
-5) Change code of networking module in Volbx to point to proper adress - look for `Networking::getCurrentVersionRequest()` and `QNetworkRequest Networking::getDownloadFileRequest(QString file)`
-6) Compile VersionChecker and run it - it should connect to given adress and download content of `current` folder.
+3) Copy .php file to hosting.
+4) Create folder `current` in directory where .php file is located.
+5) Add new/other version of Volbx and/or updater in `current` directory.
+6) Change code of `Networking` namespace in Volbx to point to proper address - look for 
+`QNetworkRequest Networking::getCurrentVersionRequest()` 
+and 
+`QNetworkRequest Networking::getDownloadFileRequest(const QString& file)`
+7) Compile `VersionChecker` and run it.
+8) Application should connect to given address and download content of `current` folder.
 
 **Remarks**:   
 - Checksum should be used in correctness checks instead of size of files.   
