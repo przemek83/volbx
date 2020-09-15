@@ -48,7 +48,7 @@ std::tuple<QString, QStringList> getAvailableVersionAndFiles(
     QStringList filesList{replyString.split(QLatin1Char('\n'))};
 
     if (filesList.isEmpty() ||
-        filesList.at(0) != QLatin1String("Volbx-Updade-Info"))
+        filesList.at(0) != QLatin1String("Volbx-Update-Info"))
         return {QLatin1String(""), filesList};
 
     LOG(LogTypes::NETWORK,
