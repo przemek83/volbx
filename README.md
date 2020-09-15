@@ -1,15 +1,15 @@
 ## Table of content
-- [Example view](#example-view-)
+- [Example view](#example-view)
 - [Description](#description)
 - [History](#history)
-- [Used tools and libs](#used-tools-and-libs-)
-- [Installation/Compilation](#installation-compilation)
+- [Used tools and libs](#used-tools-and-libs)
+- [Compilation and installation](#Compilation-and-installation)
 - [Licensing](#licensing)
 - [Updater](#updater)
 - [Setup update server](#setup-update-server)
 - [Testing](#testing)
 - [Potential further improvements](#potential-further-improvements)
-- [Screenshots](#screenshots-)
+- [Screenshots](#screenshots)
 
 ## Example view
 ![](exampleScreen.gif?raw=true "")
@@ -44,7 +44,7 @@ Tool was originally created for real estate appraisal as it gives possibility, f
 | QwtBle | master | master |
 | Wble | master | master |
 
-## Installation/Compilation
+## Compilation and installation
 Use directly Cmake or QtCreator. Cmake **should**:
 - configure everything automatically, 
 - download dependencies using Git (QuaZip, Zlib, Eible, Wble, Qwtble) and SVN (Qwt), 
