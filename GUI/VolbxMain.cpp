@@ -13,6 +13,7 @@
 #include <Common/DatasetUtilities.h>
 #include <Export/ExportVbx.h>
 #include <Import/ImportData.h>
+#include <ModelsAndViews/FilteringProxyModel.h>
 #include <ModelsAndViews/TableModel.h>
 #include <Shared/Application.h>
 #include <Shared/Logger.h>
@@ -239,7 +240,8 @@ void VolbxMain::actionAboutTriggered()
 void VolbxMain::closeTab(int tab)
 {
     QWidget* tabToDelete{tabWidget_.widget(tab)};
-    filters_.removeFiltersForModel(tabWidget_.getCurrentProxyModel());
+    const auto* proxyModel{tabToDelete->findChild<FilteringProxyModel*>()};
+    filters_.removeFiltersForModel(proxyModel);
     tabWidget_.removeTab(tab);
     delete tabToDelete;
 
