@@ -15,14 +15,13 @@
 ![](exampleScreen.gif?raw=true "")
 
 ## Description
-Volbx is a graphical tool used for data manipulation and written in C++/Qt. User can:
+Volbx is a graphical tool used for data manipulation written in C++/Qt. User can:
  * load data - opens xlsx and ods spreadsheet files,
  * filter data - filters panel can be used to define data range on each column,
  * select data - user can select rows on main data table, 
- * visualize data - multiple types of diagrams built in (histogram, grouping, linear regression, quantiles), adjusts dynamically according to filtering and selection,
- * order data - each column can be ordered ascending and descending, 
- * export data - selected set of data, together with linked plots, can be exported to xlsx spreadsheet file or CSV,
- * and more. 
+ * visualize data - multiple types of built in diagrams  (histogram, grouping, linear regression, quantiles) which adjusts dynamically according to user actions,
+ * order data - each column can be ordered ascending or descending, 
+ * export data - selected set of data, together with linked plots, can be exported to xlsx spreadsheet file or CSV. 
 
 ## History
 Tool was originally created for real estate appraisal as it gives possibility, for people working in that area, to estimate past, current and future value of analyzed properties. When project/start-up was dropped, I've decided to release less specialized application as open source project. Most advanced and dedicated for real estates functionalities were cut out, basic and intermediate ones stayed.
@@ -56,9 +55,9 @@ This is of course happy path...
 **TIPS**: set `CMAKE_PREFIX_PATH` env variable (should point to Qt) and add `qmake` location to `PATH` variable (QWT building expects it).   
 
 ## Licensing
-Volbx can be used using LGPLv3. 
+Volbx is published using LGPLv3 license. 
 
-Volbx uses following software and licenses:    
+Project uses following software and licenses:    
 * Qt, Qwt, QuaZip, Eible, Wble and Qwtble libraries - LGPL licences (more on qt-project.org, quazip.sourceforge.net, qwt.sourceforge.net and github.com/przemek83),    
 * Zlib - Zlib license (can be found on zlib.net).
 
@@ -66,6 +65,7 @@ Volbx uses following software and licenses:
 1) Build target `VersionCheck`.
 2) Run `VersionCheck`.
 3) Following window should be shown:    
+
 ![Alt text](updateScreen.gif?raw=true "")
 
 ## Setup update server
@@ -86,7 +86,7 @@ foreach (glob("*") as $filename) {
 3) Copy .php file to hosting.
 4) Create folder `current` in directory where .php file is located.
 5) Add new/other version of Volbx and/or updater in `current` directory.
-6) Change code of `Networking` namespace in Volbx to point to proper address - look for 
+6) Change code of `Networking` namespace in Volbx to point to proper address. Look for 
 `QNetworkRequest Networking::getCurrentVersionRequest()` 
 and 
 `QNetworkRequest Networking::getDownloadFileRequest(const QString& file)`
@@ -94,14 +94,15 @@ and
 8) Application should connect to given address and download content of `current` folder.
 
 **Remarks**:   
-- Checksum should be used instead of size of files in correctness checks.   
-- When I've created VersionChecker I've decided to use simplest solution which I was able to create. I do not know if it is safe and 'proper' enough but it worked for me. I'm not web developer ;)   
-- Windows needs admin rights (as of ~2012) when executing files having in name strings like "update", "install" or "setup". I've picked name `VersionChecker` to workaround that problem.   
+- Updater is doing correctness checks using file sizes. Checksums should be used instead.   
+- When I've created VersionChecker I've decided to use simplest known by me solution. I do not know if it is safe and 'proper' enough but it worked for me. I'm not web developer ;)   
+- Windows needs admin rights (as of ~2012) to execute files having in name strings like "update", "install" or "setup". I've picked name `VersionChecker` to workaround that problem.   
 - On Windows OS updater cannot overwrite file which are being used (as of ~2012). There is a special mechanism in place for replacing used/locked files: 
     * close Volbx, 
     * run updater, 
-    * change not used/blocked binaries/libs, 
-    * replace automatically used/blocked ones during next run of Volbx.
+    * download files,
+    * change not used binaries/libs, 
+    * on next run of Volbx replace automatically used/blocked ones.
 
 ## Testing
 1) Compile project.
@@ -113,7 +114,7 @@ Tests are done using Qt test framework.
 ## Potential further improvements
 * Upgrade code to use C++20.
 * Measure and increase test coverage.
-* Setup CI with static analysis (CppCheck, Clang Tidy, Clazy).
+* Setup static analysis (CppCheck, Clang Tidy, Clazy).
 
 ## Screenshots
 ![Alt text](groupingAndHistogram.gif?raw=true "")
