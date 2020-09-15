@@ -4,10 +4,10 @@
 
 #include <QWidget>
 
-#include <ColumnTag.h>
+#include <Common/ColumnTag.h>
+#include <Datasets/Dataset.h>
 
 class QTreeWidgetItem;
-class Dataset;
 class QComboBox;
 
 namespace Ui
