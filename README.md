@@ -1,4 +1,17 @@
-## Example view:
+## Table of content
+- [Example view](#example-view-)
+- [Description](#description)
+- [History](#history)
+- [Used tools and libs](#used-tools-and-libs-)
+- [Installation/Compilation](#installation-compilation)
+- [Licensing](#licensing)
+- [Updater](#updater)
+- [Setup update server](#setup-update-server)
+- [Testing](#testing)
+- [Potential further improvements](#potential-further-improvements)
+- [Some screenshots:](#some-screenshots-)
+
+## Example view
 ![](exampleScreen.gif?raw=true "")
 
 ## Description
@@ -14,7 +27,7 @@ Volbx is a graphical tool used for data manipulation and written in C++/Qt. User
 ## History
 Tool was originally created for real estate appraisal as it gives possibility, for people working in that area, to estimate past, current and future value of analyzed properties. When project/start-up was dropped, I've decided to release less specialized application as open source project. Most advanced and dedicated for real estates functionalities were cut out, basic and intermediate ones stayed.
 
-## Used tools and libs:
+## Used tools and libs
 | Tool |  Windows | Lubuntu |
 | --- | --- | --- |
 | OS version | 10 v1909 | 20.04 |
@@ -81,22 +94,26 @@ and
 8) Application should connect to given address and download content of `current` folder.
 
 **Remarks**:   
-- Checksum should be used in correctness checks instead of size of files.   
-- When I've created VersionChecker I've decided to use simplest solution which I was able to create. I do not know if it is safe and 'proper' enough but it worked :D I'm not web deweloper ;)   
-- Windows needs admin rights (as of ~2012) when executing files having in name strings like "update", "install" or "setup". Quite ugly name `VersionChecker` was picked to workaround that problem.   
-- On Windows updater cannot overwrite file which is being used (as of ~2012). There is a special mechanism for replacing used/locked files: closing Volbx, running updater, changing not used/blocked binaries/libs, replacing automatically used/blocked ones during next run of Volbx.
+- Checksum should be used instead of size of files in correctness checks.   
+- When I've created VersionChecker I've decided to use simplest solution which I was able to create. I do not know if it is safe and 'proper' enough but it worked for me. I'm not web developer ;)   
+- Windows needs admin rights (as of ~2012) when executing files having in name strings like "update", "install" or "setup". I've picked name `VersionChecker` to workaround that problem.   
+- On Windows OS updater cannot overwrite file which are being used (as of ~2012). There is a special mechanism in place for replacing used/locked files: 
+    * close Volbx, 
+    * run updater, 
+    * change not used/blocked binaries/libs, 
+    * replace automatically used/blocked ones during next run of Volbx.
 
 ## Testing
 1) Compile project.
-2) Run target named tests.
-3) Check test output, all tests should have status `PASSED`.    
+2) Run target named `tests`.
+3) Check output. All tests should have status `PASSED`.    
 
 Tests are done using Qt test framework.
 
 ## Potential further improvements
-* Clean and simplify whole code (it was created between 2010 and 2013 when I had only few years of experience and veeery little knowledge how good code should look like...). (undergoing)
-* Upgrade whole code to use C++17/C++20 (undergoing)
+* Upgrade code to use C++20.
 * Measure and increase test coverage.
+* Setup CI with static analysis (CppCheck, Clang Tidy, Clazy).
 
-## More screenshots:
+## Some screenshots:
 ![Alt text](Screenshot2.jpg?raw=true "")![Alt text](Screenshot3.jpg?raw=true "")![Alt text](Screenshot4.jpg?raw=true "")
