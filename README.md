@@ -27,27 +27,31 @@ Tool was originally created for real estate appraisal as it gives possibility, f
 | Qwt | 6.1.4 | 6.1.4 |
 | QuaZip | 0.9 | 0.9 |
 | Zlib | 1.2.11 | 1.2.11 |
+| Eible | master | master |
+| QwtBle | master | master |
+| Wble | master | master |
 
 ## Installation/Compilation
-Use Cmake directly or via QtCreator. Cmake **should**:
+Use directly Cmake or QtCreator. Cmake **should**:
 - configure everything automatically, 
-- download dependencies using Git (QuaZip, Zlib) and SVN (Qwt), 
+- download dependencies using Git (QuaZip, Zlib, Eible, Wble, Qwtble) and SVN (Qwt), 
 - build dependencies, 
 - compile Volbx and create binaries.  
 
-This is of course "happy path" ;)  
+This is of course happy path...  
 
-**TIPS**: set CMAKE_PREFIX_PATH env variable (should point to Qt) and add qmake location to PATH variable (QWT building expects it).   
+**TIPS**: set `CMAKE_PREFIX_PATH` env variable (should point to Qt) and add `qmake` location to `PATH` variable (QWT building expects it).   
 
 ## Licensing
 Volbx can be used using LGPLv3. 
+
 Volbx uses following software and licenses:    
-* Qt, Qwt and QuaZip libraries - LGPL licences (more on qt-project.org, quazip.sourceforge.net and qwt.sourceforge.net),    
+* Qt, Qwt, QuaZip, Eible, Wble and Qwtble libraries - LGPL licences (more on qt-project.org, quazip.sourceforge.net, qwt.sourceforge.net and github.com/przemek83),    
 * Zlib - Zlib license (can be found on zlib.net).
 
 ## Updater
-1) Build target VersionCheck.
-2) Run VersionCheck, following window should be shown:    
+1) Build target `VersionCheck`.
+2) Run `VersionCheck`, following window should be shown:    
 ![Alt text](updater.jpg?raw=true "")
 
 ## Setup update server
