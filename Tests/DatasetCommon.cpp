@@ -148,8 +148,10 @@ void compareExportDataWithDump(std::unique_ptr<Dataset> dataset,
         FileUtilities::loadFile(filePath + Common::getDataTsvDumpSuffix())
             .second};
 
-    QVector<QStringRef> actualDataLines{actualData.splitRef('\n')};
-    QVector<QStringRef> expectedDataLines{expectedData.splitRef('\n')};
+    QVector<QStringRef> actualDataLines{
+        actualData.splitRef(QRegExp("\n|\r\n"))};
+    QVector<QStringRef> expectedDataLines{
+        expectedData.splitRef(QRegExp("\n|\r\n"))};
     QCOMPARE(actualDataLines.size(), expectedDataLines.size());
     for (int i = 0; i < actualDataLines.size(); ++i)
         if (actualDataLines[i] != expectedDataLines[i])
