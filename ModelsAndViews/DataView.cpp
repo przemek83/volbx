@@ -25,8 +25,8 @@ DataView::DataView(QWidget* parent)
 
 void DataView::setModel(QAbstractItemModel* model)
 {
-    const auto* proxyModel = qobject_cast<FilteringProxyModel*>(model);
-    const TableModel* parentModel = proxyModel->getParentModel();
+    const auto* proxyModel{qobject_cast<FilteringProxyModel*>(model)};
+    const TableModel* parentModel{proxyModel->getParentModel()};
 
     for (int column = 0; column < proxyModel->columnCount(); ++column)
         setDelegate(column, parentModel);
