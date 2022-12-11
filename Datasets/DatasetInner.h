@@ -57,7 +57,7 @@ private:
     static QVariant getElementAsVariant(ColumnType columnFormat,
                                         const QString& element);
 
-    static QVariant getDefaultVariantForFormat(const ColumnType format);
+    static QVariant getDefaultVariantForFormat(ColumnType format);
 
     QVector<QVector<QVariant>> prepareContainerForAllData() const;
 

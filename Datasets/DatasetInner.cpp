@@ -204,7 +204,7 @@ QVariant DatasetInner::getElementAsVariant(ColumnType columnFormat,
     return elementAsVariant;
 }
 
-QVariant DatasetInner::getDefaultVariantForFormat(const ColumnType format)
+QVariant DatasetInner::getDefaultVariantForFormat(ColumnType format)
 {
     switch (format)
     {
