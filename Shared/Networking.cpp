@@ -35,7 +35,7 @@ bool replyIsValid(QNetworkReply* reply)
         reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toUInt();
 
     const int okCode{200};
-    return !(httpStatusCode == okCode && reply->isReadable());
+    return httpStatusCode != okCode || !reply->isReadable();
 }
 
 std::tuple<QString, QStringList> getAvailableVersionAndFiles(
