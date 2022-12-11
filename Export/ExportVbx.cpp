@@ -103,7 +103,7 @@ void ExportVbx::variantToString(const QVariant& variant,
                 // No new line for first string.
                 if (nextIndex_ != 1)
                     stringsContent_.append(newLine_);
-                stringsContent_.append(tmpString);
+                stringsContent_.append(tmpString.toUtf8());
                 nextIndex_++;
             }
             destinationArray.append(QByteArray::number(index));
