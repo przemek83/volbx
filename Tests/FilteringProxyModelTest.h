@@ -12,14 +12,14 @@ class FilteringProxyModelTest : public QObject
 {
     Q_OBJECT
 private Q_SLOTS:
-    void testNoFilter();
+    static void testNoFilter();
 
-    void testStringFilter();
+    static void testStringFilter();
 
-    void testDateFilter();
+    static void testDateFilter();
     void testDateFilterFilterEmptyDates();
 
-    void testNumberFilter();
+    static void testNumberFilter();
 
 private:
     static void checkProxyHasAllItems(const FilteringProxyModel& proxy,

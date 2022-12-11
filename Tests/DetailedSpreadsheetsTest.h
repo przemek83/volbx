@@ -29,25 +29,25 @@ public:
 
 private Q_SLOTS:
     void testBasics_data();
-    void testBasics();
+    static void testBasics();
 
     void testColumns_data();
-    void testColumns();
+    static void testColumns();
 
     void testSampleData_data();
-    void testSampleData();
+    static void testSampleData();
 
     void testNumericColumnRanges_data();
     void testNumericColumnRanges();
 
     void testDateColumnRanges_data();
-    void testDateColumnRanges();
+    static void testDateColumnRanges();
 
     void testStringColumnRanges_data();
-    void testStringColumnRanges();
+    static void testStringColumnRanges();
 
-    void testDataFile01SomeColumnsActive_data();
-    void testDataFile01SomeColumnsActive();
+    static void testDataFile01SomeColumnsActive_data();
+    static void testDataFile01SomeColumnsActive();
 
 private:
     static void checkNumericColumnRange(

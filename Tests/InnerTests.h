@@ -20,10 +20,10 @@ private Q_SLOTS:
     void initTestCase();
 
     void testDefinition_data();
-    void testDefinition();
+    static void testDefinition();
 
     void testData_data();
-    void testData();
+    static void testData();
 
     void testExport_data();
     void testExport();
@@ -38,7 +38,8 @@ private:
      * @param datasetName Name of dataset.
      * @param exportedBuffer Exported zip.
      */
-    void checkExport(const QString& datasetName, QBuffer& exportedBuffer);
+    static void checkExport(const QString& datasetName,
+                            QBuffer& exportedBuffer);
 
     void addTestCases(const QString& testNamePrefix);
 

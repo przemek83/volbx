@@ -16,19 +16,19 @@ private Q_SLOTS:
     void initTestCase();
 
     void testDefinition_data();
-    void testDefinition();
+    static void testDefinition();
 
     void testData_data();
-    void testData();
+    static void testData();
 
-    void testDamagedFiles_data();
-    void testDamagedFiles();
+    static void testDamagedFiles_data();
+    static void testDamagedFiles();
 
     void compareExpectedDefinitionsOfOdsAndXlsx_data();
-    void compareExpectedDefinitionsOfOdsAndXlsx();
+    static void compareExpectedDefinitionsOfOdsAndXlsx();
 
     void compareExpectedTsvDumpsOfOdsAndXlsx_data();
-    void compareExpectedTsvDumpsOfOdsAndXlsx();
+    static void compareExpectedTsvDumpsOfOdsAndXlsx();
 
 private:
     void addTestCaseForOdsAndXlsxComparison(const QString& testNamePrefix);

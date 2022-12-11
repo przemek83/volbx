@@ -20,10 +20,10 @@ private Q_SLOTS:
 
     void testRecomputeGroupingIvalidFormat();
     void testRecomputeGroupingData();
-    void testRecomputeGroupingDataEmptyCalcData();
+    static void testRecomputeGroupingDataEmptyCalcData();
 
     void testRecompute_data();
-    void testRecompute();
+    static void testRecompute();
 
 private:
     void checkRecomputeGroupingDataForColumnType(ColumnType columnType);
