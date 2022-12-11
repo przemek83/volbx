@@ -2,6 +2,7 @@
 
 #include <ProgressBarCounter.h>
 #include <QDir>
+#include <QElapsedTimer>
 #include <QMessageBox>
 #include <QNetworkReply>
 #include <QProcess>
@@ -301,7 +302,7 @@ void VolbxMain::saveDataset(const QString& datasetName)
     QString filePath{DatasetUtilities::getDatasetsDir() + datasetName +
                      DatasetUtilities::getDatasetExtension()};
 
-    QTime performanceTimer;
+    QElapsedTimer performanceTimer;
     performanceTimer.start();
 
     QFile file(filePath);
@@ -353,7 +354,7 @@ void VolbxMain::importDataset(std::unique_ptr<Dataset> dataset)
 
     QApplication::processEvents();
 
-    QTime performanceTimer;
+    QElapsedTimer performanceTimer;
     performanceTimer.start();
 
     try

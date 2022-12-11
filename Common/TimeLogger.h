@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QElapsedTimer>
 #include <QTime>
 
 #include <Shared/LogType.h>
@@ -23,5 +24,5 @@ public:
 private:
     const LogTypes logType_;
     const QString operationName_;
-    QTime performanceTimer_;
+    QElapsedTimer performanceTimer_;
 };

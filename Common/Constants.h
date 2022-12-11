@@ -3,7 +3,7 @@
 #include <QDate>
 #include <QString>
 
-class QTime;
+class QElapsedTimer;
 
 /**
  * Helper functions for constants.
@@ -30,7 +30,7 @@ QString getProgressBarTitle(BarTitle barTitle);
 
 const int NOT_SET_COLUMN{-1};
 
-QString timeFromTimeToSeconds(QTime time);
+QString timeFromTimeToSeconds(QElapsedTimer time);
 
 int getProgressBarFullCounter();
 };  // namespace Constants

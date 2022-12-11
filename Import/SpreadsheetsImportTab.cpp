@@ -4,6 +4,7 @@
 #include <future>
 
 #include <ProgressBarInfinite.h>
+#include <QElapsedTimer>
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QHeaderView>
@@ -52,7 +53,7 @@ void SpreadsheetsImportTab::analyzeFile(std::unique_ptr<Dataset>& dataset)
     ProgressBarInfinite bar(barTitle, nullptr);
     bar.showDetached();
     bar.start();
-    QTime performanceTimer;
+    QElapsedTimer performanceTimer;
     performanceTimer.start();
 
     QCoreApplication::processEvents();

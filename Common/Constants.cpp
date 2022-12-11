@@ -2,9 +2,9 @@
 
 #include <cmath>
 
+#include <QElapsedTimer>
 #include <QLocale>
 #include <QSettings>
-#include <QTime>
 #include <QVector>
 
 namespace Constants
@@ -34,7 +34,7 @@ QString getProgressBarTitle(BarTitle barTitle)
     return progressTitles[static_cast<int>(barTitle)];
 }
 
-QString timeFromTimeToSeconds(QTime time)
+QString timeFromTimeToSeconds(QElapsedTimer time)
 {
     const int milisecondsInSecond{1000};
     return QString::number(static_cast<double>(time.elapsed()) /

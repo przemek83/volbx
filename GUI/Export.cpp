@@ -5,6 +5,7 @@
 #include <PlotBase.h>
 #include <ProgressBarCounter.h>
 #include <QDir>
+#include <QElapsedTimer>
 #include <QFileDialog>
 #include <QMainWindow>
 #include <QMessageBox>
@@ -74,7 +75,7 @@ void Export::saveOnDisk()
     const QString fileName{getFileName()};
     exportPlots(fileName);
 
-    QTime performanceTimer;
+    QElapsedTimer performanceTimer;
     performanceTimer.start();
 
     if (exportData(fileName))
