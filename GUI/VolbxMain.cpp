@@ -447,7 +447,7 @@ void VolbxMain::updateApplication()
                       Constants::getUpdaterName() +
                       Constants::getExeFileSuffix()))
     {
-        QProcess::startDetached(Constants::getUpdaterName());
+        QProcess::startDetached(Constants::getUpdaterName(), {});
         QCoreApplication::quit();
     }
     else
