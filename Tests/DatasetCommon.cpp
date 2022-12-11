@@ -45,8 +45,8 @@ bool domNodeListsEqual(const QDomNodeList& leftNodes,
         bool found{false};
         for (int j = 0; j < rightNodes.size(); ++j)
         {
-            QDomElement currentLeft{leftNodes.at(i).toElement()};
-            QDomElement currentRight{rightNodes.at(j).toElement()};
+            const QDomElement currentLeft{leftNodes.at(i).toElement()};
+            const QDomElement currentRight{rightNodes.at(j).toElement()};
             if (!currentLeft.hasChildNodes() && !currentRight.hasChildNodes())
             {
                 if (atrributesEqual(currentLeft, currentRight))
@@ -77,8 +77,8 @@ bool domElementsEqual(const QDomElement& left, const QDomElement& right)
     if (!left.hasChildNodes())
         return atrributesEqual(left, right);
 
-    QDomNodeList leftNodes{left.childNodes()};
-    QDomNodeList rightNodes{right.childNodes()};
+    const QDomNodeList leftNodes{left.childNodes()};
+    const QDomNodeList rightNodes{right.childNodes()};
     return domNodeListsEqual(leftNodes, rightNodes) &&
            domNodeListsEqual(rightNodes, leftNodes);
 }
@@ -86,14 +86,15 @@ bool domElementsEqual(const QDomElement& left, const QDomElement& right)
 void saveExpectedDefinition(const std::unique_ptr<Dataset>& dataset,
                             const QString& filePath)
 {
-    QString dumpedDefinition{dataset->definitionToXml(dataset->rowCount())};
+    const QString dumpedDefinition{
+        dataset->definitionToXml(dataset->rowCount())};
     Common::saveFile(filePath + Common::getDefinitionDumpSuffix(),
                      dumpedDefinition);
 }
 
 void saveExpectedTsv(const QTableView& view, const QString& filePath)
 {
-    QString tsvData{DatasetCommon::getExportedTsv(view)};
+    const QString tsvData{DatasetCommon::getExportedTsv(view)};
     Common::saveFile(filePath + Common::getDataTsvDumpSuffix(), tsvData);
 }
 };  // namespace
@@ -106,8 +107,8 @@ bool xmlsAreEqual(const QByteArray& left, const QByteArray& right)
     leftDom.setContent(left);
     QDomDocument rightDom;
     rightDom.setContent(right);
-    QDomElement leftRoot{leftDom.documentElement()};
-    QDomElement rightRoot{rightDom.documentElement()};
+    const QDomElement leftRoot{leftDom.documentElement()};
+    const QDomElement rightRoot{rightDom.documentElement()};
 
     return domElementsEqual(leftRoot, rightRoot);
 }
@@ -115,9 +116,10 @@ bool xmlsAreEqual(const QByteArray& left, const QByteArray& right)
 static void checkDatasetDefinition(const std::unique_ptr<Dataset>& dataset,
                                    const QString& expectedDefinitionFilePath)
 {
-    QByteArray dumpFromFile{
+    const QByteArray dumpFromFile{
         FileUtilities::loadFile(expectedDefinitionFilePath).second.toUtf8()};
-    QByteArray dumpFromDataset{dataset->definitionToXml(dataset->rowCount())};
+    const QByteArray dumpFromDataset{
+        dataset->definitionToXml(dataset->rowCount())};
     QVERIFY(xmlsAreEqual(dumpFromFile, dumpFromDataset));
 }
 
@@ -143,8 +145,8 @@ void compareExportDataWithDump(std::unique_ptr<Dataset> dataset,
     QTableView view;
     view.setModel(&proxyModel);
 
-    QString actualData{getExportedTsv(view)};
-    QString expectedData{
+    const QString actualData{getExportedTsv(view)};
+    const QString expectedData{
         FileUtilities::loadFile(filePath + Common::getDataTsvDumpSuffix())
             .second};
 
@@ -156,9 +158,9 @@ void compareExportDataWithDump(std::unique_ptr<Dataset> dataset,
     for (int i = 0; i < actualDataLines.size(); ++i)
         if (actualDataLines[i] != expectedDataLines[i])
         {
-            QString msg{"Difference in line " + QString::number(i + 1) +
-                        "\nActual:  " + actualDataLines[i] +
-                        "\nExpected: " + expectedDataLines[i]};
+            const QString msg{"Difference in line " + QString::number(i + 1) +
+                              "\nActual:  " + actualDataLines[i] +
+                              "\nExpected: " + expectedDataLines[i]};
             QFAIL(msg.toStdString().c_str());
         }
 }
@@ -178,7 +180,8 @@ std::unique_ptr<Dataset> createDataset(const QString& fileName,
 
 void activateAllDatasetColumns(Dataset& dataset)
 {
-    QVector<bool> activeColumns(static_cast<int>(dataset.columnCount()), true);
+    const QVector<bool> activeColumns(static_cast<int>(dataset.columnCount()),
+                                      true);
     dataset.setActiveColumns(activeColumns);
 }
 
@@ -214,7 +217,7 @@ void generateExpectedDataForFile(const QString& fileName,
         DatasetCommon::createDataset(fileName, sourceDir + fileName)};
     dataset->initialize();
 
-    QString filePath{destinationDir + fileName};
+    const QString filePath{destinationDir + fileName};
     saveExpectedDefinition(dataset, filePath);
 
     DatasetCommon::activateAllDatasetColumns(*dataset);

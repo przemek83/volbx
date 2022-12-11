@@ -39,7 +39,7 @@ bool FilteringProxyModel::acceptRowAccordingToStringRestrictions(
 {
     for (const auto& [column, bannedStrings] : stringsRestrictions_)
     {
-        QModelIndex index{
+        const QModelIndex index{
             sourceModel()->index(sourceRow, column, sourceParent)};
         if (bannedStrings.contains(index.data().toString()))
             return false;
@@ -52,7 +52,7 @@ bool FilteringProxyModel::acceptRowAccordingToDateRestrictions(
 {
     for (const auto& [column, dateRestriction] : datesRestrictions_)
     {
-        QModelIndex index{
+        const QModelIndex index{
             sourceModel()->index(sourceRow, column, sourceParent)};
         auto [min, max, emptyDates] = dateRestriction;
         const QVariant& dateVariant{index.data()};
@@ -71,7 +71,7 @@ bool FilteringProxyModel::acceptRowAccordingToNumericRestrictions(
 {
     for (const auto& [column, numericRestriction] : numericRestrictions_)
     {
-        QModelIndex index{
+        const QModelIndex index{
             sourceModel()->index(sourceRow, column, sourceParent)};
         auto [min, max] = numericRestriction;
         const double itemDouble{

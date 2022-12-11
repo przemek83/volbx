@@ -63,7 +63,7 @@ std::tuple<QDate, QDate, bool> Dataset::getDateRange(Column column) const
             emptyDates = true;
             continue;
         }
-        QDate date{dateVariant.toDate()};
+        const QDate date{dateVariant.toDate()};
         if (first)
         {
             minDate = date;

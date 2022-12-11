@@ -56,7 +56,7 @@ void DatasetsListBrowser::setupDatasetsList()
 
 bool DatasetsListBrowser::doesUserChooseToDeleteSelectedDataset(QPoint pos)
 {
-    QPoint globalPos{ui->datasetsList->viewport()->mapToGlobal(pos)};
+    const QPoint globalPos{ui->datasetsList->viewport()->mapToGlobal(pos)};
 
     if (ui->datasetsList->selectedItems().isEmpty() ||
         ui->datasetsList->itemAt(pos) == nullptr)
@@ -76,7 +76,7 @@ bool DatasetsListBrowser::doesUserChooseToDeleteSelectedDataset(QPoint pos)
 bool DatasetsListBrowser::doesUserConfirmedDeleting(
     const QString& datasetToDelete)
 {
-    QMessageBox::StandardButton answer{QMessageBox::question(
+    const QMessageBox::StandardButton answer{QMessageBox::question(
         this, tr("Delete?"), tr("Delete dataset ") + datasetToDelete + "?",
         QMessageBox::Yes | QMessageBox::No)};
 

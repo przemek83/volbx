@@ -39,7 +39,7 @@ QByteArray ExportVbx::generateRowContent(const QAbstractItemModel& model,
     QByteArray rowContent;
     for (int j = 0; j < model.columnCount(); ++j)
     {
-        QVariant actualField = model.index(row, j).data();
+        const QVariant actualField = model.index(row, j).data();
         if (!actualField.isNull())
             variantToString(actualField, rowContent, separator_);
         if (j != model.columnCount() - 1)
@@ -65,7 +65,7 @@ bool ExportVbx::exportDefinition(const QAbstractItemView& view,
 {
     const TableModel* parentModel =
         (qobject_cast<FilteringProxyModel*>(view.model()))->getParentModel();
-    QByteArray definitionContent{parentModel->definitionToXml(lines_)};
+    const QByteArray definitionContent{parentModel->definitionToXml(lines_)};
 
     return write(ioDevice, DatasetUtilities::getDatasetDefinitionFilename(),
                  definitionContent, QuaZip::mdAdd);
@@ -122,12 +122,13 @@ bool ExportVbx::write(QIODevice& ioDevice, const QString& fileName,
                       const QByteArray& data, QuaZip::Mode mode)
 {
     QuaZip outZip(&ioDevice);
-    bool openSuccess = outZip.open(mode);
+    const bool openSuccess = outZip.open(mode);
     if (!openSuccess)
         return false;
 
     QuaZipFile zipFile(&outZip);
-    bool result = zipFile.open(QIODevice::WriteOnly, QuaZipNewInfo(fileName));
+    const bool result =
+        zipFile.open(QIODevice::WriteOnly, QuaZipNewInfo(fileName));
     if (!result || zipFile.write(data) == -1)
     {
         LOG(LogTypes::IMPORT_EXPORT,

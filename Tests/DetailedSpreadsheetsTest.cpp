@@ -22,7 +22,7 @@ void DetailedSpreadsheetsTest::testBasics_data()
 
     for (int i = 0; i < fileNames_.size(); ++i)
     {
-        QString testName{"Basic test for " + fileNames_[i] + "."};
+        const QString testName{"Basic test for " + fileNames_[i] + "."};
         QTest::newRow(testName.toStdString().c_str())
             << fileNames_[i] << expectedRowCounts[i / 2]
             << expectedColumnCounts[i / 2];
@@ -31,11 +31,11 @@ void DetailedSpreadsheetsTest::testBasics_data()
 
 void DetailedSpreadsheetsTest::testBasics()
 {
-    QFETCH(QString, fileName);
-    QFETCH(unsigned int, rowCount);
-    QFETCH(unsigned int, columnCount);
+    QFETCH(const QString, fileName);
+    QFETCH(const unsigned int, rowCount);
+    QFETCH(const unsigned int, columnCount);
 
-    QString filePath(Common::getSpreadsheetsDir() + fileName);
+    const QString filePath(Common::getSpreadsheetsDir() + fileName);
     std::unique_ptr<Dataset> dataset{
         DatasetCommon::createDataset(fileName, filePath)};
 
@@ -54,7 +54,7 @@ void DetailedSpreadsheetsTest::testColumns_data()
 
     for (int i = 0; i < fileNames_.size(); ++i)
     {
-        QString testName{"Column test for " + fileNames_[i] + "."};
+        const QString testName{"Column test for " + fileNames_[i] + "."};
         QTest::newRow(testName.toStdString().c_str())
             << fileNames_[i] << columnFormats_[i / 2] << columnNames_[i / 2];
     }
@@ -62,11 +62,11 @@ void DetailedSpreadsheetsTest::testColumns_data()
 
 void DetailedSpreadsheetsTest::testColumns()
 {
-    QFETCH(QString, fileName);
-    QFETCH(QVector<ColumnType>, columnFormats);
-    QFETCH(QVector<QString>, columnNames);
+    QFETCH(const QString, fileName);
+    QFETCH(const QVector<ColumnType>, columnFormats);
+    QFETCH(const QVector<QString>, columnNames);
 
-    QString filePath(Common::getSpreadsheetsDir() + fileName);
+    const QString filePath(Common::getSpreadsheetsDir() + fileName);
     std::unique_ptr<Dataset> dataset{
         DatasetCommon::createDataset(fileName, filePath)};
     dataset->initialize();
@@ -89,7 +89,7 @@ void DetailedSpreadsheetsTest::testSampleData_data()
 
     for (int i = 0; i < fileNames_.size(); ++i)
     {
-        QString testName{"Sample data test for " + fileNames_[i] + "."};
+        const QString testName{"Sample data test for " + fileNames_[i] + "."};
         QTest::newRow(testName.toStdString().c_str())
             << fileNames_[i] << expectedSampleRowCounts[i / 2]
             << expectedSampleColumnCounts[i / 2] << sampleFields_[i / 2];
@@ -98,12 +98,12 @@ void DetailedSpreadsheetsTest::testSampleData_data()
 
 void DetailedSpreadsheetsTest::testSampleData()
 {
-    QFETCH(QString, fileName);
-    QFETCH(unsigned int, sampleRowCount);
-    QFETCH(unsigned int, sampleColumnCount);
-    QFETCH(QVector<Field>, sampleFields);
+    QFETCH(const QString, fileName);
+    QFETCH(const unsigned int, sampleRowCount);
+    QFETCH(const unsigned int, sampleColumnCount);
+    QFETCH(const QVector<Field>, sampleFields);
 
-    QString filePath(Common::getSpreadsheetsDir() + fileName);
+    const QString filePath(Common::getSpreadsheetsDir() + fileName);
     std::unique_ptr<Dataset> dataset{
         DatasetCommon::createDataset(fileName, filePath)};
     dataset->initialize();
@@ -139,7 +139,8 @@ void DetailedSpreadsheetsTest::testNumericColumnRanges_data()
 
     for (int i = 0; i < fileNames_.size(); ++i)
     {
-        QString testName{"Numeric ranges test for " + fileNames_[i] + "."};
+        const QString testName{"Numeric ranges test for " + fileNames_[i] +
+                               "."};
         QTest::newRow(testName.toStdString().c_str())
             << fileNames_[i] << expectedRanges[i / 2];
     }
@@ -147,10 +148,10 @@ void DetailedSpreadsheetsTest::testNumericColumnRanges_data()
 
 void DetailedSpreadsheetsTest::testNumericColumnRanges()
 {
-    QFETCH(QString, fileName);
-    QFETCH(QVector<NumericCheckData>, expectedRanges);
+    QFETCH(const QString, fileName);
+    QFETCH(const QVector<NumericCheckData>, expectedRanges);
 
-    QString filePath(Common::getSpreadsheetsDir() + fileName);
+    const QString filePath(Common::getSpreadsheetsDir() + fileName);
     std::unique_ptr<Dataset> dataset{
         DatasetCommon::createDataset(fileName, filePath)};
 
@@ -184,7 +185,8 @@ void DetailedSpreadsheetsTest::testDateColumnRanges_data()
 
     for (int i = 0; i < fileNames_.size(); ++i)
     {
-        QString testName{"Numeric ranges test for " + fileNames_[i] + "."};
+        const QString testName{"Numeric ranges test for " + fileNames_[i] +
+                               "."};
         QTest::newRow(testName.toStdString().c_str())
             << fileNames_[i] << expectedRanges[i / 2];
     }
@@ -192,10 +194,10 @@ void DetailedSpreadsheetsTest::testDateColumnRanges_data()
 
 void DetailedSpreadsheetsTest::testDateColumnRanges()
 {
-    QFETCH(QString, fileName);
-    QFETCH(DateCheckData, expectedRanges);
+    QFETCH(const QString, fileName);
+    QFETCH(const DateCheckData, expectedRanges);
 
-    QString filePath(Common::getSpreadsheetsDir() + fileName);
+    const QString filePath(Common::getSpreadsheetsDir() + fileName);
     std::unique_ptr<Dataset> dataset{
         DatasetCommon::createDataset(fileName, filePath)};
 
@@ -221,7 +223,8 @@ void DetailedSpreadsheetsTest::testStringColumnRanges_data()
 
     for (int i = 0; i < fileNames_.size(); ++i)
     {
-        QString testName{"Numeric ranges test for " + fileNames_[i] + "."};
+        const QString testName{"Numeric ranges test for " + fileNames_[i] +
+                               "."};
         QTest::newRow(testName.toStdString().c_str())
             << fileNames_[i] << columnIndexes[i / 2] << expectedStrings[i / 2];
     }
@@ -229,11 +232,11 @@ void DetailedSpreadsheetsTest::testStringColumnRanges_data()
 
 void DetailedSpreadsheetsTest::testStringColumnRanges()
 {
-    QFETCH(QString, fileName);
-    QFETCH(int, columnIndex);
-    QFETCH(QStringList, expectedStrings);
+    QFETCH(const QString, fileName);
+    QFETCH(const int, columnIndex);
+    QFETCH(const QStringList, expectedStrings);
 
-    QString filePath(Common::getSpreadsheetsDir() + fileName);
+    const QString filePath(Common::getSpreadsheetsDir() + fileName);
     std::unique_ptr<Dataset> dataset{
         DatasetCommon::createDataset(fileName, filePath)};
 
@@ -247,7 +250,7 @@ void DetailedSpreadsheetsTest::testDataFile01SomeColumnsActive_data()
     QTest::addColumn<QString>("fileName");
     for (const auto& extension : QVector<QString>{"xlsx", "ods"})
     {
-        QString testName{"Detailed test for test01Partial " + extension};
+        const QString testName{"Detailed test for test01Partial " + extension};
         QTest::newRow(testName.toStdString().c_str())
             << "test01Partial." + extension;
     }
@@ -255,7 +258,7 @@ void DetailedSpreadsheetsTest::testDataFile01SomeColumnsActive_data()
 
 void DetailedSpreadsheetsTest::testDataFile01SomeColumnsActive()
 {
-    QFETCH(QString, fileName);
+    QFETCH(const QString, fileName);
     const QString filePath(Common::getSpreadsheetsDir() + fileName);
     std::unique_ptr<Dataset> dataset{
         DatasetCommon::createDataset(fileName, filePath)};
@@ -274,8 +277,8 @@ void DetailedSpreadsheetsTest::testDataFile01SomeColumnsActive()
     checkDateColumnRange(dataset, 0, {QDate(2010, 1, 7), QDate(2010, 2, 27)},
                          false);
 
-    QStringList compareList = {"brown", "red",  "yellow", "black",
-                               "blue",  "pink", "white"};
+    const QStringList compareList = {"brown", "red",  "yellow", "black",
+                                     "blue",  "pink", "white"};
     checkStringColumnRange(dataset, 3, compareList);
 
     DatasetCommon::compareExportDataWithDump(std::move(dataset), filePath);
@@ -323,9 +326,9 @@ void DetailedSpreadsheetsTest::checkDateColumnRange(
 
 void DetailedSpreadsheetsTest::checkStringColumnRange(
     const std::unique_ptr<Dataset>& dataset, int columnIndex,
-    QStringList& expectedList)
+    const QStringList& expectedList)
 {
-    QStringList currentList{dataset->getStringList(columnIndex)};
+    const QStringList currentList{dataset->getStringList(columnIndex)};
     QCOMPARE(currentList, expectedList);
 }
 

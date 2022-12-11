@@ -77,8 +77,8 @@ void SpreadsheetsImportTab::analyzeFile(std::unique_ptr<Dataset>& dataset)
 std::unique_ptr<Dataset> SpreadsheetsImportTab::createDataset(
     const QFileInfo& fileInfo)
 {
-    QString datasetName{getValidDatasetName(fileInfo)};
-    QString datasetFilePath{fileInfo.canonicalFilePath()};
+    const QString datasetName{getValidDatasetName(fileInfo)};
+    const QString datasetFilePath{fileInfo.canonicalFilePath()};
 
     std::unique_ptr<DatasetSpreadsheet> dataset{nullptr};
     if (fileInfo.suffix().toLower().compare(QLatin1String("ods")) == 0)
@@ -97,7 +97,7 @@ bool SpreadsheetsImportTab::fileIsOk(const QFileInfo& fileInfo)
 
 QString SpreadsheetsImportTab::getValidDatasetName(const QFileInfo& fileInfo)
 {
-    QString regexpString{DatasetUtilities::getDatasetNameRegExp().replace(
+    const QString regexpString{DatasetUtilities::getDatasetNameRegExp().replace(
         QLatin1String("["), QLatin1String("[^"))};
     QString datasetName{
         fileInfo.completeBaseName().remove(QRegExp(regexpString))};

@@ -45,7 +45,7 @@ std::tuple<QString, QStringList> getAvailableVersionAndFiles(
 
     LOG(LogTypes::NETWORK, QLatin1String("Network reply:\n") + replyString);
 
-    QStringList filesList{replyString.split(QLatin1Char('\n'))};
+    const QStringList filesList{replyString.split(QLatin1Char('\n'))};
 
     if (filesList.isEmpty() ||
         filesList.at(0) != QLatin1String("Volbx-Update-Info"))

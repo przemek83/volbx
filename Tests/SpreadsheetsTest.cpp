@@ -25,7 +25,7 @@ void SpreadsheetsTest::testDefinition_data()
 
 void SpreadsheetsTest::testDefinition()
 {
-    QFETCH(QString, fileName);
+    QFETCH(const QString, fileName);
     DatasetCommon::checkDefinition(fileName, Common::getSpreadsheetsDir());
 }
 
@@ -36,7 +36,7 @@ void SpreadsheetsTest::testData_data()
 
 void SpreadsheetsTest::testData()
 {
-    QFETCH(QString, fileName);
+    QFETCH(const QString, fileName);
     DatasetCommon::checkData(fileName, Common::getSpreadsheetsDir());
 }
 
@@ -47,7 +47,7 @@ void SpreadsheetsTest::testDamagedFiles_data()
 
 void SpreadsheetsTest::testDamagedFiles()
 {
-    QFETCH(QString, fileName);
+    QFETCH(const QString, fileName);
 
     std::unique_ptr<Dataset> dataset{DatasetCommon::createDataset(
         fileName, Common::getSpreadsheetsDir() + fileName)};
@@ -82,16 +82,16 @@ void SpreadsheetsTest::addTestCaseForOdsAndXlsxComparison(
 
     for (const auto& fileName : testFileNames_)
     {
-        QString testName{testNamePrefix + " for " + fileName};
+        const QString testName{testNamePrefix + " for " + fileName};
         QTest::newRow(testName.toStdString().c_str()) << fileName;
     }
 }
 
 void SpreadsheetsTest::compareOdsAndXlsxExpectedData(const QString& fileSuffix)
 {
-    QFETCH(QString, fileName);
+    QFETCH(const QString, fileName);
 
-    QString filePath{Common::getSpreadsheetsDir() + fileName};
+    const QString filePath{Common::getSpreadsheetsDir() + fileName};
     auto [xlsxLoaded, xlsxDump] =
         FileUtilities::loadFile(filePath + ".xlsx" + fileSuffix);
     QVERIFY(xlsxLoaded);
@@ -106,8 +106,9 @@ void SpreadsheetsTest::compareOdsAndXlsxExpectedData(const QString& fileSuffix)
     for (int i = 0; i < xlsxLines.size(); ++i)
         if (xlsxLines[i] != odsLines[i])
         {
-            QString msg{"Difference in line " + QString::number(i + 1) +
-                        "\nXlsx: " + xlsxLines[i] + "\nOds : " + odsLines[i]};
+            const QString msg{"Difference in line " + QString::number(i + 1) +
+                              "\nXlsx: " + xlsxLines[i] +
+                              "\nOds : " + odsLines[i]};
             QFAIL(msg.toStdString().c_str());
         }
 }
@@ -130,8 +131,8 @@ void SpreadsheetsTest::addTestCasesForFileNames(
 
 void SpreadsheetsTest::generateExpectedData()
 {
-    QString generatedFilesDir{QApplication::applicationDirPath() +
-                              "/generatedSpreadsheetsTestData/"};
+    const QString generatedFilesDir{QApplication::applicationDirPath() +
+                                    "/generatedSpreadsheetsTestData/"};
     QDir().mkdir(generatedFilesDir);
     for (const auto& fileName : testFileNames_)
     {

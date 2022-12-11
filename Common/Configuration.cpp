@@ -52,7 +52,7 @@ bool Configuration::load()
 
 bool Configuration::save()
 {
-    QString configXml{generateConfigXml()};
+    const QString configXml{generateConfigXml()};
 
     LOG(LogTypes::CONFIG, "Config to save:\n" + configXml);
 
@@ -120,18 +120,18 @@ bool Configuration::loadConfigXml(QDomDocument& configXml)
 void Configuration::parseConfigXml(QDomDocument& configXml)
 {
     QDomNodeList list{configXml.elementsByTagName(XML_NAME_UPDATE)};
-    QDomElement updateElement{list.at(0).toElement()};
+    const QDomElement updateElement{list.at(0).toElement()};
     if (!updateElement.isNull())
         updatePolicy_ = static_cast<UpdatePolicy>(
             updateElement.attribute(XML_NAME_VALUE).toInt());
 
     list = configXml.elementsByTagName(XML_NAME_STYLE);
-    QDomElement styleElement{list.at(0).toElement()};
+    const QDomElement styleElement{list.at(0).toElement()};
     if (!styleElement.isNull())
         styleName_ = styleElement.attribute(XML_NAME_VALUE);
 
     list = configXml.elementsByTagName(XML_NAME_IMPORTPATH);
-    QDomElement importPathElement{list.at(0).toElement()};
+    const QDomElement importPathElement{list.at(0).toElement()};
     if (!importPathElement.isNull())
         importFilePath_ = importPathElement.attribute(XML_NAME_VALUE);
 }
@@ -160,8 +160,8 @@ QString Configuration::generateConfigXml() const
 
 bool Configuration::saveConfigXml(const QString& configXml)
 {
-    QString filename(QApplication::applicationDirPath() + "/" +
-                     Constants::getConfigurationFileName());
+    const QString filename(QApplication::applicationDirPath() + "/" +
+                           Constants::getConfigurationFileName());
     QFile::remove(filename);
     QFile file(filename);
 

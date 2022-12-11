@@ -173,7 +173,7 @@ void DatasetVisualization::setTaggedColumns()
 
 QVector<bool> DatasetVisualization::getActiveColumns() const
 {
-    int topLevelItemsCount{ui->columnsList->topLevelItemCount()};
+    const int topLevelItemsCount{ui->columnsList->topLevelItemCount()};
     QVector<bool> activeColumns;
     activeColumns.resize(topLevelItemsCount);
     for (int i = 0; i < topLevelItemsCount; ++i)
@@ -202,7 +202,7 @@ void DatasetVisualization::setTaggedColumnInDataset(ColumnTag tag,
 
 QString DatasetVisualization::getTypeDisplayNameForGivenColumn(int column) const
 {
-    ColumnType columnType{dataset_->getColumnFormat(column)};
+    const ColumnType columnType{dataset_->getColumnFormat(column)};
     if (columnType == ColumnType::STRING)
         return typeNameString_;
     if (columnType == ColumnType::NUMBER)
@@ -218,7 +218,7 @@ void DatasetVisualization::fillTaggedColumnCombos()
     for (int column = 0; column < static_cast<int>(dataset_->columnCount());
          ++column)
     {
-        ColumnType columnType{dataset_->getColumnFormat(column)};
+        const ColumnType columnType{dataset_->getColumnFormat(column)};
         if (columnType == ColumnType::NUMBER)
             ui->pricePerUnitCombo->addItem(dataset_->getHeaderName(column),
                                            QVariant(column));
@@ -262,11 +262,11 @@ void DatasetVisualization::refreshColumnList([[maybe_unused]] int newIndex)
     const int dateColumn{getCurrentValueFromCombo(ui->dateCombo)};
     const int priceColumn{getCurrentValueFromCombo(ui->pricePerUnitCombo)};
 
-    int topLevelItemsCount{ui->columnsList->topLevelItemCount()};
+    const int topLevelItemsCount{ui->columnsList->topLevelItemCount()};
     for (int i = 0; i < topLevelItemsCount; ++i)
     {
         QTreeWidgetItem* currentItem{ui->columnsList->topLevelItem(i)};
-        int itemColumn{currentItem->data(0, Qt::UserRole).toInt()};
+        const int itemColumn{currentItem->data(0, Qt::UserRole).toInt()};
         if (priceColumn == itemColumn || dateColumn == itemColumn)
         {
             currentItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);

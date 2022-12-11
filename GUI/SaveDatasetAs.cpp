@@ -38,7 +38,7 @@ bool SaveDatasetAs::overwriteDataset(const QString& name)
     const QString title{QObject::tr("Overwrite dataset?")};
     const QString msg(QObject::tr("Dataset named ") + name +
                       QObject::tr(" exist. Overwrite?"));
-    QMessageBox::StandardButton decision{QMessageBox::question(
+    const QMessageBox::StandardButton decision{QMessageBox::question(
         this, title, msg, QMessageBox::Yes | QMessageBox::No)};
     return decision == QMessageBox::Yes;
 }

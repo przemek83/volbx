@@ -61,7 +61,7 @@ private:
 
     static void checkStringColumnRange(const std::unique_ptr<Dataset>& dataset,
                                        int columnIndex,
-                                       QStringList& expectedList);
+                                       const QStringList& expectedList);
 
     static void checkColumnFormats(const std::unique_ptr<Dataset>& dataset,
                                    const QVector<ColumnType>& columnFormats);

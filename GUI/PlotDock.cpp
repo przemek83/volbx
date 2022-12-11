@@ -23,7 +23,7 @@ void PlotDock::quickExportData() const
 
 void PlotDock::resetPlot()
 {
-    QList<PlotBase*> plots{findChildren<PlotBase*>()};
+    const QList<PlotBase*> plots{findChildren<PlotBase*>()};
     for (PlotBase* plot : plots)
         plot->resetPlot();
 }

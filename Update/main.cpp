@@ -55,7 +55,7 @@ static bool isUniqueInstance()
 
 int main(int argc, char* argv[])
 {
-    QApplication a(argc, argv);
+    const QApplication a(argc, argv);
 
     Application::setAdditionalApplicatioInfo(VER_PRODUCTNAME_STR);
     Application::setQtStyle(QStringLiteral("Fusion"));

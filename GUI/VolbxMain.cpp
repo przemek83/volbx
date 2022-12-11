@@ -135,7 +135,7 @@ void VolbxMain::setupNetworkManager()
 void VolbxMain::addStyleToMenu(const QString& name,
                                QActionGroup* actionsGroup) const
 {
-    QString activeStyle{Configuration::getInstance().getStyleName()};
+    const QString activeStyle{Configuration::getInstance().getStyleName()};
     auto* action{new QAction(name, actionsGroup)};
     action->setCheckable(true);
     if (activeStyle == name)
@@ -172,16 +172,16 @@ void VolbxMain::addStylesSectionToMenu()
 
 void VolbxMain::addStylesFoundInAppDir(QActionGroup* actionsGroup)
 {
-    QStringList nameFilter(QStringLiteral("*.css"));
-    QDir directory(QCoreApplication::applicationDirPath());
-    QFileInfoList styleFiles{directory.entryInfoList(nameFilter)};
+    const QStringList nameFilter(QStringLiteral("*.css"));
+    const QDir directory(QCoreApplication::applicationDirPath());
+    const QFileInfoList styleFiles{directory.entryInfoList(nameFilter)};
     for (const QFileInfo& styleFile : styleFiles)
         addStyleToMenu(styleFile.baseName(), actionsGroup);
 }
 
 void VolbxMain::addStandardQtStyles(QActionGroup* actionsGroup)
 {
-    QStringList qtStylesList{QStyleFactory::keys()};
+    const QStringList qtStylesList{QStyleFactory::keys()};
     for (const QString& style : qtStylesList)
         addStyleToMenu(style, actionsGroup);
 }
@@ -190,7 +190,7 @@ bool VolbxMain::doesUserWantsToCheckForUpdates()
 {
     bool checkForUpdates{false};
     CheckUpdates dialog(this);
-    int reply{dialog.exec()};
+    const int reply{dialog.exec()};
     if (reply == QDialog::Accepted)
         checkForUpdates = true;
 
@@ -292,15 +292,15 @@ void VolbxMain::saveDataset(const QString& datasetName)
     if (view == nullptr)
         return;
 
-    QString barTitle{
+    const QString barTitle{
         Constants::getProgressBarTitle(Constants::BarTitle::SAVING)};
     ProgressBarCounter bar(barTitle, Constants::getProgressBarFullCounter(),
                            nullptr);
     bar.showDetached();
 
     LOG(LogTypes::IMPORT_EXPORT, "Saving dataset " + datasetName);
-    QString filePath{DatasetUtilities::getDatasetsDir() + datasetName +
-                     DatasetUtilities::getDatasetExtension()};
+    const QString filePath{DatasetUtilities::getDatasetsDir() + datasetName +
+                           DatasetUtilities::getDatasetExtension()};
 
     QElapsedTimer performanceTimer;
     performanceTimer.start();
@@ -466,7 +466,7 @@ void VolbxMain::updateCheckReplyFinished(QNetworkReply* reply)
     if (!canUpdate(reply))
         return;
 
-    QMessageBox::StandardButton answer{QMessageBox::question(
+    const QMessageBox::StandardButton answer{QMessageBox::question(
         nullptr, tr("New version"),
         tr("New version is available. Download and install it now?"))};
 
@@ -487,7 +487,7 @@ void VolbxMain::actionUpdateAutoToggled(bool alwaysCheck)
 void VolbxMain::styleChanged()
 {
     auto* action{qobject_cast<QAction*>(sender())};
-    QString style{action->text()};
+    const QString style{action->text()};
     if (QStyleFactory::keys().contains(style))
         Application::setQtStyle(style);
     else

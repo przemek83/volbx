@@ -29,7 +29,7 @@ void InnerTests::testDefinition_data()
 
 void InnerTests::testDefinition()
 {
-    QFETCH(QString, datasetName);
+    QFETCH(const QString, datasetName);
     DatasetCommon::checkDefinition(datasetName,
                                    DatasetUtilities::getDatasetsDir());
 }
@@ -38,7 +38,7 @@ void InnerTests::testData_data() { addTestCases(QStringLiteral("Test data")); }
 
 void InnerTests::testData()
 {
-    QFETCH(QString, datasetName);
+    QFETCH(const QString, datasetName);
     DatasetCommon::checkData(datasetName, DatasetUtilities::getDatasetsDir());
 }
 
@@ -49,7 +49,7 @@ void InnerTests::testExport_data()
 
 void InnerTests::testExport()
 {
-    QFETCH(QString, datasetName);
+    QFETCH(const QString, datasetName);
 
     QByteArray exportedByteArray;
     QBuffer exportedBuffer(&exportedByteArray);
@@ -61,8 +61,8 @@ void InnerTests::testExport()
 
 void InnerTests::generateDumpData()
 {
-    QString generatedFilesDir{QApplication::applicationDirPath() +
-                              "/generatedVbxTestData/"};
+    const QString generatedFilesDir{QApplication::applicationDirPath() +
+                                    "/generatedVbxTestData/"};
     QDir().mkdir(generatedFilesDir);
     for (const auto& datasetName : testFileNames_)
         DatasetCommon::generateExpectedDataForFile(
@@ -88,9 +88,9 @@ void InnerTests::checkExportedData(const QString& fileName, QuaZip& zipOriginal,
     for (int i = 0; i < actualDataLines.size(); ++i)
         if (actualDataLines[i] != expectedDataLines[i])
         {
-            QString msg{"Difference in line " + QString::number(i + 1) +
-                        "\nActual:  " + actualDataLines[i] +
-                        "\nExpected: " + expectedDataLines[i]};
+            const QString msg{"Difference in line " + QString::number(i + 1) +
+                              "\nActual:  " + actualDataLines[i] +
+                              "\nExpected: " + expectedDataLines[i]};
             QFAIL(msg.toStdString().c_str());
         }
 }
@@ -169,7 +169,7 @@ void InnerTests::addTestCases(const QString& testNamePrefix)
 
     for (const auto& fileName : testFileNames_)
     {
-        QString testName{testNamePrefix + " for " + fileName};
+        const QString testName{testNamePrefix + " for " + fileName};
         QTest::newRow(testName.toStdString().c_str()) << fileName;
     }
 }

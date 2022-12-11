@@ -55,7 +55,7 @@ static bool operator==(const Quantiles& left, const Quantiles& right)
 void PlotDataProviderTest::testRecomputeGroupingData()
 {
     PlotDataProvider provider;
-    QSignalSpy spy(&provider, &PlotDataProvider::groupingPlotDataChanged);
+    const QSignalSpy spy(&provider, &PlotDataProvider::groupingPlotDataChanged);
     provider.recomputeGroupingData(calcData_, ColumnType::STRING);
 
     // General Quantiles data is empty as recompute() was not called.
@@ -67,7 +67,7 @@ void PlotDataProviderTest::testRecomputeGroupingData()
 void PlotDataProviderTest::testRecomputeGroupingDataEmptyCalcData()
 {
     PlotDataProvider provider;
-    QSignalSpy spy(&provider, &PlotDataProvider::groupingPlotDataChanged);
+    const QSignalSpy spy(&provider, &PlotDataProvider::groupingPlotDataChanged);
     provider.recomputeGroupingData({}, ColumnType::STRING);
 
     checkGroupingDataChangedSignal(spy, {}, {}, Quantiles());
@@ -97,20 +97,20 @@ void PlotDataProviderTest::testRecompute_data()
 
 void PlotDataProviderTest::testRecompute()
 {
-    QFETCH(QVector<TransactionData>, calcData);
-    QFETCH(Quantiles, quantiles);
-    QFETCH(QVector<QString>, intervalsNames);
-    QFETCH(QVector<Quantiles>, quantilesForIntervals);
-    QFETCH(QVector<QPointF>, points);
-    QFETCH(QVector<QPointF>, regression);
-    QFETCH(QVector<double>, yAxisValues);
+    QFETCH(const QVector<TransactionData>, calcData);
+    QFETCH(const Quantiles, quantiles);
+    QFETCH(const QVector<QString>, intervalsNames);
+    QFETCH(const QVector<Quantiles>, quantilesForIntervals);
+    QFETCH(const QVector<QPointF>, points);
+    QFETCH(const QVector<QPointF>, regression);
+    QFETCH(const QVector<double>, yAxisValues);
 
     PlotDataProvider provider;
-    QSignalSpy groupingPlotDataChangedSpy(
+    const QSignalSpy groupingPlotDataChangedSpy(
         &provider, &PlotDataProvider::groupingPlotDataChanged);
-    QSignalSpy basicPlotDataChangedSpy(&provider,
-                                       &PlotDataProvider::basicPlotDataChanged);
-    QSignalSpy fundamentalDataChangedSpy(
+    const QSignalSpy basicPlotDataChangedSpy(
+        &provider, &PlotDataProvider::basicPlotDataChanged);
+    const QSignalSpy fundamentalDataChangedSpy(
         &provider, &PlotDataProvider::fundamentalDataChanged);
     provider.recompute(calcData, ColumnType::STRING);
 
@@ -128,7 +128,7 @@ void PlotDataProviderTest::checkRecomputeGroupingDataForColumnType(
     ColumnType columnType)
 {
     PlotDataProvider provider;
-    QSignalSpy spy(&provider, &PlotDataProvider::groupingPlotDataChanged);
+    const QSignalSpy spy(&provider, &PlotDataProvider::groupingPlotDataChanged);
     provider.recomputeGroupingData(calcData_, columnType);
     checkGroupingDataChangedSignal(spy, {}, {}, Quantiles());
 }

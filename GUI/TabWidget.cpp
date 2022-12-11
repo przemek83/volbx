@@ -82,7 +82,8 @@ void TabWidget::changingFilterPostActions() const
 
 void TabWidget::setTextFilter(int column, const QStringList& bannedStrings)
 {
-    TimeLogger timeLogger(LogTypes::CALC, QStringLiteral("Filtration changed"));
+    const TimeLogger timeLogger(LogTypes::CALC,
+                                QStringLiteral("Filtration changed"));
 
     changingFilterPreActions();
     getCurrentProxyModel()->setStringFilter(column, bannedStrings);
@@ -92,7 +93,8 @@ void TabWidget::setTextFilter(int column, const QStringList& bannedStrings)
 void TabWidget::setDateFilter(int column, QDate from, QDate to,
                               bool filterEmptyDates)
 {
-    TimeLogger timeLogger(LogTypes::CALC, QStringLiteral("Filtration changed"));
+    const TimeLogger timeLogger(LogTypes::CALC,
+                                QStringLiteral("Filtration changed"));
 
     changingFilterPreActions();
     getCurrentProxyModel()->setDateFilter(column, from, to, filterEmptyDates);
@@ -101,7 +103,8 @@ void TabWidget::setDateFilter(int column, QDate from, QDate to,
 
 void TabWidget::setNumericFilter(int column, double from, double to)
 {
-    TimeLogger timeLogger(LogTypes::CALC, QStringLiteral("Filtration changed"));
+    const TimeLogger timeLogger(LogTypes::CALC,
+                                QStringLiteral("Filtration changed"));
 
     changingFilterPreActions();
     getCurrentProxyModel()->setNumericFilter(column, from, to);

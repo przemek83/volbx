@@ -65,7 +65,8 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::getAllData()
 
 void DatasetInner::retrieveColumnsFromXml(const QDomElement& root)
 {
-    QDomNodeList columns{root.firstChildElement(XML_COLUMNS).childNodes()};
+    const QDomNodeList columns{
+        root.firstChildElement(XML_COLUMNS).childNodes()};
     LOG(LogTypes::IMPORT_EXPORT,
         "Read column count: " + QString::number(columns.count()));
     columnsCount_ = static_cast<unsigned int>(columns.size());
@@ -105,7 +106,7 @@ bool DatasetInner::fromXml(QByteArray& definitionContent)
 
     LOG(LogTypes::IMPORT_EXPORT, "Read xml file:\n" + xmlDocument.toString());
 
-    QDomElement root{xmlDocument.documentElement()};
+    const QDomElement root{xmlDocument.documentElement()};
     retrieveColumnsFromXml(root);
     rowsCount_ =
         root.firstChildElement(XML_ROW_COUNT).attribute(XML_ROW_COUNT).toUInt();
@@ -147,7 +148,7 @@ bool DatasetInner::loadStrings(QuaZip& zip)
     if (!openQuaZipFile(zipFile))
         return false;
 
-    QList<QByteArray> strings{zipFile.readAll().split('\n')};
+    const QList<QByteArray> strings{zipFile.readAll().split('\n')};
 
     // First element need to be empty.
     sharedStrings_.append(QVariant(QString()));
@@ -250,7 +251,7 @@ QVector<QVector<QVariant>> DatasetInner::parseData(QTextStream& stream,
         if (fillSamplesOnly && lineCounter >= SAMPLE_SIZE)
             break;
 
-        QStringList line{stream.readLine().split(';')};
+        const QStringList line{stream.readLine().split(';')};
         data[static_cast<int>(lineCounter)] = fillRow(line, fillSamplesOnly);
         lineCounter++;
         if (!fillSamplesOnly)
@@ -269,7 +270,7 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::fillData(
 
     QTextStream stream(&zipFile);
     stream.setCodec("UTF-8");
-    QVector<QVector<QVariant>> data{parseData(stream, fillSamplesOnly)};
+    const QVector<QVector<QVariant>> data{parseData(stream, fillSamplesOnly)};
     LOG(LogTypes::IMPORT_EXPORT,
         "Loaded " + QString::number(data.size()) + " rows.");
 

@@ -74,7 +74,7 @@ PlotDataProvider::fillDataForStringGrouping(
 std::tuple<QVector<QPointF>, QVector<QPointF>>
 PlotDataProvider::computePointsAndRegression()
 {
-    int dataSize = calcData_.size();
+    const int dataSize = calcData_.size();
     if (dataSize <= 0)
         return {{}, {}};
 
@@ -91,7 +91,7 @@ PlotDataProvider::computePointsAndRegression()
     for (int i = 0; i < dataSize; ++i)
     {
         const QDate& date{calcData_.at(i).date_};
-        double x{static_cast<double>(
+        const double x{static_cast<double>(
             QwtBleUtilities::getStartOfTheWorld().daysTo(date))};
         auto y{calcData_.at(i).pricePerMeter_};
         data.append({x, y});
@@ -120,12 +120,12 @@ PlotDataProvider::computePointsAndRegression()
     quantiles_.maxX_ = maxX;
 
     // Calc linear regression and create points.
-    double a{(dataSize * sumXY - sumX * sumY) /
-             (dataSize * sumXX - sumX * sumX)};
-    double b{sumY / dataSize - a * sumX / dataSize};
+    const double a{(dataSize * sumXY - sumX * sumY) /
+                   (dataSize * sumXX - sumX * sumX)};
+    const double b{sumY / dataSize - a * sumX / dataSize};
 
-    QPointF linearRegressionFrom(minX, a * minX + b);
-    QPointF linearRegressionTo(maxX, a * maxX + b);
+    const QPointF linearRegressionFrom(minX, a * minX + b);
+    const QPointF linearRegressionTo(maxX, a * maxX + b);
     QVector<QPointF> linearRegression;
     linearRegression.append(linearRegressionFrom);
     linearRegression.append(linearRegressionTo);
@@ -137,7 +137,7 @@ Quantiles PlotDataProvider::computeQuantiles(
     const QVector<TransactionData>& transactionData)
 {
     Quantiles quantiles;
-    int dataSize = transactionData.size();
+    const int dataSize = transactionData.size();
     if (dataSize != 0)
     {
         QVector<double> valuePerUnit{};

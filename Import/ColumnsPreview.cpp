@@ -22,7 +22,7 @@ void ColumnsPreview::setDatasetSampleInfo(
 
     setLabels(dataset);
 
-    QVector<QVector<QVariant>> sampleData{dataset->retrieveSampleData()};
+    const QVector<QVector<QVariant>> sampleData{dataset->retrieveSampleData()};
     const int rows{sampleData.size()};
     setRowCount(rows);
     for (int i = 0; i < rows; ++i)
