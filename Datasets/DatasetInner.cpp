@@ -209,18 +209,18 @@ QVariant DatasetInner::getDefaultVariantForFormat(ColumnType format)
     switch (format)
     {
         case ColumnType::STRING:
-            return QVariant(QVariant::Int);
+            return {QVariant::Int};
 
         case ColumnType::NUMBER:
-            return QVariant(QVariant::Double);
+            return {QVariant::Double};
 
         case ColumnType::DATE:
-            return QVariant(QVariant::Date);
+            return {QVariant::Date};
 
         case ColumnType::UNKNOWN:
-            return QVariant(QVariant::String);
+            return {QVariant::String};
     }
-    return QVariant(QVariant::String);
+    return {QVariant::String};
 }
 
 QVector<QVariant> DatasetInner::fillRow(const QStringList& line,

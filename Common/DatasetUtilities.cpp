@@ -17,7 +17,7 @@ QStringList getListOfAvailableDatasets()
 {
     QDir datasetsDir{getDatasetsDir()};
     if (!doesDatasetDirExistAndUserHavePermisions())
-        return QStringList();
+        return {};
 
     datasetsDir.setFilter(QDir::Files | QDir::Readable | QDir::NoSymLinks |
                           QDir::NoDotAndDotDot);

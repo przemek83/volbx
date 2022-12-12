@@ -21,7 +21,7 @@ QVariant TableModel::data(const QModelIndex& index, int role) const
 {
     if (role == Qt::DisplayRole)
         return *dataset_->getData(index.row(), index.column());
-    return QVariant();
+    return {};
 }
 
 QVariant TableModel::headerData(int section, Qt::Orientation orientation,
@@ -29,7 +29,7 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation,
 {
     if (role == Qt::DisplayRole && orientation == Qt::Horizontal)
         return dataset_->getHeaderName(section);
-    return QVariant();
+    return {};
 }
 
 std::tuple<double, double> TableModel::getNumericRange(int column) const
