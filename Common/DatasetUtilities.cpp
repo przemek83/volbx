@@ -9,8 +9,7 @@ namespace DatasetUtilities
 QString getDatasetsDir()
 {
     const QString datasetsDirName{QStringLiteral("Data")};
-    return QString(QApplication::applicationDirPath() + "/" + datasetsDirName +
-                   "/");
+    return QApplication::applicationDirPath() + "/" + datasetsDirName + "/";
 }
 
 QStringList getListOfAvailableDatasets()

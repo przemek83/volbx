@@ -87,7 +87,7 @@ void saveExpectedDefinition(const std::unique_ptr<Dataset>& dataset,
                             const QString& filePath)
 {
     const QString dumpedDefinition{
-        dataset->definitionToXml(dataset->rowCount())};
+        QString::fromUtf8(dataset->definitionToXml(dataset->rowCount()))};
     Common::saveFile(filePath + Common::getDefinitionDumpSuffix(),
                      dumpedDefinition);
 }
@@ -151,9 +151,9 @@ void compareExportDataWithDump(std::unique_ptr<Dataset> dataset,
             .second};
 
     QVector<QStringRef> actualDataLines{
-        actualData.splitRef(QRegExp("\n|\r\n"))};
+        actualData.splitRef(QRegExp(QStringLiteral("\n|\r\n")))};
     QVector<QStringRef> expectedDataLines{
-        expectedData.splitRef(QRegExp("\n|\r\n"))};
+        expectedData.splitRef(QRegExp(QStringLiteral("\n|\r\n")))};
     QCOMPARE(actualDataLines.size(), expectedDataLines.size());
     for (int i = 0; i < actualDataLines.size(); ++i)
         if (actualDataLines[i] != expectedDataLines[i])
