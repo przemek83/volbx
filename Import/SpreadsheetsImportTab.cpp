@@ -87,7 +87,7 @@ std::unique_ptr<Dataset> SpreadsheetsImportTab::createDataset(
     if (fileInfo.suffix().toLower().compare(QStringLiteral("xlsx")) == 0)
         dataset = std::make_unique<DatasetXlsx>(datasetName, datasetFilePath);
 
-    return std::move(dataset);
+    return dataset;
 }
 
 bool SpreadsheetsImportTab::fileIsOk(const QFileInfo& fileInfo)
