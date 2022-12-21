@@ -116,7 +116,7 @@ QString Dataset::getHeaderName(Column column) const
     if (static_cast<int>(columnsCount_) >= column + 1)
         return headerColumnNames_[column];
     Q_ASSERT(false);
-    return QStringLiteral("");
+    return QLatin1String("");
 }
 
 bool Dataset::isValid() const { return valid_; }

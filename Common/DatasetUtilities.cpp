@@ -25,7 +25,7 @@ QStringList getListOfAvailableDatasets()
     datasetsDir.setSorting(QDir::Name);
 
     QStringList entries{datasetsDir.entryList()};
-    return entries.replaceInStrings(getDatasetExtension(), QStringLiteral(""));
+    return entries.replaceInStrings(getDatasetExtension(), QLatin1String(""));
 }
 
 bool doesDatasetDirExistAndUserHavePermisions()
