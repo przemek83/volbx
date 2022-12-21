@@ -253,9 +253,9 @@ QVector<QVector<QVariant>> DatasetInner::parseData(QTextStream& stream,
 
         const QStringList line{stream.readLine().split(';')};
         data[static_cast<int>(lineCounter)] = fillRow(line, fillSamplesOnly);
-        lineCounter++;
         if (!fillSamplesOnly)
             updateProgress(lineCounter, rowCount(), lastEmittedPercent);
+        lineCounter++;
     }
     return data;
 }
