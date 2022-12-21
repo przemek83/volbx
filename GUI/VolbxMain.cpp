@@ -321,7 +321,7 @@ void VolbxMain::actionSaveDatasetAsTriggered()
         QString msg(tr("Can not access folder "));
         msg.append(DatasetUtilities::getDatasetsDir());
         msg.append(tr(" needed for saving dataset."));
-        QMessageBox::critical(this, QString(tr("Access denied")), msg);
+        QMessageBox::critical(this, tr("Access denied"), msg);
         return;
     }
 
