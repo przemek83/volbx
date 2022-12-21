@@ -100,7 +100,7 @@ bool DatasetInner::fromXml(QByteArray& definitionContent)
     QDomDocument xmlDocument;
     if (!xmlDocument.setContent(definitionContent))
     {
-        LOG(LogTypes::IMPORT_EXPORT, "XML file is corrupted.");
+        LOG(LogTypes::IMPORT_EXPORT, QStringLiteral("XML file is corrupted."));
         return false;
     }
 

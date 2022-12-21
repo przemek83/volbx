@@ -31,10 +31,10 @@ Export::Export(QWidget* tab, QWidget* parent)
     ui->locationLineEdit->setText(
         Configuration::getInstance().getImportFilePath());
     auto* validator{
-        new QRegExpValidator(QRegExp(QLatin1String("[\\w]*")), ui->prefix)};
+        new QRegExpValidator(QRegExp(QStringLiteral("[\\w]*")), ui->prefix)};
     ui->prefix->setValidator(validator);
     ui->prefix->setText(tab_->windowTitle().replace(
-        QRegExp(QLatin1String("[^\\w]")), QLatin1String("")));
+        QRegExp(QStringLiteral("[^\\w]")), QStringLiteral("")));
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
@@ -84,7 +84,7 @@ void Export::saveOnDisk()
                 Constants::timeFromTimeToSeconds(performanceTimer) +
                 " seconds.");
     else
-        LOG(LogTypes::IMPORT_EXPORT, "Exporting data failed.");
+        LOG(LogTypes::IMPORT_EXPORT, QStringLiteral("Exporting data failed."));
 
     QApplication::restoreOverrideCursor();
 }

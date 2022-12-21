@@ -39,7 +39,7 @@ void Update::setupNetworkManagers()
     // Get available version and files to update list.
     initialInfoNetworkManager_.get(Networking::getCurrentVersionRequest());
 
-    LOG(LogTypes::NETWORK, QLatin1String("Initial network request send."));
+    LOG(LogTypes::NETWORK, QStringLiteral("Initial network request send."));
 }
 
 void Update::connectButtons()
@@ -158,8 +158,9 @@ void Update::downloadFile(const QString& fileName)
 
     QNetworkReply* reply{
         downloadManager_.get(Networking::getDownloadFileRequest(fileName))};
-    LOG(LogTypes::NETWORK, QLatin1String("Sent request for downloading file ") +
-                               QString(fileName));
+    LOG(LogTypes::NETWORK,
+        QStringLiteral("Sent request for downloading file ") +
+            QString(fileName));
     ui->progressBar->reset();
     connect(reply, &QNetworkReply::downloadProgress, this,
             &Update::updateProgress);
@@ -179,9 +180,9 @@ void Update::downloadFinished(QNetworkReply* reply)
 
     QByteArray fileDownloadedContent{reply->readAll()};
 
-    LOG(LogTypes::NETWORK, QLatin1String("Expected file size ") +
+    LOG(LogTypes::NETWORK, QStringLiteral("Expected file size ") +
                                QString::number(fileSize.toInt()) +
-                               QLatin1String(", size of downloaded file ") +
+                               QStringLiteral(", size of downloaded file ") +
                                QString::number(fileDownloadedContent.size()) +
                                QLatin1Char('.'));
 
@@ -213,7 +214,7 @@ void Update::saveVerfiedFile(QByteArray& fileData, QString& fileName)
     file.write(fileData);
 
     LOG(LogTypes::NETWORK,
-        QLatin1String("Saved file: ") + fileName + tmpPrefix_);
+        QStringLiteral("Saved file: ") + fileName + tmpPrefix_);
 
     tempFiles_.push_back(file.fileName());
     currentTriesCount_ = 0;

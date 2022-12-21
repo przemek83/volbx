@@ -43,16 +43,16 @@ std::tuple<QString, QStringList> getAvailableVersionAndFiles(
 {
     const QString replyString(QLatin1String(reply->readAll()));
 
-    LOG(LogTypes::NETWORK, QLatin1String("Network reply:\n") + replyString);
+    LOG(LogTypes::NETWORK, QStringLiteral("Network reply:\n") + replyString);
 
     const QStringList filesList{replyString.split(QLatin1Char('\n'))};
 
     if (filesList.isEmpty() ||
-        filesList.at(0) != QLatin1String("Volbx-Update-Info"))
-        return {QLatin1String(""), filesList};
+        filesList.at(0) != QStringLiteral("Volbx-Update-Info"))
+        return {QStringLiteral(""), filesList};
 
     LOG(LogTypes::NETWORK,
-        QLatin1String("Available version is ") + filesList.value(1));
+        QStringLiteral("Available version is ") + filesList.value(1));
 
     return {filesList.value(1), filesList};
 }

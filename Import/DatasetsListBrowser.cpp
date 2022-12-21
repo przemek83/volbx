@@ -109,7 +109,7 @@ void DatasetsListBrowser::showContextMenu(QPoint pos)
 
 void DatasetsListBrowser::datasetsListItemSelectionChanged()
 {
-    QString newCurrent{QLatin1String("")};
+    QString newCurrent{QStringLiteral("")};
     QList<QListWidgetItem*> selectedItems{ui->datasetsList->selectedItems()};
     if (!selectedItems.isEmpty())
         newCurrent = selectedItems.front()->text();

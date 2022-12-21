@@ -65,22 +65,22 @@ QString Configuration::configDump() const
     dump.append("Configuration(" + Constants::getConfigurationFileName() +
                 "):\n");
 
-    dump.append(QLatin1String("Updates choice picked = "));
+    dump.append(QStringLiteral("Updates choice picked = "));
     dump.append((updatePolicy_ == UpdatePolicy::NOT_DECIDED
-                     ? QLatin1String("No")
-                     : QLatin1String("Yes")));
+                     ? QStringLiteral("No")
+                     : QStringLiteral("Yes")));
 
-    dump.append(QLatin1String("\n"));
+    dump.append(QStringLiteral("\n"));
 
     dump.append("Import file path = " + importFilePath_ + "\n");
 
     if (updatePolicy_ != UpdatePolicy::NOT_DECIDED)
     {
-        dump.append(QLatin1String("AutoUpdate active = "));
+        dump.append(QStringLiteral("AutoUpdate active = "));
         dump.append((updatePolicy_ == UpdatePolicy::ALWAYS_CHECK
-                         ? QLatin1String("Yes")
-                         : QLatin1String("No")));
-        dump.append(QLatin1String("\n"));
+                         ? QStringLiteral("Yes")
+                         : QStringLiteral("No")));
+        dump.append(QStringLiteral("\n"));
     }
 
     dump.append("Style: " + styleName_);
@@ -175,11 +175,11 @@ bool Configuration::saveConfigXml(const QString& configXml)
 
     if (file.write(configXml.toStdString().c_str()) == -1)
     {
-        LOG(LogTypes::CONFIG, "Error during config file save.");
+        LOG(LogTypes::CONFIG, QStringLiteral("Error during config file save."));
         return false;
     }
 
-    LOG(LogTypes::CONFIG, "Config saved.");
+    LOG(LogTypes::CONFIG, QStringLiteral("Config saved."));
     return true;
 }
 

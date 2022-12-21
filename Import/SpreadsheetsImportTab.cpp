@@ -81,10 +81,10 @@ std::unique_ptr<Dataset> SpreadsheetsImportTab::createDataset(
     const QString datasetFilePath{fileInfo.canonicalFilePath()};
 
     std::unique_ptr<DatasetSpreadsheet> dataset{nullptr};
-    if (fileInfo.suffix().toLower().compare(QLatin1String("ods")) == 0)
+    if (fileInfo.suffix().toLower().compare(QStringLiteral("ods")) == 0)
         dataset = std::make_unique<DatasetOds>(datasetName, datasetFilePath);
 
-    if (fileInfo.suffix().toLower().compare(QLatin1String("xlsx")) == 0)
+    if (fileInfo.suffix().toLower().compare(QStringLiteral("xlsx")) == 0)
         dataset = std::make_unique<DatasetXlsx>(datasetName, datasetFilePath);
 
     return std::move(dataset);
@@ -98,7 +98,7 @@ bool SpreadsheetsImportTab::fileIsOk(const QFileInfo& fileInfo)
 QString SpreadsheetsImportTab::getValidDatasetName(const QFileInfo& fileInfo)
 {
     const QString regexpString{DatasetUtilities::getDatasetNameRegExp().replace(
-        QLatin1String("["), QLatin1String("[^"))};
+        QStringLiteral("["), QStringLiteral("[^"))};
     QString datasetName{
         fileInfo.completeBaseName().remove(QRegExp(regexpString))};
 

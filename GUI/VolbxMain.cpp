@@ -315,7 +315,7 @@ void VolbxMain::saveDataset(const QString& datasetName)
                 Constants::timeFromTimeToSeconds(performanceTimer) +
                 " seconds.");
     else
-        LOG(LogTypes::IMPORT_EXPORT, "Saving failed.");
+        LOG(LogTypes::IMPORT_EXPORT, QStringLiteral("Saving failed."));
 }
 
 void VolbxMain::actionSaveDatasetAsTriggered()

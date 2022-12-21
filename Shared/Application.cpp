@@ -21,7 +21,7 @@ QString getLocalStyleFilePath(const QString& styleName)
 {
     QString stylePath;
     stylePath.append(QApplication::applicationDirPath());
-    stylePath.append(QLatin1String("/"));
+    stylePath.append(QStringLiteral("/"));
     stylePath.append(styleName);
     stylePath.append(getStyleFileExtension());
     return stylePath;

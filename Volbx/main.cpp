@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
     Application::setAdditionalApplicatioInfo(VER_PRODUCTNAME_STR);
     Application::initStyle(Configuration::getInstance().getStyleName());
 
-    LOG(LogTypes::APP, "Application start");
+    LOG(LogTypes::APP, QStringLiteral("Application start"));
 
     overwriteUpdaterfIfNeeded();
 
@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
     Configuration::getInstance();
 
     VolbxMain w;
-    LOG(LogTypes::APP, "Showing main window");
+    LOG(LogTypes::APP, QStringLiteral("Showing main window"));
     w.show();
     w.checkForUpdates();
     return QApplication::exec();

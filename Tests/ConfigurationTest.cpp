@@ -14,7 +14,7 @@ void ConfigurationTest::initTestCase()
     QVERIFY(file.open(QIODevice::ReadOnly));
     QTextStream stream(&file);
     configurationFileContent_ = stream.readAll();
-    QVERIFY(configurationFileContent_ != "");
+    QVERIFY(!configurationFileContent_.isEmpty());
 }
 
 void ConfigurationTest::testSavingConfigurationFile()

@@ -99,7 +99,7 @@ void ExportVbx::variantToString(const QVariant& variant,
             if (index == 0)
             {
                 index = nextIndex_;
-                tmpString.replace(newLine_, QLatin1String("\t"));
+                tmpString.replace(newLine_, QStringLiteral("\t"));
                 // No new line for first string.
                 if (nextIndex_ != 1)
                     stringsContent_.append(newLine_);
