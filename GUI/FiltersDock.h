@@ -51,7 +51,7 @@ private:
     void fillLayoutWithFilterWidgets(QVBoxLayout* layout,
                                      const FilteringProxyModel* model);
 
-    QMap<QWidget*, const FilteringProxyModel*> modelsMap_;
+    QMap<const FilteringProxyModel*, QWidget*> modelsMap_;
 
     QStackedWidget stackedWidget_;
 

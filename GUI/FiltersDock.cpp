@@ -23,7 +23,7 @@ void FiltersDock::addFiltersForModel(const FilteringProxyModel* model)
         return;
 
     auto* mainWidget{new QWidget()};
-    modelsMap_[mainWidget] = model;
+    modelsMap_[model] = mainWidget;
 
     auto* mainLayout{new QVBoxLayout(mainWidget)};
     mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -165,16 +165,15 @@ void FiltersDock::removeFiltersForModel(const FilteringProxyModel* model)
     if (model == nullptr)
         return;
 
-    QWidget* widgetToDelete{modelsMap_.key(model)};
-    modelsMap_.remove(widgetToDelete);
-    stackedWidget_.removeWidget(widgetToDelete);
-    delete widgetToDelete;
+    QWidget* widgetToDeleteRawPtr{modelsMap_.take(model)};
+    const std::unique_ptr<QWidget> widgetToDelete{widgetToDeleteRawPtr};
+    stackedWidget_.removeWidget(widgetToDeleteRawPtr);
 }
 
 void FiltersDock::showFiltersForModel(const FilteringProxyModel* model)
 {
     if (model != nullptr)
-        stackedWidget_.setCurrentWidget(modelsMap_.key(model));
+        stackedWidget_.setCurrentWidget(modelsMap_.value(model));
 }
 
 void FiltersDock::searchTextChanged(const QString& arg1)
