@@ -26,9 +26,9 @@ private Q_SLOTS:
     static void testData();
 
     void testExport_data();
-    void testExport();
+    static void testExport();
 
-    void testPartialData();
+    static void testPartialData();
 
 private:
     void generateDumpData();

@@ -38,7 +38,7 @@ private Q_SLOTS:
     static void testSampleData();
 
     void testNumericColumnRanges_data();
-    void testNumericColumnRanges();
+    static void testNumericColumnRanges();
 
     void testDateColumnRanges_data();
     static void testDateColumnRanges();
