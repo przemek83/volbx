@@ -248,7 +248,8 @@ void DetailedSpreadsheetsTest::testStringColumnRanges()
 void DetailedSpreadsheetsTest::testDataFile01SomeColumnsActive_data()
 {
     QTest::addColumn<QString>("fileName");
-    for (const auto& extension : QVector<QString>{"xlsx", "ods"})
+    const QVector<QString> extensions{"xlsx", "ods"};
+    for (const auto& extension : extensions)
     {
         const QString testName{"Detailed test for test01Partial " + extension};
         QTest::newRow(testName.toStdString().c_str())
