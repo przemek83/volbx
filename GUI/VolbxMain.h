@@ -8,10 +8,7 @@
 #include <FiltersDock.h>
 #include <TabWidget.h>
 
-namespace Ui
-{
-class VolbxMain;
-}  // namespace Ui
+#include "ui_VolbxMain.h"
 
 class QActionGroup;
 class Dataset;
@@ -24,8 +21,6 @@ class VolbxMain : public QMainWindow
     Q_OBJECT
 public:
     explicit VolbxMain(QWidget* parent = nullptr);
-
-    ~VolbxMain() override;
 
     void checkForUpdates();
 
@@ -79,7 +74,7 @@ private:
 
     static void updateApplication();
 
-    Ui::VolbxMain* ui;
+    std::unique_ptr<Ui::VolbxMain> ui_;
 
     /// Side dock with filters.
     FiltersDock filters_;

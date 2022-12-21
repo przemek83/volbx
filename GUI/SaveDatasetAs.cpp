@@ -5,33 +5,30 @@
 
 #include <Common/DatasetUtilities.h>
 
-#include "ui_SaveDatasetAs.h"
-
 SaveDatasetAs::SaveDatasetAs(QStringList usedNames, QWidget* parent)
     : QDialog(parent),
-      ui(new Ui::SaveDatasetAs),
+      ui_(std::make_unique<Ui::SaveDatasetAs>()),
       usedNames_(std::move(usedNames))
 {
-    ui->setupUi(this);
+    ui_->setupUi(this);
 
-    connect(ui->name, &QLineEdit::textChanged, this,
+    connect(ui_->name, &QLineEdit::textChanged, this,
             &SaveDatasetAs::nameChanged);
     const QRegExp datasetNameRegExp(DatasetUtilities::getDatasetNameRegExp());
     auto* validator{new QRegExpValidator(datasetNameRegExp, this)};
-    ui->name->setValidator(validator);
+    ui_->name->setValidator(validator);
 
-    connect(ui->save, &QPushButton::clicked, this, &SaveDatasetAs::saveClicked);
-    ui->save->setEnabled(false);
+    connect(ui_->save, &QPushButton::clicked, this,
+            &SaveDatasetAs::saveClicked);
+    ui_->save->setEnabled(false);
 
-    connect(ui->cancel, &QPushButton::clicked, this,
+    connect(ui_->cancel, &QPushButton::clicked, this,
             &SaveDatasetAs::cancelClicked);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
-SaveDatasetAs::~SaveDatasetAs() { delete ui; }
-
-QString SaveDatasetAs::getDatasetName() { return ui->name->text(); }
+QString SaveDatasetAs::getDatasetName() { return ui_->name->text(); }
 
 bool SaveDatasetAs::overwriteDataset(const QString& name)
 {
@@ -68,13 +65,13 @@ void SaveDatasetAs::adjustWidgetBackgroundColor(QWidget* widget, bool nameUsed)
 
 void SaveDatasetAs::nameChanged(const QString& actualText)
 {
-    ui->save->setDisabled(actualText.isEmpty());
-    adjustWidgetBackgroundColor(ui->name, nameIsUsed(actualText));
+    ui_->save->setDisabled(actualText.isEmpty());
+    adjustWidgetBackgroundColor(ui_->name, nameIsUsed(actualText));
 }
 
 void SaveDatasetAs::saveClicked()
 {
-    const QString name{ui->name->text()};
+    const QString name{ui_->name->text()};
     if (nameIsUsed(name) && !overwriteDataset(name))
         return;
     accept();

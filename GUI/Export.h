@@ -1,14 +1,13 @@
 #pragma once
 
+#include <memory>
+
 #include <QDialog>
+
+#include "ui_Export.h"
 
 class DataView;
 class ProgressBarCounter;
-
-namespace Ui
-{
-class Export;
-}  // namespace Ui
 
 /**
  * @brief Exports data in active tab and all related plots.
@@ -18,8 +17,6 @@ class Export : public QDialog
     Q_OBJECT
 public:
     explicit Export(QWidget* tab, QWidget* parent = nullptr);
-
-    ~Export() override;
 
 private:
     void saveOnDisk();
@@ -38,7 +35,7 @@ private:
 
     QString getFileName();
 
-    Ui::Export* ui;
+    std::unique_ptr<Ui::Export> ui_;
 
     QWidget* tab_;
 

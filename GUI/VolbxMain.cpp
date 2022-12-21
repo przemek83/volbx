@@ -28,15 +28,14 @@
 #include "SaveDatasetAs.h"
 #include "Tab.h"
 #include "TabWidget.h"
-#include "ui_VolbxMain.h"
 
 VolbxMain::VolbxMain(QWidget* parent)
     : QMainWindow(parent),
-      ui(new Ui::VolbxMain),
+      ui_(std::make_unique<Ui::VolbxMain>()),
       filters_(this),
       tabWidget_(this)
 {
-    ui->setupUi(this);
+    ui_->setupUi(this);
 
     setStandardIcons();
     setupStatusBar();
@@ -49,21 +48,19 @@ VolbxMain::VolbxMain(QWidget* parent)
     createOptionsMenu();
 }
 
-VolbxMain::~VolbxMain() { delete ui; }
-
 void VolbxMain::setStandardIcons()
 {
     QStyle* style{QApplication::style()};
-    ui->actionImportData->setIcon(
+    ui_->actionImportData->setIcon(
         style->standardIcon(QStyle::SP_DialogOpenButton));
-    ui->actionSaveDatasetAs->setIcon(
+    ui_->actionSaveDatasetAs->setIcon(
         style->standardIcon(QStyle::SP_DialogSaveButton));
-    ui->actionExit->setIcon(style->standardIcon(QStyle::SP_DialogCloseButton));
-    ui->actionLogs->setIcon(
+    ui_->actionExit->setIcon(style->standardIcon(QStyle::SP_DialogCloseButton));
+    ui_->actionLogs->setIcon(
         style->standardIcon(QStyle::SP_FileDialogContentsView));
-    ui->actionCheckForNewVersion->setIcon(
+    ui_->actionCheckForNewVersion->setIcon(
         style->standardIcon(QStyle::SP_BrowserReload));
-    ui->actionAbout->setIcon(
+    ui_->actionAbout->setIcon(
         style->standardIcon(QStyle::QStyle::SP_FileDialogInfoView));
 }
 
@@ -79,38 +76,38 @@ void VolbxMain::connectFilter()
 
 void VolbxMain::connectPlots()
 {
-    connect(ui->actionBasic_plot, &QAction::triggered, &tabWidget_,
+    connect(ui_->actionBasic_plot, &QAction::triggered, &tabWidget_,
             &TabWidget::addBasicPlot);
-    connect(ui->actionHistogram, &QAction::triggered, &tabWidget_,
+    connect(ui_->actionHistogram, &QAction::triggered, &tabWidget_,
             &TabWidget::addHistogramPlot);
-    connect(ui->actionGroup_plot, &QAction::triggered, &tabWidget_,
+    connect(ui_->actionGroup_plot, &QAction::triggered, &tabWidget_,
             &TabWidget::addGroupingPlot);
 }
 
 void VolbxMain::connectActions()
 {
-    connect(ui->actionExit, &QAction::triggered, this, &VolbxMain::close);
-    connect(ui->actionFilters, &QAction::triggered,
+    connect(ui_->actionExit, &QAction::triggered, this, &VolbxMain::close);
+    connect(ui_->actionFilters, &QAction::triggered,
             [&]() { filters_.setVisible(!filters_.isVisible()); });
-    connect(ui->actionLogs, &QAction::triggered, this,
+    connect(ui_->actionLogs, &QAction::triggered, this,
             []() { Logger::getInstance().toggleVisibility(); });
-    connect(ui->actionAbout, &QAction::triggered, this,
+    connect(ui_->actionAbout, &QAction::triggered, this,
             &VolbxMain::actionAboutTriggered);
-    connect(ui->actionExport, &QAction::triggered, this,
+    connect(ui_->actionExport, &QAction::triggered, this,
             &VolbxMain::actionExportTriggered);
-    connect(ui->actionSaveDatasetAs, &QAction::triggered, this,
+    connect(ui_->actionSaveDatasetAs, &QAction::triggered, this,
             &VolbxMain::actionSaveDatasetAsTriggered);
-    connect(ui->actionImportData, &QAction::triggered, this,
+    connect(ui_->actionImportData, &QAction::triggered, this,
             &VolbxMain::actionImportDataTriggered);
-    connect(ui->actionCheckForNewVersion, &QAction::triggered, this,
+    connect(ui_->actionCheckForNewVersion, &QAction::triggered, this,
             &VolbxMain::actionCheckForNewVersionTriggered);
-    connect(ui->actionUpdateAuto, &QAction::triggered, this,
+    connect(ui_->actionUpdateAuto, &QAction::triggered, this,
             &VolbxMain::actionUpdateAutoToggled);
 }
 
 void VolbxMain::setupTabWidget()
 {
-    ui->verticalLayout->addWidget(&tabWidget_);
+    ui_->verticalLayout->addWidget(&tabWidget_);
 
     connect(&tabWidget_, &TabWidget::currentChanged, this,
             &VolbxMain::tabWasChanged);
@@ -151,14 +148,14 @@ void VolbxMain::createOptionsMenu()
 
 void VolbxMain::addUpdatesSectionToMenu()
 {
-    ui->menuOptions->addSection(tr("Updates"));
-    ui->menuOptions->addAction(ui->actionCheckForNewVersion);
-    ui->menuOptions->addAction(ui->actionUpdateAuto);
+    ui_->menuOptions->addSection(tr("Updates"));
+    ui_->menuOptions->addAction(ui_->actionCheckForNewVersion);
+    ui_->menuOptions->addAction(ui_->actionUpdateAuto);
 }
 
 void VolbxMain::addStylesSectionToMenu()
 {
-    ui->menuOptions->addSection(tr("Styles"));
+    ui_->menuOptions->addSection(tr("Styles"));
 
     auto* actionsGroup{new QActionGroup(this)};
 
@@ -167,7 +164,7 @@ void VolbxMain::addStylesSectionToMenu()
     addStylesFoundInAppDir(actionsGroup);
     addStandardQtStyles(actionsGroup);
 
-    ui->menuOptions->addActions(actionsGroup->actions());
+    ui_->menuOptions->addActions(actionsGroup->actions());
 }
 
 void VolbxMain::addStylesFoundInAppDir(QActionGroup* actionsGroup)
@@ -212,7 +209,7 @@ void VolbxMain::checkForUpdates()
     if (checkForUpdates)
         actionCheckForNewVersionTriggered();
 
-    ui->actionUpdateAuto->setChecked(
+    ui_->actionUpdateAuto->setChecked(
         Configuration::getInstance().needToCheckForUpdates());
 }
 
@@ -261,28 +258,28 @@ void VolbxMain::setTooltipsForChartsActions(bool chartsActive)
     {
         const QString cannotCreateCharts =
             tr("Time and examined variable columns are not specified.");
-        ui->actionBasic_plot->setToolTip(cannotCreateCharts);
-        ui->actionHistogram->setToolTip(cannotCreateCharts);
-        ui->actionGroup_plot->setToolTip(cannotCreateCharts);
+        ui_->actionBasic_plot->setToolTip(cannotCreateCharts);
+        ui_->actionHistogram->setToolTip(cannotCreateCharts);
+        ui_->actionGroup_plot->setToolTip(cannotCreateCharts);
     }
     else
     {
-        ui->actionBasic_plot->setToolTip(ui->actionBasic_plot->text());
-        ui->actionHistogram->setToolTip(ui->actionHistogram->text());
-        ui->actionGroup_plot->setToolTip(ui->actionGroup_plot->text());
+        ui_->actionBasic_plot->setToolTip(ui_->actionBasic_plot->text());
+        ui_->actionHistogram->setToolTip(ui_->actionHistogram->text());
+        ui_->actionGroup_plot->setToolTip(ui_->actionGroup_plot->text());
     }
 }
 
 void VolbxMain::manageActions(bool tabExists)
 {
-    ui->actionExport->setEnabled(tabExists);
-    ui->actionSaveDatasetAs->setEnabled(tabExists);
+    ui_->actionExport->setEnabled(tabExists);
+    ui_->actionSaveDatasetAs->setEnabled(tabExists);
 
     const bool activateCharts{
         tabExists && tabWidget_.getCurrentDataModel()->areTaggedColumnsSet()};
-    ui->actionBasic_plot->setEnabled(activateCharts);
-    ui->actionHistogram->setEnabled(activateCharts);
-    ui->actionGroup_plot->setEnabled(activateCharts);
+    ui_->actionBasic_plot->setEnabled(activateCharts);
+    ui_->actionHistogram->setEnabled(activateCharts);
+    ui_->actionGroup_plot->setEnabled(activateCharts);
     setTooltipsForChartsActions(activateCharts);
 }
 
@@ -408,19 +405,19 @@ void VolbxMain::addMainTabForDataset(std::unique_ptr<Dataset> dataset)
 
     manageActions(true);
 
-    ui->statusBar->showMessage(datasetName + " " + tr("loaded"));
+    ui_->statusBar->showMessage(datasetName + " " + tr("loaded"));
 }
 
 void VolbxMain::setupStatusBar()
 {
-    ui->statusBar->showMessage(tr("Ready") + "...");
+    ui_->statusBar->showMessage(tr("Ready") + "...");
 }
 
 bool VolbxMain::canUpdate(QNetworkReply* reply)
 {
     if (!Networking::replyIsValid(reply))
     {
-        ui->statusBar->showMessage(tr("Connection error encountered."));
+        ui_->statusBar->showMessage(tr("Connection error encountered."));
         return false;
     }
 
@@ -428,13 +425,13 @@ bool VolbxMain::canUpdate(QNetworkReply* reply)
         Networking::getAvailableVersionAndFiles(reply);
     if (newestVersion.isEmpty())
     {
-        ui->statusBar->showMessage(tr("Wrong answer received from server."));
+        ui_->statusBar->showMessage(tr("Wrong answer received from server."));
         return false;
     }
 
     if (QApplication::applicationVersion() == newestVersion)
     {
-        ui->statusBar->showMessage(tr("No updates available"));
+        ui_->statusBar->showMessage(tr("No updates available"));
         return false;
     }
 

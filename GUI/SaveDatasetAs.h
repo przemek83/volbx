@@ -1,11 +1,10 @@
 #pragma once
 
+#include <memory>
+
 #include <QDialog>
 
-namespace Ui
-{
-class SaveDatasetAs;
-}  // namespace Ui
+#include "ui_SaveDatasetAs.h"
 
 /**
  * @brief Window for saving datasets.
@@ -16,8 +15,6 @@ class SaveDatasetAs : public QDialog
 public:
     explicit SaveDatasetAs(QStringList usedNames, QWidget* parent = nullptr);
 
-    ~SaveDatasetAs() override;
-
     QString getDatasetName();
 
 private:
@@ -27,7 +24,7 @@ private:
 
     static void adjustWidgetBackgroundColor(QWidget* widget, bool nameUsed);
 
-    Ui::SaveDatasetAs* ui;
+    std::unique_ptr<Ui::SaveDatasetAs> ui_;
 
     QStringList usedNames_;
 

@@ -1,11 +1,10 @@
 #pragma once
 
+#include <memory>
+
 #include <QDialog>
 
-namespace Ui
-{
-class About;
-}  // namespace Ui
+#include "ui_About.h"
 
 /**
  * @brief The About dialog class.
@@ -16,8 +15,6 @@ class About : public QDialog
 public:
     explicit About(QWidget* parent = nullptr);
 
-    ~About() override;
-
 private:
-    Ui::About* ui;
+    std::unique_ptr<Ui::About> ui_;
 };

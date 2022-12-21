@@ -1,11 +1,10 @@
 #pragma once
 
+#include <memory>
+
 #include <QDialog>
 
-namespace Ui
-{
-class CheckUpdates;
-}  // namespace Ui
+#include "ui_CheckUpdates.h"
 
 /**
  * @brief Dialog class with question about auto updating.
@@ -16,10 +15,8 @@ class CheckUpdates : public QDialog
 public:
     explicit CheckUpdates(QWidget* parent = nullptr);
 
-    ~CheckUpdates() override;
-
     bool isSaveFlagSet();
 
 private:
-    Ui::CheckUpdates* ui;
+    std::unique_ptr<Ui::CheckUpdates> ui_;
 };

@@ -3,26 +3,22 @@
 #include <QPainter>
 #include <QStyle>
 
-#include "ui_DockTitleBar.h"
-
 DockTitleBar::DockTitleBar(QWidget* parent)
-    : QWidget(parent), ui(new Ui::DockTitleBar)
+    : QWidget(parent), ui_(std::make_unique<Ui::DockTitleBar>())
 {
-    ui->setupUi(this);
-    ui->reset->setVisible(false);
-    ui->selectAll->setVisible(false);
-    ui->unselectAll->setVisible(false);
-    ui->exportAll->setVisible(false);
+    ui_->setupUi(this);
+    ui_->reset->setVisible(false);
+    ui_->selectAll->setVisible(false);
+    ui_->unselectAll->setVisible(false);
+    ui_->exportAll->setVisible(false);
 
-    ui->close->setIcon(
+    ui_->close->setIcon(
         QApplication::style()->standardIcon(QStyle::SP_DialogCloseButton));
-    ui->reset->setIcon(
+    ui_->reset->setIcon(
         QApplication::style()->standardIcon(QStyle::SP_BrowserReload));
 
     connectButtons();
 }
-
-DockTitleBar::~DockTitleBar() { delete ui; }
 
 void DockTitleBar::paintEvent(QPaintEvent* event)
 {
@@ -32,17 +28,17 @@ void DockTitleBar::paintEvent(QPaintEvent* event)
 
 void DockTitleBar::connectButtons()
 {
-    connect(ui->close, &QPushButton::clicked, this,
+    connect(ui_->close, &QPushButton::clicked, this,
             &DockTitleBar::closeClicked);
-    connect(ui->floating, &QPushButton::clicked, this,
+    connect(ui_->floating, &QPushButton::clicked, this,
             &DockTitleBar::floatingClicked);
-    connect(ui->selectAll, &QPushButton::clicked, this,
+    connect(ui_->selectAll, &QPushButton::clicked, this,
             &DockTitleBar::selectAllClicked);
-    connect(ui->unselectAll, &QPushButton::clicked, this,
+    connect(ui_->unselectAll, &QPushButton::clicked, this,
             &DockTitleBar::unselectAllClicked);
-    connect(ui->exportAll, &QPushButton::clicked, this,
+    connect(ui_->exportAll, &QPushButton::clicked, this,
             &DockTitleBar::exportClicked);
-    connect(ui->reset, &QPushButton::clicked, this,
+    connect(ui_->reset, &QPushButton::clicked, this,
             &DockTitleBar::resetClicked);
 }
 
@@ -62,22 +58,22 @@ QPushButton* DockTitleBar::getButton(DockTitleBar::Button button) const
     switch (button)
     {
         case Button::CLOSE:
-            pushButton = ui->close;
+            pushButton = ui_->close;
             break;
         case Button::FLOATING:
-            pushButton = ui->floating;
+            pushButton = ui_->floating;
             break;
         case Button::SELECT_ALL:
-            pushButton = ui->selectAll;
+            pushButton = ui_->selectAll;
             break;
         case Button::UNSELECT_ALL:
-            pushButton = ui->unselectAll;
+            pushButton = ui_->unselectAll;
             break;
         case Button::EXPORT:
-            pushButton = ui->exportAll;
+            pushButton = ui_->exportAll;
             break;
         case Button::RESET:
-            pushButton = ui->reset;
+            pushButton = ui_->reset;
             break;
     }
     return pushButton;
@@ -85,7 +81,7 @@ QPushButton* DockTitleBar::getButton(DockTitleBar::Button button) const
 
 void DockTitleBar::setTitle(const QString& titleText)
 {
-    ui->label->setText(titleText);
+    ui_->label->setText(titleText);
 }
 
 void DockTitleBar::setButtonVisible(DockTitleBar::Button button, bool visible)

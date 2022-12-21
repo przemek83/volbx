@@ -2,17 +2,14 @@
 
 #include <QStyle>
 
-#include "ui_About.h"
-
-About::About(QWidget* parent) : QDialog(parent), ui(new Ui::About)
+About::About(QWidget* parent)
+    : QDialog(parent), ui_(std::make_unique<Ui::About>())
 {
-    ui->setupUi(this);
+    ui_->setupUi(this);
 
-    ui->versionNumber->setText(QApplication::applicationVersion());
+    ui_->versionNumber->setText(QApplication::applicationVersion());
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     const QStyle* style{QApplication::style()};
     setWindowIcon(style->standardIcon(QStyle::QStyle::SP_FileDialogInfoView));
 }
-
-About::~About() { delete ui; }

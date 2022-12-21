@@ -17,33 +17,30 @@
 #include "Shared/Logger.h"
 
 #include "PlotDock.h"
-#include "ui_Export.h"
 
 Export::Export(QWidget* tab, QWidget* parent)
-    : QDialog(parent), ui(new Ui::Export), tab_(tab)
+    : QDialog(parent), ui_(std::make_unique<Ui::Export>()), tab_(tab)
 {
-    ui->setupUi(this);
+    ui_->setupUi(this);
 
-    connect(ui->save, &QPushButton::clicked, this, &Export::saveClicked);
-    connect(ui->locationSearch, &QPushButton::clicked, this,
+    connect(ui_->save, &QPushButton::clicked, this, &Export::saveClicked);
+    connect(ui_->locationSearch, &QPushButton::clicked, this,
             &Export::locationSearchClicked);
 
-    ui->locationLineEdit->setText(
+    ui_->locationLineEdit->setText(
         Configuration::getInstance().getImportFilePath());
     auto* validator{
-        new QRegExpValidator(QRegExp(QStringLiteral("[\\w]*")), ui->prefix)};
-    ui->prefix->setValidator(validator);
-    ui->prefix->setText(tab_->windowTitle().replace(
+        new QRegExpValidator(QRegExp(QStringLiteral("[\\w]*")), ui_->prefix)};
+    ui_->prefix->setValidator(validator);
+    ui_->prefix->setText(tab_->windowTitle().replace(
         QRegExp(QStringLiteral("[^\\w]")), QLatin1String("")));
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
-Export::~Export() { delete ui; }
-
 void Export::saveClicked()
 {
-    if (!locationIsValid(ui->locationLineEdit->text()))
+    if (!locationIsValid(ui_->locationLineEdit->text()))
     {
         QMessageBox::warning(
             this, QObject::tr("Error"),
@@ -59,12 +56,12 @@ void Export::saveClicked()
 void Export::locationSearchClicked()
 {
     QFileDialog dialog;
-    dialog.setDirectory(ui->locationLineEdit->text());
+    dialog.setDirectory(ui_->locationLineEdit->text());
     dialog.setFileMode(QFileDialog::Directory);
     dialog.setOption(QFileDialog::ShowDirsOnly, true);
     dialog.exec();
 
-    ui->locationLineEdit->setText(dialog.directory().absolutePath());
+    ui_->locationLineEdit->setText(dialog.directory().absolutePath());
 }
 
 void Export::saveOnDisk()
@@ -92,7 +89,7 @@ void Export::saveOnDisk()
 bool Export::locationIsValid(const QString& location) const
 {
     const QDir dir(location);
-    return !ui->locationLineEdit->text().isEmpty() && dir.exists() &&
+    return !ui_->locationLineEdit->text().isEmpty() && dir.exists() &&
            QFile::permissions(dir.path()).testFlag(QFile::WriteUser);
 }
 
@@ -108,7 +105,7 @@ bool Export::exportData(const QString& fileName)
     bar.showDetached();
 
     bool exportSucceed{false};
-    if (ui->xlsx->isChecked())
+    if (ui_->xlsx->isChecked())
         exportSucceed = exportToXlsx(fileName, view, bar);
     else
         exportSucceed = exportToCsv(fileName, view, bar);
@@ -158,7 +155,7 @@ QString Export::getFileName()
 {
     const QString dateString(
         QDate::currentDate().toString(exportFilesDateFormat_));
-    QString fileName(ui->locationLineEdit->text() + "/" + ui->prefix->text() +
+    QString fileName(ui_->locationLineEdit->text() + "/" + ui_->prefix->text() +
                      "_" + dateString);
     return fileName;
 }
