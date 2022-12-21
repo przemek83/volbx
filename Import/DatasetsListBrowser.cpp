@@ -68,7 +68,7 @@ bool DatasetsListBrowser::doesUserChooseToDeleteSelectedDataset(QPoint pos)
     QMenu myMenu;
     myMenu.addAction(deleteIcon, QObject::tr("Delete dataset"));
 
-    QAction* selectedItem{myMenu.exec(globalPos)};
+    const QAction* selectedItem{myMenu.exec(globalPos)};
 
     return selectedItem != nullptr;
 }
