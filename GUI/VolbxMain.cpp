@@ -237,11 +237,10 @@ void VolbxMain::actionAboutTriggered()
 
 void VolbxMain::closeTab(int tab)
 {
-    QWidget* tabToDelete{tabWidget_.widget(tab)};
+    std::unique_ptr<QWidget> tabToDelete{tabWidget_.widget(tab)};
     const auto* proxyModel{tabToDelete->findChild<FilteringProxyModel*>()};
     filters_.removeFiltersForModel(proxyModel);
     tabWidget_.removeTab(tab);
-    delete tabToDelete;
 
     manageActions(tabWidget_.count() != 0);
 }
