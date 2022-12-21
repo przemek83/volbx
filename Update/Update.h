@@ -53,7 +53,7 @@ private:
 
     void insertErrorInfoIntoDetails(const QString& msg);
 
-    void saveVerfiedFile(QByteArray& fileData, QString& fileName);
+    void saveVerfiedFile(QByteArray& fileData, const QString& fileName);
 
     bool handleVerificationError(QString& fileName, QString& fileSize);
 

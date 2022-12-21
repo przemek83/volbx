@@ -202,7 +202,7 @@ void Update::downloadFinished(QNetworkReply* reply)
     downloadFile(filesToDownload_.constFirst());
 }
 
-void Update::saveVerfiedFile(QByteArray& fileData, QString& fileName)
+void Update::saveVerfiedFile(QByteArray& fileData, const QString& fileName)
 {
     insertSuccessInfoIntoDetails(tr("Verified"));
     insertNewLineIntoDetails();
