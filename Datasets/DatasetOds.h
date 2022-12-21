@@ -13,8 +13,6 @@ public:
     DatasetOds(const QString& name, const QString& zipFileName,
                QObject* parent = nullptr);
 
-    ~DatasetOds() override = default;
-
 protected:
     bool loadSpecificData() override;
 };

@@ -14,8 +14,6 @@ public:
     explicit PlotDock(const QString& title, QWidget* parent = nullptr,
                       Qt::WindowFlags flags = Qt::Widget);
 
-    ~PlotDock() override = default;
-
     QList<PlotBase*> getPlots() const;
 
 private Q_SLOTS:

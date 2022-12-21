@@ -17,8 +17,6 @@ class ColumnsPreview : public QTableWidget
 public:
     explicit ColumnsPreview(QWidget* parent = nullptr);
 
-    ~ColumnsPreview() override = default;
-
     void setDatasetSampleInfo(const std::unique_ptr<Dataset>& dataset);
 
     void clear();

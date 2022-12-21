@@ -14,8 +14,6 @@ public:
     LoggerCheckBox(LogTypes type, const QString& content,
                    QWidget* parent = nullptr);
 
-    ~LoggerCheckBox() override = default;
-
     LogTypes logType();
 
 private:

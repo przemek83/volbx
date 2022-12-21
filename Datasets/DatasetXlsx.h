@@ -13,8 +13,6 @@ public:
     DatasetXlsx(const QString& name, const QString& zipFileName,
                 QObject* parent = nullptr);
 
-    ~DatasetXlsx() override = default;
-
 protected:
     bool loadSpecificData() override;
 

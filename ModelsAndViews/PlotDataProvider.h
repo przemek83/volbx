@@ -4,8 +4,6 @@
 #include <Quantiles.h>
 #include <QObject>
 
-#include "Constants.h"
-
 #include "TransactionData.h"
 
 /**
@@ -16,8 +14,6 @@ class PlotDataProvider : public QObject
     Q_OBJECT
 public:
     explicit PlotDataProvider(QObject* parent = nullptr);
-
-    ~PlotDataProvider() override = default;
 
     /**
      * @brief reCompute all data for plots.

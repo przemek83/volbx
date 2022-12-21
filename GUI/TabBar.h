@@ -13,8 +13,6 @@ class TabBar : public QTabBar
 public:
     explicit TabBar(QWidget* parent = nullptr);
 
-    ~TabBar() override = default;
-
 protected:
     void mouseDoubleClickEvent(QMouseEvent* event) override;
 

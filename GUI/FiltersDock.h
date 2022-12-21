@@ -24,8 +24,6 @@ class FiltersDock : public Dock
 public:
     explicit FiltersDock(QWidget* parent = nullptr);
 
-    ~FiltersDock() override = default;
-
     void addFiltersForModel(const FilteringProxyModel* model);
 
     void removeFiltersForModel(const FilteringProxyModel* model);

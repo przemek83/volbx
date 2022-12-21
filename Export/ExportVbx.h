@@ -21,7 +21,6 @@ class ExportVbx : public ExportData
     Q_OBJECT
 public:
     explicit ExportVbx(QObject* parent = nullptr);
-    ~ExportVbx() override = default;
 
     /**
      * @brief Generate inner Volbx format of data (.vbx).

@@ -11,8 +11,6 @@ class NumericDelegate : public QStyledItemDelegate
 public:
     explicit NumericDelegate(QObject* parent = nullptr);
 
-    ~NumericDelegate() override = default;
-
     QString displayText(const QVariant& value,
                         const QLocale& locale) const override;
 };

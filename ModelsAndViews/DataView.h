@@ -16,8 +16,6 @@ class DataView : public QTableView
 public:
     explicit DataView(QWidget* parent = nullptr);
 
-    ~DataView() override = default;
-
     void setModel(QAbstractItemModel* model) override;
 
     const PlotDataProvider& getPlotDataProvider() const;

@@ -16,8 +16,6 @@ public:
     DatasetSpreadsheet(const QString& name, const QString& zipFileName,
                        QObject* parent = nullptr);
 
-    ~DatasetSpreadsheet() override = default;
-
 protected:
     bool analyze() override;
 

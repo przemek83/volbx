@@ -19,8 +19,6 @@ class Tab : public QMainWindow
 public:
     explicit Tab(std::unique_ptr<Dataset> dataset, QWidget* parent = nullptr);
 
-    ~Tab() override = default;
-
     FilteringProxyModel* getCurrentProxyModel() const;
 
     TableModel* getCurrentTableModel() const;

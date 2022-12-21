@@ -15,8 +15,6 @@ class DatasetImportTab : public ImportTab
 public:
     explicit DatasetImportTab(QWidget* parent = nullptr);
 
-    ~DatasetImportTab() override = default;
-
     bool datasetsAreAvailable();
 
 private:

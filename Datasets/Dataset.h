@@ -14,7 +14,7 @@ class DatasetDefinition;
 class QDomDocument;
 class QDomElement;
 
-typedef int Column;
+using Column = int;
 
 /**
  * @class Dataset
@@ -30,8 +30,6 @@ public:
      * @param parent Parent object.
      */
     explicit Dataset(QString name, QObject* parent = nullptr);
-
-    ~Dataset() override = default;
 
     /**
      * @brief Get number of rows in dataset.

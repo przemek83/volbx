@@ -13,8 +13,6 @@ class FilteringProxyModel : public QSortFilterProxyModel
 public:
     explicit FilteringProxyModel(QObject* parent = nullptr);
 
-    ~FilteringProxyModel() override = default;
-
     /**
      * @brief get pointer to parent model.
      * @return parent parent model.

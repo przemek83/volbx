@@ -17,8 +17,6 @@ public:
     explicit TableModel(std::unique_ptr<Dataset> dataset,
                         QObject* parent = nullptr);
 
-    ~TableModel() override = default;
-
     /**
      * @brief Overridden method for row count check.
      * @return row count.

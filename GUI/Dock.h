@@ -14,8 +14,6 @@ public:
     explicit Dock(const QString& titleText, QWidget* parent = nullptr,
                   Qt::WindowFlags flags = Qt::Widget);
 
-    ~Dock() override = default;
-
 public Q_SLOTS:
     void setNewToolTip(const QString& text);
 

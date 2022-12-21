@@ -21,8 +21,6 @@ class TabWidget : public QTabWidget
 public:
     explicit TabWidget(QWidget* parent = nullptr);
 
-    ~TabWidget() override = default;
-
     FilteringProxyModel* getCurrentProxyModel() const;
 
     TableModel* getCurrentDataModel() const;
