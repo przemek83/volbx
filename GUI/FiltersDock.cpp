@@ -180,6 +180,7 @@ void FiltersDock::showFiltersForModel(const FilteringProxyModel* model)
 void FiltersDock::searchTextChanged(const QString& arg1)
 {
     QWidget* currentWidget{stackedWidget_.currentWidget()};
-    for (auto* filter : currentWidget->findChildren<Filter*>())
+    const QList<Filter*> filters{currentWidget->findChildren<Filter*>()};
+    for (auto* filter : filters)
         filter->setVisible(filter->title().contains(arg1, Qt::CaseInsensitive));
 }
