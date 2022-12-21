@@ -336,7 +336,9 @@ void VolbxMain::importDataset(std::unique_ptr<Dataset> dataset)
     {
         QMessageBox::critical(
             this, tr("Import error"),
-            tr("Import error encountered: ") + dataset->getLastError());
+            tr("Import error encountered: ") + (dataset == nullptr
+                                                    ? tr("dataset is null")
+                                                    : dataset->getLastError()));
         return;
     }
 
