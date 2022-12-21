@@ -188,16 +188,16 @@ void VolbxMain::addStandardQtStyles(QActionGroup* actionsGroup)
 
 bool VolbxMain::doesUserWantsToCheckForUpdates()
 {
-    bool checkForUpdates{false};
+    bool shouldCheckForUpdates{false};
     CheckUpdates dialog(this);
     const int reply{dialog.exec()};
     if (reply == QDialog::Accepted)
-        checkForUpdates = true;
+        shouldCheckForUpdates = true;
 
     if (dialog.isSaveFlagSet())
-        Configuration::getInstance().setUpdatePolicy(checkForUpdates);
+        Configuration::getInstance().setUpdatePolicy(shouldCheckForUpdates);
 
-    return checkForUpdates;
+    return shouldCheckForUpdates;
 }
 
 void VolbxMain::checkForUpdates()
