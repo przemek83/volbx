@@ -87,7 +87,7 @@ void VolbxMain::connectPlots()
 void VolbxMain::connectActions()
 {
     connect(ui_->actionExit, &QAction::triggered, this, &VolbxMain::close);
-    connect(ui_->actionFilters, &QAction::triggered,
+    connect(ui_->actionFilters, &QAction::triggered, this,
             [&]() { filters_.setVisible(!filters_.isVisible()); });
     connect(ui_->actionLogs, &QAction::triggered, this,
             []() { Logger::getInstance().toggleVisibility(); });
