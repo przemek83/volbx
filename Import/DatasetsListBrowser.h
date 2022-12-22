@@ -1,13 +1,12 @@
 #pragma once
 
+#include <memory>
+
 #include <QWidget>
 
-class QListWidgetItem;
+#include "ui_DatasetsListBrowser.h"
 
-namespace Ui
-{
-class DatasetsListBrowser;
-}  // namespace Ui
+class QListWidgetItem;
 
 /**
  * @brief Widget for browsing list of actual datasets.
@@ -17,8 +16,6 @@ class DatasetsListBrowser : public QWidget
     Q_OBJECT
 public:
     explicit DatasetsListBrowser(QWidget* parent = nullptr);
-
-    ~DatasetsListBrowser() override;
 
     void clearSelection();
 
@@ -33,7 +30,7 @@ private:
 
     void deleteSelectedDataset(const QString& datasetToDelete);
 
-    Ui::DatasetsListBrowser* ui;
+    std::unique_ptr<Ui::DatasetsListBrowser> ui_;
 
 private Q_SLOTS:
     void searchTextChanged(const QString& arg1);

@@ -5,26 +5,22 @@
 
 #include <Common/DatasetUtilities.h>
 
-#include "ui_DatasetsListBrowser.h"
-
 DatasetsListBrowser::DatasetsListBrowser(QWidget* parent)
-    : QWidget(parent), ui(new Ui::DatasetsListBrowser)
+    : QWidget(parent), ui_(std::make_unique<Ui::DatasetsListBrowser>())
 {
-    ui->setupUi(this);
+    ui_->setupUi(this);
 
-    connect(ui->searchLineEdit, &QLineEdit::textChanged, this,
+    connect(ui_->searchLineEdit, &QLineEdit::textChanged, this,
             &DatasetsListBrowser::searchTextChanged);
 
     setupDatasetsList();
 }
 
-DatasetsListBrowser::~DatasetsListBrowser() { delete ui; }
-
 void DatasetsListBrowser::searchTextChanged(const QString& arg1)
 {
-    for (int i = 0; i < ui->datasetsList->count(); ++i)
+    for (int i = 0; i < ui_->datasetsList->count(); ++i)
     {
-        QListWidgetItem* item{ui->datasetsList->item(i)};
+        QListWidgetItem* item{ui_->datasetsList->item(i)};
         const bool hide{!item->text().contains(arg1, Qt::CaseInsensitive)};
         item->setHidden(hide);
     }
@@ -32,34 +28,34 @@ void DatasetsListBrowser::searchTextChanged(const QString& arg1)
 
 void DatasetsListBrowser::clearSelection()
 {
-    ui->datasetsList->clearSelection();
+    ui_->datasetsList->clearSelection();
 }
 
 bool DatasetsListBrowser::isDatasetsListEmpty() const
 {
-    return (ui->datasetsList->count() == 0);
+    return (ui_->datasetsList->count() == 0);
 }
 
 void DatasetsListBrowser::setupDatasetsList()
 {
-    ui->datasetsList->insertItems(
+    ui_->datasetsList->insertItems(
         0, DatasetUtilities::getListOfAvailableDatasets());
 
-    ui->datasetsList->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui_->datasetsList->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    connect(ui->datasetsList, &QListWidget::customContextMenuRequested, this,
+    connect(ui_->datasetsList, &QListWidget::customContextMenuRequested, this,
             &DatasetsListBrowser::showContextMenu);
 
-    connect(ui->datasetsList, &QListWidget::itemSelectionChanged, this,
+    connect(ui_->datasetsList, &QListWidget::itemSelectionChanged, this,
             &DatasetsListBrowser::datasetsListItemSelectionChanged);
 }
 
 bool DatasetsListBrowser::doesUserChooseToDeleteSelectedDataset(QPoint pos)
 {
-    const QPoint globalPos{ui->datasetsList->viewport()->mapToGlobal(pos)};
+    const QPoint globalPos{ui_->datasetsList->viewport()->mapToGlobal(pos)};
 
-    if (ui->datasetsList->selectedItems().isEmpty() ||
-        ui->datasetsList->itemAt(pos) == nullptr)
+    if (ui_->datasetsList->selectedItems().isEmpty() ||
+        ui_->datasetsList->itemAt(pos) == nullptr)
         return false;
 
     const QIcon deleteIcon{
@@ -89,18 +85,18 @@ void DatasetsListBrowser::deleteSelectedDataset(const QString& datasetToDelete)
         QMessageBox::warning(this, tr("Error"),
                              tr("Can not delete ") + datasetToDelete + ".");
 
-    ui->datasetsList->clear();
-    ui->datasetsList->insertItems(
+    ui_->datasetsList->clear();
+    ui_->datasetsList->insertItems(
         0, DatasetUtilities::getListOfAvailableDatasets());
 }
 
 void DatasetsListBrowser::showContextMenu(QPoint pos)
 {
-    if (ui->datasetsList->selectedItems().isEmpty())
+    if (ui_->datasetsList->selectedItems().isEmpty())
         return;
 
     const QString datasetToDelete{
-        ui->datasetsList->selectedItems().first()->text()};
+        ui_->datasetsList->selectedItems().first()->text()};
 
     if (doesUserChooseToDeleteSelectedDataset(pos) &&
         doesUserConfirmedDeleting(datasetToDelete))
@@ -110,7 +106,7 @@ void DatasetsListBrowser::showContextMenu(QPoint pos)
 void DatasetsListBrowser::datasetsListItemSelectionChanged()
 {
     QString newCurrent{QLatin1String("")};
-    QList<QListWidgetItem*> selectedItems{ui->datasetsList->selectedItems()};
+    QList<QListWidgetItem*> selectedItems{ui_->datasetsList->selectedItems()};
     if (!selectedItems.isEmpty())
         newCurrent = selectedItems.front()->text();
 

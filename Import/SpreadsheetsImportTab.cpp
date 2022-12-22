@@ -22,14 +22,13 @@
 
 #include "ColumnsPreview.h"
 #include "DatasetVisualization.h"
-#include "ui_SpreadsheetsImportTab.h"
 
 SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent)
-    : ImportTab(parent), ui(new Ui::SpreadsheetsImportTab)
+    : ImportTab(parent), ui_(std::make_unique<Ui::SpreadsheetsImportTab>())
 {
-    ui->setupUi(this);
+    ui_->setupUi(this);
 
-    connect(ui->openFileButton, &QPushButton::clicked, this,
+    connect(ui_->openFileButton, &QPushButton::clicked, this,
             &SpreadsheetsImportTab::openFileButtonClicked);
 
     auto [visualization, columnsPreview] =
@@ -39,12 +38,10 @@ SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent)
     centralSplitter->addWidget(visualization);
     centralSplitter->addWidget(columnsPreview);
 
-    ui->verticalLayout->addWidget(centralSplitter);
+    ui_->verticalLayout->addWidget(centralSplitter);
 
-    ui->sheetCombo->hide();
+    ui_->sheetCombo->hide();
 }
-
-SpreadsheetsImportTab::~SpreadsheetsImportTab() { delete ui; }
 
 void SpreadsheetsImportTab::analyzeFile(std::unique_ptr<Dataset>& dataset)
 {
@@ -131,7 +128,7 @@ void SpreadsheetsImportTab::openFileButtonClicked()
         return;
 
     Configuration::getInstance().setImportFilePath(fileInfo.canonicalPath());
-    ui->fileNameLineEdit->setText(fileInfo.filePath());
+    ui_->fileNameLineEdit->setText(fileInfo.filePath());
 
     std::unique_ptr<Dataset> dataset{createDataset(fileInfo)};
     if (dataset == nullptr)

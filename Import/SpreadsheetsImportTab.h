@@ -1,11 +1,10 @@
 #pragma once
 
+#include <memory>
+
 #include "ImportTab.h"
 
-namespace Ui
-{
-class SpreadsheetsImportTab;
-}  // namespace Ui
+#include "ui_SpreadsheetsImportTab.h"
 
 class DatasetSpreadsheet;
 class QFileInfo;
@@ -19,8 +18,6 @@ class SpreadsheetsImportTab : public ImportTab
 public:
     explicit SpreadsheetsImportTab(QWidget* parent = nullptr);
 
-    ~SpreadsheetsImportTab() override;
-
 private:
     static void analyzeFile(std::unique_ptr<Dataset>& dataset);
 
@@ -32,7 +29,7 @@ private:
 
     bool getFileInfo(QFileInfo& fileInfo);
 
-    Ui::SpreadsheetsImportTab* ui;
+    std::unique_ptr<Ui::SpreadsheetsImportTab> ui_;
 
 private Q_SLOTS:
     void openFileButtonClicked();

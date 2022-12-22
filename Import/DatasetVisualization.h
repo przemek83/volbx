@@ -7,13 +7,10 @@
 #include <Common/ColumnTag.h>
 #include <Datasets/Dataset.h>
 
+#include "ui_DatasetVisualization.h"
+
 class QTreeWidgetItem;
 class QComboBox;
-
-namespace Ui
-{
-class DatasetVisualization;
-}  // namespace Ui
 
 /**
  * @brief Widget for visualization of dataset.
@@ -23,8 +20,6 @@ class DatasetVisualization : public QWidget
     Q_OBJECT
 public:
     explicit DatasetVisualization(QWidget* parent = nullptr);
-
-    ~DatasetVisualization() override;
 
     void setDataset(std::unique_ptr<Dataset> dataset);
 
@@ -59,7 +54,7 @@ private:
 
     static int getCurrentValueFromCombo(QComboBox* combo);
 
-    Ui::DatasetVisualization* ui;
+    std::unique_ptr<Ui::DatasetVisualization> ui_;
 
     const QString typeNameString_{tr("Name")};
     const QString typeNameFloat_{tr("Number")};

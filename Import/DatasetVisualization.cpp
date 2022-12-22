@@ -3,36 +3,32 @@
 #include <Common/Constants.h>
 #include <Datasets/Dataset.h>
 
-#include "ui_DatasetVisualization.h"
-
 DatasetVisualization::DatasetVisualization(QWidget* parent)
-    : QWidget(parent), ui(new Ui::DatasetVisualization)
+    : QWidget(parent), ui_(std::make_unique<Ui::DatasetVisualization>())
 {
-    ui->setupUi(this);
+    ui_->setupUi(this);
 
-    ui->columnsList->header()->setSectionsMovable(false);
+    ui_->columnsList->header()->setSectionsMovable(false);
 
-    connect(ui->searchLineEdit, &QLineEdit::textChanged, this,
+    connect(ui_->searchLineEdit, &QLineEdit::textChanged, this,
             &DatasetVisualization::searchTextChanged);
 
-    connect(ui->columnsList, &QTreeWidget::currentItemChanged, this,
+    connect(ui_->columnsList, &QTreeWidget::currentItemChanged, this,
             &DatasetVisualization::currentColumnOnTreeChanged);
 
-    connect(ui->dateCombo, qOverload<int>(&QComboBox::currentIndexChanged),
+    connect(ui_->dateCombo, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &DatasetVisualization::refreshColumnList);
 
-    connect(ui->pricePerUnitCombo,
+    connect(ui_->pricePerUnitCombo,
             qOverload<int>(&QComboBox::currentIndexChanged), this,
             &DatasetVisualization::refreshColumnList);
 
-    connect(ui->SelectAll, &QPushButton::clicked, this,
+    connect(ui_->SelectAll, &QPushButton::clicked, this,
             &DatasetVisualization::selectAllClicked);
 
-    connect(ui->UnselectAll, &QPushButton::clicked, this,
+    connect(ui_->UnselectAll, &QPushButton::clicked, this,
             &DatasetVisualization::unselectAllClicked);
 }
-
-DatasetVisualization::~DatasetVisualization() { delete ui; }
 
 void DatasetVisualization::setDataset(std::unique_ptr<Dataset> dataset)
 {
@@ -46,24 +42,24 @@ void DatasetVisualization::setDataset(std::unique_ptr<Dataset> dataset)
 
     setTaggedColumns();
 
-    ui->taggedColumnsWidget->setEnabled(true);
+    ui_->taggedColumnsWidget->setEnabled(true);
 
     refreshColumnList(0);
 }
 
 void DatasetVisualization::clear()
 {
-    ui->pricePerUnitCombo->clear();
-    ui->dateCombo->clear();
-    ui->columnsList->clear();
-    ui->columnsList->setEnabled(false);
-    ui->taggedColumnsWidget->setEnabled(false);
+    ui_->pricePerUnitCombo->clear();
+    ui_->dateCombo->clear();
+    ui_->columnsList->clear();
+    ui_->columnsList->setEnabled(false);
+    ui_->taggedColumnsWidget->setEnabled(false);
     dataset_ = nullptr;
 }
 
 void DatasetVisualization::searchTextChanged(const QString& newText)
 {
-    QTreeWidgetItemIterator it(ui->columnsList);
+    QTreeWidgetItemIterator it(ui_->columnsList);
     while (*it != nullptr)
     {
         const QString& currentItemText{(*it)->text(0)};
@@ -80,8 +76,8 @@ std::unique_ptr<Dataset> DatasetVisualization::retrieveDataset()
 
     dataset_->setActiveColumns(getActiveColumns());
 
-    setTaggedColumnInDataset(ColumnTag::DATE, ui->dateCombo);
-    setTaggedColumnInDataset(ColumnTag::VALUE, ui->pricePerUnitCombo);
+    setTaggedColumnInDataset(ColumnTag::DATE, ui_->dateCombo);
+    setTaggedColumnInDataset(ColumnTag::VALUE, ui_->pricePerUnitCombo);
 
     return std::move(dataset_);
 }
@@ -98,17 +94,17 @@ void DatasetVisualization::currentColumnOnTreeChanged(
 void DatasetVisualization::selectCurrentColumn(int column)
 {
     const QList<QTreeWidgetItem*> selectedItemsList{
-        ui->columnsList->selectedItems()};
-    if (selectedItemsList.count() != 0 &&
+        ui_->columnsList->selectedItems()};
+    if (!selectedItemsList.isEmpty() &&
         selectedItemsList.first()->data(0, Qt::UserRole).toInt() == column)
         return;
 
-    for (int i = 0; i < ui->columnsList->topLevelItemCount(); ++i)
+    for (int i = 0; i < ui_->columnsList->topLevelItemCount(); ++i)
     {
-        QTreeWidgetItem* currentItem{ui->columnsList->topLevelItem(i)};
+        QTreeWidgetItem* currentItem{ui_->columnsList->topLevelItem(i)};
         if (currentItem->data(0, Qt::UserRole).toInt() == column)
         {
-            ui->columnsList->setCurrentItem(currentItem);
+            ui_->columnsList->setCurrentItem(currentItem);
             break;
         }
     }
@@ -129,9 +125,9 @@ void DatasetVisualization::setCurrentIndexUsingColumn(QComboBox* combo,
 
 void DatasetVisualization::setupColumnsListWidget()
 {
-    ui->columnsList->sortByColumn(Constants::NOT_SET_COLUMN,
-                                  Qt::AscendingOrder);
-    ui->columnsList->setSortingEnabled(false);
+    ui_->columnsList->sortByColumn(Constants::NOT_SET_COLUMN,
+                                   Qt::AscendingOrder);
+    ui_->columnsList->setSortingEnabled(false);
 
     for (int column = 0; column < static_cast<int>(dataset_->columnCount());
          ++column)
@@ -140,45 +136,45 @@ void DatasetVisualization::setupColumnsListWidget()
                                getTypeDisplayNameForGivenColumn(column)};
         auto* item{new QTreeWidgetItem(list)};
         item->setData(0, Qt::UserRole, QVariant(column));
-        ui->columnsList->addTopLevelItem(item);
+        ui_->columnsList->addTopLevelItem(item);
     }
 
-    ui->columnsList->header()->resizeSections(QHeaderView::ResizeToContents);
+    ui_->columnsList->header()->resizeSections(QHeaderView::ResizeToContents);
 
-    ui->columnsList->setSortingEnabled(true);
-    ui->columnsList->sortByColumn(Constants::NOT_SET_COLUMN,
-                                  Qt::AscendingOrder);
+    ui_->columnsList->setSortingEnabled(true);
+    ui_->columnsList->sortByColumn(Constants::NOT_SET_COLUMN,
+                                   Qt::AscendingOrder);
 
-    ui->columnsList->setEnabled(true);
+    ui_->columnsList->setEnabled(true);
 }
 
 void DatasetVisualization::setTaggedColumns()
 {
-    ui->dateCombo->blockSignals(true);
-    ui->pricePerUnitCombo->blockSignals(true);
+    ui_->dateCombo->blockSignals(true);
+    ui_->pricePerUnitCombo->blockSignals(true);
 
     auto [dateOfTransactionPointed, dateColumn] =
         dataset_->getTaggedColumn(ColumnTag::DATE);
     if (dateOfTransactionPointed)
-        setCurrentIndexUsingColumn(ui->dateCombo, dateColumn);
+        setCurrentIndexUsingColumn(ui_->dateCombo, dateColumn);
 
     auto [pricePerUnitPointed, valueColumn] =
         dataset_->getTaggedColumn(ColumnTag::VALUE);
     if (pricePerUnitPointed)
-        setCurrentIndexUsingColumn(ui->pricePerUnitCombo, valueColumn);
+        setCurrentIndexUsingColumn(ui_->pricePerUnitCombo, valueColumn);
 
-    ui->dateCombo->blockSignals(false);
-    ui->pricePerUnitCombo->blockSignals(false);
+    ui_->dateCombo->blockSignals(false);
+    ui_->pricePerUnitCombo->blockSignals(false);
 }
 
 QVector<bool> DatasetVisualization::getActiveColumns() const
 {
-    const int topLevelItemsCount{ui->columnsList->topLevelItemCount()};
+    const int topLevelItemsCount{ui_->columnsList->topLevelItemCount()};
     QVector<bool> activeColumns;
     activeColumns.resize(topLevelItemsCount);
     for (int i = 0; i < topLevelItemsCount; ++i)
     {
-        QTreeWidgetItem* currentItem{ui->columnsList->topLevelItem(i)};
+        QTreeWidgetItem* currentItem{ui_->columnsList->topLevelItem(i)};
         bool active{false};
         if (currentItem->flags().testFlag(Qt::ItemIsUserCheckable))
             active = (currentItem->checkState(0) == Qt::Checked);
@@ -220,20 +216,20 @@ void DatasetVisualization::fillTaggedColumnCombos()
     {
         const ColumnType columnType{dataset_->getColumnFormat(column)};
         if (columnType == ColumnType::NUMBER)
-            ui->pricePerUnitCombo->addItem(dataset_->getHeaderName(column),
-                                           QVariant(column));
+            ui_->pricePerUnitCombo->addItem(dataset_->getHeaderName(column),
+                                            QVariant(column));
         if (columnType == ColumnType::DATE)
-            ui->dateCombo->addItem(dataset_->getHeaderName(column),
-                                   QVariant(column));
+            ui_->dateCombo->addItem(dataset_->getHeaderName(column),
+                                    QVariant(column));
     }
 }
 
 void DatasetVisualization::setAllItemsInColumnsListToState(Qt::CheckState state)
 {
-    const int topLevelItemsCount{ui->columnsList->topLevelItemCount()};
+    const int topLevelItemsCount{ui_->columnsList->topLevelItemCount()};
     for (int i = 0; i < topLevelItemsCount; ++i)
     {
-        QTreeWidgetItem* currentItem{ui->columnsList->topLevelItem(i)};
+        QTreeWidgetItem* currentItem{ui_->columnsList->topLevelItem(i)};
         if (currentItem->flags().testFlag(Qt::ItemIsUserCheckable))
             currentItem->setCheckState(0, state);
     }
@@ -259,13 +255,13 @@ void DatasetVisualization::unselectAllClicked()
 
 void DatasetVisualization::refreshColumnList([[maybe_unused]] int newIndex)
 {
-    const int dateColumn{getCurrentValueFromCombo(ui->dateCombo)};
-    const int priceColumn{getCurrentValueFromCombo(ui->pricePerUnitCombo)};
+    const int dateColumn{getCurrentValueFromCombo(ui_->dateCombo)};
+    const int priceColumn{getCurrentValueFromCombo(ui_->pricePerUnitCombo)};
 
-    const int topLevelItemsCount{ui->columnsList->topLevelItemCount()};
+    const int topLevelItemsCount{ui_->columnsList->topLevelItemCount()};
     for (int i = 0; i < topLevelItemsCount; ++i)
     {
-        QTreeWidgetItem* currentItem{ui->columnsList->topLevelItem(i)};
+        QTreeWidgetItem* currentItem{ui_->columnsList->topLevelItem(i)};
         const int itemColumn{currentItem->data(0, Qt::UserRole).toInt()};
         if (priceColumn == itemColumn || dateColumn == itemColumn)
         {
