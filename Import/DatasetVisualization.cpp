@@ -16,11 +16,11 @@ DatasetVisualization::DatasetVisualization(QWidget* parent)
     connect(ui_->columnsList, &QTreeWidget::currentItemChanged, this,
             &DatasetVisualization::currentColumnOnTreeChanged);
 
-    connect(ui_->dateCombo, qOverload<int>(&QComboBox::currentIndexChanged),
+    connect(ui_->dateCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &DatasetVisualization::refreshColumnList);
 
     connect(ui_->pricePerUnitCombo,
-            qOverload<int>(&QComboBox::currentIndexChanged), this,
+            QOverload<int>::of(&QComboBox::currentIndexChanged), this,
             &DatasetVisualization::refreshColumnList);
 
     connect(ui_->SelectAll, &QPushButton::clicked, this,
