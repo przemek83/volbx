@@ -49,7 +49,7 @@ std::tuple<QString, QStringList> getAvailableVersionAndFiles(
 
     if (filesList.isEmpty() ||
         filesList.at(0) != QStringLiteral("Volbx-Update-Info"))
-        return {QStringLiteral(""), filesList};
+        return {QLatin1String(""), filesList};
 
     LOG(LogTypes::NETWORK,
         QStringLiteral("Available version is ") + filesList.value(1));
