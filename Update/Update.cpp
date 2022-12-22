@@ -58,7 +58,7 @@ void Update::startUpdating(const QString& availableVersion,
 
     fillFilesToUpdateLists(replyStringList);
 
-    if (filesToDownload_.count() == 0 || filesToDownloadSize_.count() == 0 ||
+    if (filesToDownload_.isEmpty() || filesToDownloadSize_.isEmpty() ||
         filesToDownload_.count() != filesToDownloadSize_.count())
     {
         showErrorMsg(tr("Wrong data received from update server."));
