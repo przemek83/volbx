@@ -3,12 +3,9 @@
 #include <QNetworkAccessManager>
 #include <QWidget>
 
-class QNetworkReply;
+#include "ui_Update.h"
 
-namespace Ui
-{
-class Update;
-}  // namespace Ui
+class QNetworkReply;
 
 /**
  * @brief Updater window used for all operations and display.
@@ -18,8 +15,6 @@ class Update : public QWidget
     Q_OBJECT
 public:
     explicit Update(QWidget* parent = nullptr);
-
-    ~Update() override;
 
 protected:
     void closeEvent(QCloseEvent* event) override;
@@ -66,7 +61,7 @@ private:
 
     void renameTempFile(const QString& file);
 
-    Ui::Update* ui;
+    Ui::Update ui_;
 
     /// Network manager used for getting initial info.
     QNetworkAccessManager initialInfoNetworkManager_;

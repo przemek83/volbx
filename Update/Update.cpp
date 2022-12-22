@@ -7,11 +7,9 @@
 #include <Shared/Logger.h>
 #include <Shared/Networking.h>
 
-#include "ui_Update.h"
-
-Update::Update(QWidget* parent) : QWidget(parent), ui(new Ui::Update)
+Update::Update(QWidget* parent) : QWidget(parent)
 {
-    ui->setupUi(this);
+    ui_.setupUi(this);
 
     setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint |
                    Qt::WindowCloseButtonHint);
@@ -20,10 +18,8 @@ Update::Update(QWidget* parent) : QWidget(parent), ui(new Ui::Update)
     setupNetworkManagers();
     connectButtons();
 
-    ui->details->hide();
+    ui_.details->hide();
 }
-
-Update::~Update() { delete ui; }
 
 void Update::setupNetworkManagers()
 {
@@ -44,21 +40,21 @@ void Update::setupNetworkManagers()
 
 void Update::connectButtons()
 {
-    connect(ui->buttonQuit, &QPushButton::clicked, this, &Update::close);
-    connect(ui->showDetails, &QCheckBox::toggled, this,
+    connect(ui_.buttonQuit, &QPushButton::clicked, this, &Update::close);
+    connect(ui_.showDetails, &QCheckBox::toggled, this,
             &Update::showDetailsToggled);
 }
 
 void Update::setupVersions()
 {
-    ui->valueAvailable->setText(tr("checking..."));
-    ui->valueActual->setText(QApplication::applicationVersion());
+    ui_.valueAvailable->setText(tr("checking..."));
+    ui_.valueActual->setText(QApplication::applicationVersion());
 }
 
 void Update::startUpdating(const QString& availableVersion,
                            const QStringList& replyStringList)
 {
-    ui->valueAvailable->setText(availableVersion);
+    ui_.valueAvailable->setText(availableVersion);
 
     fillFilesToUpdateLists(replyStringList);
 
@@ -69,7 +65,7 @@ void Update::startUpdating(const QString& availableVersion,
         return;
     }
 
-    ui->fileCount->setText(QLatin1Char('/') +
+    ui_.fileCount->setText(QLatin1Char('/') +
                            QString::number(filesToDownload_.count()));
 
     insertNewLineIntoDetails();
@@ -153,15 +149,15 @@ void Update::downloadFile(const QString& fileName)
 {
     insertInfoIntoDetails(fileName + QStringLiteral("... "));
     if (currentTriesCount_ == 0)
-        ui->currentFile->setText(
-            QString::number(ui->currentFile->text().toInt() + 1));
+        ui_.currentFile->setText(
+            QString::number(ui_.currentFile->text().toInt() + 1));
 
     QNetworkReply* reply{
         downloadManager_.get(Networking::getDownloadFileRequest(fileName))};
     LOG(LogTypes::NETWORK,
         QStringLiteral("Sent request for downloading file ") +
             QString(fileName));
-    ui->progressBar->reset();
+    ui_.progressBar->reset();
     connect(reply, &QNetworkReply::downloadProgress, this,
             &Update::updateProgress);
 }
@@ -268,7 +264,7 @@ void Update::finalizeUpdate()
     insertSuccessInfoIntoDetails(tr("Update complete") + QLatin1Char('.'));
     insertNewLineIntoDetails();
 
-    ui->valueActual->setText(ui->valueAvailable->text());
+    ui_.valueActual->setText(ui_.valueAvailable->text());
 
     QMessageBox::information(nullptr, tr("Update complete"),
                              tr("Application update is completed."));
@@ -278,8 +274,8 @@ void Update::finalizeUpdate()
 
 void Update::updateProgress(qint64 bytesRead, qint64 totalBytes)
 {
-    ui->progressBar->setMaximum(static_cast<int>(totalBytes));
-    ui->progressBar->setValue(static_cast<int>(bytesRead));
+    ui_.progressBar->setMaximum(static_cast<int>(totalBytes));
+    ui_.progressBar->setValue(static_cast<int>(bytesRead));
 }
 
 void Update::closeEvent(QCloseEvent* event)
@@ -292,8 +288,8 @@ void Update::closeEvent(QCloseEvent* event)
 
 void Update::showErrorMsg(const QString& error)
 {
-    if (!ui->details->isVisible())
-        ui->showDetails->setChecked(true);
+    if (!ui_.details->isVisible())
+        ui_.showDetails->setChecked(true);
 
     // Do not close app. Allow user to check details.
     QMessageBox::critical(this, tr("Error"), error);
@@ -301,36 +297,36 @@ void Update::showErrorMsg(const QString& error)
 
 void Update::insertNewSectionIntoDetails(const QString& msg)
 {
-    ui->details->insertHtml(QStringLiteral("<b><FONT COLOR=blue>") + msg +
+    ui_.details->insertHtml(QStringLiteral("<b><FONT COLOR=blue>") + msg +
                             QStringLiteral("</FONT></b><br>"));
-    ui->details->ensureCursorVisible();
+    ui_.details->ensureCursorVisible();
 }
 
 void Update::insertInfoIntoDetails(const QString& msg)
 {
-    ui->details->insertHtml(QStringLiteral("<FONT COLOR=black>") + msg +
+    ui_.details->insertHtml(QStringLiteral("<FONT COLOR=black>") + msg +
                             QStringLiteral("</FONT>"));
-    ui->details->ensureCursorVisible();
+    ui_.details->ensureCursorVisible();
 }
 
 void Update::insertNewLineIntoDetails()
 {
-    ui->details->insertHtml(QStringLiteral("<br>"));
-    ui->details->ensureCursorVisible();
+    ui_.details->insertHtml(QStringLiteral("<br>"));
+    ui_.details->ensureCursorVisible();
 }
 
 void Update::insertSuccessInfoIntoDetails(const QString& msg)
 {
-    ui->details->insertHtml(QStringLiteral("<b><FONT COLOR=green>") + msg +
+    ui_.details->insertHtml(QStringLiteral("<b><FONT COLOR=green>") + msg +
                             QStringLiteral("</FONT></b>"));
-    ui->details->ensureCursorVisible();
+    ui_.details->ensureCursorVisible();
 }
 
 void Update::insertErrorInfoIntoDetails(const QString& msg)
 {
-    ui->details->insertHtml(QStringLiteral("<b><FONT COLOR=red>") + msg +
+    ui_.details->insertHtml(QStringLiteral("<b><FONT COLOR=red>") + msg +
                             QStringLiteral("</FONT></b>"));
-    ui->details->ensureCursorVisible();
+    ui_.details->ensureCursorVisible();
 }
 
 void Update::showDetailsToggled(bool checked)
@@ -338,16 +334,16 @@ void Update::showDetailsToggled(bool checked)
     static int detailsSize{0};
     if (checked)
     {
-        const int minimumSize{ui->verticalLayout->minimumSize().height()};
-        ui->details->show();
-        setMinimumHeight(minimumSize + ui->details->minimumHeight());
+        const int minimumSize{ui_.verticalLayout->minimumSize().height()};
+        ui_.details->show();
+        setMinimumHeight(minimumSize + ui_.details->minimumHeight());
         resize(width(), minimumSize + detailsSize);
     }
     else
     {
-        detailsSize = ui->details->height();
-        ui->details->hide();
-        const int minimumSize{ui->verticalLayout->minimumSize().height()};
+        detailsSize = ui_.details->height();
+        ui_.details->hide();
+        const int minimumSize{ui_.verticalLayout->minimumSize().height()};
         setMinimumHeight(minimumSize);
     }
 }
