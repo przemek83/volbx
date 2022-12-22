@@ -22,6 +22,12 @@ class Logger : public QObject
 {
     Q_OBJECT
 public:
+    Logger& operator=(const Logger& other) = delete;
+    Logger(const Logger& other) = delete;
+
+    Logger& operator=(Logger&& other) = delete;
+    Logger(Logger&& other) = delete;
+
     static Logger& getInstance();
 
     void log(LogTypes type, const char* file, const char* function, int line,
