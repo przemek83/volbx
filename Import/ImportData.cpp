@@ -46,15 +46,14 @@ void ImportData::setupLayout()
     auto enableOpenButton = [=](bool activate) {
         buttonBox->button(QDialogButtonBox::Open)->setEnabled(activate);
     };
-    QTabWidget* tabWidget{
-        createTabWidgetWithContent(std::move(enableOpenButton))};
+    QTabWidget* tabWidget{createTabWidgetWithContent(enableOpenButton)};
 
     layout->addWidget(tabWidget);
     layout->addWidget(buttonBox);
 }
 
 QTabWidget* ImportData::createTabWidgetWithContent(
-    std::function<void(bool)> enableOpenButton)
+    const std::function<void(bool)>& enableOpenButton)
 {
     auto* tabWidget{new QTabWidget(this)};
 
@@ -66,7 +65,6 @@ QTabWidget* ImportData::createTabWidgetWithContent(
     connect(spreadsheetsTab, &ImportTab::datasetIsReady, enableOpenButton);
     tabWidget->addTab(spreadsheetsTab, tr("Spreadsheets"));
 
-    // If no datasets, than switch to spreadsheets tab.
     if (datasetsTab->datasetsAreAvailable())
         tabWidget->setCurrentWidget(datasetsTab);
     else

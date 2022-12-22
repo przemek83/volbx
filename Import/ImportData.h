@@ -29,5 +29,5 @@ private:
     void setupLayout();
 
     QTabWidget* createTabWidgetWithContent(
-        std::function<void(bool)> enableOpenButton);
+        const std::function<void(bool)>& enableOpenButton);
 };
