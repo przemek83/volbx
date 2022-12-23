@@ -14,6 +14,4 @@ Dock::Dock(const QString& titleText, QWidget* parent,
     setTitleBarWidget(&titleBar_);
 }
 
-void Dock::setNewToolTip(const QString& text) { setToolTip(text); }
-
 void Dock::toggleFloating() { setFloating(!isFloating()); }
