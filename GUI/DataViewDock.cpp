@@ -57,9 +57,3 @@ void DataViewDock::activateSelectButtons()
     titleBar_.setButtonEnabled(DockTitleBar::Button::SELECT_ALL, true);
     titleBar_.setButtonEnabled(DockTitleBar::Button::UNSELECT_ALL, true);
 }
-
-void DataViewDock::deactivateSelectButtons()
-{
-    titleBar_.setButtonEnabled(DockTitleBar::Button::SELECT_ALL, false);
-    titleBar_.setButtonEnabled(DockTitleBar::Button::UNSELECT_ALL, false);
-}

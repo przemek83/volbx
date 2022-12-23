@@ -14,8 +14,6 @@ public:
 
     void activateSelectButtons();
 
-    void deactivateSelectButtons();
-
 private Q_SLOTS:
     void quickExportData();
 
