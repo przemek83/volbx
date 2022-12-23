@@ -50,7 +50,7 @@ bool Configuration::load()
     return true;
 }
 
-bool Configuration::save()
+bool Configuration::save() const
 {
     const QString configXml{generateConfigXml()};
 

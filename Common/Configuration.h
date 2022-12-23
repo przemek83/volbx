@@ -38,7 +38,7 @@ public:
      * @brief Save configuration into file.
      * @return True if success, false otherwise.
      */
-    bool save();
+    bool save() const;
 
     /**
      * @brief Set update policy.
