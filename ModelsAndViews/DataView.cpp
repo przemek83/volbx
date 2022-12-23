@@ -65,21 +65,21 @@ std::tuple<bool, int, int> DataView::getTaggedColumns(
     return {true, pricePerMeterColumn, transactionDateColumn};
 }
 
-void DataView::setDelegate(int column, const TableModel* parentModel)
+void DataView::setDelegate(int columnIndex, const TableModel* parentModel)
 {
-    switch (parentModel->getColumnFormat(column))
+    switch (parentModel->getColumnFormat(columnIndex))
     {
         case ColumnType::NUMBER:
         {
             auto* delegate{new NumericDelegate(this)};
-            setItemDelegateForColumn(column, delegate);
+            setItemDelegateForColumn(columnIndex, delegate);
             break;
         }
 
         case ColumnType::DATE:
         {
             auto* delegate{new DateDelegate(this)};
-            setItemDelegateForColumn(column, delegate);
+            setItemDelegateForColumn(columnIndex, delegate);
             break;
         }
 
