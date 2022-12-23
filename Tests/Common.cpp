@@ -21,12 +21,6 @@ QString getDefinitionDumpSuffix()
     return definitionDumpSuffix;
 }
 
-QString getDefinitionRefSuffix()
-{
-    QString definitionDumpSuffix{QStringLiteral("_DefinitionRef.txt")};
-    return definitionDumpSuffix;
-}
-
 QString getDataTsvDumpSuffix()
 {
     QString dataTsvDumpSuffix{QStringLiteral("_tsvDump.txt")};

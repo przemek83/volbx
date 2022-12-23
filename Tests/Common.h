@@ -11,8 +11,6 @@ void saveFile(const QString& fileName, const QString& data);
 
 QString getDefinitionDumpSuffix();
 
-QString getDefinitionRefSuffix();
-
 QString getDataTsvDumpSuffix();
 
 QString getSpreadsheetsDir();
