@@ -29,16 +29,16 @@ Tool was originally created for real estate appraisal as it gives possibility, f
 ## Used tools and libs
 | Tool |  Windows | Lubuntu |
 | --- | --- | --- |
-| OS version | 10 v1909 | 20.04 |
-| GCC | 7.3.0 | 9.3.0 |
-| Cmake | 3.14 | 3.17 |
-| Git | 2.20 | 2.25 |
-| Svn | 1.11.1 | 1.13.0 |
-| Qt | 5.12.6 | 5.12.7 |
-| QtCreator | 4.12.0 | 4.13.0 |
-| Qwt | 6.1.4 | 6.1.4 |
+| OS version | 10 22H2 | 22.04 |
+| GCC | 8.1.0 | 9.5.0 |
+| Cmake | 3.25.0 | 3.25.0 |
+| Git | 2.38.1 | 2.34.1 |
+| Svn | 1.14.2 | 1.14.1 |
+| Qt | 5.15.2 | 5.15.2 |
+| QtCreator | 9.0.0 |9.0.0 |
+| Qwt | 6.1.6 | 6.1.6 |
 | QuaZip | 0.9 | 0.9 |
-| Zlib | 1.2.11 | 1.2.11 |
+| Zlib | 1.2.13 | 1.2.13 |
 | Eible | master | master |
 | QwtBle | master | master |
 | Wble | master | master |
