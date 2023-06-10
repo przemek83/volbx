@@ -16,26 +16,26 @@
 
 ## Description
 Volbx is a graphical tool used for data manipulation written in C++/Qt. User can:
- * load data - opens xlsx and ods spreadsheet files,
+ * load data - opens XLSX and ODS spreadsheet files,
  * filter data - filters panel can be used to define data range on each column,
  * select data - user can select rows on main data table, 
- * visualize data - multiple types of built in diagrams  (histogram, grouping, linear regression, quantiles) which adjusts dynamically according to user actions,
+ * visualize data - multiple types of built-in diagrams  (histogram, grouping, linear regression, quantiles) which adjusts dynamically according to user actions,
  * order data - each column can be ordered ascending or descending, 
- * export data - selected set of data, together with linked plots, can be exported to xlsx spreadsheet file or CSV. 
+ * export data - selected set of data, together with linked plots, can be exported to XLSX spreadsheet file or CSV. 
 
 ## History
-Tool was originally created for real estate appraisal as it gives possibility, for people working in that area, to estimate past, current and future value of analyzed properties. When project/start-up was dropped, I've decided to release less specialized application as open source project. Most advanced and dedicated for real estates functionalities were cut out, basic and intermediate ones stayed.
+The tool was originally created for real estate appraisal as it gives the possibility, for people working in that area, to estimate past, current and future value of analyzed properties. When project/start-up was dropped, I've decided to release a less specialized application as an open source project. Most advanced and dedicated for real estates functionalities were cut out, basic and intermediate ones stayed.
 
 ## Used tools and libs
 | Tool |  Windows | Lubuntu |
 | --- | --- | --- |
 | OS version | 10 22H2 | 22.04 |
 | GCC | 8.1.0 | 9.5.0 |
-| Cmake | 3.25.0 | 3.25.0 |
+| CMake | 3.25.0 | 3.25.0 |
 | Git | 2.38.1 | 2.34.1 |
-| Svn | 1.14.2 | 1.14.1 |
+| SVN | 1.14.2 | 1.14.1 |
 | Qt | 5.15.2 | 5.15.2 |
-| QtCreator | 9.0.0 |9.0.0 |
+| Qt Creator | 9.0.0 |9.0.0 |
 | Qwt | 6.1.6 | 6.1.6 |
 | QuaZip | 0.9 | 0.9 |
 | Zlib | 1.2.13 | 1.2.13 |
@@ -44,21 +44,21 @@ Tool was originally created for real estate appraisal as it gives possibility, f
 | Wble | master | master |
 
 ## Compilation and installation
-Use directly Cmake or QtCreator. Cmake **should**:
+Use directly CMake or Qt Creator. CMake **should**:
 - configure everything automatically, 
 - download dependencies using Git (QuaZip, Zlib, Eible, Wble, Qwtble) and SVN (Qwt), 
 - build dependencies, 
 - compile Volbx and create binaries.  
 
-This is of course happy path...  
+This is of course a happy path...  
 
 **TIPS**: set `CMAKE_PREFIX_PATH` env variable (should point to Qt) and add `qmake` location to `PATH` variable (QWT building expects it).   
 
 ## Licensing
 Volbx is published using LGPLv3 license. 
 
-Project uses following software and licenses:    
-* Qt, Qwt, QuaZip, Eible, Wble and Qwtble libraries - LGPL licences (more on qt-project.org, quazip.sourceforge.net, qwt.sourceforge.net and github.com/przemek83),    
+The project uses the following software and licenses:    
+* Qt, Qwt, QuaZip, Eible, Wble and Qwtble libraries - LGPL licenses (more on qt-project.org, quazip.sourceforge.net, qwt.sourceforge.net and github.com/przemek83),    
 * Zlib - Zlib license (can be found on zlib.net).
 
 ## Updater
@@ -70,7 +70,7 @@ Project uses following software and licenses:
 
 ## Setup update server
 1) Get a domain and hosting :)
-2) Create simple .php file which contains something similar to this:
+2) Create a simple .php file which contains something similar to this:
 ```
 <?
 echo("Volbx-Update-Info\n");
@@ -95,9 +95,9 @@ and
 
 **Remarks**:   
 - Updater is doing correctness checks using file sizes. Checksums should be used instead.   
-- When I've created VersionChecker I've decided to use simplest known by me solution. I do not know if it is safe and 'proper' enough but it worked for me. I'm not web developer ;)   
-- Windows needs admin rights (as of ~2012) to execute files having in name strings like "update", "install" or "setup". I've picked name `VersionChecker` to workaround that problem.   
-- On Windows OS updater cannot overwrite file which are being used (as of ~2012). There is a special mechanism in place for replacing used/locked files: 
+- When I've created VersionChecker I've decided to use the simplest known by me solution. I do not know if it is safe and 'proper' enough, but it worked for me. I'm not web developer ;)   
+- Windows needs admin rights (as of ~2012) to execute files having in name strings like "update", "install" or "setup". I've picked name `VersionChecker` to work around that problem.   
+- On Windows OS, updater cannot overwrite file which are being used (as of ~2012). There is a special mechanism in place for replacing used/locked files: 
     * close Volbx, 
     * run updater, 
     * download files,
