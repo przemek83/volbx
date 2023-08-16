@@ -2,7 +2,7 @@
 
 #include <QKeyEvent>
 #include <QMainWindow>
-#include <QRegExpValidator>
+#include <QRegularExpressionValidator>
 #include <QTabWidget>
 
 #include <Common/DatasetUtilities.h>
@@ -59,8 +59,8 @@ bool TabBar::eventFilter(QObject* obj, QEvent* event)
 
 void TabBar::setupLineEdit()
 {
-    auto* validator{new QRegExpValidator(
-        QRegExp(DatasetUtilities::getDatasetNameRegExp()), this)};
+    auto* validator{new QRegularExpressionValidator(
+        QRegularExpression(DatasetUtilities::getDatasetNameRegExp()), this)};
     nameEdit_.setValidator(validator);
     nameEdit_.hide();
     connect(&nameEdit_, &QLineEdit::editingFinished, this,

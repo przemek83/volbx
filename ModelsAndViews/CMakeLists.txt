@@ -1,21 +1,24 @@
 project(modelsAndViews)
 
-set(${PROJECT_NAME}_SOURCES
+set(SOURCES
     DataView.cpp
-    DataView.h
     DateDelegate.cpp
-    DateDelegate.h
     FilteringProxyModel.cpp
-    FilteringProxyModel.h
     NumericDelegate.cpp
-    NumericDelegate.h
     TableModel.cpp
-    TableModel.h
     PlotDataProvider.cpp
+)
+
+set(HEADERS
+    DataView.h
+    DateDelegate.h
+    FilteringProxyModel.h
+    NumericDelegate.h
+    TableModel.h
     PlotDataProvider.h
     TransactionData.h
-    )
+)
 
-ADD_LIBRARY(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SOURCES})
+ADD_LIBRARY(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
 
-target_link_libraries(${PROJECT_NAME} qwtble common shared Qt5::Core Qt5::Widgets)
+target_link_libraries(${PROJECT_NAME} qwtble common shared Qt6::Core Qt6::Widgets)

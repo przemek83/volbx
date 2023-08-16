@@ -7,7 +7,7 @@
 
 Dataset::Dataset(QString name, QObject* parent)
     : QObject(parent),
-      nullStringVariant_(QVariant::String),
+      nullStringVariant_(QMetaType(QMetaType::QString)),
       name_(std::move(name))
 {
 }
@@ -92,7 +92,7 @@ QStringList Dataset::getStringList(Column column) const
         if (row[column].isNull())
             continue;
 
-        if (row[column].type() == QVariant::String)
+        if (row[column].typeId() == QMetaType::QString)
         {
             listToFill.append(row[column].toString());
             continue;
@@ -238,7 +238,7 @@ void Dataset::updateSampleDataStrings(QVector<QVector<QVariant>>& data) const
 
         for (auto& sampleDataRow : data)
         {
-            if (sampleDataRow[i].type() != QVariant::Int)
+            if (sampleDataRow[i].typeId() != QMetaType::Int)
                 continue;
 
             const int index{sampleDataRow[i].toInt()};

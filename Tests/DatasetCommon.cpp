@@ -150,12 +150,13 @@ void compareExportDataWithDump(std::unique_ptr<Dataset> dataset,
         FileUtilities::loadFile(filePath + Common::getDataTsvDumpSuffix())
             .second};
 
-    QVector<QStringRef> actualDataLines{
-        actualData.splitRef(QRegExp(QStringLiteral("\n|\r\n")))};
-    QVector<QStringRef> expectedDataLines{
-        expectedData.splitRef(QRegExp(QStringLiteral("\n|\r\n")))};
+    QStringList actualDataLines{
+        actualData.split(QRegularExpression(QStringLiteral("\n|\r\n")))};
+    QStringList expectedDataLines{
+        expectedData.split(QRegularExpression(QStringLiteral("\n|\r\n")))};
     QCOMPARE(actualDataLines.size(), expectedDataLines.size());
     for (int i = 0; i < actualDataLines.size(); ++i)
+    {
         if (actualDataLines[i] != expectedDataLines[i])
         {
             const QString msg{"Difference in line " + QString::number(i + 1) +
@@ -163,6 +164,7 @@ void compareExportDataWithDump(std::unique_ptr<Dataset> dataset,
                               "\nExpected: " + expectedDataLines[i]};
             QFAIL(msg.toStdString().c_str());
         }
+    }
 }
 
 std::unique_ptr<Dataset> createDataset(const QString& fileName,

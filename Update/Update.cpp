@@ -121,7 +121,7 @@ void Update::initialInfoNetworkReplyFinished(QNetworkReply* reply)
 void Update::fillFilesToUpdateLists(const QStringList& serverInfoList)
 {
     // First line/element is correctness checker, second version.
-    const int filesCount{serverInfoList.size() - 2};
+    const qsizetype filesCount{serverInfoList.size() - 2};
     insertNewSectionIntoDetails(
         tr("Found") + QLatin1Char(' ') + QString::number(filesCount) +
         QLatin1Char(' ') + (filesCount != 1 ? tr("files") : tr("file")) +

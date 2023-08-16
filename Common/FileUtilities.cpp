@@ -13,7 +13,7 @@ std::pair<bool, QString> loadFile(const QString& name)
         return {false, ""};
 
     QTextStream stream(&file);
-    stream.setCodec("UTF-8");
+    stream.setEncoding(QStringConverter::Utf8);
     return {true, stream.readAll()};
 }
 }  // namespace FileUtilities

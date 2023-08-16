@@ -29,11 +29,11 @@ Export::Export(QWidget* tab, QWidget* parent)
 
     ui_->locationLineEdit->setText(
         Configuration::getInstance().getImportFilePath());
-    auto* validator{
-        new QRegExpValidator(QRegExp(QStringLiteral("[\\w]*")), ui_->prefix)};
+    auto* validator{new QRegularExpressionValidator(
+        QRegularExpression(QStringLiteral("[\\w]*")), ui_->prefix)};
     ui_->prefix->setValidator(validator);
     ui_->prefix->setText(tab_->windowTitle().replace(
-        QRegExp(QStringLiteral("[^\\w]")), QLatin1String("")));
+        QRegularExpression(QStringLiteral("[^\\w]")), QLatin1String("")));
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }

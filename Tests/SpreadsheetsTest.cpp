@@ -100,8 +100,8 @@ void SpreadsheetsTest::compareOdsAndXlsxExpectedData(const QString& fileSuffix)
         FileUtilities::loadFile(filePath + ".ods" + fileSuffix);
     QVERIFY(odsLoaded);
 
-    QVector<QStringRef> xlsxLines{xlsxDump.splitRef('\n')};
-    QVector<QStringRef> odsLines{odsDump.splitRef('\n')};
+    QStringList xlsxLines{xlsxDump.split('\n')};
+    QStringList odsLines{odsDump.split('\n')};
     QCOMPARE(xlsxLines.size(), odsLines.size());
     for (int i = 0; i < xlsxLines.size(); ++i)
         if (xlsxLines[i] != odsLines[i])

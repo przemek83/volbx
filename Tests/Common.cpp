@@ -11,7 +11,7 @@ void saveFile(const QString& fileName, const QString& data)
     file.open(QIODevice::WriteOnly);
 
     QTextStream stream(&file);
-    stream.setCodec("UTF-8");
+    stream.setEncoding(QStringConverter::Utf8);
     stream << data;
 }
 

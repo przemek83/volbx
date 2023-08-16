@@ -55,7 +55,7 @@ public:
         {
             if (data_[row][column].isNull())
                 return &nullStringVariant_;
-            if (data_[row][column].type() != QVariant::String)
+            if (data_[row][column].typeId() != QMetaType::QString)
                 return &sharedStrings_[data_[row][column].toInt()];
         }
         return &data_[row][column];

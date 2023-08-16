@@ -1,7 +1,7 @@
 ﻿#include "SaveDatasetAs.h"
 
 #include <QMessageBox>
-#include <QRegExpValidator>
+#include <QRegularExpressionValidator>
 
 #include <Common/DatasetUtilities.h>
 
@@ -14,8 +14,9 @@ SaveDatasetAs::SaveDatasetAs(QStringList usedNames, QWidget* parent)
 
     connect(ui_->name, &QLineEdit::textChanged, this,
             &SaveDatasetAs::nameChanged);
-    const QRegExp datasetNameRegExp(DatasetUtilities::getDatasetNameRegExp());
-    auto* validator{new QRegExpValidator(datasetNameRegExp, this)};
+    const QRegularExpression datasetNameRegExp(
+        DatasetUtilities::getDatasetNameRegExp());
+    auto* validator{new QRegularExpressionValidator(datasetNameRegExp, this)};
     ui_->name->setValidator(validator);
 
     connect(ui_->save, &QPushButton::clicked, this,

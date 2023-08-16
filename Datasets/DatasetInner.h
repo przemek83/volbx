@@ -2,7 +2,7 @@
 
 #include "Dataset.h"
 
-#include <Qt5Quazip/quazip.h>
+#include <quazip/quazip.h>
 
 class QuaZipFile;
 class QTextStream;

@@ -1,19 +1,22 @@
 project(common)
 
-set(${PROJECT_NAME}_SOURCES
+set(SOURCES
     Configuration.cpp
-    Configuration.h
     Constants.cpp
+    DatasetUtilities.cpp
+    TimeLogger.cpp
+    FileUtilities.cpp
+)
+
+set(HEADERS
+    Configuration.h
     Constants.h
     ColumnTag.h
-    DatasetUtilities.cpp
     DatasetUtilities.h
-    TimeLogger.cpp
     TimeLogger.h
-    FileUtilities.cpp
     FileUtilities.h
-    )
+)
 
-ADD_LIBRARY(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SOURCES})
+ADD_LIBRARY(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
 
-target_link_libraries(${PROJECT_NAME} shared Qt5::Core)
+target_link_libraries(${PROJECT_NAME} shared Qt6::Core)

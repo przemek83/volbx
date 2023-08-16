@@ -116,7 +116,7 @@ FilterStrings* FiltersDock::createStringsFilter(const TableModel* parentModel,
 {
     const QString columnName{getColumnName(parentModel, index)};
     QStringList list{parentModel->getStringList(index)};
-    const int itemCount{list.size()};
+    const qsizetype itemCount{list.size()};
     list.sort();
     auto* filter{new FilterStrings(columnName, std::move(list))};
     auto emitChangeForColumn{[=](QStringList bannedList) {

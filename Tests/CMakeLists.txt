@@ -1,47 +1,43 @@
 project(tests)
 
-qt5_add_resources(RESOURCES_TESTS testResources.qrc)
-add_custom_target(generatedTest_qrc DEPENDS ${RESOURCES_TESTS})
-
-set(${PROJECT_NAME}_SOURCES
-    qrc_testResources.cpp
+set(SOURCES
     Common.cpp
-    Common.h
     ConfigurationTest.cpp
-    ConfigurationTest.h
     InnerTests.cpp
-    InnerTests.h
     SpreadsheetsTest.cpp
-    SpreadsheetsTest.h
     Tests.cpp
-    PlotDataProviderTest.h
     PlotDataProviderTest.cpp
-    FilteringProxyModelTest.h
     FilteringProxyModelTest.cpp
     DetailedSpreadsheetsTest.cpp
-    DetailedSpreadsheetsTest.h
     DatasetDummy.cpp
-    DatasetDummy.h
     DatasetTest.cpp
-    DatasetTest.h
     DatasetCommon.cpp
+)
+qt_add_resources(SOURCES testResources.qrc)
+
+set(HEADERS
+    Common.h
+    ConfigurationTest.h
+    InnerTests.h
+    SpreadsheetsTest.h
+    PlotDataProviderTest.h
+    FilteringProxyModelTest.h
+    DetailedSpreadsheetsTest.h
+    DatasetDummy.h
+    DatasetTest.h
     DatasetCommon.h
-    )
+)
 
-add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})
+add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
-add_dependencies(${PROJECT_NAME} generatedTest_qrc)
-
-target_link_libraries(${PROJECT_NAME} common datasets modelsAndViews export Qt5::Xml Qt5::Test Qt5::Core)
-target_link_libraries(${PROJECT_NAME} optimized Qt5Quazip)
-target_link_libraries(${PROJECT_NAME} debug Qt5Quazipd)
+target_link_libraries(${PROJECT_NAME} common datasets modelsAndViews export Qt6::Xml Qt6::Test Qt6::Core)
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
-                   ${CMAKE_CURRENT_SOURCE_DIR}/TestFiles/Data $<TARGET_FILE_DIR:tests>/Data)
+                   "${CMAKE_CURRENT_SOURCE_DIR}/TestFiles/Data" "$<TARGET_FILE_DIR:tests>/Data")
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy 
-                   ${CMAKE_CURRENT_SOURCE_DIR}/TestFiles/config $<TARGET_FILE_DIR:tests>)
+                   "${CMAKE_CURRENT_SOURCE_DIR}/TestFiles/config" "$<TARGET_FILE_DIR:tests>")
            
 add_test(NAME tests COMMAND tests)

@@ -1,7 +1,7 @@
 #include "ExportVbx.h"
 
 #include <FilteringProxyModel.h>
-#include <Qt5Quazip/quazipfile.h>
+#include <quazip/quazipfile.h>
 #include <QAbstractItemView>
 #include <QFile>
 #include <QVariant>
@@ -75,24 +75,24 @@ void ExportVbx::variantToString(const QVariant& variant,
                                 QByteArray& destinationArray,
                                 [[maybe_unused]] char separator)
 {
-    switch (variant.type())
+    switch (variant.typeId())
     {
-        case QVariant::Double:
-        case QVariant::Int:
+        case QMetaType::Double:
+        case QMetaType::Int:
         {
             destinationArray.append(variant.toByteArray());
             break;
         }
 
-        case QVariant::Date:
-        case QVariant::DateTime:
+        case QMetaType::QDate:
+        case QMetaType::QDateTime:
         {
             destinationArray.append(
                 QByteArray::number(variant.toDate().toJulianDay()));
             break;
         }
 
-        case QVariant::String:
+        case QMetaType::QString:
         {
             QString tmpString(variant.toString());
             int& index = stringsMap_[tmpString];

@@ -97,7 +97,7 @@ QString SpreadsheetsImportTab::getValidDatasetName(const QFileInfo& fileInfo)
     const QString regexpString{DatasetUtilities::getDatasetNameRegExp().replace(
         QStringLiteral("["), QStringLiteral("[^"))};
     QString datasetName{
-        fileInfo.completeBaseName().remove(QRegExp(regexpString))};
+        fileInfo.completeBaseName().remove(QRegularExpression(regexpString))};
 
     if (datasetName.isEmpty())
         datasetName = tr("Dataset");

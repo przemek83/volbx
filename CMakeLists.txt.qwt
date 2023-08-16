@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.16)
 
 include(ExternalProject)
 
@@ -6,7 +6,8 @@ project(qwt NONE)
 
 ExternalProject_Add(qwt
     PREFIX qwt
-    SVN_REPOSITORY https://svn.code.sf.net/p/qwt/code/branches/qwt-6.1/
-    CONFIGURE_COMMAND ${QT_QMAKE_EXECUTABLE} ${CMAKE_BINARY_DIR}/qwt/qwt/src/qwt/qwt.pro
+    GIT_REPOSITORY https://git.code.sf.net/p/qwt/git
+    GIT_TAG 9e554a5e03bc3a1fe379bdddfa4d21ced2ed7995
+    CONFIGURE_COMMAND qmake ${CMAKE_BINARY_DIR}/qwt/qwt/src/qwt/qwt.pro
     INSTALL_COMMAND ""
 )

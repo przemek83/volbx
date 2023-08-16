@@ -1,6 +1,6 @@
 #include "DatasetInner.h"
 
-#include <Qt5Quazip/quazipfile.h>
+#include <quazip/quazipfile.h>
 #include <QCoreApplication>
 #include <QDir>
 #include <QDomDocument>
@@ -197,7 +197,7 @@ QVariant DatasetInner::getElementAsVariant(ColumnType columnFormat,
 
             case ColumnType::UNKNOWN:
                 Q_ASSERT(false);
-                elementAsVariant = QVariant(QVariant::String);
+                elementAsVariant = QVariant(QMetaType(QMetaType::QString));
                 break;
         }
     }
@@ -209,18 +209,18 @@ QVariant DatasetInner::getDefaultVariantForFormat(ColumnType format)
     switch (format)
     {
         case ColumnType::STRING:
-            return {QVariant::Int};
+            return QVariant(QMetaType(QMetaType::Int));
 
         case ColumnType::NUMBER:
-            return {QVariant::Double};
+            return QVariant(QMetaType(QMetaType::Double));
 
         case ColumnType::DATE:
-            return {QVariant::Date};
+            return QVariant(QMetaType(QMetaType::QDate));
 
         case ColumnType::UNKNOWN:
-            return {QVariant::String};
+            return QVariant(QMetaType(QMetaType::QString));
     }
-    return {QVariant::String};
+    return QVariant(QMetaType(QMetaType::QString));
 }
 
 QVector<QVariant> DatasetInner::fillRow(const QStringList& line,
@@ -269,7 +269,7 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::fillData(
         return {false, {}};
 
     QTextStream stream(&zipFile);
-    stream.setCodec("UTF-8");
+    stream.setEncoding(QStringConverter::Utf8);
     const QVector<QVector<QVariant>> data{parseData(stream, fillSamplesOnly)};
     LOG(LogTypes::IMPORT_EXPORT,
         "Loaded " + QString::number(data.size()) + " rows.");
@@ -281,7 +281,7 @@ QVector<QVector<QVariant>> DatasetInner::prepareContainerForAllData() const
 {
     QVector<QVector<QVariant>> data;
     data.resize(static_cast<int>(rowCount()));
-    const int activeColumnsCount{activeColumns_.size()};
+    const qsizetype activeColumnsCount{activeColumns_.size()};
     for (auto& row : data)
         row.resize(activeColumnsCount);
     return data;

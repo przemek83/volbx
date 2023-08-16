@@ -1,6 +1,6 @@
 #include "InnerTests.h"
 
-#include <Qt5Quazip/quazipfile.h>
+#include <quazip/quazipfile.h>
 #include <QBuffer>
 #include <QDirIterator>
 #include <QDomDocument>

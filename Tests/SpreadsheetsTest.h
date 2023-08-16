@@ -51,7 +51,6 @@ private:
                                           "test2",
                                           "testAccounts",
                                           "testDataWithPlot",
-                                          "testDataWithPlot",
                                           "test",
                                           "testFileData",
                                           "test01",

@@ -5,7 +5,7 @@
 #include <ExportData.h>
 #include <QHash>
 
-#include <Qt5Quazip/quazip.h>
+#include <quazip/quazip.h>
 
 class QAbstractItemModel;
 class QAbstractItemView;

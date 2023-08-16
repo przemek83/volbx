@@ -2,14 +2,21 @@
 #Workaround it using different name.
 project(VersionCheck)
 
-set(${PROJECT_NAME}_SOURCES
+set(SOURCES
     main.cpp
     Update.cpp
-    Update.h
-    Update.ui
-    UpdateProperties.h
     UpdateProperties.rc
-    )
+)
+
+set(HEADERS
+    Update.h
+    UpdateProperties.h
+)
+
+set(UI
+    Update.ui
+)
+source_group("UI Files" FILES ${UI})
 
 include_directories(${CMAKE_SOURCE_DIR})
 
@@ -21,6 +28,6 @@ if(APPLE)
     set(GUI_TYPE MACOSX_BUNDLE)
 endif(APPLE)
 
-add_executable(${PROJECT_NAME} ${GUI_TYPE} ${${PROJECT_NAME}_SOURCES})
+add_executable(${PROJECT_NAME} ${GUI_TYPE} ${SOURCES} ${HEADERS} ${UI})
 
-target_link_libraries(${PROJECT_NAME} shared Qt5::Core Qt5::Network Qt5::Gui)
+target_link_libraries(${PROJECT_NAME} shared Qt6::Core Qt6::Network Qt6::Gui)
