@@ -30,23 +30,22 @@ The tool was originally created for real estate appraisal as it gives the possib
 | Tool |  Windows | Lubuntu |
 | --- | --- | --- |
 | OS version | 10 22H2 | 22.04 |
-| GCC | 8.1.0 | 9.5.0 |
+| GCC | 11.2.0 | 11.3.0 |
 | CMake | 3.25.0 | 3.25.0 |
 | Git | 2.38.1 | 2.34.1 |
-| SVN | 1.14.2 | 1.14.1 |
-| Qt | 5.15.2 | 5.15.2 |
-| Qt Creator | 9.0.0 |9.0.0 |
-| Qwt | 6.1.6 | 6.1.6 |
-| QuaZip | 0.9 | 0.9 |
+| Qt | 6.5.2 | 6.5.2 |
+| Qt Creator | 10.0.2 | 10.0.2 |
+| Qwt | 6.2 | 6.2 |
+| QuaZip | 1.4 | 1.4 |
 | Zlib | 1.2.13 | 1.2.13 |
-| Eible | master | master |
-| QwtBle | master | master |
-| Wble | master | master |
+| Eible | 1.1.0 | 1.1.0 |
+| QwtBle | 1.1.0 | 1.1.0 |
+| Wble | 1.1.0 | 1.1.0 |
 
 ## Compilation and installation
 Use directly CMake or Qt Creator. CMake **should**:
 - configure everything automatically, 
-- download dependencies using Git (QuaZip, Zlib, Eible, Wble, Qwtble) and SVN (Qwt), 
+- download dependencies using Git (QuaZip, Zlib, Eible, Wble, Qwtble, Qwt), 
 - build dependencies, 
 - compile Volbx and create binaries.  
 
