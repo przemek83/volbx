@@ -1,43 +1,39 @@
-# C++ objects and libs
+# Prerequisites
+*.d
+
+# Compiled Object files
 *.slo
 *.lo
 *.o
-*.a
-*.la
-*.lai
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
 *.so
-*.dll
 *.dylib
+*.dll
 
-# Qt-es
-object_script.*.Release
-object_script.*.Debug
-*_plugin_import.cpp
-/.qmake.cache
-/.qmake.stash
-*.pro.user
-*.pro.user.*
-*.qbs.user
-*.qbs.user.*
-*.moc
-moc_*.cpp
-moc_*.h
-qrc_*.cpp
-ui_*.h
-*.qmlc
-*.jsc
-Makefile*
-*build-*
+# Fortran module files
+*.mod
+*.smod
 
-# Qt unit tests
-target_wrapper.*
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
 
-# QtCreator
-*.autosave
+# Executables
+*.exe
+*.out
+*.app
 
-# QtCreator Qml
-*.qmlproject.user
-*.qmlproject.user.*
-
-# QtCreator CMake
-CMakeLists.txt.user*
+# Other
+/.vscode
+/build
+/**/__pycache__
+/.cache
+*.user
