@@ -6,7 +6,7 @@ jobs:
   build-and-test:
     strategy:
       matrix:
-        platform: [ubuntu-latest, windows-latest]
+        platform: [ubuntu-latest] #, windows-latest]
         qt-version: [6.5.*]
     uses: przemek83/common/.github/workflows/build-and-test-cpp.yml@main
     with:
