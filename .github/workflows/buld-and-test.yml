@@ -8,8 +8,7 @@ jobs:
       matrix:
         platform: [ubuntu-latest, windows-latest]
         qt-version: [6.5.*]
-    uses: przemek83/common/.github/workflows/build-and-test-cpp.yml@main
+    uses: przemek83/workflows/.github/workflows/build-and-test-qt.yml@main
     with:
       platform: ${{ matrix.platform }}
-      use-qt: true
       qt-version: ${{ matrix.qt-version }}
