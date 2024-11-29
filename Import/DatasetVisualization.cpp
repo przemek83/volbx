@@ -199,14 +199,21 @@ void DatasetVisualization::setTaggedColumnInDataset(ColumnTag tag,
 QString DatasetVisualization::getTypeDisplayNameForGivenColumn(int column) const
 {
     const ColumnType columnType{dataset_->getColumnFormat(column)};
-    if (columnType == ColumnType::STRING)
-        return typeNameString_;
-    if (columnType == ColumnType::NUMBER)
-        return typeNameFloat_;
-    if (columnType == ColumnType::DATE)
-        return typeNameDate_;
 
-    Q_ASSERT(false);
+    switch (columnType)
+    {
+        case ColumnType::STRING:
+            return typeNameString_;
+
+        case ColumnType::NUMBER:
+            return typeNameFloat_;
+
+        case ColumnType::DATE:
+            return typeNameDate_;
+
+        default:
+            Q_ASSERT(false);
+    }
 }
 
 void DatasetVisualization::fillTaggedColumnCombos()

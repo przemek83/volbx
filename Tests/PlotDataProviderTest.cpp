@@ -60,8 +60,9 @@ void PlotDataProviderTest::testRecomputeGroupingData()
 
     // General Quantiles data is empty as recompute() was not called.
     checkGroupingDataChangedSignal(
-        spy, QVector{QStringLiteral("column1"), QStringLiteral("column2")},
-        QVector{firstQuantiles_, secondQuantiles_}, Quantiles());
+        spy,
+        QVector<QString>{QStringLiteral("column1"), QStringLiteral("column2")},
+        QVector<Quantiles>{firstQuantiles_, secondQuantiles_}, Quantiles());
 }
 
 void PlotDataProviderTest::testRecomputeGroupingDataEmptyCalcData()
@@ -90,9 +91,10 @@ void PlotDataProviderTest::testRecompute_data()
 
     QTest::newRow("Test recompute")
         << calcData_ << mainQuantiles_
-        << QVector{QStringLiteral("column1"), QStringLiteral("column2")}
-        << QVector{firstQuantiles_, secondQuantiles_} << points_ << regression_
-        << yAxisValues_;
+        << QVector<QString>{QStringLiteral("column1"),
+                            QStringLiteral("column2")}
+        << QVector<Quantiles>{firstQuantiles_, secondQuantiles_} << points_
+        << regression_ << yAxisValues_;
 }
 
 void PlotDataProviderTest::testRecompute()
