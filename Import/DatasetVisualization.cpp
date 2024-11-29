@@ -198,9 +198,8 @@ void DatasetVisualization::setTaggedColumnInDataset(ColumnTag tag,
 
 QString DatasetVisualization::getTypeDisplayNameForGivenColumn(int column) const
 {
-    const ColumnType columnType{dataset_->getColumnFormat(column)};
-
-    switch (columnType)
+    switch (const ColumnType columnType{dataset_->getColumnFormat(column)};
+            columnType)
     {
         case ColumnType::STRING:
             return typeNameString_;
@@ -214,6 +213,8 @@ QString DatasetVisualization::getTypeDisplayNameForGivenColumn(int column) const
         default:
             Q_ASSERT(false);
     }
+
+    return typeNameString_;
 }
 
 void DatasetVisualization::fillTaggedColumnCombos()
