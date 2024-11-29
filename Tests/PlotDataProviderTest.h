@@ -3,7 +3,7 @@
 #include <QPointF>
 
 #include <ColumnType.h>
-#include <Quantiles.h>
+#include <qwtble/Quantiles.h>
 
 #include "TransactionData.h"
 

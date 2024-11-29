@@ -1,6 +1,6 @@
 #include "DateDelegate.h"
 
-#include <QwtBleUtilities.h>
+#include <qwtble/QwtBleUtilities.h>
 
 DateDelegate::DateDelegate(QObject* parent)
     : QStyledItemDelegate(parent),

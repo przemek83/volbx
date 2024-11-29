@@ -1,8 +1,8 @@
 #include "TabWidget.h"
 
-#include <BasicDataPlot.h>
-#include <GroupPlotUI.h>
-#include <HistogramPlotUI.h>
+#include <qwtble/BasicDataPlot.h>
+#include <qwtble/GroupPlotUI.h>
+#include <qwtble/HistogramPlotUI.h>
 #include <QApplication>
 
 #include <Common/TimeLogger.h>
@@ -163,14 +163,16 @@ void TabWidget::addBasicPlot()
         return;
     }
 
-    const auto createBasicPlot{[=]() -> BasicDataPlot* {
-        DataView* view{getCurrentDataView()};
-        auto* basicPlot{new BasicDataPlot()};
-        connect(&(view->getPlotDataProvider()),
-                &PlotDataProvider::basicPlotDataChanged, basicPlot,
-                &BasicDataPlot::setNewData);
-        return basicPlot;
-    }};
+    const auto createBasicPlot{[=]() -> BasicDataPlot*
+                               {
+                                   DataView* view{getCurrentDataView()};
+                                   auto* basicPlot{new BasicDataPlot()};
+                                   connect(
+                                       &(view->getPlotDataProvider()),
+                                       &PlotDataProvider::basicPlotDataChanged,
+                                       basicPlot, &BasicDataPlot::setNewData);
+                                   return basicPlot;
+                               }};
 
     addPlot<BasicDataPlot>(tr("Quantiles"), createBasicPlot);
 }
@@ -183,14 +185,16 @@ void TabWidget::addHistogramPlot()
         return;
     }
 
-    const auto createHistogramPlot{[=]() -> HistogramPlotUI* {
-        DataView* view{getCurrentDataView()};
-        auto* histogramPlot{new HistogramPlotUI()};
-        connect(&(view->getPlotDataProvider()),
-                &PlotDataProvider::fundamentalDataChanged, histogramPlot,
-                &HistogramPlotUI::setNewData);
-        return histogramPlot;
-    }};
+    const auto createHistogramPlot{
+        [=]() -> HistogramPlotUI*
+        {
+            DataView* view{getCurrentDataView()};
+            auto* histogramPlot{new HistogramPlotUI()};
+            connect(&(view->getPlotDataProvider()),
+                    &PlotDataProvider::fundamentalDataChanged, histogramPlot,
+                    &HistogramPlotUI::setNewData);
+            return histogramPlot;
+        }};
 
     addPlot<HistogramPlotUI>(tr("Histogram"), createHistogramPlot);
 }
@@ -203,17 +207,20 @@ void TabWidget::addGroupingPlot()
         return;
     }
 
-    const auto createGroupingPlot{[=]() -> GroupPlotUI* {
-        DataView* view{getCurrentDataView()};
-        TableModel* model{getCurrentDataModel()};
-        auto* groupPlot{new GroupPlotUI(getStringColumnsWithIndexes(model))};
-        connect(&(view->getPlotDataProvider()),
-                &PlotDataProvider::groupingPlotDataChanged, groupPlot,
-                &GroupPlotUI::setNewData);
-        connect(groupPlot, &GroupPlotUI::traitIndexChanged, view,
-                &DataView::groupingColumnChanged);
-        return groupPlot;
-    }};
+    const auto createGroupingPlot{
+        [=]() -> GroupPlotUI*
+        {
+            DataView* view{getCurrentDataView()};
+            TableModel* model{getCurrentDataModel()};
+            auto* groupPlot{
+                new GroupPlotUI(getStringColumnsWithIndexes(model))};
+            connect(&(view->getPlotDataProvider()),
+                    &PlotDataProvider::groupingPlotDataChanged, groupPlot,
+                    &GroupPlotUI::setNewData);
+            connect(groupPlot, &GroupPlotUI::traitIndexChanged, view,
+                    &DataView::groupingColumnChanged);
+            return groupPlot;
+        }};
 
     addPlot<GroupPlotUI>(tr("Grouping"), createGroupingPlot);
 }

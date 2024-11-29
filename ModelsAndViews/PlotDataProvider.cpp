@@ -1,6 +1,6 @@
 #include "PlotDataProvider.h"
 
-#include <QwtBleUtilities.h>
+#include <qwtble/QwtBleUtilities.h>
 #include <QPointF>
 
 PlotDataProvider::PlotDataProvider(QObject* parent) : QObject(parent) {}

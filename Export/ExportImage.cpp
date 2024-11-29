@@ -1,7 +1,7 @@
 #include "ExportImage.h"
 
-#include <PlotBase.h>
 #include <qwt_plot_renderer.h>
+#include <qwtble/PlotBase.h>
 #include <QApplication>
 #include <QClipboard>
 #include <QImage>

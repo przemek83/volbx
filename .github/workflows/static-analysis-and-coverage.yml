@@ -1,0 +1,11 @@
+name: Static analysis and coverage
+
+on: [push, pull_request]
+
+jobs:
+  analyze:
+    uses: przemek83/common/.github/workflows/static-analysis-and-coverage-cpp.yml@main
+    secrets: inherit
+    with:
+      use-qt: true
+      qt-version: 6.5.*

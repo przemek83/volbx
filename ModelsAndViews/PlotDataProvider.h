@@ -1,7 +1,7 @@
 #pragma once
 
 #include <ColumnType.h>
-#include <Quantiles.h>
+#include <qwtble/Quantiles.h>
 #include <QObject>
 
 #include "TransactionData.h"

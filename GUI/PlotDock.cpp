@@ -1,6 +1,6 @@
 #include "PlotDock.h"
 
-#include <PlotBase.h>
+#include <qwtble/PlotBase.h>
 
 #include <Export/ExportImage.h>
 

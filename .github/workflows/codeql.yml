@@ -1,0 +1,16 @@
+name: "CodeQL for Qt project analysis"
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '29 2 * * 0'
+
+jobs:
+  analyze:
+    uses: przemek83/common/.github/workflows/codeql-cpp.yml@main
+    with:
+      use-qt: true
+      qt-version: 6.5.*
