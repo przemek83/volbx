@@ -2,45 +2,13 @@ name: Build & test
 
 on: [push, pull_request]
 
-env:
-  BUILD_TYPE: Release
-
 jobs:
-  build:
-    name: Build & test
-    runs-on: windows-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install Qt
-        uses: jurplel/install-qt-action@v4
-        with:
-          version: 6.5.*
-          modules: 'qt5compat'
-
-      - name: Set CL=/MP environment variable on Windows 
-        if: runner.os == 'Windows'
-        shell: bash
-        run: echo "CL=/MP" >> $GITHUB_ENV
-
-      - name: Configure CMake
-        run: cmake -B ${{ github.workspace }}/build -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
-
-      - name: Build
-        run: cmake --build ${{ github.workspace }}/build --config ${{ env.BUILD_TYPE }} --parallel 4
-
-      - name: Set QT_QPA_PLATFORM
-        shell: bash
-        run: echo "QT_QPA_PLATFORM=offscreen" >> $GITHUB_ENV
-
-      - name: Run tests
-        continue-on-error: true
-        working-directory: ${{ github.workspace }}/build
-        run: ctest -C ${{ env.BUILD_TYPE }} -E 'Benchmark'
-
-      - name: Debug
-        working-directory: ${{ github.workspace }}/build
-        run: |
-          type "D:/a/volbx/volbx/build/Testing/Temporary/LastTest.log"
+  build-and-test:
+    strategy:
+      matrix:
+        platform: [ubuntu-latest, windows-latest]
+        qt-version: [6.5.*]
+    uses: przemek83/workflows/.github/workflows/build-and-test-qt.yml@main
+    with:
+      platform: ${{ matrix.platform }}
+      qt-version: ${{ matrix.qt-version }}
