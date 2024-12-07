@@ -20,6 +20,11 @@ jobs:
           version: 6.5.*
           modules: 'qt5compat'
 
+      - name: Set CL=/MP environment variable on Windows 
+        if: runner.os == 'Windows'
+        shell: bash
+        run: echo "CL=/MP" >> $GITHUB_ENV
+
       - name: Configure CMake
         run: cmake -B ${{ github.workspace }}/build -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
 
