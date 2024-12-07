@@ -3,7 +3,7 @@ include(FetchContent)
 FetchContent_Declare(
     qwtble
     GIT_REPOSITORY https://github.com/przemek83/qwtble.git
-    GIT_TAG 82c46972ca85fe7b96079f28443b51f90a5a2677
+    GIT_TAG 545eb5ad82459f687efc5bdd2525058e80cdfbde
 )
 
 FetchContent_MakeAvailable(qwtble)
