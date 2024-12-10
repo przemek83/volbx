@@ -15,8 +15,9 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets Core Gui Network Xml Test)
 qt_standard_project_setup()
 
 include(CMakeLists.txt.qwtble)
+include(CMakeLists.txt.wble)
 
-set(THIRD_PARTY_LIBS wble eible zlib quazip)
+set(THIRD_PARTY_LIBS eible zlib quazip)
 foreach(library ${THIRD_PARTY_LIBS})
     configure_file(CMakeLists.txt.${library} ${library}/CMakeLists.txt)
     execute_process(COMMAND ${CMAKE_COMMAND} -G ${CMAKE_GENERATOR} .
@@ -39,7 +40,6 @@ find_package(QuaZip-Qt6 CONFIG REQUIRED)
 link_directories(${FETCHCONTENT_BASE_DIR}/qwtble-build/qwt/install/lib)
 link_directories(${CMAKE_BINARY_DIR}/zlib/install/bin)
 link_directories(${CMAKE_BINARY_DIR}/quazip/install/lib)
-link_directories(${CMAKE_BINARY_DIR}/wble/install/lib)
 link_directories(${CMAKE_BINARY_DIR}/eible/install/lib)
 
 include_directories(${CMAKE_SOURCE_DIR})

@@ -3,7 +3,7 @@
 #include <cmath>
 #include <future>
 
-#include <ProgressBarInfinite.h>
+#include <wble/ProgressBarInfinite.h>
 #include <QElapsedTimer>
 #include <QFileDialog>
 #include <QFileInfo>

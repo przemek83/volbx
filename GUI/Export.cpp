@@ -2,8 +2,8 @@
 
 #include <ExportDsv.h>
 #include <ExportXlsx.h>
-#include <ProgressBarCounter.h>
 #include <qwtble/PlotBase.h>
+#include <wble/ProgressBarCounter.h>
 #include <QDir>
 #include <QElapsedTimer>
 #include <QFileDialog>

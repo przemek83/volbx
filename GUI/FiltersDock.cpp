@@ -1,9 +1,9 @@
 #include "FiltersDock.h"
 
-#include <Filter.h>
-#include <FilterDates.h>
-#include <FilterDoubles.h>
-#include <FilterStrings.h>
+#include <wble/Filter.h>
+#include <wble/FilterDates.h>
+#include <wble/FilterDoubles.h>
+#include <wble/FilterStrings.h>
 #include <QLineEdit>
 #include <QScrollArea>
 #include <QVBoxLayout>
@@ -152,8 +152,8 @@ FilterNumbers* FiltersDock::createNumbersFilter(const TableModel* parentModel,
     const QString columnName{getColumnName(parentModel, index)};
     const auto [min, max]{parentModel->getNumericRange(index)};
     auto* filter{new FilterDoubles(columnName, min, max)};
-    auto emitChangeForColumn{
-        [=](double from, double to) { Q_EMIT filterNumbers(index, from, to); }};
+    auto emitChangeForColumn{[=](double from, double to)
+                             { Q_EMIT filterNumbers(index, from, to); }};
     connect(filter, &FilterDoubles::newNumericFilter, this,
             emitChangeForColumn);
     filter->setCheckable(true);

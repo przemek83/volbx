@@ -1,6 +1,6 @@
 #include "VolbxMain.h"
 
-#include <ProgressBarCounter.h>
+#include <wble/ProgressBarCounter.h>
 #include <QActionGroup>
 #include <QDir>
 #include <QElapsedTimer>

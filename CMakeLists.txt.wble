@@ -1,12 +1,9 @@
-cmake_minimum_required(VERSION 3.16)
+include(FetchContent)
 
-include(ExternalProject)
-
-project(wble NONE)
-
-ExternalProject_Add(wble
-    PREFIX wble
+FetchContent_Declare(
+    wble
     GIT_REPOSITORY https://github.com/przemek83/wble.git
-    GIT_TAG v1.1.0
-    CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/wble/install
+    GIT_TAG d91243e7696acb4f6dde28f71d264b6ac55377d9
 )
+
+FetchContent_MakeAvailable(wble)
