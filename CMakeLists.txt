@@ -10,6 +10,13 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+option(CODE_COVERAGE "Collect coverage" OFF)
+
+if(CODE_COVERAGE)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 --coverage")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 --coverage")
+endif()
+
 find_package(Threads REQUIRED)
 find_package(Qt6 REQUIRED COMPONENTS Widgets Core Gui Network Xml Test)
 qt_standard_project_setup()
