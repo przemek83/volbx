@@ -1,4 +1,4 @@
-name: "CodeQL for Qt project analysis"
+name: "CodeQL"
 
 on:
   push:
@@ -10,7 +10,6 @@ on:
 
 jobs:
   analyze:
-    uses: przemek83/common/.github/workflows/codeql-cpp.yml@main
+    uses: przemek83/workflows/.github/workflows/codeql-qt.yml@main
     with:
-      use-qt: true
       qt-version: 6.5.*
