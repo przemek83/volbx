@@ -14,13 +14,9 @@ find_package(Threads REQUIRED)
 find_package(Qt6 REQUIRED COMPONENTS Widgets Core Gui Network Xml Test)
 qt_standard_project_setup()
 
-include(CMakeLists.txt.qwtble)
-include(CMakeLists.txt.wble)
-include(CMakeLists.txt.eible)
-
-include_directories(${FETCHCONTENT_BASE_DIR}/qwtble-build/qwt/install/include)
-
-link_directories(${FETCHCONTENT_BASE_DIR}/qwtble-build/qwt/install/lib)
+include(QwtbleConfig.cmake)
+include(WbleConfig.cmake)
+include(EibleConfig.cmake)
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(GUI)

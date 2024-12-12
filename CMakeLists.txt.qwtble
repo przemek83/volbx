@@ -1,9 +1,0 @@
-include(FetchContent)
-
-FetchContent_Declare(
-    qwtble
-    GIT_REPOSITORY https://github.com/przemek83/qwtble.git
-    GIT_TAG 053e98689130f21bba4125eb946d196403859b3d
-)
-
-FetchContent_MakeAvailable(qwtble)
