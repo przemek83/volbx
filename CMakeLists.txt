@@ -18,82 +18,82 @@ include(QwtbleConfig.cmake)
 include(WbleConfig.cmake)
 include(EibleConfig.cmake)
 
-include_directories(${CMAKE_SOURCE_DIR})
-include_directories(GUI)
-include_directories(Import)
-include_directories(Shared)
-include_directories(Common)
-include_directories(Datasets)
-include_directories(ModelsAndViews)
-include_directories(Export)
+include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(src/GUI)
+include_directories(src/Import)
+include_directories(src/Shared)
+include_directories(src/Common)
+include_directories(src/Datasets)
+include_directories(src/ModelsAndViews)
+include_directories(src/Export)
 
-add_subdirectory(Shared)
-add_subdirectory(Common)
-add_subdirectory(Datasets)
-add_subdirectory(ModelsAndViews)
-add_subdirectory(Export)
+add_subdirectory(src/Shared)
+add_subdirectory(src/Common)
+add_subdirectory(src/Datasets)
+add_subdirectory(src/ModelsAndViews)
+add_subdirectory(src/Export)
 
 set(SOURCES
-    Volbx/main.cpp
-    Volbx/Volbx.ico
-    Volbx/VolbxProperties.rc
-    GUI/About.cpp
-    GUI/CheckUpdates.cpp
-    GUI/DockTitleBar.cpp
-    GUI/Dock.cpp
-    GUI/Export.cpp
-    GUI/FiltersDock.cpp
-    GUI/Tab.cpp
-    GUI/TabWidget.cpp
-    GUI/PlotDock.cpp
-    GUI/SaveDatasetAs.cpp
-    GUI/TabBar.cpp
-    GUI/DataViewDock.cpp
-    GUI/VolbxMain.cpp
-    Import/ColumnsPreview.cpp
-    Import/DatasetVisualization.cpp
-    Import/DatasetImportTab.cpp
-    Import/DatasetsListBrowser.cpp
-    Import/ImportData.cpp
-    Import/ImportTab.cpp
-    Import/SpreadsheetsImportTab.cpp
+    src/Volbx/main.cpp
+    src/Volbx/Volbx.ico
+    src/Volbx/VolbxProperties.rc
+    src/GUI/About.cpp
+    src/GUI/CheckUpdates.cpp
+    src/GUI/DockTitleBar.cpp
+    src/GUI/Dock.cpp
+    src/GUI/Export.cpp
+    src/GUI/FiltersDock.cpp
+    src/GUI/Tab.cpp
+    src/GUI/TabWidget.cpp
+    src/GUI/PlotDock.cpp
+    src/GUI/SaveDatasetAs.cpp
+    src/GUI/TabBar.cpp
+    src/GUI/DataViewDock.cpp
+    src/GUI/VolbxMain.cpp
+    src/Import/ColumnsPreview.cpp
+    src/Import/DatasetVisualization.cpp
+    src/Import/DatasetImportTab.cpp
+    src/Import/DatasetsListBrowser.cpp
+    src/Import/ImportData.cpp
+    src/Import/ImportTab.cpp
+    src/Import/SpreadsheetsImportTab.cpp
 )
 qt_add_resources(SOURCES Resources/Resources.qrc)
 
 set(HEADERS
-    Volbx/VolbxProperties.h
-    GUI/About.h
-    GUI/CheckUpdates.h
-    GUI/DockTitleBar.h
-    GUI/Dock.h
-    GUI/Export.h
-    GUI/FiltersDock.h
-    GUI/Tab.h
-    GUI/TabWidget.h
-    GUI/PlotDock.h
-    GUI/SaveDatasetAs.h
-    GUI/TabBar.h
-    GUI/DataViewDock.h
-    GUI/VolbxMain.h
-    Import/ColumnsPreview.h
-    Import/DatasetVisualization.h
-    Import/DatasetImportTab.h
-    Import/DatasetsListBrowser.h
-    Import/ImportData.h
-    Import/ImportTab.h
-    Import/SpreadsheetsImportTab.h
+    src/Volbx/VolbxProperties.h
+    src/GUI/About.h
+    src/GUI/CheckUpdates.h
+    src/GUI/DockTitleBar.h
+    src/GUI/Dock.h
+    src/GUI/Export.h
+    src/GUI/FiltersDock.h
+    src/GUI/Tab.h
+    src/GUI/TabWidget.h
+    src/GUI/PlotDock.h
+    src/GUI/SaveDatasetAs.h
+    src/GUI/TabBar.h
+    src/GUI/DataViewDock.h
+    src/GUI/VolbxMain.h
+    src/Import/ColumnsPreview.h
+    src/Import/DatasetVisualization.h
+    src/Import/DatasetImportTab.h
+    src/Import/DatasetsListBrowser.h
+    src/Import/ImportData.h
+    src/Import/ImportTab.h
+    src/Import/SpreadsheetsImportTab.h
 )
 
 set(UI
-    GUI/About.ui
-    GUI/CheckUpdates.ui
-    GUI/DockTitleBar.ui
-    GUI/Export.ui
-    GUI/SaveDatasetAs.ui
-    GUI/VolbxMain.ui
-    Import/SpreadsheetsImportTab.ui
-    Import/DatasetsListBrowser.ui
-    Import/DatasetVisualization.ui
+    src/GUI/About.ui
+    src/GUI/CheckUpdates.ui
+    src/GUI/DockTitleBar.ui
+    src/GUI/Export.ui
+    src/GUI/SaveDatasetAs.ui
+    src/GUI/VolbxMain.ui
+    src/Import/SpreadsheetsImportTab.ui
+    src/Import/DatasetsListBrowser.ui
+    src/Import/DatasetVisualization.ui
 )
 source_group("UI Files" FILES ${UI})
 
@@ -115,7 +115,7 @@ else()
     target_link_libraries(${PROJECT_NAME} qwt)
 endif()
 
-add_subdirectory(Update)
+add_subdirectory(src/Update)
 
 enable_testing()
 add_subdirectory(Tests)
