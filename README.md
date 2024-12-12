@@ -1,3 +1,6 @@
+[![Build & test](https://github.com/przemek83/volbx/actions/workflows/buld-and-test.yml/badge.svg)](https://github.com/przemek83/volbx/actions/workflows/buld-and-test.yml)
+[![CodeQL](https://github.com/przemek83/volbx/actions/workflows/codeql.yml/badge.svg)](https://github.com/przemek83/volbx/actions/workflows/codeql.yml)
+
 ## Table of content
 - [Example view](#example-view)
 - [Description](#description)
