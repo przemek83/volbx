@@ -2,6 +2,12 @@
 [![CodeQL](https://github.com/przemek83/volbx/actions/workflows/codeql.yml/badge.svg)](https://github.com/przemek83/volbx/actions/workflows/codeql.yml)
 [![codecov](https://codecov.io/gh/przemek83/volbx/graph/badge.svg?token=4E63PV9WM1)](https://codecov.io/gh/przemek83/volbx)
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=przemek83_volbx&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=przemek83_volbx)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=przemek83_volbx&metric=bugs)](https://sonarcloud.io/summary/new_code?id=przemek83_volbx)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=przemek83_volbx&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=przemek83_volbx)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=przemek83_volbx&metric=coverage)](https://sonarcloud.io/summary/new_code?id=przemek83_volbx)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=przemek83_volbx&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=przemek83_volbx)
+
 ## Table of content
 - [Example view](#example-view)
 - [Description](#description)
