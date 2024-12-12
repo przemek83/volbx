@@ -1,43 +1,51 @@
-project(tests)
+SET(PROJECT_TESTS ${PROJECT_NAME}-tests)
 
-set(SOURCES
+set(${PROJECT_TESTS}_SOURCES
+    Common.h
     Common.cpp
+    ConfigurationTest.h
     ConfigurationTest.cpp
+    InnerTests.h
     InnerTests.cpp
+    SpreadsheetsTest.h
     SpreadsheetsTest.cpp
     Tests.cpp
+    PlotDataProviderTest.h
     PlotDataProviderTest.cpp
+    FilteringProxyModelTest.h
     FilteringProxyModelTest.cpp
+    DetailedSpreadsheetsTest.h
     DetailedSpreadsheetsTest.cpp
+    DatasetDummy.h
     DatasetDummy.cpp
+    DatasetTest.h
     DatasetTest.cpp
+    DatasetCommon.h
     DatasetCommon.cpp
 )
-qt_add_resources(SOURCES testResources.qrc)
+qt_add_resources(${PROJECT_TESTS}_SOURCES testResources.qrc)
 
-set(HEADERS
-    Common.h
-    ConfigurationTest.h
-    InnerTests.h
-    SpreadsheetsTest.h
-    PlotDataProviderTest.h
-    FilteringProxyModelTest.h
-    DetailedSpreadsheetsTest.h
-    DatasetDummy.h
-    DatasetTest.h
-    DatasetCommon.h
-)
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
-target_link_libraries(${PROJECT_NAME} common datasets modelsAndViews export Qt6::Xml Qt6::Test Qt6::Core)
+add_executable(${PROJECT_TESTS} ${${PROJECT_TESTS}_SOURCES})
 
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+target_link_libraries(${PROJECT_TESTS} common datasets modelsAndViews export Qt6::Xml Qt6::Test Qt6::Core)
+
+add_custom_command(TARGET ${PROJECT_TESTS} POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
-                   "${CMAKE_CURRENT_SOURCE_DIR}/TestFiles/Data" "$<TARGET_FILE_DIR:tests>/Data")
+                   "${CMAKE_CURRENT_SOURCE_DIR}/TestFiles/Data" "$<TARGET_FILE_DIR:${PROJECT_TESTS}>/Data")
 
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+add_custom_command(TARGET ${PROJECT_TESTS} POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy 
-                   "${CMAKE_CURRENT_SOURCE_DIR}/TestFiles/config" "$<TARGET_FILE_DIR:tests>")
+                   "${CMAKE_CURRENT_SOURCE_DIR}/TestFiles/config" "$<TARGET_FILE_DIR:${PROJECT_TESTS}>")
+
+if (WIN32)
+    add_custom_command(TARGET ${PROJECT_TESTS} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_BINARY_DIR}/zlib/install/bin" "$<TARGET_FILE_DIR:${PROJECT_TESTS}>")
+    add_custom_command(TARGET ${PROJECT_TESTS} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${FETCHCONTENT_BASE_DIR}/qwtble-build/qwt/install/lib" "$<TARGET_FILE_DIR:${PROJECT_TESTS}>")
+endif()
            
-add_test(NAME tests COMMAND tests)
+add_test(NAME ${PROJECT_TESTS} COMMAND ${PROJECT_TESTS})
