@@ -1,6 +1,6 @@
 #include "DatasetOds.h"
 
-#include <ImportOds.h>
+#include <eible/ImportOds.h>
 
 DatasetOds::DatasetOds(const QString& name, const QString& zipFileName,
                        QObject* parent)

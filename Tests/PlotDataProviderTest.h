@@ -2,7 +2,7 @@
 
 #include <QPointF>
 
-#include <ColumnType.h>
+#include <eible/ColumnType.h>
 #include <qwtble/Quantiles.h>
 
 #include "TransactionData.h"

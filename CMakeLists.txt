@@ -16,31 +16,11 @@ qt_standard_project_setup()
 
 include(CMakeLists.txt.qwtble)
 include(CMakeLists.txt.wble)
-
-set(THIRD_PARTY_LIBS eible zlib quazip)
-foreach(library ${THIRD_PARTY_LIBS})
-    configure_file(CMakeLists.txt.${library} ${library}/CMakeLists.txt)
-    execute_process(COMMAND ${CMAKE_COMMAND} -G ${CMAKE_GENERATOR} .
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/${library})
-    execute_process(COMMAND ${CMAKE_COMMAND} --build .
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/${library} )
-endforeach(library)
+include(CMakeLists.txt.eible)
 
 include_directories(${FETCHCONTENT_BASE_DIR}/qwtble-build/qwt/install/include)
 
-foreach(file_i ${THIRD_PARTY_LIBS})
-    include_directories(${CMAKE_BINARY_DIR}/${file_i}/install/include)
-endforeach(file_i)
-
-set(ZLIB_ROOT ${CMAKE_BINARY_DIR}/zlib/install)
-find_package(ZLIB REQUIRED)
-list(APPEND CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}/quazip/install/")
-find_package(QuaZip-Qt6 CONFIG REQUIRED)
-
 link_directories(${FETCHCONTENT_BASE_DIR}/qwtble-build/qwt/install/lib)
-link_directories(${CMAKE_BINARY_DIR}/zlib/install/bin)
-link_directories(${CMAKE_BINARY_DIR}/quazip/install/lib)
-link_directories(${CMAKE_BINARY_DIR}/eible/install/lib)
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(GUI)

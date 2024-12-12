@@ -12,4 +12,4 @@ set(HEADERS
 
 ADD_LIBRARY(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
 
-target_link_libraries(${PROJECT_NAME} shared qwtble Qt6::Core QuaZip::QuaZip)
+target_link_libraries(${PROJECT_NAME} shared qwtble Qt6::Core eible QuaZip)

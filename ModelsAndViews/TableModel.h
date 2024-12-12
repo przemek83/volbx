@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include <ColumnType.h>
+#include <eible/ColumnType.h>
 #include <QAbstractTableModel>
 
 #include "Dataset.h"

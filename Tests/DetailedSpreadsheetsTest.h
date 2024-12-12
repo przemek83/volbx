@@ -2,13 +2,12 @@
 
 #include <memory>
 
+#include <eible/ColumnType.h>
 #include <QDate>
 #include <QObject>
 #include <QString>
 #include <QVariant>
 #include <QVector>
-
-#include <ColumnType.h>
 
 class DatasetSpreadsheet;
 class Dataset;

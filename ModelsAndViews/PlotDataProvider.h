@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ColumnType.h>
+#include <eible/ColumnType.h>
 #include <qwtble/Quantiles.h>
 #include <QObject>
 

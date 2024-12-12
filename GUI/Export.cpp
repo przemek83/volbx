@@ -1,7 +1,7 @@
 #include "Export.h"
 
-#include <ExportDsv.h>
-#include <ExportXlsx.h>
+#include <eible/ExportDsv.h>
+#include <eible/ExportXlsx.h>
 #include <qwtble/PlotBase.h>
 #include <wble/ProgressBarCounter.h>
 #include <QDir>

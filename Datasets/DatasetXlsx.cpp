@@ -1,7 +1,7 @@
 #include "DatasetXlsx.h"
 
-#include <ImportXlsx.h>
 #include <Logger.h>
+#include <eible/ImportXlsx.h>
 
 DatasetXlsx::DatasetXlsx(const QString& name, const QString& zipFileName,
                          QObject* parent)
