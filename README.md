@@ -1,5 +1,6 @@
 [![Build & test](https://github.com/przemek83/volbx/actions/workflows/buld-and-test.yml/badge.svg)](https://github.com/przemek83/volbx/actions/workflows/buld-and-test.yml)
 [![CodeQL](https://github.com/przemek83/volbx/actions/workflows/codeql.yml/badge.svg)](https://github.com/przemek83/volbx/actions/workflows/codeql.yml)
+[![codecov](https://codecov.io/gh/przemek83/volbx/graph/badge.svg?token=4E63PV9WM1)](https://codecov.io/gh/przemek83/volbx)
 
 ## Table of content
 - [Example view](#example-view)
