@@ -47,10 +47,10 @@ The tool was originally created for real estate appraisal as it gives the possib
 | Qt Creator | 10.0.2 | 10.0.2 |
 | Qwt | 6.2 | 6.2 |
 | QuaZip | 1.4 | 1.4 |
-| Zlib | 1.2.13 | 1.2.13 |
-| Eible | 1.1.0 | 1.1.0 |
+| Zlib | 1.3.1 | 1.3.1 |
+| Eible | 1.2.0 | 1.2.0 |
 | QwtBle | 1.1.0 | 1.1.0 |
-| Wble | 1.1.0 | 1.1.0 |
+| Wble | 1.2.0 | 1.2.0 |
 
 ## Compilation and installation
 Use directly CMake or Qt Creator. CMake **should**:
