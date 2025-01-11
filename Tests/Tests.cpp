@@ -14,26 +14,27 @@ int main(int argc, char* argv[])
 
     const QApplication a(argc, argv);
 
+    int status{EXIT_SUCCESS};
     ConfigurationTest configurationTest;
-    QTest::qExec(&configurationTest);
+    status |= QTest::qExec(&configurationTest);
 
     SpreadsheetsTest spreadsheetsTest;
-    QTest::qExec(&spreadsheetsTest);
+    status |= QTest::qExec(&spreadsheetsTest);
 
     DetailedSpreadsheetsTest detailedSpreadsheetsTest;
-    QTest::qExec(&detailedSpreadsheetsTest);
+    status |= QTest::qExec(&detailedSpreadsheetsTest);
 
     PlotDataProviderTest plotDataProviderTest;
-    QTest::qExec(&plotDataProviderTest);
+    status |= QTest::qExec(&plotDataProviderTest);
 
     FilteringProxyModelTest filteringProxyModelTest;
-    QTest::qExec(&filteringProxyModelTest);
+    status |= QTest::qExec(&filteringProxyModelTest);
 
     InnerTests innerTests;
-    QTest::qExec(&innerTests);
+    status |= QTest::qExec(&innerTests);
 
     DatasetTest datasetTest;
-    QTest::qExec(&datasetTest);
+    status |= QTest::qExec(&datasetTest);
 
-    return 0;
+    return status;
 }
