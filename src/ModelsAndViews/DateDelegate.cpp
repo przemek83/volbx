@@ -4,7 +4,7 @@
 
 DateDelegate::DateDelegate(QObject* parent)
     : QStyledItemDelegate(parent),
-      defaultDateFormat_(QwtBleUtilities::getDefaultDateFormat())
+      defaultDateFormat_(qwt_ble_utilities::getDefaultDateFormat())
 {
 }
 

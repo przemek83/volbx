@@ -92,7 +92,7 @@ PlotDataProvider::computePointsAndRegression()
     {
         const QDate& date{calcData_.at(i).date_};
         const double x{static_cast<double>(
-            QwtBleUtilities::getStartOfTheWorld().daysTo(date))};
+            qwt_ble_utilities::getStartOfTheWorld().daysTo(date))};
         auto y{calcData_.at(i).pricePerMeter_};
         data.append({x, y});
 
