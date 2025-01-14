@@ -7,9 +7,6 @@
 
 class QNetworkReply;
 
-/**
- * @brief Updater window used for all operations and display.
- */
 class Update : public QWidget
 {
     Q_OBJECT
@@ -30,10 +27,6 @@ private:
 
     void showErrorMsg(const QString& error);
 
-    /**
-     * @brief Retrieve info about files to download and sizes.
-     * @param serverInfoList Files list.
-     */
     void fillFilesToUpdateLists(const QStringList& serverInfoList);
 
     void finalizeUpdate();
@@ -63,22 +56,16 @@ private:
 
     Ui::Update ui_;
 
-    /// Network manager used for getting initial info.
     QNetworkAccessManager initialInfoNetworkManager_;
 
-    /// Network manager used for downloading.
     QNetworkAccessManager downloadManager_;
 
-    /// List of files to download.
     QVector<QString> filesToDownload_;
 
-    /// List of sizes of files to download.
     QVector<QString> filesToDownloadSize_;
 
-    /// List of temporary files.
     QStringList tempFiles_;
 
-    /// Temporary files prefix.
     const QString tmpPrefix_{QStringLiteral(".tmp")};
 
     int currentTriesCount_{0};

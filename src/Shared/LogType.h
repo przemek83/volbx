@@ -1,8 +1,5 @@
 #pragma once
 
-/**
- * @brief types of logs.
- */
 enum class LogTypes : char
 {
     DB = 0,

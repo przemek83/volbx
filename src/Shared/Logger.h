@@ -15,9 +15,6 @@ class QWidget;
 class QHBoxLayout;
 class QVBoxLayout;
 
-/**
- * @brief Visual Logger class.
- */
 class Logger : public QObject
 {
     Q_OBJECT
@@ -33,9 +30,6 @@ public:
     void log(LogTypes type, const char* file, const char* function, int line,
              const QString& msg);
 
-    /**
-     * @brief Toggle visibility of logging window.
-     */
     void toggleVisibility();
 
 private:
@@ -52,7 +46,6 @@ private:
 
     QMap<LogTypes, bool> activeLogs_;
 
-    /// Widget to display logs (text edit on it).
     QWidget display_;
 
     const QMap<LogTypes, QString> logNames_{
