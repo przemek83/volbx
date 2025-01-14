@@ -45,7 +45,7 @@ private:
 
     static bool loadConfigXml(QDomDocument& configXml);
 
-    void parseConfigXml(QDomDocument& configXml);
+    void parseConfigXml(const QDomDocument& configXml);
 
     QString generateConfigXml() const;
 

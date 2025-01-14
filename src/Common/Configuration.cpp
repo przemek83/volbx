@@ -90,8 +90,8 @@ QString Configuration::configDump() const
 
 bool Configuration::loadConfigXml(QDomDocument& configXml)
 {
-    const QString filename(QApplication::applicationDirPath() + "/" +
-                           Constants::getConfigurationFileName());
+    const QString filename{QApplication::applicationDirPath() + "/" +
+                           Constants::getConfigurationFileName()};
 
     const auto [success, content] = FileUtilities::loadFile(filename);
     if (!success)
@@ -117,41 +117,39 @@ bool Configuration::loadConfigXml(QDomDocument& configXml)
     return true;
 }
 
-void Configuration::parseConfigXml(QDomDocument& configXml)
+void Configuration::parseConfigXml(const QDomDocument& configXml)
 {
     QDomNodeList list{configXml.elementsByTagName(XML_NAME_UPDATE)};
-    const QDomElement updateElement{list.at(0).toElement()};
-    if (!updateElement.isNull())
-        updatePolicy_ = static_cast<UpdatePolicy>(
-            updateElement.attribute(XML_NAME_VALUE).toInt());
+
+    if (const QDomElement el{list.at(0).toElement()}; !el.isNull())
+        updatePolicy_ =
+            static_cast<UpdatePolicy>(el.attribute(XML_NAME_VALUE).toInt());
 
     list = configXml.elementsByTagName(XML_NAME_STYLE);
-    const QDomElement styleElement{list.at(0).toElement()};
-    if (!styleElement.isNull())
-        styleName_ = styleElement.attribute(XML_NAME_VALUE);
+    if (const QDomElement el{list.at(0).toElement()}; !el.isNull())
+        styleName_ = el.attribute(XML_NAME_VALUE);
 
     list = configXml.elementsByTagName(XML_NAME_IMPORTPATH);
-    const QDomElement importPathElement{list.at(0).toElement()};
-    if (!importPathElement.isNull())
-        importFilePath_ = importPathElement.attribute(XML_NAME_VALUE);
+    if (const QDomElement el{list.at(0).toElement()}; !el.isNull())
+        importFilePath_ = el.attribute(XML_NAME_VALUE);
 }
 
 QString Configuration::generateConfigXml() const
 {
     QDomDocument doc(XML_NAME_CONFIG);
-    QDomElement root = doc.createElement(XML_NAME_CONFIG);
+    QDomElement root{doc.createElement(XML_NAME_CONFIG)};
     doc.appendChild(root);
 
-    QDomElement updates = doc.createElement(XML_NAME_UPDATE);
+    QDomElement updates{doc.createElement(XML_NAME_UPDATE)};
     updates.setAttribute(XML_NAME_VALUE,
                          QString::number(static_cast<int>(updatePolicy_)));
     root.appendChild(updates);
 
-    QDomElement style = doc.createElement(XML_NAME_STYLE);
+    QDomElement style{doc.createElement(XML_NAME_STYLE)};
     style.setAttribute(XML_NAME_VALUE, styleName_);
     root.appendChild(style);
 
-    QDomElement importPath = doc.createElement(XML_NAME_IMPORTPATH);
+    QDomElement importPath{doc.createElement(XML_NAME_IMPORTPATH)};
     importPath.setAttribute(XML_NAME_VALUE, importFilePath_);
     root.appendChild(importPath);
 
@@ -160,8 +158,8 @@ QString Configuration::generateConfigXml() const
 
 bool Configuration::saveConfigXml(const QString& configXml)
 {
-    const QString filename(QApplication::applicationDirPath() + "/" +
-                           Constants::getConfigurationFileName());
+    const QString filename{QApplication::applicationDirPath() + "/" +
+                           Constants::getConfigurationFileName()};
     QFile::remove(filename);
     QFile file(filename);
 
