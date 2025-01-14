@@ -5,9 +5,6 @@
 
 class QElapsedTimer;
 
-/**
- * Helper functions for constants.
- */
 namespace Constants
 {
 QString getUpdaterName();

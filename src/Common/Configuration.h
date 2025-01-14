@@ -4,9 +4,6 @@
 
 class QDomDocument;
 
-/**
- * @brief Singleton for configuration.
- */
 class Configuration
 {
 public:
@@ -16,34 +13,14 @@ public:
     Configuration& operator=(Configuration&& other) = delete;
     Configuration(Configuration&& other) = delete;
 
-    /**
-     * @brief Used to access configuration singleton.
-     * @return Singleton instance.
-     */
     static Configuration& getInstance();
 
-    /**
-     * @brief Check if update policy was picked in past.
-     * @return True is picked, false if not.
-     */
     bool isUpdatePolicyPicked() const;
 
-    /**
-     * @brief Check if application should check for updates.
-     * @return True if should check, false otherwise.
-     */
     bool needToCheckForUpdates() const;
 
-    /**
-     * @brief Save configuration into file.
-     * @return True if success, false otherwise.
-     */
     bool save() const;
 
-    /**
-     * @brief Set update policy.
-     * @param alwaysCheck True is should always check.
-     */
     void setUpdatePolicy(bool alwaysCheck);
 
     QString getStyleName() const;
@@ -53,10 +30,7 @@ public:
     /// For unit tests.
     bool configValid() const;
 
-    /**
-     * @brief Load/reload configuration. Public for unit tests.
-     * @return true if loading finished with success.
-     */
+    /// Public for unit tests.
     bool load();
 
     QString getImportFilePath() const;
