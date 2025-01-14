@@ -25,9 +25,9 @@ protected:
     void closeEvent(QCloseEvent* event) override;
 
 private:
-    void connectFilter();
+    void connectFilter() const;
 
-    void connectPlots();
+    void connectPlots() const;
 
     void connectActions();
 
@@ -35,7 +35,7 @@ private:
 
     void setupFilters();
 
-    void setupNetworkManager();
+    void setupNetworkManager() const;
 
     void addStyleToMenu(const QString& name, QActionGroup* actionsGroup) const;
 
@@ -51,9 +51,9 @@ private:
 
     void addStylesSectionToMenu();
 
-    void addStylesFoundInAppDir(QActionGroup* actionsGroup);
+    void addStylesFoundInAppDir(QActionGroup* actionsGroup) const;
 
-    void addStandardQtStyles(QActionGroup* actionsGroup);
+    void addStandardQtStyles(QActionGroup* actionsGroup) const;
 
     void setStandardIcons();
 
@@ -61,7 +61,7 @@ private:
 
     void setTooltipsForChartsActions(bool chartsActive);
 
-    void saveDataset(const QString& datasetName);
+    void saveDataset(const QString& datasetName) const;
 
     void importDataset(std::unique_ptr<Dataset> dataset);
 
@@ -101,5 +101,5 @@ private Q_SLOTS:
 
     static void actionUpdateAutoToggled(bool alwaysCheck);
 
-    void styleChanged();
+    void styleChanged() const;
 };

@@ -51,7 +51,7 @@ VolbxMain::VolbxMain()
 
 void VolbxMain::setStandardIcons()
 {
-    QStyle* style{QApplication::style()};
+    const QStyle* style{QApplication::style()};
     ui_->actionImportData->setIcon(
         style->standardIcon(QStyle::SP_DialogOpenButton));
     ui_->actionSaveDatasetAs->setIcon(
@@ -65,7 +65,7 @@ void VolbxMain::setStandardIcons()
         style->standardIcon(QStyle::QStyle::SP_FileDialogInfoView));
 }
 
-void VolbxMain::connectFilter()
+void VolbxMain::connectFilter() const
 {
     connect(&filters_, &FiltersDock::filterNames, &tabWidget_,
             &TabWidget::setTextFilter);
@@ -75,7 +75,7 @@ void VolbxMain::connectFilter()
             &TabWidget::setNumericFilter);
 }
 
-void VolbxMain::connectPlots()
+void VolbxMain::connectPlots() const
 {
     connect(ui_->actionBasic_plot, &QAction::triggered, &tabWidget_,
             &TabWidget::addBasicPlot);
@@ -124,7 +124,7 @@ void VolbxMain::setupFilters()
                                       filters_.titleBarWidget()->height());
 }
 
-void VolbxMain::setupNetworkManager()
+void VolbxMain::setupNetworkManager() const
 {
     connect(&networkManager_, &QNetworkAccessManager::finished, this,
             &VolbxMain::updateCheckReplyFinished);
@@ -168,7 +168,7 @@ void VolbxMain::addStylesSectionToMenu()
     ui_->menuOptions->addActions(actionsGroup->actions());
 }
 
-void VolbxMain::addStylesFoundInAppDir(QActionGroup* actionsGroup)
+void VolbxMain::addStylesFoundInAppDir(QActionGroup* actionsGroup) const
 {
     const QStringList nameFilter(QStringLiteral("*.css"));
     const QDir directory(QCoreApplication::applicationDirPath());
@@ -177,7 +177,7 @@ void VolbxMain::addStylesFoundInAppDir(QActionGroup* actionsGroup)
         addStyleToMenu(styleFile.baseName(), actionsGroup);
 }
 
-void VolbxMain::addStandardQtStyles(QActionGroup* actionsGroup)
+void VolbxMain::addStandardQtStyles(QActionGroup* actionsGroup) const
 {
     const QStringList qtStylesList{QStyleFactory::keys()};
     for (const QString& style : qtStylesList)
@@ -188,8 +188,8 @@ bool VolbxMain::doesUserWantsToCheckForUpdates()
 {
     bool shouldCheckForUpdates{false};
     CheckUpdates dialog(this);
-    const int reply{dialog.exec()};
-    if (reply == QDialog::Accepted)
+
+    if (dialog.exec() == QDialog::Accepted)
         shouldCheckForUpdates = true;
 
     if (dialog.isSaveFlagSet())
@@ -283,9 +283,9 @@ void VolbxMain::manageActions(bool tabExists)
     setTooltipsForChartsActions(activateCharts);
 }
 
-void VolbxMain::saveDataset(const QString& datasetName)
+void VolbxMain::saveDataset(const QString& datasetName) const
 {
-    DataView* view{tabWidget_.getCurrentDataView()};
+    const DataView* view{tabWidget_.getCurrentDataView()};
     if (view == nullptr)
         return;
 
@@ -381,17 +381,16 @@ void VolbxMain::importDataset(std::unique_ptr<Dataset> dataset)
 
 void VolbxMain::actionImportDataTriggered()
 {
-    ImportData import(this);
-    if (import.exec() == QDialog::Accepted)
-        importDataset(import.getSelectedDataset());
+    ImportData importData(this);
+    if (importData.exec() == QDialog::Accepted)
+        importDataset(importData.getSelectedDataset());
 }
 
 QString VolbxMain::createNameForTab(const std::unique_ptr<Dataset>& dataset)
 {
     QString nameForTabBar{dataset->getName()};
-    if (auto [ok, column] = dataset->getTaggedColumn(ColumnTag::VALUE); ok)
-        nameForTabBar.append(
-            " (" + dataset->getHeaderName(static_cast<int>(column)) + ")");
+    if (auto [ok, column]{dataset->getTaggedColumn(ColumnTag::VALUE)}; ok)
+        nameForTabBar.append(" (" + dataset->getHeaderName(column) + ")");
     return nameForTabBar;
 }
 
@@ -483,9 +482,9 @@ void VolbxMain::actionUpdateAutoToggled(bool alwaysCheck)
     Configuration::getInstance().setUpdatePolicy(alwaysCheck);
 }
 
-void VolbxMain::styleChanged()
+void VolbxMain::styleChanged() const
 {
-    auto* action{qobject_cast<QAction*>(sender())};
+    const auto* action{qobject_cast<QAction*>(sender())};
     const QString style{action->text()};
     if (QStyleFactory::keys().contains(style))
         Application::setQtStyle(style);
