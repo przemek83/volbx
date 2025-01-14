@@ -19,10 +19,13 @@ QString getConfigurationFileName() { return QStringLiteral("config"); }
 
 QString getProgressBarTitle(BarTitle barTitle)
 {
-    const QVector<QString> progressTitles{QObject::tr("Loading"),
-                                          QObject::tr("Saving"),
-                                          QObject::tr("Analysing")};
-    return progressTitles[static_cast<int>(barTitle)];
+    if (barTitle == BarTitle::LOADING)
+        return QObject::tr("Loading");
+
+    if (barTitle == BarTitle::SAVING)
+        return QObject::tr("Saving");
+
+    return QObject::tr("Analysing");
 }
 
 QString timeFromTimeToSeconds(QElapsedTimer time)
