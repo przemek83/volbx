@@ -150,8 +150,8 @@ QDomElement Dataset::columnsToXml(QDomDocument& xmlDocument) const
         node.setAttribute(XML_COLUMN_NAME, headerColumnNames_.at(column));
         node.setAttribute(XML_COLUMN_FORMAT,
                           static_cast<int>(columnTypes_.at(column)));
-        QMapIterator<ColumnTag, Column> it(taggedColumns_);
-        if (it.findNext(column))
+
+        if (QMapIterator it(taggedColumns_); it.findNext(column))
             node.setAttribute(XML_COLUMN_TAG,
                               QString::number(static_cast<int>(it.key())));
         columns.appendChild(node);

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include <eible/ColumnType.h>
 #include <QMap>
 #include <QObject>
