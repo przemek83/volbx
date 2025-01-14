@@ -8,7 +8,7 @@ class DataViewDock : public Dock
 public:
     DataViewDock(const QString& title, QWidget* parent);
 
-    void activateSelectButtons();
+    void activateSelectButtons() const;
 
 private Q_SLOTS:
     void quickExportData() const;

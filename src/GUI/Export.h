@@ -21,17 +21,17 @@ private:
 
     bool locationIsValid(const QString& location) const;
 
-    bool exportData(const QString& fileName);
+    bool exportData(const QString& fileName) const;
 
     static bool exportToXlsx(const QString& fileName, const DataView* view,
-                             ProgressBarCounter& bar);
+                             const ProgressBarCounter& bar);
 
     static bool exportToCsv(const QString& fileName, const DataView* view,
-                            ProgressBarCounter& bar);
+                            const ProgressBarCounter& bar);
 
-    void exportPlots(const QString& fileName);
+    void exportPlots(const QString& fileName) const;
 
-    QString getFileName();
+    QString getFileName() const;
 
     std::unique_ptr<Ui::Export> ui_;
 

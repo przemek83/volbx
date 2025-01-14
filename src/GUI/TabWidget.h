@@ -26,11 +26,12 @@ public:
     DataView* getCurrentDataView() const;
 
 public Q_SLOTS:
-    void setTextFilter(int column, const QStringList& bannedStrings);
+    void setTextFilter(int column, const QStringList& bannedStrings) const;
 
-    void setDateFilter(int column, QDate from, QDate to, bool filterEmptyDates);
+    void setDateFilter(int column, QDate from, QDate to,
+                       bool filterEmptyDates) const;
 
-    void setNumericFilter(int column, double from, double to);
+    void setNumericFilter(int column, double from, double to) const;
 
     void addBasicPlot();
 
@@ -49,14 +50,14 @@ private:
 
     void changingFilterPostActions() const;
 
-    void activateDataSelection(DataView* view);
+    void activateDataSelection(DataView* view) const;
 
     DataViewDock* getCurrentDataViewDock() const;
 
     Tab* getCurrentMainTab() const;
 
     static QVector<std::pair<QString, int>> getStringColumnsWithIndexes(
-        TableModel* model);
+        const TableModel* model);
 
     template <class T>
     void showPlot();

@@ -29,7 +29,7 @@ Export::Export(QWidget* tab, QWidget* parent)
 
     ui_->locationLineEdit->setText(
         Configuration::getInstance().getImportFilePath());
-    auto* validator{new QRegularExpressionValidator(
+    const auto* validator{new QRegularExpressionValidator(
         QRegularExpression(QStringLiteral("[\\w]*")), ui_->prefix)};
     ui_->prefix->setValidator(validator);
     ui_->prefix->setText(tab_->windowTitle().replace(
@@ -93,7 +93,7 @@ bool Export::locationIsValid(const QString& location) const
            QFile::permissions(dir.path()).testFlag(QFile::WriteUser);
 }
 
-bool Export::exportData(const QString& fileName)
+bool Export::exportData(const QString& fileName) const
 {
     const auto* view{tab_->findChild<DataView*>()};
     Q_ASSERT(view != nullptr);
@@ -113,7 +113,7 @@ bool Export::exportData(const QString& fileName)
 }
 
 bool Export::exportToXlsx(const QString& fileName, const DataView* view,
-                          ProgressBarCounter& bar)
+                          const ProgressBarCounter& bar)
 {
     QFile file(fileName + "_" + tr("data") + ".xlsx");
     ExportXlsx exportXlsx;
@@ -123,7 +123,7 @@ bool Export::exportToXlsx(const QString& fileName, const DataView* view,
 }
 
 bool Export::exportToCsv(const QString& fileName, const DataView* view,
-                         ProgressBarCounter& bar)
+                         const ProgressBarCounter& bar)
 {
     QFile file(fileName + "_" + tr("data") + ".csv");
     file.open(QIODevice::WriteOnly);
@@ -137,7 +137,7 @@ bool Export::exportToCsv(const QString& fileName, const DataView* view,
     return exportDsv.exportView(*view, file);
 }
 
-void Export::exportPlots(const QString& fileName)
+void Export::exportPlots(const QString& fileName) const
 {
     const QList<PlotDock*> plotDocks{tab_->findChildren<PlotDock*>()};
     for (const auto* plotDock : plotDocks)
@@ -151,7 +151,7 @@ void Export::exportPlots(const QString& fileName)
     }
 }
 
-QString Export::getFileName()
+QString Export::getFileName() const
 {
     const QString dateString(
         QDate::currentDate().toString(exportFilesDateFormat_));

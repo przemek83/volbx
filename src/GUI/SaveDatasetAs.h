@@ -12,12 +12,12 @@ class SaveDatasetAs : public QDialog
 public:
     explicit SaveDatasetAs(QStringList usedNames);
 
-    QString getDatasetName();
+    QString getDatasetName() const;
 
 private:
     bool overwriteDataset(const QString& name);
 
-    bool nameIsUsed(const QString& name);
+    bool nameIsUsed(const QString& name) const;
 
     static void adjustWidgetBackgroundColor(QWidget* widget, bool nameUsed);
 

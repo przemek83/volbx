@@ -82,7 +82,7 @@ void FiltersDock::fillLayoutWithFilterWidgets(QVBoxLayout* layout,
                                               const FilteringProxyModel* model)
 {
     const TableModel* parentModel{model->getParentModel()};
-    for (int i = 0; i < model->columnCount(); ++i)
+    for (int i{0}; i < model->columnCount(); ++i)
     {
         Filter* filter{nullptr};
         switch (parentModel->getColumnFormat(i))
@@ -176,9 +176,9 @@ void FiltersDock::showFiltersForModel(const FilteringProxyModel* model)
         stackedWidget_.setCurrentWidget(modelsMap_.value(model));
 }
 
-void FiltersDock::searchTextChanged(const QString& arg1)
+void FiltersDock::searchTextChanged(const QString& arg1) const
 {
-    QWidget* currentWidget{stackedWidget_.currentWidget()};
+    const QWidget* currentWidget{stackedWidget_.currentWidget()};
     const QList<Filter*> filters{currentWidget->findChildren<Filter*>()};
     for (auto* filter : filters)
         filter->setVisible(filter->title().contains(arg1, Qt::CaseInsensitive));

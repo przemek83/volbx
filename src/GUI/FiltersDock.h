@@ -53,7 +53,7 @@ private:
     QStackedWidget stackedWidget_;
 
 private Q_SLOTS:
-    void searchTextChanged(const QString& arg1);
+    void searchTextChanged(const QString& arg1) const;
 
 Q_SIGNALS:
     void filterNumbers(int column, double from, double to);

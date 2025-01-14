@@ -51,7 +51,7 @@ void DataViewDock::unselectAll() const
     view->recomputeAllData();
 }
 
-void DataViewDock::activateSelectButtons()
+void DataViewDock::activateSelectButtons() const
 {
     titleBar_.setButtonEnabled(DockTitleBar::Button::SELECT_ALL, true);
     titleBar_.setButtonEnabled(DockTitleBar::Button::UNSELECT_ALL, true);

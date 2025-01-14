@@ -44,10 +44,10 @@ Tab* TabWidget::getCurrentMainTab() const
 }
 
 QVector<std::pair<QString, int>> TabWidget::getStringColumnsWithIndexes(
-    TableModel* model)
+    const TableModel* model)
 {
     QVector<std::pair<QString, int>> stringColumns;
-    for (int i = 0; i < model->columnCount(); ++i)
+    for (int i{0}; i < model->columnCount(); ++i)
     {
         if (model->getColumnFormat(i) != ColumnType::STRING)
             continue;
@@ -61,7 +61,7 @@ QVector<std::pair<QString, int>> TabWidget::getStringColumnsWithIndexes(
 
 DataViewDock* TabWidget::getCurrentDataViewDock() const
 {
-    DataView* dataView{getCurrentDataView()};
+    const DataView* dataView{getCurrentDataView()};
     return qobject_cast<DataViewDock*>(dataView->parent());
 }
 
@@ -80,7 +80,8 @@ void TabWidget::changingFilterPostActions() const
     QApplication::restoreOverrideCursor();
 }
 
-void TabWidget::setTextFilter(int column, const QStringList& bannedStrings)
+void TabWidget::setTextFilter(int column,
+                              const QStringList& bannedStrings) const
 {
     const TimeLogger timeLogger(LogTypes::CALC,
                                 QStringLiteral("Filtration changed"));
@@ -91,7 +92,7 @@ void TabWidget::setTextFilter(int column, const QStringList& bannedStrings)
 }
 
 void TabWidget::setDateFilter(int column, QDate from, QDate to,
-                              bool filterEmptyDates)
+                              bool filterEmptyDates) const
 {
     const TimeLogger timeLogger(LogTypes::CALC,
                                 QStringLiteral("Filtration changed"));
@@ -101,7 +102,7 @@ void TabWidget::setDateFilter(int column, QDate from, QDate to,
     changingFilterPostActions();
 }
 
-void TabWidget::setNumericFilter(int column, double from, double to)
+void TabWidget::setNumericFilter(int column, double from, double to) const
 {
     const TimeLogger timeLogger(LogTypes::CALC,
                                 QStringLiteral("Filtration changed"));
@@ -163,9 +164,9 @@ void TabWidget::addBasicPlot()
         return;
     }
 
-    const auto createBasicPlot{[=]() -> BasicDataPlot*
+    const auto createBasicPlot{[=]()
                                {
-                                   DataView* view{getCurrentDataView()};
+                                   const DataView* view{getCurrentDataView()};
                                    auto* basicPlot{new BasicDataPlot()};
                                    connect(
                                        &(view->getPlotDataProvider()),
@@ -186,9 +187,9 @@ void TabWidget::addHistogramPlot()
     }
 
     const auto createHistogramPlot{
-        [=]() -> HistogramPlotUI*
+        [=]()
         {
-            DataView* view{getCurrentDataView()};
+            const DataView* view{getCurrentDataView()};
             auto* histogramPlot{new HistogramPlotUI()};
             connect(&(view->getPlotDataProvider()),
                     &PlotDataProvider::fundamentalDataChanged, histogramPlot,
@@ -208,10 +209,10 @@ void TabWidget::addGroupingPlot()
     }
 
     const auto createGroupingPlot{
-        [=]() -> GroupPlotUI*
+        [=]()
         {
-            DataView* view{getCurrentDataView()};
-            TableModel* model{getCurrentDataModel()};
+            const DataView* view{getCurrentDataView()};
+            const TableModel* model{getCurrentDataModel()};
             auto* groupPlot{
                 new GroupPlotUI(getStringColumnsWithIndexes(model))};
             connect(&(view->getPlotDataProvider()),
@@ -225,9 +226,9 @@ void TabWidget::addGroupingPlot()
     addPlot<GroupPlotUI>(tr("Grouping"), createGroupingPlot);
 }
 
-void TabWidget::activateDataSelection(DataView* view)
+void TabWidget::activateDataSelection(DataView* view) const
 {
-    DataViewDock* viewDock{getCurrentDataViewDock()};
+    const DataViewDock* viewDock{getCurrentDataViewDock()};
     viewDock->activateSelectButtons();
 
     view->clearSelection();

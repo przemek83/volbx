@@ -16,7 +16,8 @@ SaveDatasetAs::SaveDatasetAs(QStringList usedNames)
             &SaveDatasetAs::nameChanged);
     const QRegularExpression datasetNameRegExp(
         DatasetUtilities::getDatasetNameRegExp());
-    auto* validator{new QRegularExpressionValidator(datasetNameRegExp, this)};
+    const auto* validator{
+        new QRegularExpressionValidator(datasetNameRegExp, this)};
     ui_->name->setValidator(validator);
 
     connect(ui_->save, &QPushButton::clicked, this,
@@ -29,7 +30,7 @@ SaveDatasetAs::SaveDatasetAs(QStringList usedNames)
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
-QString SaveDatasetAs::getDatasetName() { return ui_->name->text(); }
+QString SaveDatasetAs::getDatasetName() const { return ui_->name->text(); }
 
 bool SaveDatasetAs::overwriteDataset(const QString& name)
 {
@@ -41,7 +42,7 @@ bool SaveDatasetAs::overwriteDataset(const QString& name)
     return decision == QMessageBox::Yes;
 }
 
-bool SaveDatasetAs::nameIsUsed(const QString& name)
+bool SaveDatasetAs::nameIsUsed(const QString& name) const
 {
     return usedNames_.contains(name, Qt::CaseInsensitive);
 }
@@ -72,9 +73,10 @@ void SaveDatasetAs::nameChanged(const QString& actualText)
 
 void SaveDatasetAs::saveClicked()
 {
-    const QString name{ui_->name->text()};
-    if (nameIsUsed(name) && !overwriteDataset(name))
+    if (QString name{ui_->name->text()};
+        nameIsUsed(name) && !overwriteDataset(name))
         return;
+
     accept();
 }
 
