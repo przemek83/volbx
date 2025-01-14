@@ -2,9 +2,6 @@
 
 #include "Dock.h"
 
-/**
- * @brief Dock for data view.
- */
 class DataViewDock : public Dock
 {
     Q_OBJECT

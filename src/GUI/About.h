@@ -6,9 +6,6 @@
 
 #include "ui_About.h"
 
-/**
- * @brief The About dialog class.
- */
 class About : public QDialog
 {
     Q_OBJECT

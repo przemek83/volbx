@@ -4,9 +4,6 @@
 
 class PlotBase;
 
-/**
- * @brief Dock widget with plots.
- */
 class PlotDock : public Dock
 {
     Q_OBJECT

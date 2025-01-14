@@ -6,9 +6,6 @@
 
 #include "ui_SaveDatasetAs.h"
 
-/**
- * @brief Window for saving datasets.
- */
 class SaveDatasetAs : public QDialog
 {
     Q_OBJECT
@@ -29,10 +26,6 @@ private:
     QStringList usedNames_;
 
 private Q_SLOTS:
-    /**
-     * @brief action on string/name change.
-     * @param actualText actual string.
-     */
     void nameChanged(const QString& actualText);
 
     void saveClicked();

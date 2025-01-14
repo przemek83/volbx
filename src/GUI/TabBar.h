@@ -4,9 +4,7 @@
 #include <QTabBar>
 
 class QMainWindow;
-/**
- * @brief Tab bar for tab widget.
- */
+
 class TabBar : public QTabBar
 {
     Q_OBJECT

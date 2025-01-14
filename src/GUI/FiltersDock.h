@@ -15,9 +15,6 @@ class FilterNumbers;
 class TableModel;
 class QVBoxLayout;
 
-/**
- * @brief Dock widget with filters for each opened dataset.
- */
 class FiltersDock : public Dock
 {
     Q_OBJECT

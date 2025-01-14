@@ -4,9 +4,7 @@
 
 #include "DockTitleBar.h"
 
-/**
- * @brief Base class used by filters, data and plot docks.
- */
+/// @brief Base class used by filters, data and plot docks.
 class Dock : public QDockWidget
 {
     Q_OBJECT

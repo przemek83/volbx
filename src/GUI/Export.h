@@ -9,9 +9,7 @@
 class DataView;
 class ProgressBarCounter;
 
-/**
- * @brief Exports data in active tab and all related plots.
- */
+/// @brief Exports data in active tab and all related plots.
 class Export : public QDialog
 {
     Q_OBJECT

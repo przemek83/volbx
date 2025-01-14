@@ -13,9 +13,6 @@
 class QActionGroup;
 class Dataset;
 
-/**
- * @brief Volbx main window.
- */
 class VolbxMain : public QMainWindow
 {
     Q_OBJECT

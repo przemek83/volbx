@@ -12,9 +12,7 @@ class Tab;
 class DataViewDock;
 class PlotDock;
 
-/**
- * @brief Central widget with tabs. Each tab contains data and plots.
- */
+/// @brief Central widget with tabs. Each tab contains data and plots.
 class TabWidget : public QTabWidget
 {
     Q_OBJECT

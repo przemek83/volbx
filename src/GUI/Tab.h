@@ -10,9 +10,7 @@ class DataView;
 class FilteringProxyModel;
 class DataViewDock;
 
-/**
- * @brief Tab containing models, view, dock widgets with data and plot.
- */
+/// @brief Tab containing models, view, dock widgets with data and plot.
 class Tab : public QMainWindow
 {
     Q_OBJECT

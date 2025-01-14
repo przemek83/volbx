@@ -8,9 +8,7 @@
 
 class QPushButton;
 
-/**
- * @brief Title bar with buttons used in dock windows.
- */
+/// @brief Title bar with buttons used in dock windows.
 class DockTitleBar : public QWidget
 {
     Q_OBJECT

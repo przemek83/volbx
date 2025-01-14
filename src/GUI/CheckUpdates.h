@@ -6,9 +6,6 @@
 
 #include "ui_CheckUpdates.h"
 
-/**
- * @brief Dialog class with question about auto updating.
- */
 class CheckUpdates : public QDialog
 {
     Q_OBJECT

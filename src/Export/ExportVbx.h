@@ -12,22 +12,12 @@ class QAbstractItemView;
 class QIODevice;
 class QuaZipFile;
 
-/**
- * @class ExportVbx
- * @brief Class for exporting data to vbx files.
- */
 class ExportVbx : public ExportData
 {
     Q_OBJECT
 public:
     explicit ExportVbx(QObject* parent = nullptr);
 
-    /**
-     * @brief Generate inner Volbx format of data (.vbx).
-     * @param view View with selected data to export.
-     * @param ioDevice Device to write to.
-     * @return True on success, false otherwise.
-     */
     bool generateVbx(const QAbstractItemView& view, QIODevice& ioDevice);
 
 protected:
