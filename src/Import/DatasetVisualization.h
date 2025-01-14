@@ -12,9 +12,6 @@
 class QTreeWidgetItem;
 class QComboBox;
 
-/**
- * @brief Widget for visualization of dataset.
- */
 class DatasetVisualization : public QWidget
 {
     Q_OBJECT
@@ -28,11 +25,6 @@ public:
     std::unique_ptr<Dataset> retrieveDataset();
 
 public Q_SLOTS:
-    /**
-     * Triggered when currently selected column in linked widget changed.
-     * Used to sync widgets displaying columns.
-     * @param column Currently selected column.
-     */
     void selectCurrentColumn(int column);
 
 private:
@@ -75,9 +67,5 @@ private Q_SLOTS:
     void refreshColumnList(int newIndex);
 
 Q_SIGNALS:
-    /**
-     * Emit when selected column was changed to sync linked widgets.
-     * @param currentColumn Currently selected column.
-     */
     void currentColumnNeedSync(int currentColumn);
 };

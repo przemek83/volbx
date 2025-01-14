@@ -8,9 +8,6 @@ class Dataset;
 class ColumnsPreview;
 class DatasetVisualization;
 
-/**
- * @brief Import tabs base class.
- */
 class ImportTab : public QWidget
 {
     Q_OBJECT

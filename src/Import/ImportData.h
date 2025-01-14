@@ -9,10 +9,6 @@ class Dataset;
 class QDialogButtonBox;
 class QTabWidget;
 
-/**
- * @brief Main dialog for loading data into application.
- * It consist QTabWidget with pages for each type of data.
- */
 class ImportData : public QDialog
 {
     Q_OBJECT

@@ -4,9 +4,6 @@
 #include <QMetaType>
 #include <QVariant>
 
-/**
- * @brief Struct used for computation. 3 related values needed.
- */
 struct TransactionData
 {
 public:

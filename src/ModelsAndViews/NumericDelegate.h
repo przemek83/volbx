@@ -2,9 +2,6 @@
 
 #include <QStyledItemDelegate>
 
-/**
- * @brief Delegate for numeric type.
- */
 class NumericDelegate : public QStyledItemDelegate
 {
     Q_OBJECT

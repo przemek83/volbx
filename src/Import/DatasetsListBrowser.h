@@ -8,9 +8,6 @@
 
 class QListWidgetItem;
 
-/**
- * @brief Widget for browsing list of actual datasets.
- */
 class DatasetsListBrowser : public QWidget
 {
     Q_OBJECT

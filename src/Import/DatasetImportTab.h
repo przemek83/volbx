@@ -6,9 +6,6 @@
 
 class Dataset;
 
-/**
- *@brief Import tab for inner datasets.
- */
 class DatasetImportTab : public ImportTab
 {
     Q_OBJECT

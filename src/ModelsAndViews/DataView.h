@@ -7,9 +7,6 @@
 class TableModel;
 class FilteringProxyModel;
 
-/**
- * @brief 2d view for data.
- */
 class DataView : public QTableView
 {
     Q_OBJECT
@@ -20,16 +17,9 @@ public:
 
     const PlotDataProvider& getPlotDataProvider() const;
 
-    /**
-     * @brief Recompute data using currently selected rows.
-     */
     void recomputeAllData();
 
 public Q_SLOTS:
-    /**
-     * @brief Force recomputing of data because of grouping column changed.
-     * @param column New grouping column.
-     */
     void groupingColumnChanged(int column);
 
 protected:
@@ -38,11 +28,6 @@ protected:
     void keyPressEvent(QKeyEvent* event) override;
 
 private:
-    /**
-     * @brief Get data selected on view.
-     * @param groupByColumn Column used in grouping.
-     * @return Container of structures containing data, price and grouping data.
-     */
     QVector<TransactionData> fillDataFromSelection(int groupByColumn) const;
 
     void initHorizontalHeader();

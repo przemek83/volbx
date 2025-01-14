@@ -2,9 +2,6 @@
 
 #include <QStyledItemDelegate>
 
-/**
- * @brief Delegate for date type.
- */
 class DateDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
