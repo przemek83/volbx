@@ -9,8 +9,7 @@ class Dock : public QDockWidget
 {
     Q_OBJECT
 public:
-    Dock(const QString& titleText, QWidget* parent,
-         Qt::WindowFlags flags = Qt::Widget);
+    Dock(const QString& titleText, QWidget* parent);
 
 protected:
     DockTitleBar titleBar_;

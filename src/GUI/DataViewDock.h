@@ -6,15 +6,14 @@ class DataViewDock : public Dock
 {
     Q_OBJECT
 public:
-    DataViewDock(const QString& title, QWidget* parent,
-                 Qt::WindowFlags flags = Qt::Widget);
+    DataViewDock(const QString& title, QWidget* parent);
 
     void activateSelectButtons();
 
 private Q_SLOTS:
-    void quickExportData();
+    void quickExportData() const;
 
-    void selectAll();
+    void selectAll() const;
 
-    void unselectAll();
+    void unselectAll() const;
 };

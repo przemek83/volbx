@@ -26,7 +26,7 @@ void DockTitleBar::paintEvent(QPaintEvent* event)
     drawBorder();
 }
 
-void DockTitleBar::connectButtons()
+void DockTitleBar::connectButtons() const
 {
     connect(ui_->close, &QPushButton::clicked, this,
             &DockTitleBar::closeClicked);
@@ -84,12 +84,14 @@ void DockTitleBar::setTitle(const QString& titleText)
     ui_->label->setText(titleText);
 }
 
-void DockTitleBar::setButtonVisible(DockTitleBar::Button button, bool visible)
+void DockTitleBar::setButtonVisible(DockTitleBar::Button button,
+                                    bool visible) const
 {
     getButton(button)->setVisible(visible);
 }
 
-void DockTitleBar::setButtonEnabled(DockTitleBar::Button button, bool enabled)
+void DockTitleBar::setButtonEnabled(DockTitleBar::Button button,
+                                    bool enabled) const
 {
     getButton(button)->setEnabled(enabled);
 }

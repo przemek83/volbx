@@ -12,7 +12,7 @@ class CheckUpdates : public QDialog
 public:
     explicit CheckUpdates(QWidget* parent);
 
-    bool isSaveFlagSet();
+    bool isSaveFlagSet() const;
 
 private:
     std::unique_ptr<Ui::CheckUpdates> ui_;

@@ -8,13 +8,12 @@ class PlotDock : public Dock
 {
     Q_OBJECT
 public:
-    PlotDock(const QString& title, QWidget* parent,
-             Qt::WindowFlags flags = Qt::Widget);
+    PlotDock(const QString& title, QWidget* parent);
 
     QList<PlotBase*> getPlots() const;
 
 private Q_SLOTS:
     void quickExportData() const;
 
-    void resetPlot();
+    void resetPlot() const;
 };

@@ -7,9 +7,8 @@
 
 #include "ModelsAndViews/DataView.h"
 
-DataViewDock::DataViewDock(const QString& title, QWidget* parent,
-                           Qt::WindowFlags flags)
-    : Dock(title, parent, flags)
+DataViewDock::DataViewDock(const QString& title, QWidget* parent)
+    : Dock(title, parent)
 {
     titleBar_.setButtonVisible(DockTitleBar::Button::EXPORT, true);
     titleBar_.setButtonVisible(DockTitleBar::Button::SELECT_ALL, true);
@@ -25,9 +24,9 @@ DataViewDock::DataViewDock(const QString& title, QWidget* parent,
             &DataViewDock::unselectAll);
 }
 
-void DataViewDock::quickExportData()
+void DataViewDock::quickExportData() const
 {
-    auto* view{findChild<DataView*>()};
+    const auto* view{findChild<DataView*>()};
     QByteArray exportedByteArray;
     QBuffer exportedBuffer(&exportedByteArray);
     exportedBuffer.open(QIODevice::WriteOnly);
@@ -38,14 +37,14 @@ void DataViewDock::quickExportData()
     QApplication::clipboard()->setText(QString::fromUtf8(exportedByteArray));
 }
 
-void DataViewDock::selectAll()
+void DataViewDock::selectAll() const
 {
     auto* view{findChild<DataView*>()};
     view->selectAll();
     view->recomputeAllData();
 }
 
-void DataViewDock::unselectAll()
+void DataViewDock::unselectAll() const
 {
     auto* view{findChild<DataView*>()};
     view->clearSelection();

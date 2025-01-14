@@ -12,4 +12,7 @@ CheckUpdates::CheckUpdates(QWidget* parent)
     setWindowIcon(style->standardIcon(QStyle::QStyle::SP_MessageBoxQuestion));
 }
 
-bool CheckUpdates::isSaveFlagSet() { return ui_->saveCheckBox->isChecked(); }
+bool CheckUpdates::isSaveFlagSet() const
+{
+    return ui_->saveCheckBox->isChecked();
+}

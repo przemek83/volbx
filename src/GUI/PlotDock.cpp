@@ -4,8 +4,7 @@
 
 #include <Export/ExportImage.h>
 
-PlotDock::PlotDock(const QString& title, QWidget* parent, Qt::WindowFlags flags)
-    : Dock(title, parent, flags)
+PlotDock::PlotDock(const QString& title, QWidget* parent) : Dock(title, parent)
 {
     titleBar_.setButtonVisible(DockTitleBar::Button::EXPORT, true);
     titleBar_.setButtonVisible(DockTitleBar::Button::RESET, true);
@@ -21,7 +20,7 @@ void PlotDock::quickExportData() const
     ExportImage::quickExportAsImage(getPlots());
 }
 
-void PlotDock::resetPlot()
+void PlotDock::resetPlot() const
 {
     const QList<PlotBase*> plots{findChildren<PlotBase*>()};
     for (PlotBase* plot : plots)

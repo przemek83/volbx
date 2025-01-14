@@ -27,9 +27,9 @@ public:
         RESET
     };
 
-    void setButtonVisible(Button button, bool visible);
+    void setButtonVisible(Button button, bool visible) const;
 
-    void setButtonEnabled(Button button, bool enabled);
+    void setButtonEnabled(Button button, bool enabled) const;
 
 Q_SIGNALS:
     void closeClicked();
@@ -43,7 +43,7 @@ protected:
     void paintEvent(QPaintEvent* event) override;
 
 private:
-    void connectButtons();
+    void connectButtons() const;
 
     void drawBorder();
 
