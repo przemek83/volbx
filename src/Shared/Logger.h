@@ -33,7 +33,7 @@ public:
     void toggleVisibility();
 
 private:
-    explicit Logger(QObject* parent = nullptr);
+    Logger();
     ~Logger() override = default;
 
     QTextEdit* createLogsTextEdit();

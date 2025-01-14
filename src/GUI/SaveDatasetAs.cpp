@@ -5,8 +5,8 @@
 
 #include <Common/DatasetUtilities.h>
 
-SaveDatasetAs::SaveDatasetAs(QStringList usedNames, QWidget* parent)
-    : QDialog(parent),
+SaveDatasetAs::SaveDatasetAs(QStringList usedNames)
+    : QDialog(),
       ui_(std::make_unique<Ui::SaveDatasetAs>()),
       usedNames_(std::move(usedNames))
 {

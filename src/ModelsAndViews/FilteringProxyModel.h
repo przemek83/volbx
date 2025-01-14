@@ -8,7 +8,7 @@ class FilteringProxyModel : public QSortFilterProxyModel
 {
     Q_OBJECT
 public:
-    explicit FilteringProxyModel(QObject* parent = nullptr);
+    using QSortFilterProxyModel::QSortFilterProxyModel;
 
     const TableModel* getParentModel() const;
 

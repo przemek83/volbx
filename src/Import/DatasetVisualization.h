@@ -16,7 +16,7 @@ class DatasetVisualization : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DatasetVisualization(QWidget* parent = nullptr);
+    explicit DatasetVisualization(QWidget* parent);
 
     void setDataset(std::unique_ptr<Dataset> dataset);
 

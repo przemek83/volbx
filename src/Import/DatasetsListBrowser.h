@@ -12,7 +12,7 @@ class DatasetsListBrowser : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DatasetsListBrowser(QWidget* parent = nullptr);
+    explicit DatasetsListBrowser(QWidget* parent);
 
     void clearSelection();
 

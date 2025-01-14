@@ -10,8 +10,6 @@
 #include <ModelsAndViews/TableModel.h>
 #include <Shared/Logger.h>
 
-ExportVbx::ExportVbx(QObject* parent) : ExportData(parent) {}
-
 bool ExportVbx::generateVbx(const QAbstractItemView& view, QIODevice& ioDevice)
 {
     return exportView(view, ioDevice) && exportStrings(ioDevice) &&
@@ -26,8 +24,8 @@ bool ExportVbx::writeContent(const QByteArray& content, QIODevice& ioDevice)
 
 QByteArray ExportVbx::getEmptyContent() { return QByteArrayLiteral(""); }
 
-QByteArray ExportVbx::generateHeaderContent([
-    [maybe_unused]] const QAbstractItemModel& model)
+QByteArray ExportVbx::generateHeaderContent(
+    [[maybe_unused]] const QAbstractItemModel& model)
 {
     return QByteArrayLiteral("");
 }

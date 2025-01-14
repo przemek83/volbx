@@ -10,7 +10,7 @@ class CheckUpdates : public QDialog
 {
     Q_OBJECT
 public:
-    explicit CheckUpdates(QWidget* parent = nullptr);
+    explicit CheckUpdates(QWidget* parent);
 
     bool isSaveFlagSet();
 

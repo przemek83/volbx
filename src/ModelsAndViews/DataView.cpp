@@ -180,7 +180,8 @@ void DataView::initHorizontalHeader()
     horizontalHeader()->setSortIndicatorShown(false);
     horizontalHeader()->setSectionsMovable(true);
 
-    auto showSortIndicator = [=]() {
+    auto showSortIndicator = [=]()
+    {
         if (!horizontalHeader()->isSortIndicatorShown())
             horizontalHeader()->setSortIndicatorShown(true);
     };

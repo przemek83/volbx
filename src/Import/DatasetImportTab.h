@@ -10,7 +10,7 @@ class DatasetImportTab : public ImportTab
 {
     Q_OBJECT
 public:
-    explicit DatasetImportTab(QWidget* parent = nullptr);
+    explicit DatasetImportTab(QWidget* parent);
 
     bool datasetsAreAvailable();
 

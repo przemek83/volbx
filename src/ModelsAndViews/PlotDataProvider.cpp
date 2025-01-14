@@ -3,8 +3,6 @@
 #include <qwtble/QwtBleUtilities.h>
 #include <QPointF>
 
-PlotDataProvider::PlotDataProvider(QObject* parent) : QObject(parent) {}
-
 void PlotDataProvider::recompute(QVector<TransactionData> newCalcData,
                                  ColumnType columnFormat)
 {

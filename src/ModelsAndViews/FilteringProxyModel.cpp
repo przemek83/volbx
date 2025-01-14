@@ -4,11 +4,6 @@
 
 #include "TableModel.h"
 
-FilteringProxyModel::FilteringProxyModel(QObject* parent)
-    : QSortFilterProxyModel(parent)
-{
-}
-
 const TableModel* FilteringProxyModel::getParentModel() const
 {
     return qobject_cast<const TableModel*>(sourceModel());

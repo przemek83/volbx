@@ -5,8 +5,8 @@
 
 #include <Constants.h>
 
-Dataset::Dataset(QString name, QObject* parent)
-    : QObject(parent),
+Dataset::Dataset(QString name)
+    : QObject(),
       nullStringVariant_(QMetaType(QMetaType::QString)),
       name_(std::move(name))
 {

@@ -16,8 +16,6 @@ class ExportVbx : public ExportData
 {
     Q_OBJECT
 public:
-    explicit ExportVbx(QObject* parent = nullptr);
-
     bool generateVbx(const QAbstractItemView& view, QIODevice& ioDevice);
 
 protected:

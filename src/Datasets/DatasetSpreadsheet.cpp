@@ -3,9 +3,8 @@
 #include <Logger.h>
 
 DatasetSpreadsheet::DatasetSpreadsheet(const QString& name,
-                                       const QString& zipFileName,
-                                       QObject* parent)
-    : Dataset(name, parent), zipFile_(zipFileName)
+                                       const QString& zipFileName)
+    : Dataset(name), zipFile_(zipFileName)
 {
 }
 

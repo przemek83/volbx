@@ -14,7 +14,7 @@ class Export : public QDialog
 {
     Q_OBJECT
 public:
-    explicit Export(QWidget* tab, QWidget* parent = nullptr);
+    Export(QWidget* tab, QWidget* parent);
 
 private:
     void saveOnDisk();

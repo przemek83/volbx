@@ -10,7 +10,7 @@ class PlotDataProvider : public QObject
 {
     Q_OBJECT
 public:
-    explicit PlotDataProvider(QObject* parent = nullptr);
+    using QObject::QObject;
 
     void recompute(QVector<TransactionData> newCalcData,
                    ColumnType columnFormat);

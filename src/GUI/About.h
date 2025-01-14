@@ -10,7 +10,7 @@ class About : public QDialog
 {
     Q_OBJECT
 public:
-    explicit About(QWidget* parent = nullptr);
+    explicit About(QWidget* parent);
 
 private:
     std::unique_ptr<Ui::About> ui_;

@@ -17,7 +17,7 @@ class TabWidget : public QTabWidget
 {
     Q_OBJECT
 public:
-    explicit TabWidget(QWidget* parent = nullptr);
+    explicit TabWidget(QWidget* parent);
 
     FilteringProxyModel* getCurrentProxyModel() const;
 

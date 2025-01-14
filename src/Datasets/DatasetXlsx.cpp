@@ -3,9 +3,8 @@
 #include <Logger.h>
 #include <eible/ImportXlsx.h>
 
-DatasetXlsx::DatasetXlsx(const QString& name, const QString& zipFileName,
-                         QObject* parent)
-    : DatasetSpreadsheet(name, zipFileName, parent)
+DatasetXlsx::DatasetXlsx(const QString& name, const QString& zipFileName)
+    : DatasetSpreadsheet(name, zipFileName)
 {
     importer_ = std::make_unique<ImportXlsx>(zipFile_);
 }

@@ -10,7 +10,7 @@ class SaveDatasetAs : public QDialog
 {
     Q_OBJECT
 public:
-    explicit SaveDatasetAs(QStringList usedNames, QWidget* parent = nullptr);
+    explicit SaveDatasetAs(QStringList usedNames);
 
     QString getDatasetName();
 

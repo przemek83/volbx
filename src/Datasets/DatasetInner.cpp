@@ -9,8 +9,8 @@
 #include <DatasetUtilities.h>
 #include <Logger.h>
 
-DatasetInner::DatasetInner(const QString& name, QObject* parent)
-    : Dataset(name, parent), datasetsDir_(DatasetUtilities::getDatasetsDir())
+DatasetInner::DatasetInner(const QString& name)
+    : Dataset(name), datasetsDir_(DatasetUtilities::getDatasetsDir())
 {
     zip_.setZipName(datasetsDir_ + name +
                     DatasetUtilities::getDatasetExtension());

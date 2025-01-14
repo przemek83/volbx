@@ -8,7 +8,7 @@
 
 #include "LoggerCheckBox.h"
 
-Logger::Logger(QObject* parent) : QObject(parent)
+Logger::Logger() : QObject()
 {
     display_.setWindowTitle(QStringLiteral("Logs"));
     display_.setLayout(createLayout());

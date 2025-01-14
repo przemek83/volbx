@@ -6,8 +6,8 @@ class DataViewDock : public Dock
 {
     Q_OBJECT
 public:
-    explicit DataViewDock(const QString& title, QWidget* parent = nullptr,
-                          Qt::WindowFlags flags = Qt::Widget);
+    DataViewDock(const QString& title, QWidget* parent,
+                 Qt::WindowFlags flags = Qt::Widget);
 
     void activateSelectButtons();
 

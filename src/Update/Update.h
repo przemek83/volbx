@@ -11,7 +11,7 @@ class Update : public QWidget
 {
     Q_OBJECT
 public:
-    explicit Update(QWidget* parent = nullptr);
+    Update();
 
 protected:
     void closeEvent(QCloseEvent* event) override;

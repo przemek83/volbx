@@ -12,7 +12,7 @@ class ColumnsPreview : public QTableWidget
 {
     Q_OBJECT
 public:
-    explicit ColumnsPreview(QWidget* parent = nullptr);
+    explicit ColumnsPreview(QWidget* parent);
 
     void setDatasetSampleInfo(const std::unique_ptr<Dataset>& dataset);
 

@@ -11,7 +11,7 @@ class DatasetInner : public Dataset
 {
     Q_OBJECT
 public:
-    explicit DatasetInner(const QString& name, QObject* parent = nullptr);
+    explicit DatasetInner(const QString& name);
 
 protected:
     std::tuple<bool, QVector<QVector<QVariant>>> getSample() override;

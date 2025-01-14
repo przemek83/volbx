@@ -9,8 +9,7 @@ class LoggerCheckBox : public QCheckBox
 {
     Q_OBJECT
 public:
-    LoggerCheckBox(LogTypes type, const QString& content,
-                   QWidget* parent = nullptr);
+    LoggerCheckBox(LogTypes type, const QString& content, QWidget* parent);
 
     LogTypes logType();
 

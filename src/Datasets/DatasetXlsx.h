@@ -6,8 +6,7 @@ class DatasetXlsx : public DatasetSpreadsheet
 {
     Q_OBJECT
 public:
-    DatasetXlsx(const QString& name, const QString& zipFileName,
-                QObject* parent = nullptr);
+    DatasetXlsx(const QString& name, const QString& zipFileName);
 
 protected:
     bool loadSpecificData() override;

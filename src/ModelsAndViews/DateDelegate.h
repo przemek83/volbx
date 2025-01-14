@@ -6,7 +6,7 @@ class DateDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    explicit DateDelegate(QObject* parent = nullptr);
+    explicit DateDelegate(QObject* parent);
 
     QString displayText(const QVariant& value,
                         const QLocale& locale) const override;

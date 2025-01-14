@@ -11,7 +11,7 @@ class DataView : public QTableView
 {
     Q_OBJECT
 public:
-    explicit DataView(QWidget* parent = nullptr);
+    explicit DataView(QWidget* parent);
 
     void setModel(QAbstractItemModel* model) override;
 

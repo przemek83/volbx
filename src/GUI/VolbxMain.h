@@ -17,7 +17,7 @@ class VolbxMain : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit VolbxMain(QWidget* parent = nullptr);
+    VolbxMain();
 
     void checkForUpdates();
 

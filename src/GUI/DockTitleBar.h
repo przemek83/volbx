@@ -13,7 +13,7 @@ class DockTitleBar : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DockTitleBar(QWidget* parent = nullptr);
+    DockTitleBar();
 
     void setTitle(const QString& titleText);
 

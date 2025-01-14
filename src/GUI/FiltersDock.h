@@ -19,7 +19,7 @@ class FiltersDock : public Dock
 {
     Q_OBJECT
 public:
-    explicit FiltersDock(QWidget* parent = nullptr);
+    explicit FiltersDock(QWidget* parent);
 
     void addFiltersForModel(const FilteringProxyModel* model);
 

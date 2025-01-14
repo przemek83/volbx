@@ -20,7 +20,7 @@ class Dataset : public QObject
 {
     Q_OBJECT
 public:
-    explicit Dataset(QString name, QObject* parent = nullptr);
+    explicit Dataset(QString name);
 
     unsigned int rowCount() const;
 

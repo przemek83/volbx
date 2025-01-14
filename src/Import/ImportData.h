@@ -13,7 +13,7 @@ class ImportData : public QDialog
 {
     Q_OBJECT
 public:
-    explicit ImportData(QWidget* parent = nullptr);
+    explicit ImportData(QWidget* parent);
 
     std::unique_ptr<Dataset> getSelectedDataset();
 

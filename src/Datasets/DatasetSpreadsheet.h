@@ -9,8 +9,7 @@ class DatasetSpreadsheet : public Dataset
 {
     Q_OBJECT
 public:
-    DatasetSpreadsheet(const QString& name, const QString& zipFileName,
-                       QObject* parent = nullptr);
+    DatasetSpreadsheet(const QString& name, const QString& zipFileName);
 
 protected:
     bool analyze() override;

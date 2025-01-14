@@ -13,7 +13,7 @@ class SpreadsheetsImportTab : public ImportTab
 {
     Q_OBJECT
 public:
-    explicit SpreadsheetsImportTab(QWidget* parent = nullptr);
+    explicit SpreadsheetsImportTab(QWidget* parent);
 
 private:
     static void analyzeFile(std::unique_ptr<Dataset>& dataset);

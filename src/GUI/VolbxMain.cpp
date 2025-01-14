@@ -30,8 +30,8 @@
 #include "Tab.h"
 #include "TabWidget.h"
 
-VolbxMain::VolbxMain(QWidget* parent)
-    : QMainWindow(parent),
+VolbxMain::VolbxMain()
+    : QMainWindow(),
       ui_(std::make_unique<Ui::VolbxMain>()),
       filters_(this),
       tabWidget_(this)

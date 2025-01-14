@@ -6,7 +6,7 @@ class DatasetDummy : public Dataset
 {
     Q_OBJECT
 public:
-    explicit DatasetDummy(const QString& name, QObject* parent = nullptr);
+    using Dataset::Dataset;
 
 protected:
     bool analyze() override;
