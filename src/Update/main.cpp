@@ -16,10 +16,6 @@ static void showDifferentInstanceRunnningError()
                               QObject::tr(" already running, exiting."));
 }
 
-/**
- * @brief check if different updater is working.
- * @return true if unique, false if already working.
- */
 static bool isUniqueInstance()
 {
     // Only one instance can run. Intentionally leak.
