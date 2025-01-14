@@ -18,7 +18,7 @@ ImportData::ImportData(QWidget* parent) : QDialog(parent)
 
 std::unique_ptr<Dataset> ImportData::getSelectedDataset()
 {
-    auto* tabWidget{findChild<QTabWidget*>()};
+    const auto* tabWidget{findChild<QTabWidget*>()};
     auto* tab{dynamic_cast<ImportTab*>(tabWidget->currentWidget())};
     return tab->getDataset();
 }
@@ -43,9 +43,9 @@ void ImportData::setupLayout()
     layout->setContentsMargins(2, 2, 2, 2);
 
     QDialogButtonBox* buttonBox{createButtonBox()};
-    auto enableOpenButton = [=](bool activate) {
+    auto enableOpenButton{[=](bool activate) {
         buttonBox->button(QDialogButtonBox::Open)->setEnabled(activate);
-    };
+    }};
     QTabWidget* tabWidget{createTabWidgetWithContent(enableOpenButton)};
 
     layout->addWidget(tabWidget);

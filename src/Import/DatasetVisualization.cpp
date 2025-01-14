@@ -83,7 +83,8 @@ std::unique_ptr<Dataset> DatasetVisualization::retrieveDataset()
 }
 
 void DatasetVisualization::currentColumnOnTreeChanged(
-    QTreeWidgetItem* current, [[maybe_unused]] QTreeWidgetItem* previous)
+    const QTreeWidgetItem* current,
+    [[maybe_unused]] const QTreeWidgetItem* previous)
 {
     if (current == nullptr)
         return;
@@ -93,13 +94,12 @@ void DatasetVisualization::currentColumnOnTreeChanged(
 
 void DatasetVisualization::selectCurrentColumn(int column)
 {
-    const QList<QTreeWidgetItem*> selectedItemsList{
-        ui_->columnsList->selectedItems()};
-    if (!selectedItemsList.isEmpty() &&
-        selectedItemsList.first()->data(0, Qt::UserRole).toInt() == column)
+    if (QList<QTreeWidgetItem*> items{ui_->columnsList->selectedItems()};
+        !items.isEmpty() &&
+        items.first()->data(0, Qt::UserRole).toInt() == column)
         return;
 
-    for (int i = 0; i < ui_->columnsList->topLevelItemCount(); ++i)
+    for (int i{0}; i < ui_->columnsList->topLevelItemCount(); ++i)
     {
         QTreeWidgetItem* currentItem{ui_->columnsList->topLevelItem(i)};
         if (currentItem->data(0, Qt::UserRole).toInt() == column)
@@ -113,7 +113,7 @@ void DatasetVisualization::selectCurrentColumn(int column)
 void DatasetVisualization::setCurrentIndexUsingColumn(QComboBox* combo,
                                                       int column)
 {
-    for (int i = 0; i < combo->count(); ++i)
+    for (int i{0}; i < combo->count(); ++i)
     {
         if (combo->itemData(i).toInt() == column)
         {
@@ -129,7 +129,7 @@ void DatasetVisualization::setupColumnsListWidget()
                                    Qt::AscendingOrder);
     ui_->columnsList->setSortingEnabled(false);
 
-    for (int column = 0; column < static_cast<int>(dataset_->columnCount());
+    for (int column{0}; column < static_cast<int>(dataset_->columnCount());
          ++column)
     {
         const QStringList list{dataset_->getHeaderName(column),
@@ -172,9 +172,9 @@ QVector<bool> DatasetVisualization::getActiveColumns() const
     const int topLevelItemsCount{ui_->columnsList->topLevelItemCount()};
     QVector<bool> activeColumns;
     activeColumns.resize(topLevelItemsCount);
-    for (int i = 0; i < topLevelItemsCount; ++i)
+    for (int i{0}; i < topLevelItemsCount; ++i)
     {
-        QTreeWidgetItem* currentItem{ui_->columnsList->topLevelItem(i)};
+        const QTreeWidgetItem* currentItem{ui_->columnsList->topLevelItem(i)};
         bool active{false};
         if (currentItem->flags().testFlag(Qt::ItemIsUserCheckable))
             active = (currentItem->checkState(0) == Qt::Checked);
@@ -187,7 +187,7 @@ QVector<bool> DatasetVisualization::getActiveColumns() const
 }
 
 void DatasetVisualization::setTaggedColumnInDataset(ColumnTag tag,
-                                                    QComboBox* combo)
+                                                    const QComboBox* combo)
 {
     if (combo->currentIndex() == -1)
         return;
@@ -219,7 +219,7 @@ QString DatasetVisualization::getTypeDisplayNameForGivenColumn(int column) const
 
 void DatasetVisualization::fillTaggedColumnCombos()
 {
-    for (int column = 0; column < static_cast<int>(dataset_->columnCount());
+    for (int column{0}; column < static_cast<int>(dataset_->columnCount());
          ++column)
     {
         const ColumnType columnType{dataset_->getColumnFormat(column)};
@@ -232,10 +232,11 @@ void DatasetVisualization::fillTaggedColumnCombos()
     }
 }
 
-void DatasetVisualization::setAllItemsInColumnsListToState(Qt::CheckState state)
+void DatasetVisualization::setAllItemsInColumnsListToState(
+    Qt::CheckState state) const
 {
     const int topLevelItemsCount{ui_->columnsList->topLevelItemCount()};
-    for (int i = 0; i < topLevelItemsCount; ++i)
+    for (int i{0}; i < topLevelItemsCount; ++i)
     {
         QTreeWidgetItem* currentItem{ui_->columnsList->topLevelItem(i)};
         if (currentItem->flags().testFlag(Qt::ItemIsUserCheckable))
@@ -243,7 +244,7 @@ void DatasetVisualization::setAllItemsInColumnsListToState(Qt::CheckState state)
     }
 }
 
-int DatasetVisualization::getCurrentValueFromCombo(QComboBox* combo)
+int DatasetVisualization::getCurrentValueFromCombo(const QComboBox* combo)
 {
     int column{Constants::NOT_SET_COLUMN};
     if (combo->currentIndex() != -1)
@@ -251,23 +252,24 @@ int DatasetVisualization::getCurrentValueFromCombo(QComboBox* combo)
     return column;
 }
 
-void DatasetVisualization::selectAllClicked()
+void DatasetVisualization::selectAllClicked() const
 {
     setAllItemsInColumnsListToState(Qt::Checked);
 }
 
-void DatasetVisualization::unselectAllClicked()
+void DatasetVisualization::unselectAllClicked() const
 {
     setAllItemsInColumnsListToState(Qt::Unchecked);
 }
 
-void DatasetVisualization::refreshColumnList([[maybe_unused]] int newIndex)
+void DatasetVisualization::refreshColumnList(
+    [[maybe_unused]] int newIndex) const
 {
     const int dateColumn{getCurrentValueFromCombo(ui_->dateCombo)};
     const int priceColumn{getCurrentValueFromCombo(ui_->pricePerUnitCombo)};
 
     const int topLevelItemsCount{ui_->columnsList->topLevelItemCount()};
-    for (int i = 0; i < topLevelItemsCount; ++i)
+    for (int i{0}; i < topLevelItemsCount; ++i)
     {
         QTreeWidgetItem* currentItem{ui_->columnsList->topLevelItem(i)};
         const int itemColumn{currentItem->data(0, Qt::UserRole).toInt()};

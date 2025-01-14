@@ -36,15 +36,15 @@ private:
 
     QVector<bool> getActiveColumns() const;
 
-    void setTaggedColumnInDataset(ColumnTag tag, QComboBox* combo);
+    void setTaggedColumnInDataset(ColumnTag tag, const QComboBox* combo);
 
     QString getTypeDisplayNameForGivenColumn(int column) const;
 
     void fillTaggedColumnCombos();
 
-    void setAllItemsInColumnsListToState(Qt::CheckState state);
+    void setAllItemsInColumnsListToState(Qt::CheckState state) const;
 
-    static int getCurrentValueFromCombo(QComboBox* combo);
+    static int getCurrentValueFromCombo(const QComboBox* combo);
 
     std::unique_ptr<Ui::DatasetVisualization> ui_;
 
@@ -57,14 +57,14 @@ private:
 private Q_SLOTS:
     void searchTextChanged(const QString& newText);
 
-    void currentColumnOnTreeChanged(QTreeWidgetItem* current,
-                                    QTreeWidgetItem* previous);
+    void currentColumnOnTreeChanged(const QTreeWidgetItem* current,
+                                    const QTreeWidgetItem* previous);
 
-    void selectAllClicked();
+    void selectAllClicked() const;
 
-    void unselectAllClicked();
+    void unselectAllClicked() const;
 
-    void refreshColumnList(int newIndex);
+    void refreshColumnList(int newIndex) const;
 
 Q_SIGNALS:
     void currentColumnNeedSync(int currentColumn);

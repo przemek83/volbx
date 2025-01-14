@@ -107,9 +107,10 @@ QString SpreadsheetsImportTab::getValidDatasetName(const QFileInfo& fileInfo)
 
 bool SpreadsheetsImportTab::getFileInfo(QFileInfo& fileInfo)
 {
-    const QString filePath = QFileDialog::getOpenFileName(
-        this, tr("Open file"), Configuration::getInstance().getImportFilePath(),
-        tr("Spreadsheets (*.xlsx *.ods )"));
+    const QString defaultPath{Configuration::getInstance().getImportFilePath()};
+    const QString filePath{
+        QFileDialog::getOpenFileName(this, tr("Open file"), defaultPath,
+                                     tr("Spreadsheets (*.xlsx *.ods )"))};
 
     fileInfo.setFile(filePath);
     if (!fileIsOk(fileInfo))

@@ -23,10 +23,10 @@ void ColumnsPreview::setDatasetSampleInfo(
     setLabels(dataset);
 
     const QVector<QVector<QVariant>> sampleData{dataset->retrieveSampleData()};
-    const qsizetype rows{sampleData.size()};
+    const int rows{static_cast<int>(sampleData.size())};
     setRowCount(rows);
-    for (int i = 0; i < rows; ++i)
-        for (int j = 0; j < columns; ++j)
+    for (int i{0}; i < rows; ++i)
+        for (int j{0}; j < columns; ++j)
             setItem(i, j, createItem(sampleData.at(i).at(j).toString()));
 }
 

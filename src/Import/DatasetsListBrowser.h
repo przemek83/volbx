@@ -21,7 +21,7 @@ public:
 private:
     void setupDatasetsList();
 
-    bool doesUserChooseToDeleteSelectedDataset(QPoint pos);
+    bool doesUserChooseToDeleteSelectedDataset(QPoint pos) const;
 
     bool doesUserConfirmedDeleting(const QString& datasetToDelete);
 
@@ -30,7 +30,7 @@ private:
     std::unique_ptr<Ui::DatasetsListBrowser> ui_;
 
 private Q_SLOTS:
-    void searchTextChanged(const QString& arg1);
+    void searchTextChanged(const QString& arg1) const;
 
     void showContextMenu(QPoint pos);
 

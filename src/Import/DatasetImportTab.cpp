@@ -45,7 +45,7 @@ void DatasetImportTab::selectedDatasetChanged(const QString& current)
         createDataset(current);
 }
 
-bool DatasetImportTab::datasetsAreAvailable()
+bool DatasetImportTab::datasetsAreAvailable() const
 {
     const auto* datasetsListBrowser{findChild<DatasetsListBrowser*>()};
     return (!datasetsListBrowser->isDatasetsListEmpty());

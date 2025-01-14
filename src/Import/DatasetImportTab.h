@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include "ImportTab.h"
 
 class Dataset;
@@ -12,7 +10,7 @@ class DatasetImportTab : public ImportTab
 public:
     explicit DatasetImportTab(QWidget* parent);
 
-    bool datasetsAreAvailable();
+    bool datasetsAreAvailable() const;
 
 private:
     void clear();
