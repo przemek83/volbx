@@ -49,7 +49,7 @@ The tool was originally created for real estate appraisal as it gives the possib
 | QuaZip | 1.4 | 1.4 |
 | Zlib | 1.3.1 | 1.3.1 |
 | Eible | 1.2.0 | 1.2.0 |
-| QwtBle | 1.1.0 | 1.1.0 |
+| QwtBle | 1.2.0 | 1.2.0 |
 | Wble | 1.2.0 | 1.2.0 |
 
 ## Compilation and installation
