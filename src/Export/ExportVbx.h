@@ -34,7 +34,7 @@ private:
     void variantToString(const QVariant& variant, QByteArray& destinationArray,
                          char separator);
 
-    bool exportStrings(QIODevice& ioDevice);
+    bool exportStrings(QIODevice& ioDevice) const;
 
     bool exportDefinition(const QAbstractItemView& view,
                           QIODevice& ioDevice) const;

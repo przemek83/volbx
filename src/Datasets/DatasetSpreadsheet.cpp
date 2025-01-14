@@ -27,7 +27,7 @@ bool DatasetSpreadsheet::analyze()
     return true;
 }
 
-const QString& DatasetSpreadsheet::getSheetName()
+const QString& DatasetSpreadsheet::getSheetName() const
 {
     return sheetNames_.constFirst();
 }

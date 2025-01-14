@@ -32,7 +32,7 @@ private:
     std::tuple<bool, QVector<QVector<QVariant>>> getDataFromZip(
         const QString& sheetName, bool fillSamplesOnly);
 
-    const QString& getSheetName();
+    const QString& getSheetName() const;
 
     QStringList sheetNames_;
 };
