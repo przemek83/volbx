@@ -31,7 +31,7 @@ private:
 
     void checkForTaggedColumn(const QDomElement& columnElement, Column column);
 
-    bool fromXml(QByteArray& definitionContent);
+    bool fromXml(const QByteArray& definitionContent);
 
     static bool loadXmlFile(QByteArray& definitionContent, QuaZip& zip);
 

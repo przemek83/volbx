@@ -21,9 +21,9 @@ bool DatasetInner::analyze()
     if (!openZip())
         return false;
 
-    QByteArray definitionContent;
-    if (!loadXmlFile(definitionContent, zip_) || !fromXml(definitionContent) ||
-        !loadStrings(zip_))
+    if (QByteArray definitionContent; !loadXmlFile(definitionContent, zip_) ||
+                                      !fromXml(definitionContent) ||
+                                      !loadStrings(zip_))
         return false;
 
     valid_ = true;
@@ -44,7 +44,7 @@ bool DatasetInner::openZip()
 
 std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::getSample()
 {
-    auto [success, data] = fillData(zip_, true);
+    auto [success, data]{fillData(zip_, true)};
     if (!success)
         return {false, {}};
 
@@ -95,7 +95,7 @@ void DatasetInner::checkForTaggedColumn(const QDomElement& columnElement,
                         column);
 }
 
-bool DatasetInner::fromXml(QByteArray& definitionContent)
+bool DatasetInner::fromXml(const QByteArray& definitionContent)
 {
     QDomDocument xmlDocument;
     if (!xmlDocument.setContent(definitionContent))
@@ -227,7 +227,7 @@ QVector<QVariant> DatasetInner::fillRow(const QStringList& line,
                                         bool fillSamplesOnly)
 {
     QVector<QVariant> row;
-    for (Column column = 0; column < static_cast<int>(columnCount()); ++column)
+    for (Column column{0}; column < static_cast<int>(columnCount()); ++column)
     {
         if (!fillSamplesOnly && !activeColumns_[column])
             continue;
@@ -290,10 +290,10 @@ QVector<QVector<QVariant>> DatasetInner::prepareContainerForAllData() const
 QVector<QVector<QVariant>> DatasetInner::prepareContainerForSampleData() const
 {
     QVector<QVector<QVariant>> data;
-    const int rowsCountForSamples =
-        static_cast<int>((rowCount() > SAMPLE_SIZE ? SAMPLE_SIZE : rowCount()));
+    const int rowsCountForSamples{static_cast<int>(
+        (rowCount() > SAMPLE_SIZE ? SAMPLE_SIZE : rowCount()))};
     data.resize(rowsCountForSamples);
-    for (int i = 0; i < rowsCountForSamples; ++i)
+    for (int i{0}; i < rowsCountForSamples; ++i)
         data[i].resize(static_cast<int>(columnsCount_));
     return data;
 }
