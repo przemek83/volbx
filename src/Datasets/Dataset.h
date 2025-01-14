@@ -16,39 +16,16 @@ class QDomElement;
 
 using Column = int;
 
-/**
- * @class Dataset
- * @brief Representation for set of data.
- */
 class Dataset : public QObject
 {
     Q_OBJECT
 public:
-    /**
-     * @brief Dataset constructor
-     * @param name Dataset name.
-     * @param parent Parent object.
-     */
     explicit Dataset(QString name, QObject* parent = nullptr);
 
-    /**
-     * @brief Get number of rows in dataset.
-     * @return Number of rows.
-     */
     unsigned int rowCount() const;
 
-    /**
-     * @brief Get number of columns in dataset.
-     * @return Number of columns.
-     */
     unsigned int columnCount() const;
 
-    /**
-     * @brief Get data QVariant for given row and column.
-     * @param row Row for which data need to be retrieved.
-     * @param column Column for which data need to be retrieved.
-     * @return Pointer to QVariant with data.
-     */
     virtual inline QVariant* getData(int row, Column column)
     {
         if (getColumnFormat(column) == ColumnType::STRING)
@@ -61,102 +38,40 @@ public:
         return &data_[row][column];
     }
 
-    /**
-     * @brief Get format of column with given index.
-     * @param column Column index.
-     * @return Type of column.
-     */
     ColumnType getColumnFormat(Column column) const;
 
-    /**
-     * @brief Get numeric range for given column.
-     * @param column Column index.
-     * @return Minimum and maximum in given column.
-     */
     std::tuple<double, double> getNumericRange(Column column) const;
 
-    /**
-     * @brief Get dates range got given column.
-     * @param column Column index.
-     * @return Minimum, maximum and flag if there are empty dates for column.
-     */
+    /// @brief Get dates range got given column.
+    /// @param column Column index.
+    /// @return Minimum, maximum and flag if there are empty dates for column.
     std::tuple<QDate, QDate, bool> getDateRange(Column column) const;
 
-    /**
-     * @brief Get list of unique strings in given column.
-     * @param column Column index.
-     * @return String list for given column.
-     */
     QStringList getStringList(Column column) const;
 
-    /**
-     * @brief Get index of tagged column if available.
-     * @param columnTag Type of tagged column.
-     * @return Flag indicating there is tagged column and column index.
-     */
+    /// @brief Get index of tagged column if available.
+    /// @param columnTag Type of tagged column.
+    /// @return Flag indicating there is tagged column and column index.
     std::tuple<bool, Column> getTaggedColumn(ColumnTag columnTag) const;
 
-    /**
-     * @brief Get header name for given column.
-     * @param column Column index.
-     * @return Column name.
-     */
     QString getHeaderName(Column column) const;
 
-    /**
-     * @brief Check if dataset is valid.
-     * @return True if valid, false otherwise.
-     */
     bool isValid() const;
 
-    /**
-     * @brief Get dataset name
-     * @return Dataset name.
-     */
     QString getName() const;
 
-    /**
-     * @brief Initialize dataset.
-     * @return True if succeed, false otherwise.
-     */
     bool initialize();
 
-    /**
-     * @brief Load data into dataset.
-     * @return True if succeed, false otherwise.
-     */
     bool loadData();
 
-    /**
-     * @brief Create XML with definition of dataset
-     * @param rowCount Number of rows active in view.
-     * @return Definition as QByteArray.
-     */
     QByteArray definitionToXml(unsigned int rowCount) const;
 
-    /**
-     * @brief Retrieve sample data (data is moved).
-     * @return Sample data.
-     */
     QVector<QVector<QVariant>> retrieveSampleData();
 
-    /**
-     * @brief Set active columns in dataset.
-     * @param activeColumns Active columns flags vector.
-     */
     void setActiveColumns(const QVector<bool>& activeColumns);
 
-    /**
-     * @brief Set tagged column in dataset.
-     * @param columnTag Column tag.
-     * @param column Column index.
-     */
     void setTaggedColumn(ColumnTag columnTag, Column column);
 
-    /**
-     * @brief Get last error.
-     * @return Last error.
-     */
     QString getLastError() const;
 
 protected:
@@ -220,9 +135,5 @@ private:
     QMap<ColumnTag, Column> taggedColumns_;
 
 Q_SIGNALS:
-    /**
-     * @brief Signal for loading percent changes
-     * @param newPercentage New percent.
-     */
     void loadingPercentChanged(unsigned int newPercentage);
 };

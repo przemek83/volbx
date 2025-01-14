@@ -5,10 +5,6 @@
 
 #include "Dataset.h"
 
-/**
- * @class DatasetSpreadsheet
- * @brief Dataset class for spreadsheets.
- */
 class DatasetSpreadsheet : public Dataset
 {
     Q_OBJECT

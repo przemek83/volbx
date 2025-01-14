@@ -7,10 +7,6 @@
 class QuaZipFile;
 class QTextStream;
 
-/**
- * @class DatasetInner
- * @brief Dataset class for inner format.
- */
 class DatasetInner : public Dataset
 {
     Q_OBJECT

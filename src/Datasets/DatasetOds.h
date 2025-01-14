@@ -2,10 +2,6 @@
 
 #include "DatasetSpreadsheet.h"
 
-/**
- * @class DatasetOds
- * @brief Dataset definition for .ods files.
- */
 class DatasetOds : public DatasetSpreadsheet
 {
     Q_OBJECT
