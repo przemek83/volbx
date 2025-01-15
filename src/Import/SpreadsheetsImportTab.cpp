@@ -43,7 +43,7 @@ SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent)
     ui_->sheetCombo->hide();
 }
 
-void SpreadsheetsImportTab::analyzeFile(std::unique_ptr<Dataset>& dataset)
+void SpreadsheetsImportTab::analyzeFile(const std::unique_ptr<Dataset>& dataset)
 {
     const QString barTitle{
         Constants::getProgressBarTitle(Constants::BarTitle::ANALYSING)};

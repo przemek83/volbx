@@ -16,7 +16,7 @@ public:
     explicit SpreadsheetsImportTab(QWidget* parent);
 
 private:
-    static void analyzeFile(std::unique_ptr<Dataset>& dataset);
+    static void analyzeFile(const std::unique_ptr<Dataset>& dataset);
 
     static std::unique_ptr<Dataset> createDataset(const QFileInfo& fileInfo);
 
