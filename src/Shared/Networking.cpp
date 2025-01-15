@@ -6,7 +6,7 @@
 
 #include "Logger.h"
 
-namespace Networking
+namespace networking
 {
 int getMaxRetries()
 {
@@ -56,4 +56,4 @@ std::tuple<QString, QStringList> getAvailableVersionAndFiles(
 
     return {filesList.value(1), filesList};
 }
-}  // namespace Networking
+}  // namespace networking

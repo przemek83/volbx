@@ -416,14 +416,14 @@ void VolbxMain::setupStatusBar()
 
 bool VolbxMain::canUpdate(QNetworkReply* reply)
 {
-    if (!Networking::replyIsValid(reply))
+    if (!networking::replyIsValid(reply))
     {
         ui_->statusBar->showMessage(tr("Connection error encountered."));
         return false;
     }
 
     auto [newestVersion, notNeededHereList] =
-        Networking::getAvailableVersionAndFiles(reply);
+        networking::getAvailableVersionAndFiles(reply);
     if (newestVersion.isEmpty())
     {
         ui_->statusBar->showMessage(tr("Wrong answer received from server."));
@@ -474,7 +474,7 @@ void VolbxMain::updateCheckReplyFinished(QNetworkReply* reply)
 
 void VolbxMain::actionCheckForNewVersionTriggered()
 {
-    networkManager_.get(Networking::getCurrentVersionRequest());
+    networkManager_.get(networking::getCurrentVersionRequest());
 }
 
 void VolbxMain::actionUpdateAutoToggled(bool alwaysCheck)

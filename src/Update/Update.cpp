@@ -33,7 +33,7 @@ void Update::setupNetworkManagers()
                           QStringLiteral("... "));
 
     // Get available version and files to update list.
-    initialInfoNetworkManager_.get(Networking::getCurrentVersionRequest());
+    initialInfoNetworkManager_.get(networking::getCurrentVersionRequest());
 
     LOG(LogTypes::NETWORK, QStringLiteral("Initial network request send."));
 }
@@ -83,7 +83,7 @@ void Update::exitUpdaterAsMostRecentVersionIsInstalled()
 
 bool Update::isReplyOk(const QNetworkReply* reply)
 {
-    if (!Networking::replyIsValid(reply))
+    if (!networking::replyIsValid(reply))
     {
         insertNewLineIntoDetails();
         insertErrorInfoIntoDetails(tr("Error") + QLatin1Char(':') +
@@ -105,7 +105,7 @@ void Update::initialInfoNetworkReplyFinished(QNetworkReply* reply)
     insertNewLineIntoDetails();
 
     auto [availableVersion,
-          replyStringList]{Networking::getAvailableVersionAndFiles(reply)};
+          replyStringList]{networking::getAvailableVersionAndFiles(reply)};
     if (availableVersion.isEmpty())
     {
         showErrorMsg(tr("Wrong answer received from server."));
@@ -153,7 +153,7 @@ void Update::downloadFile(const QString& fileName)
             QString::number(ui_.currentFile->text().toInt() + 1));
 
     const QNetworkReply* reply{
-        downloadManager_.get(Networking::getDownloadFileRequest(fileName))};
+        downloadManager_.get(networking::getDownloadFileRequest(fileName))};
     LOG(LogTypes::NETWORK,
         QStringLiteral("Sent request for downloading file ") +
             QString(fileName));
@@ -223,7 +223,7 @@ bool Update::handleVerificationError(const QString& fileName,
     insertErrorInfoIntoDetails(tr("Error during verification!"));
 
     // Add corrupted file to front of vector if max tries not reached yet.
-    if (currentTriesCount_ >= Networking::getMaxRetries())
+    if (currentTriesCount_ >= networking::getMaxRetries())
     {
         insertErrorInfoIntoDetails(tr("Can not download file."));
         const QString msg(tr(

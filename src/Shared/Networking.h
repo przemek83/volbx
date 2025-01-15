@@ -5,7 +5,7 @@
 
 class QNetworkReply;
 
-namespace Networking
+namespace networking
 {
 QNetworkRequest getCurrentVersionRequest();
 
@@ -17,4 +17,4 @@ std::tuple<QString, QStringList> getAvailableVersionAndFiles(
     QNetworkReply* reply);
 
 int getMaxRetries();
-}  // namespace Networking
+}  // namespace networking
