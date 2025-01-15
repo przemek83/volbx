@@ -12,7 +12,7 @@ DatasetXlsx::DatasetXlsx(const QString& name, const QString& zipFileName)
 bool DatasetXlsx::loadSharedStrings()
 {
     const auto [success, sharedStringsList]{
-        qobject_cast<ImportXlsx*>(importer_.get())->getSharedStrings()};
+        ::qobject_cast<ImportXlsx*>(importer_.get())->getSharedStrings()};
     if (!success)
     {
         LOG(LogTypes::IMPORT_EXPORT, importer_->getLastError());

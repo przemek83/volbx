@@ -106,7 +106,7 @@ void Logger::moveCursorToTheEnd(QTextEdit* logTextEdit)
 
 void Logger::changeActiveLogs(bool state)
 {
-    auto* clickedCheckBox{qobject_cast<LoggerCheckBox*>(sender())};
+    const auto* clickedCheckBox{::qobject_cast<LoggerCheckBox*>(sender())};
     const LogTypes logType{clickedCheckBox->logType()};
     activeLogs_[logType] = state;
 

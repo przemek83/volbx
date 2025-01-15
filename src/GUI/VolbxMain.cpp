@@ -484,7 +484,7 @@ void VolbxMain::actionUpdateAutoToggled(bool alwaysCheck)
 
 void VolbxMain::styleChanged() const
 {
-    const auto* action{qobject_cast<QAction*>(sender())};
+    const auto* action{::qobject_cast<QAction*>(sender())};
     const QString style{action->text()};
     if (QStyleFactory::keys().contains(style))
         Application::setQtStyle(style);

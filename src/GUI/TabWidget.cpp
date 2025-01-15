@@ -62,7 +62,7 @@ QVector<std::pair<QString, int>> TabWidget::getStringColumnsWithIndexes(
 DataViewDock* TabWidget::getCurrentDataViewDock() const
 {
     const DataView* dataView{getCurrentDataView()};
-    return qobject_cast<DataViewDock*>(dataView->parent());
+    return ::qobject_cast<DataViewDock*>(dataView->parent());
 }
 
 void TabWidget::changingFilterPreActions() const
@@ -117,7 +117,7 @@ void TabWidget::showPlot()
 {
     Tab* mainTab{getCurrentMainTab()};
     auto* plotUI{mainTab->findChild<T*>()};
-    auto dock{qobject_cast<PlotDock*>(plotUI->parent())};
+    auto dock{::qobject_cast<PlotDock*>(plotUI->parent())};
     dock->setVisible(true);
     dock->raise();
 }

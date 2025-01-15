@@ -26,7 +26,7 @@ DataView::DataView(QWidget* parent)
 
 void DataView::setModel(QAbstractItemModel* model)
 {
-    const auto* proxyModel{qobject_cast<FilteringProxyModel*>(model)};
+    const auto* proxyModel{::qobject_cast<FilteringProxyModel*>(model)};
     const TableModel* parentModel{proxyModel->getParentModel()};
 
     for (int column{0}; column < proxyModel->columnCount(); ++column)
@@ -199,7 +199,7 @@ void DataView::initVerticalHeader() const
 
 const FilteringProxyModel* DataView::getProxyModel() const
 {
-    return qobject_cast<FilteringProxyModel*>(model());
+    return ::qobject_cast<FilteringProxyModel*>(model());
 }
 
 const TableModel* DataView::getParentModel() const

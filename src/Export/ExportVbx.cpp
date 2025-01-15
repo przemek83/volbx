@@ -63,7 +63,7 @@ bool ExportVbx::exportDefinition(const QAbstractItemView& view,
                                  QIODevice& ioDevice) const
 {
     const TableModel* parentModel{
-        (qobject_cast<FilteringProxyModel*>(view.model()))->getParentModel()};
+        (::qobject_cast<FilteringProxyModel*>(view.model()))->getParentModel()};
     const QByteArray definitionContent{parentModel->definitionToXml(lines_)};
 
     return write(ioDevice, DatasetUtilities::getDatasetDefinitionFilename(),
