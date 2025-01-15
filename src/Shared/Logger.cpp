@@ -14,7 +14,7 @@ Logger::Logger() : QObject()
     display_.setLayout(createLayout());
 
     // Activate all logs as default.
-    for (int i = 0; i < static_cast<int>(LogTypes::END); ++i)
+    for (int i{0}; i < static_cast<int>(LogTypes::END); ++i)
         activeLogs_[static_cast<LogTypes>(i)] = true;
 
     createCheckBoxes();
@@ -84,16 +84,16 @@ void Logger::createCheckBoxes()
     if (verticalLayout == nullptr)
         return;
 
-    QMapIterator<LogTypes, bool> i(activeLogs_);
-    while (i.hasNext())
+    QMapIterator it(activeLogs_);
+    while (it.hasNext())
     {
-        i.next();
+        it.next();
         LoggerCheckBox* check{
-            new LoggerCheckBox(i.key(), logNames_[i.key()], &display_)};
-        check->setChecked(i.value());
+            new LoggerCheckBox(it.key(), logNames_[it.key()], &display_)};
+        check->setChecked(it.value());
         connect(check, &LoggerCheckBox::toggled, this,
                 &Logger::changeActiveLogs);
-        verticalLayout->insertWidget(static_cast<int>(i.key()), check);
+        verticalLayout->insertWidget(static_cast<int>(it.key()), check);
     }
 }
 

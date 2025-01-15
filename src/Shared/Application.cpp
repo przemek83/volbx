@@ -37,7 +37,7 @@ QString getStylePath(const QString& styleName)
 
 void clearAppFocus()
 {
-    QWidget* focusWidget = qApp->focusWidget();
+    QWidget* focusWidget{QApplication::focusWidget()};
     if (focusWidget != nullptr)
         focusWidget->clearFocus();
 }
@@ -69,7 +69,7 @@ void setQtStyle(const QString& name)
 {
     clearAppFocus();
     qApp->setStyleSheet(QString());
-    qApp->setStyle(name);
+    QApplication::setStyle(name);
 }
 
 void initStyle(const QString& nameFromConfig)

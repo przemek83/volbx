@@ -26,13 +26,13 @@ QNetworkRequest getDownloadFileRequest(const QString& file)
         QUrl(QStringLiteral("http://example.com/update/current/") + file));
 }
 
-bool replyIsValid(QNetworkReply* reply)
+bool replyIsValid(const QNetworkReply* reply)
 {
     if (QNetworkReply::NoError != reply->error())
         return true;
 
-    const unsigned int httpStatusCode =
-        reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toUInt();
+    const unsigned int httpStatusCode{
+        reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toUInt()};
 
     const int okCode{200};
     return httpStatusCode != okCode || !reply->isReadable();

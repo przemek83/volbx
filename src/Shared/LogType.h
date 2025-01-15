@@ -1,6 +1,6 @@
 #pragma once
 
-enum class LogTypes : char
+enum class LogTypes : signed char
 {
     DB = 0,
     CONFIG,

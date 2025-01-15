@@ -11,7 +11,7 @@ QNetworkRequest getCurrentVersionRequest();
 
 QNetworkRequest getDownloadFileRequest(const QString& file);
 
-bool replyIsValid(QNetworkReply* reply);
+bool replyIsValid(const QNetworkReply* reply);
 
 std::tuple<QString, QStringList> getAvailableVersionAndFiles(
     QNetworkReply* reply);
