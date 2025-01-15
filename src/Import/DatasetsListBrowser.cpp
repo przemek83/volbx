@@ -39,7 +39,7 @@ bool DatasetsListBrowser::isDatasetsListEmpty() const
 void DatasetsListBrowser::setupDatasetsList()
 {
     ui_->datasetsList->insertItems(
-        0, DatasetUtilities::getListOfAvailableDatasets());
+        0, dataset_utilities::getListOfAvailableDatasets());
 
     ui_->datasetsList->setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -82,13 +82,13 @@ bool DatasetsListBrowser::doesUserConfirmedDeleting(
 
 void DatasetsListBrowser::deleteSelectedDataset(const QString& datasetToDelete)
 {
-    if (!DatasetUtilities::removeDataset(datasetToDelete))
+    if (!dataset_utilities::removeDataset(datasetToDelete))
         QMessageBox::warning(this, tr("Error"),
                              tr("Can not delete ") + datasetToDelete + ".");
 
     ui_->datasetsList->clear();
     ui_->datasetsList->insertItems(
-        0, DatasetUtilities::getListOfAvailableDatasets());
+        0, dataset_utilities::getListOfAvailableDatasets());
 }
 
 void DatasetsListBrowser::showContextMenu(QPoint pos)

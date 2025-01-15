@@ -94,8 +94,9 @@ bool SpreadsheetsImportTab::fileIsOk(const QFileInfo& fileInfo)
 
 QString SpreadsheetsImportTab::getValidDatasetName(const QFileInfo& fileInfo)
 {
-    const QString regexpString{DatasetUtilities::getDatasetNameRegExp().replace(
-        QStringLiteral("["), QStringLiteral("[^"))};
+    const QString regexpString{
+        dataset_utilities::getDatasetNameRegExp().replace(
+            QStringLiteral("["), QStringLiteral("[^"))};
     QString datasetName{
         fileInfo.completeBaseName().remove(QRegularExpression(regexpString))};
 

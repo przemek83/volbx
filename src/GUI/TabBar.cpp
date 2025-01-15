@@ -60,7 +60,7 @@ bool TabBar::eventFilter(QObject* obj, QEvent* event)
 void TabBar::setupLineEdit()
 {
     const auto* validator{new QRegularExpressionValidator(
-        QRegularExpression(DatasetUtilities::getDatasetNameRegExp()), this)};
+        QRegularExpression(dataset_utilities::getDatasetNameRegExp()), this)};
     nameEdit_.setValidator(validator);
     nameEdit_.hide();
     connect(&nameEdit_, &QLineEdit::editingFinished, this,

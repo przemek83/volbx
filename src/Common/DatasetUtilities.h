@@ -2,7 +2,7 @@
 
 #include <QStringList>
 
-namespace DatasetUtilities
+namespace dataset_utilities
 {
 QString getDatasetsDir();
 
@@ -21,4 +21,4 @@ QString getDatasetStringsFilename();
 QString getDatasetExtension();
 
 QString getDatasetNameRegExp();
-};  // namespace DatasetUtilities
+};  // namespace dataset_utilities

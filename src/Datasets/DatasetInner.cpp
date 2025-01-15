@@ -12,7 +12,7 @@
 DatasetInner::DatasetInner(const QString& name) : Dataset{name}
 {
     zip_.setZipName(datasetsDir_ + name +
-                    DatasetUtilities::getDatasetExtension());
+                    dataset_utilities::getDatasetExtension());
 }
 
 bool DatasetInner::analyze()
@@ -136,7 +136,7 @@ bool DatasetInner::openQuaZipFile(QuaZipFile& zipFile)
 bool DatasetInner::loadXmlFile(QByteArray& definitionContent, QuaZip& zip)
 {
     QuaZipFile zipFile(&zip);
-    zip.setCurrentFile(DatasetUtilities::getDatasetDefinitionFilename());
+    zip.setCurrentFile(dataset_utilities::getDatasetDefinitionFilename());
     if (!openQuaZipFile(zipFile))
         return false;
 
@@ -147,7 +147,7 @@ bool DatasetInner::loadXmlFile(QByteArray& definitionContent, QuaZip& zip)
 bool DatasetInner::loadStrings(QuaZip& zip)
 {
     QuaZipFile zipFile(&zip);
-    zip.setCurrentFile(DatasetUtilities::getDatasetStringsFilename());
+    zip.setCurrentFile(dataset_utilities::getDatasetStringsFilename());
     if (!openQuaZipFile(zipFile))
         return false;
 
@@ -267,7 +267,7 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::fillData(
     QuaZip& zip, bool fillSamplesOnly)
 {
     QuaZipFile zipFile(&zip);
-    zip.setCurrentFile(DatasetUtilities::getDatasetDataFilename());
+    zip.setCurrentFile(dataset_utilities::getDatasetDataFilename());
     if (!openQuaZipFile(zipFile))
         return {false, {}};
 

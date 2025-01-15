@@ -18,7 +18,7 @@ bool ExportVbx::generateVbx(const QAbstractItemView& view, QIODevice& ioDevice)
 
 bool ExportVbx::writeContent(const QByteArray& content, QIODevice& ioDevice)
 {
-    return write(ioDevice, DatasetUtilities::getDatasetDataFilename(), content,
+    return write(ioDevice, dataset_utilities::getDatasetDataFilename(), content,
                  QuaZip::mdCreate);
 }
 
@@ -55,7 +55,7 @@ QByteArray ExportVbx::getContentEnding() { return QByteArrayLiteral(""); }
 
 bool ExportVbx::exportStrings(QIODevice& ioDevice) const
 {
-    return write(ioDevice, DatasetUtilities::getDatasetStringsFilename(),
+    return write(ioDevice, dataset_utilities::getDatasetStringsFilename(),
                  stringsContent_, QuaZip::mdAdd);
 }
 
@@ -66,7 +66,7 @@ bool ExportVbx::exportDefinition(const QAbstractItemView& view,
         (::qobject_cast<FilteringProxyModel*>(view.model()))->getParentModel()};
     const QByteArray definitionContent{parentModel->definitionToXml(lines_)};
 
-    return write(ioDevice, DatasetUtilities::getDatasetDefinitionFilename(),
+    return write(ioDevice, dataset_utilities::getDatasetDefinitionFilename(),
                  definitionContent, QuaZip::mdAdd);
 }
 

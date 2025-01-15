@@ -15,7 +15,7 @@ SaveDatasetAs::SaveDatasetAs(QStringList usedNames)
     connect(ui_->name, &QLineEdit::textChanged, this,
             &SaveDatasetAs::nameChanged);
     const QRegularExpression datasetNameRegExp(
-        DatasetUtilities::getDatasetNameRegExp());
+        dataset_utilities::getDatasetNameRegExp());
     const auto* validator{
         new QRegularExpressionValidator(datasetNameRegExp, this)};
     ui_->name->setValidator(validator);

@@ -4,7 +4,7 @@
 #include <QDir>
 #include <QFile>
 
-namespace DatasetUtilities
+namespace dataset_utilities
 {
 QString getDatasetsDir()
 {
@@ -57,4 +57,4 @@ QString getDatasetExtension() { return QStringLiteral(".vbx"); }
 
 QString getDatasetNameRegExp() { return QStringLiteral("[\\w\\s-]+"); }
 
-}  // namespace DatasetUtilities
+}  // namespace dataset_utilities

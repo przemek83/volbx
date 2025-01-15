@@ -60,5 +60,5 @@ private:
 
     QuaZip zip_;
 
-    const QString datasetsDir_{DatasetUtilities::getDatasetsDir()};
+    const QString datasetsDir_{dataset_utilities::getDatasetsDir()};
 };

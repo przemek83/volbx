@@ -31,7 +31,7 @@ void InnerTests::testDefinition()
 {
     QFETCH(const QString, datasetName);
     DatasetCommon::checkDefinition(datasetName,
-                                   DatasetUtilities::getDatasetsDir());
+                                   dataset_utilities::getDatasetsDir());
 }
 
 void InnerTests::testData_data() { addTestCases(QStringLiteral("Test data")); }
@@ -39,7 +39,7 @@ void InnerTests::testData_data() { addTestCases(QStringLiteral("Test data")); }
 void InnerTests::testData()
 {
     QFETCH(const QString, datasetName);
-    DatasetCommon::checkData(datasetName, DatasetUtilities::getDatasetsDir());
+    DatasetCommon::checkData(datasetName, dataset_utilities::getDatasetsDir());
 }
 
 void InnerTests::testExport_data()
@@ -66,7 +66,8 @@ void InnerTests::generateDumpData()
     QDir().mkdir(generatedFilesDir);
     for (const auto& datasetName : testFileNames_)
         DatasetCommon::generateExpectedDataForFile(
-            datasetName, DatasetUtilities::getDatasetsDir(), generatedFilesDir);
+            datasetName, dataset_utilities::getDatasetsDir(),
+            generatedFilesDir);
 }
 
 QByteArray InnerTests::loadDataFromZip(QuaZip& zip, const QString& fileName)
@@ -99,9 +100,9 @@ void InnerTests::checkExportedDefinitions(QuaZip& zipOriginal,
                                           QuaZip& zipGenerated)
 {
     const QByteArray originalData{loadDataFromZip(
-        zipOriginal, DatasetUtilities::getDatasetDefinitionFilename())};
+        zipOriginal, dataset_utilities::getDatasetDefinitionFilename())};
     const QByteArray generatedData{loadDataFromZip(
-        zipGenerated, DatasetUtilities::getDatasetDefinitionFilename())};
+        zipGenerated, dataset_utilities::getDatasetDefinitionFilename())};
     DatasetCommon::xmlsAreEqual(generatedData, originalData);
 }
 
@@ -109,7 +110,7 @@ void InnerTests::generateVbxFile(const QString& datasetName, QBuffer& buffer,
                                  const QVector<bool>& activeColumns)
 {
     std::unique_ptr<Dataset> dataset{DatasetCommon::createDataset(
-        datasetName, DatasetUtilities::getDatasetsDir())};
+        datasetName, dataset_utilities::getDatasetsDir())};
     dataset->initialize();
     if (activeColumns.empty())
         DatasetCommon::activateAllDatasetColumns(*dataset);
@@ -131,17 +132,17 @@ void InnerTests::generateVbxFile(const QString& datasetName, QBuffer& buffer,
 void InnerTests::checkExport(const QString& datasetName,
                              QBuffer& exportedBuffer)
 {
-    QuaZip zipOriginal(DatasetUtilities::getDatasetsDir() + datasetName +
-                       DatasetUtilities::getDatasetExtension());
+    QuaZip zipOriginal(dataset_utilities::getDatasetsDir() + datasetName +
+                       dataset_utilities::getDatasetExtension());
     QVERIFY(zipOriginal.open(QuaZip::mdUnzip));
 
     QuaZip zipGenerated(&exportedBuffer);
     QVERIFY(zipGenerated.open(QuaZip::mdUnzip));
 
-    checkExportedData(DatasetUtilities::getDatasetDataFilename(), zipOriginal,
+    checkExportedData(dataset_utilities::getDatasetDataFilename(), zipOriginal,
                       zipGenerated);
 
-    checkExportedData(DatasetUtilities::getDatasetStringsFilename(),
+    checkExportedData(dataset_utilities::getDatasetStringsFilename(),
                       zipOriginal, zipGenerated);
 
     checkExportedDefinitions(zipOriginal, zipGenerated);

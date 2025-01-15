@@ -296,8 +296,8 @@ void VolbxMain::saveDataset(const QString& datasetName) const
     bar.showDetached();
 
     LOG(LogTypes::IMPORT_EXPORT, "Saving dataset " + datasetName);
-    const QString filePath{DatasetUtilities::getDatasetsDir() + datasetName +
-                           DatasetUtilities::getDatasetExtension()};
+    const QString filePath{dataset_utilities::getDatasetsDir() + datasetName +
+                           dataset_utilities::getDatasetExtension()};
 
     QElapsedTimer performanceTimer;
     performanceTimer.start();
@@ -317,16 +317,16 @@ void VolbxMain::saveDataset(const QString& datasetName) const
 
 void VolbxMain::actionSaveDatasetAsTriggered()
 {
-    if (!DatasetUtilities::doesDatasetDirExistAndUserHavePermisions())
+    if (!dataset_utilities::doesDatasetDirExistAndUserHavePermisions())
     {
         QString msg(tr("Can not access folder "));
-        msg.append(DatasetUtilities::getDatasetsDir());
+        msg.append(dataset_utilities::getDatasetsDir());
         msg.append(tr(" needed for saving dataset."));
         QMessageBox::critical(this, tr("Access denied"), msg);
         return;
     }
 
-    SaveDatasetAs saveAs(DatasetUtilities::getListOfAvailableDatasets());
+    SaveDatasetAs saveAs(dataset_utilities::getListOfAvailableDatasets());
     if (saveAs.exec() == QDialog::Accepted)
         saveDataset(saveAs.getDatasetName());
 }
