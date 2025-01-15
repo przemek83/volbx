@@ -11,7 +11,7 @@ void PlotDataProvider::recompute(QVector<TransactionData> newCalcData,
 
     recomputeGroupingData(calcData_, columnFormat);
 
-    auto [points, linearRegression] = computePointsAndRegression();
+    auto [points, linearRegression]{computePointsAndRegression()};
 
     QVector<double> yAxisValues;
     yAxisValues.reserve(points.size());
@@ -48,15 +48,15 @@ PlotDataProvider::fillDataForStringGrouping(
     QVector<QString> names;
     QVector<Quantiles> quantilesForIntervals;
     QMap<QString, QVector<double>> map;
-    const int dataSize = calcData.size();
+    const qsizetype dataSize{calcData.size()};
 
     // Group by name/string.
-    for (int i = 0; i < dataSize; ++i)
+    for (int i{0}; i < dataSize; ++i)
         map[calcData.at(i).groupedBy_.toString()].append(
             calcData.at(i).pricePerMeter_);
 
     // For each group calculate quantiles and create names.
-    auto iterator = map.begin();
+    auto iterator{map.begin()};
     while (iterator != map.end())
     {
         names.append(iterator.key());
@@ -72,21 +72,21 @@ PlotDataProvider::fillDataForStringGrouping(
 std::tuple<QVector<QPointF>, QVector<QPointF>>
 PlotDataProvider::computePointsAndRegression()
 {
-    const int dataSize = calcData_.size();
+    const qsizetype dataSize{calcData_.size()};
     if (dataSize <= 0)
         return {{}, {}};
 
-    double sumX = 0.;
-    double sumY = 0.;
-    double sumXX = 0.;
-    double sumXY = 0.;
-    double minX = 0.;
-    double maxX = 0.;
+    double sumX{0.};
+    double sumY{0.};
+    double sumXX{0.};
+    double sumXY{0.};
+    double minX{0.};
+    double maxX{0.};
     bool set = false;
 
     QVector<QPointF> data;
     data.reserve(dataSize);
-    for (int i = 0; i < dataSize; ++i)
+    for (int i{0}; i < dataSize; ++i)
     {
         const QDate& date{calcData_.at(i).date_};
         const double x{static_cast<double>(
@@ -135,12 +135,11 @@ Quantiles PlotDataProvider::computeQuantiles(
     const QVector<TransactionData>& transactionData)
 {
     Quantiles quantiles;
-    const int dataSize = transactionData.size();
-    if (dataSize != 0)
+    if (const qsizetype dataSize{transactionData.size()}; dataSize != 0)
     {
         QVector<double> valuePerUnit{};
         valuePerUnit.reserve(dataSize);
-        for (int i = 0; i < dataSize; ++i)
+        for (int i{0}; i < dataSize; ++i)
             valuePerUnit.push_back(transactionData.at(i).pricePerMeter_);
         quantiles.init(std::move(valuePerUnit));
     }

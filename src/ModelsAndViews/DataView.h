@@ -30,9 +30,9 @@ protected:
 private:
     QVector<TransactionData> fillDataFromSelection(int groupByColumn) const;
 
-    void initHorizontalHeader();
+    void initHorizontalHeader() const;
 
-    void initVerticalHeader();
+    void initVerticalHeader() const;
 
     const FilteringProxyModel* getProxyModel() const;
 

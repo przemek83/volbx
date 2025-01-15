@@ -29,7 +29,7 @@ void DataView::setModel(QAbstractItemModel* model)
     const auto* proxyModel{qobject_cast<FilteringProxyModel*>(model)};
     const TableModel* parentModel{proxyModel->getParentModel()};
 
-    for (int column = 0; column < proxyModel->columnCount(); ++column)
+    for (int column{0}; column < proxyModel->columnCount(); ++column)
         setDelegate(column, parentModel);
 
     QTableView::setModel(model);
@@ -56,8 +56,8 @@ std::tuple<bool, int, int> DataView::getTaggedColumns(
         return {false, Constants::NOT_SET_COLUMN, Constants::NOT_SET_COLUMN};
 
     int transactionDateColumn{Constants::NOT_SET_COLUMN};
-    if (auto [ok, columnId] =
-            parentModel->getTaggedColumnIfExists(ColumnTag::DATE);
+    if (auto [ok,
+              columnId]{parentModel->getTaggedColumnIfExists(ColumnTag::DATE)};
         ok)
         transactionDateColumn = columnId;
     else
@@ -96,8 +96,8 @@ QVector<TransactionData> DataView::fillDataFromSelection(
 {
     const TableModel* parentModel{getParentModel()};
 
-    const auto [success, pricePerMeterColumn, transactionDateColumn] =
-        getTaggedColumns(parentModel);
+    const auto [success, pricePerMeterColumn,
+                transactionDateColumn]{getTaggedColumns(parentModel)};
     if (!success)
         return {};
 
@@ -108,7 +108,7 @@ QVector<TransactionData> DataView::fillDataFromSelection(
     const int batchSize{1000};
 
     const FilteringProxyModel* proxyModel{getProxyModel()};
-    for (int i = 0; i < proxyModel->rowCount(); ++i)
+    for (int i{0}; i < proxyModel->rowCount(); ++i)
     {
         if (i % batchSize == 0)
             QApplication::processEvents();
@@ -175,21 +175,22 @@ const PlotDataProvider& DataView::getPlotDataProvider() const
     return plotDataProvider_;
 }
 
-void DataView::initHorizontalHeader()
+void DataView::initHorizontalHeader() const
 {
     horizontalHeader()->setSortIndicatorShown(false);
     horizontalHeader()->setSectionsMovable(true);
 
-    auto showSortIndicator = [=]()
-    {
-        if (!horizontalHeader()->isSortIndicatorShown())
-            horizontalHeader()->setSortIndicatorShown(true);
-    };
+    auto showSortIndicator{
+        [=]()
+        {
+            if (!horizontalHeader()->isSortIndicatorShown())
+                horizontalHeader()->setSortIndicatorShown(true);
+        }};
     connect(horizontalHeader(), &QHeaderView::sectionClicked,
             showSortIndicator);
 }
 
-void DataView::initVerticalHeader()
+void DataView::initVerticalHeader() const
 {
     const int rowHeight{static_cast<int>(fontMetrics().height() * 1.5)};
     verticalHeader()->setDefaultSectionSize(rowHeight);

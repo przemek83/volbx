@@ -70,17 +70,17 @@ QByteArray TableModel::definitionToXml(unsigned int rowCount) const
 
 bool TableModel::areTaggedColumnsSet() const
 {
-    const auto [transDateColumnSet, transDateColumnId] =
-        getTaggedColumnIfExists(ColumnTag::DATE);
-    const auto [priceColumnSet, priceColumnId] =
-        getTaggedColumnIfExists(ColumnTag::VALUE);
+    const auto [transDateColumnSet,
+                transDateColumnId]{getTaggedColumnIfExists(ColumnTag::DATE)};
+    const auto [priceColumnSet,
+                priceColumnId]{getTaggedColumnIfExists(ColumnTag::VALUE)};
 
     return transDateColumnSet && priceColumnSet;
 }
 
 int TableModel::getDefaultGroupingColumn() const
 {
-    for (int column = 0; column < columnCount(); ++column)
+    for (int column{0}; column < columnCount(); ++column)
         if (getColumnFormat(column) == ColumnType::STRING)
             return column;
     return Constants::NOT_SET_COLUMN;

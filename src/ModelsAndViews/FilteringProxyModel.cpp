@@ -49,7 +49,7 @@ bool FilteringProxyModel::acceptRowAccordingToDateRestrictions(
     {
         const QModelIndex index{
             sourceModel()->index(sourceRow, column, sourceParent)};
-        auto [min, max, emptyDates] = dateRestriction;
+        const auto& [min, max, emptyDates] = dateRestriction;
         const QVariant& dateVariant{index.data()};
         if (dateVariant.isNull())
             return !emptyDates;
