@@ -6,4 +6,4 @@ LoggerCheckBox::LoggerCheckBox(LogTypes type, const QString& content,
 {
 }
 
-LogTypes LoggerCheckBox::logType() { return type_; }
+LogTypes LoggerCheckBox::logType() const { return type_; }

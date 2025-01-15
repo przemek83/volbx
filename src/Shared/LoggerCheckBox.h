@@ -11,7 +11,7 @@ class LoggerCheckBox : public QCheckBox
 public:
     LoggerCheckBox(LogTypes type, const QString& content, QWidget* parent);
 
-    LogTypes logType();
+    LogTypes logType() const;
 
 private:
     LogTypes type_;

@@ -17,7 +17,7 @@ public:
     Export(QWidget* tab, QWidget* parent);
 
 private:
-    void saveOnDisk();
+    void saveOnDisk() const;
 
     bool locationIsValid(const QString& location) const;
 

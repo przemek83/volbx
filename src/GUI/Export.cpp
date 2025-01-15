@@ -64,7 +64,7 @@ void Export::locationSearchClicked()
     ui_->locationLineEdit->setText(dialog.directory().absolutePath());
 }
 
-void Export::saveOnDisk()
+void Export::saveOnDisk() const
 {
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
