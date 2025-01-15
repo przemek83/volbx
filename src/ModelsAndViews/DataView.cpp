@@ -110,7 +110,7 @@ QVector<TransactionData> DataView::fillDataFromSelection(
     const FilteringProxyModel* proxyModel{getProxyModel()};
     for (int i{0}; i < proxyModel->rowCount(); ++i)
     {
-        if (i % batchSize == 0)
+        if ((i % batchSize) == 0)
             QApplication::processEvents();
 
         if (!selectionModelOfView->isSelected(proxyModel->index(i, 0)))

@@ -2,11 +2,7 @@
 
 #include <qwtble/QwtBleUtilities.h>
 
-DateDelegate::DateDelegate(QObject* parent)
-    : QStyledItemDelegate(parent),
-      defaultDateFormat_(qwt_ble_utilities::getDefaultDateFormat())
-{
-}
+DateDelegate::DateDelegate(QObject* parent) : QStyledItemDelegate{parent} {}
 
 QString DateDelegate::displayText(const QVariant& value,
                                   [[maybe_unused]] const QLocale& locale) const

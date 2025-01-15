@@ -41,7 +41,7 @@ QByteArray ExportVbx::generateRowContent(const QAbstractItemModel& model,
             !actualField.isNull())
             variantToString(actualField, rowContent, separator_);
 
-        if (j != model.columnCount() - 1)
+        if (j != (model.columnCount() - 1))
             rowContent.append(separator_);
     }
 

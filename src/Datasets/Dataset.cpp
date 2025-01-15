@@ -5,12 +5,7 @@
 
 #include <Constants.h>
 
-Dataset::Dataset(QString name)
-    : QObject(),
-      nullStringVariant_(QMetaType(QMetaType::QString)),
-      name_(std::move(name))
-{
-}
+Dataset::Dataset(QString name) : QObject(), name_{std::move(name)} {}
 
 unsigned int Dataset::rowCount() const { return rowsCount_; }
 
@@ -113,7 +108,7 @@ std::tuple<bool, Column> Dataset::getTaggedColumn(ColumnTag columnTag) const
 
 QString Dataset::getHeaderName(Column column) const
 {
-    if (static_cast<int>(columnsCount_) >= column + 1)
+    if (static_cast<int>(columnsCount_) >= (column + 1))
         return headerColumnNames_[column];
     Q_ASSERT(false);
     return QLatin1String("");

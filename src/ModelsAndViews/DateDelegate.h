@@ -1,5 +1,6 @@
 #pragma once
 
+#include <qwtble/QwtBleUtilities.h>
 #include <QStyledItemDelegate>
 
 class DateDelegate : public QStyledItemDelegate
@@ -12,5 +13,5 @@ public:
                         const QLocale& locale) const override;
 
 private:
-    QString defaultDateFormat_;
+    QString defaultDateFormat_{qwt_ble_utilities::getDefaultDateFormat()};
 };

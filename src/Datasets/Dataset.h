@@ -120,7 +120,7 @@ private:
     QDomElement rowCountToXml(QDomDocument& xmlDocument,
                               unsigned int rowCount) const;
 
-    QVariant nullStringVariant_;
+    QVariant nullStringVariant_{QMetaType(QMetaType::QString)};
 
     const QString name_;
 

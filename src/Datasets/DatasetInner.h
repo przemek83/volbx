@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Dataset.h"
-
 #include <quazip/quazip.h>
+
+#include "Dataset.h"
+#include "DatasetUtilities.h"
 
 class QuaZipFile;
 class QTextStream;
@@ -59,5 +60,5 @@ private:
 
     QuaZip zip_;
 
-    const QString datasetsDir_;
+    const QString datasetsDir_{DatasetUtilities::getDatasetsDir()};
 };

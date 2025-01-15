@@ -9,8 +9,7 @@
 #include <DatasetUtilities.h>
 #include <Logger.h>
 
-DatasetInner::DatasetInner(const QString& name)
-    : Dataset(name), datasetsDir_(DatasetUtilities::getDatasetsDir())
+DatasetInner::DatasetInner(const QString& name) : Dataset{name}
 {
     zip_.setZipName(datasetsDir_ + name +
                     DatasetUtilities::getDatasetExtension());
@@ -163,7 +162,7 @@ void DatasetInner::updateProgress(unsigned int currentRow,
                                   unsigned int& lastEmittedPercent)
 {
     const unsigned int currentPercent{
-        static_cast<unsigned int>(100. * (currentRow + 1) / rowCount)};
+        static_cast<unsigned int>((100. * (currentRow + 1)) / rowCount)};
     if (currentPercent > lastEmittedPercent)
     {
         Q_EMIT loadingPercentChanged(currentPercent);
