@@ -119,38 +119,38 @@ bool Configuration::loadConfigXml(QDomDocument& configXml)
 
 void Configuration::parseConfigXml(const QDomDocument& configXml)
 {
-    QDomNodeList list{configXml.elementsByTagName(XML_NAME_UPDATE)};
+    QDomNodeList list{configXml.elementsByTagName(xmlNameUpdate_)};
 
     if (const QDomElement el{list.at(0).toElement()}; !el.isNull())
         updatePolicy_ =
-            static_cast<UpdatePolicy>(el.attribute(XML_NAME_VALUE).toInt());
+            static_cast<UpdatePolicy>(el.attribute(xmlNameValue_).toInt());
 
-    list = configXml.elementsByTagName(XML_NAME_STYLE);
+    list = configXml.elementsByTagName(xmlNameStyle_);
     if (const QDomElement el{list.at(0).toElement()}; !el.isNull())
-        styleName_ = el.attribute(XML_NAME_VALUE);
+        styleName_ = el.attribute(xmlNameValue_);
 
-    list = configXml.elementsByTagName(XML_NAME_IMPORTPATH);
+    list = configXml.elementsByTagName(xmlNameImportPath_);
     if (const QDomElement el{list.at(0).toElement()}; !el.isNull())
-        importFilePath_ = el.attribute(XML_NAME_VALUE);
+        importFilePath_ = el.attribute(xmlNameValue_);
 }
 
 QString Configuration::generateConfigXml() const
 {
-    QDomDocument doc(XML_NAME_CONFIG);
-    QDomElement root{doc.createElement(XML_NAME_CONFIG)};
+    QDomDocument doc(xmlNameConfig_);
+    QDomElement root{doc.createElement(xmlNameConfig_)};
     doc.appendChild(root);
 
-    QDomElement updates{doc.createElement(XML_NAME_UPDATE)};
-    updates.setAttribute(XML_NAME_VALUE,
+    QDomElement updates{doc.createElement(xmlNameUpdate_)};
+    updates.setAttribute(xmlNameValue_,
                          QString::number(static_cast<int>(updatePolicy_)));
     root.appendChild(updates);
 
-    QDomElement style{doc.createElement(XML_NAME_STYLE)};
-    style.setAttribute(XML_NAME_VALUE, styleName_);
+    QDomElement style{doc.createElement(xmlNameStyle_)};
+    style.setAttribute(xmlNameValue_, styleName_);
     root.appendChild(style);
 
-    QDomElement importPath{doc.createElement(XML_NAME_IMPORTPATH)};
-    importPath.setAttribute(XML_NAME_VALUE, importFilePath_);
+    QDomElement importPath{doc.createElement(xmlNameImportPath_)};
+    importPath.setAttribute(xmlNameValue_, importFilePath_);
     root.appendChild(importPath);
 
     return doc.toString();
