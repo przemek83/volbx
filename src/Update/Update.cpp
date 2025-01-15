@@ -38,7 +38,7 @@ void Update::setupNetworkManagers()
     LOG(LogTypes::NETWORK, QStringLiteral("Initial network request send."));
 }
 
-void Update::connectButtons()
+void Update::connectButtons() const
 {
     connect(ui_.buttonQuit, &QPushButton::clicked, this, &Update::close);
     connect(ui_.showDetails, &QCheckBox::toggled, this,
@@ -81,7 +81,7 @@ void Update::exitUpdaterAsMostRecentVersionIsInstalled()
     close();
 }
 
-bool Update::isReplyOk(QNetworkReply* reply)
+bool Update::isReplyOk(const QNetworkReply* reply)
 {
     if (!Networking::replyIsValid(reply))
     {
@@ -104,8 +104,8 @@ void Update::initialInfoNetworkReplyFinished(QNetworkReply* reply)
     insertNewLineIntoDetails();
     insertNewLineIntoDetails();
 
-    auto [availableVersion, replyStringList] =
-        Networking::getAvailableVersionAndFiles(reply);
+    auto [availableVersion,
+          replyStringList]{Networking::getAvailableVersionAndFiles(reply)};
     if (availableVersion.isEmpty())
     {
         showErrorMsg(tr("Wrong answer received from server."));
@@ -129,7 +129,7 @@ void Update::fillFilesToUpdateLists(const QStringList& serverInfoList)
 
     filesToDownload_.clear();
     filesToDownloadSize_.clear();
-    for (int i = 0; i < filesCount; ++i)
+    for (int i{0}; i < filesCount; ++i)
     {
         const QString& fileInfoLine{serverInfoList.at(2 + i)};
         const QString fileName{fileInfoLine.section(QLatin1Char(';'), 0, 0)};
@@ -152,7 +152,7 @@ void Update::downloadFile(const QString& fileName)
         ui_.currentFile->setText(
             QString::number(ui_.currentFile->text().toInt() + 1));
 
-    QNetworkReply* reply{
+    const QNetworkReply* reply{
         downloadManager_.get(Networking::getDownloadFileRequest(fileName))};
     LOG(LogTypes::NETWORK,
         QStringLiteral("Sent request for downloading file ") +
@@ -198,7 +198,8 @@ void Update::downloadFinished(QNetworkReply* reply)
     downloadFile(filesToDownload_.constFirst());
 }
 
-void Update::saveVerfiedFile(QByteArray& fileData, const QString& fileName)
+void Update::saveVerfiedFile(const QByteArray& fileData,
+                             const QString& fileName)
 {
     insertSuccessInfoIntoDetails(tr("Verified"));
     insertNewLineIntoDetails();
@@ -216,7 +217,8 @@ void Update::saveVerfiedFile(QByteArray& fileData, const QString& fileName)
     currentTriesCount_ = 0;
 }
 
-bool Update::handleVerificationError(QString& fileName, QString& fileSize)
+bool Update::handleVerificationError(const QString& fileName,
+                                     const QString& fileSize)
 {
     insertErrorInfoIntoDetails(tr("Error during verification!"));
 

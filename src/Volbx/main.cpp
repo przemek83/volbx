@@ -11,9 +11,9 @@
 
 static void overwriteUpdaterfIfNeeded()
 {
-    const QString updaterFile(QCoreApplication::applicationDirPath() + "/" +
+    const QString updaterFile{QCoreApplication::applicationDirPath() + "/" +
                               Constants::getUpdaterName() +
-                              Constants::getExeFileSuffix());
+                              Constants::getExeFileSuffix()};
 
     if (QFile::exists(updaterFile + Constants::getTemporaryFileSuffix()))
     {

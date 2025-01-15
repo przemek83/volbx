@@ -19,7 +19,7 @@ protected:
 private:
     void setupNetworkManagers();
 
-    void connectButtons();
+    void connectButtons() const;
 
     void setupVersions();
 
@@ -41,16 +41,17 @@ private:
 
     void insertErrorInfoIntoDetails(const QString& msg);
 
-    void saveVerfiedFile(QByteArray& fileData, const QString& fileName);
+    void saveVerfiedFile(const QByteArray& fileData, const QString& fileName);
 
-    bool handleVerificationError(QString& fileName, QString& fileSize);
+    bool handleVerificationError(const QString& fileName,
+                                 const QString& fileSize);
 
     void startUpdating(const QString& availableVersion,
                        const QStringList& replyStringList);
 
     void exitUpdaterAsMostRecentVersionIsInstalled();
 
-    bool isReplyOk(QNetworkReply* reply);
+    bool isReplyOk(const QNetworkReply* reply);
 
     void renameTempFile(const QString& file);
 
