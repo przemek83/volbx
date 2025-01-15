@@ -138,16 +138,16 @@ bool Dataset::loadData()
 
 QDomElement Dataset::columnsToXml(QDomDocument& xmlDocument) const
 {
-    QDomElement columns{xmlDocument.createElement(XML_COLUMNS)};
+    QDomElement columns{xmlDocument.createElement(xmlColumns_)};
     for (Column column = 0; column < static_cast<int>(columnsCount_); ++column)
     {
-        QDomElement node{xmlDocument.createElement(XML_COLUMN)};
-        node.setAttribute(XML_COLUMN_NAME, headerColumnNames_.at(column));
-        node.setAttribute(XML_COLUMN_FORMAT,
+        QDomElement node{xmlDocument.createElement(xmlColumn_)};
+        node.setAttribute(xmlColumnName_, headerColumnNames_.at(column));
+        node.setAttribute(xmlColumnFormat_,
                           static_cast<int>(columnTypes_.at(column)));
 
         if (QMapIterator it(taggedColumns_); it.findNext(column))
-            node.setAttribute(XML_COLUMN_TAG,
+            node.setAttribute(xmlColumnTag_,
                               QString::number(static_cast<int>(it.key())));
         columns.appendChild(node);
     }
@@ -157,15 +157,15 @@ QDomElement Dataset::columnsToXml(QDomDocument& xmlDocument) const
 QDomElement Dataset::rowCountToXml(QDomDocument& xmlDocument,
                                    unsigned int rowCount) const
 {
-    QDomElement rowCountElement{xmlDocument.createElement(XML_ROW_COUNT)};
-    rowCountElement.setAttribute(XML_ROW_COUNT, QString::number(rowCount));
+    QDomElement rowCountElement{xmlDocument.createElement(xmlRowCount_)};
+    rowCountElement.setAttribute(xmlRowCount_, QString::number(rowCount));
     return rowCountElement;
 }
 
 QByteArray Dataset::definitionToXml(unsigned int rowCount) const
 {
     QDomDocument xmlDocument;
-    QDomElement root{xmlDocument.createElement(XML_NAME)};
+    QDomElement root{xmlDocument.createElement(xmlName_)};
     root.appendChild(columnsToXml(xmlDocument));
     root.appendChild(rowCountToXml(xmlDocument, rowCount));
     xmlDocument.appendChild(root);

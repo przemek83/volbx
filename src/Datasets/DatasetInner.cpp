@@ -65,16 +65,16 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::getAllData()
 void DatasetInner::retrieveColumnsFromXml(const QDomElement& root)
 {
     const QDomNodeList columns{
-        root.firstChildElement(XML_COLUMNS).childNodes()};
+        root.firstChildElement(xmlColumns_).childNodes()};
     LOG(LogTypes::IMPORT_EXPORT,
         "Read column count: " + QString::number(columns.count()));
     columnsCount_ = static_cast<unsigned int>(columns.size());
     for (int column = 0; column < static_cast<int>(columnsCount_); ++column)
     {
         const QDomElement columnElement{columns.at(column).toElement()};
-        headerColumnNames_.push_back(columnElement.attribute(XML_COLUMN_NAME));
+        headerColumnNames_.push_back(columnElement.attribute(xmlColumnName_));
         columnTypes_.push_back(static_cast<ColumnType>(
-            columnElement.attribute(XML_COLUMN_FORMAT).toInt()));
+            columnElement.attribute(xmlColumnFormat_).toInt()));
         checkForTaggedColumn(columnElement, column);
     }
 }
@@ -82,7 +82,7 @@ void DatasetInner::retrieveColumnsFromXml(const QDomElement& root)
 void DatasetInner::checkForTaggedColumn(const QDomElement& columnElement,
                                         Column column)
 {
-    if (const QString tag{columnElement.attribute(XML_COLUMN_TAG)};
+    if (const QString tag{columnElement.attribute(xmlColumnTag_)};
         !tag.isEmpty())
     {
         setTaggedColumn(static_cast<ColumnTag>(tag.toInt()), column);
@@ -91,7 +91,7 @@ void DatasetInner::checkForTaggedColumn(const QDomElement& columnElement,
     {
         // Deprecated Tag used before 10.09.2020. Kept for compatibility.
         const QString columnTagDeprecated{
-            columnElement.attribute(XML_COLUMN_TAG_DEPRECATED)};
+            columnElement.attribute(xmlColumnTagDeprecated_)};
         if (!columnTagDeprecated.isEmpty())
             setTaggedColumn(static_cast<ColumnTag>(columnTagDeprecated.toInt()),
                             column);
@@ -112,7 +112,7 @@ bool DatasetInner::fromXml(const QByteArray& definitionContent)
     const QDomElement root{xmlDocument.documentElement()};
     retrieveColumnsFromXml(root);
     rowsCount_ =
-        root.firstChildElement(XML_ROW_COUNT).attribute(XML_ROW_COUNT).toUInt();
+        root.firstChildElement(xmlRowCount_).attribute(xmlRowCount_).toUInt();
 
     return true;
 }

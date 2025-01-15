@@ -101,14 +101,14 @@ protected:
 
     QString error_;
 
-    const QString XML_NAME{QStringLiteral("DATASET")};
-    const QString XML_COLUMNS{QStringLiteral("COLUMNS")};
-    const QString XML_COLUMN{QStringLiteral("COLUMN")};
-    const QString XML_COLUMN_NAME{QStringLiteral("NAME")};
-    const QString XML_COLUMN_FORMAT{QStringLiteral("FORMAT")};
-    const QString XML_COLUMN_TAG{QStringLiteral("TAG")};
-    const QString XML_COLUMN_TAG_DEPRECATED{QStringLiteral("SPECIAL_TAG")};
-    const QString XML_ROW_COUNT{QStringLiteral("ROW_COUNT")};
+    const QString xmlName_{QStringLiteral("DATASET")};
+    const QString xmlColumns_{QStringLiteral("COLUMNS")};
+    const QString xmlColumn_{QStringLiteral("COLUMN")};
+    const QString xmlColumnName_{QStringLiteral("NAME")};
+    const QString xmlColumnFormat_{QStringLiteral("FORMAT")};
+    const QString xmlColumnTag_{QStringLiteral("TAG")};
+    const QString xmlColumnTagDeprecated_{QStringLiteral("SPECIAL_TAG")};
+    const QString xmlRowCount_{QStringLiteral("ROW_COUNT")};
 
 private:
     void rebuildDefinitonUsingActiveColumnsOnly();
