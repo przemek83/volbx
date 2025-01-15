@@ -36,7 +36,7 @@ void exportTwinImage(const QList<PlotBase*>& plotsList,
     const QSize rightSize{rightPlot->size()};
 
     const QSize imageSize(leftSize.width() + rightSize.width(),
-                          qMax(leftSize.height(), rightSize.height()));
+                          ::qMax(leftSize.height(), rightSize.height()));
     QImage image(createImage(imageSize));
     QPainter painter(&image);
 

@@ -8,7 +8,9 @@
 
 #include "Update.h"
 
-static void showDifferentInstanceRunnningError()
+namespace
+{
+void showDifferentInstanceRunnningError()
 {
     QMessageBox::critical(nullptr, QObject::tr("Error"),
                           QObject::tr("Different instance of ") +
@@ -16,7 +18,7 @@ static void showDifferentInstanceRunnningError()
                               QObject::tr(" already running, exiting."));
 }
 
-static bool isUniqueInstance()
+bool isUniqueInstance()
 {
     // Only one instance can run. Intentionally leak.
     auto* sharedMemory{new QSharedMemory(QStringLiteral(VER_PRODUCTNAME_STR))};
@@ -49,6 +51,7 @@ static bool isUniqueInstance()
 
     return true;
 }
+}  // namespace
 
 int main(int argc, char* argv[])
 {

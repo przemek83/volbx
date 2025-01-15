@@ -9,7 +9,9 @@
 
 #include "VolbxProperties.h"
 
-static void overwriteUpdaterfIfNeeded()
+namespace
+{
+void overwriteUpdaterfIfNeeded()
 {
     const QString updaterFile{QCoreApplication::applicationDirPath() + "/" +
                               constants::getUpdaterName() +
@@ -26,6 +28,7 @@ static void overwriteUpdaterfIfNeeded()
                       updaterFile);
     }
 }
+}  // namespace
 
 int main(int argc, char* argv[])
 {

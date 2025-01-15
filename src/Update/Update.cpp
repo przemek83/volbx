@@ -259,7 +259,7 @@ void Update::finalizeUpdate()
     insertNewSectionIntoDetails(tr("Renaming temporary filenames") +
                                 QLatin1Char(':'));
 
-    for (const QString& tempFileName : qAsConst(tempFiles_))
+    for (const QString& tempFileName : ::qAsConst(tempFiles_))
         renameTempFile(tempFileName);
 
     insertNewLineIntoDetails();

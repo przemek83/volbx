@@ -15,7 +15,7 @@ void PlotDataProvider::recompute(QVector<TransactionData> newCalcData,
 
     QVector<double> yAxisValues;
     yAxisValues.reserve(points.size());
-    for (const auto& point : qAsConst(points))
+    for (const auto& point : ::qAsConst(points))
         yAxisValues.append(point.y());
 
     Q_EMIT basicPlotDataChanged(std::move(points), quantiles_,
