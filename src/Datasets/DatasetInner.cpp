@@ -82,16 +82,20 @@ void DatasetInner::retrieveColumnsFromXml(const QDomElement& root)
 void DatasetInner::checkForTaggedColumn(const QDomElement& columnElement,
                                         Column column)
 {
-    const QString columnTag{columnElement.attribute(XML_COLUMN_TAG)};
-
-    // Deprecated Tag used before 10.09.2020. Kept for compatibility.
-    const QString columnTagDeprecated{
-        columnElement.attribute(XML_COLUMN_TAG_DEPRECATED)};
-    if (!columnTag.isEmpty())
-        setTaggedColumn(static_cast<ColumnTag>(columnTag.toInt()), column);
-    else if (!columnTagDeprecated.isEmpty())
-        setTaggedColumn(static_cast<ColumnTag>(columnTagDeprecated.toInt()),
-                        column);
+    if (const QString tag{columnElement.attribute(XML_COLUMN_TAG)};
+        !tag.isEmpty())
+    {
+        setTaggedColumn(static_cast<ColumnTag>(tag.toInt()), column);
+    }
+    else
+    {
+        // Deprecated Tag used before 10.09.2020. Kept for compatibility.
+        const QString columnTagDeprecated{
+            columnElement.attribute(XML_COLUMN_TAG_DEPRECATED)};
+        if (!columnTagDeprecated.isEmpty())
+            setTaggedColumn(static_cast<ColumnTag>(columnTagDeprecated.toInt()),
+                            column);
+    }
 }
 
 bool DatasetInner::fromXml(const QByteArray& definitionContent)
