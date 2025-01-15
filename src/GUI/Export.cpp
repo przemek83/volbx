@@ -146,7 +146,7 @@ void Export::exportPlots(const QString& fileName) const
         for (auto* plot : plots)
         {
             const QString name(fileName + "_" + plot->windowTitle() + ".png");
-            ExportImage::exportAsImage(plot, name);
+            export_image::exportAsImage(plot, name);
         }
     }
 }

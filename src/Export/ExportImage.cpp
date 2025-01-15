@@ -70,7 +70,7 @@ void exportQuadImage(const QList<PlotBase*>& plotsList,
 }
 }  // namespace
 
-namespace ExportImage
+namespace export_image
 {
 void exportAsImage(PlotBase* plot, const QString& fileName)
 {
@@ -117,4 +117,4 @@ void quickExportAsImage(const QList<PlotBase*>& list)
         }
     }
 }
-}  // namespace ExportImage
+}  // namespace export_image

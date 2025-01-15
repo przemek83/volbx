@@ -5,9 +5,9 @@
 class PlotBase;
 class QString;
 
-namespace ExportImage
+namespace export_image
 {
 void exportAsImage(PlotBase* plot, const QString& fileName);
 
 void quickExportAsImage(const QList<PlotBase*>& list);
-}  // namespace ExportImage
+}  // namespace export_image

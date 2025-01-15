@@ -17,7 +17,7 @@ PlotDock::PlotDock(const QString& title, QWidget* parent) : Dock(title, parent)
 
 void PlotDock::quickExportData() const
 {
-    ExportImage::quickExportAsImage(getPlots());
+    export_image::quickExportAsImage(getPlots());
 }
 
 void PlotDock::resetPlot() const
