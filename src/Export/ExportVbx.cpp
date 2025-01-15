@@ -46,7 +46,7 @@ QByteArray ExportVbx::generateRowContent(const QAbstractItemModel& model,
     }
 
     rowContent.append(QByteArrayLiteral("\n"));
-    lines_++;
+    ++lines_;
 
     return rowContent;
 }
@@ -103,7 +103,7 @@ void ExportVbx::variantToString(const QVariant& variant,
                 if (nextIndex_ != 1)
                     stringsContent_.append(newLine_);
                 stringsContent_.append(tmpString.toUtf8());
-                nextIndex_++;
+                ++nextIndex_;
             }
             destinationArray.append(QByteArray::number(index));
             break;

@@ -234,7 +234,7 @@ bool Update::handleVerificationError(const QString& fileName,
 
     filesToDownload_.push_front(fileName);
     filesToDownloadSize_.push_front(fileSize);
-    currentTriesCount_++;
+    ++currentTriesCount_;
 
     return true;
 }

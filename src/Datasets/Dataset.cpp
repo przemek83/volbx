@@ -23,7 +23,7 @@ std::tuple<double, double> Dataset::getNumericRange(Column column) const
     double min{0.};
     double max{0.};
     bool first{true};
-    for (int i = 0; i < static_cast<int>(rowCount()); ++i)
+    for (int i{0}; i < static_cast<int>(rowCount()); ++i)
     {
         const double value{data_[i][column].toDouble()};
         if (first)
@@ -50,7 +50,7 @@ std::tuple<QDate, QDate, bool> Dataset::getDateRange(Column column) const
     QDate maxDate;
     bool emptyDates{false};
     bool first{true};
-    for (int i = 0; i < static_cast<int>(rowCount()); ++i)
+    for (int i{0}; i < static_cast<int>(rowCount()); ++i)
     {
         const QVariant& dateVariant{data_[i][column]};
         if (dateVariant.isNull())
@@ -200,7 +200,7 @@ void Dataset::rebuildDefinitonUsingActiveColumnsOnly()
     const bool dateColumnTagged{isColumnTagged(dateTag)};
     const bool priceColumnTagged{isColumnTagged(priceTag)};
 
-    for (int i = 0; i < activeColumns_.count(); ++i)
+    for (int i{0}; i < activeColumns_.count(); ++i)
     {
         if (!activeColumns_.at(i))
             continue;
@@ -211,7 +211,7 @@ void Dataset::rebuildDefinitonUsingActiveColumnsOnly()
             rebuiltTaggedColumns[dateTag] = activeColumnNumber;
         if (priceColumnTagged && taggedColumns_.value(priceTag) == i)
             rebuiltTaggedColumns[priceTag] = activeColumnNumber;
-        activeColumnNumber++;
+        ++activeColumnNumber;
     }
 
     columnTypes_ = rebuiltColumnsFormat;
@@ -226,7 +226,7 @@ void Dataset::updateSampleDataStrings(QVector<QVector<QVariant>>& data) const
     if (sharedStrings_.isEmpty())
         return;
 
-    for (int i = 0; i < static_cast<int>(columnCount()); ++i)
+    for (int i{0}; i < static_cast<int>(columnCount()); ++i)
     {
         if (columnTypes_.at(i) != ColumnType::STRING)
             continue;
