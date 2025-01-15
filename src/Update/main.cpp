@@ -54,8 +54,8 @@ int main(int argc, char* argv[])
 {
     const QApplication a(argc, argv);
 
-    Application::setAdditionalApplicatioInfo(VER_PRODUCTNAME_STR);
-    Application::setQtStyle(QStringLiteral("Fusion"));
+    application::setAdditionalApplicatioInfo(VER_PRODUCTNAME_STR);
+    application::setQtStyle(QStringLiteral("Fusion"));
 
     if (!isUniqueInstance())
     {

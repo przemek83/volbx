@@ -30,8 +30,8 @@ static void overwriteUpdaterfIfNeeded()
 int main(int argc, char* argv[])
 {
     const QApplication a(argc, argv);
-    Application::setAdditionalApplicatioInfo(VER_PRODUCTNAME_STR);
-    Application::initStyle(Configuration::getInstance().getStyleName());
+    application::setAdditionalApplicatioInfo(VER_PRODUCTNAME_STR);
+    application::initStyle(Configuration::getInstance().getStyleName());
 
     LOG(LogTypes::APP, QStringLiteral("Application start"));
 

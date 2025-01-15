@@ -43,7 +43,7 @@ void clearAppFocus()
 }
 }  // namespace
 
-namespace Application
+namespace application
 {
 void setAdditionalApplicatioInfo(const char* productName)
 {
@@ -80,4 +80,4 @@ void initStyle(const QString& nameFromConfig)
     else
         setCssStyle(nameFromConfig);
 }
-}  // namespace Application
+}  // namespace application
