@@ -93,11 +93,11 @@ void SpreadsheetsTest::compareOdsAndXlsxExpectedData(const QString& fileSuffix)
 
     const QString filePath{Common::getSpreadsheetsDir() + fileName};
     auto [xlsxLoaded, xlsxDump] =
-        FileUtilities::loadFile(filePath + ".xlsx" + fileSuffix);
+        file_utilities::loadFile(filePath + ".xlsx" + fileSuffix);
     QVERIFY(xlsxLoaded);
 
     auto [odsLoaded, odsDump] =
-        FileUtilities::loadFile(filePath + ".ods" + fileSuffix);
+        file_utilities::loadFile(filePath + ".ods" + fileSuffix);
     QVERIFY(odsLoaded);
 
     QStringList xlsxLines{xlsxDump.split('\n')};

@@ -3,7 +3,7 @@
 #include <QFile>
 #include <QTextStream>
 
-namespace FileUtilities
+namespace file_utilities
 {
 std::pair<bool, QString> loadFile(const QString& name)
 {
@@ -16,4 +16,4 @@ std::pair<bool, QString> loadFile(const QString& name)
     stream.setEncoding(QStringConverter::Utf8);
     return {true, stream.readAll()};
 }
-}  // namespace FileUtilities
+}  // namespace file_utilities

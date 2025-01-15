@@ -93,7 +93,7 @@ bool Configuration::loadConfigXml(QDomDocument& configXml)
     const QString filename{QApplication::applicationDirPath() + "/" +
                            constants::getConfigurationFileName()};
 
-    const auto [success, content] = FileUtilities::loadFile(filename);
+    const auto [success, content] = file_utilities::loadFile(filename);
     if (!success)
     {
         LOG(LogTypes::CONFIG, "Config file " + filename +

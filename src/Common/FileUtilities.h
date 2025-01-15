@@ -2,7 +2,7 @@
 
 #include <QString>
 
-namespace FileUtilities
+namespace file_utilities
 {
 std::pair<bool, QString> loadFile(const QString& name);
-}  // namespace FileUtilities
+}  // namespace file_utilities

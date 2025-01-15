@@ -117,7 +117,7 @@ static void checkDatasetDefinition(const std::unique_ptr<Dataset>& dataset,
                                    const QString& expectedDefinitionFilePath)
 {
     const QByteArray dumpFromFile{
-        FileUtilities::loadFile(expectedDefinitionFilePath).second.toUtf8()};
+        file_utilities::loadFile(expectedDefinitionFilePath).second.toUtf8()};
     const QByteArray dumpFromDataset{
         dataset->definitionToXml(dataset->rowCount())};
     QVERIFY(xmlsAreEqual(dumpFromFile, dumpFromDataset));
@@ -147,7 +147,7 @@ void compareExportDataWithDump(std::unique_ptr<Dataset> dataset,
 
     const QString actualData{getExportedTsv(view)};
     const QString expectedData{
-        FileUtilities::loadFile(filePath + Common::getDataTsvDumpSuffix())
+        file_utilities::loadFile(filePath + Common::getDataTsvDumpSuffix())
             .second};
 
     QStringList actualDataLines{
