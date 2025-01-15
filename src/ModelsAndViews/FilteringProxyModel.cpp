@@ -78,9 +78,9 @@ bool FilteringProxyModel::acceptRowAccordingToNumericRestrictions(
 }
 
 bool FilteringProxyModel::filterAcceptsRow(
-    int sourceRow, const QModelIndex& sourceParent) const
+    int source_row, const QModelIndex& source_parent) const
 {
-    return acceptRowAccordingToStringRestrictions(sourceRow, sourceParent) &&
-           acceptRowAccordingToDateRestrictions(sourceRow, sourceParent) &&
-           acceptRowAccordingToNumericRestrictions(sourceRow, sourceParent);
+    return acceptRowAccordingToStringRestrictions(source_row, source_parent) &&
+           acceptRowAccordingToDateRestrictions(source_row, source_parent) &&
+           acceptRowAccordingToNumericRestrictions(source_row, source_parent);
 }

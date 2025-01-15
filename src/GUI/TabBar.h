@@ -14,7 +14,7 @@ public:
 protected:
     void mouseDoubleClickEvent(QMouseEvent* event) override;
 
-    bool eventFilter(QObject* obj, QEvent* event) override;
+    bool eventFilter(QObject* watched, QEvent* event) override;
 
 private:
     void setupLineEdit();

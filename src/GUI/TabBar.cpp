@@ -42,7 +42,7 @@ void TabBar::editingNameFinished()
     mainWindow->setWindowTitle(nameEdit_.text());
 }
 
-bool TabBar::eventFilter(QObject* obj, QEvent* event)
+bool TabBar::eventFilter(QObject* watched, QEvent* event)
 {
     if (event->type() == QEvent::KeyPress)
     {
@@ -54,7 +54,7 @@ bool TabBar::eventFilter(QObject* obj, QEvent* event)
         }
     }
 
-    return QObject::eventFilter(obj, event);
+    return QObject::eventFilter(watched, event);
 }
 
 void TabBar::setupLineEdit()
