@@ -24,7 +24,7 @@ public:
 
     unsigned int columnCount() const;
 
-    virtual inline QVariant* getData(int row, Column column)
+    QVariant* getData(int row, Column column)
     {
         if (getColumnFormat(column) == ColumnType::STRING)
         {
