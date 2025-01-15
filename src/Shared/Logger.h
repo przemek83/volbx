@@ -8,7 +8,7 @@
 #include "LogType.h"
 
 #define LOG(type, msg) \
-    Logger::getInstance().log(type, __FILE__, __FUNCTION__, __LINE__, msg)
+    Logger::getInstance().log((type), __FILE__, __FUNCTION__, __LINE__, (msg))
 
 class QTextEdit;
 class QWidget;
