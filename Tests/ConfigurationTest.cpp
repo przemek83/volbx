@@ -8,7 +8,7 @@
 void ConfigurationTest::initTestCase()
 {
     configurationFileName_ = QCoreApplication::applicationDirPath() + "/" +
-                             Constants::getConfigurationFileName();
+                             constants::getConfigurationFileName();
 
     QFile file(configurationFileName_);
     QVERIFY(file.open(QIODevice::ReadOnly));
@@ -17,7 +17,7 @@ void ConfigurationTest::initTestCase()
     QVERIFY(!configurationFileContent_.isEmpty());
 }
 
-void ConfigurationTest::testSavingConfigurationFile()
+void ConfigurationTest::testSavingConfigurationFile() const
 {
     Configuration::getInstance();
     QVERIFY(QFile::exists(configurationFileName_));
@@ -26,7 +26,7 @@ void ConfigurationTest::testSavingConfigurationFile()
     QVERIFY(QFile::exists(configurationFileName_));
 }
 
-void ConfigurationTest::testReadingFilledConfigurationFile()
+void ConfigurationTest::testReadingFilledConfigurationFile() const
 {
     QVERIFY(QFile::exists(configurationFileName_));
     QVERIFY(Configuration::getInstance().configValid());
@@ -35,7 +35,7 @@ void ConfigurationTest::testReadingFilledConfigurationFile()
     QVERIFY(!Configuration::getInstance().needToCheckForUpdates());
 }
 
-void ConfigurationTest::testReadingEmptyConfigurationFile()
+void ConfigurationTest::testReadingEmptyConfigurationFile() const
 {
     QVERIFY(QFile::remove(configurationFileName_));
     QVERIFY(!QFile::exists(configurationFileName_));
@@ -46,7 +46,7 @@ void ConfigurationTest::testReadingEmptyConfigurationFile()
     QVERIFY(!Configuration::getInstance().needToCheckForUpdates());
 }
 
-void ConfigurationTest::cleanupTestCase()
+void ConfigurationTest::cleanupTestCase() const
 {
     QFile::remove(configurationFileName_);
     QFile file(configurationFileName_);

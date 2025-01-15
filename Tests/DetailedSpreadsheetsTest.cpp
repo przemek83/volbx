@@ -120,7 +120,7 @@ void DetailedSpreadsheetsTest::testSampleData()
 
 struct NumericCheckData
 {
-    int columnIndex{Constants::NOT_SET_COLUMN};
+    int columnIndex{constants::NOT_SET_COLUMN};
     double min{0.};
     double max{0.};
 };
@@ -164,7 +164,7 @@ void DetailedSpreadsheetsTest::testNumericColumnRanges()
 
 struct DateCheckData
 {
-    int columnIndex{Constants::NOT_SET_COLUMN};
+    int columnIndex{constants::NOT_SET_COLUMN};
     QDate min{};
     QDate max{};
     bool emptyDates{false};

@@ -10,10 +10,10 @@ class ConfigurationTest : public QObject
     Q_OBJECT
 private Q_SLOTS:
     void initTestCase();
-    void testSavingConfigurationFile();
-    void testReadingFilledConfigurationFile();
-    void testReadingEmptyConfigurationFile();
-    void cleanupTestCase();
+    void testSavingConfigurationFile() const;
+    void testReadingFilledConfigurationFile() const;
+    void testReadingEmptyConfigurationFile() const;
+    void cleanupTestCase() const;
 
 private:
     QString configurationFileContent_;

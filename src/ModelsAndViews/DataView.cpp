@@ -47,21 +47,21 @@ void DataView::groupingColumnChanged(int column)
 std::tuple<bool, int, int> DataView::getTaggedColumns(
     const TableModel* parentModel)
 {
-    int pricePerMeterColumn{Constants::NOT_SET_COLUMN};
+    int pricePerMeterColumn{constants::NOT_SET_COLUMN};
     if (auto [ok, columnId] =
             parentModel->getTaggedColumnIfExists(ColumnTag::VALUE);
         ok)
         pricePerMeterColumn = columnId;
     else
-        return {false, Constants::NOT_SET_COLUMN, Constants::NOT_SET_COLUMN};
+        return {false, constants::NOT_SET_COLUMN, constants::NOT_SET_COLUMN};
 
-    int transactionDateColumn{Constants::NOT_SET_COLUMN};
+    int transactionDateColumn{constants::NOT_SET_COLUMN};
     if (auto [ok,
               columnId]{parentModel->getTaggedColumnIfExists(ColumnTag::DATE)};
         ok)
         transactionDateColumn = columnId;
     else
-        return {false, Constants::NOT_SET_COLUMN, Constants::NOT_SET_COLUMN};
+        return {false, constants::NOT_SET_COLUMN, constants::NOT_SET_COLUMN};
     return {true, pricePerMeterColumn, transactionDateColumn};
 }
 
@@ -125,7 +125,7 @@ QVector<TransactionData> DataView::fillDataFromSelection(
         transactionData.pricePerMeter_ =
             proxyModel->index(i, pricePerMeterColumn).data().toDouble();
 
-        if (groupByColumn != Constants::NOT_SET_COLUMN)
+        if (groupByColumn != constants::NOT_SET_COLUMN)
             transactionData.groupedBy_ =
                 proxyModel->index(i, groupByColumn).data();
 
@@ -141,7 +141,7 @@ void DataView::recomputeAllData()
     QApplication::processEvents();
 
     ColumnType columnFormat{ColumnType::UNKNOWN};
-    if (groupByColumn_ != Constants::NOT_SET_COLUMN)
+    if (groupByColumn_ != constants::NOT_SET_COLUMN)
     {
         const TableModel* parentModel{getParentModel()};
         columnFormat = parentModel->getColumnFormat(groupByColumn_);

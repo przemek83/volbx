@@ -62,7 +62,7 @@ bool Configuration::save() const
 QString Configuration::configDump() const
 {
     QString dump;
-    dump.append("Configuration(" + Constants::getConfigurationFileName() +
+    dump.append("Configuration(" + constants::getConfigurationFileName() +
                 "):\n");
 
     dump.append(QStringLiteral("Updates choice picked = "));
@@ -91,7 +91,7 @@ QString Configuration::configDump() const
 bool Configuration::loadConfigXml(QDomDocument& configXml)
 {
     const QString filename{QApplication::applicationDirPath() + "/" +
-                           Constants::getConfigurationFileName()};
+                           constants::getConfigurationFileName()};
 
     const auto [success, content] = FileUtilities::loadFile(filename);
     if (!success)
@@ -159,14 +159,14 @@ QString Configuration::generateConfigXml() const
 bool Configuration::saveConfigXml(const QString& configXml)
 {
     const QString filename{QApplication::applicationDirPath() + "/" +
-                           Constants::getConfigurationFileName()};
+                           constants::getConfigurationFileName()};
     QFile::remove(filename);
     QFile file(filename);
 
     if (!file.open(QIODevice::WriteOnly))
     {
         LOG(LogTypes::CONFIG,
-            "Config file " + Constants::getConfigurationFileName() +
+            "Config file " + constants::getConfigurationFileName() +
                 " can not be opened for writing. Config not saved.");
         return false;
     }

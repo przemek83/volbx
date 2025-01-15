@@ -5,7 +5,7 @@
 
 class QElapsedTimer;
 
-namespace Constants
+namespace constants
 {
 QString getUpdaterName();
 
@@ -30,4 +30,4 @@ const int NOT_SET_COLUMN{-1};
 QString timeFromTimeToSeconds(QElapsedTimer time);
 
 int getProgressBarFullCounter();
-};  // namespace Constants
+};  // namespace constants

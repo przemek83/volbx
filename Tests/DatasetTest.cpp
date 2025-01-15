@@ -27,8 +27,8 @@ void DatasetTest::testGetColumnFormatColumnsNotSet()
 
     auto [ok, column] = dataset.getTaggedColumn(ColumnTag::DATE);
     QVERIFY(!ok);
-    QCOMPARE(column, Constants::NOT_SET_COLUMN);
+    QCOMPARE(column, constants::NOT_SET_COLUMN);
     std::tie(ok, column) = dataset.getTaggedColumn(ColumnTag::VALUE);
     QVERIFY(!ok);
-    QCOMPARE(column, Constants::NOT_SET_COLUMN);
+    QCOMPARE(column, constants::NOT_SET_COLUMN);
 }

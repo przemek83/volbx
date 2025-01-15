@@ -290,8 +290,8 @@ void VolbxMain::saveDataset(const QString& datasetName) const
         return;
 
     const QString barTitle{
-        Constants::getProgressBarTitle(Constants::BarTitle::SAVING)};
-    ProgressBarCounter bar(barTitle, Constants::getProgressBarFullCounter(),
+        constants::getProgressBarTitle(constants::BarTitle::SAVING)};
+    ProgressBarCounter bar(barTitle, constants::getProgressBarFullCounter(),
                            nullptr);
     bar.showDetached();
 
@@ -309,7 +309,7 @@ void VolbxMain::saveDataset(const QString& datasetName) const
     if (exportVbx.generateVbx(*view, file))
         LOG(LogTypes::IMPORT_EXPORT,
             "File saved in " +
-                Constants::timeFromTimeToSeconds(performanceTimer) +
+                constants::timeFromTimeToSeconds(performanceTimer) +
                 " seconds.");
     else
         LOG(LogTypes::IMPORT_EXPORT, QStringLiteral("Saving failed."));
@@ -344,8 +344,8 @@ void VolbxMain::importDataset(std::unique_ptr<Dataset> dataset)
     }
 
     const QString barTitle{
-        Constants::getProgressBarTitle(Constants::BarTitle::LOADING)};
-    ProgressBarCounter bar(barTitle, Constants::getProgressBarFullCounter(),
+        constants::getProgressBarTitle(constants::BarTitle::LOADING)};
+    ProgressBarCounter bar(barTitle, constants::getProgressBarFullCounter(),
                            nullptr);
     QObject::connect(dataset.get(), &Dataset::loadingPercentChanged, &bar,
                      &ProgressBarCounter::updateProgress);
@@ -374,7 +374,7 @@ void VolbxMain::importDataset(std::unique_ptr<Dataset> dataset)
     LOG(LogTypes::IMPORT_EXPORT,
         "Loaded file having " + QString::number(dataset->rowCount()) +
             " rows in time " +
-            Constants::timeFromTimeToSeconds(performanceTimer) + " seconds.");
+            constants::timeFromTimeToSeconds(performanceTimer) + " seconds.");
 
     addMainTabForDataset(std::move(dataset));
 }
@@ -442,10 +442,10 @@ bool VolbxMain::canUpdate(QNetworkReply* reply)
 void VolbxMain::updateApplication()
 {
     if (QFile::exists(QCoreApplication::applicationDirPath() + '/' +
-                      Constants::getUpdaterName() +
-                      Constants::getExeFileSuffix()))
+                      constants::getUpdaterName() +
+                      constants::getExeFileSuffix()))
     {
-        QProcess::startDetached(Constants::getUpdaterName(), {});
+        QProcess::startDetached(constants::getUpdaterName(), {});
         QCoreApplication::quit();
     }
     else
@@ -453,7 +453,7 @@ void VolbxMain::updateApplication()
         QMessageBox::critical(
             nullptr, tr("Wrong installation"),
             tr("Installation is corrupted. Could not find file ") +
-                Constants::getUpdaterName() + Constants::getExeFileSuffix() +
+                constants::getUpdaterName() + constants::getExeFileSuffix() +
                 ".\n" + tr("Can not use update functionality."));
     }
 }

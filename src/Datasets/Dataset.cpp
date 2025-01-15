@@ -103,7 +103,7 @@ std::tuple<bool, Column> Dataset::getTaggedColumn(ColumnTag columnTag) const
 {
     if (isColumnTagged(columnTag))
         return {true, taggedColumns_[columnTag]};
-    return {false, Constants::NOT_SET_COLUMN};
+    return {false, constants::NOT_SET_COLUMN};
 }
 
 QString Dataset::getHeaderName(Column column) const

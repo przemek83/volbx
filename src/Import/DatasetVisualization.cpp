@@ -125,7 +125,7 @@ void DatasetVisualization::setCurrentIndexUsingColumn(QComboBox* combo,
 
 void DatasetVisualization::setupColumnsListWidget()
 {
-    ui_->columnsList->sortByColumn(Constants::NOT_SET_COLUMN,
+    ui_->columnsList->sortByColumn(constants::NOT_SET_COLUMN,
                                    Qt::AscendingOrder);
     ui_->columnsList->setSortingEnabled(false);
 
@@ -142,7 +142,7 @@ void DatasetVisualization::setupColumnsListWidget()
     ui_->columnsList->header()->resizeSections(QHeaderView::ResizeToContents);
 
     ui_->columnsList->setSortingEnabled(true);
-    ui_->columnsList->sortByColumn(Constants::NOT_SET_COLUMN,
+    ui_->columnsList->sortByColumn(constants::NOT_SET_COLUMN,
                                    Qt::AscendingOrder);
 
     ui_->columnsList->setEnabled(true);
@@ -246,7 +246,7 @@ void DatasetVisualization::setAllItemsInColumnsListToState(
 
 int DatasetVisualization::getCurrentValueFromCombo(const QComboBox* combo)
 {
-    int column{Constants::NOT_SET_COLUMN};
+    int column{constants::NOT_SET_COLUMN};
     if (combo->currentIndex() != -1)
         column = combo->itemData(combo->currentIndex()).toInt();
     return column;

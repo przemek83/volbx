@@ -46,7 +46,7 @@ SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent)
 void SpreadsheetsImportTab::analyzeFile(const std::unique_ptr<Dataset>& dataset)
 {
     const QString barTitle{
-        Constants::getProgressBarTitle(Constants::BarTitle::ANALYSING)};
+        constants::getProgressBarTitle(constants::BarTitle::ANALYSING)};
     ProgressBarInfinite bar(barTitle, nullptr);
     bar.showDetached();
     bar.start();
@@ -68,7 +68,7 @@ void SpreadsheetsImportTab::analyzeFile(const std::unique_ptr<Dataset>& dataset)
     LOG(LogTypes::IMPORT_EXPORT,
         "Analysed file having " + QString::number(dataset->rowCount()) +
             " rows in time " +
-            Constants::timeFromTimeToSeconds(performanceTimer) + " seconds.");
+            constants::timeFromTimeToSeconds(performanceTimer) + " seconds.");
 }
 
 std::unique_ptr<Dataset> SpreadsheetsImportTab::createDataset(

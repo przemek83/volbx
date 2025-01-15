@@ -7,7 +7,7 @@
 #include <QSettings>
 #include <QVector>
 
-namespace Constants
+namespace constants
 {
 QString getUpdaterName() { return QStringLiteral("VersionCheck"); }
 
@@ -41,4 +41,4 @@ int getProgressBarFullCounter()
     return fullCounter;
 }
 
-}  // namespace Constants
+}  // namespace constants

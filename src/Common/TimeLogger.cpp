@@ -11,6 +11,6 @@ TimeLogger::TimeLogger(LogTypes logType, QString operationName)
 
 TimeLogger::~TimeLogger()
 {
-    const QString seconds{Constants::timeFromTimeToSeconds(performanceTimer_)};
+    const QString seconds{constants::timeFromTimeToSeconds(performanceTimer_)};
     LOG(logType_, operationName_ + " in " + seconds + " seconds.");
 }

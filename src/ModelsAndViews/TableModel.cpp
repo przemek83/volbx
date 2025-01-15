@@ -83,5 +83,5 @@ int TableModel::getDefaultGroupingColumn() const
     for (int column{0}; column < columnCount(); ++column)
         if (getColumnFormat(column) == ColumnType::STRING)
             return column;
-    return Constants::NOT_SET_COLUMN;
+    return constants::NOT_SET_COLUMN;
 }

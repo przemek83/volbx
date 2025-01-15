@@ -78,7 +78,7 @@ void Export::saveOnDisk() const
     if (exportData(fileName))
         LOG(LogTypes::IMPORT_EXPORT,
             "Data exported in " +
-                Constants::timeFromTimeToSeconds(performanceTimer) +
+                constants::timeFromTimeToSeconds(performanceTimer) +
                 " seconds.");
     else
         LOG(LogTypes::IMPORT_EXPORT, QStringLiteral("Exporting data failed."));
@@ -99,8 +99,8 @@ bool Export::exportData(const QString& fileName) const
     Q_ASSERT(view != nullptr);
 
     const QString barTitle{
-        Constants::getProgressBarTitle(Constants::BarTitle::SAVING)};
-    ProgressBarCounter bar(barTitle, Constants::getProgressBarFullCounter(),
+        constants::getProgressBarTitle(constants::BarTitle::SAVING)};
+    ProgressBarCounter bar(barTitle, constants::getProgressBarFullCounter(),
                            nullptr);
     bar.showDetached();
 
