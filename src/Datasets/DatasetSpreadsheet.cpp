@@ -15,8 +15,8 @@ bool DatasetSpreadsheet::analyze()
                      &ImportSpreadsheet::progressPercentChanged, this,
                      &Dataset::loadingPercentChanged);
 
-    if (!getSheetList() || !loadSpecificData() ||
-        !getColumnTypes(getSheetName()) || !getHeadersList(getSheetName()))
+    if ((!getSheetList()) || (!loadSpecificData()) ||
+        (!getColumnTypes(getSheetName())) || (!getHeadersList(getSheetName())))
         return false;
 
     columnsCount_ = importer_->getColumnCount(getSheetName()).second;

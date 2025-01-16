@@ -20,9 +20,9 @@ bool DatasetInner::analyze()
     if (!openZip())
         return false;
 
-    if (QByteArray definitionContent; !loadXmlFile(definitionContent, zip_) ||
-                                      !fromXml(definitionContent) ||
-                                      !loadStrings(zip_))
+    if (QByteArray definitionContent; (!loadXmlFile(definitionContent, zip_)) ||
+                                      (!fromXml(definitionContent)) ||
+                                      (!loadStrings(zip_)))
         return false;
 
     valid_ = true;
@@ -232,7 +232,7 @@ QVector<QVariant> DatasetInner::fillRow(const QStringList& line,
     QVector<QVariant> row;
     for (Column column{0}; column < static_cast<int>(columnCount()); ++column)
     {
-        if (!fillSamplesOnly && !activeColumns_[column])
+        if ((!fillSamplesOnly) && (!activeColumns_[column]))
             continue;
 
         const QString& element{line.at(column)};
@@ -249,9 +249,9 @@ QVector<QVector<QVariant>> DatasetInner::parseData(QTextStream& stream,
     QVector<QVector<QVariant>> data{fillSamplesOnly
                                         ? prepareContainerForSampleData()
                                         : prepareContainerForAllData()};
-    while (!stream.atEnd() && lineCounter < rowCount())
+    while (!stream.atEnd() && (lineCounter < rowCount()))
     {
-        if (fillSamplesOnly && lineCounter >= SAMPLE_SIZE)
+        if (fillSamplesOnly && (lineCounter >= SAMPLE_SIZE))
             break;
 
         const QStringList line{stream.readLine().split(';')};

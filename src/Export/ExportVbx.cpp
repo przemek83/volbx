@@ -126,7 +126,8 @@ bool ExportVbx::write(QIODevice& ioDevice, const QString& fileName,
 
     const QuaZipNewInfo info(fileName);
     if (QuaZipFile zipFile(&outZip);
-        !zipFile.open(QIODevice::WriteOnly, info) || zipFile.write(data) == -1)
+        (!zipFile.open(QIODevice::WriteOnly, info)) ||
+        (zipFile.write(data) == -1))
     {
         LOG(LogTypes::IMPORT_EXPORT,
             "Error while saving file " + fileName + ".");

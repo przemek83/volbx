@@ -30,7 +30,7 @@ QStringList getListOfAvailableDatasets()
 bool isDatasetDirUsable()
 {
     const QDir directory{getDatasetsDir()};
-    if (!directory.exists() && !directory.mkpath(directory.path()))
+    if ((!directory.exists()) && (!directory.mkpath(directory.path())))
         return false;
 
     return QFile::permissions(directory.path()).testFlag(QFile::ReadUser) &&

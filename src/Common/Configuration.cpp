@@ -22,7 +22,7 @@ Configuration& Configuration::getInstance()
 
 bool Configuration::isUpdatePolicyPicked() const
 {
-    return (configValid_ && updatePolicy_ != UpdatePolicy::NOT_DECIDED);
+    return (configValid_ && (updatePolicy_ != UpdatePolicy::NOT_DECIDED));
 }
 
 bool Configuration::needToCheckForUpdates() const
@@ -195,7 +195,7 @@ bool Configuration::configValid() const { return configValid_; }
 
 QString Configuration::getImportFilePath() const
 {
-    if (!importFilePath_.isEmpty() && QFile::exists(importFilePath_))
+    if ((!importFilePath_.isEmpty()) && QFile::exists(importFilePath_))
         return importFilePath_;
     return QDir::homePath();
 }

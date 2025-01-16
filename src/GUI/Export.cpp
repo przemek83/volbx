@@ -89,7 +89,7 @@ void Export::saveOnDisk() const
 bool Export::locationIsValid(const QString& location) const
 {
     const QDir dir(location);
-    return !ui_->locationLineEdit->text().isEmpty() && dir.exists() &&
+    return (!ui_->locationLineEdit->text().isEmpty()) && dir.exists() &&
            QFile::permissions(dir.path()).testFlag(QFile::WriteUser);
 }
 

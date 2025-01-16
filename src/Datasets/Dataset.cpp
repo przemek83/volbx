@@ -207,9 +207,9 @@ void Dataset::rebuildUsingActiveColumns()
 
         rebuiltColumnsFormat.push_back(columnTypes_[i]);
         rebuiltHeaderColumnNames << headerColumnNames_[i];
-        if (dateColumnTagged && taggedColumns_.value(dateTag) == i)
+        if (dateColumnTagged && (taggedColumns_.value(dateTag) == i))
             rebuiltTaggedColumns[dateTag] = activeColumnNumber;
-        if (priceColumnTagged && taggedColumns_.value(priceTag) == i)
+        if (priceColumnTagged && (taggedColumns_.value(priceTag) == i))
             rebuiltTaggedColumns[priceTag] = activeColumnNumber;
         ++activeColumnNumber;
     }
