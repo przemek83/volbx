@@ -89,7 +89,7 @@ void VolbxMain::connectActions()
 {
     connect(ui_->actionExit, &QAction::triggered, this, &VolbxMain::close);
     connect(ui_->actionFilters, &QAction::triggered, this,
-            [&]() { filters_.setVisible(!filters_.isVisible()); });
+            [this]() { filters_.setVisible(!filters_.isVisible()); });
     connect(ui_->actionLogs, &QAction::triggered, this,
             []() { Logger::getInstance().toggleVisibility(); });
     connect(ui_->actionAbout, &QAction::triggered, this,

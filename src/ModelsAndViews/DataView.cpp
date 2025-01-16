@@ -181,12 +181,12 @@ void DataView::initHorizontalHeader() const
     horizontalHeader()->setSectionsMovable(true);
 
     auto showSortIndicator{
-        [=]()
+        [this]()
         {
             if (!horizontalHeader()->isSortIndicatorShown())
                 horizontalHeader()->setSortIndicatorShown(true);
         }};
-    connect(horizontalHeader(), &QHeaderView::sectionClicked,
+    connect(horizontalHeader(), &QHeaderView::sectionClicked, this,
             showSortIndicator);
 }
 

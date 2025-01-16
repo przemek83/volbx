@@ -43,8 +43,8 @@ void ImportData::setupLayout()
     layout->setContentsMargins(2, 2, 2, 2);
 
     QDialogButtonBox* buttonBox{createButtonBox()};
-    auto enableOpenButton{[=](bool activate) {
-        buttonBox->button(QDialogButtonBox::Open)->setEnabled(activate);
+    auto enableOpenButton{[box = buttonBox](bool activate) {
+        box->button(QDialogButtonBox::Open)->setEnabled(activate);
     }};
     QTabWidget* tabWidget{createTabWidgetWithContent(enableOpenButton)};
 
