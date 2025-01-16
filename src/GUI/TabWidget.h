@@ -25,7 +25,7 @@ public:
 
     DataView* getCurrentDataView() const;
 
-public Q_SLOTS:
+public slots:
     void setTextFilter(int column, const QStringList& bannedStrings) const;
 
     void setDateFilter(int column, QDate from, QDate to,

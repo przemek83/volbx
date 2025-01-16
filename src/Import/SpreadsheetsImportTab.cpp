@@ -136,7 +136,7 @@ void SpreadsheetsImportTab::openFileButtonClicked()
     {
         QMessageBox::information(this, tr("Wrong file"),
                                  tr("File type is not supported."));
-        Q_EMIT datasetIsReady(false);
+        emit datasetIsReady(false);
         return;
     }
 

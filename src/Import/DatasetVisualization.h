@@ -24,7 +24,7 @@ public:
 
     std::unique_ptr<Dataset> retrieveDataset();
 
-public Q_SLOTS:
+public slots:
     void selectCurrentColumn(int column);
 
 private:
@@ -54,7 +54,7 @@ private:
 
     std::unique_ptr<Dataset> dataset_{nullptr};
 
-private Q_SLOTS:
+private slots:
     void searchTextChanged(const QString& newText);
 
     void currentColumnOnTreeChanged(const QTreeWidgetItem* current,
@@ -66,6 +66,6 @@ private Q_SLOTS:
 
     void refreshColumnList(int newIndex) const;
 
-Q_SIGNALS:
+signals:
     void currentColumnNeedSync(int currentColumn);
 };

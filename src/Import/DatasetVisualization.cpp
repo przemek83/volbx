@@ -89,7 +89,7 @@ void DatasetVisualization::currentColumnOnTreeChanged(
     if (current == nullptr)
         return;
 
-    Q_EMIT currentColumnNeedSync(current->data(0, Qt::UserRole).toInt());
+    emit currentColumnNeedSync(current->data(0, Qt::UserRole).toInt());
 }
 
 void DatasetVisualization::selectCurrentColumn(int column)

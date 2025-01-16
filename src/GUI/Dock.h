@@ -14,6 +14,6 @@ public:
 protected:
     DockTitleBar titleBar_;
 
-private Q_SLOTS:
+private slots:
     void toggleFloating();
 };

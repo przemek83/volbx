@@ -10,7 +10,7 @@ public:
 
     void activateSelectButtons() const;
 
-private Q_SLOTS:
+private slots:
     void quickExportData() const;
 
     void selectAll() const;

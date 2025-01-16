@@ -18,11 +18,11 @@ void PlotDataProvider::recompute(QVector<TransactionData> newCalcData,
     for (const auto& point : ::qAsConst(points))
         yAxisValues.append(point.y());
 
-    Q_EMIT basicPlotDataChanged(std::move(points), quantiles_,
-                                std::move(linearRegression));
+    emit basicPlotDataChanged(std::move(points), quantiles_,
+                              std::move(linearRegression));
 
     // Currently only histogram plot is attached under this signal.
-    Q_EMIT fundamentalDataChanged(std::move(yAxisValues), quantiles_);
+    emit fundamentalDataChanged(std::move(yAxisValues), quantiles_);
 }
 
 void PlotDataProvider::recomputeGroupingData(QVector<TransactionData> calcData,
@@ -32,13 +32,13 @@ void PlotDataProvider::recomputeGroupingData(QVector<TransactionData> calcData,
 
     if (ColumnType::STRING != columnFormat)
     {
-        Q_EMIT groupingPlotDataChanged({}, {}, quantiles_);
+        emit groupingPlotDataChanged({}, {}, quantiles_);
         return;
     }
 
     auto [names, quantilesForIntervals] = fillDataForStringGrouping(calcData_);
-    Q_EMIT groupingPlotDataChanged(
-        std::move(names), std::move(quantilesForIntervals), quantiles_);
+    emit groupingPlotDataChanged(std::move(names),
+                                 std::move(quantilesForIntervals), quantiles_);
 }
 
 std::tuple<QVector<QString>, QVector<Quantiles>>

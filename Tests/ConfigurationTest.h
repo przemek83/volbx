@@ -8,7 +8,7 @@
 class ConfigurationTest : public QObject
 {
     Q_OBJECT
-private Q_SLOTS:
+private slots:
     void initTestCase();
     void testSavingConfigurationFile() const;
     void testReadingFilledConfigurationFile() const;

@@ -29,13 +29,13 @@ private:
 
     std::unique_ptr<Ui::DatasetsListBrowser> ui_;
 
-private Q_SLOTS:
+private slots:
     void searchTextChanged(const QString& arg1) const;
 
     void showContextMenu(QPoint pos);
 
     void datasetListItemSelectionChanged();
 
-Q_SIGNALS:
+signals:
     void currentDatasetChanged(QString current);
 };

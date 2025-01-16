@@ -26,7 +26,7 @@ public:
         unsigned int column{0U};
     };
 
-private Q_SLOTS:
+private slots:
     void testBasics_data();
     static void testBasics();
 

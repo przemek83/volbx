@@ -22,6 +22,6 @@ protected:
 
     void setDataset(std::unique_ptr<Dataset> dataset);
 
-Q_SIGNALS:
+signals:
     void datasetIsReady(bool);
 };

@@ -132,6 +132,6 @@ private:
     /// Stores information about columns which are tagged.
     QMap<ColumnTag, Column> taggedColumns_;
 
-Q_SIGNALS:
+signals:
     void loadingPercentChanged(unsigned int newPercentage);
 };

@@ -59,7 +59,7 @@ void DatasetImportTab::clear()
     visualization->clear();
     visualization->setEnabled(false);
 
-    Q_EMIT datasetIsReady(false);
+    emit datasetIsReady(false);
 }
 
 void DatasetImportTab::createDataset(const QString& datasetName)

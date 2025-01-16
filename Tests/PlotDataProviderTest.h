@@ -15,7 +15,7 @@ class QSignalSpy;
 class PlotDataProviderTest : public QObject
 {
     Q_OBJECT
-private Q_SLOTS:
+private slots:
     void initTestCase();
 
     void testRecomputeGroupingIvalidFormat();

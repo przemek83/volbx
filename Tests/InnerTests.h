@@ -16,7 +16,7 @@ class QuaZip;
 class InnerTests : public QObject
 {
     Q_OBJECT
-private Q_SLOTS:
+private slots:
     void initTestCase();
 
     void testDefinition_data();

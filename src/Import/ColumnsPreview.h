@@ -18,7 +18,7 @@ public:
 
     void clear();
 
-public Q_SLOTS:
+public slots:
     void selectCurrentColumn(int column);
 
 private:
@@ -26,9 +26,9 @@ private:
 
     void setLabels(const std::unique_ptr<Dataset>& dataset);
 
-private Q_SLOTS:
+private slots:
     void onItemSelectionChanged();
 
-Q_SIGNALS:
+signals:
     void currentColumnNeedSync(int currentColumn);
 };

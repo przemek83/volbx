@@ -61,6 +61,6 @@ private:
         QStringLiteral("<b><font size=\"3\" color=\"green\">")};
     const QString styleEnd_{QStringLiteral("</b></font>")};
 
-private Q_SLOTS:
+private slots:
     void changeActiveLogs(bool state);
 };

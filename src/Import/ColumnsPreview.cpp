@@ -66,5 +66,5 @@ void ColumnsPreview::onItemSelectionChanged()
 {
     const QList<QTableWidgetItem*> selectedItemsList{selectedItems()};
     if (!selectedItemsList.isEmpty())
-        Q_EMIT currentColumnNeedSync(selectedItemsList.first()->column());
+        emit currentColumnNeedSync(selectedItemsList.first()->column());
 }

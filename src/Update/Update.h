@@ -71,7 +71,7 @@ private:
 
     int currentTriesCount_{0};
 
-private Q_SLOTS:
+private slots:
     void initialInfoNetworkReplyFinished(QNetworkReply* reply);
 
     void downloadFinished(QNetworkReply* reply);

@@ -52,10 +52,10 @@ private:
 
     QStackedWidget stackedWidget_;
 
-private Q_SLOTS:
+private slots:
     void searchTextChanged(const QString& arg1) const;
 
-Q_SIGNALS:
+signals:
     void filterNumbers(int column, double from, double to);
 
     void filterNames(int column, QStringList exclusionList);

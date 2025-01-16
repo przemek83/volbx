@@ -19,7 +19,7 @@ public:
 
     void recomputeAllData();
 
-public Q_SLOTS:
+public slots:
     void groupingColumnChanged(int column);
 
 protected:

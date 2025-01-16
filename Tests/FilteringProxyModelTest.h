@@ -11,7 +11,7 @@ class FilteringProxyModel;
 class FilteringProxyModelTest : public QObject
 {
     Q_OBJECT
-private Q_SLOTS:
+private slots:
     static void testNoFilter();
 
     static void testStringFilter();

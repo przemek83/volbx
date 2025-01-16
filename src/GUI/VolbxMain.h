@@ -82,7 +82,7 @@ private:
     /// Network manager used to retrieve current available version.
     QNetworkAccessManager networkManager_;
 
-private Q_SLOTS:
+private slots:
     void tabWasChanged(int index);
 
     void actionAboutTriggered();

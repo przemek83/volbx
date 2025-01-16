@@ -18,7 +18,7 @@ public:
     void recomputeGroupingData(QVector<TransactionData> calcData,
                                ColumnType columnFormat);
 
-Q_SIGNALS:
+signals:
     void groupingPlotDataChanged(QVector<QString> intervalsNames,
                                  QVector<Quantiles> quantilesForIntervals,
                                  Quantiles quantiles);

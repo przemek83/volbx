@@ -31,7 +31,7 @@ public:
 
     void setButtonEnabled(Button button, bool enabled) const;
 
-Q_SIGNALS:
+signals:
     void closeClicked();
     void floatingClicked();
     void selectAllClicked();

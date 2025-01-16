@@ -17,6 +17,6 @@ private:
 
     void createDataset(const QString& datasetName);
 
-private Q_SLOTS:
+private slots:
     void selectedDatasetChanged(const QString& current);
 };

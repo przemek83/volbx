@@ -169,7 +169,7 @@ void DatasetInner::updateProgress(unsigned int currentRow,
         static_cast<unsigned int>((100. * (currentRow + 1)) / rowCount)};
     if (currentPercent > lastEmittedPercent)
     {
-        Q_EMIT loadingPercentChanged(currentPercent);
+        emit loadingPercentChanged(currentPercent);
         lastEmittedPercent = currentPercent;
         QCoreApplication::processEvents();
     }

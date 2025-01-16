@@ -28,6 +28,6 @@ private:
 
     std::unique_ptr<Ui::SpreadsheetsImportTab> ui_;
 
-private Q_SLOTS:
+private slots:
     void openFileButtonClicked();
 };

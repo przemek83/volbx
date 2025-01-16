@@ -25,7 +25,7 @@ private:
 
     QStringList usedNames_;
 
-private Q_SLOTS:
+private slots:
     void nameChanged(const QString& actualText);
 
     void saveClicked();

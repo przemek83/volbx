@@ -109,5 +109,5 @@ void DatasetsListBrowser::datasetListItemSelectionChanged()
         !items.isEmpty())
         newCurrent = items.front()->text();
 
-    Q_EMIT currentDatasetChanged(newCurrent);
+    emit currentDatasetChanged(newCurrent);
 }

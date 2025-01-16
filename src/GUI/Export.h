@@ -39,7 +39,7 @@ private:
 
     const QString exportFilesDateFormat_{QStringLiteral("yyyyMMdd")};
 
-private Q_SLOTS:
+private slots:
     void saveClicked();
 
     void locationSearchClicked();

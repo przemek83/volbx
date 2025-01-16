@@ -12,7 +12,7 @@ public:
 
     QList<PlotBase*> getPlots() const;
 
-private Q_SLOTS:
+private slots:
     void quickExportData() const;
 
     void resetPlot() const;
