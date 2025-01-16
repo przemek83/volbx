@@ -230,7 +230,9 @@ QVector<QVariant> DatasetInner::fillRow(const QStringList& line,
                                         bool fillSamplesOnly)
 {
     QVector<QVariant> row;
-    for (Column column{0}; column < static_cast<int>(columnCount()); ++column)
+
+    const int count{static_cast<int>(columnCount())};
+    for (Column column{0}; column < count; ++column)
     {
         if ((!fillSamplesOnly) && (!activeColumns_[column]))
             continue;

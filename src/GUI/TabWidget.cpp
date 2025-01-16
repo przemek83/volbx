@@ -47,14 +47,15 @@ QVector<std::pair<QString, int>> TabWidget::getStringColumnsWithIndexes(
     const TableModel* model)
 {
     QVector<std::pair<QString, int>> stringColumns;
-    for (int i{0}; i < model->columnCount(); ++i)
+    const int count{model->columnCount()};
+    for (int column{0}; column < count; ++column)
     {
-        if (model->getColumnFormat(i) != ColumnType::STRING)
+        if (model->getColumnFormat(column) != ColumnType::STRING)
             continue;
 
         const QString columnName{
-            model->headerData(i, Qt::Horizontal).toString()};
-        stringColumns.append({columnName, i});
+            model->headerData(column, Qt::Horizontal).toString()};
+        stringColumns.append({columnName, column});
     }
     return stringColumns;
 }

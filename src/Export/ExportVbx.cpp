@@ -35,13 +35,14 @@ QByteArray ExportVbx::generateRowContent(const QAbstractItemModel& model,
                                          [[maybe_unused]] int skippedRowsCount)
 {
     QByteArray rowContent;
-    for (int j{0}; j < model.columnCount(); ++j)
+    const int count{model.columnCount()};
+    for (int column{0}; column < count; ++column)
     {
-        if (const QVariant actualField{model.index(row, j).data()};
+        if (const QVariant actualField{model.index(row, column).data()};
             !actualField.isNull())
             variantToString(actualField, rowContent, separator_);
 
-        if (j != (model.columnCount() - 1))
+        if (column != (count - 1))
             rowContent.append(separator_);
     }
 

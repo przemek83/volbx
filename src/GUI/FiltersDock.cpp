@@ -82,24 +82,25 @@ void FiltersDock::fillLayoutWithFilterWidgets(QVBoxLayout* layout,
                                               const FilteringProxyModel* model)
 {
     const TableModel* parentModel{model->getParentModel()};
-    for (int i{0}; i < model->columnCount(); ++i)
+    const int count{model->columnCount()};
+    for (int column{0}; column < count; ++column)
     {
         Filter* filter{nullptr};
-        switch (parentModel->getColumnFormat(i))
+        switch (parentModel->getColumnFormat(column))
         {
             case ColumnType::STRING:
             {
-                filter = createStringsFilter(parentModel, i);
+                filter = createStringsFilter(parentModel, column);
                 break;
             }
             case ColumnType::DATE:
             {
-                filter = createDatesFilter(parentModel, i);
+                filter = createDatesFilter(parentModel, column);
                 break;
             }
             case ColumnType::NUMBER:
             {
-                filter = createNumbersFilter(parentModel, i);
+                filter = createNumbersFilter(parentModel, column);
                 break;
             }
             case ColumnType::UNKNOWN:
