@@ -130,9 +130,7 @@ bool TabWidget::plotExist() const
     return plotUI != nullptr;
 }
 
-template <class T>
-void TabWidget::addPlot(const QString& title,
-                        const std::function<T*()>& createPlot)
+void TabWidget::addPlot(const QString& title, QWidget* plot)
 {
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
@@ -140,7 +138,7 @@ void TabWidget::addPlot(const QString& title,
     Tab* mainTab{getCurrentMainTab()};
     auto* tabifyOn{mainTab->findChild<PlotDock*>()};
     auto* dock{new PlotDock(title, mainTab)};
-    dock->setWidget(createPlot());
+    dock->setWidget(plot);
     mainTab->addDockWidget(Qt::RightDockWidgetArea, dock);
 
     DataView* view{getCurrentDataView()};
@@ -149,7 +147,8 @@ void TabWidget::addPlot(const QString& title,
     else
         activateDataSelection(view);
 
-    showPlot<T>();
+    dock->setVisible(true);
+    dock->raise();
 
     view->recomputeAllData();
 
@@ -164,18 +163,13 @@ void TabWidget::addBasicPlot()
         return;
     }
 
-    const auto createBasicPlot{[=]()
-                               {
-                                   const DataView* view{getCurrentDataView()};
-                                   auto* basicPlot{new BasicDataPlot()};
-                                   connect(
-                                       &(view->getPlotDataProvider()),
-                                       &PlotDataProvider::basicPlotDataChanged,
-                                       basicPlot, &BasicDataPlot::setNewData);
-                                   return basicPlot;
-                               }};
+    const DataView* view{getCurrentDataView()};
+    auto* basicPlot{new BasicDataPlot()};
+    connect(&(view->getPlotDataProvider()),
+            &PlotDataProvider::basicPlotDataChanged, basicPlot,
+            &BasicDataPlot::setNewData);
 
-    addPlot<BasicDataPlot>(tr("Quantiles"), createBasicPlot);
+    addPlot(tr("Quantiles"), basicPlot);
 }
 
 void TabWidget::addHistogramPlot()
@@ -186,18 +180,13 @@ void TabWidget::addHistogramPlot()
         return;
     }
 
-    const auto createHistogramPlot{
-        [=]()
-        {
-            const DataView* view{getCurrentDataView()};
-            auto* histogramPlot{new HistogramPlotUI()};
-            connect(&(view->getPlotDataProvider()),
-                    &PlotDataProvider::fundamentalDataChanged, histogramPlot,
-                    &HistogramPlotUI::setNewData);
-            return histogramPlot;
-        }};
+    const DataView* view{getCurrentDataView()};
+    auto* histogramPlot{new HistogramPlotUI()};
+    connect(&(view->getPlotDataProvider()),
+            &PlotDataProvider::fundamentalDataChanged, histogramPlot,
+            &HistogramPlotUI::setNewData);
 
-    addPlot<HistogramPlotUI>(tr("Histogram"), createHistogramPlot);
+    addPlot(tr("Histogram"), histogramPlot);
 }
 
 void TabWidget::addGroupingPlot()
@@ -208,22 +197,16 @@ void TabWidget::addGroupingPlot()
         return;
     }
 
-    const auto createGroupingPlot{
-        [=]()
-        {
-            const DataView* view{getCurrentDataView()};
-            const TableModel* model{getCurrentDataModel()};
-            auto* groupPlot{
-                new GroupPlotUI(getStringColumnsWithIndexes(model))};
-            connect(&(view->getPlotDataProvider()),
-                    &PlotDataProvider::groupingPlotDataChanged, groupPlot,
-                    &GroupPlotUI::setNewData);
-            connect(groupPlot, &GroupPlotUI::traitIndexChanged, view,
-                    &DataView::groupingColumnChanged);
-            return groupPlot;
-        }};
+    const DataView* view{getCurrentDataView()};
+    const TableModel* model{getCurrentDataModel()};
+    auto* groupPlot{new GroupPlotUI(getStringColumnsWithIndexes(model))};
+    connect(&(view->getPlotDataProvider()),
+            &PlotDataProvider::groupingPlotDataChanged, groupPlot,
+            &GroupPlotUI::setNewData);
+    connect(groupPlot, &GroupPlotUI::traitIndexChanged, view,
+            &DataView::groupingColumnChanged);
 
-    addPlot<GroupPlotUI>(tr("Grouping"), createGroupingPlot);
+    addPlot(tr("Grouping"), groupPlot);
 }
 
 void TabWidget::activateDataSelection(DataView* view) const

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <functional>
-
 #include <QDate>
 #include <QTabWidget>
 
@@ -40,8 +38,7 @@ public slots:
     void addGroupingPlot();
 
 private:
-    template <class T>
-    void addPlot(const QString& title, const std::function<T*()>& createPlot);
+    void addPlot(const QString& title, QWidget* plot);
 
     template <class T>
     bool plotExist() const;
