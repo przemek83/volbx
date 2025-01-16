@@ -101,7 +101,7 @@ void VolbxMain::connectActions()
     connect(ui_->actionImportData, &QAction::triggered, this,
             &VolbxMain::actionImportDataTriggered);
     connect(ui_->actionCheckForNewVersion, &QAction::triggered, this,
-            &VolbxMain::actionCheckForNewVersionTriggered);
+            &VolbxMain::actionCheckForUpdateTriggered);
     connect(ui_->actionUpdateAuto, &QAction::triggered, this,
             &VolbxMain::actionUpdateAutoToggled);
 }
@@ -208,7 +208,7 @@ void VolbxMain::checkForUpdates()
         checkForUpdates = Configuration::getInstance().needToCheckForUpdates();
 
     if (checkForUpdates)
-        actionCheckForNewVersionTriggered();
+        actionCheckForUpdateTriggered();
 
     ui_->actionUpdateAuto->setChecked(
         Configuration::getInstance().needToCheckForUpdates());
@@ -317,7 +317,7 @@ void VolbxMain::saveDataset(const QString& datasetName) const
 
 void VolbxMain::actionSaveDatasetAsTriggered()
 {
-    if (!dataset_utilities::doesDatasetDirExistAndUserHavePermisions())
+    if (!dataset_utilities::isDatasetDirUsable())
     {
         QString msg(tr("Can not access folder "));
         msg.append(dataset_utilities::getDatasetsDir());
@@ -472,7 +472,7 @@ void VolbxMain::updateCheckReplyFinished(QNetworkReply* reply)
         updateApplication();
 }
 
-void VolbxMain::actionCheckForNewVersionTriggered()
+void VolbxMain::actionCheckForUpdateTriggered()
 {
     networkManager_.get(networking::getCurrentVersionRequest());
 }

@@ -21,9 +21,9 @@ public:
 private:
     void setupDatasetsList();
 
-    bool doesUserChooseToDeleteSelectedDataset(QPoint pos) const;
+    bool userWantToDeleteDataset(QPoint pos) const;
 
-    bool doesUserConfirmedDeleting(const QString& datasetToDelete);
+    bool userConfirmedDeleting(const QString& datasetToDelete);
 
     void deleteSelectedDataset(const QString& datasetToDelete);
 
@@ -34,7 +34,7 @@ private Q_SLOTS:
 
     void showContextMenu(QPoint pos);
 
-    void datasetsListItemSelectionChanged();
+    void datasetListItemSelectionChanged();
 
 Q_SIGNALS:
     void currentDatasetChanged(QString current);

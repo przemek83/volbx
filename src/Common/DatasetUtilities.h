@@ -8,7 +8,7 @@ QString getDatasetsDir();
 
 QStringList getListOfAvailableDatasets();
 
-bool doesDatasetDirExistAndUserHavePermisions();
+bool isDatasetDirUsable();
 
 bool removeDataset(const QString& datasetName);
 

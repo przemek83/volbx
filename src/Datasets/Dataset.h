@@ -111,7 +111,7 @@ protected:
     const QString xmlRowCount_{QStringLiteral("ROW_COUNT")};
 
 private:
-    void rebuildDefinitonUsingActiveColumnsOnly();
+    void rebuildUsingActiveColumns();
 
     bool isColumnTagged(ColumnTag tag) const;
 

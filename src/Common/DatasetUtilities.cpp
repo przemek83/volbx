@@ -15,7 +15,7 @@ QString getDatasetsDir()
 QStringList getListOfAvailableDatasets()
 {
     QDir datasetsDir{getDatasetsDir()};
-    if (!doesDatasetDirExistAndUserHavePermisions())
+    if (!isDatasetDirUsable())
         return {};
 
     datasetsDir.setFilter(QDir::Files | QDir::Readable | QDir::NoSymLinks |
@@ -27,7 +27,7 @@ QStringList getListOfAvailableDatasets()
     return entries.replaceInStrings(getDatasetExtension(), QLatin1String(""));
 }
 
-bool doesDatasetDirExistAndUserHavePermisions()
+bool isDatasetDirUsable()
 {
     const QDir directory{getDatasetsDir()};
     if (!directory.exists() && !directory.mkpath(directory.path()))

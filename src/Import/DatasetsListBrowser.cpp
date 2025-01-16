@@ -47,11 +47,10 @@ void DatasetsListBrowser::setupDatasetsList()
             &DatasetsListBrowser::showContextMenu);
 
     connect(ui_->datasetsList, &QListWidget::itemSelectionChanged, this,
-            &DatasetsListBrowser::datasetsListItemSelectionChanged);
+            &DatasetsListBrowser::datasetListItemSelectionChanged);
 }
 
-bool DatasetsListBrowser::doesUserChooseToDeleteSelectedDataset(
-    QPoint pos) const
+bool DatasetsListBrowser::userWantToDeleteDataset(QPoint pos) const
 {
     const QPoint globalPos{ui_->datasetsList->viewport()->mapToGlobal(pos)};
 
@@ -70,8 +69,7 @@ bool DatasetsListBrowser::doesUserChooseToDeleteSelectedDataset(
     return selectedItem != nullptr;
 }
 
-bool DatasetsListBrowser::doesUserConfirmedDeleting(
-    const QString& datasetToDelete)
+bool DatasetsListBrowser::userConfirmedDeleting(const QString& datasetToDelete)
 {
     const QMessageBox::StandardButton answer{QMessageBox::question(
         this, tr("Delete?"), tr("Delete dataset ") + datasetToDelete + "?",
@@ -99,12 +97,11 @@ void DatasetsListBrowser::showContextMenu(QPoint pos)
     const QString datasetToDelete{
         ui_->datasetsList->selectedItems().first()->text()};
 
-    if (doesUserChooseToDeleteSelectedDataset(pos) &&
-        doesUserConfirmedDeleting(datasetToDelete))
+    if (userWantToDeleteDataset(pos) && userConfirmedDeleting(datasetToDelete))
         deleteSelectedDataset(datasetToDelete);
 }
 
-void DatasetsListBrowser::datasetsListItemSelectionChanged()
+void DatasetsListBrowser::datasetListItemSelectionChanged()
 {
     QString newCurrent{QLatin1String("")};
 

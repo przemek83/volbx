@@ -133,7 +133,7 @@ void DatasetVisualization::setupColumnsListWidget()
          ++column)
     {
         const QStringList list{dataset_->getHeaderName(column),
-                               getTypeDisplayNameForGivenColumn(column)};
+                               getTypeDisplayNameForColumn(column)};
         auto* item{new QTreeWidgetItem(list)};
         item->setData(0, Qt::UserRole, QVariant(column));
         ui_->columnsList->addTopLevelItem(item);
@@ -196,7 +196,7 @@ void DatasetVisualization::setTaggedColumnInDataset(ColumnTag tag,
     dataset_->setTaggedColumn(tag, column);
 }
 
-QString DatasetVisualization::getTypeDisplayNameForGivenColumn(int column) const
+QString DatasetVisualization::getTypeDisplayNameForColumn(int column) const
 {
     switch (const ColumnType columnType{dataset_->getColumnFormat(column)};
             columnType)

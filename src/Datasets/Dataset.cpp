@@ -131,7 +131,7 @@ bool Dataset::loadData()
 {
     bool success{false};
     std::tie(success, data_) = getAllData();
-    rebuildDefinitonUsingActiveColumnsOnly();
+    rebuildUsingActiveColumns();
     closeZip();
     return success;
 }
@@ -189,7 +189,7 @@ void Dataset::setTaggedColumn(ColumnTag columnTag, Column column)
 
 QString Dataset::getLastError() const { return error_; }
 
-void Dataset::rebuildDefinitonUsingActiveColumnsOnly()
+void Dataset::rebuildUsingActiveColumns()
 {
     QVector<ColumnType> rebuiltColumnsFormat;
     QStringList rebuiltHeaderColumnNames;

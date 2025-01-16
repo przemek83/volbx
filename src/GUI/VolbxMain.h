@@ -97,7 +97,7 @@ private Q_SLOTS:
 
     void updateCheckReplyFinished(QNetworkReply* reply);
 
-    void actionCheckForNewVersionTriggered();
+    void actionCheckForUpdateTriggered();
 
     static void actionUpdateAutoToggled(bool alwaysCheck);
 

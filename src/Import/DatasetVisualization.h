@@ -38,7 +38,7 @@ private:
 
     void setTaggedColumnInDataset(ColumnTag tag, const QComboBox* combo);
 
-    QString getTypeDisplayNameForGivenColumn(int column) const;
+    QString getTypeDisplayNameForColumn(int column) const;
 
     void fillTaggedColumnCombos();
 
