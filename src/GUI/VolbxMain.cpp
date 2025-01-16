@@ -416,12 +416,6 @@ void VolbxMain::setupStatusBar()
 
 bool VolbxMain::canUpdate(QNetworkReply* reply)
 {
-    if (!networking::replyIsValid(reply))
-    {
-        ui_->statusBar->showMessage(tr("Connection error encountered."));
-        return false;
-    }
-
     auto [newestVersion, notNeededHereList] =
         networking::getAvailableVersionAndFiles(reply);
     if (newestVersion.isEmpty())
@@ -461,6 +455,13 @@ void VolbxMain::updateApplication()
 void VolbxMain::updateCheckReplyFinished(QNetworkReply* reply)
 {
     reply->deleteLater();
+
+    if (!networking::replyIsValid(reply))
+    {
+        ui_->statusBar->showMessage(tr("Connection error encountered."));
+        return;
+    }
+
     if (!canUpdate(reply))
         return;
 
