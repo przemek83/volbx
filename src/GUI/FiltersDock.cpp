@@ -119,9 +119,10 @@ FilterStrings* FiltersDock::createStringsFilter(const TableModel* parentModel,
     const qsizetype itemCount{list.size()};
     list.sort();
     auto* filter{new FilterStrings(columnName, std::move(list))};
-    auto emitChangeForColumn{[=](QStringList bannedList) {
-        emit filterNames(index, std::move(bannedList));
+    auto emitChangeForColumn{[this, column = index](QStringList bannedList) {
+        emit filterNames(column, std::move(bannedList));
     }};
+
     connect(filter, &FilterStrings::newStringFilter, this, emitChangeForColumn);
 
     filter->setCheckable(true);
@@ -138,9 +139,9 @@ FilterDates* FiltersDock::createDatesFilter(const TableModel* parentModel,
     const auto [minDate, maxDate,
                 haveEmptyDates]{parentModel->getDateRange(index)};
     auto* filter{new FilterDates(columnName, minDate, maxDate, haveEmptyDates)};
-    auto emitChangeForColumn{[=](QDate from, QDate to, bool filterEmptyDates) {
-        emit filterDates(index, from, to, filterEmptyDates);
-    }};
+    auto emitChangeForColumn{
+        [this, column = index](QDate from, QDate to, bool filterEmptyDates)
+        { emit filterDates(column, from, to, filterEmptyDates); }};
     connect(filter, &FilterDates::newDateFilter, this, emitChangeForColumn);
     filter->setCheckable(true);
     return filter;
@@ -152,8 +153,8 @@ FilterNumbers* FiltersDock::createNumbersFilter(const TableModel* parentModel,
     const QString columnName{getColumnName(parentModel, index)};
     const auto [min, max]{parentModel->getNumericRange(index)};
     auto* filter{new FilterDoubles(columnName, min, max)};
-    auto emitChangeForColumn{[=](double from, double to)
-                             { emit filterNumbers(index, from, to); }};
+    auto emitChangeForColumn{[this, column = index](double from, double to)
+                             { emit filterNumbers(column, from, to); }};
     connect(filter, &FilterDoubles::newNumericFilter, this,
             emitChangeForColumn);
     filter->setCheckable(true);
