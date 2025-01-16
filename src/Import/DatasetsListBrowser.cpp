@@ -18,7 +18,8 @@ DatasetsListBrowser::DatasetsListBrowser(QWidget* parent)
 
 void DatasetsListBrowser::searchTextChanged(const QString& arg1) const
 {
-    for (int i{0}; i < ui_->datasetsList->count(); ++i)
+    const int count{ui_->datasetsList->count()};
+    for (int i{0}; i < count; ++i)
     {
         QListWidgetItem* item{ui_->datasetsList->item(i)};
         const bool hide{!item->text().contains(arg1, Qt::CaseInsensitive)};

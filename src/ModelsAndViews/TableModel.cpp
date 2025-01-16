@@ -80,7 +80,8 @@ bool TableModel::areTaggedColumnsSet() const
 
 int TableModel::getDefaultGroupingColumn() const
 {
-    for (int column{0}; column < columnCount(); ++column)
+    const int count{columnCount()};
+    for (int column{0}; column < count; ++column)
         if (getColumnFormat(column) == ColumnType::STRING)
             return column;
     return constants::NOT_SET_COLUMN;

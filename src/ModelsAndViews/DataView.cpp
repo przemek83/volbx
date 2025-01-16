@@ -29,7 +29,8 @@ void DataView::setModel(QAbstractItemModel* model)
     const auto* proxyModel{::qobject_cast<FilteringProxyModel*>(model)};
     const TableModel* parentModel{proxyModel->getParentModel()};
 
-    for (int column{0}; column < proxyModel->columnCount(); ++column)
+    const int count{proxyModel->columnCount()};
+    for (int column{0}; column < count; ++column)
         setDelegate(column, parentModel);
 
     QTableView::setModel(model);
@@ -108,7 +109,8 @@ QVector<TransactionData> DataView::fillDataFromSelection(
     const int batchSize{1000};
 
     const FilteringProxyModel* proxyModel{getProxyModel()};
-    for (int i{0}; i < proxyModel->rowCount(); ++i)
+    const int count{proxyModel->rowCount()};
+    for (int i{0}; i < count; ++i)
     {
         if ((i % batchSize) == 0)
             QApplication::processEvents();

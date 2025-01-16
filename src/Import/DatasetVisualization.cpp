@@ -99,7 +99,8 @@ void DatasetVisualization::selectCurrentColumn(int column)
         (items.first()->data(0, Qt::UserRole).toInt() == column))
         return;
 
-    for (int i{0}; i < ui_->columnsList->topLevelItemCount(); ++i)
+    const int itemCount{ui_->columnsList->topLevelItemCount()};
+    for (int i{0}; i < itemCount; ++i)
     {
         QTreeWidgetItem* currentItem{ui_->columnsList->topLevelItem(i)};
         if (currentItem->data(0, Qt::UserRole).toInt() == column)
@@ -113,7 +114,8 @@ void DatasetVisualization::selectCurrentColumn(int column)
 void DatasetVisualization::setCurrentIndexUsingColumn(QComboBox* combo,
                                                       int column)
 {
-    for (int i{0}; i < combo->count(); ++i)
+    const int itemCount{combo->count()};
+    for (int i{0}; i < itemCount; ++i)
     {
         if (combo->itemData(i).toInt() == column)
         {
@@ -129,8 +131,8 @@ void DatasetVisualization::setupColumnsListWidget()
                                    Qt::AscendingOrder);
     ui_->columnsList->setSortingEnabled(false);
 
-    for (int column{0}; column < static_cast<int>(dataset_->columnCount());
-         ++column)
+    const int count{static_cast<int>(dataset_->columnCount())};
+    for (int column{0}; column < count; ++column)
     {
         const QStringList list{dataset_->getHeaderName(column),
                                getTypeDisplayNameForColumn(column)};
@@ -219,8 +221,8 @@ QString DatasetVisualization::getTypeDisplayNameForColumn(int column) const
 
 void DatasetVisualization::fillTaggedColumnCombos()
 {
-    for (int column{0}; column < static_cast<int>(dataset_->columnCount());
-         ++column)
+    const int count{static_cast<int>(dataset_->columnCount())};
+    for (int column{0}; column < count; ++column)
     {
         const ColumnType columnType{dataset_->getColumnFormat(column)};
         if (columnType == ColumnType::NUMBER)
