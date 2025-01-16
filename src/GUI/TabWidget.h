@@ -38,7 +38,7 @@ public slots:
     void addGroupingPlot();
 
 private:
-    void addPlot(const QString& title, QWidget* plot);
+    void addPlot(const QString& title, QWidget* plot) const;
 
     template <class T>
     bool plotExist() const;

@@ -131,7 +131,7 @@ bool TabWidget::plotExist() const
     return plotUI != nullptr;
 }
 
-void TabWidget::addPlot(const QString& title, QWidget* plot)
+void TabWidget::addPlot(const QString& title, QWidget* plot) const
 {
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
