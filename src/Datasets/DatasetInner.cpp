@@ -249,7 +249,7 @@ QVector<QVector<QVariant>> DatasetInner::parseData(QTextStream& stream,
     QVector<QVector<QVariant>> data{fillSamplesOnly
                                         ? prepareContainerForSampleData()
                                         : prepareContainerForAllData()};
-    while (!stream.atEnd() && (lineCounter < rowCount()))
+    while ((!stream.atEnd()) && (lineCounter < rowCount()))
     {
         if (fillSamplesOnly && (lineCounter >= SAMPLE_SIZE))
             break;
