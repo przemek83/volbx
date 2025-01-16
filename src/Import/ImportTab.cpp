@@ -10,7 +10,7 @@
 ImportTab::ImportTab(QWidget* parent) : QWidget(parent) {}
 
 std::pair<DatasetVisualization*, ColumnsPreview*>
-ImportTab::createVisualizationAndColumnPreview()
+ImportTab::createVisualizationAndPreview()
 {
     auto* visualization{new DatasetVisualization(this)};
     auto* columnsPreview{new ColumnsPreview(this)};

@@ -23,14 +23,14 @@ protected:
                           const QModelIndex& source_parent) const override;
 
 private:
-    bool acceptRowAccordingToStringRestrictions(
-        int sourceRow, const QModelIndex& sourceParent) const;
+    bool acceptRowWithStringRestrictions(int sourceRow,
+                                         const QModelIndex& sourceParent) const;
 
-    bool acceptRowAccordingToDateRestrictions(
-        int sourceRow, const QModelIndex& sourceParent) const;
+    bool acceptRowWithDateRestrictions(int sourceRow,
+                                       const QModelIndex& sourceParent) const;
 
-    bool acceptRowAccordingToNumericRestrictions(
-        int sourceRow, const QModelIndex& sourceParent) const;
+    bool acceptRowWithNumberRestrictions(int sourceRow,
+                                         const QModelIndex& sourceParent) const;
 
     std::map<int, QStringList> stringsRestrictions_;
 

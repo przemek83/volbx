@@ -12,8 +12,7 @@
 
 DatasetImportTab::DatasetImportTab(QWidget* parent) : ImportTab(parent)
 {
-    auto [visualization, columnsPreview] =
-        createVisualizationAndColumnPreview();
+    auto [visualization, columnsPreview]{createVisualizationAndPreview()};
     auto* listBrowser{new DatasetsListBrowser(this)};
 
     auto* upperSplitter{new QSplitter(Qt::Horizontal, this)};

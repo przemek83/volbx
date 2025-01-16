@@ -49,7 +49,7 @@ private:
     void startUpdating(const QString& availableVersion,
                        const QStringList& replyStringList);
 
-    void exitUpdaterAsMostRecentVersionIsInstalled();
+    void exitUpdaterAsNoUpdateNeeded();
 
     bool isReplyOk(const QNetworkReply* reply);
 

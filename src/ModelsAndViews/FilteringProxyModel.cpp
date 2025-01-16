@@ -29,7 +29,7 @@ void FilteringProxyModel::setNumericFilter(int column, double from, double to)
     invalidate();
 }
 
-bool FilteringProxyModel::acceptRowAccordingToStringRestrictions(
+bool FilteringProxyModel::acceptRowWithStringRestrictions(
     int sourceRow, const QModelIndex& sourceParent) const
 {
     for (const auto& [column, bannedStrings] : stringsRestrictions_)
@@ -42,7 +42,7 @@ bool FilteringProxyModel::acceptRowAccordingToStringRestrictions(
     return true;
 }
 
-bool FilteringProxyModel::acceptRowAccordingToDateRestrictions(
+bool FilteringProxyModel::acceptRowWithDateRestrictions(
     int sourceRow, const QModelIndex& sourceParent) const
 {
     for (const auto& [column, dateRestriction] : datesRestrictions_)
@@ -61,7 +61,7 @@ bool FilteringProxyModel::acceptRowAccordingToDateRestrictions(
     return true;
 }
 
-bool FilteringProxyModel::acceptRowAccordingToNumericRestrictions(
+bool FilteringProxyModel::acceptRowWithNumberRestrictions(
     int sourceRow, const QModelIndex& sourceParent) const
 {
     for (const auto& [column, numericRestriction] : numericRestrictions_)
@@ -80,7 +80,7 @@ bool FilteringProxyModel::acceptRowAccordingToNumericRestrictions(
 bool FilteringProxyModel::filterAcceptsRow(
     int source_row, const QModelIndex& source_parent) const
 {
-    return acceptRowAccordingToStringRestrictions(source_row, source_parent) &&
-           acceptRowAccordingToDateRestrictions(source_row, source_parent) &&
-           acceptRowAccordingToNumericRestrictions(source_row, source_parent);
+    return acceptRowWithStringRestrictions(source_row, source_parent) &&
+           acceptRowWithDateRestrictions(source_row, source_parent) &&
+           acceptRowWithNumberRestrictions(source_row, source_parent);
 }

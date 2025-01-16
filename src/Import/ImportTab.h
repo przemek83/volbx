@@ -18,7 +18,7 @@ public:
 
 protected:
     std::pair<DatasetVisualization*, ColumnsPreview*>
-    createVisualizationAndColumnPreview();
+    createVisualizationAndPreview();
 
     void setDataset(std::unique_ptr<Dataset> dataset);
 

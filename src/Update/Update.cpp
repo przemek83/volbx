@@ -74,7 +74,7 @@ void Update::startUpdating(const QString& availableVersion,
     downloadFile(filesToDownload_.constFirst());
 }
 
-void Update::exitUpdaterAsMostRecentVersionIsInstalled()
+void Update::exitUpdaterAsNoUpdateNeeded()
 {
     QMessageBox::information(this, tr("No update needed"),
                              tr("Application is up to date."));
@@ -115,7 +115,7 @@ void Update::initialInfoNetworkReplyFinished(QNetworkReply* reply)
     if (QApplication::applicationVersion() != availableVersion)
         startUpdating(availableVersion, replyStringList);
     else
-        exitUpdaterAsMostRecentVersionIsInstalled();
+        exitUpdaterAsNoUpdateNeeded();
 }
 
 void Update::fillFilesToUpdateLists(const QStringList& serverInfoList)

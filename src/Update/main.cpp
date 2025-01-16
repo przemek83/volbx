@@ -10,7 +10,7 @@
 
 namespace
 {
-void showDifferentInstanceRunnningError()
+void showOtherInstanceRunnningError()
 {
     QMessageBox::critical(nullptr, QObject::tr("Error"),
                           QObject::tr("Different instance of ") +
@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
 
     if (!isUniqueInstance())
     {
-        showDifferentInstanceRunnningError();
+        showOtherInstanceRunnningError();
 
         return -1;
     }

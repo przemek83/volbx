@@ -31,8 +31,7 @@ SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent)
     connect(ui_->openFileButton, &QPushButton::clicked, this,
             &SpreadsheetsImportTab::openFileButtonClicked);
 
-    auto [visualization, columnsPreview] =
-        createVisualizationAndColumnPreview();
+    auto [visualization, columnsPreview]{createVisualizationAndPreview()};
 
     auto* centralSplitter{new QSplitter(Qt::Vertical, this)};
     centralSplitter->addWidget(visualization);
