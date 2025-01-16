@@ -58,7 +58,7 @@ void ColumnsPreview::setLabels(const std::unique_ptr<Dataset>& dataset)
 void ColumnsPreview::selectCurrentColumn(int column)
 {
     const QTableWidgetItem* itemToSelect{item(0, column)};
-    if (itemToSelect != nullptr && !itemToSelect->isSelected())
+    if ((itemToSelect != nullptr) && (!itemToSelect->isSelected()))
         selectColumn(column);
 }
 

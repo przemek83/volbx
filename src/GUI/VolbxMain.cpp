@@ -201,7 +201,7 @@ bool VolbxMain::doesUserWantsToCheckForUpdates()
 void VolbxMain::checkForUpdates()
 {
     bool checkForUpdates{false};
-    if (!Configuration::getInstance().isUpdatePolicyPicked() &&
+    if ((!Configuration::getInstance().isUpdatePolicyPicked()) &&
         doesUserWantsToCheckForUpdates())
         checkForUpdates = true;
     else
@@ -333,7 +333,7 @@ void VolbxMain::actionSaveDatasetAsTriggered()
 
 void VolbxMain::importDataset(std::unique_ptr<Dataset> dataset)
 {
-    if (dataset == nullptr || !dataset->isValid())
+    if ((dataset == nullptr) || (!dataset->isValid()))
     {
         QMessageBox::critical(
             this, tr("Import error"),

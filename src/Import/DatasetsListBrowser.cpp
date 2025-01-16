@@ -55,7 +55,7 @@ bool DatasetsListBrowser::userWantToDeleteDataset(QPoint pos) const
     const QPoint globalPos{ui_->datasetsList->viewport()->mapToGlobal(pos)};
 
     if (ui_->datasetsList->selectedItems().isEmpty() ||
-        ui_->datasetsList->itemAt(pos) == nullptr)
+        (ui_->datasetsList->itemAt(pos) == nullptr))
         return false;
 
     const QIcon deleteIcon{

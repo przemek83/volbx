@@ -166,7 +166,7 @@ void DataView::mouseReleaseEvent(QMouseEvent* event)
 void DataView::keyPressEvent(QKeyEvent* event)
 {
     QTableView::keyPressEvent(event);
-    if (event->key() == Qt::Key_A && event->modifiers() == Qt::CTRL)
+    if ((event->key() == Qt::Key_A) && (event->modifiers() == Qt::CTRL))
         recomputeAllData();
 }
 

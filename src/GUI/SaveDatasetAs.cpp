@@ -52,13 +52,13 @@ void SaveDatasetAs::adjustWidgetBackgroundColor(QWidget* widget, bool nameUsed)
     QPalette palette{widget->palette()};
     const QPalette::ColorRole colorRole{widget->backgroundRole()};
 
-    if (!nameUsed && palette.color(colorRole) == QColor(Qt::red))
+    if ((!nameUsed) && (palette.color(colorRole) == QColor(Qt::red)))
     {
         palette.setColor(colorRole, Qt::white);
         widget->setPalette(palette);
     }
 
-    if (nameUsed && palette.color(colorRole) != QColor(Qt::red))
+    if (nameUsed && (palette.color(colorRole) != QColor(Qt::red)))
     {
         palette.setColor(colorRole, Qt::red);
         widget->setPalette(palette);
@@ -74,7 +74,7 @@ void SaveDatasetAs::nameChanged(const QString& actualText)
 void SaveDatasetAs::saveClicked()
 {
     if (QString name{ui_->name->text()};
-        nameIsUsed(name) && !overwriteDataset(name))
+        nameIsUsed(name) && (!overwriteDataset(name)))
         return;
 
     accept();

@@ -35,7 +35,7 @@ bool replyIsValid(const QNetworkReply* reply)
         reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toUInt()};
 
     const int okCode{200};
-    return httpStatusCode != okCode || !reply->isReadable();
+    return (httpStatusCode != okCode) || (!reply->isReadable());
 }
 
 std::tuple<QString, QStringList> getAvailableVersionAndFiles(
@@ -48,7 +48,7 @@ std::tuple<QString, QStringList> getAvailableVersionAndFiles(
     const QStringList filesList{replyString.split(QLatin1Char('\n'))};
 
     if (filesList.isEmpty() ||
-        filesList.at(0) != QStringLiteral("Volbx-Update-Info"))
+        (filesList.at(0) != QStringLiteral("Volbx-Update-Info")))
         return {QLatin1String(""), filesList};
 
     LOG(LogTypes::NETWORK,

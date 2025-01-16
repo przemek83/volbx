@@ -55,7 +55,7 @@ bool FilteringProxyModel::acceptRowWithDateRestrictions(
             return !emptyDates;
 
         const QDate itemDate{dateVariant.toDate()};
-        if (itemDate < min || itemDate > max)
+        if ((itemDate < min) || (itemDate > max))
             return false;
     }
     return true;
@@ -71,7 +71,7 @@ bool FilteringProxyModel::acceptRowWithNumberRestrictions(
         auto [min, max] = numericRestriction;
         const double itemDouble{
             QString::number(index.data().toDouble(), 'f', 2).toDouble()};
-        if (itemDouble < min || itemDouble > max)
+        if ((itemDouble < min) || (itemDouble > max))
             return false;
     }
     return true;

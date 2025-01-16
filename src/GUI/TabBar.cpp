@@ -47,7 +47,7 @@ bool TabBar::eventFilter(QObject* watched, QEvent* event)
     if (event->type() == QEvent::KeyPress)
     {
         const auto* keyEvent{dynamic_cast<QKeyEvent*>(event)};
-        if (keyEvent != nullptr && keyEvent->key() == Qt::Key_Escape)
+        if ((keyEvent != nullptr) && (keyEvent->key() == Qt::Key_Escape))
         {
             nameEdit_.hide();
             return true;

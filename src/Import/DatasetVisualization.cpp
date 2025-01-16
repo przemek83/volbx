@@ -95,8 +95,8 @@ void DatasetVisualization::currentColumnOnTreeChanged(
 void DatasetVisualization::selectCurrentColumn(int column)
 {
     if (QList<QTreeWidgetItem*> items{ui_->columnsList->selectedItems()};
-        !items.isEmpty() &&
-        items.first()->data(0, Qt::UserRole).toInt() == column)
+        (!items.isEmpty()) &&
+        (items.first()->data(0, Qt::UserRole).toInt() == column))
         return;
 
     for (int i{0}; i < ui_->columnsList->topLevelItemCount(); ++i)
@@ -273,7 +273,7 @@ void DatasetVisualization::refreshColumnList(
     {
         QTreeWidgetItem* currentItem{ui_->columnsList->topLevelItem(i)};
         const int itemColumn{currentItem->data(0, Qt::UserRole).toInt()};
-        if (priceColumn == itemColumn || dateColumn == itemColumn)
+        if ((priceColumn == itemColumn) || (dateColumn == itemColumn))
         {
             currentItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
             currentItem->setData(0, Qt::CheckStateRole, QVariant());
