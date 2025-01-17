@@ -33,12 +33,14 @@ include_directories(src/Common)
 include_directories(src/Datasets)
 include_directories(src/ModelsAndViews)
 include_directories(src/Export)
+include_directories(src/Import)
 
 add_subdirectory(src/Shared)
 add_subdirectory(src/Common)
 add_subdirectory(src/Datasets)
 add_subdirectory(src/ModelsAndViews)
 add_subdirectory(src/Export)
+add_subdirectory(src/Import)
 
 set(SOURCES
     src/Volbx/main.cpp
@@ -57,13 +59,6 @@ set(SOURCES
     src/GUI/TabBar.cpp
     src/GUI/DataViewDock.cpp
     src/GUI/VolbxMain.cpp
-    src/Import/ColumnsPreview.cpp
-    src/Import/DatasetVisualization.cpp
-    src/Import/DatasetImportTab.cpp
-    src/Import/DatasetsListBrowser.cpp
-    src/Import/ImportData.cpp
-    src/Import/ImportTab.cpp
-    src/Import/SpreadsheetsImportTab.cpp
 )
 qt_add_resources(SOURCES Resources/Resources.qrc)
 
@@ -82,13 +77,6 @@ set(HEADERS
     src/GUI/TabBar.h
     src/GUI/DataViewDock.h
     src/GUI/VolbxMain.h
-    src/Import/ColumnsPreview.h
-    src/Import/DatasetVisualization.h
-    src/Import/DatasetImportTab.h
-    src/Import/DatasetsListBrowser.h
-    src/Import/ImportData.h
-    src/Import/ImportTab.h
-    src/Import/SpreadsheetsImportTab.h
 )
 
 set(UI
@@ -98,9 +86,6 @@ set(UI
     src/GUI/Export.ui
     src/GUI/SaveDatasetAs.ui
     src/GUI/VolbxMain.ui
-    src/Import/SpreadsheetsImportTab.ui
-    src/Import/DatasetsListBrowser.ui
-    src/Import/DatasetVisualization.ui
 )
 source_group("UI Files" FILES ${UI})
 
@@ -114,7 +99,7 @@ endif(APPLE)
 
 add_executable(${PROJECT_NAME} ${GUI_TYPE} ${SOURCES} ${HEADERS} ${UI})
 
-target_link_libraries(${PROJECT_NAME} Threads::Threads shared common datasets modelsAndViews export wble qwtble eible Qt6::Core Qt6::Network Qt6::Widgets Qt6::Gui Qt6::Xml)
+target_link_libraries(${PROJECT_NAME} Threads::Threads shared common datasets modelsAndViews export import wble qwtble eible Qt6::Core Qt6::Network Qt6::Widgets Qt6::Gui Qt6::Xml)
 
 if(WIN32)
     target_link_libraries(${PROJECT_NAME} optimized qwt debug qwtd)
