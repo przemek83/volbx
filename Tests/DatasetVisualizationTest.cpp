@@ -63,3 +63,17 @@ void DatasetVisualizationTest::testClearDataset() const
     auto dataset{visualization.retrieveDataset()};
     QCOMPARE(dataset, nullptr);
 }
+
+void DatasetVisualizationTest::testSelectCurrentColumn() const
+{
+    std::unique_ptr<Dataset> dataset{getDataset()};
+    DatasetVisualization visualization(nullptr);
+    visualization.setDataset(std::move(dataset));
+
+    const auto* tree{visualization.findChild<QTreeWidget*>()};
+    auto* initialItem{tree->currentItem()};
+    QCOMPARE(initialItem, nullptr);
+
+    visualization.selectCurrentColumn(1);
+    QCOMPARE(tree->currentItem()->text(0), "pow");
+}

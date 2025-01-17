@@ -18,4 +18,6 @@ private slots:
     void testGetDatasetWithoutSettingIt() const;
 
     void testClearDataset() const;
+
+    void testSelectCurrentColumn() const;
 };
