@@ -1,18 +1,27 @@
 #include "DatasetVisualizationTest.h"
 
 #include <QtTest/QtTest>
+#include <memory>
 
 #include <Dataset.h>
 #include <DatasetVisualization.h>
+#include <QApplication>
+#include <QTreeWidget>
 
+#include "ColumnTag.h"
 #include "Common.h"
 #include "DatasetCommon.h"
 
 std::unique_ptr<Dataset> DatasetVisualizationTest::getDataset() const
 {
-    const QString fileName{"test.ods"};
+    const QString fileName{"smallDataSet.ods"};
     const QString filePath(Common::getSpreadsheetsDir() + fileName);
-    return DatasetCommon::createDataset(fileName, filePath);
+    std::unique_ptr<Dataset> dataset{
+        DatasetCommon::createDataset(fileName, filePath)};
+    dataset->initialize();
+    dataset->setTaggedColumn(ColumnTag::VALUE, 0);
+    dataset->setTaggedColumn(ColumnTag::DATE, 3);
+    return dataset;
 }
 
 std::unique_ptr<Dataset> getDataset();
