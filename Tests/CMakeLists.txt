@@ -22,6 +22,8 @@ set(${PROJECT_TESTS}_SOURCES
     DatasetTest.cpp
     DatasetCommon.h
     DatasetCommon.cpp
+    DatasetVisualizationTest.h
+    DatasetVisualizationTest.cpp
 )
 qt_add_resources(${PROJECT_TESTS}_SOURCES testResources.qrc)
 
@@ -29,7 +31,7 @@ qt_add_resources(${PROJECT_TESTS}_SOURCES testResources.qrc)
 
 add_executable(${PROJECT_TESTS} ${${PROJECT_TESTS}_SOURCES})
 
-target_link_libraries(${PROJECT_TESTS} common datasets modelsAndViews export Qt6::Xml Qt6::Test Qt6::Core)
+target_link_libraries(${PROJECT_TESTS} common datasets modelsAndViews export import Qt6::Xml Qt6::Test Qt6::Core)
 
 add_custom_command(TARGET ${PROJECT_TESTS} POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory

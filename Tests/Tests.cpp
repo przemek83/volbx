@@ -2,6 +2,7 @@
 
 #include "ConfigurationTest.h"
 #include "DatasetTest.h"
+#include "DatasetVisualizationTest.h"
 #include "DetailedSpreadsheetsTest.h"
 #include "FilteringProxyModelTest.h"
 #include "InnerTests.h"
@@ -35,6 +36,9 @@ int main(int argc, char* argv[])
 
     DatasetTest datasetTest;
     status |= QTest::qExec(&datasetTest);
+
+    DatasetVisualizationTest datasetVisualizationTest;
+    status |= QTest::qExec(&datasetVisualizationTest);
 
     return status;
 }
