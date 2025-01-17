@@ -3,6 +3,8 @@
 #include <Common/Constants.h>
 #include <Datasets/Dataset.h>
 
+#include "ui_DatasetVisualization.h"
+
 DatasetVisualization::DatasetVisualization(QWidget* parent)
     : QWidget(parent), ui_(std::make_unique<Ui::DatasetVisualization>())
 {
@@ -29,6 +31,8 @@ DatasetVisualization::DatasetVisualization(QWidget* parent)
     connect(ui_->UnselectAll, &QPushButton::clicked, this,
             &DatasetVisualization::unselectAllClicked);
 }
+
+DatasetVisualization::~DatasetVisualization() = default;
 
 void DatasetVisualization::setDataset(std::unique_ptr<Dataset> dataset)
 {

@@ -7,16 +7,20 @@
 #include <Common/ColumnTag.h>
 #include <Datasets/Dataset.h>
 
-#include "ui_DatasetVisualization.h"
-
 class QTreeWidgetItem;
 class QComboBox;
+
+namespace Ui
+{
+class DatasetVisualization;
+}  // namespace Ui
 
 class DatasetVisualization : public QWidget
 {
     Q_OBJECT
 public:
     explicit DatasetVisualization(QWidget* parent);
+    ~DatasetVisualization() override;
 
     void setDataset(std::unique_ptr<Dataset> dataset);
 
