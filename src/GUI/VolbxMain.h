@@ -71,7 +71,7 @@ private:
 
     static void updateApplication();
 
-    std::unique_ptr<Ui::VolbxMain> ui_;
+    std::unique_ptr<Ui::VolbxMain> ui_{std::make_unique<Ui::VolbxMain>()};
 
     /// Side dock with filters.
     FiltersDock filters_;

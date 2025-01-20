@@ -5,16 +5,9 @@
 #include <QRegularExpressionValidator>
 #include <QTabWidget>
 
-#include <Common/DatasetUtilities.h>
 #include <qvalidator.h>
 
-TabBar::TabBar()
-    : QTabBar(),
-      nameEdit_(this),
-      validator_{QRegularExpression(dataset_utilities::getDatasetNameRegExp())}
-{
-    setupLineEdit();
-}
+TabBar::TabBar() : QTabBar(), nameEdit_(this) { setupLineEdit(); }
 
 void TabBar::mouseDoubleClickEvent(QMouseEvent* event)
 {

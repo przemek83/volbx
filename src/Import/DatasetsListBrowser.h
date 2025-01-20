@@ -27,7 +27,8 @@ private:
 
     void deleteSelectedDataset(const QString& datasetToDelete);
 
-    std::unique_ptr<Ui::DatasetsListBrowser> ui_;
+    std::unique_ptr<Ui::DatasetsListBrowser> ui_{
+        std::make_unique<Ui::DatasetsListBrowser>()};
 
 private slots:
     void searchTextChanged(const QString& arg1) const;

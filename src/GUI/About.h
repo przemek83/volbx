@@ -13,5 +13,5 @@ public:
     explicit About(QWidget* parent);
 
 private:
-    std::unique_ptr<Ui::About> ui_;
+    std::unique_ptr<Ui::About> ui_{std::make_unique<Ui::About>()};
 };

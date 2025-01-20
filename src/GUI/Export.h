@@ -34,13 +34,14 @@ private:
 
     QString getFileName() const;
 
-    std::unique_ptr<Ui::Export> ui_;
+    std::unique_ptr<Ui::Export> ui_{std::make_unique<Ui::Export>()};
 
     QWidget* tab_;
 
     const QString exportFilesDateFormat_{QStringLiteral("yyyyMMdd")};
 
-    QRegularExpressionValidator validator_;
+    QRegularExpressionValidator validator_{
+        QRegularExpression(QStringLiteral("[\\w]*"))};
 
 private slots:
     void saveClicked();

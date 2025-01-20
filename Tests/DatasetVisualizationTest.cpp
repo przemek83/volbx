@@ -1,12 +1,13 @@
 #include "DatasetVisualizationTest.h"
 
-#include <QtTest/QtTest>
 #include <memory>
+
+#include <QApplication>
+#include <QTreeWidget>
+#include <QtTest/QtTest>
 
 #include <Dataset.h>
 #include <DatasetVisualization.h>
-#include <QApplication>
-#include <QTreeWidget>
 
 #include "ColumnTag.h"
 #include "Common.h"

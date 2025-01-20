@@ -4,6 +4,8 @@
 #include <QRegularExpressionValidator>
 #include <QTabBar>
 
+#include <Common/DatasetUtilities.h>
+
 class QMainWindow;
 
 class TabBar : public QTabBar
@@ -24,7 +26,8 @@ private:
 
     QLineEdit nameEdit_;
 
-    QRegularExpressionValidator validator_;
+    QRegularExpressionValidator validator_{
+        QRegularExpression(dataset_utilities::getDatasetNameRegExp())};
 
 private slots:
     void editingNameFinished();

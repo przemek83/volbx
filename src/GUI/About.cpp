@@ -2,8 +2,7 @@
 
 #include <QStyle>
 
-About::About(QWidget* parent)
-    : QDialog(parent), ui_(std::make_unique<Ui::About>())
+About::About(QWidget* parent) : QDialog(parent)
 {
     ui_->setupUi(this);
 

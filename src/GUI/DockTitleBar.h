@@ -49,5 +49,5 @@ private:
 
     QPushButton* getButton(Button button) const;
 
-    std::unique_ptr<Ui::DockTitleBar> ui_;
+    std::unique_ptr<Ui::DockTitleBar> ui_{std::make_unique<Ui::DockTitleBar>()};
 };

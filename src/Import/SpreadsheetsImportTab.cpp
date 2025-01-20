@@ -24,7 +24,7 @@
 #include "DatasetVisualization.h"
 
 SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent)
-    : ImportTab(parent), ui_(std::make_unique<Ui::SpreadsheetsImportTab>())
+    : ImportTab(parent)
 {
     ui_->setupUi(this);
 

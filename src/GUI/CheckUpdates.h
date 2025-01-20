@@ -15,5 +15,5 @@ public:
     bool isSaveFlagSet() const;
 
 private:
-    std::unique_ptr<Ui::CheckUpdates> ui_;
+    std::unique_ptr<Ui::CheckUpdates> ui_{std::make_unique<Ui::CheckUpdates>()};
 };

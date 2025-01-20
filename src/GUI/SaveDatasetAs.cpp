@@ -3,13 +3,8 @@
 #include <QMessageBox>
 #include <QRegularExpressionValidator>
 
-#include <Common/DatasetUtilities.h>
-
 SaveDatasetAs::SaveDatasetAs(QStringList usedNames)
-    : QDialog(),
-      ui_{std::make_unique<Ui::SaveDatasetAs>()},
-      usedNames_{std::move(usedNames)},
-      validator_{QRegularExpression(dataset_utilities::getDatasetNameRegExp())}
+    : QDialog(), usedNames_{std::move(usedNames)}
 {
     ui_->setupUi(this);
 

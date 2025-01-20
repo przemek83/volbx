@@ -5,8 +5,7 @@
 
 #include <Common/DatasetUtilities.h>
 
-DatasetsListBrowser::DatasetsListBrowser(QWidget* parent)
-    : QWidget(parent), ui_(std::make_unique<Ui::DatasetsListBrowser>())
+DatasetsListBrowser::DatasetsListBrowser(QWidget* parent) : QWidget(parent)
 {
     ui_->setupUi(this);
 

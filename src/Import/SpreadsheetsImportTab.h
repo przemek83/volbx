@@ -26,7 +26,8 @@ private:
 
     bool getFileInfo(QFileInfo& fileInfo);
 
-    std::unique_ptr<Ui::SpreadsheetsImportTab> ui_;
+    std::unique_ptr<Ui::SpreadsheetsImportTab> ui_{
+        std::make_unique<Ui::SpreadsheetsImportTab>()};
 
 private slots:
     void openFileButtonClicked();

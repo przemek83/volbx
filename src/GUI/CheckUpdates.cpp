@@ -3,8 +3,7 @@
 #include <QStyle>
 
 CheckUpdates::CheckUpdates(QWidget* parent)
-    : QDialog(parent, Qt::CustomizeWindowHint | Qt::WindowTitleHint),
-      ui_(std::make_unique<Ui::CheckUpdates>())
+    : QDialog(parent, Qt::CustomizeWindowHint | Qt::WindowTitleHint)
 {
     ui_->setupUi(this);
 

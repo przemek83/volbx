@@ -18,11 +18,7 @@
 
 #include "PlotDock.h"
 
-Export::Export(QWidget* tab, QWidget* parent)
-    : QDialog(parent),
-      ui_{std::make_unique<Ui::Export>()},
-      tab_{tab},
-      validator_{QRegularExpression(QStringLiteral("[\\w]*"))}
+Export::Export(QWidget* tab, QWidget* parent) : QDialog(parent), tab_{tab}
 {
     ui_->setupUi(this);
 
