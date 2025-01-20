@@ -31,7 +31,7 @@ private:
     std::unique_ptr<Ui::SpreadsheetsImportTab> ui_{
         std::make_unique<Ui::SpreadsheetsImportTab>()};
 
-    QSplitter centralSplitter_;
+    QSplitter centralSplitter_{Qt::Vertical};
 
 private slots:
     void openFileButtonClicked();

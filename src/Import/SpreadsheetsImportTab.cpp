@@ -23,7 +23,7 @@
 #include "DatasetVisualization.h"
 
 SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent)
-    : ImportTab(parent), centralSplitter_{Qt::Vertical}
+    : ImportTab(parent)
 {
     ui_->setupUi(this);
 
