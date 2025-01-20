@@ -28,10 +28,10 @@ QString getProgressBarTitle(BarTitle barTitle)
     return QObject::tr("Analysing");
 }
 
-QString timeFromTimeToSeconds(QElapsedTimer time)
+QString elapsedTimeToSeconds(QElapsedTimer timer)
 {
     const int milisecondsInSecond{1000};
-    return QString::number(static_cast<double>(time.elapsed()) /
+    return QString::number(static_cast<double>(timer.elapsed()) /
                            milisecondsInSecond);
 }
 

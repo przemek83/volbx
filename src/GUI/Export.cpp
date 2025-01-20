@@ -75,7 +75,7 @@ void Export::saveOnDisk() const
     if (exportData(fileName))
         LOG(LogTypes::IMPORT_EXPORT,
             "Data exported in " +
-                constants::timeFromTimeToSeconds(performanceTimer) +
+                constants::elapsedTimeToSeconds(performanceTimer) +
                 " seconds.");
     else
         LOG(LogTypes::IMPORT_EXPORT, QStringLiteral("Exporting data failed."));

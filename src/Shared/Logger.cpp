@@ -42,8 +42,8 @@ Logger& Logger::getInstance()
     return instance;
 }
 
-void Logger::log(LogTypes type, const char* file, const char* function,
-                 int line, const QString& msg)
+void Logger::info(LogTypes type, const char* file, const char* function,
+                  int line, const QString& msg)
 {
     auto* logTextEdit{display_.findChild<QTextEdit*>()};
     if (logTextEdit == nullptr)
@@ -52,10 +52,10 @@ void Logger::log(LogTypes type, const char* file, const char* function,
     if (!activeLogs_[type])
         return;
 
-    QString time;
-    time.append(QTime::currentTime().toString(QStringLiteral("hh:mm:ss")));
+    QString currentTime{
+        QTime::currentTime().toString(QStringLiteral("hh:mm:ss"))};
     QString entry;
-    entry.append(timeStyleBegin_ + time + styleEnd_);
+    entry.append(timeStyleBegin_ + currentTime + styleEnd_);
     entry.append(QStringLiteral(" (") + logNames_[type] + QStringLiteral(")"));
     entry.append(QStringLiteral(" - "));
     entry.append(functionStyleBegin_ + QLatin1String(function) + styleEnd_);

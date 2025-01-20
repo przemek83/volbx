@@ -27,7 +27,7 @@ QString getProgressBarTitle(BarTitle barTitle);
 
 const int NOT_SET_COLUMN{-1};
 
-QString timeFromTimeToSeconds(QElapsedTimer time);
+QString elapsedTimeToSeconds(QElapsedTimer time);
 
 int getProgressBarFullCounter();
 };  // namespace constants

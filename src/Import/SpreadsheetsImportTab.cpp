@@ -67,7 +67,7 @@ void SpreadsheetsImportTab::analyzeFile(const std::unique_ptr<Dataset>& dataset)
     LOG(LogTypes::IMPORT_EXPORT,
         "Analysed file having " + QString::number(dataset->rowCount()) +
             " rows in time " +
-            constants::timeFromTimeToSeconds(performanceTimer) + " seconds.");
+            constants::elapsedTimeToSeconds(performanceTimer) + " seconds.");
 }
 
 std::unique_ptr<Dataset> SpreadsheetsImportTab::createDataset(
