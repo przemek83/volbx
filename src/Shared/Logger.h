@@ -3,6 +3,7 @@
 #include <QLatin1String>
 #include <QMap>
 #include <QObject>
+#include <QTextEdit>
 #include <QWidget>
 
 #include "LogType.h"
@@ -28,8 +29,6 @@ public:
 
 private:
     Logger();
-
-    QTextEdit* createLogsTextEdit();
 
     QHBoxLayout* createLayout();
 
@@ -60,6 +59,8 @@ private:
     const QString lineStyleBegin_{
         QStringLiteral("<b><font size=\"3\" color=\"green\">")};
     const QString styleEnd_{QStringLiteral("</b></font>")};
+
+    QTextEdit textEdit_;
 
 private slots:
     void changeActiveLogs(bool state);

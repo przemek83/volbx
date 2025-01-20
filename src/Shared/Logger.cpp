@@ -2,7 +2,6 @@
 
 #include <QDebug>
 #include <QHBoxLayout>
-#include <QTextEdit>
 #include <QTime>
 #include <QVBoxLayout>
 
@@ -11,6 +10,9 @@
 Logger::Logger() : QObject()
 {
     display_.setWindowTitle(QStringLiteral("Logs"));
+
+    textEdit_.setLineWrapMode(QTextEdit::NoWrap);
+    textEdit_.setReadOnly(true);
     display_.setLayout(createLayout());
 
     // Activate all logs as default.
@@ -24,21 +26,13 @@ Logger::Logger() : QObject()
     display_.resize(defaultLoggerWindowWidth, defaultLoggerWindowHeight);
 }
 
-QTextEdit* Logger::createLogsTextEdit()
-{
-    auto* textEdit{new QTextEdit(&display_)};
-    textEdit->setLineWrapMode(QTextEdit::NoWrap);
-    textEdit->setReadOnly(true);
-    return textEdit;
-}
-
 QHBoxLayout* Logger::createLayout()
 {
     auto* verticalLayout{new QVBoxLayout()};
     verticalLayout->addStretch();
     auto* horizontalLayout{new QHBoxLayout()};
     horizontalLayout->addLayout(verticalLayout);
-    horizontalLayout->addWidget(createLogsTextEdit());
+    horizontalLayout->addWidget(&textEdit_);
     return horizontalLayout;
 }
 
