@@ -3,6 +3,7 @@
 #include <memory>
 
 #include <QDialog>
+#include <QRegularExpressionValidator>
 
 #include "ui_SaveDatasetAs.h"
 
@@ -24,6 +25,8 @@ private:
     std::unique_ptr<Ui::SaveDatasetAs> ui_;
 
     QStringList usedNames_;
+
+    QRegularExpressionValidator validator_;
 
 private slots:
     void nameChanged(const QString& actualText);

@@ -7,18 +7,16 @@
 
 SaveDatasetAs::SaveDatasetAs(QStringList usedNames)
     : QDialog(),
-      ui_(std::make_unique<Ui::SaveDatasetAs>()),
-      usedNames_(std::move(usedNames))
+      ui_{std::make_unique<Ui::SaveDatasetAs>()},
+      usedNames_{std::move(usedNames)},
+      validator_{QRegularExpression(dataset_utilities::getDatasetNameRegExp())}
 {
     ui_->setupUi(this);
 
     connect(ui_->name, &QLineEdit::textChanged, this,
             &SaveDatasetAs::nameChanged);
-    const QRegularExpression datasetNameRegExp(
-        dataset_utilities::getDatasetNameRegExp());
-    const auto* validator{
-        new QRegularExpressionValidator(datasetNameRegExp, this)};
-    ui_->name->setValidator(validator);
+
+    ui_->name->setValidator(&validator_);
 
     connect(ui_->save, &QPushButton::clicked, this,
             &SaveDatasetAs::saveClicked);
