@@ -6,16 +6,21 @@
 
 #include "ImportTab.h"
 
-#include "ui_SpreadsheetsImportTab.h"
-
 class DatasetSpreadsheet;
 class QFileInfo;
+
+namespace Ui
+{
+class SpreadsheetsImportTab;
+}
 
 class SpreadsheetsImportTab : public ImportTab
 {
     Q_OBJECT
 public:
-    explicit SpreadsheetsImportTab(QWidget* parent);
+    SpreadsheetsImportTab();
+
+    ~SpreadsheetsImportTab();
 
 private:
     static void analyzeFile(const std::unique_ptr<Dataset>& dataset);
@@ -28,8 +33,7 @@ private:
 
     bool getFileInfo(QFileInfo& fileInfo);
 
-    std::unique_ptr<Ui::SpreadsheetsImportTab> ui_{
-        std::make_unique<Ui::SpreadsheetsImportTab>()};
+    std::unique_ptr<Ui::SpreadsheetsImportTab> ui_{nullptr};
 
     QSplitter centralSplitter_{Qt::Vertical};
 

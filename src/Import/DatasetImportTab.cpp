@@ -10,7 +10,7 @@
 #include "DatasetVisualization.h"
 #include "DatasetsListBrowser.h"
 
-DatasetImportTab::DatasetImportTab(QWidget* parent) : ImportTab(parent)
+DatasetImportTab::DatasetImportTab() : ImportTab()
 {
     auto [visualization, columnsPreview]{createVisualizationAndPreview()};
     auto* listBrowser{new DatasetsListBrowser(this)};

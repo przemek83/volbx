@@ -21,9 +21,10 @@
 
 #include "ColumnsPreview.h"
 #include "DatasetVisualization.h"
+#include "ui_SpreadsheetsImportTab.h"
 
-SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent)
-    : ImportTab(parent)
+SpreadsheetsImportTab::SpreadsheetsImportTab()
+    : ImportTab(), ui_{std::make_unique<Ui::SpreadsheetsImportTab>()}
 {
     ui_->setupUi(this);
 
@@ -38,6 +39,8 @@ SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent)
 
     ui_->sheetCombo->hide();
 }
+
+SpreadsheetsImportTab::~SpreadsheetsImportTab() = default;
 
 void SpreadsheetsImportTab::analyzeFile(const std::unique_ptr<Dataset>& dataset)
 {

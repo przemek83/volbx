@@ -12,8 +12,6 @@ class ImportTab : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ImportTab(QWidget* parent);
-
     std::unique_ptr<Dataset> getDataset();
 
 protected:

@@ -377,7 +377,7 @@ void VolbxMain::importDataset(std::unique_ptr<Dataset> dataset)
 
 void VolbxMain::actionImportDataTriggered()
 {
-    ImportData importData(this);
+    ImportData importData;
     if (importData.exec() == QDialog::Accepted)
         importDataset(importData.getSelectedDataset());
 }

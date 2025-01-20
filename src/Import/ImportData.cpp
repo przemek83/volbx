@@ -7,10 +7,7 @@
 
 #include <Datasets/Dataset.h>
 
-#include "DatasetImportTab.h"
-#include "SpreadsheetsImportTab.h"
-
-ImportData::ImportData(QWidget* parent) : QDialog(parent)
+ImportData::ImportData() : QDialog()
 {
     setupLayout();
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
@@ -46,29 +43,24 @@ void ImportData::setupLayout()
     auto enableOpenButton{[box = buttonBox](bool activate) {
         box->button(QDialogButtonBox::Open)->setEnabled(activate);
     }};
-    QTabWidget* tabWidget{createTabWidgetWithContent(enableOpenButton)};
 
-    layout->addWidget(tabWidget);
+    setupTabWidget(enableOpenButton);
+
+    layout->addWidget(&tabWidget_);
     layout->addWidget(buttonBox);
 }
 
-QTabWidget* ImportData::createTabWidgetWithContent(
+void ImportData::setupTabWidget(
     const std::function<void(bool)>& enableOpenButton)
 {
-    auto* tabWidget{new QTabWidget(this)};
+    connect(&datasetsTab_, &ImportTab::datasetIsReady, enableOpenButton);
+    tabWidget_.addTab(&datasetsTab_, tr("Datasets"));
 
-    auto* datasetsTab{new DatasetImportTab(tabWidget)};
-    connect(datasetsTab, &ImportTab::datasetIsReady, enableOpenButton);
-    tabWidget->addTab(datasetsTab, tr("Datasets"));
+    connect(&spreadsheetsTab_, &ImportTab::datasetIsReady, enableOpenButton);
+    tabWidget_.addTab(&spreadsheetsTab_, tr("Spreadsheets"));
 
-    auto* spreadsheetsTab{new SpreadsheetsImportTab(tabWidget)};
-    connect(spreadsheetsTab, &ImportTab::datasetIsReady, enableOpenButton);
-    tabWidget->addTab(spreadsheetsTab, tr("Spreadsheets"));
-
-    if (datasetsTab->datasetsAreAvailable())
-        tabWidget->setCurrentWidget(datasetsTab);
+    if (datasetsTab_.datasetsAreAvailable())
+        tabWidget_.setCurrentWidget(&datasetsTab_);
     else
-        tabWidget->setCurrentWidget(spreadsheetsTab);
-
-    return tabWidget;
+        tabWidget_.setCurrentWidget(&spreadsheetsTab_);
 }

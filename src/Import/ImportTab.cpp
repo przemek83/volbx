@@ -7,8 +7,6 @@
 #include "ColumnsPreview.h"
 #include "DatasetVisualization.h"
 
-ImportTab::ImportTab(QWidget* parent) : QWidget(parent) {}
-
 std::pair<DatasetVisualization*, ColumnsPreview*>
 ImportTab::createVisualizationAndPreview()
 {
