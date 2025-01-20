@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include <QSplitter>
+
 #include "ImportTab.h"
 
 #include "ui_SpreadsheetsImportTab.h"
@@ -28,6 +30,8 @@ private:
 
     std::unique_ptr<Ui::SpreadsheetsImportTab> ui_{
         std::make_unique<Ui::SpreadsheetsImportTab>()};
+
+    QSplitter centralSplitter_;
 
 private slots:
     void openFileButtonClicked();

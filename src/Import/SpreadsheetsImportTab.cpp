@@ -9,7 +9,6 @@
 #include <QFileInfo>
 #include <QHeaderView>
 #include <QMessageBox>
-#include <QSplitter>
 
 #include <Common/Configuration.h>
 #include <Common/Constants.h>
@@ -24,7 +23,7 @@
 #include "DatasetVisualization.h"
 
 SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent)
-    : ImportTab(parent)
+    : ImportTab(parent), centralSplitter_{Qt::Vertical}
 {
     ui_->setupUi(this);
 
@@ -33,11 +32,9 @@ SpreadsheetsImportTab::SpreadsheetsImportTab(QWidget* parent)
 
     auto [visualization, columnsPreview]{createVisualizationAndPreview()};
 
-    auto* centralSplitter{new QSplitter(Qt::Vertical, this)};
-    centralSplitter->addWidget(visualization);
-    centralSplitter->addWidget(columnsPreview);
-
-    ui_->verticalLayout->addWidget(centralSplitter);
+    centralSplitter_.addWidget(visualization);
+    centralSplitter_.addWidget(columnsPreview);
+    ui_->verticalLayout->addWidget(&centralSplitter_);
 
     ui_->sheetCombo->hide();
 }
