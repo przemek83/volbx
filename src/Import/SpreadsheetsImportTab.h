@@ -20,7 +20,7 @@ class SpreadsheetsImportTab : public ImportTab
 public:
     SpreadsheetsImportTab();
 
-    ~SpreadsheetsImportTab();
+    ~SpreadsheetsImportTab() override;
 
 private:
     static void analyzeFile(const std::unique_ptr<Dataset>& dataset);
