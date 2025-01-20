@@ -19,7 +19,10 @@
 #include "PlotDock.h"
 
 Export::Export(QWidget* tab, QWidget* parent)
-    : QDialog(parent), ui_(std::make_unique<Ui::Export>()), tab_(tab)
+    : QDialog(parent),
+      ui_{std::make_unique<Ui::Export>()},
+      tab_{tab},
+      validator_{QRegularExpression(QStringLiteral("[\\w]*"))}
 {
     ui_->setupUi(this);
 
@@ -29,9 +32,7 @@ Export::Export(QWidget* tab, QWidget* parent)
 
     ui_->locationLineEdit->setText(
         Configuration::getInstance().getImportFilePath());
-    const auto* validator{new QRegularExpressionValidator(
-        QRegularExpression(QStringLiteral("[\\w]*")), ui_->prefix)};
-    ui_->prefix->setValidator(validator);
+    ui_->prefix->setValidator(&validator_);
     ui_->prefix->setText(tab_->windowTitle().replace(
         QRegularExpression(QStringLiteral("[^\\w]")), QLatin1String("")));
 

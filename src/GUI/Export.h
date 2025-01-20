@@ -3,6 +3,7 @@
 #include <memory>
 
 #include <QDialog>
+#include <QRegularExpressionValidator>
 
 #include "ui_Export.h"
 
@@ -38,6 +39,8 @@ private:
     QWidget* tab_;
 
     const QString exportFilesDateFormat_{QStringLiteral("yyyyMMdd")};
+
+    QRegularExpressionValidator validator_;
 
 private slots:
     void saveClicked();
