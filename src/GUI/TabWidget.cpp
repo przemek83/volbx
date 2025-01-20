@@ -13,11 +13,10 @@
 #include "DataViewDock.h"
 #include "PlotDock.h"
 #include "Tab.h"
-#include "TabBar.h"
 
 TabWidget::TabWidget(QWidget* parent) : QTabWidget(parent)
 {
-    setTabBar(new TabBar(this));
+    setTabBar(&tabBar_);
     setTabsClosable(true);
     setMovable(true);
 }

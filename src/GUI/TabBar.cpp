@@ -8,8 +8,8 @@
 #include <Common/DatasetUtilities.h>
 #include <qvalidator.h>
 
-TabBar::TabBar(QWidget* parent)
-    : QTabBar(parent),
+TabBar::TabBar()
+    : QTabBar(),
       nameEdit_(this),
       validator_{QRegularExpression(dataset_utilities::getDatasetNameRegExp())}
 {

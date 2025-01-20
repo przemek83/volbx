@@ -3,6 +3,8 @@
 #include <QDate>
 #include <QTabWidget>
 
+#include "TabBar.h"
+
 class TableModel;
 class DataView;
 class FilteringProxyModel;
@@ -58,4 +60,6 @@ private:
 
     template <class T>
     void showPlot();
+
+    TabBar tabBar_;
 };

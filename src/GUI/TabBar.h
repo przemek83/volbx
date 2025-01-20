@@ -10,7 +10,7 @@ class TabBar : public QTabBar
 {
     Q_OBJECT
 public:
-    explicit TabBar(QWidget* parent);
+    TabBar();
 
 protected:
     void mouseDoubleClickEvent(QMouseEvent* event) override;
