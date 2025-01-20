@@ -6,8 +6,12 @@
 #include <QTabWidget>
 
 #include <Common/DatasetUtilities.h>
+#include <qvalidator.h>
 
-TabBar::TabBar(QWidget* parent) : QTabBar(parent), nameEdit_(this)
+TabBar::TabBar(QWidget* parent)
+    : QTabBar(parent),
+      nameEdit_(this),
+      validator_{QRegularExpression(dataset_utilities::getDatasetNameRegExp())}
 {
     setupLineEdit();
 }
@@ -59,9 +63,7 @@ bool TabBar::eventFilter(QObject* watched, QEvent* event)
 
 void TabBar::setupLineEdit()
 {
-    const auto* validator{new QRegularExpressionValidator(
-        QRegularExpression(dataset_utilities::getDatasetNameRegExp()), this)};
-    nameEdit_.setValidator(validator);
+    nameEdit_.setValidator(&validator_);
     nameEdit_.hide();
     connect(&nameEdit_, &QLineEdit::editingFinished, this,
             &TabBar::editingNameFinished);

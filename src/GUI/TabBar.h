@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QLineEdit>
+#include <QRegularExpressionValidator>
 #include <QTabBar>
 
 class QMainWindow;
@@ -22,6 +23,8 @@ private:
     QMainWindow* getCurrentTabWidget() const;
 
     QLineEdit nameEdit_;
+
+    QRegularExpressionValidator validator_;
 
 private slots:
     void editingNameFinished();
