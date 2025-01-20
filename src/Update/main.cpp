@@ -18,15 +18,12 @@ void showOtherInstanceRunnningError()
                               QObject::tr(" already running, exiting."));
 }
 
-bool isUniqueInstance()
+bool isUniqueInstance(QSharedMemory& sharedMemory)
 {
-    // Only one instance can run. Intentionally leak.
-    auto* sharedMemory{new QSharedMemory(QStringLiteral(VER_PRODUCTNAME_STR))};
-
     LOG(LogTypes::APP, QStringLiteral("Setting shared memory key named ") +
                            QApplication::applicationName() + QLatin1Char('.'));
 
-    if (sharedMemory->attach())
+    if (sharedMemory.attach())
     {
         LOG(LogTypes::APP,
             QStringLiteral("Attached to shared memory. Different "
@@ -38,7 +35,7 @@ bool isUniqueInstance()
     LOG(LogTypes::APP,
         QStringLiteral("Attaching to shared memory successful. Continue."));
 
-    if (!sharedMemory->create(1))
+    if (!sharedMemory.create(1))
     {
         LOG(LogTypes::APP,
             QStringLiteral("Creating shared memory failed. Different instance "
@@ -60,15 +57,16 @@ int main(int argc, char* argv[])
     application::setAdditionalApplicatioInfo(VER_PRODUCTNAME_STR);
     application::setQtStyle(QStringLiteral("Fusion"));
 
-    if (!isUniqueInstance())
+    if (QSharedMemory sharedMemory(QStringLiteral(VER_PRODUCTNAME_STR));
+        isUniqueInstance(sharedMemory))
     {
-        showOtherInstanceRunnningError();
+        Update w;
+        w.show();
 
-        return -1;
+        return QApplication::exec();
     }
 
-    Update w;
-    w.show();
+    showOtherInstanceRunnningError();
 
-    return QApplication::exec();
+    return EXIT_FAILURE;
 }
