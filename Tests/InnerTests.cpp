@@ -118,7 +118,7 @@ void InnerTests::generateVbxFile(const QString& datasetName, QBuffer& buffer,
         dataset->setActiveColumns(activeColumns);
     dataset->loadData();
 
-    TableModel model(std::move(dataset));
+    TableModel model(std::move(dataset), nullptr);
     FilteringProxyModel proxyModel;
     proxyModel.setSourceModel(&model);
 

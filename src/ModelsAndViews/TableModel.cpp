@@ -7,11 +7,6 @@ TableModel::TableModel(std::unique_ptr<Dataset> dataset, QObject* parent)
 {
 }
 
-TableModel::TableModel(std::unique_ptr<Dataset> dataset)
-    : TableModel(std::move(dataset), nullptr)
-{
-}
-
 int TableModel::rowCount([[maybe_unused]] const QModelIndex& parent) const
 {
     return static_cast<int>(dataset_->rowCount());

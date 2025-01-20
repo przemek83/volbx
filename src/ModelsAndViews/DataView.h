@@ -41,8 +41,6 @@ private:
     static std::tuple<bool, int, int> getTaggedColumns(
         const TableModel* parentModel);
 
-    void createTransactionData() const;
-
     void setDelegate(int columnIndex, const TableModel* parentModel);
 
     int groupByColumn_{0};

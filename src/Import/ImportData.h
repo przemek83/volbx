@@ -21,8 +21,6 @@ public:
 
     std::unique_ptr<Dataset> getSelectedDataset();
 
-    QString getZipFileName() const;
-
 private:
     QDialogButtonBox* createButtonBox();
 
