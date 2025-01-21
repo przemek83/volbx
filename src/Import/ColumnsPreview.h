@@ -16,7 +16,7 @@ public:
 
     void setDatasetSampleInfo(const std::unique_ptr<Dataset>& dataset);
 
-    void clear();
+    void purge();
 
 public slots:
     void selectCurrentColumn(int column);

@@ -53,7 +53,7 @@ bool DatasetImportTab::datasetsAreAvailable() const
 void DatasetImportTab::clear()
 {
     auto* columnsPreview{findChild<ColumnsPreview*>()};
-    columnsPreview->clear();
+    columnsPreview->purge();
     columnsPreview->setEnabled(false);
     auto* visualization{findChild<DatasetVisualization*>()};
     visualization->clear();

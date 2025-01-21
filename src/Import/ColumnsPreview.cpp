@@ -15,7 +15,7 @@ ColumnsPreview::ColumnsPreview(QWidget* parent) : QTableWidget(parent)
 void ColumnsPreview::setDatasetSampleInfo(
     const std::unique_ptr<Dataset>& dataset)
 {
-    clear();
+    purge();
 
     const int columns{dataset->columnCount()};
     setColumnCount(columns);
@@ -30,7 +30,7 @@ void ColumnsPreview::setDatasetSampleInfo(
             setItem(i, j, createItem(sampleData.at(i).at(j).toString()));
 }
 
-void ColumnsPreview::clear()
+void ColumnsPreview::purge()
 {
     QTableWidget::clear();
     setColumnCount(0);
