@@ -42,7 +42,7 @@ Logger& Logger::getInstance()
     return instance;
 }
 
-void Logger::info(LogTypes type, const char* file, const char* function,
+void Logger::info(LogTypes type, const QString& file, const QString& function,
                   int line, const QString& msg)
 {
     auto* logTextEdit{display_.findChild<QTextEdit*>()};
@@ -58,9 +58,9 @@ void Logger::info(LogTypes type, const char* file, const char* function,
     entry.append(timeStyleBegin_ + currentTime + styleEnd_);
     entry.append(QStringLiteral(" (") + logNames_[type] + QStringLiteral(")"));
     entry.append(QStringLiteral(" - "));
-    entry.append(functionStyleBegin_ + QLatin1String(function) + styleEnd_);
+    entry.append(functionStyleBegin_ + function + styleEnd_);
     entry.append(QStringLiteral(", "));
-    entry.append(fileStyleBegin_ + QLatin1String(file) + styleEnd_);
+    entry.append(fileStyleBegin_ + file + styleEnd_);
     entry.append(QStringLiteral(" (") + lineStyleBegin_ +
                  QString::number(line) + styleEnd_ + QStringLiteral(")"));
     entry.append(QStringLiteral(":<br>"));

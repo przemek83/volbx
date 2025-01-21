@@ -5,7 +5,7 @@
 namespace application
 {
 /// @brief Set version, application name, company name.
-void setAdditionalApplicatioInfo(const char* productName);
+void setAdditionalApplicatioInfo(const QString& productName);
 
 void setCssStyle(const QString& styleName);
 

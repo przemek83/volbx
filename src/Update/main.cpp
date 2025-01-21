@@ -54,7 +54,8 @@ int main(int argc, char* argv[])
 {
     const QApplication a(argc, argv);
 
-    application::setAdditionalApplicatioInfo(VER_PRODUCTNAME_STR);
+    application::setAdditionalApplicatioInfo(
+        QStringLiteral(VER_PRODUCTNAME_STR));
     application::setQtStyle(QStringLiteral("Fusion"));
 
     if (QSharedMemory sharedMemory(QStringLiteral(VER_PRODUCTNAME_STR));

@@ -45,9 +45,9 @@ void clearAppFocus()
 
 namespace application
 {
-void setAdditionalApplicatioInfo(const char* productName)
+void setAdditionalApplicatioInfo(const QString& productName)
 {
-    QApplication::setApplicationName(QLatin1String(productName));
+    QApplication::setApplicationName(productName);
     QApplication::setApplicationVersion(QStringLiteral(VER_PRODUCTVERSION_STR));
     QApplication::setOrganizationName(QStringLiteral(VER_COMPANYNAME_STR));
     QApplication::setOrganizationDomain(QLatin1String(VER_COMPANYDOMAIN_STR));
