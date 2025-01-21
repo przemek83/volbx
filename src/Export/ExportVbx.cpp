@@ -94,18 +94,7 @@ void ExportVbx::variantToString(const QVariant& variant,
 
         case QMetaType::QString:
         {
-            QString tmpString(variant.toString());
-            int& index{stringsMap_[tmpString]};
-            if (index == 0)
-            {
-                index = nextIndex_;
-                tmpString.replace(newLine_, QStringLiteral("\t"));
-                // No new line for first string.
-                if (nextIndex_ != 1)
-                    stringsContent_.append(newLine_);
-                stringsContent_.append(tmpString.toUtf8());
-                ++nextIndex_;
-            }
+            const int index{ExportVbx::getStringIndex(variant)};
             destinationArray.append(QByteArray::number(index));
             break;
         }
@@ -136,4 +125,22 @@ bool ExportVbx::write(QIODevice& ioDevice, const QString& fileName,
     }
 
     return true;
+}
+
+int ExportVbx::getStringIndex(const QVariant& variant)
+{
+    QString entry(variant.toString());
+    int& index{stringsMap_[entry]};
+    if (index == 0)
+    {
+        index = nextIndex_;
+        entry.replace(newLine_, QStringLiteral("\t"));
+        // No new line for first string.
+        if (nextIndex_ != 1)
+            stringsContent_.append(newLine_);
+        stringsContent_.append(entry.toUtf8());
+        ++nextIndex_;
+    }
+
+    return index;
 }

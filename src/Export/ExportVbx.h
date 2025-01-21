@@ -42,6 +42,8 @@ private:
     static bool write(QIODevice& ioDevice, const QString& fileName,
                       const QByteArray& data, QuaZip::Mode mode);
 
+    int getStringIndex(const QVariant& variant);
+
     static constexpr char separator_{';'};
     QHash<QString, int> stringsMap_;
     QByteArray stringsContent_;
