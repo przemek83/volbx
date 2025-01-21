@@ -196,7 +196,7 @@ QVariant DatasetInner::getElementAsVariant(ColumnType columnFormat,
                     QVariant(QDate::fromJulianDay(element.toInt()));
                 break;
 
-            case ColumnType::UNKNOWN:
+            default:
                 Q_ASSERT(false);
                 elementAsVariant = QVariant(QMetaType(QMetaType::QString));
                 break;
@@ -218,7 +218,7 @@ QVariant DatasetInner::getDefaultVariantForFormat(ColumnType format)
         case ColumnType::DATE:
             return QVariant(QMetaType(QMetaType::QDate));
 
-        case ColumnType::UNKNOWN:
+        default:
             return QVariant(QMetaType(QMetaType::QString));
     }
     return QVariant(QMetaType(QMetaType::QString));

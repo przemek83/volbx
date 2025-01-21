@@ -84,11 +84,8 @@ void DataView::setDelegate(int columnIndex, const TableModel* parentModel)
             break;
         }
 
-        case ColumnType::STRING:
-        case ColumnType::UNKNOWN:
-        {
+        default:
             break;
-        }
     }
 }
 

@@ -74,6 +74,8 @@ QPushButton* DockTitleBar::getButton(DockTitleBar::Button button) const
         case Button::RESET:
             pushButton = ui_->reset;
             break;
+        default:
+            Q_ASSERT(false);
     }
     return pushButton;
 }

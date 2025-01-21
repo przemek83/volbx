@@ -94,20 +94,21 @@ void FiltersDock::fillLayoutWithFilterWidgets(QVBoxLayout* layout,
                 filter = createStringsFilter(parentModel, column);
                 break;
             }
+
             case ColumnType::DATE:
             {
                 filter = createDatesFilter(parentModel, column);
                 break;
             }
+
             case ColumnType::NUMBER:
             {
                 filter = createNumbersFilter(parentModel, column);
                 break;
             }
-            case ColumnType::UNKNOWN:
-            {
+
+            default:
                 Q_ASSERT(false);
-            }
         }
         layout->addWidget(filter);
     }
