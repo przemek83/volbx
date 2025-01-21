@@ -331,11 +331,13 @@ void VolbxMain::importDataset(std::unique_ptr<Dataset> dataset)
 {
     if ((dataset == nullptr) || (!dataset->isValid()))
     {
-        QMessageBox::critical(
-            this, tr("Import error"),
-            tr("Import error encountered: ") + (dataset == nullptr
-                                                    ? tr("dataset is null")
-                                                    : dataset->getLastError()));
+        QString error;
+        if (dataset == nullptr)
+            error = tr("dataset is null");
+        else
+            error = dataset->getLastError();
+        QMessageBox::critical(this, tr("Import error"),
+                              tr("Import error encountered: ") + error);
         return;
     }
 

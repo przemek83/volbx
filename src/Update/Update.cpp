@@ -122,10 +122,10 @@ void Update::fillFilesToUpdateLists(const QStringList& serverInfoList)
 {
     // First line/element is correctness checker, second version.
     const qsizetype filesCount{serverInfoList.size() - 2};
-    insertNewSectionIntoDetails(
-        tr("Found") + QLatin1Char(' ') + QString::number(filesCount) +
-        QLatin1Char(' ') + (filesCount != 1 ? tr("files") : tr("file")) +
-        QLatin1Char(' ') + tr("to update") + QLatin1Char(':'));
+    insertNewSectionIntoDetails(tr("Found") + QLatin1Char(' ') +
+                                QString::number(filesCount) + QLatin1Char(' ') +
+                                "file(s)" + QLatin1Char(' ') + tr("to update") +
+                                QLatin1Char(':'));
 
     filesToDownload_.clear();
     filesToDownloadSize_.clear();
