@@ -66,20 +66,20 @@ QString Configuration::configDump() const
                 "):\n");
 
     dump.append(QStringLiteral("Updates choice picked = "));
-    dump.append((updatePolicy_ == UpdatePolicy::NOT_DECIDED
-                     ? QStringLiteral("No")
-                     : QStringLiteral("Yes")));
-
+    if (updatePolicy_ == UpdatePolicy::NOT_DECIDED)
+        dump.append(QStringLiteral("No"));
+    else
+        dump.append(QStringLiteral("Yes"));
     dump.append(QStringLiteral("\n"));
-
     dump.append("Import file path = " + importFilePath_ + "\n");
 
     if (updatePolicy_ != UpdatePolicy::NOT_DECIDED)
     {
         dump.append(QStringLiteral("AutoUpdate active = "));
-        dump.append((updatePolicy_ == UpdatePolicy::ALWAYS_CHECK
-                         ? QStringLiteral("Yes")
-                         : QStringLiteral("No")));
+        if (updatePolicy_ == UpdatePolicy::ALWAYS_CHECK)
+            dump.append(QStringLiteral("Yes"));
+        else
+            dump.append(QStringLiteral("No"));
         dump.append(QStringLiteral("\n"));
     }
 
@@ -183,8 +183,10 @@ bool Configuration::saveConfigXml(const QString& configXml)
 
 void Configuration::setUpdatePolicy(bool alwaysCheck)
 {
-    updatePolicy_ =
-        (alwaysCheck ? UpdatePolicy::ALWAYS_CHECK : UpdatePolicy::NEVER_CHECK);
+    if (alwaysCheck)
+        updatePolicy_ = UpdatePolicy::ALWAYS_CHECK;
+    else
+        updatePolicy_ = UpdatePolicy::NEVER_CHECK;
 }
 
 QString Configuration::getStyleName() const { return styleName_; }
@@ -197,6 +199,7 @@ QString Configuration::getImportFilePath() const
 {
     if ((!importFilePath_.isEmpty()) && QFile::exists(importFilePath_))
         return importFilePath_;
+
     return QDir::homePath();
 }
 
