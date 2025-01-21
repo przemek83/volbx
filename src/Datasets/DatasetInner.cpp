@@ -256,7 +256,7 @@ QVector<QVector<QVariant>> DatasetInner::parseData(QTextStream& stream,
     while ((!stream.atEnd()) && (lineCounter < rowCount()))
     {
         if (fillSamplesOnly && (lineCounter >= SAMPLE_SIZE))
-            break;
+            return data;
 
         const QStringList line{stream.readLine().split(';')};
         data[lineCounter] = fillRow(line, fillSamplesOnly);
@@ -264,6 +264,7 @@ QVector<QVector<QVariant>> DatasetInner::parseData(QTextStream& stream,
             updateProgress(lineCounter, lastEmittedPercent);
         ++lineCounter;
     }
+
     return data;
 }
 
