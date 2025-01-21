@@ -8,6 +8,7 @@
 #include <FiltersDock.h>
 #include <TabWidget.h>
 
+#include "Configuration.h"
 #include "ui_VolbxMain.h"
 
 class QActionGroup;
@@ -17,7 +18,7 @@ class VolbxMain : public QMainWindow
 {
     Q_OBJECT
 public:
-    VolbxMain();
+    explicit VolbxMain(Configuration config);
 
     void checkForUpdates();
 
@@ -82,6 +83,8 @@ private:
     /// Network manager used to retrieve current available version.
     QNetworkAccessManager networkManager_;
 
+    Configuration config_;
+
 private slots:
     void tabWasChanged(int index);
 
@@ -99,7 +102,7 @@ private slots:
 
     void actionCheckForUpdateTriggered();
 
-    static void actionUpdateAutoToggled(bool alwaysCheck);
+    void actionUpdateAutoToggled(bool alwaysCheck);
 
-    void styleChanged() const;
+    void styleChanged();
 };

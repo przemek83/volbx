@@ -18,9 +18,11 @@ class SpreadsheetsImportTab : public ImportTab
 {
     Q_OBJECT
 public:
-    SpreadsheetsImportTab();
+    explicit SpreadsheetsImportTab(const QString& importFilePath);
 
     ~SpreadsheetsImportTab() override;
+
+    QString getCurrentImportFilePath() const;
 
 private:
     static void analyzeFile(const std::unique_ptr<Dataset>& dataset);
@@ -36,6 +38,8 @@ private:
     std::unique_ptr<Ui::SpreadsheetsImportTab> ui_{nullptr};
 
     QSplitter centralSplitter_{Qt::Vertical};
+
+    QString importFilePath_;
 
 private slots:
     void openFileButtonClicked();

@@ -17,9 +17,11 @@ class ImportData : public QDialog
 {
     Q_OBJECT
 public:
-    ImportData();
+    explicit ImportData(const QString& importFilePath);
 
     std::unique_ptr<Dataset> getSelectedDataset();
+
+    QString getImportFilePath() const;
 
 private:
     QDialogButtonBox* createButtonBox();

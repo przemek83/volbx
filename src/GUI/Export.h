@@ -15,7 +15,7 @@ class Export : public QDialog
 {
     Q_OBJECT
 public:
-    Export(QWidget* tab, QWidget* parent);
+    Export(QWidget* tab, const QString& importFilePath, QWidget* parent);
 
 private:
     void saveOnDisk() const;

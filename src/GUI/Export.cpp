@@ -10,7 +10,6 @@
 #include <QMainWindow>
 #include <QMessageBox>
 
-#include "Common/Configuration.h"
 #include "Common/Constants.h"
 #include "Export/ExportImage.h"
 #include "ModelsAndViews/DataView.h"
@@ -18,7 +17,8 @@
 
 #include "PlotDock.h"
 
-Export::Export(QWidget* tab, QWidget* parent) : QDialog(parent), tab_{tab}
+Export::Export(QWidget* tab, const QString& importFilePath, QWidget* parent)
+    : QDialog(parent), tab_{tab}
 {
     ui_->setupUi(this);
 
@@ -26,8 +26,7 @@ Export::Export(QWidget* tab, QWidget* parent) : QDialog(parent), tab_{tab}
     connect(ui_->locationSearch, &QPushButton::clicked, this,
             &Export::locationSearchClicked);
 
-    ui_->locationLineEdit->setText(
-        Configuration::getInstance().getImportFilePath());
+    ui_->locationLineEdit->setText(importFilePath);
     ui_->prefix->setValidator(&validator_);
     ui_->prefix->setText(tab_->windowTitle().replace(
         QRegularExpression(QStringLiteral("[^\\w]")), QLatin1String("")));

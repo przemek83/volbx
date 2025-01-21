@@ -34,16 +34,14 @@ int main(int argc, char* argv[])
 {
     const QApplication a(argc, argv);
     application::setAdditionalApplicatioInfo(VER_PRODUCTNAME_STR);
-    application::initStyle(Configuration::getInstance().getStyleName());
+    Configuration config;
+    application::initStyle(config.getStyleName());
 
     LOG(LogTypes::APP, QStringLiteral("Application start"));
 
     overwriteUpdaterfIfNeeded();
 
-    // Create new or load existing configuration.
-    Configuration::getInstance();
-
-    VolbxMain w;
+    VolbxMain w(std::move(config));
     LOG(LogTypes::APP, QStringLiteral("Showing main window"));
     w.show();
     w.checkForUpdates();

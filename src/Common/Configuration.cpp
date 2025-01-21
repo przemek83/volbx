@@ -14,15 +14,9 @@
 
 Configuration::Configuration() { load(); }
 
-Configuration& Configuration::getInstance()
-{
-    static Configuration instance;
-    return instance;
-}
-
 bool Configuration::isUpdatePolicyPicked() const
 {
-    return (configValid_ && (updatePolicy_ != UpdatePolicy::NOT_DECIDED));
+    return (configValid() && (updatePolicy_ != UpdatePolicy::NOT_DECIDED));
 }
 
 bool Configuration::needToCheckForUpdates() const

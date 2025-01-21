@@ -10,7 +10,6 @@
 #include <QHeaderView>
 #include <QMessageBox>
 
-#include <Common/Configuration.h>
 #include <Common/Constants.h>
 #include <Common/DatasetUtilities.h>
 #include <Datasets/Dataset.h>
@@ -23,8 +22,10 @@
 #include "DatasetVisualization.h"
 #include "ui_SpreadsheetsImportTab.h"
 
-SpreadsheetsImportTab::SpreadsheetsImportTab()
-    : ImportTab(), ui_{std::make_unique<Ui::SpreadsheetsImportTab>()}
+SpreadsheetsImportTab::SpreadsheetsImportTab(const QString& importFilePath)
+    : ImportTab(),
+      ui_{std::make_unique<Ui::SpreadsheetsImportTab>()},
+      importFilePath_{importFilePath}
 {
     ui_->setupUi(this);
 
@@ -41,6 +42,11 @@ SpreadsheetsImportTab::SpreadsheetsImportTab()
 }
 
 SpreadsheetsImportTab::~SpreadsheetsImportTab() = default;
+
+QString SpreadsheetsImportTab::getCurrentImportFilePath() const
+{
+    return importFilePath_;
+}
 
 void SpreadsheetsImportTab::analyzeFile(const std::unique_ptr<Dataset>& dataset)
 {
@@ -107,9 +113,8 @@ QString SpreadsheetsImportTab::getValidDatasetName(const QFileInfo& fileInfo)
 
 bool SpreadsheetsImportTab::getFileInfo(QFileInfo& fileInfo)
 {
-    const QString defaultPath{Configuration::getInstance().getImportFilePath()};
     const QString filePath{
-        QFileDialog::getOpenFileName(this, tr("Open file"), defaultPath,
+        QFileDialog::getOpenFileName(this, tr("Open file"), importFilePath_,
                                      tr("Spreadsheets (*.xlsx *.ods )"))};
 
     fileInfo.setFile(filePath);
@@ -128,7 +133,7 @@ void SpreadsheetsImportTab::openFileButtonClicked()
     if (!getFileInfo(fileInfo))
         return;
 
-    Configuration::getInstance().setImportFilePath(fileInfo.canonicalPath());
+    importFilePath_ = fileInfo.canonicalPath();
     ui_->fileNameLineEdit->setText(fileInfo.filePath());
 
     std::unique_ptr<Dataset> dataset{createDataset(fileInfo)};

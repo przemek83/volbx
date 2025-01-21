@@ -7,7 +7,8 @@
 
 #include <Datasets/Dataset.h>
 
-ImportData::ImportData() : QDialog()
+ImportData::ImportData(const QString& importFilePath)
+    : QDialog(), spreadsheetsTab_{importFilePath}
 {
     setupLayout();
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
@@ -18,6 +19,11 @@ std::unique_ptr<Dataset> ImportData::getSelectedDataset()
     const auto* tabWidget{findChild<QTabWidget*>()};
     auto* tab{dynamic_cast<ImportTab*>(tabWidget->currentWidget())};
     return tab->getDataset();
+}
+
+QString ImportData::getImportFilePath() const
+{
+    return spreadsheetsTab_.getCurrentImportFilePath();
 }
 
 QDialogButtonBox* ImportData::createButtonBox()

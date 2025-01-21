@@ -7,7 +7,7 @@ class QDomDocument;
 class Configuration
 {
 public:
-    static Configuration& getInstance();
+    Configuration();
 
     bool isUpdatePolicyPicked() const;
 
@@ -21,18 +21,15 @@ public:
 
     void setStyleName(const QString& style);
 
-    /// For unit tests.
-    bool configValid() const;
-
     /// Public for unit tests.
-    bool load();
+    bool configValid() const;
 
     QString getImportFilePath() const;
 
     void setImportFilePath(const QString& path);
 
 private:
-    Configuration();
+    bool load();
 
     QString configDump() const;
 

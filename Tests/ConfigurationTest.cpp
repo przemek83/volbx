@@ -19,31 +19,33 @@ void ConfigurationTest::initTestCase()
 
 void ConfigurationTest::testSavingConfigurationFile() const
 {
-    Configuration::getInstance();
+    Configuration config;
     QVERIFY(QFile::exists(configurationFileName_));
-    QVERIFY(Configuration::getInstance().configValid());
-    QVERIFY(Configuration::getInstance().save());
+    QVERIFY(config.configValid());
+    QVERIFY(config.save());
     QVERIFY(QFile::exists(configurationFileName_));
 }
 
 void ConfigurationTest::testReadingFilledConfigurationFile() const
 {
+    Configuration config;
     QVERIFY(QFile::exists(configurationFileName_));
-    QVERIFY(Configuration::getInstance().configValid());
-    QCOMPARE(Configuration::getInstance().getStyleName(), defaultStyle_);
-    QVERIFY(Configuration::getInstance().isUpdatePolicyPicked());
-    QVERIFY(!Configuration::getInstance().needToCheckForUpdates());
+    QVERIFY(config.configValid());
+    QCOMPARE(config.getStyleName(), defaultStyle_);
+    QVERIFY(config.isUpdatePolicyPicked());
+    QVERIFY(!config.needToCheckForUpdates());
 }
 
 void ConfigurationTest::testReadingEmptyConfigurationFile() const
 {
     QVERIFY(QFile::remove(configurationFileName_));
     QVERIFY(!QFile::exists(configurationFileName_));
-    QVERIFY(!Configuration::getInstance().load());
-    QVERIFY(!Configuration::getInstance().configValid());
-    QCOMPARE(Configuration::getInstance().getStyleName(), defaultStyle_);
-    QVERIFY(!Configuration::getInstance().isUpdatePolicyPicked());
-    QVERIFY(!Configuration::getInstance().needToCheckForUpdates());
+
+    Configuration config;
+    QVERIFY(!config.configValid());
+    QCOMPARE(config.getStyleName(), defaultStyle_);
+    QVERIFY(!config.isUpdatePolicyPicked());
+    QVERIFY(!config.needToCheckForUpdates());
 }
 
 void ConfigurationTest::cleanupTestCase() const

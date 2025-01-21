@@ -30,7 +30,11 @@
 #include "Tab.h"
 #include "TabWidget.h"
 
-VolbxMain::VolbxMain() : QMainWindow(), filters_(this), tabWidget_(this)
+VolbxMain::VolbxMain(Configuration config)
+    : QMainWindow(),
+      filters_(this),
+      tabWidget_(this),
+      config_{std::move(config)}
 {
     ui_->setupUi(this);
 
@@ -129,7 +133,7 @@ void VolbxMain::setupNetworkManager() const
 void VolbxMain::addStyleToMenu(const QString& name,
                                QActionGroup* actionsGroup) const
 {
-    const QString activeStyle{Configuration::getInstance().getStyleName()};
+    const QString activeStyle{config_.getStyleName()};
     auto* action{new QAction(name, actionsGroup)};
     action->setCheckable(true);
     if (activeStyle == name)
@@ -189,7 +193,7 @@ bool VolbxMain::doesUserWantsToCheckForUpdates()
         shouldCheckForUpdates = true;
 
     if (dialog.isSaveFlagSet())
-        Configuration::getInstance().setUpdatePolicy(shouldCheckForUpdates);
+        config_.setUpdatePolicy(shouldCheckForUpdates);
 
     return shouldCheckForUpdates;
 }
@@ -197,17 +201,15 @@ bool VolbxMain::doesUserWantsToCheckForUpdates()
 void VolbxMain::checkForUpdates()
 {
     bool checkForUpdates{false};
-    if ((!Configuration::getInstance().isUpdatePolicyPicked()) &&
-        doesUserWantsToCheckForUpdates())
+    if ((!config_.isUpdatePolicyPicked()) && doesUserWantsToCheckForUpdates())
         checkForUpdates = true;
     else
-        checkForUpdates = Configuration::getInstance().needToCheckForUpdates();
+        checkForUpdates = config_.needToCheckForUpdates();
 
     if (checkForUpdates)
         actionCheckForUpdateTriggered();
 
-    ui_->actionUpdateAuto->setChecked(
-        Configuration::getInstance().needToCheckForUpdates());
+    ui_->actionUpdateAuto->setChecked(config_.needToCheckForUpdates());
 }
 
 void VolbxMain::tabWasChanged(int index)
@@ -219,7 +221,7 @@ void VolbxMain::tabWasChanged(int index)
 
 void VolbxMain::closeEvent(QCloseEvent* event)
 {
-    Configuration::getInstance().save();
+    config_.save();
     QMainWindow::closeEvent(event);
 
     // If logger window is shown closing mainWindow do not close app.
@@ -244,7 +246,8 @@ void VolbxMain::closeTab(int tab)
 
 void VolbxMain::actionExportTriggered()
 {
-    Export exportDialog(tabWidget_.currentWidget(), this);
+    Export exportDialog(tabWidget_.currentWidget(), config_.getImportFilePath(),
+                        this);
     exportDialog.exec();
 }
 
@@ -379,9 +382,11 @@ void VolbxMain::importDataset(std::unique_ptr<Dataset> dataset)
 
 void VolbxMain::actionImportDataTriggered()
 {
-    ImportData importData;
+    ImportData importData(config_.getImportFilePath());
     if (importData.exec() == QDialog::Accepted)
         importDataset(importData.getSelectedDataset());
+
+    config_.setImportFilePath(importData.getImportFilePath());
 }
 
 QString VolbxMain::createNameForTab(const std::unique_ptr<Dataset>& dataset)
@@ -478,10 +483,10 @@ void VolbxMain::actionCheckForUpdateTriggered()
 
 void VolbxMain::actionUpdateAutoToggled(bool alwaysCheck)
 {
-    Configuration::getInstance().setUpdatePolicy(alwaysCheck);
+    config_.setUpdatePolicy(alwaysCheck);
 }
 
-void VolbxMain::styleChanged() const
+void VolbxMain::styleChanged()
 {
     const auto* action{::qobject_cast<QAction*>(sender())};
     const QString style{action->text()};
@@ -489,5 +494,5 @@ void VolbxMain::styleChanged() const
         application::setQtStyle(style);
     else
         application::setCssStyle(style);
-    Configuration::getInstance().setStyleName(style);
+    config_.setStyleName(style);
 }
