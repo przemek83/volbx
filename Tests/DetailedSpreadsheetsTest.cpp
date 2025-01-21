@@ -14,11 +14,11 @@
 void DetailedSpreadsheetsTest::testBasics_data()
 {
     QTest::addColumn<QString>("fileName");
-    QTest::addColumn<unsigned int>("rowCount");
-    QTest::addColumn<unsigned int>("columnCount");
+    QTest::addColumn<int>("rowCount");
+    QTest::addColumn<int>("columnCount");
 
-    const QVector<unsigned int> expectedRowCounts{49, 4, 30};
-    const QVector<unsigned int> expectedColumnCounts{7, 5, 12};
+    const QVector<int> expectedRowCounts{49, 4, 30};
+    const QVector<int> expectedColumnCounts{7, 5, 12};
 
     for (int i = 0; i < fileNames_.size(); ++i)
     {
@@ -32,8 +32,8 @@ void DetailedSpreadsheetsTest::testBasics_data()
 void DetailedSpreadsheetsTest::testBasics()
 {
     QFETCH(const QString, fileName);
-    QFETCH(const unsigned int, rowCount);
-    QFETCH(const unsigned int, columnCount);
+    QFETCH(const int, rowCount);
+    QFETCH(const int, columnCount);
 
     const QString filePath(Common::getSpreadsheetsDir() + fileName);
     std::unique_ptr<Dataset> dataset{
@@ -80,12 +80,12 @@ Q_DECLARE_METATYPE(DetailedSpreadsheetsTest::Field)
 void DetailedSpreadsheetsTest::testSampleData_data()
 {
     QTest::addColumn<QString>("fileName");
-    QTest::addColumn<unsigned int>("sampleRowCount");
-    QTest::addColumn<unsigned int>("sampleColumnCount");
+    QTest::addColumn<int>("sampleRowCount");
+    QTest::addColumn<int>("sampleColumnCount");
     QTest::addColumn<QVector<Field>>("sampleFields");
 
-    const QVector<unsigned int> expectedSampleRowCounts{10, 4, 10};
-    const QVector<unsigned int> expectedSampleColumnCounts{7, 5, 12};
+    const QVector<int> expectedSampleRowCounts{10, 4, 10};
+    const QVector<int> expectedSampleColumnCounts{7, 5, 12};
 
     for (int i = 0; i < fileNames_.size(); ++i)
     {
@@ -99,8 +99,8 @@ void DetailedSpreadsheetsTest::testSampleData_data()
 void DetailedSpreadsheetsTest::testSampleData()
 {
     QFETCH(const QString, fileName);
-    QFETCH(const unsigned int, sampleRowCount);
-    QFETCH(const unsigned int, sampleColumnCount);
+    QFETCH(const int, sampleRowCount);
+    QFETCH(const int, sampleColumnCount);
     QFETCH(const QVector<Field>, sampleFields);
 
     const QString filePath(Common::getSpreadsheetsDir() + fileName);

@@ -20,9 +20,9 @@ class Dataset : public QObject
 public:
     explicit Dataset(QString name);
 
-    unsigned int rowCount() const;
+    int rowCount() const;
 
-    unsigned int columnCount() const;
+    int columnCount() const;
 
     QVariant* getData(int row, Column column)
     {
@@ -62,7 +62,7 @@ public:
 
     bool loadData();
 
-    QByteArray definitionToXml(unsigned int rowCount) const;
+    QByteArray definitionToXml(int rowCount) const;
 
     QVector<QVector<QVariant>> retrieveSampleData();
 
@@ -87,7 +87,7 @@ protected:
 
     bool valid_{false};
 
-    static constexpr unsigned int SAMPLE_SIZE{10};
+    static constexpr int SAMPLE_SIZE{10};
 
     QVector<ColumnType> columnTypes_;
 
@@ -95,9 +95,9 @@ protected:
 
     QVector<bool> activeColumns_;
 
-    unsigned int rowsCount_{0};
+    int rowsCount_{0};
 
-    unsigned int columnsCount_{0};
+    int columnsCount_{0};
 
     QString error_;
 
@@ -117,8 +117,7 @@ private:
 
     QDomElement columnsToXml(QDomDocument& xmlDocument) const;
 
-    QDomElement rowCountToXml(QDomDocument& xmlDocument,
-                              unsigned int rowCount) const;
+    QDomElement rowCountToXml(QDomDocument& xmlDocument, int rowCount) const;
 
     QVariant nullStringVariant_{QMetaType(QMetaType::QString)};
 
@@ -133,5 +132,5 @@ private:
     QMap<ColumnTag, Column> taggedColumns_;
 
 signals:
-    void loadingPercentChanged(unsigned int newPercentage);
+    void loadingPercentChanged(int newPercentage);
 };

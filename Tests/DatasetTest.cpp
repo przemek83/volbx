@@ -8,8 +8,8 @@
 
 void DatasetTest::testGetColumnFormatColumnsSet()
 {
-    const unsigned int dateColumnIndex{0};
-    const unsigned int valueColumnIndex{1};
+    const int dateColumnIndex{0};
+    const int valueColumnIndex{1};
 
     DatasetDummy dataset(QStringLiteral("a"));
     dataset.setTaggedColumn(ColumnTag::DATE, dateColumnIndex);

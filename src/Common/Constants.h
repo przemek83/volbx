@@ -15,7 +15,7 @@ QString getTemporaryFileSuffix();
 
 QString getConfigurationFileName();
 
-enum class BarTitle : unsigned char
+enum class BarTitle : signed char
 {
     LOADING = 0,
     SAVING,

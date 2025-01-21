@@ -46,6 +46,6 @@ private:
     QHash<QString, int> stringsMap_;
     QByteArray stringsContent_;
     int nextIndex_{1};
-    unsigned int lines_{0};
+    int lines_{0};
     static constexpr char newLine_{'\n'};
 };

@@ -68,8 +68,8 @@ void DatasetInner::retrieveColumnsFromXml(const QDomElement& root)
         root.firstChildElement(xmlColumns_).childNodes()};
     LOG(LogTypes::IMPORT_EXPORT,
         "Read column count: " + QString::number(columns.count()));
-    columnsCount_ = static_cast<unsigned int>(columns.size());
-    for (int column = 0; column < static_cast<int>(columnsCount_); ++column)
+    columnsCount_ = columns.size();
+    for (int column = 0; column < columnsCount_; ++column)
     {
         const QDomElement columnElement{columns.at(column).toElement()};
         headerColumnNames_.push_back(columnElement.attribute(xmlColumnName_));
@@ -112,7 +112,7 @@ bool DatasetInner::fromXml(const QByteArray& definitionContent)
     const QDomElement root{xmlDocument.documentElement()};
     retrieveColumnsFromXml(root);
     rowsCount_ =
-        root.firstChildElement(xmlRowCount_).attribute(xmlRowCount_).toUInt();
+        root.firstChildElement(xmlRowCount_).attribute(xmlRowCount_).toInt();
 
     return true;
 }
@@ -161,12 +161,11 @@ bool DatasetInner::loadStrings(QuaZip& zip)
     return true;
 }
 
-void DatasetInner::updateProgress(unsigned int currentRow,
-                                  unsigned int rowCount,
-                                  unsigned int& lastEmittedPercent)
+void DatasetInner::updateProgress(int currentRow, int rowCount,
+                                  int& lastEmittedPercent)
 {
-    const unsigned int currentPercent{
-        static_cast<unsigned int>((100. * (currentRow + 1)) / rowCount)};
+    const int currentPercent{
+        static_cast<int>((100. * (currentRow + 1)) / rowCount)};
     if (currentPercent > lastEmittedPercent)
     {
         emit loadingPercentChanged(currentPercent);
@@ -246,8 +245,8 @@ QVector<QVariant> DatasetInner::fillRow(const QStringList& line,
 QVector<QVector<QVariant>> DatasetInner::parseData(QTextStream& stream,
                                                    bool fillSamplesOnly)
 {
-    unsigned int lastEmittedPercent{0};
-    unsigned int lineCounter{0};
+    int lastEmittedPercent{0};
+    int lineCounter{0};
     QVector<QVector<QVariant>> data{fillSamplesOnly
                                         ? prepareContainerForSampleData()
                                         : prepareContainerForAllData()};

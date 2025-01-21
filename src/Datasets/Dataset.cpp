@@ -7,9 +7,9 @@
 
 Dataset::Dataset(QString name) : QObject(), name_{std::move(name)} {}
 
-unsigned int Dataset::rowCount() const { return rowsCount_; }
+int Dataset::rowCount() const { return rowsCount_; }
 
-unsigned int Dataset::columnCount() const { return columnsCount_; }
+int Dataset::columnCount() const { return columnsCount_; }
 
 ColumnType Dataset::getColumnFormat(Column column) const
 {
@@ -159,14 +159,14 @@ QDomElement Dataset::columnsToXml(QDomDocument& xmlDocument) const
 }
 
 QDomElement Dataset::rowCountToXml(QDomDocument& xmlDocument,
-                                   unsigned int rowCount) const
+                                   int rowCount) const
 {
     QDomElement rowCountElement{xmlDocument.createElement(xmlRowCount_)};
     rowCountElement.setAttribute(xmlRowCount_, QString::number(rowCount));
     return rowCountElement;
 }
 
-QByteArray Dataset::definitionToXml(unsigned int rowCount) const
+QByteArray Dataset::definitionToXml(int rowCount) const
 {
     QDomDocument xmlDocument;
     QDomElement root{xmlDocument.createElement(xmlName_)};
@@ -222,7 +222,7 @@ void Dataset::rebuildUsingActiveColumns()
     columnTypes_ = rebuiltColumnsFormat;
     headerColumnNames_ = rebuiltHeaderColumnNames;
     taggedColumns_ = rebuiltTaggedColumns;
-    columnsCount_ = static_cast<unsigned int>(activeColumns_.count(true));
+    columnsCount_ = static_cast<int>(activeColumns_.count(true));
     activeColumns_.clear();
 }
 
@@ -231,7 +231,7 @@ void Dataset::updateSampleDataStrings(QVector<QVector<QVariant>>& data) const
     if (sharedStrings_.isEmpty())
         return;
 
-    const int count{static_cast<int>(columnCount())};
+    const int count{columnCount()};
     for (int i{0}; i < count; ++i)
     {
         if (columnTypes_.at(i) != ColumnType::STRING)

@@ -46,8 +46,7 @@ private:
     std::tuple<bool, QVector<QVector<QVariant>>> fillData(QuaZip& zip,
                                                           bool fillSamplesOnly);
 
-    void updateProgress(unsigned int currentRow, unsigned int rowCount,
-                        unsigned int& lastEmittedPercent);
+    void updateProgress(int currentRow, int rowCount, int& lastEmittedPercent);
 
     static QVariant getElementAsVariant(ColumnType columnFormat,
                                         const QString& element);

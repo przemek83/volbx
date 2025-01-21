@@ -22,8 +22,8 @@ public:
     struct Field
     {
         QVariant data{};
-        unsigned int row{0U};
-        unsigned int column{0U};
+        int row{0};
+        int column{0};
     };
 
 private slots:

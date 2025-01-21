@@ -37,7 +37,7 @@ public:
 
     std::tuple<bool, int> getTaggedColumnIfExists(ColumnTag columnTag) const;
 
-    QByteArray definitionToXml(unsigned int rowCount) const;
+    QByteArray definitionToXml(int rowCount) const;
 
     bool areTaggedColumnsSet() const;
 

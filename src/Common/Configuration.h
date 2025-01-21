@@ -53,7 +53,7 @@ private:
 
     bool configValid_{false};
 
-    enum class UpdatePolicy : unsigned char
+    enum class UpdatePolicy : signed char
     {
         NOT_DECIDED,
         ALWAYS_CHECK,

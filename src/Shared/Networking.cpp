@@ -31,8 +31,8 @@ bool replyIsValid(const QNetworkReply* reply)
     if (QNetworkReply::NoError != reply->error())
         return true;
 
-    const unsigned int httpStatusCode{
-        reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toUInt()};
+    const int httpStatusCode{
+        reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()};
 
     const int okCode{200};
     return (httpStatusCode != okCode) || (!reply->isReadable());

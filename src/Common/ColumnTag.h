@@ -1,7 +1,7 @@
 #pragma once
 
 /// @brief Enum used to tag columns in plots.
-enum class ColumnTag : unsigned char
+enum class ColumnTag : signed char
 {
     /// Date of event.
     DATE = 0,

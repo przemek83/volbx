@@ -58,7 +58,7 @@ std::tuple<bool, int> TableModel::getTaggedColumnIfExists(
     return dataset_->getTaggedColumn(columnTag);
 }
 
-QByteArray TableModel::definitionToXml(unsigned int rowCount) const
+QByteArray TableModel::definitionToXml(int rowCount) const
 {
     return dataset_->definitionToXml(rowCount);
 }

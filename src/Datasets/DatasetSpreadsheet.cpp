@@ -118,7 +118,7 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetSpreadsheet::getDataFromZip(
 
     if (!fillSamplesOnly)
     {
-        Q_ASSERT(rowCount() == static_cast<unsigned int>(data.size()));
+        Q_ASSERT(rowCount() == static_cast<int>(data.size()));
         LOG(LogTypes::IMPORT_EXPORT,
             "Loaded file having " + QString::number(rowsCount_) + " rows.");
     }
