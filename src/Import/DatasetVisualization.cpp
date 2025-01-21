@@ -110,7 +110,7 @@ void DatasetVisualization::selectCurrentColumn(int column)
         if (currentItem->data(0, Qt::UserRole).toInt() == column)
         {
             ui_->columnsList->setCurrentItem(currentItem);
-            break;
+            return;
         }
     }
 }
@@ -124,7 +124,7 @@ void DatasetVisualization::setCurrentIndexUsingColumn(QComboBox* combo,
         if (combo->itemData(i).toInt() == column)
         {
             combo->setCurrentIndex(i);
-            break;
+            return;
         }
     }
 }
