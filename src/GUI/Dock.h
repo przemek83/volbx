@@ -12,6 +12,9 @@ public:
     Dock(const QString& titleText, QWidget* parent);
 
 protected:
+    const DockTitleBar& getTitleBar() const;
+
+private:
     DockTitleBar titleBar_;
 
 private slots:

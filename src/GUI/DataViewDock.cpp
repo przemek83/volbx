@@ -5,22 +5,24 @@
 #include <QBuffer>
 #include <QClipboard>
 
+#include "DockTitleBar.h"
 #include "ModelsAndViews/DataView.h"
 
 DataViewDock::DataViewDock(const QString& title, QWidget* parent)
     : Dock(title, parent)
 {
-    titleBar_.setButtonVisible(DockTitleBar::Button::EXPORT, true);
-    titleBar_.setButtonVisible(DockTitleBar::Button::SELECT_ALL, true);
-    titleBar_.setButtonVisible(DockTitleBar::Button::UNSELECT_ALL, true);
+    const DockTitleBar& titleBar{getTitleBar()};
+    titleBar.setButtonVisible(DockTitleBar::Button::EXPORT, true);
+    titleBar.setButtonVisible(DockTitleBar::Button::SELECT_ALL, true);
+    titleBar.setButtonVisible(DockTitleBar::Button::UNSELECT_ALL, true);
 
-    connect(&titleBar_, &DockTitleBar::exportClicked, this,
+    connect(&titleBar, &DockTitleBar::exportClicked, this,
             &DataViewDock::quickExportData);
 
-    connect(&titleBar_, &DockTitleBar::selectAllClicked, this,
+    connect(&titleBar, &DockTitleBar::selectAllClicked, this,
             &DataViewDock::selectAll);
 
-    connect(&titleBar_, &DockTitleBar::unselectAllClicked, this,
+    connect(&titleBar, &DockTitleBar::unselectAllClicked, this,
             &DataViewDock::unselectAll);
 }
 
@@ -53,6 +55,7 @@ void DataViewDock::unselectAll() const
 
 void DataViewDock::activateSelectButtons() const
 {
-    titleBar_.setButtonEnabled(DockTitleBar::Button::SELECT_ALL, true);
-    titleBar_.setButtonEnabled(DockTitleBar::Button::UNSELECT_ALL, true);
+    const DockTitleBar& titleBar{getTitleBar()};
+    titleBar.setButtonEnabled(DockTitleBar::Button::SELECT_ALL, true);
+    titleBar.setButtonEnabled(DockTitleBar::Button::UNSELECT_ALL, true);
 }

@@ -12,4 +12,6 @@ Dock::Dock(const QString& titleText, QWidget* parent)
     setTitleBarWidget(&titleBar_);
 }
 
+const DockTitleBar& Dock::getTitleBar() const { return titleBar_; }
+
 void Dock::toggleFloating() { setFloating(!isFloating()); }

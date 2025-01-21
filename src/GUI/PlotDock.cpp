@@ -6,13 +6,13 @@
 
 PlotDock::PlotDock(const QString& title, QWidget* parent) : Dock(title, parent)
 {
-    titleBar_.setButtonVisible(DockTitleBar::Button::EXPORT, true);
-    titleBar_.setButtonVisible(DockTitleBar::Button::RESET, true);
+    const DockTitleBar& titleBar{getTitleBar()};
+    titleBar.setButtonVisible(DockTitleBar::Button::EXPORT, true);
+    titleBar.setButtonVisible(DockTitleBar::Button::RESET, true);
 
-    connect(&titleBar_, &DockTitleBar::exportClicked, this,
+    connect(&titleBar, &DockTitleBar::exportClicked, this,
             &PlotDock::quickExportData);
-    connect(&titleBar_, &DockTitleBar::resetClicked, this,
-            &PlotDock::resetPlot);
+    connect(&titleBar, &DockTitleBar::resetClicked, this, &PlotDock::resetPlot);
 }
 
 void PlotDock::quickExportData() const
