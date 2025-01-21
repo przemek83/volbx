@@ -66,6 +66,8 @@ void TabBar::setupLineEdit()
 QMainWindow* TabBar::getCurrentTabWidget() const
 {
     const auto* tabWidget{dynamic_cast<QTabWidget*>(parentWidget())};
+    Q_ASSERT(tabWidget != nullptr);
     auto* mainWindow{dynamic_cast<QMainWindow*>(tabWidget->currentWidget())};
+    Q_ASSERT(mainWindow != nullptr);
     return mainWindow;
 }
