@@ -161,11 +161,10 @@ bool DatasetInner::loadStrings(QuaZip& zip)
     return true;
 }
 
-void DatasetInner::updateProgress(int currentRow, int rowCount,
-                                  int& lastEmittedPercent)
+void DatasetInner::updateProgress(int currentRow, int& lastEmittedPercent)
 {
     const int currentPercent{
-        static_cast<int>((100. * (currentRow + 1)) / rowCount)};
+        static_cast<int>((100. * (currentRow + 1)) / rowCount())};
     if (currentPercent > lastEmittedPercent)
     {
         emit loadingPercentChanged(currentPercent);
@@ -262,7 +261,7 @@ QVector<QVector<QVariant>> DatasetInner::parseData(QTextStream& stream,
         const QStringList line{stream.readLine().split(';')};
         data[lineCounter] = fillRow(line, fillSamplesOnly);
         if (!fillSamplesOnly)
-            updateProgress(lineCounter, rowCount(), lastEmittedPercent);
+            updateProgress(lineCounter, lastEmittedPercent);
         ++lineCounter;
     }
     return data;
