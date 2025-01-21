@@ -75,7 +75,7 @@ bool TableModel::areTaggedColumnsSet() const
 
 int TableModel::getDefaultGroupingColumn() const
 {
-    const int count{columnCount()};
+    const int count{columnCount(QModelIndex())};
     for (int column{0}; column < count; ++column)
         if (getColumnFormat(column) == ColumnType::STRING)
             return column;

@@ -51,7 +51,8 @@ QWidget* FiltersDock::createFiltersWidgets(const FilteringProxyModel* model)
 
 QString FiltersDock::getColumnName(const TableModel* parentModel, int index)
 {
-    return parentModel->headerData(index, Qt::Horizontal).toString();
+    return parentModel->headerData(index, Qt::Horizontal, Qt::DisplayRole)
+        .toString();
 }
 
 QLineEdit* FiltersDock::createSearchLineEdit(QWidget* parent) const
