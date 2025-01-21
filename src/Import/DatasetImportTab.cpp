@@ -24,7 +24,9 @@ DatasetImportTab::DatasetImportTab() : ImportTab()
     centralSplitter->addWidget(columnsPreview);
 
     auto* layout{new QVBoxLayout(this)};
-    layout->setContentsMargins(2, 2, 2, 2);
+
+    const int margin{2};
+    layout->setContentsMargins(margin, margin, margin, margin);
     layout->addWidget(centralSplitter);
     setLayout(layout);
 
