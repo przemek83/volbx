@@ -135,7 +135,7 @@ void DatasetVisualization::setupColumnsListWidget()
                                    Qt::AscendingOrder);
     ui_->columnsList->setSortingEnabled(false);
 
-    const int count{static_cast<int>(dataset_->columnCount())};
+    const int count{dataset_->columnCount()};
     for (int column{0}; column < count; ++column)
     {
         const QStringList list{dataset_->getHeaderName(column),
@@ -225,7 +225,7 @@ QString DatasetVisualization::getTypeDisplayNameForColumn(int column) const
 
 void DatasetVisualization::fillTaggedColumnCombos()
 {
-    const int count{static_cast<int>(dataset_->columnCount())};
+    const int count{dataset_->columnCount()};
     for (int column{0}; column < count; ++column)
     {
         const ColumnType columnType{dataset_->getColumnFormat(column)};

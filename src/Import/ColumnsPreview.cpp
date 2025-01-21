@@ -17,7 +17,7 @@ void ColumnsPreview::setDatasetSampleInfo(
 {
     clear();
 
-    const int columns{static_cast<int>(dataset->columnCount())};
+    const int columns{dataset->columnCount()};
     setColumnCount(columns);
 
     setLabels(dataset);
@@ -46,7 +46,7 @@ QTableWidgetItem* ColumnsPreview::createItem(const QString& name)
 
 void ColumnsPreview::setLabels(const std::unique_ptr<Dataset>& dataset)
 {
-    const int columns{static_cast<int>(dataset->columnCount())};
+    const int columns{dataset->columnCount()};
     QStringList labels;
     labels.reserve(columns);
     for (int i = 0; i < columns; ++i)

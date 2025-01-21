@@ -13,7 +13,7 @@ int Dataset::columnCount() const { return columnsCount_; }
 
 ColumnType Dataset::getColumnFormat(Column column) const
 {
-    Q_ASSERT(column >= 0 && column < static_cast<int>(columnCount()));
+    Q_ASSERT(column >= 0 && column < columnCount());
     return columnTypes_[column];
 }
 
@@ -24,7 +24,7 @@ std::tuple<double, double> Dataset::getNumericRange(Column column) const
     double max{0.};
     bool first{true};
 
-    const int count{static_cast<int>(rowCount())};
+    const int count{rowCount()};
     for (int i{0}; i < count; ++i)
     {
         const double value{data_[i][column].toDouble()};
@@ -53,7 +53,7 @@ std::tuple<QDate, QDate, bool> Dataset::getDateRange(Column column) const
     bool emptyDates{false};
     bool first{true};
 
-    const int count{static_cast<int>(rowCount())};
+    const int count{rowCount()};
     for (int i{0}; i < count; ++i)
     {
         const QVariant& dateVariant{data_[i][column]};
@@ -85,7 +85,7 @@ QStringList Dataset::getStringList(Column column) const
 {
     Q_ASSERT(ColumnType::STRING == getColumnFormat(column));
     QStringList listToFill;
-    listToFill.reserve(static_cast<int>(rowCount()));
+    listToFill.reserve(rowCount());
     for (const auto& row : data_)
     {
         if (row[column].isNull())
@@ -112,7 +112,7 @@ std::tuple<bool, Column> Dataset::getTaggedColumn(ColumnTag columnTag) const
 
 QString Dataset::getHeaderName(Column column) const
 {
-    if (static_cast<int>(columnsCount_) >= (column + 1))
+    if (columnsCount_ >= (column + 1))
         return headerColumnNames_[column];
     Q_ASSERT(false);
     return QLatin1String("");
@@ -143,7 +143,7 @@ bool Dataset::loadData()
 QDomElement Dataset::columnsToXml(QDomDocument& xmlDocument) const
 {
     QDomElement columns{xmlDocument.createElement(xmlColumns_)};
-    for (Column column = 0; column < static_cast<int>(columnsCount_); ++column)
+    for (Column column = 0; column < columnsCount_; ++column)
     {
         QDomElement node{xmlDocument.createElement(xmlColumn_)};
         node.setAttribute(xmlColumnName_, headerColumnNames_.at(column));

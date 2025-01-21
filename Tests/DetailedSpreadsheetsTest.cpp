@@ -114,8 +114,7 @@ void DetailedSpreadsheetsTest::testSampleData()
     QCOMPARE(sampleData.front().size(), sampleColumnCount);
 
     for (const auto& [value, row, column] : sampleFields)
-        QCOMPARE(sampleData.at(static_cast<int>(row))[static_cast<int>(column)],
-                 value);
+        QCOMPARE(sampleData.at(row)[column], value);
 }
 
 struct NumericCheckData
@@ -265,7 +264,7 @@ void DetailedSpreadsheetsTest::testDataFile01SomeColumnsActive()
         DatasetCommon::createDataset(fileName, filePath)};
 
     dataset->initialize();
-    QVector<bool> activeColumns(static_cast<int>(dataset->columnCount()), true);
+    QVector<bool> activeColumns(dataset->columnCount(), true);
     activeColumns[0] = false;
     activeColumns[1] = false;
     activeColumns[4] = false;

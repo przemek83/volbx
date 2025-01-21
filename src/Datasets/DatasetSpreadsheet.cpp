@@ -102,7 +102,7 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetSpreadsheet::getDataFromZip(
     else
     {
         QVector<int> excludedColumns;
-        const int count{static_cast<int>(columnCount())};
+        const int count{columnCount()};
         for (Column column{0}; column < count; ++column)
             if (!activeColumns_.at(column))
                 excludedColumns.append(column);

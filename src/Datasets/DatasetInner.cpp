@@ -230,7 +230,7 @@ QVector<QVariant> DatasetInner::fillRow(const QStringList& line,
 {
     QVector<QVariant> row;
 
-    const int count{static_cast<int>(columnCount())};
+    const int count{columnCount()};
     for (Column column{0}; column < count; ++column)
     {
         if ((!fillSamplesOnly) && (!activeColumns_[column]))
@@ -256,7 +256,7 @@ QVector<QVector<QVariant>> DatasetInner::parseData(QTextStream& stream,
             break;
 
         const QStringList line{stream.readLine().split(';')};
-        data[static_cast<int>(lineCounter)] = fillRow(line, fillSamplesOnly);
+        data[lineCounter] = fillRow(line, fillSamplesOnly);
         if (!fillSamplesOnly)
             updateProgress(lineCounter, rowCount(), lastEmittedPercent);
         ++lineCounter;
@@ -284,7 +284,7 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetInner::fillData(
 QVector<QVector<QVariant>> DatasetInner::prepareContainerForAllData() const
 {
     QVector<QVector<QVariant>> data;
-    data.resize(static_cast<int>(rowCount()));
+    data.resize(rowCount());
     const qsizetype activeColumnsCount{activeColumns_.size()};
     for (auto& row : data)
         row.resize(activeColumnsCount);
@@ -294,10 +294,10 @@ QVector<QVector<QVariant>> DatasetInner::prepareContainerForAllData() const
 QVector<QVector<QVariant>> DatasetInner::prepareContainerForSampleData() const
 {
     QVector<QVector<QVariant>> data;
-    const int rowsCountForSamples{static_cast<int>(
-        (rowCount() > SAMPLE_SIZE ? SAMPLE_SIZE : rowCount()))};
+    const int rowsCountForSamples{(rowCount() > SAMPLE_SIZE) ? SAMPLE_SIZE
+                                                             : rowCount()};
     data.resize(rowsCountForSamples);
     for (int i{0}; i < rowsCountForSamples; ++i)
-        data[i].resize(static_cast<int>(columnsCount_));
+        data[i].resize(columnsCount_);
     return data;
 }

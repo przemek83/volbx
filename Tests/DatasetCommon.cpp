@@ -182,8 +182,7 @@ std::unique_ptr<Dataset> createDataset(const QString& fileName,
 
 void activateAllDatasetColumns(Dataset& dataset)
 {
-    const QVector<bool> activeColumns(static_cast<int>(dataset.columnCount()),
-                                      true);
+    const QVector<bool> activeColumns(dataset.columnCount(), true);
     dataset.setActiveColumns(activeColumns);
 }
 

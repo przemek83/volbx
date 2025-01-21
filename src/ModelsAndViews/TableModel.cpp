@@ -9,12 +9,12 @@ TableModel::TableModel(std::unique_ptr<Dataset> dataset, QObject* parent)
 
 int TableModel::rowCount([[maybe_unused]] const QModelIndex& parent) const
 {
-    return static_cast<int>(dataset_->rowCount());
+    return dataset_->rowCount();
 }
 
 int TableModel::columnCount([[maybe_unused]] const QModelIndex& parent) const
 {
-    return static_cast<int>(dataset_->columnCount());
+    return dataset_->columnCount();
 }
 
 QVariant TableModel::data(const QModelIndex& index, int role) const
