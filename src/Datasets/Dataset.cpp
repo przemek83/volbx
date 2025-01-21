@@ -243,8 +243,10 @@ void Dataset::updateSampleDataStrings(QVector<QVector<QVariant>>& data) const
                 continue;
 
             const int index{sampleDataRow[i].toInt()};
-            sampleDataRow[i] =
-                (index > sharedStrings_.size() ? 0 : sharedStrings_[index]);
+            if (index > sharedStrings_.size())
+                sampleDataRow[i] = 0;
+            else
+                sampleDataRow[i] = sharedStrings_[index];
         }
     }
 }

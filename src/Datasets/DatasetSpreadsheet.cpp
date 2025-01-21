@@ -96,8 +96,12 @@ std::tuple<bool, QVector<QVector<QVariant>>> DatasetSpreadsheet::getDataFromZip(
     bool success{false};
     if (fillSamplesOnly)
     {
-        std::tie(success, data) = importer_->getLimitedData(
-            sheetName, {}, SAMPLE_SIZE < rowCount() ? SAMPLE_SIZE : rowCount());
+        int limit{rowCount()};
+        if (limit > SAMPLE_SIZE)
+            limit = SAMPLE_SIZE;
+
+        std::tie(success, data) =
+            importer_->getLimitedData(sheetName, {}, limit);
     }
     else
     {

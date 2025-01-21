@@ -105,8 +105,14 @@ void Logger::changeActiveLogs(bool state)
     activeLogs_[logType] = state;
 
     QString msg(logNames_[logType]);
-    msg.append(QStringLiteral(" is ") + (state ? QStringLiteral("enabled")
-                                               : QStringLiteral("disabled")));
+
+    QString stateString;
+    if (state)
+        stateString = QStringLiteral("enabled");
+    else
+        stateString = QStringLiteral("disabled");
+
+    msg.append(QStringLiteral(" is ") + stateString);
     LOG(LogTypes::APP, msg);
 }
 

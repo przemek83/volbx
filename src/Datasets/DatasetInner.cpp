@@ -247,9 +247,13 @@ QVector<QVector<QVariant>> DatasetInner::parseData(QTextStream& stream,
 {
     int lastEmittedPercent{0};
     int lineCounter{0};
-    QVector<QVector<QVariant>> data{fillSamplesOnly
-                                        ? prepareContainerForSampleData()
-                                        : prepareContainerForAllData()};
+
+    QVector<QVector<QVariant>> data;
+    if (fillSamplesOnly)
+        data = prepareContainerForSampleData();
+    else
+        data = prepareContainerForAllData();
+
     while ((!stream.atEnd()) && (lineCounter < rowCount()))
     {
         if (fillSamplesOnly && (lineCounter >= SAMPLE_SIZE))
@@ -294,8 +298,10 @@ QVector<QVector<QVariant>> DatasetInner::prepareContainerForAllData() const
 QVector<QVector<QVariant>> DatasetInner::prepareContainerForSampleData() const
 {
     QVector<QVector<QVariant>> data;
-    const int rowsCountForSamples{(rowCount() > SAMPLE_SIZE) ? SAMPLE_SIZE
-                                                             : rowCount()};
+    int rowsCountForSamples{rowCount()};
+    if (rowsCountForSamples > SAMPLE_SIZE)
+        rowsCountForSamples = SAMPLE_SIZE;
+
     data.resize(rowsCountForSamples);
     for (int i{0}; i < rowsCountForSamples; ++i)
         data[i].resize(columnsCount_);
