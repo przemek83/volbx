@@ -50,7 +50,7 @@ private:
 
     static int getCurrentValueFromCombo(const QComboBox* combo);
 
-    std::unique_ptr<Ui::DatasetVisualization> ui_;
+    std::unique_ptr<Ui::DatasetVisualization> ui_{nullptr};
 
     const QString typeNameString_{tr("Name")};
     const QString typeNameFloat_{tr("Number")};
