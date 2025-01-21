@@ -10,4 +10,6 @@ public:
 
     QString displayText(const QVariant& value,
                         const QLocale& locale) const override;
+
+    const int decimalPlaces_{2};
 };

@@ -42,8 +42,11 @@ QDialogButtonBox* ImportData::createButtonBox()
 void ImportData::setupLayout()
 {
     auto* layout{new QVBoxLayout(this)};
-    layout->setSpacing(2);
-    layout->setContentsMargins(2, 2, 2, 2);
+
+    const int spacing{2};
+    layout->setSpacing(spacing);
+    const int margin{2};
+    layout->setContentsMargins(margin, margin, margin, margin);
 
     QDialogButtonBox* buttonBox{createButtonBox()};
     auto enableOpenButton{[box = buttonBox](bool activate) {
