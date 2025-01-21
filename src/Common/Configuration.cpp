@@ -12,6 +12,12 @@
 #include "Constants.h"
 #include "FileUtilities.h"
 
+const QString Configuration::xmlNameConfig_{QStringLiteral("CONFIG")};
+const QString Configuration::xmlNameUpdate_{QStringLiteral("UPDATE")};
+const QString Configuration::xmlNameValue_{QStringLiteral("VALUE")};
+const QString Configuration::xmlNameStyle_{QStringLiteral("STYLE")};
+const QString Configuration::xmlNameImportPath_{QStringLiteral("IMPORTPATH")};
+
 Configuration::Configuration() { load(); }
 
 bool Configuration::isUpdatePolicyPicked() const

@@ -9,6 +9,14 @@ class Configuration
 public:
     Configuration();
 
+    ~Configuration() = default;
+
+    Configuration& operator=(const Configuration& other) = delete;
+    Configuration(const Configuration& other) = delete;
+
+    Configuration& operator=(Configuration&& other) = default;
+    Configuration(Configuration&& other) = default;
+
     bool isUpdatePolicyPicked() const;
 
     bool needToCheckForUpdates() const;
@@ -56,9 +64,9 @@ private:
 
     UpdatePolicy updatePolicy_{UpdatePolicy::NOT_DECIDED};
 
-    const QString xmlNameConfig_{QStringLiteral("CONFIG")};
-    const QString xmlNameUpdate_{QStringLiteral("UPDATE")};
-    const QString xmlNameValue_{QStringLiteral("VALUE")};
-    const QString xmlNameStyle_{QStringLiteral("STYLE")};
-    const QString xmlNameImportPath_{QStringLiteral("IMPORTPATH")};
+    static const QString xmlNameConfig_;
+    static const QString xmlNameUpdate_;
+    static const QString xmlNameValue_;
+    static const QString xmlNameStyle_;
+    static const QString xmlNameImportPath_;
 };
