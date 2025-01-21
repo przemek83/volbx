@@ -58,13 +58,20 @@ void exportQuadImage(const QList<PlotBase*>& plotsList,
     QPainter painter(&image);
 
     QRect rect(0, 0, width, height);
-    plotRenderer.render(plotsList[0], &painter, rect);
+    int imageNumber{0};
+    plotRenderer.render(plotsList[imageNumber], &painter, rect);
+
+    ++imageNumber;
     rect.adjust(width, 0, width, 0);
-    plotRenderer.render(plotsList[1], &painter, rect);
+    plotRenderer.render(plotsList[imageNumber], &painter, rect);
+
+    ++imageNumber;
     rect.adjust(-width, height, -width, height);
-    plotRenderer.render(plotsList[2], &painter, rect);
+    plotRenderer.render(plotsList[imageNumber], &painter, rect);
+
+    ++imageNumber;
     rect.adjust(width, 0, width, 0);
-    plotRenderer.render(plotsList[3], &painter, rect);
+    plotRenderer.render(plotsList[imageNumber], &painter, rect);
 
     QApplication::clipboard()->setImage(image);
 }
@@ -90,21 +97,25 @@ void quickExportAsImage(const QList<PlotBase*>& list)
     plotRenderer.setDiscardFlags(QwtPlotRenderer::DiscardBackground |
                                  QwtPlotRenderer::DiscardCanvasBackground);
 
+    const int singleCount{1};
+    const int twinCount{2};
+    const int quadCount{4};
+
     switch (list.size())
     {
-        case 1:
+        case singleCount:
         {
             exportSingleImage(plotRenderer, list);
             break;
         }
 
-        case 2:
+        case twinCount:
         {
             exportTwinImage(list, plotRenderer);
             break;
         }
 
-        case 4:
+        case quadCount:
         {
             exportQuadImage(list, plotRenderer);
             break;
