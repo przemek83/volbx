@@ -64,9 +64,9 @@ private:
 
     UpdatePolicy updatePolicy_{UpdatePolicy::NOT_DECIDED};
 
-    static const QString xmlNameConfig_;
-    static const QString xmlNameUpdate_;
-    static const QString xmlNameValue_;
-    static const QString xmlNameStyle_;
-    static const QString xmlNameImportPath_;
+    QString xmlNameConfig_{QStringLiteral("CONFIG")};
+    QString xmlNameUpdate_{QStringLiteral("UPDATE")};
+    QString xmlNameValue_{QStringLiteral("VALUE")};
+    QString xmlNameStyle_{QStringLiteral("STYLE")};
+    QString xmlNameImportPath_{QStringLiteral("IMPORTPATH")};
 };
