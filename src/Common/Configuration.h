@@ -7,12 +7,6 @@ class QDomDocument;
 class Configuration
 {
 public:
-    Configuration& operator=(const Configuration& other) = delete;
-    Configuration(const Configuration& other) = delete;
-
-    Configuration& operator=(Configuration&& other) = delete;
-    Configuration(Configuration&& other) = delete;
-
     static Configuration& getInstance();
 
     bool isUpdatePolicyPicked() const;
@@ -39,7 +33,6 @@ public:
 
 private:
     Configuration();
-    ~Configuration() = default;
 
     QString configDump() const;
 
