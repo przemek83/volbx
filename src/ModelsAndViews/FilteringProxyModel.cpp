@@ -32,14 +32,15 @@ void FilteringProxyModel::setNumericFilter(int column, double from, double to)
 bool FilteringProxyModel::acceptRowWithStringRestrictions(
     int sourceRow, const QModelIndex& sourceParent) const
 {
-    for (const auto& [column, bannedStrings] : stringsRestrictions_)
-    {
-        const QModelIndex index{
-            sourceModel()->index(sourceRow, column, sourceParent)};
-        if (bannedStrings.contains(index.data().toString()))
-            return false;
-    }
-    return true;
+    return std::none_of(
+        stringsRestrictions_.cbegin(), stringsRestrictions_.cend(),
+        [&](const auto& restriction)
+        {
+            const auto& [column, bannedStrings] = restriction;
+            const QModelIndex index{
+                sourceModel()->index(sourceRow, column, sourceParent)};
+            return bannedStrings.contains(index.data().toString());
+        });
 }
 
 bool FilteringProxyModel::acceptRowWithDateRestrictions(
@@ -64,17 +65,18 @@ bool FilteringProxyModel::acceptRowWithDateRestrictions(
 bool FilteringProxyModel::acceptRowWithNumberRestrictions(
     int sourceRow, const QModelIndex& sourceParent) const
 {
-    for (const auto& [column, numericRestriction] : numericRestrictions_)
-    {
-        const QModelIndex index{
-            sourceModel()->index(sourceRow, column, sourceParent)};
-        auto [min, max] = numericRestriction;
-        const double itemDouble{
-            QString::number(index.data().toDouble(), 'f', 2).toDouble()};
-        if ((itemDouble < min) || (itemDouble > max))
-            return false;
-    }
-    return true;
+    return std::all_of(
+        numericRestrictions_.cbegin(), numericRestrictions_.cend(),
+        [&](const auto& restriction)
+        {
+            const auto& [column, numericRestriction] = restriction;
+            const QModelIndex index{
+                sourceModel()->index(sourceRow, column, sourceParent)};
+            auto [min, max] = numericRestriction;
+            const double itemDouble{
+                QString::number(index.data().toDouble(), 'f', 2).toDouble()};
+            return (itemDouble >= min) && (itemDouble <= max);
+        });
 }
 
 bool FilteringProxyModel::filterAcceptsRow(
