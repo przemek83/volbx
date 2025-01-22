@@ -232,11 +232,11 @@ QVector<QVariant> DatasetInner::fillRow(const QStringList& line,
     const int count{columnCount()};
     for (Column column{0}; column < count; ++column)
     {
-        if ((!fillSamplesOnly) && (!activeColumns_[column]))
-            continue;
-
-        const QString& element{line.at(column)};
-        row.append(getElementAsVariant(getColumnFormat(column), element));
+        if (fillSamplesOnly || activeColumns_[column])
+        {
+            const QString& element{line.at(column)};
+            row.append(getElementAsVariant(getColumnFormat(column), element));
+        }
     }
     return row;
 }
