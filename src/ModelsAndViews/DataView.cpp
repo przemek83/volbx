@@ -112,23 +112,24 @@ QVector<TransactionData> DataView::fillDataFromSelection(
         if ((i % batchSize) == 0)
             QApplication::processEvents();
 
-        if (!selectionModelOfView->isSelected(proxyModel->index(i, 0)))
-            continue;
-        const QVariant& dateVariant{
-            proxyModel->index(i, transactionDateColumn).data()};
-        if (dateVariant.isNull())
-            continue;
+        if (selectionModelOfView->isSelected(proxyModel->index(i, 0)))
+        {
+            const QVariant& dateVariant{
+                proxyModel->index(i, transactionDateColumn).data()};
+            if (!dateVariant.isNull())
+            {
+                TransactionData transactionData;
+                transactionData.date_ = dateVariant.toDate();
+                transactionData.pricePerMeter_ =
+                    proxyModel->index(i, pricePerMeterColumn).data().toDouble();
 
-        TransactionData transactionData;
-        transactionData.date_ = dateVariant.toDate();
-        transactionData.pricePerMeter_ =
-            proxyModel->index(i, pricePerMeterColumn).data().toDouble();
+                if (groupByColumn != constants::NOT_SET_COLUMN)
+                    transactionData.groupedBy_ =
+                        proxyModel->index(i, groupByColumn).data();
 
-        if (groupByColumn != constants::NOT_SET_COLUMN)
-            transactionData.groupedBy_ =
-                proxyModel->index(i, groupByColumn).data();
-
-        calcDataContainer.append(transactionData);
+                calcDataContainer.append(transactionData);
+            }
+        }
     }
 
     return calcDataContainer;
