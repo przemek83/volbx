@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include <QTableWidget>
 
 class Dataset;
@@ -14,7 +12,8 @@ class ColumnsPreview : public QTableWidget
 public:
     explicit ColumnsPreview(QWidget* parent);
 
-    void setDatasetSampleInfo(const std::unique_ptr<Dataset>& dataset);
+    void setDatasetSampleInfo(int columnsCount,
+                              const QVector<QVector<QVariant>>& sampleData);
 
     void purge();
 
@@ -23,8 +22,6 @@ public slots:
 
 private:
     static QTableWidgetItem* createItem(const QString& name);
-
-    void setLabels(const std::unique_ptr<Dataset>& dataset);
 
 private slots:
     void onItemSelectionChanged();

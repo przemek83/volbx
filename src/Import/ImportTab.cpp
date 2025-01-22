@@ -37,8 +37,19 @@ std::unique_ptr<Dataset> ImportTab::getDataset()
 void ImportTab::setDataset(std::unique_ptr<Dataset> dataset)
 {
     auto* columnsPreview{findChild<ColumnsPreview*>()};
-    columnsPreview->setDatasetSampleInfo(dataset);
+    const int columnCount{dataset->columnCount()};
+
+    const QVector<QVector<QVariant>> sampleData{dataset->retrieveSampleData()};
+    columnsPreview->setDatasetSampleInfo(columnCount, sampleData);
+
+    QStringList labels;
+    labels.reserve(columnCount);
+    for (int i = 0; i < columnCount; ++i)
+        labels.append(dataset->getHeaderName(i));
+    columnsPreview->setHorizontalHeaderLabels(labels);
+
     columnsPreview->setEnabled(true);
+
     auto* visualization{findChild<DatasetVisualization*>()};
     visualization->setDataset(std::move(dataset));
     visualization->setEnabled(true);

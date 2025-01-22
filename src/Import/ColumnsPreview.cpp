@@ -2,8 +2,6 @@
 
 #include <QTableWidgetItem>
 
-#include "Datasets/Dataset.h"
-
 ColumnsPreview::ColumnsPreview(QWidget* parent) : QTableWidget(parent)
 {
     setSelectionBehavior(QAbstractItemView::SelectColumns);
@@ -13,16 +11,13 @@ ColumnsPreview::ColumnsPreview(QWidget* parent) : QTableWidget(parent)
 }
 
 void ColumnsPreview::setDatasetSampleInfo(
-    const std::unique_ptr<Dataset>& dataset)
+    int columnsCount, const QVector<QVector<QVariant>>& sampleData)
 {
     purge();
 
-    const int columns{dataset->columnCount()};
+    const int columns{columnsCount};
     setColumnCount(columns);
 
-    setLabels(dataset);
-
-    const QVector<QVector<QVariant>> sampleData{dataset->retrieveSampleData()};
     const int rows{static_cast<int>(sampleData.size())};
     setRowCount(rows);
     for (int i{0}; i < rows; ++i)
@@ -42,17 +37,6 @@ QTableWidgetItem* ColumnsPreview::createItem(const QString& name)
     QTableWidgetItem* item{new QTableWidgetItem(name)};
     item->setFlags(item->flags() & ~Qt::ItemIsEditable);
     return item;
-}
-
-void ColumnsPreview::setLabels(const std::unique_ptr<Dataset>& dataset)
-{
-    const int columns{dataset->columnCount()};
-    QStringList labels;
-    labels.reserve(columns);
-    for (int i = 0; i < columns; ++i)
-        labels.append(dataset->getHeaderName(i));
-
-    setHorizontalHeaderLabels(labels);
 }
 
 void ColumnsPreview::selectCurrentColumn(int column)
