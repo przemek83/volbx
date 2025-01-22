@@ -33,14 +33,15 @@ std::tuple<double, double> Dataset::getNumericRange(Column column) const
             min = value;
             max = value;
             first = false;
-            continue;
         }
+        else
+        {
+            if (value < min)
+                min = value;
 
-        if (value < min)
-            min = value;
-
-        if (value > max)
-            max = value;
+            if (value > max)
+                max = value;
+        }
     }
     return {min, max};
 }
