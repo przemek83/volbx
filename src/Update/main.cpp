@@ -4,7 +4,6 @@
 
 #include "Shared/Application.h"
 #include "Shared/Logger.h"
-#include "Update/UpdateProperties.h"
 
 #include "Update.h"
 
@@ -54,12 +53,12 @@ int main(int argc, char* argv[])
 {
     const QApplication a(argc, argv);
 
-    application::setAdditionalApplicatioInfo(
-        QStringLiteral(VER_PRODUCTNAME_STR));
+    const QString appName{QStringLiteral("VersionCheck")};
+
+    application::setAdditionalApplicatioInfo(appName);
     application::setQtStyle(QStringLiteral("Fusion"));
 
-    if (QSharedMemory sharedMemory(QStringLiteral(VER_PRODUCTNAME_STR));
-        isUniqueInstance(sharedMemory))
+    if (QSharedMemory sharedMemory(appName); isUniqueInstance(sharedMemory))
     {
         Update w;
         w.show();

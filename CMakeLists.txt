@@ -63,7 +63,6 @@ set(SOURCES
 qt_add_resources(SOURCES Resources/Resources.qrc)
 
 set(HEADERS
-    src/Volbx/VolbxProperties.h
     src/GUI/About.h
     src/GUI/CheckUpdates.h
     src/GUI/DockTitleBar.h

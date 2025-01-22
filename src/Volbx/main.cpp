@@ -7,8 +7,6 @@
 #include <Shared/Application.h>
 #include <Shared/Logger.h>
 
-#include "VolbxProperties.h"
-
 namespace
 {
 void overwriteUpdaterfIfNeeded()
@@ -33,7 +31,9 @@ void overwriteUpdaterfIfNeeded()
 int main(int argc, char* argv[])
 {
     const QApplication a(argc, argv);
-    application::setAdditionalApplicatioInfo(VER_PRODUCTNAME_STR);
+
+    const QString appName{QStringLiteral("Volbx")};
+    application::setAdditionalApplicatioInfo(appName);
     Configuration config;
     application::initStyle(config.getStyleName());
 

@@ -10,7 +10,6 @@ set(SOURCES
 
 set(HEADERS
     Update.h
-    UpdateProperties.h
 )
 
 set(UI
