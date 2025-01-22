@@ -115,7 +115,7 @@ QVector<TransactionData> DataView::fillDataFromSelection(
         const QModelIndex dateIndex{proxyModel->index(i, taggedColumns.date_)};
         const QVariant& dateVariant{dateIndex.data()};
         if (selectionModelOfView->isSelected(dateIndex) &&
-            !dateVariant.isNull())
+            (!dateVariant.isNull()))
         {
             TransactionData transactionData;
             transactionData.date_ = dateVariant.toDate();
