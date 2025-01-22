@@ -45,25 +45,26 @@ void DataView::groupingColumnChanged(int column)
         fillDataFromSelection(column), parentModel->getColumnFormat(column));
 }
 
-std::tuple<bool, int, int> DataView::getTaggedColumns(
+std::pair<bool, DataView::TaggedColumns> DataView::getTaggedColumns(
     const TableModel* parentModel)
 {
-    int pricePerMeterColumn{constants::NOT_SET_COLUMN};
-    if (auto [ok, columnId] =
-            parentModel->getTaggedColumnIfExists(ColumnTag::VALUE);
-        ok)
-        pricePerMeterColumn = columnId;
-    else
-        return {false, constants::NOT_SET_COLUMN, constants::NOT_SET_COLUMN};
+    using constants::NOT_SET_COLUMN;
 
-    int transactionDateColumn{constants::NOT_SET_COLUMN};
-    if (auto [ok,
-              columnId]{parentModel->getTaggedColumnIfExists(ColumnTag::DATE)};
+    int valueColumn{NOT_SET_COLUMN};
+    if (auto [ok, id] = parentModel->getTaggedColumnIfExists(ColumnTag::VALUE);
         ok)
-        transactionDateColumn = columnId;
+        valueColumn = id;
     else
-        return {false, constants::NOT_SET_COLUMN, constants::NOT_SET_COLUMN};
-    return {true, pricePerMeterColumn, transactionDateColumn};
+        return {false, {NOT_SET_COLUMN, NOT_SET_COLUMN}};
+
+    int dateColumn{NOT_SET_COLUMN};
+    if (auto [ok, id]{parentModel->getTaggedColumnIfExists(ColumnTag::DATE)};
+        ok)
+        dateColumn = id;
+    else
+        return {false, {NOT_SET_COLUMN, NOT_SET_COLUMN}};
+
+    return {true, {valueColumn, dateColumn}};
 }
 
 void DataView::setDelegate(int columnIndex, const TableModel* parentModel)
@@ -94,8 +95,7 @@ QVector<TransactionData> DataView::fillDataFromSelection(
 {
     const TableModel* parentModel{getParentModel()};
 
-    const auto [success, pricePerMeterColumn,
-                transactionDateColumn]{getTaggedColumns(parentModel)};
+    const auto [success, taggedColumns]{getTaggedColumns(parentModel)};
     if (!success)
         return {};
 
@@ -112,23 +112,20 @@ QVector<TransactionData> DataView::fillDataFromSelection(
         if ((i % batchSize) == 0)
             QApplication::processEvents();
 
-        if (selectionModelOfView->isSelected(proxyModel->index(i, 0)))
+        if (const QModelIndex dateIndex{
+                proxyModel->index(i, taggedColumns.date_)};
+            selectionModelOfView->isSelected(dateIndex))
         {
-            const QVariant& dateVariant{
-                proxyModel->index(i, transactionDateColumn).data()};
-            if (!dateVariant.isNull())
-            {
-                TransactionData transactionData;
-                transactionData.date_ = dateVariant.toDate();
-                transactionData.pricePerMeter_ =
-                    proxyModel->index(i, pricePerMeterColumn).data().toDouble();
+            TransactionData transactionData;
+            transactionData.date_ = dateIndex.data().toDate();
+            transactionData.pricePerMeter_ =
+                proxyModel->index(i, taggedColumns.value_).data().toDouble();
 
-                if (groupByColumn != constants::NOT_SET_COLUMN)
-                    transactionData.groupedBy_ =
-                        proxyModel->index(i, groupByColumn).data();
+            if (groupByColumn != constants::NOT_SET_COLUMN)
+                transactionData.groupedBy_ =
+                    proxyModel->index(i, groupByColumn).data();
 
-                calcDataContainer.append(transactionData);
-            }
+            calcDataContainer.append(transactionData);
         }
     }
 

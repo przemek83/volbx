@@ -38,7 +38,13 @@ private:
 
     const TableModel* getParentModel() const;
 
-    static std::tuple<bool, int, int> getTaggedColumns(
+    struct TaggedColumns
+    {
+        int date_{0};
+        int value_{0};
+    };
+
+    static std::pair<bool, TaggedColumns> getTaggedColumns(
         const TableModel* parentModel);
 
     void setDelegate(int columnIndex, const TableModel* parentModel);
