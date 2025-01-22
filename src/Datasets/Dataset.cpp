@@ -57,25 +57,28 @@ std::tuple<QDate, QDate, bool> Dataset::getDateRange(Column column) const
     for (int i{0}; i < count; ++i)
     {
         const QVariant& dateVariant{data_[i][column]};
-        if (dateVariant.isNull())
+        if (!dateVariant.isNull())
+        {
+            const QDate date{dateVariant.toDate()};
+            if (first)
+            {
+                minDate = date;
+                maxDate = date;
+                first = false;
+            }
+            else
+            {
+                if (date < minDate)
+                    minDate = date;
+
+                if (date > maxDate)
+                    maxDate = date;
+            }
+        }
+        else
         {
             emptyDates = true;
-            continue;
         }
-        const QDate date{dateVariant.toDate()};
-        if (first)
-        {
-            minDate = date;
-            maxDate = date;
-            first = false;
-            continue;
-        }
-
-        if (date < minDate)
-            minDate = date;
-
-        if (date > maxDate)
-            maxDate = date;
     }
 
     return {minDate, maxDate, emptyDates};
@@ -88,17 +91,20 @@ QStringList Dataset::getStringList(Column column) const
     listToFill.reserve(rowCount());
     for (const auto& row : data_)
     {
-        if (row[column].isNull())
-            continue;
-
-        if (row[column].typeId() == QMetaType::QString)
+        if (!row[column].isNull())
         {
-            listToFill.append(row[column].toString());
-            continue;
+            if (row[column].typeId() == QMetaType::QString)
+            {
+                listToFill.append(row[column].toString());
+            }
+            else
+            {
+                const int index{row[column].toInt()};
+                listToFill.append(sharedStrings_[index].toString());
+            }
         }
-        const int index{row[column].toInt()};
-        listToFill.append(sharedStrings_[index].toString());
     }
+
     listToFill.removeDuplicates();
     return listToFill;
 }
@@ -207,16 +213,16 @@ void Dataset::rebuildUsingActiveColumns()
     const qsizetype count{activeColumns_.count()};
     for (qsizetype i{0}; i < count; ++i)
     {
-        if (!activeColumns_.at(i))
-            continue;
-
-        rebuiltColumnsFormat.push_back(columnTypes_[i]);
-        rebuiltHeaderColumnNames << headerColumnNames_[i];
-        if (dateColumnTagged && (taggedColumns_.value(dateTag) == i))
-            rebuiltTaggedColumns[dateTag] = activeColumnNumber;
-        if (priceColumnTagged && (taggedColumns_.value(priceTag) == i))
-            rebuiltTaggedColumns[priceTag] = activeColumnNumber;
-        ++activeColumnNumber;
+        if (activeColumns_.at(i))
+        {
+            rebuiltColumnsFormat.push_back(columnTypes_[i]);
+            rebuiltHeaderColumnNames << headerColumnNames_[i];
+            if (dateColumnTagged && (taggedColumns_.value(dateTag) == i))
+                rebuiltTaggedColumns[dateTag] = activeColumnNumber;
+            if (priceColumnTagged && (taggedColumns_.value(priceTag) == i))
+                rebuiltTaggedColumns[priceTag] = activeColumnNumber;
+            ++activeColumnNumber;
+        }
     }
 
     columnTypes_ = rebuiltColumnsFormat;
@@ -234,19 +240,19 @@ void Dataset::updateSampleDataStrings(QVector<QVector<QVariant>>& data) const
     const int count{columnCount()};
     for (int i{0}; i < count; ++i)
     {
-        if (columnTypes_.at(i) != ColumnType::STRING)
-            continue;
-
-        for (auto& sampleDataRow : data)
+        if (columnTypes_.at(i) == ColumnType::STRING)
         {
-            if (sampleDataRow[i].typeId() != QMetaType::Int)
-                continue;
-
-            const int index{sampleDataRow[i].toInt()};
-            if (index > sharedStrings_.size())
-                sampleDataRow[i] = 0;
-            else
-                sampleDataRow[i] = sharedStrings_[index];
+            for (auto& sampleDataRow : data)
+            {
+                if (sampleDataRow[i].typeId() == QMetaType::Int)
+                {
+                    const int index{sampleDataRow[i].toInt()};
+                    if (index > sharedStrings_.size())
+                        sampleDataRow[i] = 0;
+                    else
+                        sampleDataRow[i] = sharedStrings_[index];
+                }
+            }
         }
     }
 }
