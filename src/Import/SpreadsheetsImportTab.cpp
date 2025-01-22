@@ -48,8 +48,18 @@ QString SpreadsheetsImportTab::getCurrentImportFilePath() const
     return importFilePath_;
 }
 
-void SpreadsheetsImportTab::analyzeFile(const std::unique_ptr<Dataset>& dataset)
+std::unique_ptr<Dataset> SpreadsheetsImportTab::prepareDataset(
+    const QFileInfo& fileInfo)
 {
+    std::unique_ptr<Dataset> dataset{createDataset(fileInfo)};
+    if (dataset == nullptr)
+    {
+        QMessageBox::information(this, tr("Wrong file"),
+                                 tr("File type is not supported."));
+        emit datasetIsReady(false);
+        return nullptr;
+    }
+
     const QString barTitle{
         constants::getProgressBarTitle(constants::BarTitle::ANALYSING)};
     ProgressBarInfinite bar(barTitle, nullptr);
@@ -67,13 +77,15 @@ void SpreadsheetsImportTab::analyzeFile(const std::unique_ptr<Dataset>& dataset)
     if (!futureInit.get())
     {
         LOG(LogTypes::IMPORT_EXPORT, "Last error: " + dataset->getLastError());
-        return;
+        return nullptr;
     }
 
     LOG(LogTypes::IMPORT_EXPORT,
         "Analysed file having " + QString::number(dataset->rowCount()) +
             " rows in time " +
             constants::elapsedTimeToSeconds(performanceTimer) + " seconds.");
+
+    return dataset;
 }
 
 std::unique_ptr<Dataset> SpreadsheetsImportTab::createDataset(
@@ -136,15 +148,7 @@ void SpreadsheetsImportTab::openFileButtonClicked()
     importFilePath_ = fileInfo.canonicalPath();
     ui_->fileNameLineEdit->setText(fileInfo.filePath());
 
-    std::unique_ptr<Dataset> dataset{createDataset(fileInfo)};
-    if (dataset == nullptr)
-    {
-        QMessageBox::information(this, tr("Wrong file"),
-                                 tr("File type is not supported."));
-        emit datasetIsReady(false);
-        return;
-    }
-
-    analyzeFile(dataset);
-    setDataset(std::move(dataset));
+    std::unique_ptr<Dataset> dataset{prepareDataset(fileInfo)};
+    if (dataset != nullptr)
+        setDataset(std::move(dataset));
 }

@@ -25,7 +25,7 @@ public:
     QString getCurrentImportFilePath() const;
 
 private:
-    static void analyzeFile(const std::unique_ptr<Dataset>& dataset);
+    std::unique_ptr<Dataset> prepareDataset(const QFileInfo& fileInfo);
 
     static std::unique_ptr<Dataset> createDataset(const QFileInfo& fileInfo);
 
