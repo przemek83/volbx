@@ -25,9 +25,9 @@ std::tuple<double, double> Dataset::getNumericRange(Column column) const
     bool first{true};
 
     const int count{rowCount()};
-    for (int i{0}; i < count; ++i)
+    for (int row{0}; row < count; ++row)
     {
-        const double value{data_[i][column].toDouble()};
+        const double value{data_[row][column].toDouble()};
         if (first)
         {
             min = value;
@@ -36,11 +36,8 @@ std::tuple<double, double> Dataset::getNumericRange(Column column) const
         }
         else
         {
-            if (value < min)
-                min = value;
-
-            if (value > max)
-                max = value;
+            min = std::min(min, value);
+            max = std::max(max, value);
         }
     }
     return {min, max};
@@ -55,9 +52,9 @@ std::tuple<QDate, QDate, bool> Dataset::getDateRange(Column column) const
     bool first{true};
 
     const int count{rowCount()};
-    for (int i{0}; i < count; ++i)
+    for (int row{0}; row < count; ++row)
     {
-        const QVariant& dateVariant{data_[i][column]};
+        const QVariant& dateVariant{data_[row][column]};
         if (!dateVariant.isNull())
         {
             const QDate date{dateVariant.toDate()};
@@ -69,11 +66,8 @@ std::tuple<QDate, QDate, bool> Dataset::getDateRange(Column column) const
             }
             else
             {
-                if (date < minDate)
-                    minDate = date;
-
-                if (date > maxDate)
-                    maxDate = date;
+                minDate = std::min(minDate, date);
+                maxDate = std::max(maxDate, date);
             }
         }
         else
