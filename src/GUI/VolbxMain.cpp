@@ -389,17 +389,12 @@ void VolbxMain::actionImportDataTriggered()
     config_.setImportFilePath(importData.getImportFilePath());
 }
 
-QString VolbxMain::createNameForTab(const std::unique_ptr<Dataset>& dataset)
+void VolbxMain::addMainTabForDataset(std::unique_ptr<Dataset> dataset)
 {
     QString nameForTabBar{dataset->getName()};
     if (auto [ok, column]{dataset->getTaggedColumn(ColumnTag::VALUE)}; ok)
         nameForTabBar.append(" (" + dataset->getHeaderName(column) + ")");
-    return nameForTabBar;
-}
 
-void VolbxMain::addMainTabForDataset(std::unique_ptr<Dataset> dataset)
-{
-    const QString nameForTabBar{createNameForTab(dataset)};
     const QString datasetName{dataset->getName()};
 
     auto* mainTab{new Tab(std::move(dataset), &tabWidget_)};

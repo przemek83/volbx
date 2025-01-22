@@ -66,8 +66,6 @@ private:
 
     void importDataset(std::unique_ptr<Dataset> dataset);
 
-    static QString createNameForTab(const std::unique_ptr<Dataset>& dataset);
-
     bool canUpdate(QNetworkReply* reply);
 
     static void updateApplication();
