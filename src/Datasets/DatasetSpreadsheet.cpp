@@ -34,7 +34,7 @@ const QString& DatasetSpreadsheet::getSheetName() const
 
 std::tuple<bool, QVector<QVector<QVariant>>> DatasetSpreadsheet::getSample()
 {
-    auto [success, data] = getDataFromZip(getSheetName(), true);
+    auto [success, data]{getDataFromZip(getSheetName(), true)};
     if (!success)
         return {false, {}};
 
