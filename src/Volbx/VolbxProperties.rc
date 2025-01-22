@@ -4,20 +4,20 @@ IDI_ICON1   ICON    DISCARDABLE "Volbx.ico"
 #include "../Shared/CommonProperties.h"
 
 VS_VERSION_INFO VERSIONINFO
-FILEVERSION     VER_FILEVERSION
+FILEVERSION     1, 0, 0, 0
 PRODUCTVERSION  VER_PRODUCTVERSION
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
         BLOCK "040904E4"
         BEGIN
-            VALUE "CompanyName",        VER_COMPANYNAME_STR
+            VALUE "CompanyName",        ""
             VALUE "FileDescription",    "Volbx"
-            VALUE "FileVersion",        VER_FILEVERSION_STR
+            VALUE "FileVersion",        "1.0.0.0"
             VALUE "InternalName",       "Volbx"
             VALUE "LegalCopyright",     VER_LEGALCOPYRIGHT_STR
-            VALUE "LegalTrademarks1",   VER_LEGALTRADEMARKS1_STR
-            VALUE "LegalTrademarks2",   VER_LEGALTRADEMARKS2_STR
+            VALUE "LegalTrademarks1",   ""
+            VALUE "LegalTrademarks2",   ""
             VALUE "OriginalFilename",   "Volbx.exe"
             VALUE "ProductName",        "Volbx"
             VALUE "ProductVersion",     VER_PRODUCTVERSION_STR
