@@ -112,12 +112,13 @@ QVector<TransactionData> DataView::fillDataFromSelection(
         if ((i % batchSize) == 0)
             QApplication::processEvents();
 
-        if (const QModelIndex dateIndex{
-                proxyModel->index(i, taggedColumns.date_)};
-            selectionModelOfView->isSelected(dateIndex))
+        const QModelIndex dateIndex{proxyModel->index(i, taggedColumns.date_)};
+        const QVariant& dateVariant{dateIndex.data()};
+        if (selectionModelOfView->isSelected(dateIndex) &&
+            !dateVariant.isNull())
         {
             TransactionData transactionData;
-            transactionData.date_ = dateIndex.data().toDate();
+            transactionData.date_ = dateVariant.toDate();
             transactionData.pricePerMeter_ =
                 proxyModel->index(i, taggedColumns.value_).data().toDouble();
 
