@@ -233,28 +233,32 @@ void Dataset::rebuildUsingActiveColumns()
     activeColumns_.clear();
 }
 
+void Dataset::fillStringsInColumn(QVector<QVector<QVariant>>& data,
+                                  int column) const
+{
+    for (auto& sampleDataRow : data)
+    {
+        if (sampleDataRow[column].typeId() == QMetaType::Int)
+        {
+            const int index{sampleDataRow[column].toInt()};
+            if (index > sharedStrings_.size())
+                sampleDataRow[column] = 0;
+            else
+                sampleDataRow[column] = sharedStrings_[index];
+        }
+    }
+}
+
 void Dataset::updateSampleDataStrings(QVector<QVector<QVariant>>& data) const
 {
     if (sharedStrings_.isEmpty())
         return;
 
     const int count{columnCount()};
-    for (int i{0}; i < count; ++i)
+    for (int column{0}; column < count; ++column)
     {
-        if (columnTypes_.at(i) == ColumnType::STRING)
-        {
-            for (auto& sampleDataRow : data)
-            {
-                if (sampleDataRow[i].typeId() == QMetaType::Int)
-                {
-                    const int index{sampleDataRow[i].toInt()};
-                    if (index > sharedStrings_.size())
-                        sampleDataRow[i] = 0;
-                    else
-                        sampleDataRow[i] = sharedStrings_[index];
-                }
-            }
-        }
+        if (columnTypes_.at(column) == ColumnType::STRING)
+            fillStringsInColumn(data, column);
     }
 }
 

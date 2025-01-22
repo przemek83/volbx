@@ -81,6 +81,9 @@ protected:
 
     virtual void closeZip() = 0;
 
+    void fillStringsInColumn(QVector<QVector<QVariant>>& data,
+                             int column) const;
+
     void updateSampleDataStrings(QVector<QVector<QVariant>>& data) const;
 
     QVector<QVariant> sharedStrings_;
