@@ -4,14 +4,13 @@
 
 #include <QMainWindow>
 
+#include <ModelsAndViews/DataView.h>
 #include <ModelsAndViews/FilteringProxyModel.h>
 #include <ModelsAndViews/TableModel.h>
 
+#include "DataViewDock.h"
+
 class Dataset;
-class TableModel;
-class DataView;
-class FilteringProxyModel;
-class DataViewDock;
 
 /// @brief Tab containing models, view, dock widgets with data and plot.
 class Tab : public QMainWindow
@@ -27,8 +26,11 @@ public:
     DataView* getCurrentDataView() const;
 
 private:
-    DataViewDock* createDataViewDock();
+    void setupDock();
 
     FilteringProxyModel proxyModel_;
     TableModel model_;
+
+    DataViewDock dock_;
+    DataView view_;
 };

@@ -1,12 +1,13 @@
 #include "Tab.h"
 
 #include <Datasets/Dataset.h>
-#include <ModelsAndViews/DataView.h>
-
-#include "DataViewDock.h"
 
 Tab::Tab(std::unique_ptr<Dataset> dataset, QString name, QWidget* parent)
-    : QMainWindow(parent), proxyModel_{this}, model_{std::move(dataset)}
+    : QMainWindow(parent),
+      proxyModel_{this},
+      model_{std::move(dataset)},
+      dock_{tr("Data"), this},
+      view_{&dock_}
 {
     setWindowTitle(name);
 
@@ -15,7 +16,9 @@ Tab::Tab(std::unique_ptr<Dataset> dataset, QString name, QWidget* parent)
     model_.setParent(this);
     proxyModel_.setSourceModel(&model_);
 
-    addDockWidget(Qt::LeftDockWidgetArea, createDataViewDock());
+    setupDock();
+
+    addDockWidget(Qt::LeftDockWidgetArea, &dock_);
 }
 
 FilteringProxyModel* Tab::getCurrentProxyModel() const
@@ -30,11 +33,8 @@ TableModel* Tab::getCurrentTableModel() const
 
 DataView* Tab::getCurrentDataView() const { return findChild<DataView*>(); }
 
-DataViewDock* Tab::createDataViewDock()
+void Tab::setupDock()
 {
-    auto* dock{new DataViewDock(tr("Data"), this)};
-    auto* view{new DataView(dock)};
-    view->setModel(&proxyModel_);
-    dock->setWidget(view);
-    return dock;
+    view_.setModel(&proxyModel_);
+    dock_.setWidget(&view_);
 }
