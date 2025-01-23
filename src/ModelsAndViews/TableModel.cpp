@@ -2,8 +2,8 @@
 
 #include "Constants.h"
 
-TableModel::TableModel(std::unique_ptr<Dataset> dataset, QObject* parent)
-    : QAbstractTableModel(parent), dataset_(std::move(dataset))
+TableModel::TableModel(std::unique_ptr<Dataset> dataset)
+    : QAbstractTableModel(), dataset_(std::move(dataset))
 {
 }
 

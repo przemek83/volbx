@@ -11,7 +11,7 @@ class TableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    TableModel(std::unique_ptr<Dataset> dataset, QObject* parent);
+    explicit TableModel(std::unique_ptr<Dataset> dataset);
 
     int rowCount(const QModelIndex& parent) const override;
 

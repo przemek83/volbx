@@ -138,7 +138,7 @@ QString getExportedTsv(const QAbstractItemView& view)
 void compareExportDataWithDump(std::unique_ptr<Dataset> dataset,
                                const QString& filePath)
 {
-    TableModel model(std::move(dataset), nullptr);
+    TableModel model(std::move(dataset));
     FilteringProxyModel proxyModel;
     proxyModel.setSourceModel(&model);
 
@@ -224,7 +224,7 @@ void generateExpectedDataForFile(const QString& fileName,
     DatasetCommon::activateAllDatasetColumns(*dataset);
     dataset->loadData();
 
-    TableModel model(std::move(dataset), nullptr);
+    TableModel model(std::move(dataset));
     FilteringProxyModel proxyModel;
     proxyModel.setSourceModel(&model);
     QTableView view;

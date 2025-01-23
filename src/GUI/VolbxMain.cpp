@@ -397,7 +397,7 @@ void VolbxMain::addMainTabForDataset(std::unique_ptr<Dataset> dataset)
 
     const QString datasetName{dataset->getName()};
 
-    auto* mainTab{new Tab(std::move(dataset), &tabWidget_)};
+    auto* mainTab{new Tab(std::move(dataset), dataset->getName(), &tabWidget_)};
     filters_.addFiltersForModel(mainTab->getCurrentProxyModel());
     const int newTabIndex{tabWidget_.addTab(mainTab, nameForTabBar)};
     tabWidget_.setCurrentIndex(newTabIndex);

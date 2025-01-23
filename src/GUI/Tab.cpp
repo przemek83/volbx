@@ -2,23 +2,20 @@
 
 #include <Datasets/Dataset.h>
 #include <ModelsAndViews/DataView.h>
-#include <ModelsAndViews/FilteringProxyModel.h>
-#include <ModelsAndViews/TableModel.h>
 
 #include "DataViewDock.h"
 
-Tab::Tab(std::unique_ptr<Dataset> dataset, QWidget* parent)
-    : QMainWindow(parent)
+Tab::Tab(std::unique_ptr<Dataset> dataset, QString name, QWidget* parent)
+    : QMainWindow(parent), proxyModel_{this}, model_{std::move(dataset)}
 {
-    setWindowTitle(dataset->getName());
+    setWindowTitle(name);
 
     setDockNestingEnabled(true);
 
-    auto* proxyModel{new FilteringProxyModel(this)};
-    auto* model{new TableModel(std::move(dataset), this)};
-    proxyModel->setSourceModel(model);
+    model_.setParent(this);
+    proxyModel_.setSourceModel(&model_);
 
-    addDockWidget(Qt::LeftDockWidgetArea, createDataViewDock(proxyModel));
+    addDockWidget(Qt::LeftDockWidgetArea, createDataViewDock());
 }
 
 FilteringProxyModel* Tab::getCurrentProxyModel() const
@@ -33,11 +30,11 @@ TableModel* Tab::getCurrentTableModel() const
 
 DataView* Tab::getCurrentDataView() const { return findChild<DataView*>(); }
 
-DataViewDock* Tab::createDataViewDock(FilteringProxyModel* proxyModel)
+DataViewDock* Tab::createDataViewDock()
 {
     auto* dock{new DataViewDock(tr("Data"), this)};
     auto* view{new DataView(dock)};
-    view->setModel(proxyModel);
+    view->setModel(&proxyModel_);
     dock->setWidget(view);
     return dock;
 }
