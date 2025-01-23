@@ -2,7 +2,7 @@
 
 #include <QApplication>
 #include <QTableView>
-#include <QtTest/QtTest>
+#include <QTest>
 
 #include <Common/FileUtilities.h>
 #include <Datasets/DatasetOds.h>

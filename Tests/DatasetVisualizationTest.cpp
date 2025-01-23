@@ -3,8 +3,8 @@
 #include <memory>
 
 #include <QApplication>
+#include <QTest>
 #include <QTreeWidget>
-#include <QtTest/QtTest>
 
 #include <Dataset.h>
 #include <DatasetVisualization.h>

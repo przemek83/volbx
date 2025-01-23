@@ -2,7 +2,7 @@
 
 #include <QDate>
 #include <QStandardItemModel>
-#include <QtTest/QtTest>
+#include <QTest>
 
 #include <FilteringProxyModel.h>
 

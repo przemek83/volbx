@@ -1,6 +1,6 @@
 #include "ConfigurationTest.h"
 
-#include <QtTest/QtTest>
+#include <QTest>
 
 #include "Common/Configuration.h"
 #include "Common/Constants.h"

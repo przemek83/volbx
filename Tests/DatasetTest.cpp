@@ -1,6 +1,6 @@
 #include "DatasetTest.h"
 
-#include <QtTest/QtTest>
+#include <QTest>
 
 #include <Constants.h>
 

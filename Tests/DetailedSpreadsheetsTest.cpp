@@ -1,7 +1,7 @@
 #include "DetailedSpreadsheetsTest.h"
 
 #include <QApplication>
-#include <QtTest/QtTest>
+#include <QTest>
 
 #include <Common/Constants.h>
 #include <Common/FileUtilities.h>

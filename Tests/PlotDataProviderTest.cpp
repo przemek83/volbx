@@ -1,6 +1,7 @@
 #include "PlotDataProviderTest.h"
 
-#include <QtTest/QtTest>
+#include <QSignalSpy>
+#include <QTest>
 
 #include <PlotDataProvider.h>
 

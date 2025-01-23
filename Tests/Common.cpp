@@ -2,6 +2,7 @@
 
 #include <QFile>
 #include <QTextStream>
+#include <QStringConverter>
 
 namespace Common
 {

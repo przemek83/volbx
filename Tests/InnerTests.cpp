@@ -5,7 +5,7 @@
 #include <QDirIterator>
 #include <QDomDocument>
 #include <QTableView>
-#include <QtTest/QtTest>
+#include <QTest>
 
 #include <Common/FileUtilities.h>
 #include <Datasets/DatasetInner.h>

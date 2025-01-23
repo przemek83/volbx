@@ -3,9 +3,10 @@
 #include <memory>
 
 #include <eible/ExportDsv.h>
+#include <QBuffer>
 #include <QDomDocument>
 #include <QTableView>
-#include <QtTest/QtTest>
+#include <QTest>
 
 #include <Common/FileUtilities.h>
 #include <Datasets/Dataset.h>

@@ -1,4 +1,4 @@
-#include <QtTest/QtTest>
+#include <QTest>
 
 #include "ConfigurationTest.h"
 #include "DatasetTest.h"
