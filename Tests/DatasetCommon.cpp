@@ -151,10 +151,9 @@ void compareExportDataWithDump(std::unique_ptr<Dataset> dataset,
         file_utilities::loadFile(filePath + Common::getDataTsvDumpSuffix())
             .second};
 
-    QStringList actualDataLines{
-        actualData.split(QRegularExpression(QStringLiteral("\n|\r\n")))};
-    QStringList expectedDataLines{
-        expectedData.split(QRegularExpression(QStringLiteral("\n|\r\n")))};
+    static QRegularExpression splitRegexp{QStringLiteral("\n|\r\n")};
+    QStringList actualDataLines{actualData.split(splitRegexp)};
+    QStringList expectedDataLines{expectedData.split(splitRegexp)};
     QCOMPARE(actualDataLines.size(), expectedDataLines.size());
     for (int i = 0; i < actualDataLines.size(); ++i)
     {

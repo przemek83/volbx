@@ -65,11 +65,10 @@ void Update::startUpdating(const QString& availableVersion,
         return;
     }
 
-    ui_.fileCount->setText(QLatin1Char('/') +
-                           QString::number(filesToDownload_.count()));
+    ui_.fileCount->setText(u'/' + QString::number(filesToDownload_.count()));
 
     insertNewLineIntoDetails();
-    insertNewSectionIntoDetails(tr("Downloading files") + QLatin1Char(':'));
+    insertNewSectionIntoDetails(tr("Downloading files") + u':');
 
     downloadFile(filesToDownload_.constFirst());
 }
@@ -86,8 +85,7 @@ bool Update::isReplyOk(const QNetworkReply* reply)
     if (!networking::replyIsValid(reply))
     {
         insertNewLineIntoDetails();
-        insertErrorInfoIntoDetails(tr("Error") + QLatin1Char(':') +
-                                   reply->errorString());
+        insertErrorInfoIntoDetails(tr("Error") + u':' + reply->errorString());
         showErrorMsg(tr("Connection error encountered."));
         return false;
     }
@@ -122,32 +120,30 @@ void Update::fillFilesToUpdateLists(const QStringList& serverInfoList)
 {
     // First line/element is correctness checker, second version.
     const qsizetype filesCount{serverInfoList.size() - 2};
-    insertNewSectionIntoDetails(tr("Found") + QLatin1Char(' ') +
-                                QString::number(filesCount) + QLatin1Char(' ') +
-                                "file(s)" + QLatin1Char(' ') + tr("to update") +
-                                QLatin1Char(':'));
+    insertNewSectionIntoDetails(tr("Found") + u' ' +
+                                QString::number(filesCount) + u' ' + "file(s)" +
+                                u' ' + tr("to update") + u':');
 
     filesToDownload_.clear();
     filesToDownloadSize_.clear();
     for (int i{0}; i < filesCount; ++i)
     {
         const QString& fileInfoLine{serverInfoList.at(2 + i)};
-        const QString fileName{fileInfoLine.section(QLatin1Char(';'), 0, 0)};
-        const QString fileSize{fileInfoLine.section(QLatin1Char(';'), 1)};
+        const QString fileName{fileInfoLine.section(u';', 0, 0)};
+        const QString fileSize{fileInfoLine.section(u';', 1)};
         filesToDownload_.push_back(fileName);
         filesToDownloadSize_.push_back(fileSize);
 
-        insertInfoIntoDetails(
-            QString::number(i + 1) + QStringLiteral(". ") + fileName +
-            QStringLiteral(" (") + tr("size") + QStringLiteral(": ") +
-            fileSize + QLatin1Char(' ') + tr("bytes") + QLatin1Char(')'));
+        insertInfoIntoDetails(QString::number(i + 1) + u". "_qs + fileName +
+                              u" ("_qs + tr("size") + u": "_qs + fileSize +
+                              u' ' + tr("bytes") + u')');
         insertNewLineIntoDetails();
     }
 }
 
 void Update::downloadFile(const QString& fileName)
 {
-    insertInfoIntoDetails(fileName + QStringLiteral("... "));
+    insertInfoIntoDetails(fileName + u"... "_qs);
     if (currentTriesCount_ == 0)
         ui_.currentFile->setText(
             QString::number(ui_.currentFile->text().toInt() + 1));
@@ -180,7 +176,7 @@ void Update::downloadFinished(QNetworkReply* reply)
                                QString::number(fileSize.toInt()) +
                                QStringLiteral(", size of downloaded file ") +
                                QString::number(fileDownloadedContent.size()) +
-                               QLatin1Char('.'));
+                               u'.');
 
     // Verification of file size.
     if (fileDownloadedContent.size() == fileSize.toInt())
@@ -204,8 +200,8 @@ void Update::saveVerfiedFile(const QByteArray& fileData,
     insertSuccessInfoIntoDetails(tr("Verified"));
     insertNewLineIntoDetails();
 
-    QString filePath{QApplication::applicationDirPath() + QLatin1Char('/') +
-                     fileName + tmpPrefix_};
+    QString filePath{QApplication::applicationDirPath() + u'/' + fileName +
+                     tmpPrefix_};
     QFile file(filePath);
 
     if (bool success{file.remove()}; !success)
@@ -249,34 +245,31 @@ void Update::renameTempFile(const QString& file)
     QString targetFileName(file);
     targetFileName.chop(tmpPrefix_.size());
 
-    insertInfoIntoDetails(file.section(QLatin1Char('/'), -1) +
-                          QStringLiteral(" -> ") +
-                          targetFileName.section(QLatin1Char('/'), -1));
+    insertInfoIntoDetails(file.section(u'/', -1) + QStringLiteral(" -> ") +
+                          targetFileName.section(u'/', -1));
     insertNewLineIntoDetails();
 
     bool success{QFile::remove(targetFileName)};
     if (!success)
         LOG(LogTypes::NETWORK,
-            QString::fromLatin1("Cannot remove file: ") + targetFileName);
+            QStringLiteral("Cannot remove file: ") + targetFileName);
 
     success = QFile::rename(file, targetFileName);
     if (!success)
-        LOG(LogTypes::NETWORK, QString::fromLatin1("Cannot rename file ") +
-                                   file + QString::fromLatin1(" to ") +
-                                   targetFileName);
+        LOG(LogTypes::NETWORK, QStringLiteral("Cannot rename file ") + file +
+                                   QStringLiteral(" to ") + targetFileName);
 }
 
 void Update::finalizeUpdate()
 {
     insertNewLineIntoDetails();
-    insertNewSectionIntoDetails(tr("Renaming temporary filenames") +
-                                QLatin1Char(':'));
+    insertNewSectionIntoDetails(tr("Renaming temporary filenames") + u':');
 
     for (const QString& tempFileName : ::qAsConst(tempFiles_))
         renameTempFile(tempFileName);
 
     insertNewLineIntoDetails();
-    insertSuccessInfoIntoDetails(tr("Update complete") + QLatin1Char('.'));
+    insertSuccessInfoIntoDetails(tr("Update complete") + u'.');
     insertNewLineIntoDetails();
 
     ui_.valueActual->setText(ui_.valueAvailable->text());

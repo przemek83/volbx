@@ -24,7 +24,7 @@ QStringList getListOfAvailableDatasets()
     datasetsDir.setSorting(QDir::Name);
 
     QStringList entries{datasetsDir.entryList()};
-    return entries.replaceInStrings(getDatasetExtension(), QLatin1String(""));
+    return entries.replaceInStrings(getDatasetExtension(), u""_qs);
 }
 
 bool isDatasetDirUsable()

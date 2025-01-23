@@ -49,8 +49,8 @@ void setAdditionalApplicatioInfo(const QString& productName)
 {
     QApplication::setApplicationName(productName);
     QApplication::setApplicationVersion(QStringLiteral(VER_PRODUCTVERSION_STR));
-    QApplication::setOrganizationName(QStringLiteral(""));
-    QApplication::setOrganizationDomain(QLatin1String(""));
+    QApplication::setOrganizationName(u""_qs);
+    QApplication::setOrganizationDomain(u""_qs);
 }
 
 void setCssStyle(const QString& styleName)
@@ -60,7 +60,7 @@ void setCssStyle(const QString& styleName)
     QFile styleFile(getStylePath(styleName));
     if (styleFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        const QString style(QLatin1String(styleFile.readAll()));
+        const QString style(styleFile.readAll());
         qApp->setStyleSheet(style);
     }
 }

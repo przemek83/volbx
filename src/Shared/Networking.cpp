@@ -2,7 +2,7 @@
 
 #include <QApplication>
 #include <QNetworkAccessManager>
-#include <QtNetwork>
+#include <QNetworkReply>
 
 #include "Logger.h"
 
@@ -41,15 +41,15 @@ bool replyIsValid(const QNetworkReply* reply)
 std::tuple<QString, QStringList> getAvailableVersionAndFiles(
     QNetworkReply* reply)
 {
-    const QString replyString(QLatin1String(reply->readAll()));
+    const QString replyString(reply->readAll());
 
     LOG(LogTypes::NETWORK, QStringLiteral("Network reply:\n") + replyString);
 
-    const QStringList filesList{replyString.split(QLatin1Char('\n'))};
+    const QStringList filesList{replyString.split(u'\n')};
 
     if (filesList.isEmpty() ||
         (filesList.at(0) != QStringLiteral("Volbx-Update-Info")))
-        return {QLatin1String(""), filesList};
+        return {u""_qs, filesList};
 
     LOG(LogTypes::NETWORK,
         QStringLiteral("Available version is ") + filesList.value(1));

@@ -7,10 +7,9 @@
 
 #include "LogType.h"
 
-#define LOG(type, msg)                                                      \
-    Logger::getInstance().info((type), QString::fromLatin1(__FILE__),       \
-                               QString::fromLatin1(__FUNCTION__), __LINE__, \
-                               (msg))
+#define LOG(type, msg)                                                         \
+    Logger::getInstance().info((type), QStringLiteral(__FILE__), __FUNCTION__, \
+                               __LINE__, (msg))
 
 class QTextEdit;
 class QWidget;
@@ -23,7 +22,7 @@ class Logger : public QObject
 public:
     static Logger& getInstance();
 
-    void info(LogTypes type, const QString& file, const QString& function,
+    void info(LogTypes type, const QString& file, const char* function,
               int line, const QString& msg);
 
     void toggleVisibility();

@@ -42,7 +42,7 @@ Logger& Logger::getInstance()
     return instance;
 }
 
-void Logger::info(LogTypes type, const QString& file, const QString& function,
+void Logger::info(LogTypes type, const QString& file, const char* function,
                   int line, const QString& msg)
 {
     auto* logTextEdit{display_.findChild<QTextEdit*>()};

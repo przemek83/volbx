@@ -20,7 +20,7 @@ void showOtherInstanceRunnningError()
 bool isUniqueInstance(QSharedMemory& sharedMemory)
 {
     LOG(LogTypes::APP, QStringLiteral("Setting shared memory key named ") +
-                           QApplication::applicationName() + QLatin1Char('.'));
+                           QApplication::applicationName() + u'.');
 
     if (sharedMemory.attach())
     {
