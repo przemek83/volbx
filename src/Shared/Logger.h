@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QLatin1String>
 #include <QMap>
 #include <QObject>
 #include <QTextEdit>
@@ -9,8 +8,8 @@
 #include "LogType.h"
 
 #define LOG(type, msg)                                          \
-    Logger::getInstance().info((type), QLatin1String(__FILE__), \
-                               QLatin1String(__FUNCTION__), __LINE__, (msg))
+Logger::getInstance().info((type), QString::fromLatin1(__FILE__), \
+                               QString::fromLatin1(__FUNCTION__), __LINE__, (msg))
 
 class QTextEdit;
 class QWidget;
