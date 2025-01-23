@@ -18,7 +18,7 @@ class SpreadsheetsImportTab : public ImportTab
 {
     Q_OBJECT
 public:
-    explicit SpreadsheetsImportTab(const QString& importFilePath);
+    explicit SpreadsheetsImportTab(QString importFilePath);
 
     ~SpreadsheetsImportTab() override;
 

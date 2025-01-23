@@ -13,11 +13,11 @@ private:
     static std::unique_ptr<Dataset> getDataset();
 
 private slots:
-    void testGetDataset() const;
+    static void testGetDataset();
 
     static void testGetDatasetWithoutSettingIt();
 
-    void testClearDataset() const;
+    static void testClearDataset();
 
-    void testSelectCurrentColumn() const;
+    static void testSelectCurrentColumn();
 };

@@ -22,10 +22,10 @@
 #include "DatasetVisualization.h"
 #include "ui_SpreadsheetsImportTab.h"
 
-SpreadsheetsImportTab::SpreadsheetsImportTab(const QString& importFilePath)
+SpreadsheetsImportTab::SpreadsheetsImportTab(QString importFilePath)
     : ImportTab(),
       ui_{std::make_unique<Ui::SpreadsheetsImportTab>()},
-      importFilePath_{importFilePath}
+      importFilePath_{std::move(importFilePath)}
 {
     ui_->setupUi(this);
 

@@ -118,9 +118,10 @@ PlotDataProvider::computePointsAndRegression()
     quantiles_.maxX_ = maxX;
 
     // Calc linear regression and create points.
-    const double a{((dataSize * sumXY) - (sumX * sumY)) /
-                   ((dataSize * sumXX) - (sumX * sumX))};
-    const double b{(sumY / dataSize) - ((a * sumX) / dataSize)};
+    double sizeAsDouble{static_cast<double>(dataSize)};
+    const double a{((sizeAsDouble * sumXY) - (sumX * sumY)) /
+                   ((sizeAsDouble * sumXX) - (sumX * sumX))};
+    const double b{(sumY / sizeAsDouble) - ((a * sumX) / sizeAsDouble)};
 
     const QPointF linearRegressionFrom(minX, (a * minX) + b);
     const QPointF linearRegressionTo(maxX, (a * maxX) + b);

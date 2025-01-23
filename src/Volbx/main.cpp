@@ -21,9 +21,14 @@ void overwriteUpdaterfIfNeeded()
                                updaterFile +
                                constants::getTemporaryFileSuffix());
 
-        QFile::remove(updaterFile);
-        QFile::rename(updaterFile + constants::getTemporaryFileSuffix(),
-                      updaterFile);
+        bool success{QFile::remove(updaterFile)};
+        if (!success)
+            LOG(LogTypes::APP, "Cannot remove " + updaterFile);
+
+        success = QFile::rename(
+            updaterFile + constants::getTemporaryFileSuffix(), updaterFile);
+        if (!success)
+            LOG(LogTypes::APP, "Cannot rename file to " + updaterFile);
     }
 }
 }  // namespace

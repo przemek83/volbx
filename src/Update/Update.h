@@ -55,7 +55,7 @@ private:
 
     void renameTempFile(const QString& file);
 
-    Ui::Update ui_;
+    Ui::Update ui_{};
 
     QNetworkAccessManager initialInfoNetworkManager_;
 

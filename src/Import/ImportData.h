@@ -17,7 +17,7 @@ class ImportData : public QDialog
 {
     Q_OBJECT
 public:
-    explicit ImportData(const QString& importFilePath);
+    explicit ImportData(QString importFilePath);
 
     std::unique_ptr<Dataset> getSelectedDataset();
 

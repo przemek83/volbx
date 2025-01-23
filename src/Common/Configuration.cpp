@@ -154,7 +154,13 @@ bool Configuration::saveConfigXml(const QString& configXml)
 {
     const QString filename{QApplication::applicationDirPath() + "/" +
                            constants::getConfigurationFileName()};
-    QFile::remove(filename);
+
+    if (bool success{QFile::remove(filename)}; !success)
+    {
+        LOG(LogTypes::CONFIG, "Cannot remove config file " + filename);
+        return false;
+    }
+
     QFile file(filename);
 
     if (!file.open(QIODevice::WriteOnly))

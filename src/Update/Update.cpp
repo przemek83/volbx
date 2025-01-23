@@ -204,10 +204,15 @@ void Update::saveVerfiedFile(const QByteArray& fileData,
     insertSuccessInfoIntoDetails(tr("Verified"));
     insertNewLineIntoDetails();
 
-    QFile file(QApplication::applicationDirPath() + QLatin1Char('/') +
-               fileName + tmpPrefix_);
-    file.remove();
-    file.open(QIODevice::WriteOnly);
+    QString filePath{QApplication::applicationDirPath() + QLatin1Char('/') +
+                     fileName + tmpPrefix_};
+    QFile file(filePath);
+
+    if (bool success{file.remove()}; !success)
+        LOG(LogTypes::NETWORK,
+            QStringLiteral("Cannot remove file ") + filePath);
+
+    file.open(QIODevice::WriteOnly | QIODevice::Truncate);
     file.write(fileData);
 
     LOG(LogTypes::NETWORK,
@@ -249,8 +254,16 @@ void Update::renameTempFile(const QString& file)
                           targetFileName.section(QLatin1Char('/'), -1));
     insertNewLineIntoDetails();
 
-    QFile::remove(targetFileName);
-    QFile::rename(file, targetFileName);
+    bool success{QFile::remove(targetFileName)};
+    if (!success)
+        LOG(LogTypes::NETWORK,
+            QString::fromLatin1("Cannot remove file: ") + targetFileName);
+
+    success = QFile::rename(file, targetFileName);
+    if (!success)
+        LOG(LogTypes::NETWORK, QString::fromLatin1("Cannot rename file ") +
+                                   file + QString::fromLatin1(" to ") +
+                                   targetFileName);
 }
 
 void Update::finalizeUpdate()

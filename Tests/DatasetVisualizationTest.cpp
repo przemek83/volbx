@@ -26,7 +26,7 @@ std::unique_ptr<Dataset> DatasetVisualizationTest::getDataset()
 }
 
 std::unique_ptr<Dataset> getDataset();
-void DatasetVisualizationTest::testGetDataset() const
+void DatasetVisualizationTest::testGetDataset()
 {
     std::unique_ptr<Dataset> expectedDataset{getDataset()};
 
@@ -53,7 +53,7 @@ void DatasetVisualizationTest::testGetDatasetWithoutSettingIt()
     QCOMPARE(dataset, nullptr);
 }
 
-void DatasetVisualizationTest::testClearDataset() const
+void DatasetVisualizationTest::testClearDataset()
 {
     std::unique_ptr<Dataset> expectedDataset{getDataset()};
     DatasetVisualization visualization(nullptr);
@@ -65,7 +65,7 @@ void DatasetVisualizationTest::testClearDataset() const
     QCOMPARE(dataset, nullptr);
 }
 
-void DatasetVisualizationTest::testSelectCurrentColumn() const
+void DatasetVisualizationTest::testSelectCurrentColumn()
 {
     std::unique_ptr<Dataset> dataset{getDataset()};
     DatasetVisualization visualization(nullptr);
