@@ -64,7 +64,7 @@ std::pair<bool, DataView::TaggedColumns> DataView::getTaggedColumns(
     else
         return {false, {NOT_SET_COLUMN, NOT_SET_COLUMN}};
 
-    return {true, {valueColumn, dateColumn}};
+    return {true, {dateColumn, valueColumn}};
 }
 
 void DataView::setDelegate(int columnIndex, const TableModel* parentModel)
