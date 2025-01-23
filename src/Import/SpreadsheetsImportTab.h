@@ -12,7 +12,7 @@ class QFileInfo;
 namespace Ui
 {
 class SpreadsheetsImportTab;
-}
+}  // namespace Ui
 
 class SpreadsheetsImportTab : public ImportTab
 {

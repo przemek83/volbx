@@ -50,8 +50,7 @@ void ConfigurationTest::testReadingEmptyConfigurationFile() const
 
 void ConfigurationTest::cleanupTestCase() const
 {
-    QFile::remove(configurationFileName_);
     QFile file(configurationFileName_);
-    QVERIFY(file.open(QIODevice::WriteOnly));
+    QVERIFY(file.open(QIODeviceBase::Truncate | QIODevice::WriteOnly));
     QVERIFY(-1 != file.write(configurationFileContent_.toStdString().c_str()));
 }

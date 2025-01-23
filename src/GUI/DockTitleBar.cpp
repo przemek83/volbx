@@ -3,7 +3,7 @@
 #include <QPainter>
 #include <QStyle>
 
-DockTitleBar::DockTitleBar() : QWidget()
+DockTitleBar::DockTitleBar()
 {
     ui_->setupUi(this);
     ui_->reset->setVisible(false);

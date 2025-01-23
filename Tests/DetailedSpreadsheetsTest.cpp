@@ -164,8 +164,8 @@ void DetailedSpreadsheetsTest::testNumericColumnRanges()
 struct DateCheckData
 {
     int columnIndex{constants::NOT_SET_COLUMN};
-    QDate min{};
-    QDate max{};
+    QDate min;
+    QDate max;
     bool emptyDates{false};
 };
 

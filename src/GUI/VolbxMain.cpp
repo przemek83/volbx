@@ -31,10 +31,7 @@
 #include "TabWidget.h"
 
 VolbxMain::VolbxMain(Configuration config)
-    : QMainWindow(),
-      filters_(this),
-      tabWidget_(this),
-      config_{std::move(config)}
+    : filters_(this), tabWidget_(this), config_{std::move(config)}
 {
     ui_->setupUi(this);
 

@@ -10,12 +10,12 @@ class DatasetVisualizationTest : public QObject
     Q_OBJECT
 
 private:
-    std::unique_ptr<Dataset> getDataset() const;
+    static std::unique_ptr<Dataset> getDataset();
 
 private slots:
     void testGetDataset() const;
 
-    void testGetDatasetWithoutSettingIt() const;
+    static void testGetDatasetWithoutSettingIt();
 
     void testClearDataset() const;
 

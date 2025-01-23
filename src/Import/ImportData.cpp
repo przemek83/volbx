@@ -8,7 +8,7 @@
 #include <Datasets/Dataset.h>
 
 ImportData::ImportData(const QString& importFilePath)
-    : QDialog(), spreadsheetsTab_{importFilePath}
+    : spreadsheetsTab_{importFilePath}
 {
     setupLayout();
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);

@@ -21,7 +21,7 @@ class DetailedSpreadsheetsTest : public QObject
 public:
     struct Field
     {
-        QVariant data{};
+        QVariant data;
         int row{0};
         int column{0};
     };

@@ -17,7 +17,7 @@ class Tab : public QMainWindow
 {
     Q_OBJECT
 public:
-    Tab(std::unique_ptr<Dataset> dataset, QString name, QWidget* parent);
+    Tab(std::unique_ptr<Dataset> dataset, const QString &name, QWidget* parent);
 
     FilteringProxyModel* getCurrentProxyModel() const;
 

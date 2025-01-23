@@ -5,7 +5,7 @@
 
 #include <Constants.h>
 
-Dataset::Dataset(QString name) : QObject(), name_{std::move(name)} {}
+Dataset::Dataset(QString name) : name_{std::move(name)} {}
 
 int Dataset::rowCount() const { return rowsCount_; }
 

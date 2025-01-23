@@ -4,7 +4,7 @@
 #include <QRegularExpressionValidator>
 
 SaveDatasetAs::SaveDatasetAs(QStringList usedNames)
-    : QDialog(), usedNames_{std::move(usedNames)}
+    : usedNames_{std::move(usedNames)}
 {
     ui_->setupUi(this);
 

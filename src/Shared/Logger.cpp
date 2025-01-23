@@ -7,7 +7,7 @@
 
 #include "LoggerCheckBox.h"
 
-Logger::Logger() : QObject()
+Logger::Logger()
 {
     display_.setWindowTitle(QStringLiteral("Logs"));
 

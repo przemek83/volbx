@@ -2,7 +2,7 @@
 
 #include <Datasets/Dataset.h>
 
-Tab::Tab(std::unique_ptr<Dataset> dataset, QString name, QWidget* parent)
+Tab::Tab(std::unique_ptr<Dataset> dataset, const QString& name, QWidget* parent)
     : QMainWindow(parent),
       proxyModel_{this},
       model_{std::move(dataset)},

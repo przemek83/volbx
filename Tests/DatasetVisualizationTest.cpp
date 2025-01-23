@@ -13,9 +13,9 @@
 #include "Common.h"
 #include "DatasetCommon.h"
 
-std::unique_ptr<Dataset> DatasetVisualizationTest::getDataset() const
+std::unique_ptr<Dataset> DatasetVisualizationTest::getDataset()
 {
-    const QString fileName{"smallDataSet.ods"};
+    const QString fileName{QStringLiteral("smallDataSet.ods")};
     const QString filePath(Common::getSpreadsheetsDir() + fileName);
     std::unique_ptr<Dataset> dataset{
         DatasetCommon::createDataset(fileName, filePath)};
@@ -44,7 +44,7 @@ void DatasetVisualizationTest::testGetDataset() const
              true);
 }
 
-void DatasetVisualizationTest::testGetDatasetWithoutSettingIt() const
+void DatasetVisualizationTest::testGetDatasetWithoutSettingIt()
 {
     DatasetVisualization visualization(nullptr);
 

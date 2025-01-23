@@ -7,7 +7,7 @@
 #include <Shared/Logger.h>
 #include <Shared/Networking.h>
 
-Update::Update() : QWidget()
+Update::Update()
 {
     ui_.setupUi(this);
 

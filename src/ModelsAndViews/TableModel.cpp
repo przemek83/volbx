@@ -3,7 +3,7 @@
 #include "Constants.h"
 
 TableModel::TableModel(std::unique_ptr<Dataset> dataset)
-    : QAbstractTableModel(), dataset_(std::move(dataset))
+    : dataset_(std::move(dataset))
 {
 }
 
