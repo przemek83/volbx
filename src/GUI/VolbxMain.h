@@ -9,16 +9,22 @@
 #include <TabWidget.h>
 
 #include "Configuration.h"
-#include "ui_VolbxMain.h"
 
 class QActionGroup;
 class Dataset;
+
+namespace Ui
+{
+class VolbxMain;
+}  // namespace Ui
 
 class VolbxMain : public QMainWindow
 {
     Q_OBJECT
 public:
     explicit VolbxMain(Configuration config);
+
+    ~VolbxMain() override;
 
     void checkForUpdates();
 
@@ -70,7 +76,7 @@ private:
 
     static void updateApplication();
 
-    std::unique_ptr<Ui::VolbxMain> ui_{std::make_unique<Ui::VolbxMain>()};
+    std::unique_ptr<Ui::VolbxMain> ui_;
 
     /// Side dock with filters.
     FiltersDock filters_;

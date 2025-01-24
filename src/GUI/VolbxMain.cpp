@@ -29,9 +29,13 @@
 #include "SaveDatasetAs.h"
 #include "Tab.h"
 #include "TabWidget.h"
+#include "ui_VolbxMain.h"
 
 VolbxMain::VolbxMain(Configuration config)
-    : filters_(this), tabWidget_(this), config_{std::move(config)}
+    : ui_{std::make_unique<Ui::VolbxMain>()},
+      filters_(this),
+      tabWidget_(this),
+      config_{std::move(config)}
 {
     ui_->setupUi(this);
 
@@ -45,6 +49,8 @@ VolbxMain::VolbxMain(Configuration config)
     connectActions();
     createOptionsMenu();
 }
+
+VolbxMain::~VolbxMain() = default;
 
 void VolbxMain::setStandardIcons()
 {

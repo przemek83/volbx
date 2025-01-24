@@ -4,9 +4,12 @@
 
 #include <QWidget>
 
-#include "ui_DockTitleBar.h"
-
 class QPushButton;
+
+namespace Ui
+{
+class DockTitleBar;
+}  // namespace Ui
 
 /// @brief Title bar with buttons used in dock windows.
 class DockTitleBar : public QWidget
@@ -14,6 +17,8 @@ class DockTitleBar : public QWidget
     Q_OBJECT
 public:
     DockTitleBar();
+
+    ~DockTitleBar() override;
 
     void setTitle(const QString& titleText);
 
@@ -49,5 +54,5 @@ private:
 
     QPushButton* getButton(Button button) const;
 
-    std::unique_ptr<Ui::DockTitleBar> ui_{std::make_unique<Ui::DockTitleBar>()};
+    std::unique_ptr<Ui::DockTitleBar> ui_;
 };

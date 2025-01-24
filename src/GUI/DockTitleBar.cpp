@@ -3,7 +3,9 @@
 #include <QPainter>
 #include <QStyle>
 
-DockTitleBar::DockTitleBar()
+#include "ui_DockTitleBar.h"
+
+DockTitleBar::DockTitleBar() : ui_{std::make_unique<Ui::DockTitleBar>()}
 {
     ui_->setupUi(this);
     ui_->reset->setVisible(false);
@@ -18,6 +20,8 @@ DockTitleBar::DockTitleBar()
 
     connectButtons();
 }
+
+DockTitleBar::~DockTitleBar() = default;
 
 void DockTitleBar::paintEvent(QPaintEvent* event)
 {
