@@ -27,11 +27,9 @@ set(${PROJECT_TESTS}_SOURCES
 )
 qt_add_resources(${PROJECT_TESTS}_SOURCES testResources.qrc)
 
-
-
 add_executable(${PROJECT_TESTS} ${${PROJECT_TESTS}_SOURCES})
 
-target_link_libraries(${PROJECT_TESTS} common datasets modelsAndViews export import Qt6::Xml Qt6::Test Qt6::Core)
+target_link_libraries(${PROJECT_TESTS} datasets common eible export modelsAndViews import QuaZip qwtble Qt6::Core Qt6::Test Qt6::Gui Qt6::Xml Qt6::Widgets)
 
 add_custom_command(TARGET ${PROJECT_TESTS} POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory

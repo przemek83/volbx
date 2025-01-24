@@ -27,4 +27,4 @@ source_group("UI Files" FILES ${UI})
 
 ADD_LIBRARY(${PROJECT_NAME} STATIC ${SOURCES} ${UI})
 
-target_link_libraries(${PROJECT_NAME} Qt6::Widgets QuaZip eible wble)
+target_link_libraries(${PROJECT_NAME} eible wble QuaZip Qt6::Widgets)

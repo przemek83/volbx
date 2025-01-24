@@ -1,24 +1,20 @@
 project(modelsAndViews)
 
 set(SOURCES
-    DataView.cpp
-    DateDelegate.cpp
-    FilteringProxyModel.cpp
-    NumericDelegate.cpp
-    TableModel.cpp
-    PlotDataProvider.cpp
-)
-
-set(HEADERS
     DataView.h
+    DataView.cpp
     DateDelegate.h
+    DateDelegate.cpp
     FilteringProxyModel.h
+    FilteringProxyModel.cpp
     NumericDelegate.h
+    NumericDelegate.cpp
     TableModel.h
+    TableModel.cpp
     PlotDataProvider.h
-    TransactionData.h
+    PlotDataProvider.cpp
 )
 
 ADD_LIBRARY(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
 
-target_link_libraries(${PROJECT_NAME} qwtble common shared Qt6::Core Qt6::Widgets eible)
+target_link_libraries(${PROJECT_NAME} shared common qwtble eible Qt6::Widgets)

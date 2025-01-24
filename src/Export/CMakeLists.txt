@@ -1,15 +1,12 @@
 project(export)
 
 set(SOURCES
+    ExportImage.h
     ExportImage.cpp
+    ExportVbx.h
     ExportVbx.cpp
 )
 
-set(HEADERS
-    ExportImage.h
-    ExportVbx.h
-)
+ADD_LIBRARY(${PROJECT_NAME} STATIC ${SOURCES})
 
-ADD_LIBRARY(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
-
-target_link_libraries(${PROJECT_NAME} shared qwtble Qt6::Core eible QuaZip)
+target_link_libraries(${PROJECT_NAME} qwtble eible QuaZip Qt6::Core Qt6::Widgets)

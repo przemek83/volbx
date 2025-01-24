@@ -1,21 +1,18 @@
 project(datasets)
 
 set(SOURCES
+    Dataset.h
     Dataset.cpp
+    DatasetOds.h
     DatasetOds.cpp
+    DatasetXlsx.h
     DatasetXlsx.cpp
+    DatasetInner.h
     DatasetInner.cpp
+    DatasetSpreadsheet.h
     DatasetSpreadsheet.cpp
 )
 
-set(HEADERS
-    Dataset.h
-    DatasetOds.h
-    DatasetXlsx.h
-    DatasetInner.h
-    DatasetSpreadsheet.h
-)
+ADD_LIBRARY(${PROJECT_NAME} STATIC ${SOURCES})
 
-ADD_LIBRARY(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
-
-target_link_libraries(${PROJECT_NAME} shared common Qt6::Core Qt6::Xml eible QuaZip)
+target_link_libraries(${PROJECT_NAME} eible QuaZip Qt6::Xml Qt6::Widgets)
