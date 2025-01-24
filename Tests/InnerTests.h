@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include <QObject>
 #include <QVector>
 
@@ -10,9 +8,6 @@ class QTableView;
 class QBuffer;
 class QuaZip;
 
-/**
- * @brief Test for inner format functionalities.
- */
 class InnerTests : public QObject
 {
     Q_OBJECT
@@ -41,7 +36,7 @@ private:
     static void checkExport(const QString& datasetName,
                             QBuffer& exportedBuffer);
 
-    void addTestCases(const QString& testNamePrefix);
+    void addTestCases(const QString& testNamePrefix) const;
 
     static QByteArray loadDataFromZip(QuaZip& zip, const QString& fileName);
 

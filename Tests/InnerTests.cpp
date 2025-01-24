@@ -86,14 +86,20 @@ void InnerTests::checkExportedData(const QString& fileName, QuaZip& zipOriginal,
     QList<QByteArray> actualDataLines{generatedData.split('\n')};
     QList<QByteArray> expectedDataLines{originalData.split('\n')};
     QCOMPARE(actualDataLines.size(), expectedDataLines.size());
-    for (int i = 0; i < actualDataLines.size(); ++i)
-        if (actualDataLines[i] != expectedDataLines[i])
+
+    qsizetype linesCount{actualDataLines.size()};
+    for (qsizetype i{0}; i < linesCount; ++i)
+    {
+        const QByteArray& actualLine{actualDataLines[i]};
+        const QByteArray& expectedLine{expectedDataLines[i]};
+        if (actualLine != expectedLine)
         {
             const QString msg{"Difference in line " + QString::number(i + 1) +
-                              "\nActual:  " + actualDataLines[i] +
-                              "\nExpected: " + expectedDataLines[i]};
+                              "\nActual:  " + actualLine +
+                              "\nExpected: " + expectedLine};
             QFAIL(msg.toStdString().c_str());
         }
+    }
 }
 
 void InnerTests::checkExportedDefinitions(QuaZip& zipOriginal,
@@ -164,7 +170,7 @@ void InnerTests::testPartialData()
     checkExport(QStringLiteral("ExampleDataPartial"), exportedBuffer);
 }
 
-void InnerTests::addTestCases(const QString& testNamePrefix)
+void InnerTests::addTestCases(const QString& testNamePrefix) const
 {
     QTest::addColumn<QString>("datasetName");
 
