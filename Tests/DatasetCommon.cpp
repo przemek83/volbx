@@ -37,37 +37,45 @@ bool atrributesEqual(const QDomElement& left, const QDomElement& right)
 
 bool domElementsEqual(const QDomElement& left, const QDomElement& right);
 
-bool domNodeListsEqual(const QDomNodeList& leftNodes,
-                       const QDomNodeList& rightNodes)
+bool haveSameElement(const QDomNodeList& rightNodes,
+                     const QDomElement& leftElement)
 {
+    bool found{false};
     bool equal{true};
-    for (int i{0}; i < leftNodes.size(); ++i)
+    for (int j{0}; j < rightNodes.size(); ++j)
     {
-        bool found{false};
-        for (int j{0}; j < rightNodes.size(); ++j)
+        const QDomElement rightElement{rightNodes.at(j).toElement()};
+        if (leftElement.hasChildNodes() || rightElement.hasChildNodes())
         {
-            const QDomElement currentLeft{leftNodes.at(i).toElement()};
-            const QDomElement currentRight{rightNodes.at(j).toElement()};
-            if (!currentLeft.hasChildNodes() && !currentRight.hasChildNodes())
+            if (leftElement.tagName() == rightElement.tagName())
             {
-                if (atrributesEqual(currentLeft, currentRight))
-                {
-                    found = true;
-                    break;
-                }
-                continue;
-            }
-
-            if (currentLeft.tagName() == currentRight.tagName())
-            {
-                equal = equal && domElementsEqual(currentLeft, currentRight);
+                equal = equal && domElementsEqual(leftElement, rightElement);
                 found = true;
             }
         }
-        if (!found || !equal)
+        else
+        {
+            if (atrributesEqual(leftElement, rightElement))
+            {
+                found = true;
+                break;
+            }
+        }
+    }
+
+    return found && equal;
+}
+
+bool domNodeListsEqual(const QDomNodeList& leftNodes,
+                       const QDomNodeList& rightNodes)
+{
+    for (int i{0}; i < leftNodes.size(); ++i)
+    {
+        const QDomElement leftElement{leftNodes.at(i).toElement()};
+        if (!haveSameElement(rightNodes, leftElement))
             return false;
     }
-    return equal;
+    return true;
 }
 
 bool domElementsEqual(const QDomElement& left, const QDomElement& right)
@@ -84,13 +92,9 @@ bool domElementsEqual(const QDomElement& left, const QDomElement& right)
            domNodeListsEqual(rightNodes, leftNodes);
 }
 
-void saveExpectedDefinition(const std::unique_ptr<Dataset>& dataset,
-                            const QString& filePath)
+void saveExpectedDefinition(const QString& definition, const QString& filePath)
 {
-    const QString dumpedDefinition{
-        QString::fromUtf8(dataset->definitionToXml(dataset->rowCount()))};
-    Common::saveFile(filePath + Common::getDefinitionDumpSuffix(),
-                     dumpedDefinition);
+    Common::saveFile(filePath + Common::getDefinitionDumpSuffix(), definition);
 }
 
 void saveExpectedTsv(const QTableView& view, const QString& filePath)
@@ -114,14 +118,12 @@ bool xmlsAreEqual(const QByteArray& left, const QByteArray& right)
     return domElementsEqual(leftRoot, rightRoot);
 }
 
-static void checkDatasetDefinition(const std::unique_ptr<Dataset>& dataset,
+static void checkDatasetDefinition(const QByteArray& definitionActual,
                                    const QString& expectedDefinitionFilePath)
 {
-    const QByteArray dumpFromFile{
+    const QByteArray definitionExpected{
         file_utilities::loadFile(expectedDefinitionFilePath).second.toUtf8()};
-    const QByteArray dumpFromDataset{
-        dataset->definitionToXml(dataset->rowCount())};
-    QVERIFY(xmlsAreEqual(dumpFromFile, dumpFromDataset));
+    QVERIFY(xmlsAreEqual(definitionExpected, definitionActual));
 }
 
 QString getExportedTsv(const QAbstractItemView& view)
@@ -157,11 +159,13 @@ void compareExportDataWithDump(std::unique_ptr<Dataset> dataset,
     QCOMPARE(actualDataLines.size(), expectedDataLines.size());
     for (int i{0}; i < actualDataLines.size(); ++i)
     {
-        if (actualDataLines[i] != expectedDataLines[i])
+        const QString& actualLine{actualDataLines.at(i)};
+        const QString& expectedLine{expectedDataLines.at(i)};
+        if (actualLine != expectedLine)
         {
             const QString msg{"Difference in line " + QString::number(i + 1) +
-                              "\nActual:  " + actualDataLines[i] +
-                              "\nExpected: " + expectedDataLines[i]};
+                              "\nActual:  " + actualLine +
+                              "\nExpected: " + expectedLine};
             QFAIL(msg.toStdString().c_str());
         }
     }
@@ -193,7 +197,8 @@ void checkDefinition(const QString& fileName, const QString& dir)
     QVERIFY(dataset->initialize());
     QVERIFY(dataset->isValid());
 
-    checkDatasetDefinition(dataset,
+    const QByteArray definition{dataset->definitionToXml(dataset->rowCount())};
+    checkDatasetDefinition(definition,
                            filePath + Common::getDefinitionDumpSuffix());
 }
 
@@ -219,7 +224,9 @@ void generateExpectedDataForFile(const QString& fileName,
     dataset->initialize();
 
     const QString filePath{destinationDir + fileName};
-    saveExpectedDefinition(dataset, filePath);
+    const QString definition{
+        QString::fromUtf8(dataset->definitionToXml(dataset->rowCount()))};
+    saveExpectedDefinition(definition, filePath);
 
     DatasetCommon::activateAllDatasetColumns(*dataset);
     dataset->loadData();
