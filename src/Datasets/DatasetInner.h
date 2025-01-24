@@ -38,7 +38,8 @@ private:
 
     bool loadStrings(QuaZip& zip);
 
-    QVector<QVariant> fillRow(const QStringList& line, bool fillSamplesOnly);
+    QVector<QVariant> fillRow(const QStringList& line,
+                              bool fillSamplesOnly) const;
 
     QVector<QVector<QVariant>> parseData(QTextStream& stream,
                                          bool fillSamplesOnly);

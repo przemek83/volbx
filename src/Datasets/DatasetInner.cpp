@@ -225,14 +225,14 @@ QVariant DatasetInner::getDefaultVariantForFormat(ColumnType format)
 }
 
 QVector<QVariant> DatasetInner::fillRow(const QStringList& line,
-                                        bool fillSamplesOnly)
+                                        bool fillSamplesOnly) const
 {
     QVector<QVariant> row;
 
     const int count{columnCount()};
     for (Column column{0}; column < count; ++column)
     {
-        if (fillSamplesOnly || activeColumns_[column])
+        if (fillSamplesOnly || activeColumns_.at(column))
         {
             const QString& element{line.at(column)};
             row.append(getElementAsVariant(getColumnFormat(column), element));

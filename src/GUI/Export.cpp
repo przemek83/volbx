@@ -28,8 +28,8 @@ Export::Export(QWidget* tab, const QString& importFilePath, QWidget* parent)
 
     ui_->locationLineEdit->setText(importFilePath);
     ui_->prefix->setValidator(&validator_);
-    ui_->prefix->setText(tab_->windowTitle().replace(
-        QRegularExpression(QStringLiteral("[^\\w]")), u""_qs));
+    static const QRegularExpression regExp{QStringLiteral("[^\\w]")};
+    ui_->prefix->setText(tab_->windowTitle().replace(regExp, u""_qs));
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
