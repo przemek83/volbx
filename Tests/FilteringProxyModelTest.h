@@ -22,7 +22,7 @@ private:
     static void checkProxyHasAllItems(const FilteringProxyModel& proxy,
                                       const QList<QStandardItem*>& items);
 
-    static QVariant getData(QStandardItem* item);
+    static QVariant getData(const QStandardItem* item);
     static QStandardItem* createItem(const QVariant& data);
     static QList<QStandardItem*> getStringItems();
     static QList<QStandardItem*> getDateItems();

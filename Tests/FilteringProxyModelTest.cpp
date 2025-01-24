@@ -80,11 +80,11 @@ void FilteringProxyModelTest::checkProxyHasAllItems(
     const FilteringProxyModel& proxy, const QList<QStandardItem*>& items)
 {
     QCOMPARE(proxy.rowCount(), items.size());
-    for (int i = 0; i < items.size(); ++i)
+    for (int i{0}; i < items.size(); ++i)
         QCOMPARE(proxy.data(proxy.index(i, 0)), items[i]->text());
 }
 
-QVariant FilteringProxyModelTest::getData(QStandardItem* item)
+QVariant FilteringProxyModelTest::getData(const QStandardItem* item)
 {
     return item->data(Qt::DisplayRole);
 }
