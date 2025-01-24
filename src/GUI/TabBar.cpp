@@ -5,8 +5,6 @@
 #include <QRegularExpressionValidator>
 #include <QTabWidget>
 
-#include <qvalidator.h>
-
 TabBar::TabBar() : nameEdit_(this) { setupLineEdit(); }
 
 void TabBar::mouseDoubleClickEvent(QMouseEvent* event)
