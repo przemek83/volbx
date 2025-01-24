@@ -24,7 +24,7 @@ QHash<QString, QString> getAttributesMap(const QDomElement& element)
 {
     QHash<QString, QString> attributeMap;
     const QDomNamedNodeMap attributes{element.attributes()};
-    for (int i = 0; i < attributes.size(); ++i)
+    for (int i{0}; i < attributes.size(); ++i)
         attributeMap[attributes.item(i).toAttr().name()] =
             attributes.item(i).toAttr().value();
     return attributeMap;
@@ -41,10 +41,10 @@ bool domNodeListsEqual(const QDomNodeList& leftNodes,
                        const QDomNodeList& rightNodes)
 {
     bool equal{true};
-    for (int i = 0; i < leftNodes.size(); ++i)
+    for (int i{0}; i < leftNodes.size(); ++i)
     {
         bool found{false};
-        for (int j = 0; j < rightNodes.size(); ++j)
+        for (int j{0}; j < rightNodes.size(); ++j)
         {
             const QDomElement currentLeft{leftNodes.at(i).toElement()};
             const QDomElement currentRight{rightNodes.at(j).toElement()};
@@ -155,7 +155,7 @@ void compareExportDataWithDump(std::unique_ptr<Dataset> dataset,
     QStringList actualDataLines{actualData.split(splitRegexp)};
     QStringList expectedDataLines{expectedData.split(splitRegexp)};
     QCOMPARE(actualDataLines.size(), expectedDataLines.size());
-    for (int i = 0; i < actualDataLines.size(); ++i)
+    for (int i{0}; i < actualDataLines.size(); ++i)
     {
         if (actualDataLines[i] != expectedDataLines[i])
         {
