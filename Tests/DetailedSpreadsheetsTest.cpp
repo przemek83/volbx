@@ -20,7 +20,7 @@ void DetailedSpreadsheetsTest::testBasics_data()
     const QVector<int> expectedRowCounts{49, 4, 30};
     const QVector<int> expectedColumnCounts{7, 5, 12};
 
-    for (int i = 0; i < fileNames_.size(); ++i)
+    for (int i{0}; i < fileNames_.size(); ++i)
     {
         const QString testName{"Basic test for " + fileNames_[i] + "."};
         QTest::newRow(testName.toStdString().c_str())
@@ -46,13 +46,13 @@ void DetailedSpreadsheetsTest::testBasics()
     QCOMPARE(dataset->getName(), fileName);
 }
 
-void DetailedSpreadsheetsTest::testColumns_data()
+void DetailedSpreadsheetsTest::testColumns_data() const
 {
     QTest::addColumn<QString>("fileName");
     QTest::addColumn<QVector<ColumnType>>("columnFormats");
     QTest::addColumn<QVector<QString>>("columnNames");
 
-    for (int i = 0; i < fileNames_.size(); ++i)
+    for (int i{0}; i < fileNames_.size(); ++i)
     {
         const QString testName{"Column test for " + fileNames_[i] + "."};
         QTest::newRow(testName.toStdString().c_str())
@@ -71,13 +71,13 @@ void DetailedSpreadsheetsTest::testColumns()
         DatasetCommon::createDataset(fileName, filePath)};
     dataset->initialize();
 
-    checkColumnFormats(dataset, columnFormats);
-    checkColumnNames(dataset, columnNames);
+    checkColumnFormats(*dataset, columnFormats);
+    checkColumnNames(*dataset, columnNames);
 }
 
 Q_DECLARE_METATYPE(DetailedSpreadsheetsTest::Field)
 
-void DetailedSpreadsheetsTest::testSampleData_data()
+void DetailedSpreadsheetsTest::testSampleData_data() const
 {
     QTest::addColumn<QString>("fileName");
     QTest::addColumn<int>("sampleRowCount");
@@ -87,7 +87,7 @@ void DetailedSpreadsheetsTest::testSampleData_data()
     const QVector<int> expectedSampleRowCounts{10, 4, 10};
     const QVector<int> expectedSampleColumnCounts{7, 5, 12};
 
-    for (int i = 0; i < fileNames_.size(); ++i)
+    for (int i{0}; i < fileNames_.size(); ++i)
     {
         const QString testName{"Sample data test for " + fileNames_[i] + "."};
         QTest::newRow(testName.toStdString().c_str())
@@ -126,7 +126,7 @@ struct NumericCheckData
 
 Q_DECLARE_METATYPE(NumericCheckData)
 
-void DetailedSpreadsheetsTest::testNumericColumnRanges_data()
+void DetailedSpreadsheetsTest::testNumericColumnRanges_data() const
 {
     QTest::addColumn<QString>("fileName");
     QTest::addColumn<QVector<NumericCheckData>>("expectedRanges");
@@ -136,7 +136,7 @@ void DetailedSpreadsheetsTest::testNumericColumnRanges_data()
         {{0, 200000, 200003}, {1, 51, 54}},
         {{2, 0, 74.46}, {3, 0, 1.83}}};
 
-    for (int i = 0; i < fileNames_.size(); ++i)
+    for (int i{0}; i < fileNames_.size(); ++i)
     {
         const QString testName{"Numeric ranges test for " + fileNames_[i] +
                                "."};
@@ -154,10 +154,10 @@ void DetailedSpreadsheetsTest::testNumericColumnRanges()
     std::unique_ptr<Dataset> dataset{
         DatasetCommon::createDataset(fileName, filePath)};
 
-    prepareDatasetForTest(dataset);
+    prepareDatasetForTest(*dataset);
 
     for (const auto& [columnIndex, expectedMin, expectedMax] : expectedRanges)
-        checkNumericColumnRange(dataset, columnIndex,
+        checkNumericColumnRange(*dataset, columnIndex,
                                 {expectedMin, expectedMax});
 }
 
@@ -172,7 +172,7 @@ struct DateCheckData
 Q_DECLARE_METATYPE(DateCheckData)
 Q_DECLARE_TYPEINFO(DateCheckData, Q_MOVABLE_TYPE);
 
-void DetailedSpreadsheetsTest::testDateColumnRanges_data()
+void DetailedSpreadsheetsTest::testDateColumnRanges_data() const
 {
     QTest::addColumn<QString>("fileName");
     QTest::addColumn<DateCheckData>("expectedRanges");
@@ -182,7 +182,7 @@ void DetailedSpreadsheetsTest::testDateColumnRanges_data()
         {3, QDate(2012, 2, 2), QDate(2012, 2, 5), true},
         {1, QDate(1970, 1, 1), QDate(1970, 1, 30), false}};
 
-    for (int i = 0; i < fileNames_.size(); ++i)
+    for (int i{0}; i < fileNames_.size(); ++i)
     {
         const QString testName{"Numeric ranges test for " + fileNames_[i] +
                                "."};
@@ -200,15 +200,15 @@ void DetailedSpreadsheetsTest::testDateColumnRanges()
     std::unique_ptr<Dataset> dataset{
         DatasetCommon::createDataset(fileName, filePath)};
 
-    prepareDatasetForTest(dataset);
+    prepareDatasetForTest(*dataset);
 
-    const auto& [columnIndex, expectedMin, expectedMax, expectedEmptyDates] =
-        expectedRanges;
-    checkDateColumnRange(dataset, columnIndex, {expectedMin, expectedMax},
+    const auto& [columnIndex, expectedMin, expectedMax,
+                 expectedEmptyDates]{expectedRanges};
+    checkDateColumnRange(*dataset, columnIndex, {expectedMin, expectedMax},
                          expectedEmptyDates);
 }
 
-void DetailedSpreadsheetsTest::testStringColumnRanges_data()
+void DetailedSpreadsheetsTest::testStringColumnRanges_data() const
 {
     QTest::addColumn<QString>("fileName");
     QTest::addColumn<int>("columnIndex");
@@ -220,7 +220,7 @@ void DetailedSpreadsheetsTest::testStringColumnRanges_data()
         {"a", "b", "c"},
         {}};
 
-    for (int i = 0; i < fileNames_.size(); ++i)
+    for (int i{0}; i < fileNames_.size(); ++i)
     {
         const QString testName{"Numeric ranges test for " + fileNames_[i] +
                                "."};
@@ -239,9 +239,9 @@ void DetailedSpreadsheetsTest::testStringColumnRanges()
     std::unique_ptr<Dataset> dataset{
         DatasetCommon::createDataset(fileName, filePath)};
 
-    prepareDatasetForTest(dataset);
+    prepareDatasetForTest(*dataset);
 
-    checkStringColumnRange(dataset, columnIndex, expectedStrings);
+    checkStringColumnRange(*dataset, columnIndex, expectedStrings);
 }
 
 void DetailedSpreadsheetsTest::testDataFile01SomeColumnsActive_data()
@@ -271,71 +271,67 @@ void DetailedSpreadsheetsTest::testDataFile01SomeColumnsActive()
     dataset->setActiveColumns(activeColumns);
     dataset->loadData();
 
-    checkNumericColumnRange(dataset, 1, {19.23, 94.68});
-    checkNumericColumnRange(dataset, 2, {3376.03, 23223.09});
+    checkNumericColumnRange(*dataset, 1, {19.23, 94.68});
+    checkNumericColumnRange(*dataset, 2, {3376.03, 23223.09});
 
-    checkDateColumnRange(dataset, 0, {QDate(2010, 1, 7), QDate(2010, 2, 27)},
+    checkDateColumnRange(*dataset, 0, {QDate(2010, 1, 7), QDate(2010, 2, 27)},
                          false);
 
-    const QStringList compareList = {"brown", "red",  "yellow", "black",
-                                     "blue",  "pink", "white"};
-    checkStringColumnRange(dataset, 3, compareList);
+    const QStringList compareList{
+        {"brown", "red", "yellow", "black", "blue", "pink", "white"}};
+    checkStringColumnRange(*dataset, 3, compareList);
 
     DatasetCommon::compareExportDataWithDump(std::move(dataset), filePath);
 }
 
 void DetailedSpreadsheetsTest::checkColumnFormats(
-    const std::unique_ptr<Dataset>& dataset,
-    const QVector<ColumnType>& columnFormats)
+    const Dataset& dataset, const QVector<ColumnType>& columnFormats)
 {
     int column{0};
     for (const auto& expectedColumnType : columnFormats)
-        QCOMPARE(dataset->getColumnFormat(column++), expectedColumnType);
+        QCOMPARE(dataset.getColumnFormat(column++), expectedColumnType);
 }
 
 void DetailedSpreadsheetsTest::checkColumnNames(
-    const std::unique_ptr<Dataset>& dataset,
-    const QVector<QString>& columnNames)
+    const Dataset& dataset, const QVector<QString>& columnNames)
 {
     int column{0};
     for (const auto& expectedColumnName : columnNames)
-        QCOMPARE(dataset->getHeaderName(column++), expectedColumnName);
+        QCOMPARE(dataset.getHeaderName(column++), expectedColumnName);
 }
 
 void DetailedSpreadsheetsTest::checkNumericColumnRange(
-    const std::unique_ptr<Dataset>& dataset, int columnIndex,
+    const Dataset& dataset, int columnIndex,
     std::pair<double, double> expectedRange)
 {
-    auto [currentMin, currentMax] = dataset->getNumericRange(columnIndex);
+    auto [currentMin, currentMax]{dataset.getNumericRange(columnIndex)};
     const auto [expectedMin, expectedMax] = expectedRange;
     QCOMPARE(currentMin, expectedMin);
     QCOMPARE(currentMax, expectedMax);
 }
 
 void DetailedSpreadsheetsTest::checkDateColumnRange(
-    const std::unique_ptr<Dataset>& dataset, int columnIndex,
+    const Dataset& dataset, int columnIndex,
     std::pair<QDate, QDate> expectedRange, bool expectedEmptyDates)
 {
-    auto [currentMinDate, currentMaxDate, currentEmpty] =
-        dataset->getDateRange(columnIndex);
-    const auto [expectedMin, expectedMax] = expectedRange;
+    auto [currentMinDate, currentMaxDate,
+          currentEmpty]{dataset.getDateRange(columnIndex)};
+    const auto [expectedMin, expectedMax]{expectedRange};
     QCOMPARE(currentMinDate, expectedMin);
     QCOMPARE(currentMaxDate, expectedMax);
     QCOMPARE(currentEmpty, expectedEmptyDates);
 }
 
 void DetailedSpreadsheetsTest::checkStringColumnRange(
-    const std::unique_ptr<Dataset>& dataset, int columnIndex,
-    const QStringList& expectedList)
+    const Dataset& dataset, int columnIndex, const QStringList& expectedList)
 {
-    const QStringList currentList{dataset->getStringList(columnIndex)};
+    const QStringList currentList{dataset.getStringList(columnIndex)};
     QCOMPARE(currentList, expectedList);
 }
 
-void DetailedSpreadsheetsTest::prepareDatasetForTest(
-    std::unique_ptr<Dataset>& dataset)
+void DetailedSpreadsheetsTest::prepareDatasetForTest(Dataset& dataset)
 {
-    dataset->initialize();
-    DatasetCommon::activateAllDatasetColumns(*dataset);
-    dataset->loadData();
+    dataset.initialize();
+    DatasetCommon::activateAllDatasetColumns(dataset);
+    dataset.loadData();
 }

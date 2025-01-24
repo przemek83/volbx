@@ -30,19 +30,19 @@ private slots:
     void testBasics_data();
     static void testBasics();
 
-    void testColumns_data();
+    void testColumns_data() const;
     static void testColumns();
 
-    void testSampleData_data();
+    void testSampleData_data() const;
     static void testSampleData();
 
-    void testNumericColumnRanges_data();
+    void testNumericColumnRanges_data() const;
     static void testNumericColumnRanges();
 
-    void testDateColumnRanges_data();
+    void testDateColumnRanges_data() const;
     static void testDateColumnRanges();
 
-    void testStringColumnRanges_data();
+    void testStringColumnRanges_data() const;
     static void testStringColumnRanges();
 
     static void testDataFile01SomeColumnsActive_data();
@@ -50,25 +50,23 @@ private slots:
 
 private:
     static void checkNumericColumnRange(
-        const std::unique_ptr<Dataset>& dataset, int columnIndex,
+        const Dataset& dataset, int columnIndex,
         std::pair<double, double> expectedRange);
 
-    static void checkDateColumnRange(const std::unique_ptr<Dataset>& dataset,
-                                     int columnIndex,
+    static void checkDateColumnRange(const Dataset& dataset, int columnIndex,
                                      std::pair<QDate, QDate> expectedRange,
                                      bool expectedEmptyDates);
 
-    static void checkStringColumnRange(const std::unique_ptr<Dataset>& dataset,
-                                       int columnIndex,
+    static void checkStringColumnRange(const Dataset& dataset, int columnIndex,
                                        const QStringList& expectedList);
 
-    static void checkColumnFormats(const std::unique_ptr<Dataset>& dataset,
+    static void checkColumnFormats(const Dataset& dataset,
                                    const QVector<ColumnType>& columnFormats);
 
-    static void checkColumnNames(const std::unique_ptr<Dataset>& dataset,
+    static void checkColumnNames(const Dataset& dataset,
                                  const QVector<QString>& columnNames);
 
-    static void prepareDatasetForTest(std::unique_ptr<Dataset>& dataset);
+    static void prepareDatasetForTest(Dataset& dataset);
 
     const QVector<QString> fileNames_{"test01.xlsx", "test01.ods",
                                       "test03.xlsx", "test03.ods",
