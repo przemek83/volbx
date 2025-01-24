@@ -13,12 +13,12 @@
 #include "Common.h"
 #include "DatasetCommon.h"
 
-void SpreadsheetsTest::initTestCase()
+void SpreadsheetsTest::initTestCase() const
 {
     // generateExpectedData();
 }
 
-void SpreadsheetsTest::testDefinition_data()
+void SpreadsheetsTest::testDefinition_data() const
 {
     addTestCasesForFileNames(testFileNames_);
 }
@@ -29,7 +29,7 @@ void SpreadsheetsTest::testDefinition()
     DatasetCommon::checkDefinition(fileName, Common::getSpreadsheetsDir());
 }
 
-void SpreadsheetsTest::testData_data()
+void SpreadsheetsTest::testData_data() const
 {
     addTestCasesForFileNames(testFileNames_);
 }
@@ -54,7 +54,7 @@ void SpreadsheetsTest::testDamagedFiles()
     QVERIFY(!dataset->initialize());
 }
 
-void SpreadsheetsTest::compareExpectedDefinitionsOfOdsAndXlsx_data()
+void SpreadsheetsTest::compareExpectedDefinitionsOfOdsAndXlsx_data() const
 {
     addTestCaseForOdsAndXlsxComparison(
         QStringLiteral("Compare definition dumps"));
@@ -65,7 +65,7 @@ void SpreadsheetsTest::compareExpectedDefinitionsOfOdsAndXlsx()
     compareOdsAndXlsxExpectedData(Common::getDefinitionDumpSuffix());
 }
 
-void SpreadsheetsTest::compareExpectedTsvDumpsOfOdsAndXlsx_data()
+void SpreadsheetsTest::compareExpectedTsvDumpsOfOdsAndXlsx_data() const
 {
     addTestCaseForOdsAndXlsxComparison(QStringLiteral("Compare tsv dumps"));
 }
@@ -76,7 +76,7 @@ void SpreadsheetsTest::compareExpectedTsvDumpsOfOdsAndXlsx()
 }
 
 void SpreadsheetsTest::addTestCaseForOdsAndXlsxComparison(
-    const QString& testNamePrefix)
+    const QString& testNamePrefix) const
 {
     QTest::addColumn<QString>("fileName");
 
@@ -92,25 +92,30 @@ void SpreadsheetsTest::compareOdsAndXlsxExpectedData(const QString& fileSuffix)
     QFETCH(const QString, fileName);
 
     const QString filePath{Common::getSpreadsheetsDir() + fileName};
-    auto [xlsxLoaded, xlsxDump] =
-        file_utilities::loadFile(filePath + ".xlsx" + fileSuffix);
+    auto [xlsxLoaded,
+          xlsxDump]{file_utilities::loadFile(filePath + ".xlsx" + fileSuffix)};
     QVERIFY(xlsxLoaded);
 
-    auto [odsLoaded, odsDump] =
-        file_utilities::loadFile(filePath + ".ods" + fileSuffix);
+    auto [odsLoaded,
+          odsDump]{file_utilities::loadFile(filePath + ".ods" + fileSuffix)};
     QVERIFY(odsLoaded);
 
     QStringList xlsxLines{xlsxDump.split('\n')};
     QStringList odsLines{odsDump.split('\n')};
     QCOMPARE(xlsxLines.size(), odsLines.size());
-    for (int i = 0; i < xlsxLines.size(); ++i)
-        if (xlsxLines[i] != odsLines[i])
+
+    const qsizetype linesCount{xlsxLines.size()};
+    for (int i{0}; i < linesCount; ++i)
+    {
+        QString xlsxLine{xlsxLines[i]};
+        QString odsLine{odsLines[i]};
+        if (xlsxLine != odsLine)
         {
             const QString msg{"Difference in line " + QString::number(i + 1) +
-                              "\nXlsx: " + xlsxLines[i] +
-                              "\nOds : " + odsLines[i]};
+                              "\nXlsx: " + xlsxLine + "\nOds : " + odsLine};
             QFAIL(msg.toStdString().c_str());
         }
+    }
 }
 
 void SpreadsheetsTest::addTestCasesForFileNames(
@@ -129,7 +134,7 @@ void SpreadsheetsTest::addTestCasesForFileNames(
     }
 }
 
-void SpreadsheetsTest::generateExpectedData()
+void SpreadsheetsTest::generateExpectedData() const
 {
     const QString generatedFilesDir{QApplication::applicationDirPath() +
                                     "/generatedSpreadsheetsTestData/"};

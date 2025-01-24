@@ -2,43 +2,36 @@
 
 #include <QObject>
 
-#include "Datasets/DatasetSpreadsheet.h"
-
 class QTableView;
 
-/**
- * @brief Standard tests for spreadsheets.
- */
 class SpreadsheetsTest : public QObject
 {
     Q_OBJECT
 private slots:
-    void initTestCase();
+    void initTestCase() const;
 
-    void testDefinition_data();
+    void testDefinition_data() const;
     static void testDefinition();
 
-    void testData_data();
+    void testData_data() const;
     static void testData();
 
     static void testDamagedFiles_data();
     static void testDamagedFiles();
 
-    void compareExpectedDefinitionsOfOdsAndXlsx_data();
+    void compareExpectedDefinitionsOfOdsAndXlsx_data() const;
     static void compareExpectedDefinitionsOfOdsAndXlsx();
 
-    void compareExpectedTsvDumpsOfOdsAndXlsx_data();
+    void compareExpectedTsvDumpsOfOdsAndXlsx_data() const;
     static void compareExpectedTsvDumpsOfOdsAndXlsx();
 
 private:
-    void addTestCaseForOdsAndXlsxComparison(const QString& testNamePrefix);
+    void addTestCaseForOdsAndXlsxComparison(
+        const QString& testNamePrefix) const;
 
     static void compareOdsAndXlsxExpectedData(const QString& fileSuffix);
 
-    void activateAllDatasetColumns(
-        const std::unique_ptr<DatasetSpreadsheet>& dataset);
-
-    void generateExpectedData();
+    void generateExpectedData() const;
 
     static void addTestCasesForFileNames(const QVector<QString>& fileNames);
 
