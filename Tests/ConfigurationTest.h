@@ -2,9 +2,6 @@
 
 #include <QObject>
 
-/**
- * @brief Unit tests for Configuration class.
- */
 class ConfigurationTest : public QObject
 {
     Q_OBJECT
