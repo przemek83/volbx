@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include <eible/ColumnType.h>
 #include <QDate>
 #include <QObject>
@@ -12,9 +10,6 @@
 class DatasetSpreadsheet;
 class Dataset;
 
-/**
- * @brief Detailed tests for spreadsheet files.
- */
 class DetailedSpreadsheetsTest : public QObject
 {
     Q_OBJECT

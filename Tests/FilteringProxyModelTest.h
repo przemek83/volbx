@@ -5,9 +5,6 @@
 class QStandardItem;
 class FilteringProxyModel;
 
-/**
- * @brief Tests for FilteringProxyModel class.
- */
 class FilteringProxyModelTest : public QObject
 {
     Q_OBJECT
