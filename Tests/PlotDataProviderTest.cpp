@@ -5,6 +5,11 @@
 
 #include <PlotDataProvider.h>
 
+bool operator==(const Quantiles& left, const Quantiles& right)
+{
+    return left.getValuesAsToolTip() == right.getValuesAsToolTip();
+}
+
 void PlotDataProviderTest::initTestCase()
 {
     mainQuantiles_.max_ = 15.;
@@ -48,12 +53,7 @@ void PlotDataProviderTest::testRecomputeGroupingIvalidFormat()
         checkRecomputeGroupingDataForColumnType(columnType);
 }
 
-static bool operator==(const Quantiles& left, const Quantiles& right)
-{
-    return left.getValuesAsToolTip() == right.getValuesAsToolTip();
-}
-
-void PlotDataProviderTest::testRecomputeGroupingData()
+void PlotDataProviderTest::testRecomputeGroupingData() const
 {
     PlotDataProvider provider;
     const QSignalSpy spy(&provider, &PlotDataProvider::groupingPlotDataChanged);
