@@ -24,6 +24,8 @@ set(${PROJECT_TESTS}_SOURCES
     DatasetCommon.cpp
     DatasetVisualizationTest.h
     DatasetVisualizationTest.cpp
+    ConstantsTest.h
+    ConstantsTest.cpp
 )
 qt_add_resources(${PROJECT_TESTS}_SOURCES testResources.qrc)
 

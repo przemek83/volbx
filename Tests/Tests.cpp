@@ -1,6 +1,7 @@
 #include <QTest>
 
 #include "ConfigurationTest.h"
+#include "ConstantsTest.h"
 #include "DatasetTest.h"
 #include "DatasetVisualizationTest.h"
 #include "DetailedSpreadsheetsTest.h"
@@ -39,6 +40,9 @@ int main(int argc, char* argv[])
 
     DatasetVisualizationTest datasetVisualizationTest;
     status |= QTest::qExec(&datasetVisualizationTest);
+
+    TestConstants testConstants;
+    status |= QTest::qExec(&testConstants);
 
     return status;
 }
