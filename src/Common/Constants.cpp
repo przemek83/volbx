@@ -1,11 +1,6 @@
 #include "Constants.h"
 
-#include <cmath>
-
-#include <QElapsedTimer>
-#include <QLocale>
-#include <QSettings>
-#include <QVector>
+#include <QObject>
 
 namespace constants
 {
@@ -28,11 +23,11 @@ QString getProgressBarTitle(BarTitle barTitle)
     return QObject::tr("Analysing");
 }
 
-QString elapsedTimeToSeconds(QElapsedTimer timer)
+QString elapsedTimeToSeconds(qint64 elapsedMiliseconds)
 {
     const int milisecondsInSecond{1000};
-    return QString::number(static_cast<double>(timer.elapsed()) /
-                           milisecondsInSecond);
+    return QString::number(std::round(static_cast<double>(elapsedMiliseconds) /
+                                      milisecondsInSecond));
 }
 
 int getProgressBarFullCounter()

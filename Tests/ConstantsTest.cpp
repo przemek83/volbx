@@ -34,6 +34,14 @@ void TestConstants::testGetProgressBarTitle()
              QObject::tr("Analysing"));
 }
 
+void TestConstants::testElapsedTimeToSeconds()
+{
+    QCOMPARE(constants::elapsedTimeToSeconds(2000), QStringLiteral("2"));
+    QCOMPARE(constants::elapsedTimeToSeconds(2499), QStringLiteral("2"));
+    QCOMPARE(constants::elapsedTimeToSeconds(2500), QStringLiteral("3"));
+    QCOMPARE(constants::elapsedTimeToSeconds(3000), QStringLiteral("3"));
+}
+
 void TestConstants::testGetProgressBarFullCounter()
 {
     QCOMPARE(constants::getProgressBarFullCounter(), 100);

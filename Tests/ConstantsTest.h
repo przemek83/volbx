@@ -11,5 +11,6 @@ private slots:
     static void testGetTemporaryFileSuffix();
     static void testGetConfigurationFileName();
     static void testGetProgressBarTitle();
+    static void testElapsedTimeToSeconds();
     static void testGetProgressBarFullCounter();
 };

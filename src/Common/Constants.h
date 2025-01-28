@@ -1,9 +1,6 @@
 #pragma once
 
-#include <QDate>
 #include <QString>
-
-class QElapsedTimer;
 
 namespace constants
 {
@@ -27,7 +24,7 @@ QString getProgressBarTitle(BarTitle barTitle);
 
 const int NOT_SET_COLUMN{-1};
 
-QString elapsedTimeToSeconds(QElapsedTimer timer);
+QString elapsedTimeToSeconds(qint64 elapsedMiliseconds);
 
 int getProgressBarFullCounter();
 };  // namespace constants

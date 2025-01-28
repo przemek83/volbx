@@ -83,7 +83,8 @@ std::unique_ptr<Dataset> SpreadsheetsImportTab::prepareDataset(
     LOG(LogTypes::IMPORT_EXPORT,
         "Analysed file having " + QString::number(dataset->rowCount()) +
             " rows in time " +
-            constants::elapsedTimeToSeconds(performanceTimer) + " seconds.");
+            constants::elapsedTimeToSeconds(performanceTimer.elapsed()) +
+            " seconds.");
 
     return dataset;
 }

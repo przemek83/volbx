@@ -4,6 +4,7 @@
 
 #include <eible/ColumnType.h>
 #include <QAbstractTableModel>
+#include <QDate>
 
 #include "Dataset.h"
 
