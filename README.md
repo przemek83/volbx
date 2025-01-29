@@ -64,6 +64,7 @@ As a result of compilation, binary for simulations and binary for testing should
 | Eible | 1.2.0 | 1.2.0 | 1.2.0 |
 | QwtBle | 1.2.0 | 1.2.0 | 1.2.0 |
 | Wble | 1.2.0 | 1.2.0 | 1.2.0 |
+| QuaZip | 1.4 | 1.4 | 1.4 |
 
 ## Licensing
 Volbx is published using LGPLv3 license. 
