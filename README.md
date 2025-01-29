@@ -8,16 +8,17 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=przemek83_volbx&metric=coverage)](https://sonarcloud.io/summary/new_code?id=przemek83_volbx)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=przemek83_volbx&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=przemek83_volbx)
 
-## Table of content
+## Table of contents
 - [Example view](#example-view)
-- [Description](#description)
-- [History](#history)
-- [Used tools and libs](#used-tools-and-libs)
-- [Compilation and installation](#Compilation-and-installation)
-- [Licensing](#licensing)
+- [About project](#about-project)
+- [Getting Started](#getting-started)
+   * [Prerequisites](#prerequisites)
+   * [Building](#building)
+- [Built with](#built-with)
 - [Updater](#updater)
 - [Setup update server](#setup-update-server)
 - [Testing](#testing)
+- [Licensing](#licensing)
 - [Potential further improvements](#potential-further-improvements)
 - [Screenshots](#screenshots)
 
@@ -65,13 +66,6 @@ As a result of compilation, binary for simulations and binary for testing should
 | QwtBle | 1.2.0 | 1.2.0 | 1.2.0 |
 | Wble | 1.2.0 | 1.2.0 | 1.2.0 |
 | QuaZip | 1.4 | 1.4 | 1.4 |
-
-## Licensing
-Volbx is published using LGPLv3 license. 
-
-The project uses the following software and licenses:    
-* Qt, Qwt, QuaZip, Eible, Wble and Qwtble libraries - LGPL licenses (more on qt-project.org, quazip.sourceforge.net, qwt.sourceforge.net and github.com/przemek83),    
-* Zlib - Zlib license (can be found on zlib.net).
 
 ## Updater
 1) Build target `VersionCheck`.
@@ -148,6 +142,19 @@ Test project <path>/volbx/build/tests
 Total Test time (real) =   0.39 sec
 
 ```
+
+## Licensing
+Volbx is published under a LGPL license.
+
+The project uses the following software:
+| Name | License | Home | Description |
+| --- | --- | --- | --- |
+| Qt | LGPLv3 | https://www.qt.io/| cross-platform application development framework |
+| Eible | LGPLv3 | https://github.com/przemek83/eible | library for importing and exporting data |
+| QwtBle | LGPLv3 | https://github.com/przemek83/qwtble | library of useful plots and one marker based on Qwt library |
+| Wble | LGPLv3 | https://github.com/przemek83/wble | library of useful Qt widgets |
+| QuaZip | LGPLv2.1 with static linking exception | https://github.com/stachenov/quazip | C++ wrapper for Minizip using Qt library |
+
 
 ## Potential further improvements
 * Upgrade code to use C++20.
