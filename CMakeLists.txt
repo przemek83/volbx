@@ -64,4 +64,4 @@ target_link_libraries(${PROJECT_NAME} common gui Qt6::Widgets Qt6::Network)
 add_subdirectory(src/Update)
 
 enable_testing()
-add_subdirectory(Tests)
+add_subdirectory(tests)
