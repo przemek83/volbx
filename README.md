@@ -19,7 +19,7 @@
 - [Setup update server](#setup-update-server)
 - [Testing](#testing)
 - [Licensing](#licensing)
-- [Potential further improvements](#potential-further-improvements)
+- [Further improvements](#further-improvements)
 - [Screenshots](#screenshots)
 
 ## Example view
@@ -156,10 +156,9 @@ The project uses the following software:
 | QuaZip | LGPLv2.1 with static linking exception | https://github.com/stachenov/quazip | C++ wrapper for Minizip using Qt library |
 
 
-## Potential further improvements
-* Upgrade code to use C++20.
-* Measure and increase test coverage.
-* Setup static analysis (CppCheck, Clang Tidy, Clazy).
+## Further improvements
+* Upgrade code to use C++23.
+* Increase test coverage.
 
 ## Screenshots
 ![Alt text](groupingAndHistogram.gif?raw=true "")
