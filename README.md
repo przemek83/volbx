@@ -28,13 +28,13 @@
 ## About project
 Volbx is a graphical tool used for data manipulation written in C++/Qt. User can:
  * load data - opens XLSX and ODS spreadsheet files,
- * filter data - filters panel can be used to define data range on each column,
- * select data - user can select rows on main data table, 
- * visualize data - multiple types of built-in diagrams  (histogram, grouping, linear regression, quantiles) which adjusts dynamically according to user actions,
+ * filter data - filters panel can be used to define the data range on each column,
+ * select data - user can select rows on the main data table, 
+ * visualize data - multiple types of built-in diagrams (histogram, grouping, linear regression, quantiles) which adjusts dynamically according to user actions,
  * order data - each column can be ordered ascending or descending, 
  * export data - selected set of data, together with linked plots, can be exported to XLSX spreadsheet file or CSV. 
 
-The tool was originally created for real estate appraisal as it gives the possibility, for people working in that area, to estimate past, current and future value of analyzed properties. When project/start-up was dropped, I've decided to release a less specialized application as an open source project. Most advanced and dedicated for real estates functionalities were cut out, basic and intermediate ones stayed.
+The tool was originally created for real estate appraisal as it gives the possibility, for people working in that area, to estimate the past, current, and future value of analyzed properties. When the project/startup was dropped, I've decided to release a less specialized application as an open source project. Most advanced and dedicated for real estate functionalities were cut out; basic and intermediate ones stayed.
 
 ## Getting Started
 This section describes briefly how to setup the environment and build the project.
@@ -70,13 +70,13 @@ As a result of compilation, binary for simulations and binary for testing should
 ## Updater
 1) Build target `VersionCheck`.
 2) Run `VersionCheck`.
-3) Following window should be shown:    
+3) The following window should be shown:     
 
 ![Alt text](updateScreen.gif?raw=true "")
 
 ## Setup update server
 1) Get a domain and hosting :)
-2) Create a simple .php file which contains something similar to this:
+2) Create a simple .php file that contains something similar to this:
 ```
 <?
 echo("Volbx-Update-Info\n");
@@ -91,19 +91,19 @@ foreach (glob("*") as $filename) {
 ```
 3) Copy .php file to hosting.
 4) Create folder `current` in directory where .php file is located.
-5) Add new/other version of Volbx and/or updater in `current` directory.
-6) Change code of `Networking` namespace in Volbx to point to proper address. Look for 
+5) Add a new/other version of Volbx and/or updater in the `current` directory.
+6) Change the code of the `Networking` namespace in Volbx to point to the proper address. Look for 
 `QNetworkRequest Networking::getCurrentVersionRequest()` 
 and 
 `QNetworkRequest Networking::getDownloadFileRequest(const QString& file)`
 7) Compile `VersionChecker` and run it.
-8) Application should connect to given address and download content of `current` folder.
+8) The application should connect to the given address and download the content of the `current` folder.
 
 **Remarks**:   
 - Updater is doing correctness checks using file sizes. Checksums should be used instead.   
-- When I've created VersionChecker I've decided to use the simplest known by me solution. I do not know if it is safe and 'proper' enough, but it worked for me. I'm not web developer ;)   
-- Windows needs admin rights (as of ~2012) to execute files having in name strings like "update", "install" or "setup". I've picked name `VersionChecker` to work around that problem.   
-- On Windows OS, updater cannot overwrite file which are being used (as of ~2012). There is a special mechanism in place for replacing used/locked files: 
+- When I've created VersionChecker I've decided to use the simplest known solution. I do not know if it is safe and 'proper' enough, but it worked for me. I'm not a web developer ;)   
+- Windows needs admin rights (as of ~2012) to execute files having in name strings like "update", "install" or "setup". I've picked the name `VersionChecker` to work around that problem.   
+- On Windows OS, the updater cannot overwrite files that are being used (as of ~2012). There is a special mechanism in place for replacing used/locked files: 
     * close Volbx, 
     * run updater, 
     * download files,
