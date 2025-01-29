@@ -24,7 +24,7 @@
 ## Example view
 ![](exampleScreen.gif?raw=true "")
 
-## Description
+## About project
 Volbx is a graphical tool used for data manipulation written in C++/Qt. User can:
  * load data - opens XLSX and ODS spreadsheet files,
  * filter data - filters panel can be used to define data range on each column,
@@ -33,35 +33,37 @@ Volbx is a graphical tool used for data manipulation written in C++/Qt. User can
  * order data - each column can be ordered ascending or descending, 
  * export data - selected set of data, together with linked plots, can be exported to XLSX spreadsheet file or CSV. 
 
-## History
 The tool was originally created for real estate appraisal as it gives the possibility, for people working in that area, to estimate past, current and future value of analyzed properties. When project/start-up was dropped, I've decided to release a less specialized application as an open source project. Most advanced and dedicated for real estates functionalities were cut out, basic and intermediate ones stayed.
 
-## Used tools and libs
-| Tool |  Windows | Lubuntu |
-| --- | --- | --- |
-| OS version | 10 22H2 | 22.04 |
-| GCC | 11.2.0 | 11.3.0 |
-| CMake | 3.25.0 | 3.25.0 |
-| Git | 2.38.1 | 2.34.1 |
-| Qt | 6.5.2 | 6.5.2 |
-| Qt Creator | 10.0.2 | 10.0.2 |
-| Qwt | 6.2 | 6.2 |
-| QuaZip | 1.4 | 1.4 |
-| Zlib | 1.3.1 | 1.3.1 |
-| Eible | 1.2.0 | 1.2.0 |
-| QwtBle | 1.2.0 | 1.2.0 |
-| Wble | 1.2.0 | 1.2.0 |
+## Getting Started
+This section describes briefly how to setup the environment and build the project.
 
-## Compilation and installation
-Use directly CMake or Qt Creator. CMake **should**:
-- configure everything automatically, 
-- download dependencies using Git (QuaZip, Zlib, Eible, Wble, Qwtble, Qwt), 
-- build dependencies, 
-- compile Volbx and create binaries.  
+### Prerequisites
+Qt in version 6.5 or greater, a C++ compiler with C++17 support as a minimum, and CMake 3.16+. 
 
-This is of course a happy path...  
+### Building
+Clone and use CMake directly or via any IDE supporting it. CMake should:
+- configure everything automatically,
+- compile and create binaries.
 
-**TIPS**: set `CMAKE_PREFIX_PATH` env variable (should point to Qt) and add `qmake` location to `PATH` variable (QWT building expects it).   
+As a result of compilation, binary for simulations and binary for testing should be created.
+
+**TIP**: Remember to set properly the `CMAKE_PREFIX_PATH` env variable. It should have a Qt installation path to let CMake `find_package` command work.  
+
+**TIP**: Add `qmake` location to `PATH` variable as QWT building expects it.   
+
+## Built with
+
+| |  Windows | Windows | Ubuntu |
+| --- | --- | --- | --- | 
+| OS version | 10 22H2 | 10 22H2 | 24.04 |
+| compiler | GCC 13.1.0 | MSVC 19.29 | GCC 13.2.0 |
+| CMake | 3.30.2 | 3.30.2 |3.28.3 |
+| Git | 2.46.0 | 2.46.0 | 2.43.0 |
+| Qt | 6.5.2 | 6.5.2 | 6.5.2 |
+| Eible | 1.2.0 | 1.2.0 | 1.2.0 |
+| QwtBle | 1.2.0 | 1.2.0 | 1.2.0 |
+| Wble | 1.2.0 | 1.2.0 | 1.2.0 |
 
 ## Licensing
 Volbx is published using LGPLv3 license. 
