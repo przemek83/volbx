@@ -116,11 +116,37 @@ and
     * on next run of Volbx replace automatically used/blocked ones.
 
 ## Testing
-1) Compile project.
-2) Run target named `tests`.
-3) Check output. All tests should have status `PASSED`.    
+For testing purposes, the Qt Test framework is used. Build the project first. Make sure that the `volbx-tests` target is built. Modern IDEs supporting CMake also support running tests with monitoring of failures. But in case you would like to run it manually, go to the `build/tests` directory, where the⁣ binary `volbx-tests` should be available. Launching it should produce the following output on Linux:
+Example run:
+```
+$ ./volbx-tests
+********* Start testing of ConfigurationTest *********
+Config: Using QtTest library 6.5.2, Qt 6.5.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 24.04
+PASS   : ConfigurationTest::initTestCase()
+PASS   : ConfigurationTest::testSavingConfigurationFile()
+PASS   : ConfigurationTest::testReadingFilledConfigurationFile()
 
-Tests are done using Qt test framework.
+(...)
+
+PASS   : TestConstants::testElapsedTimeToSeconds()
+PASS   : TestConstants::testGetProgressBarFullCounter()
+PASS   : TestConstants::cleanupTestCase()
+Totals: 9 passed, 0 failed, 0 skipped, 0 blacklisted, 0ms
+********* Finished testing of TestConstants *********
+
+```
+As an alternative, CTest can be used to run tests from the `build/tests` directory:
+```
+$ ctest
+Test project <path>/volbx/build/tests
+    Start 1: volbx-tests
+1/1 Test #1: volbx-tests ......................   Passed    0.38 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.39 sec
+
+```
 
 ## Potential further improvements
 * Upgrade code to use C++20.
