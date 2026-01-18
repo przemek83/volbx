@@ -28,4 +28,4 @@ void checkData(const QString& fileName, const QString& dir);
 void generateExpectedDataForFile(const QString& fileName,
                                  const QString& sourceDir,
                                  const QString& destinationDir);
-};  // namespace DatasetCommon
+}  // namespace DatasetCommon

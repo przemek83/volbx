@@ -11,4 +11,4 @@ QString getDefinitionDumpSuffix();
 QString getDataTsvDumpSuffix();
 
 QString getSpreadsheetsDir();
-};  // namespace Common
+}  // namespace Common
