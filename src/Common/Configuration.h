@@ -8,13 +8,12 @@ class Configuration
 {
 public:
     Configuration();
+    Configuration& operator=(const Configuration& other) = delete;
+    Configuration& operator=(Configuration&& other) = default;
 
     ~Configuration() = default;
 
-    Configuration& operator=(const Configuration& other) = delete;
     Configuration(const Configuration& other) = delete;
-
-    Configuration& operator=(Configuration&& other) = default;
     Configuration(Configuration&& other) = default;
 
     bool isUpdatePolicyPicked() const;

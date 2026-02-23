@@ -9,13 +9,12 @@ class TimeLogger
 {
 public:
     TimeLogger(LogTypes logType, QString operationName);
+    TimeLogger& operator=(const TimeLogger& other) = delete;
+    TimeLogger& operator=(TimeLogger&& other) = delete;
 
     ~TimeLogger();
 
-    TimeLogger& operator=(const TimeLogger& other) = delete;
     TimeLogger(const TimeLogger& other) = delete;
-
-    TimeLogger& operator=(TimeLogger&& other) = delete;
     TimeLogger(TimeLogger&& other) = delete;
 
 private:
