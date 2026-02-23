@@ -8,6 +8,12 @@ on:
   schedule:
     - cron: '29 2 * * 0'
 
+permissions:
+  security-events: write
+  packages: read
+  actions: read
+  contents: read
+
 jobs:
   analyze:
     uses: przemek83/workflows/.github/workflows/codeql-qt.yml@main
