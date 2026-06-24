@@ -13,8 +13,7 @@ void TabBar::mouseDoubleClickEvent(QMouseEvent* event)
     nameEdit_.move(tabRectangle.topLeft());
     nameEdit_.resize(tabRectangle.size());
 
-    const QMainWindow* mainWindow{getCurrentTabWidget()};
-    nameEdit_.setText(mainWindow->windowTitle());
+    nameEdit_.setText(getCurrentTabName());
     nameEdit_.show();
     nameEdit_.setFocus();
 
@@ -30,11 +29,10 @@ void TabBar::editingNameFinished()
     nameEdit_.hide();
     QString currentTabText{tabText(index)};
 
-    QMainWindow* mainWindow{getCurrentTabWidget()};
     const QString suffix{
-        currentTabText.remove(0, mainWindow->windowTitle().length())};
+        currentTabText.remove(0, getCurrentTabName().length())};
     setTabText(index, nameEdit_.text() + suffix);
-    mainWindow->setWindowTitle(nameEdit_.text());
+    setCurrentTabName(nameEdit_.text());
 }
 
 bool TabBar::eventFilter(QObject* watched, QEvent* event)
@@ -64,8 +62,24 @@ void TabBar::setupLineEdit()
 QMainWindow* TabBar::getCurrentTabWidget() const
 {
     const auto* tabWidget{dynamic_cast<QTabWidget*>(parentWidget())};
-    Q_ASSERT(tabWidget != nullptr);
+    if (tabWidget == nullptr)
+        return nullptr;
     auto* mainWindow{dynamic_cast<QMainWindow*>(tabWidget->currentWidget())};
-    Q_ASSERT(mainWindow != nullptr);
     return mainWindow;
+}
+
+QString TabBar::getCurrentTabName() const
+{
+    const QMainWindow* mainWindow{getCurrentTabWidget()};
+    if (mainWindow == nullptr)
+        return {};
+    return mainWindow->windowTitle();
+}
+
+void TabBar::setCurrentTabName(const QString& newName)
+{
+    QMainWindow* mainWindow{getCurrentTabWidget()};
+    if (mainWindow == nullptr)
+        return;
+    mainWindow->setWindowTitle(newName);
 }

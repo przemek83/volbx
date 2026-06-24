@@ -24,6 +24,9 @@ private:
 
     QMainWindow* getCurrentTabWidget() const;
 
+    QString getCurrentTabName() const;
+    void setCurrentTabName(const QString& newName);
+
     QLineEdit nameEdit_;
 
     QRegularExpressionValidator validator_{
