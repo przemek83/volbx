@@ -56,7 +56,7 @@ std::unique_ptr<Dataset> SpreadsheetsImportTab::prepareDataset(
     {
         QMessageBox::information(this, tr("Wrong file"),
                                  tr("File type is not supported."));
-        emit datasetIsReady(false);
+        Q_EMIT datasetIsReady(false);
         return nullptr;
     }
 

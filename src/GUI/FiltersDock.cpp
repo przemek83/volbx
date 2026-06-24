@@ -123,7 +123,7 @@ FilterStrings* FiltersDock::createStringsFilter(const TableModel* parentModel,
     list.sort();
     auto* filter{new FilterStrings(columnName, std::move(list))};
     auto emitChangeForColumn{[this, column = index](QStringList bannedList) {
-        emit filterNames(column, std::move(bannedList));
+        Q_EMIT filterNames(column, std::move(bannedList));
     }};
 
     connect(filter, &FilterStrings::newStringFilter, this, emitChangeForColumn);
@@ -144,7 +144,7 @@ FilterDates* FiltersDock::createDatesFilter(const TableModel* parentModel,
     auto* filter{new FilterDates(columnName, minDate, maxDate, haveEmptyDates)};
     auto emitChangeForColumn{
         [this, column = index](QDate from, QDate to, bool filterEmptyDates)
-        { emit filterDates(column, from, to, filterEmptyDates); }};
+        { Q_EMIT filterDates(column, from, to, filterEmptyDates); }};
     connect(filter, &FilterDates::newDateFilter, this, emitChangeForColumn);
     filter->setCheckable(true);
     return filter;
@@ -157,7 +157,7 @@ FilterNumbers* FiltersDock::createNumbersFilter(const TableModel* parentModel,
     const auto [min, max]{parentModel->getNumericRange(index)};
     auto* filter{new FilterDoubles(columnName, min, max)};
     auto emitChangeForColumn{[this, column = index](double from, double to)
-                             { emit filterNumbers(column, from, to); }};
+                             { Q_EMIT filterNumbers(column, from, to); }};
     connect(filter, &FilterDoubles::newNumericFilter, this,
             emitChangeForColumn);
     filter->setCheckable(true);

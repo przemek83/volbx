@@ -54,5 +54,5 @@ void ImportTab::setDataset(std::unique_ptr<Dataset> dataset)
     visualization->setDataset(std::move(dataset));
     visualization->setEnabled(true);
 
-    emit datasetIsReady(true);
+    Q_EMIT datasetIsReady(true);
 }
