@@ -18,31 +18,31 @@ int main(int argc, char* argv[])
 
     int status{EXIT_SUCCESS};
     ConfigurationTest configurationTest;
-    status |= QTest::qExec(&configurationTest);
+    status = std::max(status, QTest::qExec(&configurationTest));
 
     SpreadsheetsTest spreadsheetsTest;
-    status |= QTest::qExec(&spreadsheetsTest);
+    status = std::max(status, QTest::qExec(&spreadsheetsTest));
 
     DetailedSpreadsheetsTest detailedSpreadsheetsTest;
-    status |= QTest::qExec(&detailedSpreadsheetsTest);
+    status = std::max(status, QTest::qExec(&detailedSpreadsheetsTest));
 
     PlotDataProviderTest plotDataProviderTest;
-    status |= QTest::qExec(&plotDataProviderTest);
+    status = std::max(status, QTest::qExec(&plotDataProviderTest));
 
     FilteringProxyModelTest filteringProxyModelTest;
-    status |= QTest::qExec(&filteringProxyModelTest);
+    status = std::max(status, QTest::qExec(&filteringProxyModelTest));
 
     InnerTests innerTests;
-    status |= QTest::qExec(&innerTests);
+    status = std::max(status, QTest::qExec(&innerTests));
 
     DatasetTest datasetTest;
-    status |= QTest::qExec(&datasetTest);
+    status = std::max(status, QTest::qExec(&datasetTest));
 
     DatasetVisualizationTest datasetVisualizationTest;
-    status |= QTest::qExec(&datasetVisualizationTest);
+    status = std::max(status, QTest::qExec(&datasetVisualizationTest));
 
     TestConstants testConstants;
-    status |= QTest::qExec(&testConstants);
+    status = std::max(status, QTest::qExec(&testConstants));
 
     return status;
 }
