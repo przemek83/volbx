@@ -3,7 +3,7 @@ include(FetchContent)
 FetchContent_Declare(
     eible
     GIT_REPOSITORY https://github.com/przemek83/eible.git
-    GIT_TAG 76b3eb0a6a5c45736cfa110002b34688b85eae46
+    GIT_TAG eeb238c3a6673b73d5029a7c8115f10a78b5737d
 )
 
 FetchContent_MakeAvailable(eible)
